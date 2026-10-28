@@ -2,7 +2,7 @@
 
 Raspberry Pi 5(ARM64, Debian 13, RAM 8GB)에서 한국어 ASR 모델을 비교하고 실시간 배포하기 위한 연구개발 저장소입니다. Host PC에서 개발·단위 검사를 수행하고, 실제 추론·벤치마크는 RP5에서 수행합니다. 기준 인터프리터는 Python 3.11입니다.
 
-패키징, 설정 검사 CLI, 기존 프로브 반복 도구, 모델을 한 번 로드하는 공통 파일 평가·CER 재채점, [공통 1배속 스트리밍 모사](docs/streaming_evaluation.md), 배포 절차 및 실험 기록을 제공합니다. CPU Zipformer의 batch·paced_stream과 SenseVoiceSmall INT8의 batch 어댑터를 제공합니다. SenseVoice는 Host mock 검사까지 구현했으며 실제 ARM64 모델 로딩·추론은 미검증입니다. Qwen3-ASR·정답 시각 정렬·마이크·서비스 배포는 아직 미구현입니다.
+패키징, 설정 검사 CLI, 기존 프로브 반복 도구, 모델을 한 번 로드하는 공통 파일 평가·CER 재채점, [공통 1배속 스트리밍 모사](docs/streaming_evaluation.md), 배포 절차 및 실험 기록을 제공합니다. CPU Zipformer의 batch·paced_stream과 SenseVoiceSmall INT8의 batch 어댑터를 제공합니다. 두 모델의 RP5 실제 batch 추론과 Host 재채점을 확인했습니다. Qwen3-ASR·정답 시각 정렬·마이크·서비스 배포는 아직 미구현입니다.
 
 초기 구성의 실제 로컬 검사 결과는 [검증 기록](docs/verification.md)에 있습니다.
 
@@ -66,6 +66,12 @@ sha256sum -c experiments/m1_zipformer/SHA256SUMS
 
 새 실행에는 sherpa 네이티브 ORT와 Python onnxruntime 버전, 로딩 단계 시간·CPU/RSS, 추론 단계 자원을 나누어 기록합니다. 기존 `ko_cer_v1`·RTF 계산과 M1 결과는 유지합니다. 선택 진단 `threads --pid <실제_평가_PID>`는 Linux TID별 CPU를 관찰하며 기존 CPU 324%의 원인을 확정하지 않습니다. 가중치 다운로드·RP5 환경 변경·새 추론은 이번 Host 구현 범위에 포함하지 않습니다.
 
+## M2-2 RP5 batch 검증
+
+[SenseVoice 실제 측정 기록](results/summaries/sensevoice-kss-dev50-20261028.md)은 기존 환경에 패키지를 설치하지 않고 새 모델 폴더만 추가해 실행했습니다. 동일 KSS 개발 자료 50/50 성공, CER **5.16%**, batch RTF **0.0982**, 추론 구간 관측 최대 RSS **554.14 MiB**입니다. `ko`·ITN 꺼짐·1스레드·발화별 1회 측정이며 기존 Zipformer 2스레드 결과와 통제된 속도 순위로 비교하지 않습니다. 원시 기록 37개 해시와 Host 재채점 일치, 기존 자산/환경 파일 2,028개 보존을 확인했습니다.
+
+별도 짧은 합성 무음 검사에서 0.5초에 “응”, 1초에 “그”가 반환됐습니다. 실시간 서비스·Refine 전에 VAD·무음 처리를 검증해야 합니다. 이번 완료 범위는 실제 Offline batch이며 Streaming·Refine·M2 전체 완료를 뜻하지 않습니다.
+
 ## 기존 Zipformer 실험
 
 아래 모든 값은 **동일한 3.526초 WAV 단일 샘플에 대한 설정별 1회 측정**입니다. 반복 측정 통계나 모델 전체의 성능을 의미하지 않습니다. 기존 RP5에서 가져온 파일은 수정하지 않고 보존했습니다.
@@ -108,4 +114,4 @@ git pull --ff-only origin main
 
 Host와 RP5 모두 `main` 하나로 관리합니다. Host의 main에서 개발·커밋·push하고 RP5의 main에서 pull·실행합니다. 별도 feature 브랜치는 만들지 않습니다. 가중치·WAV·가상환경·원시 결과·내부 백업은 각 장비에 둡니다. 기존 90회 결과를 통합 때문에 다시 측정할 필요는 없습니다.
 
-공통 batch·1배속 모사와 RP5의 단일 공식 샘플·KSS 개발용 50개 기준선을 확인했습니다. 다음은 M2-2 SenseVoice 실제 RP5 로딩·단일 WAV → 같은 KSS 50개 batch 비교 → 스레드/정밀도 비교와 추가 모델 검토 → 마이크·endpoint·서비스 통합입니다. main의 소스 업데이트 후 실제 모델 검증은 위 M2 안내를 따릅니다. 정답 시각 정렬 인식 지연과 최종 정확도 평가는 튜닝과 분리한 다화자·잡음 데이터로 확장해야 합니다. 기존 원시는 RP5 백업에 유지합니다. 설계 범위는 [아키텍처](docs/architecture.md)에 있습니다.
+Zipformer·SenseVoice의 RP5 batch와 Zipformer의 1배속 모사 기준선을 확인했습니다. 다음은 같은 스레드/실행 제한 조건의 비교와 VAD·무음 검증 → 추가 모델·Refine 구조 검토 → 마이크·endpoint·서비스 통합입니다. 정답 시각 정렬 인식 지연과 최종 정확도 평가는 튜닝과 분리한 다화자·잡음 데이터로 확장해야 합니다. 기존 원시는 RP5 백업에 유지합니다. 설계 범위는 [아키텍처](docs/architecture.md)에 있습니다.

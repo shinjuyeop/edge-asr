@@ -2,9 +2,11 @@
 
 모델을 한 번 로드하고 여러 WAV를 순차 처리하여 CER·batch RTF·추론 구간 CPU/RSS를 기록합니다. 입력·채점·실행·저장은 공통이며 모델 호출은 `adapters/zipformer.py`, `adapters/sensevoice.py`로 분리했습니다. 저장된 가설은 모델·오디오 없이 재채점할 수 있습니다.
 
-기본 모드는 **CPU Zipformer transducer의 batch 평가**입니다. 온라인 모델에 전체 PCM을 대기 없이 전달하고 파일마다 새 스트림을 생성·flush합니다. `configs/zipformer_paced.toml`을 지정하면 [공통 1배속 스트리밍 모사 평가](streaming_evaluation.md)로 청크별 가설·지연·드롭·백로그를 기록합니다. `configs/sensevoice_eval.toml`은 [SenseVoiceSmall INT8 Offline batch](m2_sensevoice.md) 설정이며 Host mock까지 검사했습니다. 실제 SenseVoice ARM64 추론·Qwen·마이크는 미검증/미구현입니다. 2026-10-28 공식 WAV 1개에 대한 Zipformer RP5 실행 결과를 Host에서 SSH로 직접 읽고, 결과 파일의 체크섬과 Host 재채점 일치를 확인했습니다. 단일 샘플 1회 측정이며 여러 발화용 데이터 준비는 [데이터 안내](datasets.md)를 따릅니다.
+기본 모드는 **CPU Zipformer transducer의 batch 평가**입니다. 온라인 모델에 전체 PCM을 대기 없이 전달하고 파일마다 새 스트림을 생성·flush합니다. `configs/zipformer_paced.toml`을 지정하면 [공통 1배속 스트리밍 모사 평가](streaming_evaluation.md)로 청크별 가설·지연·드롭·백로그를 기록합니다. `configs/sensevoice_eval.toml`은 [SenseVoiceSmall INT8 Offline batch](m2_sensevoice.md) 설정이며 Host mock과 RP5의 단일 WAV·KSS 50개 추론/재채점을 확인했습니다. Qwen·마이크는 미구현입니다. 2026-10-28 공식 WAV 1개에 대한 Zipformer RP5 실행 결과를 Host에서 SSH로 직접 읽고, 결과 파일의 체크섬과 Host 재채점 일치를 확인했습니다. 단일 샘플 1회 측정이며 여러 발화용 데이터 준비는 [데이터 안내](datasets.md)를 따릅니다.
 
 후속 [KSS 개발용 50개 기준선](../results/summaries/zipformer-kss-dev50-20261028.md)은 Host에서 SSH로 RP5에 직접 실행하여 50/50 성공을 확인했습니다. 단일 화자의 낭독 50개를 각각 1회 처리한 개발 자료이며 CER 11.64%, RTF 0.1082입니다. 다화자·잡음·공통 스트리밍은 이 결과로 검증하지 않았습니다.
+
+[SenseVoice M2-2 기록](../results/summaries/sensevoice-kss-dev50-20261028.md)은 같은 50개 WAV·정답·정규화에서 CER 5.16%, RTF 0.0982입니다. 1스레드 설정·별도 시점의 1회 측정이며 Zipformer 2스레드와 통제된 처리 성능 순위로 해석하지 않습니다. 합성 무음의 비어 있지 않은 전사도 관측했으므로 VAD·무음·실시간 Refine 적합성은 추가 검증합니다.
 
 ## RP5 시작
 

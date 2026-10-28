@@ -1,0 +1,421 @@
+{
+  "schema_version": 1,
+  "milestone": "M2-2 SenseVoiceSmall INT8 RP5 batch validation",
+  "evidence": "Host 에이전트가 SSH로 RP5에서 직접 실행. 원시 결과 회수·SHA-256·Host 재채점·기존 자산 보존 검증.",
+  "run_id": "eval-20261028T084849Z-64nf0pzj",
+  "source_commit": "3a8f320151efc7121352a290a8ce82f304f3c785",
+  "source_dirty": false,
+  "started_at_utc": "2026-10-28T08:48:49.602749+00:00",
+  "finished_at_utc": "2026-10-28T08:49:09.249444+00:00",
+  "verified_at_utc": "2026-10-28T08:52:45.065808+00:00",
+  "mode": "batch",
+  "normalization": "ko_cer_v1",
+  "unicode_database": "14.0.0",
+  "device": {
+    "board": "Raspberry Pi 5 Model B Rev 1.0",
+    "architecture": "aarch64",
+    "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+    "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+    "runtime": {
+      "sherpa_package_version": "2.0.1",
+      "sherpa_core_package_version": "2.0.1",
+      "python_onnxruntime_package_version": "1.31.1",
+      "sherpa_native_onnxruntime_version": "1.28.2",
+      "native_version_source": "sherpa_onnx.onnxruntime_version",
+      "status": "available",
+      "reason": null
+    }
+  },
+  "dataset": {
+    "recipe": {
+      "name": "kss-dev50-v1",
+      "dataset": "Bingsu/KSS_Dataset",
+      "revision": "48fdfd7ab1dbc1a62e4e8a8b9f4c360259d51d3c",
+      "source_config": "default",
+      "source_split": "train",
+      "offset": 1000,
+      "count": 50,
+      "reference_field": "expanded_script",
+      "sample_rate_hz": 16000,
+      "channels": 1,
+      "sample_width_bytes": 2,
+      "license": "cc-by-nc-sa-4.0"
+    },
+    "reference_field": "expanded_script",
+    "project_split": "development",
+    "speakers": 1,
+    "random_sample": false,
+    "independent_test_split": false,
+    "model_training_overlap_verified": false,
+    "input_manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+    "provenance_sha256": "024be130b23674f3ef8a44638bee03de7e8c501960a73315eae0cf7f8404d1ca",
+    "ffmpeg": "ffmpeg version 4.4.2-0ubuntu0.22.04.1 Copyright (c) 2000-2021 the FFmpeg developers"
+  },
+  "model": {
+    "configuration": {
+      "num_threads": 1,
+      "model_file": "model.int8.onnx",
+      "tokens": "tokens.txt",
+      "quantization": "int8",
+      "family": "sensevoice",
+      "path": "models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17",
+      "language": "ko",
+      "use_itn": false
+    },
+    "adapter": {
+      "backend": "sherpa_onnx",
+      "factory": "OfflineRecognizer.from_sense_voice",
+      "supported_modes": [
+        "batch"
+      ],
+      "provider": "cpu",
+      "feature_dim": 80,
+      "language": "ko",
+      "use_itn": false,
+      "quantization": "int8",
+      "quantization_evidence": "declared_configuration_not_graph_dtype_inspection",
+      "quantization_method": null,
+      "quantization_method_reason": "배포된 INT8 ONNX를 사용. 변환·양자화 알고리즘은 검증하지 않았습니다.",
+      "tail_padding_s": null,
+      "tail_padding_reason": "not_used_by_offline_sensevoice",
+      "output_policy": "sensevoice_control_tokens_v1",
+      "control_token_pattern": "<\\|[A-Za-z][A-Za-z0-9_]*\\|>"
+    },
+    "files": {
+      "model": {
+        "name": "model.int8.onnx",
+        "sha256": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51",
+        "bytes": 239233841
+      },
+      "tokens": {
+        "name": "tokens.txt",
+        "sha256": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc",
+        "bytes": 315894
+      }
+    },
+    "download_url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17.tar.bz2",
+    "artifact_version": "2024-07-17",
+    "release_tag": "asr-models",
+    "archive_bytes": 163002883,
+    "archive_sha256": "7d1efa2138a65b0b488df37f8b89e3d91a60676e416f515b952358d83dfd347e",
+    "hash_scope": "다운로드한 실제 바이트의 측정값. 게시자 서명 검증 아님. 변환·재양자화 없음.",
+    "license_reference": "Ref to https://github.com/modelscope/FunASR?tab=readme-ov-file#license",
+    "license_file_sha256": "221c6df10b0931a5629adad671ea48fb7747e034c414b6d2bfa275bc3dd4ea17",
+    "license_spdx": null,
+    "license_scope": "동봉 LICENSE는 상위 라이선스 URL 참조. toolkit 코드 라이선스를 모델 가중치에 대입하지 않음."
+  },
+  "warmup": {
+    "planned": 3,
+    "successful": 3,
+    "sample_id": "kss-train-01000"
+  },
+  "repetitions_per_sample": 1,
+  "model_loading": {
+    "wall_s": 1.8328081039999233,
+    "process_cpu_s": 2.066306044,
+    "rss_observed_max_mib": 533.640625,
+    "rss_sample_count": 20,
+    "scope": "adapter.load의 선택 런타임 import·인식기 초기화. 자산 해시를 먼저 읽으므로 cold-storage 측정이 아님."
+  },
+  "overall": {
+    "planned": 50,
+    "successful": 50,
+    "failed": 0,
+    "not_attempted": 0,
+    "interrupted": 0,
+    "complete": true,
+    "reference_character_coverage": 1.0,
+    "cer": {
+      "value": 0.051587301587301584,
+      "reference_characters": 756,
+      "errors": 39,
+      "substitutions": 25,
+      "deletions": 9,
+      "insertions": 5,
+      "scope": "successful_nonempty_references",
+      "empty_reference_samples": 0,
+      "empty_reference_nonempty_hypotheses": 0
+    },
+    "rtf": 0.09817625623487976,
+    "total_audio_s": 164.919,
+    "total_inference_wall_s": 16.191130002000136,
+    "mean_process_cpu_percent": 100.05858149492146,
+    "file_processing_s": {
+      "n": 50,
+      "mean": 0.32382260004000274,
+      "p50": 0.31699076699987927,
+      "p95": 0.5044764309986931,
+      "max": 0.5761302060000162
+    },
+    "file_rtf": {
+      "n": 50,
+      "mean": 0.09945930032126853,
+      "p50": 0.09754996679728567,
+      "p95": 0.11048505830857992,
+      "max": 0.12640344793161895
+    },
+    "rss_observed_max_mib": 554.140625
+  },
+  "unmeasured": {
+    "first_partial_from_audio_start_s": null,
+    "aligned_recognition_latency_s": null,
+    "finalization_from_audio_end_s": null,
+    "drops": null,
+    "backlog": null,
+    "offline_refine_confirmation_latency_s": null,
+    "acoustic_endpoint_latency_s": null,
+    "ui_display_latency_s": null
+  },
+  "unmeasured_reasons": {
+    "aligned_recognition_latency_s": "정답의 음향 시각 정렬이 없습니다.",
+    "offline_refine_confirmation_latency_s": "live 구간 수집·endpoint·refine 큐를 실행하지 않았습니다.",
+    "acoustic_endpoint_latency_s": "음향적 발화 끝 검출을 실행하지 않았습니다.",
+    "ui_display_latency_s": "자막 화면을 계측하지 않았습니다.",
+    "first_partial_from_audio_start_s": "batch는 부분 자막 시각을 계측하지 않습니다.",
+    "finalization_from_audio_end_s": "batch 처리 시간은 실시간 입력 끝 기준 지연이 아닙니다.",
+    "drops": "실시간 입력 큐를 실행하지 않았습니다.",
+    "backlog": "실시간 입력 큐를 실행하지 않았습니다."
+  },
+  "timing_scope": "준비한 float PCM에서 새 인식 상태 생성~최종 반환. WAV I/O·변환·모델 로딩·워밍업·결과 파일 쓰기 제외. 특징 추출·모델별 종료 처리(해당 시 flush)·출력 정리 포함.",
+  "resource_scope": "추론 구간의 현재 프로세스 CPU(계측 스레드 비용 포함), 모델 상주 상태의 주 PID 표본 RSS. RSS는 경계 표본 포함·정확한 피크 아님.",
+  "external_execution": {
+    "limits": {
+      "wall_timeout_s": 600,
+      "kill_after_s": 5,
+      "address_space_bytes": 4294967296,
+      "core_dump_bytes": 0,
+      "memory_cgroup_enforced": false,
+      "address_space_is_not_rss_cap": true
+    },
+    "exit_code": 0,
+    "actual_asr_limit_verified": true,
+    "memory_controller_available": false,
+    "preflight_systemd_exit_code": 0,
+    "preflight_systemd_memory_max_exists": false
+  },
+  "device_snapshots": {
+    "scope": "실행 전후 두 시점. 실행 중 온도/클럭 피크는 미계측.",
+    "before": {
+      "at_utc": "2026-10-28T08:48:49.514768+00:00",
+      "temperature_millicelsius": "52350",
+      "scaling_governor": "ondemand",
+      "scaling_cur_freq": "2400000",
+      "loadavg": "0.08 0.10 0.04 1/327 5174",
+      "get_throttled": {
+        "exit_code": 0,
+        "stdout": "throttled=0x0",
+        "stderr": ""
+      }
+    },
+    "after": {
+      "at_utc": "2026-10-28T08:49:09.327165+00:00",
+      "temperature_millicelsius": "61700",
+      "scaling_governor": "ondemand",
+      "scaling_cur_freq": "2400000",
+      "loadavg": "0.28 0.14 0.05 1/325 5234",
+      "get_throttled": {
+        "exit_code": 0,
+        "stdout": "throttled=0x0",
+        "stderr": ""
+      }
+    }
+  },
+  "single_sample": {
+    "run_id": "eval-20261028T084753Z-0wpgf_tc",
+    "scope": "기존 공식 WAV 한 개, 워밍업 3회와 본 측정 1회. 모집단 정확도 아님.",
+    "warmup": {
+      "planned": 3,
+      "successful": 3,
+      "sample_id": "zipformer-official-test-0"
+    },
+    "overall": {
+      "planned": 1,
+      "successful": 1,
+      "failed": 0,
+      "not_attempted": 0,
+      "interrupted": 0,
+      "complete": true,
+      "reference_character_coverage": 1.0,
+      "cer": {
+        "value": 0.0,
+        "reference_characters": 16,
+        "errors": 0,
+        "substitutions": 0,
+        "deletions": 0,
+        "insertions": 0,
+        "scope": "successful_nonempty_references",
+        "empty_reference_samples": 0,
+        "empty_reference_nonempty_hypotheses": 0
+      },
+      "rtf": 0.09816985679812826,
+      "total_audio_s": 3.5265,
+      "total_inference_wall_s": 0.3461959999985993,
+      "mean_process_cpu_percent": 100.098547066229,
+      "file_processing_s": {
+        "n": 1,
+        "mean": 0.3461959999985993,
+        "p50": null,
+        "p95": null,
+        "max": 0.3461959999985993
+      },
+      "file_rtf": {
+        "n": 1,
+        "mean": 0.09816985679812826,
+        "p50": null,
+        "p95": null,
+        "max": 0.09816985679812826
+      },
+      "rss_observed_max_mib": 542.171875
+    }
+  },
+  "short_input_probe": {
+    "scope": "합성 무음, 길이별 새 프로세스/모델로 각 1회. CER/RTF·최소 입력 길이·일반 무음 오검출률 검증 아님.",
+    "cases": [
+      {
+        "frames": 160,
+        "duration_s": 0.01,
+        "exit_code": 0,
+        "status": "returned",
+        "returned_text": "",
+        "address_space_limit_bytes": 4294967296
+      },
+      {
+        "frames": 1600,
+        "duration_s": 0.1,
+        "exit_code": 0,
+        "status": "returned",
+        "returned_text": "",
+        "address_space_limit_bytes": 4294967296
+      },
+      {
+        "frames": 8000,
+        "duration_s": 0.5,
+        "exit_code": 0,
+        "status": "returned",
+        "returned_text": "응",
+        "address_space_limit_bytes": 4294967296
+      },
+      {
+        "frames": 16000,
+        "duration_s": 1.0,
+        "exit_code": 0,
+        "status": "returned",
+        "returned_text": "그",
+        "address_space_limit_bytes": 4294967296
+      }
+    ],
+    "finding": "0.5초 무음에서 응, 1.0초 무음에서 그가 반환됨. 서비스/Refine 전 VAD·무음·endpoint 검증 필요. 출력 단어를 임의 삭제하지 않음."
+  },
+  "comparison": {
+    "zipformer_summary": "zipformer-kss-dev50-20261028.json",
+    "zipformer_run_id": "eval-20261028T055209Z-sv2lwci2",
+    "zipformer_num_threads": 2,
+    "sensevoice_num_threads": 1,
+    "inputs_identical_verified": true,
+    "zipformer_overall": {
+      "planned": 50,
+      "successful": 50,
+      "failed": 0,
+      "not_attempted": 0,
+      "interrupted": 0,
+      "complete": true,
+      "reference_character_coverage": 1.0,
+      "cer": {
+        "value": 0.1164021164021164,
+        "reference_characters": 756,
+        "errors": 88,
+        "substitutions": 71,
+        "deletions": 11,
+        "insertions": 6,
+        "scope": "successful_nonempty_references",
+        "empty_reference_samples": 0,
+        "empty_reference_nonempty_hypotheses": 0
+      },
+      "rtf": 0.10816424977110987,
+      "total_audio_s": 164.919,
+      "total_inference_wall_s": 17.83833990800167,
+      "mean_process_cpu_percent": 323.9777409672318,
+      "file_processing_s": {
+        "n": 50,
+        "mean": 0.3567667981600334,
+        "p50": 0.3386282910000773,
+        "p95": 0.5510398669998722,
+        "max": 0.6117418089997955
+      },
+      "file_rtf": {
+        "n": 50,
+        "mean": 0.10956491653983384,
+        "p50": 0.10842877740507993,
+        "p95": 0.12006092534540992,
+        "max": 0.13381544658206146
+      },
+      "rss_observed_max_mib": 246.75
+    },
+    "scope": "동일 WAV·정답·정규화 개발 자료 결과. 스레드/소스/실행 제한/측정 시점이 달라 통제된 속도·CPU 우열 결론 아님. Zipformer 로딩 RSS는 미계측. 기존 결과 수정 없음."
+  },
+  "verification": {
+    "remote_artifact_count": 37,
+    "remote_artifact_sha256": {
+      "baseline.json": "0940fc683ae0dd4731460a1991a93f7c996d797a00403684869e244309e64e4a",
+      "execute.py": "9883140e45312ddc192ad1cf9732d9242575f7082630ebef790098b578c0c1b2",
+      "integrity_after.json": "1f5218bf92c78e65f75828988921ff7cc776da2aaae1ebe6fc1d0da0eb95e2ce",
+      "kss-dev50/console.log": "c0bf13cac6bc1a0df6ec12570612826a06abba0fdb0deb8dae39bd69bb412e1c",
+      "kss-dev50/evaluations/eval-20261028T084849Z-64nf0pzj/environment.json": "87e70e92c0f27e3aaba335f2feff81b4aa100216f01a9bc8a57eeb63ce0d6104",
+      "kss-dev50/evaluations/eval-20261028T084849Z-64nf0pzj/manifest.json": "f55156c343018c29dfc2417c2f24bfacf07ea40912fcdae2647ad92e896b851e",
+      "kss-dev50/evaluations/eval-20261028T084849Z-64nf0pzj/predictions.jsonl": "2b0d6e6f95326f34c7039ef463678a7599f93316b7395d32329ac970f719dad2",
+      "kss-dev50/evaluations/eval-20261028T084849Z-64nf0pzj/progress.jsonl": "2b0d6e6f95326f34c7039ef463678a7599f93316b7395d32329ac970f719dad2",
+      "kss-dev50/evaluations/eval-20261028T084849Z-64nf0pzj/scores.jsonl": "4f06ca0852e162b408ff27a4400a359e7630f4c5425bd0e4ccb1658082305c29",
+      "kss-dev50/evaluations/eval-20261028T084849Z-64nf0pzj/summary.json": "82434c6ceac0544f063faf4fa4a3d9e5799a92bf2d875479a7773cb348f88062",
+      "kss-dev50/evaluations/eval-20261028T084849Z-64nf0pzj/summary.md": "fed56e8ec3ca073cfda9ef6088b9ca71dbaeb2b7b05b3b7c90d8722d64d31d0f",
+      "kss-dev50/execution.json": "7408673077e87d1667f5261f2bba33f1ec4b3c72ac1f8003db2f50623b0ecadc",
+      "model_provenance.json": "18e4fc58d0b71ba2e20461320088ff4729a4e529e42a7a64b592eccbd08f8df5",
+      "resource_preflight.json": "a1d67478213404cc773ceb3b13cdf3a6dc89a26790100d9d4486236724597386",
+      "short-inputs/160-execution.json": "2bd8aa43b73baa021da0c681f6d98bc3a424b8ea05cb56e857011fa477225871",
+      "short-inputs/160.json": "9e3b8671cfe6d59fcac44de1752753e05b8d50ef0b54254de98cccfd36e28e61",
+      "short-inputs/160.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "short-inputs/1600-execution.json": "0092b3fe8677e03208c3e099f293f579b6cfbed985c5f4be6aa4ee5b7cc2aefc",
+      "short-inputs/1600.json": "c9bc19fc7dd9af85b4b1f9953695d2d4deea3744648bc52ad1017d65a756cb6e",
+      "short-inputs/1600.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "short-inputs/16000-execution.json": "6f355f340447d3af3c9f08f295fa3010d06a0fa8e615effe1c9a5c26c0408542",
+      "short-inputs/16000.json": "1aaad5b5178b87dab31e027cc312526c4b5ba93bbaf53c2de085bd4fb46692b7",
+      "short-inputs/16000.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "short-inputs/8000-execution.json": "90c301dd2c40d3ed4c4d283e1a01131bd9950cb4d277cd81ad62a95806a91134",
+      "short-inputs/8000.json": "dc88a6f173a996a2eaf4fb574d707da6800e2b6f3ea993183e42db8b33daf3ed",
+      "short-inputs/8000.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "short-inputs/summary.json": "61be323b44812010fa947b2b6a3189dacfdc33b1eb95f0572ef342832d125305",
+      "short_probe.py": "4b5e1d183d837dbbde6e54f205a77ac769721feb8c49b48f4088d9aad6e4347c",
+      "single/console.log": "16ef48e3f7e5200c969af964c92323fc6d2af68706e2411830dbc238b02b323a",
+      "single/evaluations/eval-20261028T084753Z-0wpgf_tc/environment.json": "87e70e92c0f27e3aaba335f2feff81b4aa100216f01a9bc8a57eeb63ce0d6104",
+      "single/evaluations/eval-20261028T084753Z-0wpgf_tc/manifest.json": "ac735829c9e51ec2306aecbc82d6f4a8a863f9eeff17590260cdca40a2269a5a",
+      "single/evaluations/eval-20261028T084753Z-0wpgf_tc/predictions.jsonl": "7de1dbb97b3753c8cac7453556493c96e00530e22192a823e8af5c3f7746f2ba",
+      "single/evaluations/eval-20261028T084753Z-0wpgf_tc/progress.jsonl": "7de1dbb97b3753c8cac7453556493c96e00530e22192a823e8af5c3f7746f2ba",
+      "single/evaluations/eval-20261028T084753Z-0wpgf_tc/scores.jsonl": "84dc6c982179049a453f9b0cf0ea3e81ce0e96d2362b9638b462f9d01c65ce60",
+      "single/evaluations/eval-20261028T084753Z-0wpgf_tc/summary.json": "0759a6335b6d7ebc477ffbb09ac5557b57c3a363858a68dc212290af11e4b3a9",
+      "single/evaluations/eval-20261028T084753Z-0wpgf_tc/summary.md": "e57a28d713564dc29324695d6b373375af2edcb53ebdcbe66770170aa116b026",
+      "single/execution.json": "79ed2feee5d1cc29f60c2819ec3cc3b9003c714ce4574208c4cfdcc3ce7cfc3f"
+    },
+    "checksum_list_sha256": "f2af83bf573516232505ea75f9c961cbf42a888ec202be42f5f2c053f7ccdd0c",
+    "host_rescore_matches": true,
+    "single_host_rescore_matches": true,
+    "ids_references_audio_hashes_match": true,
+    "source_and_model_provenance_hashes_match": true,
+    "protected_file_count": 2028,
+    "protected_files_unchanged": true,
+    "existing_packages_unchanged": true,
+    "new_model_files_rechecked": 10
+  },
+  "raw_locations": {
+    "rp5_control": "/home/deepet/projects/edge-asr/results/executions/sensevoice-m2-2-eweeiec7",
+    "rp5_run": "/home/deepet/projects/edge-asr/results/executions/sensevoice-m2-2-eweeiec7/kss-dev50/evaluations/eval-20261028T084849Z-64nf0pzj",
+    "host_control": "results/executions/sensevoice-m2-2-eweeiec7",
+    "host_run": "results/executions/sensevoice-m2-2-eweeiec7/kss-dev50/evaluations/eval-20261028T084849Z-64nf0pzj",
+    "host_rescore": "results/executions/sensevoice-m2-2-eweeiec7/host-rescore/kss-dev50/score-20261028T085245Z-8ywby4f2"
+  },
+  "limitations": [
+    "단일 화자의 개발 발화 50개에 대한 발화별 1회 측정. 독립 test·반복 변동성·잡음·장시간 검증 아님.",
+    "온라인 부분 자막·실시간 인식 지연·Refine·VAD·마이크·동시 실행을 검증하지 않음.",
+    "TID별 CPU 원인 진단과 Zipformer 324% 원인 분석은 이번 실측에서 수행하지 않음.",
+    "언어 ko·ITN false·배포 INT8·1스레드 한 구성만 평가. 최적 설정·전체 M2 완료 판정 아님.",
+    "가상 주소 공간 4GiB 제한은 RSS/cgroup 상한이 아님. RSS와 온도는 관측 범위의 한계가 있음."
+  ]
+}

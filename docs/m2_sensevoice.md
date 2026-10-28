@@ -1,12 +1,12 @@
-# M2-0 / M2-1: SenseVoiceSmall INT8 batch 통합
+# M2-0 / M2-1 / M2-2: SenseVoiceSmall INT8 batch 통합·실측
 
-현재 완료 범위는 **Host 구현·mock 계약 검사**입니다. SenseVoice 가중치를 다운로드하지 않았고 ARM64 모델 로딩·추론·성능은 미검증입니다. M2-2의 실제 RP5 검증을 통과하기 전에는 M2 전체 완료·SenseVoice 정확도/속도 향상을 주장하지 않습니다. M1 설정·요약·음원·모델과 RP5 기존 `.venv`는 그대로 보존합니다.
+Host 구현·mock 계약 검사 후 **M2-2의 실제 RP5 batch 검증**까지 완료했습니다. 2026-10-28 기존 환경에 공식 INT8 모델을 새 폴더로 추가해 단일 WAV·KSS 50개를 실행했고 결과 회수·체크섬·Host 재채점·기존 자산 보존을 확인했습니다. [측정 기록](../results/summaries/sensevoice-kss-dev50-20261028.md)에 수치·출처·한계를 남겼습니다. Streaming·Refine·독립 평가·M2 전체 완료는 별도 범위입니다.
 
 ## 어댑터와 출력 정책
 
 `adapters/sensevoice.py`는 `load()`, `transcribe(Audio) -> str`, `close()`, `model_files` 계약을 사용합니다. [sherpa-onnx v2.0.1 Python API](https://github.com/k2-fsa/sherpa-onnx/blob/v2.0.1/sherpa-onnx/python/sherpa_onnx/offline_recognizer.py)의 `from_sense_voice()`를 기준으로 구현했습니다. 모델은 한 번 로드하고 발화마다 `OfflineRecognizer.create_stream()` → `accept_waveform()` → `decode_stream()` → `stream.result.text`로 처리합니다. 모델별 분기는 factory와 설정 검증에만 있으며 공통 batch 루프에 SenseVoice 분기는 없습니다.
 
-기본 설정은 `configs/sensevoice_eval.toml`의 배포 INT8 `model.int8.onnx`·`tokens.txt`, CPU 1스레드, `language="ko"`, `use_itn=false`, 16kHz입니다. 80차원 특징은 SenseVoice factory의 고유 규격으로 지정하며 Zipformer 설정에서 가져오지 않습니다. Zipformer의 tail padding·`input_finished()`·`is_ready()` 루프는 사용하지 않습니다. 짧은 음원 오류를 숨기기 위한 자동 padding·재시도도 없습니다. 실제 최소 입력 길이는 M2-2에서 확인합니다.
+기본 설정은 `configs/sensevoice_eval.toml`의 배포 INT8 `model.int8.onnx`·`tokens.txt`, CPU 1스레드, `language="ko"`, `use_itn=false`, 16kHz입니다. 80차원 특징은 SenseVoice factory의 고유 규격으로 지정하며 Zipformer 설정에서 가져오지 않습니다. Zipformer의 tail padding·`input_finished()`·`is_ready()` 루프는 사용하지 않습니다. 짧은 음원 오류를 숨기기 위한 자동 padding·재시도도 없습니다. M2-2에서는 0.01/0.1/0.5/1초 합성 무음이 모두 반환됐지만 정확한 최소 입력 길이를 규정하지는 않았습니다. 0.5/1초 무음의 오출력은 아래 결과를 참고합니다.
 
 `sensevoice_control_tokens_v1`은 **SenseVoice 어댑터에서만** 예약 형태 `<|[A-Za-z][A-Za-z0-9_]*|>`를 분리하고 앞뒤 공백을 제거합니다. 일반 괄호·문장부호·내부 공백·숫자·대소문자는 바꾸지 않습니다. 앞으로 추가되는 같은 문법의 태그도 분리하되 raw 출력과 태그를 모두 보존합니다. 이는 단어·의미를 교정하거나 일반 텍스트를 삭제하는 공통 정규화가 아닙니다. sherpa가 이미 태그를 제거한 본문을 반환하면 태그 목록은 빈 배열입니다.
 
@@ -31,7 +31,7 @@
 
 기존 `schema_version=1`과 기존 필드는 유지하고 선택 메타데이터만 추가했습니다. 과거 결과를 소급 변경하지 않습니다. 로딩 RSS·추론 RSS·입력 자식의 생애 최고치를 합쳐 동시 파이프라인 피크로 표시하지 않습니다. 관측 사이 피크는 놓칠 수 있습니다. 자산 체크섬을 모델 로딩 전에 읽기 때문에 `model_load_s`는 cold-storage 측정이 아닙니다.
 
-`quantization=int8`은 사용할 배포 모델의 설정 선언입니다. 그래프 dtype를 검사한 결과가 아닙니다. Zipformer도 파일명에 따른 INT8 표기와 정밀도 미확인을 구분하여 기록합니다. 배포 모델의 정확한 양자화 알고리즘은 미검증이므로 `quantization_method=null`과 사유를 남기며 이 프로젝트에서 변환·재양자화를 수행하지 않습니다. 실제 배포 파일의 리비전·출처·라이선스·해시는 M2-2에서 확인합니다.
+`quantization=int8`은 사용할 배포 모델의 설정 선언입니다. 그래프 dtype를 검사한 결과가 아닙니다. Zipformer도 파일명에 따른 INT8 표기와 정밀도 미확인을 구분하여 기록합니다. 배포 모델의 정확한 양자화 알고리즘은 미검증이므로 `quantization_method=null`과 사유를 남기며 이 프로젝트에서 변환·재양자화를 수행하지 않습니다. M2-2의 실제 배포 버전·출처·동봉 라이선스 참조·해시는 측정 JSON과 로컬 `model_provenance.json`에 기록했습니다. 모델 가중치에 toolkit 코드 라이선스를 대입하지 않습니다.
 
 ```bash
 # Host의 기본 환경 조회: 추론 런타임을 import하지 않음
@@ -65,10 +65,16 @@ M2-2에서 평가가 이미 실행 중일 때 다른 터미널에서 실제 Pyth
 
 이 명령은 Linux `/proc/PID/task/TID/stat`을 읽습니다. 모델을 시작하거나 affinity·스레드 수·우선순위를 바꾸지 않습니다. CPU는 동일한 TID 시작 시각으로 연속 관측한 두 표본의 CPU tick 차분입니다. 중간 생성/소멸 경계는 누락될 수 있으며 PID 재사용·종료를 따로 표시합니다. 스레드 수가 많다는 사실만으로 활성 스레드·spinning 원인을 확정하지 않습니다. ORT 세션별 역할은 null/사유로 남깁니다. 관측 자체의 오버헤드가 있으므로 성능 기준선과 진단 실행은 구분합니다. 기본 평가에서 자동 활성화하지 않습니다.
 
-## M2-2 RP5 실제 검증 순서 — 이번 작업에서 실행하지 않음
+## M2-2 실제 결과와 남은 검증
+
+실제 KSS 50/50·워밍업 3/3 성공, CER 5.1587%(39/756), batch RTF 0.098176, 추론 RSS 관측 최대 554.141 MiB입니다. 로딩 wall 1.832808초·로딩 RSS 관측 최대 533.641 MiB는 별도입니다. 네이티브 ORT는 1.28.2, Python ORT 패키지는 1.31.1입니다. 이번은 1스레드·발화별 1회 개발 자료 결과이며 Zipformer 2스레드와 통제된 속도 비교가 아닙니다.
+
+짧은 합성 무음의 0.01/0.1초는 빈 문자열, 0.5초는 “응”, 1초는 “그”가 반환됐습니다. 각각 1회 수용성 검사이며 전체 오검출률이나 음성 정확도·최소 입력 길이를 보증하지 않습니다. VAD·무음·endpoint 및 실제 Refine/동시 실행은 다음 검증 대상입니다. 결과를 숨기는 단어 삭제는 적용하지 않았습니다. 기존 CPU 324%의 원인도 아직 미확정입니다.
+
+## RP5 실제 검증 절차
 
 1. 기존 RP5 `.venv`·모델·데이터·과거 결과와 Git 상태를 확인하고 보존합니다. Host와 RP5 모두 main을 사용하며 RP5의 main을 fast-forward로 업데이트합니다. 강제 reset은 사용하지 않습니다.
-2. [sherpa 배포 SenseVoice INT8 모델](https://k2-fsa.github.io/sherpa/onnx/sense-voice/pretrained.html)의 고정 버전을 새 모델 폴더에 준비합니다. 기본 경로는 `models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/`이며 `model.int8.onnx`, `tokens.txt`가 필요합니다. 출처·리비전·라이선스·해시를 보관하고 기존 Zipformer 파일은 건드리지 않습니다.
+2. [sherpa 배포 SenseVoice INT8 모델](https://k2-fsa.github.io/sherpa/onnx/sense-voice/pretrained.html)의 고정 버전을 새 모델 폴더에 준비합니다. 기본 경로는 `models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/`이며 `model.int8.onnx`, `tokens.txt`가 필요합니다. 현재 RP5에는 준비됐으므로 기존 파일의 해시를 확인해 재사용합니다. 출처·리비전·라이선스·해시를 보관하고 기존 Zipformer 파일은 건드리지 않습니다.
 3. 기존 `.venv`로 `env --probe-runtime`과 `check-config --evaluation configs/sensevoice_eval.toml`을 실행합니다. 패키지가 부족하면 기존 환경을 수정하는 대신 새 후보 환경을 별도로 준비합니다.
 4. 아래 외부 제한 절차로 기존 공식 WAV 한 개부터 batch 실행합니다. 모델 로딩·메모리·언어/ITN·태그/본문·짧은 입력 실패를 확인합니다. Host mock 통과를 이 단계의 성공으로 대체하지 않습니다.
 5. `data/evaluation/kss-dev50/manifest.jsonl`로 확대하고 성공/실패·커버리지·CER·RTF·로딩/추론 RSS·CPU를 기록합니다. 필요하면 별도 실행에서 TID를 관찰합니다.
@@ -85,7 +91,7 @@ git pull --ff-only origin main
 
 ## 외부 시간 제한과 실패 기록
 
-다음은 **M2-2에서 사용할 절차**이며 이번 단계의 RP5 실행 결과가 아닙니다. GNU `timeout`을 외부에서 적용하므로 평가 루프에 복잡한 프로세스 감독기를 넣지 않습니다. 제한 시간 120초는 예시 예산이며 예상 모델 성능이 아닙니다. 전체 50개에는 예산을 별도로 정합니다. `--foreground`는 사용하지 않으며 종료 시 입력 자식을 포함한 같은 프로세스 그룹을 제한합니다.
+다음은 M2-2에서 사용한 제한 방식의 재실행 절차입니다. GNU `timeout`을 외부에서 적용하므로 평가 루프에 복잡한 프로세스 감독기를 넣지 않습니다. 단일 WAV에 120초·KSS 50개에 600초 예산을 사용했으며 예상 성능 수치가 아닙니다. `--foreground`는 사용하지 않으며 종료 시 같은 프로세스 그룹을 제한합니다. `prlimit`으로 가상 주소 공간 4GiB·core dump 0을 적용하며 기존 `.venv`나 시스템 전역 제한은 변경하지 않습니다.
 
 ```bash
 cd /home/deepet/projects/edge-asr
@@ -99,7 +105,8 @@ import sys
 p = Path(sys.argv[1]) / 'execution.json'
 p.write_text(json.dumps({'status': 'running', 'started_at_utc': datetime.now(timezone.utc).isoformat()}, indent=2))
 PY
-if timeout --signal=TERM --kill-after=5s 120s \
+if PYTHONDONTWRITEBYTECODE=1 timeout --signal=TERM --kill-after=5s 120s \
+  prlimit --as=4294967296 --core=0 -- \
   .venv/bin/python -u scripts/edge_asr.py evaluate \
   --config configs/sensevoice_eval.toml \
   --manifest data/evaluation/official-test0.jsonl \
@@ -125,6 +132,8 @@ PY
 test "$evaluation_exit" -eq 0
 ```
 
-위 `timeout`은 wall time 제한이며 메모리 상한은 아닙니다. M2-2에서 사용자 systemd/cgroup 메모리 제한을 먼저 확인할 수 있다면 위 `if timeout ...`을 `if systemd-run --user --scope --quiet --property=MemoryMax=4G --property=MemorySwapMax=0 timeout ...`으로 감싸 같은 receipt 절차를 사용합니다. 4G는 예시 보호 예산이며 필요 메모리의 예측값이 아닙니다. 실제 평가 PID의 cgroup과 적용된 상한을 실행 중 확인해야 합니다. 해당 장비의 사용자 scope 권한·제한 적용은 이번에 검증하지 않았으며 적용 실패 시 이를 기록하고 무제한 실행으로 자동 재시도하지 않습니다.
+RP5의 `/sys/fs/cgroup/cgroup.controllers`에는 `memory`가 없고 실제 사용자 scope에 `memory.max`도 없었습니다. `systemd-run --user --scope --property=MemoryMax=4G ... true`가 0을 반환해도 메모리 제어가 적용된 것은 아니었습니다. 이번에는 무제한으로 재시도하지 않고 지원되는 `prlimit`을 사용했으며 실제 ASR PID의 `/proc/PID/limits`에서 4GiB soft/hard 값을 확인해 외부 영수증에 보존했습니다.
+
+`timeout`은 wall time 제한이고 `RLIMIT_AS`는 프로세스 가상 주소 공간 상한입니다. RSS·cgroup·전체 시스템 메모리 상한과 같은 값으로 보고하지 않습니다. 4GiB는 이번 보호 예산이며 필요 메모리의 예측값이 아닙니다. 다른 장비에서 cgroup을 사용할 때도 실행 중 실제 cgroup과 `memory.max`를 확인해야 합니다. 제한 적용 실패를 기록하고 무제한 실행으로 자동 재시도하지 않습니다. [prlimit 설명](https://man7.org/linux/man-pages/man1/prlimit.1.html)을 참고합니다.
 
 네이티브 hang·SIGKILL/OOM에서는 내부 manifest가 `running`인 채 남을 수 있습니다. 외부 receipt·console·마지막 progress를 함께 보관하고 미완료를 성공 표본으로 집계하지 않습니다. 137은 SIGKILL이며 timeout 후 강제 종료·OOM·외부 kill 중 어느 원인인지 종료 코드만으로 확정하지 않습니다. 커널 기록 등 증거 없이 OOM이라고 표시하지 않습니다. SSH/전원 단절로 receipt가 `running`이면 외부 기록도 미완료입니다. 기존 내부 결과를 수정해 성공/실패를 꾸미지 않습니다.
