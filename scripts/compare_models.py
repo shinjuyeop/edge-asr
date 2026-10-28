@@ -174,7 +174,7 @@ def freeze_selection(campaign, output):
     plan = json.loads((campaign / "plan.json").read_text())
     if plan["phase"] != "matrix" or plan["runs"] != plan_matrix():
         raise ValueError("전체 18회 행렬 실험이 필요합니다.")
-    groups, signatures = {}, {}
+    groups, signatures, input_signature = {}, {}, None
     for number, item in enumerate(plan["runs"], 1):
         directory = campaign / f"{number:02d}-{item['family']}-t{item['num_threads']}"
         execution = json.loads((directory / "execution.json").read_text())
@@ -188,6 +188,10 @@ def freeze_selection(campaign, output):
             raise ValueError("완료되지 않은 평가입니다.")
         predictions = [json.loads(line) for line in (run / "predictions.jsonl").read_text().splitlines()]
         signature = [(p["id"], p["reference"], p["audio"]["sha256"], p["hypothesis"]) for p in predictions]
+        inputs = [p[:3] for p in signature]
+        if input_signature is not None and inputs != input_signature:
+            raise ValueError("모델 간 평가 입력이 다릅니다.")
+        input_signature = inputs
         family = item["family"]
         if family in signatures and signatures[family] != signature:
             raise ValueError("반복/스레드 간 입력 또는 가설이 다릅니다. 자동 선택을 중단합니다.")
@@ -237,6 +241,9 @@ def main():
             "manifest": str(manifest), "manifest_sha256": digest(manifest),
             "selection_sha256": digest(args.selection) if args.selection else None,
             "selection_policy": "3회 동일 가설·성공; 최저 중앙 RTF의 5% 이내이면 설정 스레드 적은 쪽",
+            "thread_environment": {name: os.environ.get(name) for name in
+                                   ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "OMP_WAIT_POLICY")},
+            "cpu_affinity": sorted(os.sched_getaffinity(0)),
             "device_monitor_scope": "외부 관찰 프로세스 1초 sysfs/proc 표본, ASR CPU에는 제외. 시간 간 피크 보증 없음.",
             "thread_diagnostic_scope": "별도 실행, 첫 파일 측정 이후 3초. 모델 로딩/워밍업 제외, 파일 사이 I/O 포함. 주요 속도 비교에서 제외."}
     save(output / "plan.json", plan)

@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("comparison", ROOT / "scripts/compare_models.py")
@@ -53,7 +53,7 @@ class ComparisonTests(unittest.TestCase):
                 helper.freeze_selection(root, root / "selection.json")
 
     def test_selection_rejects_failed_runs_and_changed_hypotheses(self):
-        for kind in ("failed", "hypothesis"):
+        for kind in ("failed", "hypothesis", "input"):
             with self.subTest(kind=kind), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
                 self.fixture(root)
@@ -62,7 +62,7 @@ class ComparisonTests(unittest.TestCase):
                     helper.save(d / "execution.json", {"status": "timeout"})
                 else:
                     p = d / "evaluations/eval-fixture/predictions.jsonl"
-                    row = json.loads(p.read_text()); row["hypothesis"] = "변경"
+                    row = json.loads(p.read_text()); row["reference" if kind == "input" else "hypothesis"] = "변경"
                     p.write_text(json.dumps(row) + "\n")
                 with self.assertRaises(ValueError):
                     helper.freeze_selection(root, root / "selection.json")
@@ -74,6 +74,19 @@ class ComparisonTests(unittest.TestCase):
                 helper.execute(ROOT, output, {"family": "zipformer", "num_threads": 1}, ROOT / "missing.jsonl")
             popen.assert_not_called()
             self.assertEqual(json.loads((output / "execution.json").read_text())["status"], "controller_failed")
+
+    def test_external_failure_and_missing_measurement_are_not_success(self):
+        for code, status in ((124, "timeout"), (137, "killed_cause_unverified"), (1, "failed"), (0, "measurement_incomplete")):
+            with self.subTest(code=code), tempfile.TemporaryDirectory() as directory:
+                process = Mock()
+                process.poll.return_value = code
+                process.wait.return_value = code
+                with patch.object(helper, "cool_down", return_value=0), patch.object(helper, "device", return_value={}), patch.object(helper.subprocess, "Popen", return_value=process):
+                    output = Path(directory) / "run"
+                    result = helper.execute(ROOT, output, {"family": "zipformer", "num_threads": 1}, ROOT / "missing.jsonl")
+                    self.assertEqual(result["status"], status)
+                    self.assertFalse(result["limit_verified"])
+                    self.assertEqual(json.loads((output / "execution.json").read_text())["exit_code"], code)
 
 
 if __name__ == "__main__":
