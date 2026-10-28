@@ -1,0 +1,80 @@
+"""통제 실행 계획·설정 불변·선택 정책. 실제 ARM64 추론은 이 테스트에 포함하지 않는다."""
+import importlib.util
+import json
+from pathlib import Path
+import tempfile
+import unittest
+from unittest.mock import patch
+
+ROOT = Path(__file__).resolve().parents[1]
+SPEC = importlib.util.spec_from_file_location("comparison", ROOT / "scripts/compare_models.py")
+helper = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(helper)
+
+
+class ComparisonTests(unittest.TestCase):
+    def test_matrix_balanced_and_interleaved(self):
+        plan = helper.plan_matrix()
+        self.assertEqual(len(plan), 18)
+        for family in helper.FAMILIES:
+            for threads in (1, 2, 4):
+                self.assertEqual([p["repetition"] for p in plan if p["family"] == family and p["num_threads"] == threads], [1, 2, 3])
+        self.assertNotEqual(plan[:6], plan[6:12])
+
+    def test_derived_config_only_changes_threads_and_never_overwrites(self):
+        with tempfile.TemporaryDirectory() as directory:
+            for family in helper.FAMILIES:
+                before = (ROOT / f"configs/{family}_eval.toml").read_bytes()
+                target = Path(directory) / f"{family}.toml"
+                helper.configuration(ROOT, family, 4, target)
+                self.assertEqual(helper.load_evaluation_config(target)["model"]["num_threads"], 4)
+                self.assertEqual((ROOT / f"configs/{family}_eval.toml").read_bytes(), before)
+                with self.assertRaises(FileExistsError):
+                    helper.configuration(ROOT, family, 1, target)
+
+    def fixture(self, root):
+        helper.save(root / "plan.json", {"phase": "matrix", "runs": helper.plan_matrix()})
+        for i, item in enumerate(helper.plan_matrix(), 1):
+            d = root / f"{i:02d}-{item['family']}-t{item['num_threads']}"
+            run = d / "evaluations/eval-fixture"
+            run.mkdir(parents=True)
+            helper.save(d / "execution.json", {"status": "completed", "diagnostic_only": False, "limit_verified": True})
+            helper.save(run / "summary.json", {"overall": {"complete": True, "rtf": {1: .103, 2: .1, 4: .12}[item["num_threads"]]}})
+            helper.save(run / "manifest.json", {"warmup": {"successful": 3}})
+            (run / "predictions.jsonl").write_text(json.dumps({"id": "fixture", "reference": "정답", "hypothesis": "정답", "audio": {"sha256": "a" * 64}}) + "\n")
+
+    def test_selection_prefers_fewer_threads_within_predeclared_tolerance(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.fixture(root)
+            value = helper.freeze_selection(root, root / "selection.json")
+            self.assertEqual(value["selected"], {"zipformer": 1, "sensevoice": 1})
+            with self.assertRaises(ValueError):
+                helper.freeze_selection(root, root / "selection.json")
+
+    def test_selection_rejects_failed_runs_and_changed_hypotheses(self):
+        for kind in ("failed", "hypothesis"):
+            with self.subTest(kind=kind), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                self.fixture(root)
+                d = root / "18-zipformer-t1"
+                if kind == "failed":
+                    helper.save(d / "execution.json", {"status": "timeout"})
+                else:
+                    p = d / "evaluations/eval-fixture/predictions.jsonl"
+                    row = json.loads(p.read_text()); row["hypothesis"] = "변경"
+                    p.write_text(json.dumps(row) + "\n")
+                with self.assertRaises(ValueError):
+                    helper.freeze_selection(root, root / "selection.json")
+
+    def test_temperature_failure_is_recorded_without_starting_inference(self):
+        with tempfile.TemporaryDirectory() as directory, patch.object(helper, "cool_down", side_effect=RuntimeError("온도 불가")), patch.object(helper, "device", return_value={}), patch.object(helper.subprocess, "Popen") as popen:
+            output = Path(directory) / "run"
+            with self.assertRaises(RuntimeError):
+                helper.execute(ROOT, output, {"family": "zipformer", "num_threads": 1}, ROOT / "missing.jsonl")
+            popen.assert_not_called()
+            self.assertEqual(json.loads((output / "execution.json").read_text())["status"], "controller_failed")
+
+
+if __name__ == "__main__":
+    unittest.main()
