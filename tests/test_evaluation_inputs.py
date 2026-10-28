@@ -90,6 +90,15 @@ class InputTests(unittest.TestCase):
                     with self.assertRaises(ValueError):
                         load_manifest(path, root)
 
+    def test_invalid_expected_hash_rejected(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            path = root / "manifest.jsonl"
+            row = {"id": "a", "audio_path": "a.wav", "reference": "가", "audio_sha256": "not-a-sha256"}
+            path.write_text(json.dumps(row))
+            with self.assertRaises(ValueError):
+                load_manifest(path, root)
+
     def test_audio_values_format_and_truncation(self):
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / "audio.wav"

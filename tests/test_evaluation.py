@@ -78,6 +78,18 @@ class EvaluationTests(unittest.TestCase):
         self.assertEqual(summary["reference_character_coverage"], 0.5)
         self.assertEqual(self.fake.calls, 3)
 
+    def test_expected_audio_hash_is_checked_before_inference(self):
+        records = [json.loads(line) for line in self.manifest.read_text().splitlines()]
+        records[0]["audio_sha256"] = "0" * 64
+        self.manifest.write_text("\n".join(json.dumps(row, ensure_ascii=False) for row in records) + "\n")
+        output, code = self.run_eval()
+        predictions = [json.loads(line) for line in (output / "predictions.jsonl").read_text().splitlines()]
+        self.assertEqual(code, 1)
+        self.assertEqual(predictions[0]["status"], "failed")
+        self.assertEqual(predictions[0]["error"]["stage"], "audio")
+        self.assertEqual(predictions[1]["status"], "success")
+        self.assertEqual(self.fake.calls, 3)
+
     def test_rtf_excludes_model_load_and_warmup_time(self):
         clock = {"wall": 0.0, "cpu": 0.0}
         original_load, original_transcribe = self.fake.load, self.fake.transcribe

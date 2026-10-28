@@ -6,6 +6,7 @@ import hashlib
 import io
 import json
 from pathlib import Path
+import re
 import sys
 import wave
 
@@ -17,6 +18,7 @@ class Sample:
     reference: str
     split: str = "evaluation"
     condition: str = "unspecified"
+    audio_sha256: str | None = None
 
 
 @dataclass
@@ -62,10 +64,14 @@ def load_manifest(path: Path, root: Path) -> tuple[list[Sample], str]:
             for key in ("split", "condition"):
                 if key in row and (not isinstance(row[key], str) or not row[key].strip()):
                     raise ValueError(f"{key}는 비어 있지 않은 문자열이어야 합니다.")
+            expected_hash = row.get("audio_sha256")
+            if expected_hash is not None and (not isinstance(expected_hash, str) or re.fullmatch(r"[0-9a-fA-F]{64}", expected_hash) is None):
+                raise ValueError("audio_sha256는 64자리 SHA-256 문자열이어야 합니다.")
             ids.add(row["id"])
             samples.append(Sample(row["id"], resolve_path(row["audio_path"], root),
                                   row["reference"], row.get("split", "evaluation"),
-                                  row.get("condition", "unspecified")))
+                                  row.get("condition", "unspecified"),
+                                  expected_hash.lower() if expected_hash else None))
         except (ValueError, TypeError) as error:
             raise ValueError(f"{path}:{number}: {error}") from error
     if not samples:

@@ -1,12 +1,13 @@
 # 평가 입력 manifest 설계
 
-공통 파일 실행기는 UTF-8 JSONL(줄마다 객체 하나)을 사용합니다. 목록 파서·PCM16 WAV 검사·CER·재채점을 구현했습니다. 실제 오디오·정답 전사는 포함하지 않습니다. [실행 안내](../docs/evaluation.md)를 따릅니다.
+공통 파일 실행기는 UTF-8 JSONL(줄마다 객체 하나)을 사용합니다. 목록 파서·PCM16 WAV 검사·CER·재채점을 구현했습니다. 실제 오디오·사용자 정답 목록은 포함하지 않습니다. 준비 도구에는 출처를 고정한 공식 샘플 0의 전사만 포함합니다. [실행 안내](../docs/evaluation.md)를 따릅니다.
 
 | 필드 | 의미 |
 | --- | --- |
 | `id` | corpus 안에서 유일한 샘플 식별자 |
 | `audio_path` | 저장소 루트 기준 상대 경로 또는 RP5 로컬 절대 경로; 실행 시 기준 루트 기록 |
 | `reference` | 정규화 전 한국어 정답 전사 |
+| `audio_sha256` | 선택: 64자리 예상 WAV SHA-256. 불일치 시 추론 전 파일 실패로 처리 |
 | `split` | 선택: tuning/evaluation 등 구분. 생략 시 evaluation |
 | `condition` | 선택: clean/noisy 등 라벨. 생략 시 unspecified |
 

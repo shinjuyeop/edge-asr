@@ -75,6 +75,7 @@ def evaluate(config_path: Path, manifest_path: Path, root: Path, *, output_base:
     print(f"결과 폴더: {output}", flush=True)
     rows = [{"schema_version": 1, "mode": "batch", "id": sample.id,
              "audio_path": str(sample.audio_path), "reference": sample.reference,
+             "expected_audio_sha256": sample.audio_sha256,
              "split": sample.split, "condition": sample.condition, "status": "not_attempted",
              "hypothesis": None, "audio": None, "elapsed_s": None,
              "process_cpu_s": None, "resources": None, "error": None} for sample in samples]
@@ -118,6 +119,8 @@ def evaluate(config_path: Path, manifest_path: Path, root: Path, *, output_base:
                 try:
                     audio = load_audio(sample.audio_path, config["audio"]["sample_rate_hz"])
                     row["audio"] = audio.metadata()
+                    if sample.audio_sha256 is not None and sample.audio_sha256 != audio.sha256:
+                        raise ValueError("manifest의 audio_sha256와 현재 WAV가 다릅니다.")
                     if not warmed:
                         stage = "warmup"
                         info["warmup"]["sample_id"] = sample.id

@@ -26,25 +26,21 @@ UTF-8 JSONL 한 줄마다 `id`, `audio_path`, 사람이 확인한 `reference`를
 
 현재 입력은 mono PCM16 WAV이며 샘플레이트는 설정과 일치해야 합니다(기본 16kHz). 자동 resampling·채널 혼합은 하지 않습니다. 경로는 manifest 폴더가 아니라 CLI `--root` 기준이며 기본값은 작업 디렉터리입니다. 절대 오디오 경로도 지원합니다.
 
-최초 동작 확인에는 기존 `0.wav`를 사용할 수 있습니다. 아래는 사용자가 해당 파일을 듣고 정답을 직접 입력해 로컬 목록을 만드는 명령입니다. ASR 출력을 정답으로 자동 사용하지 않습니다. 같은 목록이 있으면 덮어쓰지 않고 중단합니다.
+## 스피커 없이 공식 샘플 준비
+
+기존 `0.wav`는 배포처의 [trans.txt](https://huggingface.co/k2-fsa/sherpa-onnx-streaming-zipformer-korean-2024-06-16/blob/ba6078bca4daf3f0dd37f79d0ab505af71df14a6/test_wavs/trans.txt)에 전사가 있습니다. 이를 사용하면 사용자가 직접 듣거나 ASR 출력에서 정답을 만들 필요가 없습니다. `prepare_korean_test0.py`는 로컬 WAV가 고정한 공식 파일과 SHA-256이 일치할 때만 전사·출처·예상 해시를 담은 목록을 준비합니다. WAV·모델은 수정하거나 다운로드하지 않습니다.
 
 ```bash
-.venv/bin/python -c '
-import json
-from pathlib import Path
-reference = input("0.wav를 직접 듣고 확인한 정답 문장을 입력하세요: ").strip()
-if not reference:
-    raise SystemExit("사람이 확인한 정답이 필요합니다.")
-path = Path("data/evaluation/manifest.jsonl")
-path.parent.mkdir(parents=True, exist_ok=True)
-row = {"id": "zipformer-test-0", "audio_path": "models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/test_wavs/0.wav", "reference": reference, "split": "evaluation", "condition": "clean"}
-with path.open("x", encoding="utf-8") as handle:
-    handle.write(json.dumps(row, ensure_ascii=False) + "\n")
-print(path)
-'
+.venv/bin/python scripts/prepare_korean_test0.py &&
+.venv/bin/python scripts/edge_asr.py evaluate \
+  --manifest data/evaluation/official-test0.jsonl
 ```
 
-한 파일은 도구 동작 확인용입니다. 정확도 결론에는 여러 발화·화자·잡음·길이를 포함해야 합니다. 실제 WAV·정답 목록은 Git 제외 `data/`에 보관합니다.
+준비 도구는 동일한 목록에는 재사용 가능하며 다른 내용의 기존 파일은 덮어쓰지 않습니다. 공식 WAV 해시가 다르면 자동으로 정답을 연결하지 않고 중단합니다. 평가 실행기도 선택 필드 `audio_sha256`를 검사하므로 준비 후 WAV가 바뀌어도 추론 전에 해당 파일을 실패로 처리합니다.
+
+공식 파일은 56,424프레임·16kHz·3.5265초이며 SHA-256은 `0faf0b037efe428e5e561195f4d2aa148b2a0a2a5fc540b2c184b9d5c241e984`입니다. 전사·음원 출처는 배포 리비전 `ba6078bca4daf3f0dd37f79d0ab505af71df14a6`에 고정했습니다. Host에서 공식 파일·해시·헤더를 확인했으며 실제 RP5 파일과의 일치는 준비 도구를 RP5에서 실행할 때 검사합니다.
+
+이 한 파일은 도구 동작 확인용이며 일반 한국어 정확도 결론에는 여러 발화·화자·잡음·길이가 필요합니다. 직접 준비하는 음성은 사람이 확인한 전사를 쓰고, 정답이 없는 경우 `reference`를 빈 문자열로 두어 추론·속도만 검사할 수도 있습니다. 이 경우 CER은 `null`이며 정확도를 측정했다고 표시하지 않습니다. 실제 WAV·정답 목록은 Git 제외 `data/`에 보관합니다.
 
 목록의 모든 행을 실행하며 split 라벨로 자동 필터링하지 않습니다. tuning/evaluation을 함께 넣으면 전체 집계도 양쪽을 포함하므로 공식 비교에는 평가 전용 목록 또는 `by_split.evaluation` 집계를 사용합니다.
 
