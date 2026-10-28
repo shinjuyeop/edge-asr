@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "reported_date_local": "2026-10-28",
+  "run_id": "zipformer-20261028T034043Z-ylnmagq7",
+  "provenance": {
+    "source": "사용자가 RP5 터미널에서 출력해 전달한 summary.md",
+    "rp5_run_directory": "/home/deepet/projects/edge-asr-bench-20261028-01/benchmarks/runs/zipformer-20261028T034043Z-ylnmagq7",
+    "raw_summary_json_received": false,
+    "manifest_received": false,
+    "environment_received": false,
+    "per_run_logs_received": false,
+    "direct_rp5_verification_by_agent": false,
+    "source_commit": null,
+    "runner_sha256": null,
+    "runtime_versions": null
+  },
+  "target": "Raspberry Pi 5 / aarch64 / Debian 13.3 / 8GB RAM (사용자 제공 환경)",
+  "audio": {
+    "unique_samples": 1,
+    "duration_s": null,
+    "sha256": null,
+    "note": "동일 WAV 반복이라는 요약을 수신. 이번 실행의 정확한 길이·해시는 manifest 미수신으로 미확인."
+  },
+  "reported_counts": {
+    "warmup_attempted": 9,
+    "warmup_failed": 0,
+    "measurement_planned": 90,
+    "measurement_successful": 90,
+    "measurement_failed": 0,
+    "measurement_not_attempted": 0
+  },
+  "measurements": [
+    {
+      "num_threads": 1,
+      "planned": 30,
+      "successful": 30,
+      "failed": 0,
+      "not_attempted": 0,
+      "first_partial_from_audio_start_s": {"n": null, "p50": 0.839, "p95": 0.840},
+      "finalization_from_audio_end_s": {"n": null, "p50": 0.080, "p95": 0.108},
+      "mean_process_cpu_percent": 53.713,
+      "sampled_main_rss_max_mib": 277.891
+    },
+    {
+      "num_threads": 2,
+      "planned": 30,
+      "successful": 30,
+      "failed": 0,
+      "not_attempted": 0,
+      "first_partial_from_audio_start_s": {"n": null, "p50": 0.831, "p95": 0.835},
+      "finalization_from_audio_end_s": {"n": null, "p50": 0.064, "p95": 0.086},
+      "mean_process_cpu_percent": 68.904,
+      "sampled_main_rss_max_mib": 279.859
+    },
+    {
+      "num_threads": 4,
+      "planned": 30,
+      "successful": 30,
+      "failed": 0,
+      "not_attempted": 0,
+      "first_partial_from_audio_start_s": {"n": null, "p50": 0.838, "p95": 0.845},
+      "finalization_from_audio_end_s": {"n": null, "p50": 0.101, "p95": 0.135},
+      "mean_process_cpu_percent": 95.076,
+      "sampled_main_rss_max_mib": 278.859
+    }
+  ],
+  "metric_scope": {
+    "precision": "제공된 Markdown의 소수점 셋째 자리 값이며 원시 정밀도는 미확인.",
+    "latency_n": "각 설정의 성공 실행 수는 30. 지표별 유효 n·부분 가설 부재 수는 summary.json 미수신으로 미확인.",
+    "first_partial": "입력 대기를 포함하며 결과 조회 전 기록한 원본 프로브의 근사 시점. 실제 인식 지연 아님.",
+    "finalization": "파일 끝 기준이며 합성 무음 처리·flush 포함. 실제 발화 끝 검출 지연 아님.",
+    "cpu": "모델 로딩·WAV 읽기·입력 대기를 포함한 프로세스 관측 범위. 코어 하나가 100%, 장비 전체 점유율 아님.",
+    "rss": "주 자식 PID의 표본 관측 최대. 실제 high-water mark와 다를 수 있음."
+  },
+  "baseline_decision": {
+    "num_threads": 2,
+    "scope": "이번 단일 WAV·실행 조건에서 후속 실험의 잠정 기준값. 전체 한국어 ASR 또는 실시간 서비스의 최적값이라는 결론은 아님."
+  },
+  "unmeasured": ["cer", "aligned_recognition_latency", "rtf", "drops", "backlog", "persistent_model_service_performance"],
+  "pending_evidence": ["summary.json", "manifest.json", "environment.json", "runs.json", "per-run probe.txt and resources.jsonl"]
+}

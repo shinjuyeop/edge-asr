@@ -6,7 +6,7 @@
 
 2026-10-28 사용자가 전달한 RP5 터미널 출력에서 aarch64 / Debian 13.3, `/home/deepet/.local/bin/python3.11`, `/home/deepet/projects/edge-asr/.venv/pyvenv.cfg`의 Python 3.11 설정과 모델·WAV 파일 목록을 확인했습니다. 당시 기본 `python`은 시스템 3.13.5였습니다.
 
-기존 `.venv`의 실행·NumPy/sherpa-onnx import와 이번 반복 실행은 아직 검증하지 않았습니다. 도구는 시작 시 지정한 Python의 버전·import를 검사하고 실패하면 환경 검사 로그를 남기고 종료합니다. 대상 Python의 심볼릭 링크를 풀지 않아 기존 가상환경을 유지합니다.
+2026-10-28 사용자가 전달한 별도 배포본의 [반복 요약](../results/summaries/zipformer-repeat-20261028-reported.md)에는 측정 90/90 성공과 워밍업 9회 실패 0회가 기록되어 있습니다. 환경·manifest·원시 자료는 아직 확보하지 않았고 에이전트가 직접 RP5에서 실행한 결과는 아닙니다. 도구는 시작 시 지정한 Python의 버전·import를 검사하고 실패하면 환경 검사 로그를 남기고 종료합니다. 대상 Python의 심볼릭 링크를 풀지 않아 기존 가상환경을 유지합니다.
 
 ## 1. Host에서 push, RP5에서 clone/pull
 

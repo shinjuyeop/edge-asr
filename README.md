@@ -2,11 +2,11 @@
 
 Raspberry Pi 5(ARM64, Debian 13, RAM 8GB)에서 한국어 ASR 모델을 비교하고 실시간 배포하기 위한 연구개발 저장소입니다. Host PC에서 개발·단위 검사를 수행하고, 실제 추론·벤치마크는 RP5에서 수행합니다. 기준 인터프리터는 Python 3.11입니다.
 
-초기 골격, 패키징, 설정 검사 CLI, 기존 프로브의 반복 실행·집계 도구, 벤치마크 설계, 배포 절차 및 실험 원본 보존을 제공합니다. 상주 모델을 사용하는 공통 추론 실행기, 모델 어댑터, 마이크 입력, 서비스 배포는 아직 구현하지 않았습니다. 이번 작업에서 RP5에 연결하거나 추론 결과를 재검증하지 않았습니다.
+초기 골격, 패키징, 설정 검사 CLI, 기존 프로브의 반복 실행·집계 도구, 벤치마크 설계, 배포 절차 및 실험 원본 보존을 제공합니다. 상주 모델을 사용하는 공통 추론 실행기, 모델 어댑터, 마이크 입력, 서비스 배포는 아직 구현하지 않았습니다. RP5 직접 접속·실행 검증과 사용자가 전달한 실행 결과는 구분해 기록합니다.
 
 초기 구성의 실제 로컬 검사 결과는 [검증 기록](docs/verification.md)에 있습니다.
 
-다음 RP5 작업은 [반복 벤치마크 실행 안내](docs/rp5_repeat_benchmark.md)를 따릅니다. 새 소스 배포 후 기존 RP5 가상환경·모델을 지정하여 1·2·4스레드 워밍업·반복 실행, p50/p95 및 프로세스 CPU·RSS를 기록합니다. 원본 프로브나 기존 패키지를 변경하지 않습니다.
+2026-10-28 사용자가 전달한 RP5 반복 요약에서는 동일 WAV를 스레드별 30회 측정해 총 90/90회 성공했고 워밍업 9회도 실패가 없었습니다. [사용자 제공 요약과 해석](results/summaries/zipformer-repeat-20261028-reported.md)에 보존했으며 이번 조건의 잠정 기준값은 2스레드입니다. 원시 로그·환경·manifest는 아직 확보하지 않았고 RP5에서 직접 재검증한 결과는 아닙니다. 실행 절차는 [반복 벤치마크 안내](docs/rp5_repeat_benchmark.md)를 따릅니다.
 
 ## 디렉터리
 
@@ -52,6 +52,8 @@ sha256sum -c experiments/m1_zipformer/SHA256SUMS
 
 1·2·4스레드 원시 결과, 측정 한계 및 무결성 해시는 [실험 README](experiments/m1_zipformer/README.md), 지표 정의는 [벤치마크 설계](docs/benchmark_design.md)를 참고하세요.
 
+위 기존 1회 측정과 별도로, [2026-10-28 반복 요약](results/summaries/zipformer-repeat-20261028-reported.md)에서 2스레드의 첫 부분 시점 p50/p95는 0.831/0.835초, 최종 지연 p50/p95는 0.064/0.086초로 보고됐습니다. 같은 WAV 한 개의 반복이며 여러 발화에서의 정확도·실시간 서비스 검증은 아닙니다.
+
 ## RP5 배포와 다음 구현
 
 ```bash
@@ -69,4 +71,4 @@ git clone https://github.com/shinjuyeop/edge-asr.git edge-asr-git &&
 
 기본 흐름은 Host에서 개발·커밋·push하고 RP5의 별도 clone에서 `git pull --ff-only origin main`으로 가져오는 방식입니다. 소스 커밋은 함께 관리하고 가중치·WAV·가상환경·원시 결과는 각 장비에 둡니다. 공개 저장소의 clone/pull은 GitHub 로그인 없이 사용할 수 있습니다. 커밋 일치 확인, 기존 RP5 보존 및 rsync 대안은 [배포](docs/deployment.md)를 따릅니다. 위 RP5 실행 명령은 아직 실제 검증하지 않았습니다.
 
-다음 순서는 기존 RP5 가상환경 import 확인 및 반복 도구 실행 → 상주 Zipformer 어댑터·공통 실행기 → 평가용 정답 전사·CER → 청크 지연·자원·백로그 계측 → SenseVoice/Qwen3-ASR 비교 → 마이크·서비스 통합입니다. 설계 범위와 확장 방침은 [아키텍처](docs/architecture.md)에 정리했습니다.
+다음 순서는 기존 반복 실행의 환경·manifest·원시 결과 확보 → 상주 Zipformer 어댑터·공통 실행기 → 여러 발화의 정답 전사·CER → 청크 지연·자원·백로그 계측 → SenseVoice/Qwen3-ASR 비교 → 마이크·서비스 통합입니다. 설계 범위와 확장 방침은 [아키텍처](docs/architecture.md)에 정리했습니다.
