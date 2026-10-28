@@ -1,5 +1,11 @@
 {
   "schema_version": 1,
+  "raw_logs_archive": {
+    "git_tag": "archive-initial-zipformer-20261028",
+    "git_commit": "fe59e6c4229f78e69e2165c26c42429658ec072e",
+    "directory": "experiments/m1_zipformer/results/",
+    "note": "각 source 경로는 당시 위치. 원시 로그는 보관 태그에서 확인하며 현재 main은 요약만 유지."
+  },
   "measurement_scope": "동일한 WAV 단일 샘플에 대한 설정별 1회 측정",
   "unique_audio_samples": 1,
   "runs_per_configuration": 1,

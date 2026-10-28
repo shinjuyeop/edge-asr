@@ -2,20 +2,25 @@
 
 ## 출처와 보존
 
-`streaming_probe.py` 및 `results/streaming_threads_{1,2,4}.txt`는 기존 RP5에서 가져온 파일입니다. 초기 저장소 구성 과정에서 파일 내용을 수정하거나 삭제하지 않았습니다. 원본 체크섬은 [SHA256SUMS](SHA256SUMS)에 기록했습니다. 기존 RP5에 접속하거나 재실행하여 측정값을 검증한 것은 아닙니다.
+`streaming_probe.py`와 초기 스레드별 1회 결과는 기존 RP5에서 가져온 자료입니다. 현재 main에는 반복 도구가 사용하는 원본 프로브와 작은 [수치 요약](summary.json)만 유지합니다. 원시 로그 3개는 [보관 태그](https://github.com/shinjuyeop/edge-asr/tree/archive-initial-zipformer-20261028/experiments/m1_zipformer/results) `archive-initial-zipformer-20261028`에 보존했습니다. 초기 원본을 잃지 않으면서 현재 작업 폴더에서 원시 결과 추적 예외를 없애기 위한 정리입니다.
 
-루트 `.gitattributes`는 이 네 원본의 Git 줄바꿈 변환을 비활성화하여 Windows Host에서도 바이트를 보존합니다.
+현재 [SHA256SUMS](SHA256SUMS)는 원본 프로브만 검사합니다. 로그까지 포함한 기존 4개 해시 목록과 원본 바이트는 보관 태그에 남아 있습니다. 루트 `.gitattributes`는 현재 프로브의 줄바꿈 변환을 비활성화하며 보관 태그에는 로그의 줄바꿈 보존 설정도 함께 있습니다.
 
 ```bash
-# 저장소 루트에서 원본 바이트 무결성만 확인
+# 현재 작업 폴더의 원본 프로브 확인
 sha256sum -c experiments/m1_zipformer/SHA256SUMS
+
+# 필요할 때만 과거 원시 로그 확인. 작업 브랜치를 전환하지 않음.
+git show archive-initial-zipformer-20261028:experiments/m1_zipformer/results/streaming_threads_2.txt
 ```
+
+로컬에 보관 태그가 없다면 `git fetch origin tag archive-initial-zipformer-20261028`로 가져올 수 있습니다. 현재 브랜치를 과거 상태로 되돌릴 필요는 없습니다.
 
 하드웨어 대상은 Raspberry Pi 5 ARM64 / Debian 13 / 8GB RAM이며, 기존 측정 당시 Python·패키지 정확한 버전, 온도·클럭·전원·냉각·백그라운드 부하는 원시 로그에 없습니다. 측정일도 미상입니다. 새 의존성 후보를 과거 측정 환경으로 간주하지 않습니다.
 
 ## 단일 샘플 결과
 
-**모든 수치는 동일한 3.526초 WAV 단일 샘플에 대해 각 설정에서 1회 측정한 값입니다.** 결과의 우열이나 일반적인 실시간 성능을 결론 내릴 수 없습니다. 반올림한 표이며 원시 정밀도는 `.txt`와 [summary.json](summary.json)을 참고하세요.
+**모든 수치는 동일한 3.526초 WAV 단일 샘플에 대해 각 설정에서 1회 측정한 값입니다.** 결과의 우열이나 일반적인 실시간 성능을 결론 내릴 수 없습니다. 반올림한 표이며 원시 정밀도는 보관 태그의 `.txt`와 [summary.json](summary.json)을 참고하세요.
 
 | 모드 | 스레드 | 오디오 시작 기준 첫 부분 출력(초) | 전체 경과(초) | 최종 처리 지연(초) | 최대 처리 마감 초과(ms) | RTF |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -63,6 +68,6 @@ for threads in 1 2 4; do
 done
 ```
 
-이 명령도 설정별 단일 실행입니다. 워밍업·반복·지표 수집은 자동 제공하지 않습니다. 실패 로그를 확인하고, 다음 단계에서는 [공통 설계](../../docs/benchmark_design.md)에 따라 별도 실행기를 작성합니다. 기존 `results/*.txt`를 새 결과로 덮어쓰지 않습니다.
+이 명령도 설정별 단일 실행입니다. 워밍업·반복·지표 수집은 자동 제공하지 않습니다. 실패 로그를 확인하고, 다음 단계에서는 [공통 설계](../../docs/benchmark_design.md)에 따라 별도 실행기를 작성합니다. 새 원시 결과는 Git 제외 `runs/`에 기록합니다.
 
 단일 실행을 이미 완료했다면 [반복 실행 도구](../../docs/rp5_repeat_benchmark.md)로 넘어갑니다. 원본 프로브를 별도 자식으로 실행하여 워밍업·교차 반복·요약·프로세스 자원을 기록하며 이 디렉터리의 원본 파일은 수정하지 않습니다.

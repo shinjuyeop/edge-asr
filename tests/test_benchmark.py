@@ -12,7 +12,6 @@ import wave
 
 from edge_asr import benchmark as bench
 
-ROOT = Path(__file__).resolve().parents[1]
 SUMMARY = """--- Summary ---
 Audio duration: 1.000s
 First partial: 0.2
@@ -40,13 +39,12 @@ def fake_assets(root: Path, channels=1) -> None:
 
 
 class BenchmarkParsingTests(unittest.TestCase):
-    def test_preserved_results(self):
-        for threads, expected in ((1, 0.080), (2, 0.064), (4, 0.092)):
-            with self.subTest(threads=threads):
-                text = (ROOT / f"experiments/m1_zipformer/results/streaming_threads_{threads}.txt").read_text()
-                result = bench.parse_probe(text)
-                self.assertEqual(result["audio_duration_s"], 3.526)
-                self.assertEqual(result["finalization_from_audio_end_s"], expected)
+    def test_summary_allows_independently_rounded_times(self):
+        # 각 항목을 따로 반올림하면 전체-길이와 지연이 1ms 다를 수 있다.
+        text = SUMMARY.replace("1.000s", "3.526s").replace("1.100s", "3.619s").replace("0.100s", "0.092s")
+        result = bench.parse_probe(text)
+        self.assertEqual(result["audio_duration_s"], 3.526)
+        self.assertEqual(result["finalization_from_audio_end_s"], 0.092)
 
     def test_no_partial_is_missing(self):
         result = bench.parse_probe(SUMMARY.replace("First partial: 0.2", "First partial: None"))

@@ -79,7 +79,7 @@ git push origin main
 git rev-parse HEAD
 ```
 
-아직 커밋하지 않은 파일은 push되지 않습니다. 소스·설정·문서·테스트·보존 실험과 검토한 작은 요약을 버전 관리합니다. 새 원시 결과·자산·백업은 제외합니다. 작은 초기 보존 로그 `experiments/m1_zipformer/results/streaming_threads_{1,2,4}.txt` 3개는 의도적인 추적 예외입니다.
+아직 커밋하지 않은 파일은 push되지 않습니다. 소스·설정·문서·테스트·프로브와 검토한 작은 요약을 버전 관리합니다. 원시 결과·자산·백업은 제외합니다. 초기 로그 3개는 `archive-initial-zipformer-20261028` 태그에 보관하고 현재 main의 추적 예외는 없앴습니다.
 
 ## RP5의 평소 업데이트·실행
 

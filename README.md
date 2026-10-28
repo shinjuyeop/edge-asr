@@ -22,7 +22,7 @@ Raspberry Pi 5(ARM64, Debian 13, RAM 8GB)에서 한국어 ASR 모델을 비교�
 | `models/`, `data/` | 로컬 가중치·오디오; 안내 문서만 버전 관리 |
 | `results/` | 로컬 실행 결과; `summaries/`의 작은 MD/JSON/CSV만 검토 후 버전 관리 가능 |
 
-새 원시 실행 결과는 Git에서 제외합니다. 예외적으로 `experiments/m1_zipformer/results/streaming_threads_{1,2,4}.txt`의 작은 기존 로그 3개는 초기 원본 보존을 위해 추적하며 삭제·인덱스 제거하지 않습니다.
+원시 실행 결과는 Git에서 제외하고 현재 브랜치에는 작은 요약만 유지합니다. 초기 로그 3개는 `archive-initial-zipformer-20261028` 태그에 보관했습니다. 프로브·모델·가상환경·2스레드 기준선은 이 정리로 바뀌지 않습니다.
 
 ## Host에서 시작
 
@@ -52,7 +52,7 @@ sha256sum -c experiments/m1_zipformer/SHA256SUMS
 
 0.837초에는 오디오가 입력될 때까지의 대기가 포함됩니다. 이를 실제 인식 처리 지연으로 해석하면 안 됩니다. 0.064초는 파일 끝 이후 결과 확정까지의 프로브 측정값이며 실제 발화 끝의 endpoint 지연은 아닙니다. 파일 일괄 처리 RTF와 스트리밍 전체 경과 시간은 서로 다른 측정입니다.
 
-1·2·4스레드 원시 결과, 측정 한계 및 무결성 해시는 [실험 README](experiments/m1_zipformer/README.md), 지표 정의는 [벤치마크 설계](docs/benchmark_design.md)를 참고하세요.
+1·2·4스레드 요약과 보관 태그의 원시 결과 위치, 측정 한계 및 무결성 확인 방법은 [실험 README](experiments/m1_zipformer/README.md), 지표 정의는 [벤치마크 설계](docs/benchmark_design.md)를 참고하세요.
 
 위 기존 1회 측정과 별도로, [2026-10-28 반복 요약](results/summaries/zipformer-repeat-20261028-reported.md)에서 2스레드의 첫 부분 시점 p50/p95는 0.831/0.835초, 최종 지연 p50/p95는 0.064/0.086초로 보고됐습니다. 같은 WAV 한 개의 반복이며 여러 발화에서의 정확도·실시간 서비스 검증은 아닙니다.
 
