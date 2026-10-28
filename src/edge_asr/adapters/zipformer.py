@@ -1,4 +1,4 @@
-"""sherpa-onnx streaming Zipformer의 파일 일괄 처리 어댑터."""
+"""sherpa-onnx streaming Zipformer의 batch·청크 입력 어댑터."""
 
 from pathlib import Path
 
@@ -55,3 +55,27 @@ class ZipformerAdapter:
 
     def close(self) -> None:
         self.recognizer = None
+
+    def start_stream(self):
+        if self.recognizer is None:
+            raise RuntimeError("모델을 먼저 로드해야 합니다.")
+        return self.recognizer.create_stream()
+
+    def _decode_result(self, stream) -> str:
+        while self.recognizer.is_ready(stream):
+            self.recognizer.decode_stream(stream)
+        result = self.recognizer.get_result(stream)
+        text = result if isinstance(result, str) else getattr(result, "text", None)
+        if not isinstance(text, str):
+            raise TypeError("모델이 문자열 가설을 반환하지 않았습니다.")
+        return text
+
+    def accept_chunk(self, stream, samples) -> str:
+        stream.accept_waveform(self.sample_rate_hz, self.np.frombuffer(samples, dtype=self.np.float32))
+        return self._decode_result(stream)
+
+    def finish_stream(self, stream) -> str:
+        if len(self.padding):
+            stream.accept_waveform(self.sample_rate_hz, self.padding)
+        stream.input_finished()
+        return self._decode_result(stream)

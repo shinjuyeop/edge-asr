@@ -29,15 +29,23 @@ def new_output(base: Path, prefix: str) -> Path:
 
 class RssSampler:
     """주 프로세스 RSS 관측. 샘플 간 피크를 보증하지 않는다."""
-    def __init__(self):
+    def __init__(self, *, sample_device=False):
         self.stop_event = Event()
         self.samples = []
+        self.sample_device = sample_device
         self.thread = Thread(target=self._run, daemon=True)
 
     def capture(self):
         sample = process_sample(os.getpid())
-        self.samples.append({"monotonic_s": time.perf_counter(),
-                             "rss_mib": sample["rss_mib"] if sample else None})
+        row = {"monotonic_s": time.perf_counter(), "rss_mib": sample["rss_mib"] if sample else None}
+        if self.sample_device:
+            for key, path in (("temperature_millicelsius", "/sys/class/thermal/thermal_zone0/temp"),
+                              ("cpu0_freq_khz", "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq")):
+                try:
+                    row[key] = int(Path(path).read_text().strip())
+                except (OSError, ValueError):
+                    row[key] = None
+        self.samples.append(row)
 
     def _run(self):
         while not self.stop_event.wait(0.1):
@@ -70,23 +78,34 @@ def environment() -> dict:
 def evaluate(config_path: Path, manifest_path: Path, root: Path, *, output_base: Path | None = None,
              adapter_factory=None) -> tuple[Path, int]:
     config = load_evaluation_config(config_path)
+    mode = config["evaluation"]["mode"]
+    if mode == "paced_stream":
+        from edge_asr.streaming import run_paced, warmup_stream
     samples, manifest_hash = load_manifest(manifest_path, root)
     output = new_output(output_base or resolve_path(config["evaluation"]["output_dir"], root), "eval-")
     print(f"결과 폴더: {output}", flush=True)
-    rows = [{"schema_version": 1, "mode": "batch", "id": sample.id,
+    rows = [{"schema_version": 1, "mode": mode, "id": sample.id,
              "audio_path": str(sample.audio_path), "reference": sample.reference,
              "expected_audio_sha256": sample.audio_sha256,
              "split": sample.split, "condition": sample.condition, "status": "not_attempted",
              "hypothesis": None, "audio": None, "elapsed_s": None,
              "process_cpu_s": None, "resources": None, "error": None} for sample in samples]
+    if mode == "paced_stream":
+        for row in rows:
+            row["streaming"] = None
     info = {"schema_version": 1, "status": "running", "started_at_utc": datetime.now(timezone.utc).isoformat(),
-            "root": str(root), "output_directory": str(output), "mode": "batch", "config": config,
+            "root": str(root), "output_directory": str(output), "mode": mode, "config": config,
             "file_execution": "sequential", "batch_size": 1, "repetitions_per_sample": 1,
             "input_manifest": {"path": str(manifest_path), "sha256": manifest_hash, "samples": len(samples)},
             "config_sha256": digest(config_path), "source_commit": None, "source_dirty": None,
             "model_load_s": None, "model_files": {}, "warmup": {"planned": config["evaluation"]["warmup_runs"], "successful": 0},
             "timing_scope": "준비한 float PCM에서 새 인식 상태 생성~최종 반환. WAV I/O·변환·모델 로딩·워밍업·결과 파일 쓰기 제외. 특징 추출·flush 포함.",
             "resource_scope": "추론 구간의 현재 프로세스 CPU(계측 스레드 비용 포함), 모델 상주 상태의 주 PID 표본 RSS. RSS는 경계 표본 포함·정확한 피크 아님."}
+    if mode == "paced_stream":
+        info.update(capture_process_start_method="spawn", playback_speed=1.0,
+                    timing_scope="elapsed_s/RTF는 스트림 생성·각 청크 전달/디코딩/가설 반환·flush의 활성 wall 합. 입력 대기·IPC·기록·spawn·워밍업 제외. replay_elapsed_s는 t0~최종 반환.",
+                    resource_scope="process_cpu_s는 활성 호출 구간의 주 PID CPU. replay_process_cpu_s는 1배속 대기 포함 주 PID CPU. RSS·온도·클럭은 100ms/호출 경계 관측. 입력 자식 CPU·시작 포함 RSS 최고치는 별도.")
+        info["warmup"]["mode"] = "unpaced_chunk_feed"
     package_root = Path(__file__).resolve().parent
     source_root = package_root.parents[1]
     info["source_sha256"] = {str(p.relative_to(package_root)): digest(p) for p in package_root.rglob("*.py")}
@@ -112,7 +131,7 @@ def evaluate(config_path: Path, manifest_path: Path, root: Path, *, output_base:
         adapter.load()
         info["model_load_s"] = time.perf_counter() - started
         with (output / "progress.jsonl").open("x", encoding="utf-8") as progress:
-            for sample, row in zip(samples, rows):
+            for ordinal, (sample, row) in enumerate(zip(samples, rows), 1):
                 current = row
                 stage = "audio"
                 audio = None
@@ -125,22 +144,33 @@ def evaluate(config_path: Path, manifest_path: Path, root: Path, *, output_base:
                         stage = "warmup"
                         info["warmup"]["sample_id"] = sample.id
                         for _ in range(config["evaluation"]["warmup_runs"]):
-                            if not isinstance(adapter.transcribe(audio), str):
+                            hypothesis = (adapter.transcribe(audio) if mode == "batch"
+                                          else warmup_stream(adapter, audio, config["streaming"]))
+                            if not isinstance(hypothesis, str):
                                 raise TypeError("어댑터가 문자열을 반환해야 합니다.")
                             info["warmup"]["successful"] += 1
                             write_json(output / "manifest.json", info)
                         warmed = True
                     stage = "inference"
-                    monitor = RssSampler()
+                    monitor = RssSampler(sample_device=mode == "paced_stream")
                     try:
                         with monitor:
-                            cpu_start = time.process_time()
-                            wall_start = time.perf_counter()
-                            try:
-                                hypothesis = adapter.transcribe(audio)
-                            finally:
-                                row["elapsed_s"] = time.perf_counter() - wall_start
-                                row["process_cpu_s"] = time.process_time() - cpu_start
+                            if mode == "batch":
+                                cpu_start = time.process_time()
+                                wall_start = time.perf_counter()
+                                try:
+                                    hypothesis = adapter.transcribe(audio)
+                                finally:
+                                    row["elapsed_s"] = time.perf_counter() - wall_start
+                                    row["process_cpu_s"] = time.process_time() - cpu_start
+                            else:
+                                row["streaming"] = {"events_directory": f"events/{ordinal:05d}"}
+                                try:
+                                    hypothesis = run_paced(adapter, audio, config["streaming"],
+                                                           output / row["streaming"]["events_directory"], row["streaming"])
+                                finally:
+                                    row["elapsed_s"] = row["streaming"].get("processing_s")
+                                    row["process_cpu_s"] = row["streaming"].get("processing_cpu_s")
                     finally:
                         row["resources"] = monitor.metadata()
                     if not isinstance(hypothesis, str):
@@ -204,7 +234,9 @@ def rescore(predictions: Path, root: Path, *, normalization="ko_cer_v1",
                "reference_manifest": str(reference_manifest) if reference_manifest else None,
                "reference_manifest_sha256": reference_hash, "normalization": normalization,
                "scorer_python": sys.version, "unicode_database": summary["unicode_database"],
-               "scorer_source_sha256": {name: digest(Path(__file__).parent / name) for name in ("metrics.py", "scoring.py")},
+               "scorer_source_sha256": {name: digest(Path(__file__).parent / name)
+                                        for name in (("metrics.py", "scoring.py", "streaming.py")
+                                                     if summary["mode"] == "paced_stream" else ("metrics.py", "scoring.py"))},
                "note": "재추론 없이 저장 가설과 기록된 처리 시간을 사용. 바뀐 환경에서 속도를 다시 측정한 결과가 아님."})
     print(f"재채점 요약: {output / 'summary.md'}", flush=True)
     return output, 0 if summary["overall"]["complete"] else 1

@@ -41,11 +41,11 @@ def load_config(path: str | Path) -> dict:
 
 
 def load_evaluation_config(path: str | Path) -> dict:
-    """파일 평가 설정. 기존 streaming_probe용 설정과 구분한다."""
+    """공통 batch·paced_stream 평가. 기존 streaming_probe용 설정과 구분한다."""
     with Path(path).open("rb") as handle:
         supplied = tomllib.load(handle)
-    if set(supplied) - {"model", "audio", "evaluation"}:
-        raise ValueError("파일 평가 설정은 [model], [audio], [evaluation]만 사용합니다.")
+    if set(supplied) - {"model", "audio", "evaluation", "streaming"}:
+        raise ValueError("공통 평가 설정은 [model], [audio], [evaluation], [streaming]을 사용합니다.")
     for section in ("model", "audio", "evaluation"):
         if not isinstance(supplied.get(section), dict):
             raise ValueError(f"[{section}] 테이블이 필요합니다.")
@@ -78,9 +78,33 @@ def load_evaluation_config(path: str | Path) -> dict:
         if key in config["model"] and (not isinstance(config["model"][key], str) or not config["model"][key].strip()):
             raise ValueError(f"model.{key}는 파일 경로 문자열이어야 합니다.")
     from edge_asr.metrics import NORMALIZATIONS
-    if config["evaluation"]["mode"] != "batch":
-        raise ValueError("공통 파일 평가의 현재 지원 모드는 batch입니다.")
-    if config["evaluation"]["normalization"] not in NORMALIZATIONS:
+    if not isinstance(config["evaluation"]["mode"], str) or config["evaluation"]["mode"] not in {"batch", "paced_stream"}:
+        raise ValueError("공통 평가 모드는 batch 또는 paced_stream입니다.")
+    if config["evaluation"]["mode"] == "paced_stream":
+        streaming = supplied.get("streaming")
+        if not isinstance(streaming, dict):
+            raise ValueError("paced_stream에는 [streaming] 테이블이 필요합니다.")
+        if set(streaming) - {"chunk_ms", "queue_capacity_chunks", "drop_policy", "drain_timeout_s"}:
+            raise ValueError("알 수 없는 streaming 설정입니다.")
+        streaming = {"chunk_ms": 100, "queue_capacity_chunks": 5,
+                     "drop_policy": "drop_newest", "drain_timeout_s": 10.0, **streaming}
+        for key, low, high in (("chunk_ms", 5, 1000), ("queue_capacity_chunks", 1, 1000)):
+            value = streaming[key]
+            if type(value) is not int or not low <= value <= high:
+                raise ValueError(f"streaming.{key}는 {low}~{high} 정수여야 합니다.")
+        timeout = streaming["drain_timeout_s"]
+        if type(timeout) not in (int, float) or not math.isfinite(timeout) or not 1 <= timeout <= 300:
+            raise ValueError("streaming.drain_timeout_s는 1~300초의 유한한 수여야 합니다.")
+        if streaming["drop_policy"] != "drop_newest":
+            raise ValueError("현재 큐 초과 정책은 drop_newest입니다.")
+        if config["audio"]["sample_rate_hz"] * streaming["chunk_ms"] % 1000:
+            raise ValueError("chunk_ms는 정수 프레임 수여야 합니다.")
+        if config["model"]["family"] != "zipformer":
+            raise ValueError("paced_stream의 현재 지원 모델은 zipformer입니다.")
+        config["streaming"] = streaming
+    elif "streaming" in supplied:
+        raise ValueError("batch 모드에는 [streaming]을 지정하지 않습니다.")
+    if not isinstance(config["evaluation"]["normalization"], str) or config["evaluation"]["normalization"] not in NORMALIZATIONS:
         raise ValueError("지원하지 않는 정규화 정책입니다.")
     if not isinstance(config["evaluation"]["output_dir"], str) or not config["evaluation"]["output_dir"].strip():
         raise ValueError("evaluation.output_dir는 경로 문자열이어야 합니다.")

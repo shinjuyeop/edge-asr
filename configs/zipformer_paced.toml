@@ -1,0 +1,22 @@
+# 공통 실시간 속도 모사 평가. 스피커 재생·마이크 입력 없이 1배속 청크 입력.
+[model]
+family = "zipformer"
+path = "models/sherpa-onnx-streaming-zipformer-korean-2024-06-16"
+num_threads = 2
+tail_padding_s = 0.66
+
+[audio]
+sample_rate_hz = 16000
+
+[evaluation]
+mode = "paced_stream"
+warmup_runs = 3
+normalization = "ko_cer_v1"
+output_dir = "results/evaluations"
+
+[streaming]
+chunk_ms = 100
+queue_capacity_chunks = 5
+drop_policy = "drop_newest"
+# 입력 종료 뒤 큐 배출 제한. 네이티브 추론 함수 자체의 하드 타임아웃은 아님.
+drain_timeout_s = 10.0
