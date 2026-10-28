@@ -49,7 +49,9 @@ cache/
 *.7z
 *.log
 
-# 로컬 자산과 실행 결과. 작은 검토용 요약만 지정 위치에 허용.
+# 로컬 자산과 새 실행 결과. 작은 검토용 요약만 지정 위치에 허용.
+# experiments/m1_zipformer/results/streaming_threads_{1,2,4}.txt는
+# 초기 RP5 원본 보존용 작은 로그 3개로 의도적으로 Git 추적을 유지한다.
 /models/*
 !/models/README.md
 /data/*

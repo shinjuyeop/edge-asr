@@ -66,3 +66,5 @@
 원시 실행 자료는 `benchmarks/runs/<run-id>/` 또는 `results/<run-id>/`에 둡니다(Git 제외). 환경 JSON, pip freeze, 설정, manifest/자산 체크섬, 가설, 이벤트 타임라인, 자원 표본, 실패 상태를 보관합니다. 측정하지 않은 필드는 `null` 및 이유를 씁니다. 숫자 0은 측정된 0일 때만 사용합니다.
 
 작은 익명 요약은 `results/summaries/<run-id>.json`/`.csv`/`.md`로 검토 후 버전 관리할 수 있습니다. 원시 타임라인·전사·개인정보·대용량 배열을 요약에 넣지 않습니다. 기존 실험의 요약은 출처 보존을 위해 해당 `experiments/` 안에 유지합니다.
+
+초기 보존 원본 `experiments/m1_zipformer/results/streaming_threads_{1,2,4}.txt` 3개는 작은 역사적 기준 로그로 Git 추적을 유지하는 예외입니다. 이를 새 대량 실행 결과의 전면 커밋 허용으로 확대하거나, 반대로 보존 로그를 자동으로 인덱스에서 제거하지 않습니다.

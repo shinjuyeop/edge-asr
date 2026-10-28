@@ -6,7 +6,7 @@ Raspberry Pi 5(ARM64, Debian 13, RAM 8GB)에서 한국어 ASR 모델을 비교�
 
 초기 구성의 실제 로컬 검사 결과는 [검증 기록](docs/verification.md)에 있습니다.
 
-2026-10-28 사용자가 전달한 RP5 반복 요약에서는 동일 WAV를 스레드별 30회 측정해 총 90/90회 성공했고 워밍업 9회도 실패가 없었습니다. [사용자 제공 요약과 해석](results/summaries/zipformer-repeat-20261028-reported.md)에 보존했으며 이번 조건의 잠정 기준값은 2스레드입니다. 원시 로그·환경·manifest는 아직 확보하지 않았고 RP5에서 직접 재검증한 결과는 아닙니다. 실행 절차는 [반복 벤치마크 안내](docs/rp5_repeat_benchmark.md)를 따릅니다.
+2026-10-28 사용자가 전달한 RP5 반복 요약에서는 동일 WAV를 스레드별 30회 측정해 총 90/90회 성공했고 워밍업 9회도 실패가 없었습니다. 후속 [RP5 Codex 검사 보고](results/summaries/rp5-consolidation-audit-20261028.json)에서 한 폴더 통합, 자산·기록 일치 및 RP5 단위 테스트 35개 통과가 확인됐다고 보고됐습니다. 실측 환경은 Python 3.11.18 / NumPy 2.4.6 / sherpa-onnx 2.0.1이고, [이번 조건의 잠정 기준값](results/summaries/zipformer-repeat-20261028-reported.md)은 2스레드입니다. 이 기록은 사용자가 전달한 검사 보고에 근거하며 Host 에이전트의 직접 원격 실행이나 원본 JSON 전송을 뜻하지 않습니다.
 
 ## 디렉터리
 
@@ -21,6 +21,8 @@ Raspberry Pi 5(ARM64, Debian 13, RAM 8GB)에서 한국어 ASR 모델을 비교�
 | `experiments/` | 모델별 탐색 실험, 원본 및 작은 결과 요약 |
 | `models/`, `data/` | 로컬 가중치·오디오; 안내 문서만 버전 관리 |
 | `results/` | 로컬 실행 결과; `summaries/`의 작은 MD/JSON/CSV만 검토 후 버전 관리 가능 |
+
+새 원시 실행 결과는 Git에서 제외합니다. 예외적으로 `experiments/m1_zipformer/results/streaming_threads_{1,2,4}.txt`의 작은 기존 로그 3개는 초기 원본 보존을 위해 추적하며 삭제·인덱스 제거하지 않습니다.
 
 ## Host에서 시작
 
@@ -58,7 +60,7 @@ sha256sum -c experiments/m1_zipformer/SHA256SUMS
 
 RP5 작업 폴더는 **`/home/deepet/projects/edge-asr` 하나**로 통일합니다. 소스·`.git`·기존 `.venv`·모델·데이터·실행 결과를 이 안에 두고, Git에는 소스와 작은 요약만 올립니다.
 
-기존에 `edge-asr`, `edge-asr-git`, `edge-asr-bench-20261028-01` 세 폴더를 만든 경우 한 번만 아래 통합 절차를 사용합니다. 실행 중인 벤치마크가 없는 상태에서 실행하세요.
+현재 RP5는 사용자 전달 검사 보고 기준으로 통합 완료입니다. 아래는 아직 `edge-asr`, `edge-asr-git`, `edge-asr-bench-20261028-01` 세 폴더를 사용하는 경우에만 수행하는 일회성 절차입니다. 이미 통합한 장비에서는 재실행하지 않습니다.
 
 ```bash
 cd /home/deepet/projects/edge-asr-git &&
@@ -67,7 +69,7 @@ git pull --ff-only origin main &&
 cd /home/deepet/projects/edge-asr
 ```
 
-통합 도구는 기존 `edge-asr` 경로를 유지합니다. 다른 두 폴더는 그 안의 `.local-backups/consolidate-<시각>-<임의문자>/`에 보관하므로 프로젝트 부모 아래에는 작업 폴더 하나만 남습니다. 모델·가상환경을 옮기거나 다시 설치하지 않으며 기존 소스 충돌은 백업 후 반영합니다. 미리보기·거부 조건·복원 기록은 [배포 안내](docs/deployment.md)를 따릅니다. 통합은 실제 RP5에서 아직 미검증입니다.
+통합 도구는 기존 `edge-asr` 경로를 유지합니다. 다른 두 폴더는 그 안의 `.local-backups/consolidate-<시각>-<임의문자>/`에 보관하므로 프로젝트 부모 아래에는 작업 폴더 하나만 남습니다. 모델·가상환경을 옮기거나 다시 설치하지 않으며 기존 소스 충돌은 백업 후 반영합니다. 현재 RP5에서는 `0297f0a` 커밋 기준 추적 파일 39개가 소스 백업과 일치하고 통합 영수증이 `completed`라고 보고됐습니다. 미리보기·거부 조건·복원 기록은 [배포 안내](docs/deployment.md)를 따릅니다.
 
 통합 후 평소 사용법은 다음과 같습니다. 벤치마크는 새 측정이 필요할 때만 실행합니다.
 
@@ -81,4 +83,4 @@ git pull --ff-only origin main
 
 Host에서 개발·커밋·push하고 RP5의 같은 프로젝트 저장소에서 pull·실행합니다. 가중치·WAV·가상환경·원시 결과·내부 백업은 각 장비에 둡니다. 기존 90회 결과를 통합 때문에 다시 측정할 필요는 없습니다.
 
-다음 순서는 기존 반복 실행의 환경·manifest·원시 결과 확보 → 상주 Zipformer 어댑터·공통 실행기 → 여러 발화의 정답 전사·CER → 청크 지연·자원·백로그 계측 → SenseVoice/Qwen3-ASR 비교 → 마이크·서비스 통합입니다. 설계 범위와 확장 방침은 [아키텍처](docs/architecture.md)에 정리했습니다.
+현재 단계는 사용자 전달 RP5 검사 보고로 환경·통합·기존 반복 기준선을 정리한 상태입니다. 다음 개발 순서는 상주 Zipformer 어댑터·공통 실행기 → 여러 발화의 정답 전사·CER → 청크 지연·자원·백로그 계측 → SenseVoice/Qwen3-ASR 비교 → 마이크·서비스 통합입니다. 원시 파일은 RP5 백업에 유지하고 필요할 때 상세 검증에 사용합니다. 설계 범위는 [아키텍처](docs/architecture.md)에 정리했습니다.

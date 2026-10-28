@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "reported_date_local": "2026-10-28",
+  "provenance": {
+    "source": "사용자가 전달한 RP5 Codex의 읽기 전용 검사 보고",
+    "host_agent_direct_rp5_verification": false,
+    "new_inference_or_benchmark_performed": false,
+    "original_json_artifacts_transferred_to_host": false
+  },
+  "repository": {
+    "root": "/home/deepet/projects/edge-asr",
+    "origin": "https://github.com/shinjuyeop/edge-asr.git",
+    "branch": "main",
+    "audited_commit": "0297f0a453b874021ec22b8773d5c00bdac49109",
+    "tracked_files_changed": false,
+    "tracked_files_matching_source_backup": 39,
+    "untracked_legacy_scripts": ["scripts/online-decode-files.py", "scripts/streaming_probe.py"]
+  },
+  "consolidation": {
+    "receipt": ".local-backups/consolidate-20261028T042622Z-_4i66ogl/receipt.json",
+    "status": "completed",
+    "recorded_commit_matches_audited_head": true,
+    "archived_directories": ["edge-asr-git", "edge-asr-bench-20261028-01"],
+    "archived_directories_exist_inside_backup": true,
+    "previous_sibling_directories_absent": true,
+    "source_git_backup_exists": true
+  },
+  "runtime": {
+    "python_executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+    "resolved_python_executable": "/home/deepet/.local/share/uv/python/cpython-3.11.18-linux-aarch64-gnu/bin/python3.11",
+    "python": "3.11.18",
+    "numpy": "2.4.6",
+    "sherpa-onnx": "2.0.1",
+    "imports_successful": true
+  },
+  "audio": {
+    "sample_rate_hz": 16000,
+    "channels": 1,
+    "sample_width_bytes": 2,
+    "frames": 56424,
+    "duration_s": 3.5265
+  },
+  "integrity": {
+    "required_model_token_audio_files_exist": true,
+    "preserved_probe_and_log_checksum_checks_passed": 4,
+    "legacy_probe_and_three_logs_match_preserved_copies": true,
+    "run_id": "zipformer-20261028T034043Z-ylnmagq7",
+    "run_manifest_status": "completed",
+    "measurement_successful": 90,
+    "measurement_planned": 90,
+    "warmup_successful": 9,
+    "failed": 0,
+    "recorded_model_token_audio_hashes_matching_current_files": 5,
+    "probe_hash_matches_run_record": true,
+    "recorded_runtime_versions_match_current_environment": true,
+    "actual_asset_sha256_values_received": false
+  },
+  "git_exclusions": {
+    "environment_assets_new_raw_runs_and_backups_untracked": true,
+    "intentional_tracked_preservation_logs": [
+      "experiments/m1_zipformer/results/streaming_threads_1.txt",
+      "experiments/m1_zipformer/results/streaming_threads_2.txt",
+      "experiments/m1_zipformer/results/streaming_threads_4.txt"
+    ],
+    "preservation_log_disposition": "원본 보존을 위해 추적을 유지하며 Git 인덱스에서 제거하지 않음."
+  },
+  "unit_tests": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v",
+    "run": 35,
+    "passed": 35,
+    "elapsed_s": 1.576,
+    "environment": "RP5 (사용자 전달 검사 보고)"
+  },
+  "remaining_unknowns": ["latency_metric_sample_counts", "unrounded_latency_values", "original_run_runner_sha256_value", "original_run_source_commit"]
+}

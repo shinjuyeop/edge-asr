@@ -12,14 +12,21 @@
     "direct_rp5_verification_by_agent": false,
     "source_commit": null,
     "runner_sha256": null,
-    "runtime_versions": null
+    "runtime_versions": {"python": "3.11.18", "numpy": "2.4.6", "sherpa-onnx": "2.0.1"},
+    "subsequent_audit_report": "rp5-consolidation-audit-20261028.json",
+    "audit_provenance": "사용자가 전달한 RP5 Codex 검사 보고. 원본 JSON 파일은 Host에 전송되지 않음.",
+    "preserved_rp5_run_directory": "/home/deepet/projects/edge-asr/.local-backups/consolidate-20261028T042622Z-_4i66ogl/edge-asr-bench-20261028-01/benchmarks/runs/zipformer-20261028T034043Z-ylnmagq7"
   },
   "target": "Raspberry Pi 5 / aarch64 / Debian 13.3 / 8GB RAM (사용자 제공 환경)",
   "audio": {
     "unique_samples": 1,
-    "duration_s": null,
+    "duration_s": 3.5265,
+    "frames": 56424,
+    "sample_rate_hz": 16000,
+    "channels": 1,
+    "sample_width_bytes": 2,
     "sha256": null,
-    "note": "동일 WAV 반복이라는 요약을 수신. 이번 실행의 정확한 길이·해시는 manifest 미수신으로 미확인."
+    "note": "후속 RP5 Codex 검사 보고에서 포맷·프레임 수·길이 및 실행 기록의 해시와 현재 파일 일치를 확인했다고 보고. 해시 원문 값은 미전달."
   },
   "reported_counts": {
     "warmup_attempted": 9,
@@ -77,5 +84,6 @@
     "scope": "이번 단일 WAV·실행 조건에서 후속 실험의 잠정 기준값. 전체 한국어 ASR 또는 실시간 서비스의 최적값이라는 결론은 아님."
   },
   "unmeasured": ["cer", "aligned_recognition_latency", "rtf", "drops", "backlog", "persistent_model_service_performance"],
-  "pending_evidence": ["summary.json", "manifest.json", "environment.json", "runs.json", "per-run probe.txt and resources.jsonl"]
+  "raw_artifacts_not_transferred_to_host": ["summary.json", "manifest.json", "environment.json", "runs.json", "per-run probe.txt and resources.jsonl"],
+  "pending_evidence": ["지연 지표별 유효 n과 부분 가설 부재 수", "반올림 전 원시 정밀도", "원래 실행의 도구 해시·커밋 값"]
 }

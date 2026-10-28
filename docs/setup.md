@@ -41,17 +41,19 @@ edge-asr env
 
 `venv`/`ensurepip`가 없는 경우 해당 3.11 설치 방식에 맞는 구성요소를 먼저 준비합니다. Debian의 `python3-venv`는 기본 Python용이므로 별도 3.11을 자동으로 지원한다고 가정하지 않습니다.
 
-## Zipformer 후보 의존성
+## Zipformer 실측 기준 의존성
 
 ```bash
 # 새 RP5 가상환경 안에서만 실행
-python -m pip install --only-binary=:all: 'numpy==1.26.4' 'sherpa-onnx==1.12.40'
+python -m pip install --only-binary=:all: 'numpy==2.4.6' 'sherpa-onnx==2.0.1'
 python -m pip install -e '.[zipformer]'
 python -m pip check
 python -c 'import numpy, sherpa_onnx; print(numpy.__version__, sherpa_onnx.__version__)'
 ```
 
-이 버전들은 새 실험을 위한 후보 고정값입니다. 기존 RP5 결과를 만든 패키지 버전은 기록되어 있지 않으며 동일 환경이라고 주장하지 않습니다. PyPI 배포 메타데이터에서 [NumPy 1.26.4](https://pypi.org/project/numpy/1.26.4/#files), [sherpa-onnx 1.12.40](https://pypi.org/project/sherpa-onnx/1.12.40/#files)의 CPython 3.11 Linux aarch64 wheel 존재를 확인한 것과 실제 RP5 설치·모델 실행 성공은 다릅니다. `sherpa-onnx`의 전이 의존성도 대상 환경에서 설치되어야 합니다. wheel을 찾지 못하면 자동 소스 빌드로 우회하지 말고 Python ABI·아키텍처·전이 의존성의 wheel 가용성을 점검합니다.
+위 고정값은 [사용자 전달 RP5 Codex 검사 보고](../results/summaries/rp5-consolidation-audit-20261028.json)에서 현재 환경과 반복 실행 기록이 일치한다고 확인된 Python 3.11.18 / NumPy 2.4.6 / sherpa-onnx 2.0.1을 기준으로 합니다. 기존 `.venv`에는 설치·업그레이드·다운그레이드를 수행하지 않습니다. 새 환경에서 재현할 때만 선택 의존성 `.[zipformer]`를 사용합니다. 최초 1회 보존 로그의 런타임 버전은 여전히 미상이며 반복 실행의 버전을 소급 적용하지 않습니다.
+
+PyPI 배포 메타데이터에서도 [NumPy 2.4.6](https://pypi.org/project/numpy/2.4.6/#files), [sherpa-onnx 2.0.1](https://pypi.org/project/sherpa-onnx/2.0.1/#files)의 CPython 3.11 Linux aarch64 wheel 존재를 확인했습니다. 메타데이터 확인과 실제 설치·추론은 구분하며 이번 실제 RP5 확인의 근거는 사용자 전달 검사 보고입니다. 전이 의존성도 대상 환경에서 설치되어야 하고 이 두 고정값만으로 전체 환경 lock을 대체하지 않습니다. wheel을 찾지 못하면 자동 소스 빌드로 우회하지 말고 Python ABI·아키텍처·전이 의존성의 wheel 가용성을 점검합니다.
 
 SenseVoice/Qwen3-ASR 런타임은 아직 의존성에 넣지 않았습니다. 모델 포맷과 실행 백엔드의 ARM64 지원을 검토한 뒤 별도 선택 의존성으로 추가합니다. 기본 설치에 PyTorch 등 무거운 패키지를 강제하지 않습니다.
 

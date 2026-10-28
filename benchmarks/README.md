@@ -6,6 +6,6 @@ Host에서는 평가 코드와 설정을 개발하고 RP5에서만 추론·성�
 - [Manifest 명세](manifest.md): 향후 평가용 정답·오디오 목록. 현재 평가 데이터셋은 포함하지 않습니다.
 - [기존 Zipformer 탐색 결과](../experiments/m1_zipformer/README.md): 단일 WAV, 각 스레드 1회 측정.
 - [RP5 반복 실행](../docs/rp5_repeat_benchmark.md): 기존 프로브의 워밍업·교차 순서 반복, 지연·CPU/RSS, 실패 로그·요약 자동 보관.
-- [사용자 제공 반복 요약](../results/summaries/zipformer-repeat-20261028-reported.md): 단일 WAV 스레드별 30회, 총 90/90 성공 보고. 잠정 기준값은 2스레드이며 원시 자료·환경·직접 원격 검증은 미확보입니다.
+- [사용자 제공 반복 요약](../results/summaries/zipformer-repeat-20261028-reported.md): 단일 WAV 스레드별 30회, 총 90/90 성공 보고. 후속 RP5 Codex 검사 보고에서 통합·횟수·자산·환경 일치를 확인했다고 보고됐으며 잠정 기준값은 2스레드입니다. Host 직접 실행·원본 파일 전송과 구분합니다.
 
 새 실행의 원시 결과는 `benchmarks/runs/<run-id>/`에 보관합니다(Git 제외). 모델과 WAV는 `models/`, `data/` 또는 RP5의 기존 읽기 경로를 참조합니다. 작은 요약은 `results/summaries/`에 작성합니다. 실행이 없으면 보고서에 미실행으로 표기하세요.

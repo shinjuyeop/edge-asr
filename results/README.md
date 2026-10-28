@@ -6,4 +6,4 @@
 
 요약에는 실행 장비, Git 커밋, 모드, 샘플 수·반복 수, 실제 측정 범위와 미계측 필드, 원시 결과의 로컬 보관 위치를 남깁니다. 기존 보존 결과는 [실험 디렉터리](../experiments/m1_zipformer/README.md)에 유지합니다.
 
-[2026-10-28 Zipformer 반복 측정](summaries/zipformer-repeat-20261028-reported.md)은 사용자가 전달한 RP5 `summary.md`에서 파생한 기록입니다. 원시 자료·환경·지표별 n은 아직 확보하지 않았으며 직접 원격 검증한 결과가 아닙니다.
+[2026-10-28 Zipformer 반복 측정](summaries/zipformer-repeat-20261028-reported.md)은 사용자가 전달한 RP5 `summary.md` 및 후속 [RP5 Codex 검사 보고](summaries/rp5-consolidation-audit-20261028.json)에서 파생한 기록입니다. 후속 보고로 환경·WAV 정보와 횟수·해시의 일치 여부를 보완했습니다. 원본 JSON·로그 자체의 전송과 Host 에이전트의 직접 검증은 아니며 지표별 n·원시 정밀도는 아직 미전달입니다.

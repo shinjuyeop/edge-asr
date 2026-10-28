@@ -46,3 +46,25 @@ PyPI 메타데이터로 후보 의존성 NumPy 1.26.4, sherpa-onnx 1.12.40 및 �
 로컬 Linux x86_64 / Python 3.11.14에서 전체 테스트 35개를 통과했습니다. 신규 통합 검사 14개는 미리보기의 무변경, 원본 가상환경·모델·과거 결과 보존, 파일·기존 Git 백업, 실패 및 Git 설치/소스 보관 직후 중단의 복원, 실행 중 벤치마크·미커밋 소스·다른 Git 이력·symlink·추적 가중치 거부, hard link의 다른 링크 내용 보존, 실행 중인 스크립트의 소스·작업 디렉터리가 이동되는 CLI 동작을 포함합니다. 모두 임시 디렉터리·로컬 시험 저장소를 사용했으며 실제 RP5 데이터는 사용하지 않았습니다.
 
 현재도 RP5 SSH 키 인증은 거절되어 원격 통합은 수행하지 않았습니다. 로컬 테스트 통과를 RP5 통합 완료로 기록하지 않습니다. 실제 적용 시 출력되는 `receipt.json`과 최종 작업 경로를 확인해야 합니다.
+
+## 2026-10-28 통합 후 RP5 Codex 검사 보고 수신
+
+아래는 위 도구 구현·로컬 검증 이후, 사용자가 전달한 RP5 Codex의 읽기 전용 검사 보고입니다. Host 에이전트가 직접 원격 실행한 결과나 원본 JSON 파일의 수신으로 표시하지 않습니다. 기계 판독용 [검사 기록](../results/summaries/rp5-consolidation-audit-20261028.json)을 함께 보관합니다.
+
+| 항목 | 사용자 전달 RP5 검사 보고 |
+| --- | --- |
+| Git | 루트 `/home/deepet/projects/edge-asr`, origin `shinjuyeop/edge-asr`, main, 검사 커밋 `0297f0a453b874021ec22b8773d5c00bdac49109`. 추적 파일 변경 없음 |
+| 통합 | `.local-backups/consolidate-20261028T042622Z-_4i66ogl/receipt.json` 상태 `completed`. 기록된 커밋 일치, 추적 파일 39개가 소스 백업과 바이트 일치. 기존 두 폴더는 내부 백업으로 이동됐고 이전 형제 경로에는 없음 |
+| 기존 환경 | `.venv/bin/python` 실행 성공. Python 3.11.18 / NumPy 2.4.6 / sherpa-onnx 2.0.1, 두 라이브러리 import 성공. 실제 Python은 uv의 aarch64 3.11.18 경로 |
+| WAV | 16,000Hz, mono, PCM16, 56,424프레임, 3.5265초. 초기 로그의 3.526초 표시는 기존 반올림 기록으로 유지 |
+| 원본 보존 | 프로브·로그 3개의 SHA256SUMS 4개 모두 OK. 기존 로컬 프로브·로그와도 바이트 일치 |
+| 과거 실행 | 보관된 `zipformer-20261028T034043Z-ylnmagq7`의 manifest `completed`. summary/runs/개별 result 교차 확인에서 측정 90/90·워밍업 9회 성공, 실패 0회 |
+| 실행 자산·환경 | 기록된 모델 3개·tokens·WAV 해시 5개 및 프로브 해시가 현재 파일과 일치. 실행 당시와 현재 런타임 버전도 일치 |
+| 단위 테스트 | RP5에서 `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v`: 35개, 1.576초, OK |
+| 미추적 파일 | `scripts/online-decode-files.py`, `scripts/streaming_probe.py`. 기존 파일로 보존하며 이 작업에서 자동 삭제·이동·추가 추적하지 않음 |
+
+검사 보고의 6번에 표시된 초기 로그 3개의 Git 추적은 오류가 아니라 의도된 보존 예외입니다. 검사 프롬프트에 예외를 빠뜨려 전체 원시 결과 제외 조건으로 전달한 것을 정정합니다. `experiments/m1_zipformer/results/streaming_threads_{1,2,4}.txt`는 유지하며 인덱스에서 제거하지 않습니다. 새 대량 원시 실행·모델·WAV·가상환경·백업은 계속 제외합니다.
+
+이 단계에서는 새 추론·벤치마크를 재실행하지 않았고 기존 패키지를 재설치하지 않았다는 보고입니다. 수신한 환경 버전을 새 환경 재현용 `pyproject.toml` 선택 의존성에 반영했습니다. 이전 NumPy 1.26.4 / sherpa-onnx 1.12.40은 실측 환경을 알기 전에 제안한 후보였으며 이번 반복 결과의 환경으로 간주하지 않습니다.
+
+원본 JSON·개별 표본 파일은 RP5 내부 백업에 남아 있고 Host로 전송되지 않았습니다. 지연 지표별 유효 n, 반올림 전 값, 해시 원문과 원래 실행의 도구 해시·커밋은 여전히 보고에 포함되지 않았습니다. 현재 단계의 통합·보존·실측 기준 환경 정리는 이 전달 보고를 근거로 완료하고, 상세 분석이 필요할 때 원시 자료를 추가 확인합니다.
