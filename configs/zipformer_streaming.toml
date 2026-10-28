@@ -1,0 +1,16 @@
+# 향후 공통 벤치마크 실행기가 사용할 설정. 기존 streaming_probe.py에는 적용되지 않음.
+# 상대 자산 경로는 저장소 루트를 작업 디렉터리로 사용할 때를 기준으로 함.
+[model]
+family = "zipformer"
+path = "models/sherpa-onnx-streaming-zipformer-korean-2024-06-16"
+num_threads = 2
+
+[audio]
+path = "models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/test_wavs/0.wav"
+sample_rate_hz = 16000
+chunk_ms = 100
+
+[benchmark]
+mode = "paced_stream"
+warmup_runs = 3
+repetitions = 30

@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "edge-asr"
+version = "0.1.0"
+description = "Raspberry Pi 5 한국어 ASR 비교 및 실시간 배포 연구"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+classifiers = [
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: POSIX :: Linux",
+]
+
+[project.optional-dependencies]
+# 신규 재현 실험을 위한 후보 조합. 기존 RP5 측정 환경의 버전은 미상.
+zipformer = ["numpy==1.26.4", "sherpa-onnx==1.12.40"]
+
+[project.scripts]
+edge-asr = "edge_asr.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

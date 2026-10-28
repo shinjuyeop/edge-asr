@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "measurement_scope": "동일한 WAV 단일 샘플에 대한 설정별 1회 측정",
+  "unique_audio_samples": 1,
+  "runs_per_configuration": 1,
+  "audio_duration_s": 3.526,
+  "target": "Raspberry Pi 5 / ARM64 / Debian 13 / 8GB RAM",
+  "measurement_date": null,
+  "original_runtime_versions": null,
+  "revalidated_on_rp5_during_repository_setup": false,
+  "batch": {
+    "source": "사용자 제공 기존 측정값; 원시 로그 없음",
+    "num_threads": null,
+    "rtf": 0.110
+  },
+  "paced_stream": [
+    {
+      "source": "results/streaming_threads_1.txt",
+      "num_threads": 1,
+      "first_partial_from_audio_start_s": 0.839024290999987,
+      "final_elapsed_s": 3.606,
+      "finalization_from_audio_end_s": 0.080,
+      "max_processing_overrun_ms": 42.2
+    },
+    {
+      "source": "results/streaming_threads_2.txt",
+      "num_threads": 2,
+      "first_partial_from_audio_start_s": 0.8374523949999002,
+      "final_elapsed_s": 3.590,
+      "finalization_from_audio_end_s": 0.064,
+      "max_processing_overrun_ms": 37.5
+    },
+    {
+      "source": "results/streaming_threads_4.txt",
+      "num_threads": 4,
+      "first_partial_from_audio_start_s": 0.8458824589999949,
+      "final_elapsed_s": 3.619,
+      "finalization_from_audio_end_s": 0.092,
+      "max_processing_overrun_ms": 45.9
+    }
+  ],
+  "unmeasured": [
+    "cer",
+    "aligned_recognition_latency",
+    "p50_p95_latency",
+    "cpu_usage",
+    "rss_memory",
+    "audio_drops",
+    "queue_backlog",
+    "streaming_processing_rtf"
+  ],
+  "caveat": "첫 부분 시점은 입력 대기 포함, 결과 조회 전 타임스탬프. 최종 지연은 파일 끝 기준이며 합성 무음 처리를 포함. 반복 통계나 실시간 서비스 검증이 아님."
+}
