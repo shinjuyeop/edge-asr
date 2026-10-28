@@ -1,0 +1,19 @@
+# 공통 파일 평가. 상대 경로는 CLI의 --root (기본 작업 디렉터리) 기준.
+[model]
+family = "zipformer"
+path = "models/sherpa-onnx-streaming-zipformer-korean-2024-06-16"
+num_threads = 2
+tokens = "tokens.txt"
+encoder = "encoder-epoch-99-avg-1.int8.onnx"
+decoder = "decoder-epoch-99-avg-1.onnx"
+joiner = "joiner-epoch-99-avg-1.int8.onnx"
+tail_padding_s = 0.66
+
+[audio]
+sample_rate_hz = 16000
+
+[evaluation]
+mode = "batch"
+warmup_runs = 3
+normalization = "ko_cer_v1"
+output_dir = "results/evaluations"
