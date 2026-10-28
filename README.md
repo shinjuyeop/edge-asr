@@ -6,9 +6,11 @@ Raspberry Pi 5(ARM64, Debian 13, RAM 8GB)에서 한국어 ASR 모델을 비교�
 
 초기 구성의 실제 로컬 검사 결과는 [검증 기록](docs/verification.md)에 있습니다.
 
-새 기능은 [공통 파일 평가](docs/evaluation.md)입니다. 사람이 확인한 WAV·정답 목록을 준비한 뒤 `.venv/bin/python scripts/edge_asr.py evaluate --manifest data/evaluation/manifest.jsonl`로 CER·batch RTF·추론 CPU/RSS를 평가합니다. 저장 가설은 `score`로 재추론 없이 채점합니다. 새 도구의 실제 RP5 실행은 아직 미검증입니다.
+새 기능은 [공통 파일 평가](docs/evaluation.md)입니다. 사람이 확인한 WAV·정답 목록을 준비한 뒤 `.venv/bin/python scripts/edge_asr.py evaluate --manifest data/evaluation/manifest.jsonl`로 CER·batch RTF·추론 CPU/RSS를 평가합니다. 저장 가설은 `score`로 재추론 없이 채점합니다. 2026-10-28 공식 WAV 단일 샘플 1회 평가가 RP5에서 성공했고 Host의 SSH 결과 회수·체크섬·재채점 대조도 확인했습니다.
 
 첫 동작 확인에는 배포처 전사를 사용할 수 있습니다. `.venv/bin/python scripts/prepare_korean_test0.py`로 기존 공식 `0.wav`의 해시를 확인해 목록을 만든 뒤 `evaluate --manifest data/evaluation/official-test0.jsonl`로 실행합니다. 스피커·수동 청취·모델 다운로드가 필요하지 않습니다. 준비와 실행 명령은 [평가 안내](docs/evaluation.md)에 있습니다.
+
+여러 발화의 개발 기준선은 [KSS 데이터 준비 안내](docs/datasets.md)를 따릅니다. Host에서 `.venv/bin/python scripts/prepare_kss_subset.py`로 고정한 50개 발화·전사를 준비하고 RP5에서 같은 공통 평가기로 실행합니다. 단일 여성 화자의 낭독이며 프로젝트의 development 자료로 사용합니다. 데이터·전사는 Git에 포함하지 않습니다.
 
 2026-10-28 사용자가 전달한 RP5 반복 요약에서는 동일 WAV를 스레드별 30회 측정해 총 90/90회 성공했고 워밍업 9회도 실패가 없었습니다. 후속 [RP5 Codex 검사 보고](results/summaries/rp5-consolidation-audit-20261028.json)에서 한 폴더 통합, 자산·기록 일치 및 RP5 단위 테스트 35개 통과가 확인됐다고 보고됐습니다. 실측 환경은 Python 3.11.18 / NumPy 2.4.6 / sherpa-onnx 2.0.1이고, [이번 조건의 잠정 기준값](results/summaries/zipformer-repeat-20261028-reported.md)은 2스레드입니다. 이 기록은 사용자가 전달한 검사 보고에 근거하며 Host 에이전트의 직접 원격 실행이나 원본 JSON 전송을 뜻하지 않습니다.
 

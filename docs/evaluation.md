@@ -2,7 +2,7 @@
 
 Zipformer를 한 번 로드하고 여러 WAV를 순차 처리하여 CER·batch RTF·추론 구간 CPU/RSS를 기록합니다. 입력·채점·실행·저장은 공통이며 모델 호출만 `adapters/zipformer.py`로 분리했습니다. 저장된 가설은 모델·오디오 없이 재채점할 수 있습니다.
 
-현재 지원은 **CPU Zipformer transducer의 batch 평가**입니다. 온라인 모델에 전체 PCM을 대기 없이 전달하고 파일마다 새 스트림을 생성·flush합니다. 공통 스트리밍 평가·다른 모델·실제 마이크는 아직 지원하지 않습니다. Host의 모의 런타임으로 검사했으며 이 새 도구의 실제 RP5 실행은 미검증입니다.
+현재 지원은 **CPU Zipformer transducer의 batch 평가**입니다. 온라인 모델에 전체 PCM을 대기 없이 전달하고 파일마다 새 스트림을 생성·flush합니다. 공통 스트리밍 평가·다른 모델·실제 마이크는 아직 지원하지 않습니다. 2026-10-28 공식 WAV 1개에 대한 RP5 실행 결과를 Host에서 SSH로 직접 읽고, 결과 파일의 체크섬과 Host 재채점 일치를 확인했습니다. 단일 샘플 1회 측정이며 여러 발화용 데이터 준비는 [데이터 안내](datasets.md)를 따릅니다.
 
 ## RP5 시작
 
@@ -98,4 +98,4 @@ Unicode 데이터베이스 버전도 집계에 기록하며 재채점 출처에�
 
 추상 기반 클래스·플러그인 시스템 없이 어댑터의 `model_files`, `load()`, `transcribe(Audio) -> str`, `close()` 경계를 사용합니다. 새 모델 모듈과 `adapters.create_adapter` 분기, 필요한 전용 설정 검증을 추가하면 데이터·채점·저장은 재사용합니다. 미구현 모델은 명시적으로 실패합니다.
 
-Zipformer 호출은 보존 프로브와 [sherpa-onnx 공식 파일 디코딩 예제](https://github.com/k2-fsa/sherpa-onnx/blob/master/python-api-examples/online-decode-files.py)를 참고했습니다. 실제 RP5 검증은 새 실행기로 수행해야 합니다.
+Zipformer 호출은 보존 프로브와 [sherpa-onnx 공식 파일 디코딩 예제](https://github.com/k2-fsa/sherpa-onnx/blob/master/python-api-examples/online-decode-files.py)를 참고했습니다. 단일 공식 샘플의 RP5 실행과 결과 회수를 확인했으며, 모델·데이터·모드를 확장할 때는 해당 조건의 새 RP5 검증이 필요합니다.
