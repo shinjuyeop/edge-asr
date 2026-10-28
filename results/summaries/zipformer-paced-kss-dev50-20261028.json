@@ -1,0 +1,278 @@
+{
+  "schema_version": 1,
+  "run_id": "eval-20261028T062504Z-w8s86vle",
+  "mode": "paced_stream",
+  "evidence": "Host SSH로 RP5의 기존 환경에서 직접 실행하고 전체 이벤트 회수·SHA-256 검증·Host 재채점 대조",
+  "source_commit": "63c304bf7bfe65796eb9d014b8a5aad7f0175254",
+  "source_dirty": false,
+  "started_at_utc": "2026-10-28T06:25:04.082828+00:00",
+  "finished_at_utc": "2026-10-28T06:28:03.623061+00:00",
+  "verified_at_utc": "2026-10-28T06:32:18.422048+00:00",
+  "normalization": "ko_cer_v1",
+  "unicode_database": "14.0.0",
+  "environment": {
+    "architecture": "aarch64",
+    "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+    "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+    "packages": {
+      "numpy": "2.4.6",
+      "sherpa-onnx-core": "2.0.1",
+      "sherpa_onnx": "2.0.1"
+    }
+  },
+  "dataset": {
+    "name": "KSS development 50",
+    "source": "Bingsu/KSS_Dataset",
+    "revision": "48fdfd7ab1dbc1a62e4e8a8b9f4c360259d51d3c",
+    "source_split": "train",
+    "rows": [
+      1000,
+      1049
+    ],
+    "reference_field": "expanded_script",
+    "project_split": "development",
+    "speakers": 1,
+    "random_sample": false,
+    "independent_test_split": false,
+    "repetitions_per_sample": 1,
+    "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+    "provenance_sha256": "024be130b23674f3ef8a44638bee03de7e8c501960a73315eae0cf7f8404d1ca"
+  },
+  "model": {
+    "num_threads": 2,
+    "tail_padding_s": 0.66,
+    "family": "zipformer",
+    "path": "models/sherpa-onnx-streaming-zipformer-korean-2024-06-16",
+    "files": {
+      "tokens": {
+        "name": "tokens.txt",
+        "sha256": "016bdf0965029263b7ad01b742366ee542ef0bef38261510e8176ff6f2e9e668"
+      },
+      "encoder": {
+        "name": "encoder-epoch-99-avg-1.int8.onnx",
+        "sha256": "8d0b1aa24fbedd4e3948564ab7facd151b8ce9b0c48fc987c541de2de3af5697"
+      },
+      "decoder": {
+        "name": "decoder-epoch-99-avg-1.onnx",
+        "sha256": "b29cfb4575141e50a30a22b2c4579934f3d4f45b83c9c8c08c3aef5a3fa7abfc"
+      },
+      "joiner": {
+        "name": "joiner-epoch-99-avg-1.int8.onnx",
+        "sha256": "128b80a66a1f718488af8560f9d15895109b99ff3e573f0a0130e03774ef1ced"
+      }
+    }
+  },
+  "streaming_config": {
+    "chunk_ms": 100,
+    "queue_capacity_chunks": 5,
+    "drop_policy": "drop_newest",
+    "drain_timeout_s": 10.0
+  },
+  "capture_start_method": "spawn",
+  "playback_speed": 1.0,
+  "warmup": {
+    "planned": 3,
+    "successful": 3,
+    "mode": "unpaced_chunk_feed",
+    "sample_id": "kss-train-01000"
+  },
+  "model_load_s": 2.4782917679999628,
+  "overall": {
+    "planned": 50,
+    "successful": 50,
+    "failed": 0,
+    "not_attempted": 0,
+    "interrupted": 0,
+    "complete": true,
+    "reference_character_coverage": 1.0,
+    "cer": {
+      "value": 0.1164021164021164,
+      "reference_characters": 756,
+      "errors": 88,
+      "substitutions": 71,
+      "deletions": 11,
+      "insertions": 6,
+      "scope": "successful_nonempty_references",
+      "empty_reference_samples": 0,
+      "empty_reference_nonempty_hypotheses": 0
+    },
+    "rtf": 0.11409879805236955,
+    "total_audio_s": 164.919,
+    "total_inference_wall_s": 18.817059675998735,
+    "mean_process_cpu_percent": 207.4607880730329,
+    "file_processing_s": {
+      "n": 50,
+      "mean": 0.3763411935199747,
+      "p50": 0.37842440100030217,
+      "p95": 0.5670532579988503,
+      "max": 0.6239307850055411
+    },
+    "file_rtf": {
+      "n": 50,
+      "mean": 0.11573689574960133,
+      "p50": 0.11151054848331847,
+      "p95": 0.13821236022673591,
+      "max": 0.15509849173011533
+    },
+    "rss_observed_max_mib": 254.625,
+    "streaming": {
+      "metric_scope": "successful_complete_capture; 실패·미실행은 지표 집계 제외, 완료율과 함께 해석",
+      "included_files": 50,
+      "no_partial_files": 0,
+      "first_partial_from_audio_start_s": {
+        "n": 50,
+        "mean": 0.9709705014400001,
+        "p50": 0.832418983,
+        "p95": 1.432002987,
+        "max": 1.439072652
+      },
+      "finalization_from_audio_end_s": {
+        "n": 50,
+        "mean": 0.07491416552000002,
+        "p50": 0.062440374000000354,
+        "p95": 0.11346377799999985,
+        "max": 0.12499614900000022
+      },
+      "chunk_processing_s": {
+        "n": 1678,
+        "mean": 0.009236227649582837,
+        "p50": 0.00037166700000001995,
+        "p95": 0.03404144600000003,
+        "max": 0.04702024699999985
+      },
+      "queue_wait_s": {
+        "n": 1678,
+        "mean": 0.0006584132163289645,
+        "p50": 0.0006619740000000096,
+        "p95": 0.0011491329999999689,
+        "max": 0.022017388000000082
+      },
+      "latest_chunk_end_to_return_s": {
+        "n": 1678,
+        "mean": 0.010631635747318242,
+        "p50": 0.0013475629999999406,
+        "p95": 0.039093021999999866,
+        "max": 0.07713631300000001
+      },
+      "capture_schedule_lag_s": {
+        "n": 1678,
+        "mean": 7.840695768772178e-05,
+        "p50": 7.228599999997698e-05,
+        "p95": 9.433699999994438e-05,
+        "max": 0.0011747120000000777
+      },
+      "dropped_chunks": 0,
+      "dropped_audio_s": 0.0,
+      "captured_chunks": 1678,
+      "backlog_audio_s": {
+        "n": 1810,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "backlog_oldest_wait_s": {
+        "n": 1810,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "backlog_event_max_audio_s": 0.1,
+      "backlog_event_max_chunks": 1,
+      "backlog_event_max_oldest_wait_s": 0.022017388000000082,
+      "backlog_at_audio_end_s": {
+        "n": 50,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "backlog_end_max_audio_s": 0.0,
+      "total_replay_elapsed_s": 168.66470827599997,
+      "replay_elapsed_ratio": 1.022712412008319,
+      "mean_replay_process_cpu_percent": 41.475773936967855,
+      "producer_cpu_s": 0.21487780300000003,
+      "producer_lifetime_peak_rss_mib": 282.734375
+    }
+  },
+  "unmeasured": {
+    "aligned_recognition_latency_s": null,
+    "speech_endpoint_latency_s": null,
+    "microphone_overruns": null,
+    "ui_display_latency_s": null
+  },
+  "timing_scope": "elapsed_s/RTF는 스트림 생성·각 청크 전달/디코딩/가설 반환·flush의 활성 wall 합. 입력 대기·IPC·기록·spawn·워밍업 제외. replay_elapsed_s는 t0~최종 반환.",
+  "resource_scope": "process_cpu_s는 활성 호출 구간의 주 PID CPU. replay_process_cpu_s는 1배속 대기 포함 주 PID CPU. RSS·온도·클럭은 100ms/호출 경계 관측. 입력 자식 CPU·시작 포함 RSS 최고치는 별도.",
+  "producer_memory_scope": "입력 자식의 resource.ru_maxrss가 보고한 시작 포함 생애 최대. 주 PID와 동시 RSS 합·전체 파이프라인 피크는 미계측.",
+  "device_observed": {
+    "rss_device_sample_count": 1827,
+    "temperature_c": {
+      "valid_n": 1827,
+      "min": 55.65,
+      "max": 63.9
+    },
+    "cpu0_freq_khz": {
+      "valid_n": 1827,
+      "min": 1500000,
+      "max": 2400000
+    },
+    "governor": "ondemand",
+    "get_throttled_before": "throttled=0x0",
+    "get_throttled_after": "throttled=0x0",
+    "scope": "발화별 주 PID RSS 모니터의 명목 100ms와 경계 관측. 표본 사이 피크는 보증하지 않음."
+  },
+  "verification": {
+    "host_unit_tests": 83,
+    "host_unit_tests_skipped": 0,
+    "wheel_contains_streaming_module": true,
+    "main_run_artifact_count": 158,
+    "smoke_run_artifact_count": 10,
+    "all_received_artifacts_sha256_match": true,
+    "checksum_inventory_sha256": "9c300795a4dd155488d1368d5f7a044aad54436e5edfc2f68c1d864cd3b2ec05",
+    "main_run_metadata_sha256": {
+      "environment.json": "0541839e0067f16226b1ddc8f65e82867b1906aa1e92921b3a7adf467cea7228",
+      "execution_context.json": "b296002964bce1d59bb745f167e509a91a2fbec72c1925d73780d33e906d16f8",
+      "manifest.json": "cbf37d3420978b050b0706bad548fd114d56e4b71ec5ae3ba530259933f68b18",
+      "predictions.jsonl": "9437d19ceecfb596a9429d2bebb58c13ffd97aa0ec7331838742dcefa7db5b7c",
+      "progress.jsonl": "9437d19ceecfb596a9429d2bebb58c13ffd97aa0ec7331838742dcefa7db5b7c",
+      "scores.jsonl": "7fc693a97bdde7978d70280e0aff5a27d5883e7f940fc5286795b7ae77180404",
+      "summary.json": "0ee3cd964816dcceae8e11187c6edef4b54b7fea2ee1230cf26fe50600a65d9b",
+      "summary.md": "668278b8af99c8dc569436a060f910ae3ca7e90c662925e7767076bb4646cad8"
+    },
+    "host_rescore_matches": true,
+    "raw_events_rebuild_backlog_matches": true,
+    "partial_and_final_timestamps_match_events": true,
+    "all_planned_frames_accounted_for": true,
+    "protected_asset_count": 7,
+    "protected_assets_unchanged": true
+  },
+  "native_smoke": {
+    "run_id": "eval-20261028T062401Z-gg5bcv07",
+    "first_partial_from_audio_start_s": 0.831421891,
+    "finalization_from_audio_end_s": 0.06189782499999996,
+    "dropped_chunks": 0
+  },
+  "batch_comparison": {
+    "run_id": "eval-20261028T055209Z-sv2lwci2",
+    "source_commit": "b78aef06db7c9e2e30320aeb2a8e0318dd5b0b57",
+    "same_input_and_model_hashes": true,
+    "identical_final_hypotheses": 50,
+    "different_final_hypotheses": 0,
+    "note": "같은 50개를 각 모드에서 1회 측정. 통계적 속도·전력·열 우열 또는 한국어 전체 정확도를 주장하지 않음."
+  },
+  "raw_locations": {
+    "rp5": "/home/deepet/projects/edge-asr/results/evaluations/eval-20261028T062504Z-w8s86vle",
+    "host": "results/evaluations/eval-20261028T062504Z-w8s86vle",
+    "rescore": "results/scores/score-20261028T062947Z-s2e11e9s",
+    "checksum_inventory": "results/operations/paced-kss-20261028-remote-hashes.json"
+  },
+  "limitations": [
+    "단일 여성 화자 낭독의 개발용 연속 50개, 각 1회. 독립 test·다화자·잡음·장시간 서비스 아님.",
+    "첫 부분 시점은 음성이 쌓이는 대기와 lookahead 포함. 정답 시각 정렬 실제 인식 지연은 미계측.",
+    "최종 확정은 파일 끝 기준 강제 flush. 실제 발화 끝 검출·endpoint 지연은 미계측.",
+    "드롭은 모사 입력 큐만 측정. 마이크 하드웨어 손실·화면 표시 지연은 미계측.",
+    "100ms 격자 백로그는 짧은 피크를 놓칠 수 있으므로 이벤트 최대를 함께 해석.",
+    "RSS는 주 PID 관측 최대와 입력 자식의 시작 포함 생애 최고치를 분리. 동시 합산 피크 아님."
+  ]
+}

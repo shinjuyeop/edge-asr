@@ -222,7 +222,7 @@ def run_paced(adapter, audio, settings, directory: Path, telemetry: dict) -> str
         if t0 is not None:
             telemetry["replay_elapsed_s"] = finish if finish is not None else (time.perf_counter_ns() - t0) / 1e9
             telemetry["replay_process_cpu_s"] = (finish_cpu if finish_cpu is not None else time.process_time()) - cpu_start
-        # 정상 입력은 EOF 뒤 종료한다. 오류·중단일 때만 취소하여 feeder 교착을 피한다.
+        # 정상 최종 반환 또는 오류·중단을 자식에게 알리고 feeder 교착을 피한다.
         stop.set()
         if process.pid is not None:
             process.join(2)
