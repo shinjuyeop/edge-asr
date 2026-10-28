@@ -56,19 +56,29 @@ sha256sum -c experiments/m1_zipformer/SHA256SUMS
 
 ## RP5 배포와 다음 구현
 
-```bash
-# RP5: 기존 모델·가상환경이 있는 edge-asr는 유지하고 별도 clone
-cd /home/deepet/projects &&
-git clone https://github.com/shinjuyeop/edge-asr.git edge-asr-git &&
+RP5 작업 폴더는 **`/home/deepet/projects/edge-asr` 하나**로 통일합니다. 소스·`.git`·기존 `.venv`·모델·데이터·실행 결과를 이 안에 두고, Git에는 소스와 작은 요약만 올립니다.
 
-# 기존 Python 3.11 환경·모델로 새 clone의 반복 도구 실행
-/home/deepet/projects/edge-asr/.venv/bin/python \
-  /home/deepet/projects/edge-asr-git/scripts/benchmark_zipformer.py \
-  --asset-root /home/deepet/projects/edge-asr
+기존에 `edge-asr`, `edge-asr-git`, `edge-asr-bench-20261028-01` 세 폴더를 만든 경우 한 번만 아래 통합 절차를 사용합니다. 실행 중인 벤치마크가 없는 상태에서 실행하세요.
+
+```bash
+cd /home/deepet/projects/edge-asr-git &&
+git pull --ff-only origin main &&
+/home/deepet/projects/edge-asr/.venv/bin/python scripts/consolidate_rp5.py --apply &&
+cd /home/deepet/projects/edge-asr
 ```
 
-위 명령은 최초 clone용이며 clone이 실패하면 추론을 실행하지 않습니다. `edge-asr-git`이 이미 있으면 삭제하거나 다시 clone하지 말고 [기존 clone 확인·업데이트 절차](docs/deployment.md)를 따릅니다. 이미 벤치마크가 실행 중이면 종료 전까지 pull·재실행하지 않습니다.
+통합 도구는 기존 `edge-asr` 경로를 유지합니다. 다른 두 폴더는 그 안의 `.local-backups/consolidate-<시각>-<임의문자>/`에 보관하므로 프로젝트 부모 아래에는 작업 폴더 하나만 남습니다. 모델·가상환경을 옮기거나 다시 설치하지 않으며 기존 소스 충돌은 백업 후 반영합니다. 미리보기·거부 조건·복원 기록은 [배포 안내](docs/deployment.md)를 따릅니다. 통합은 실제 RP5에서 아직 미검증입니다.
 
-기본 흐름은 Host에서 개발·커밋·push하고 RP5의 별도 clone에서 `git pull --ff-only origin main`으로 가져오는 방식입니다. 소스 커밋은 함께 관리하고 가중치·WAV·가상환경·원시 결과는 각 장비에 둡니다. 공개 저장소의 clone/pull은 GitHub 로그인 없이 사용할 수 있습니다. 커밋 일치 확인, 기존 RP5 보존 및 rsync 대안은 [배포](docs/deployment.md)를 따릅니다. 위 RP5 실행 명령은 아직 실제 검증하지 않았습니다.
+통합 후 평소 사용법은 다음과 같습니다. 벤치마크는 새 측정이 필요할 때만 실행합니다.
+
+```bash
+cd /home/deepet/projects/edge-asr &&
+git pull --ff-only origin main
+
+# 새 측정을 할 때만 실행
+.venv/bin/python scripts/benchmark_zipformer.py --asset-root .
+```
+
+Host에서 개발·커밋·push하고 RP5의 같은 프로젝트 저장소에서 pull·실행합니다. 가중치·WAV·가상환경·원시 결과·내부 백업은 각 장비에 둡니다. 기존 90회 결과를 통합 때문에 다시 측정할 필요는 없습니다.
 
 다음 순서는 기존 반복 실행의 환경·manifest·원시 결과 확보 → 상주 Zipformer 어댑터·공통 실행기 → 여러 발화의 정답 전사·CER → 청크 지연·자원·백로그 계측 → SenseVoice/Qwen3-ASR 비교 → 마이크·서비스 통합입니다. 설계 범위와 확장 방침은 [아키텍처](docs/architecture.md)에 정리했습니다.

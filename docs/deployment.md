@@ -1,31 +1,75 @@
-# GitHub로 Host와 RP5 소스 관리
+# Host와 RP5를 같은 GitHub 저장소로 관리
 
-공통 원격 저장소는 [shinjuyeop/edge-asr](https://github.com/shinjuyeop/edge-asr)입니다. Host와 RP5는 같은 저장소의 **서로 다른 로컬 복제본**을 사용합니다. Host의 작업 폴더가 RP5와 실시간 공유되는 것은 아닙니다. 커밋·push한 소스만 RP5에서 fetch/pull할 수 있습니다.
+공통 저장소는 [shinjuyeop/edge-asr](https://github.com/shinjuyeop/edge-asr)입니다. Host와 RP5는 서로 다른 컴퓨터의 로컬 복제본이며 각 컴퓨터에서 작업 폴더는 하나만 사용합니다.
 
-## 관리 범위
+| 장비 | 작업 경로 | 역할 |
+| --- | --- | --- |
+| Host | `/d/shin/edge-asr` | 구현·테스트·커밋·push |
+| RP5 | `/home/deepet/projects/edge-asr` | pull·실제 추론·벤치마크 |
 
-| 대상 | 관리 방식 |
-| --- | --- |
-| 소스·설정·문서·테스트 | Host에서 개발·검사·커밋·push, RP5에서 clone/pull |
-| 보존된 기존 프로브·작은 원시 실험 결과 | Git 버전 관리. 원본은 수정하지 않음 |
-| 가중치·WAV·가상환경·캐시 | 각 장비에 로컬 보관. Git으로 복사하지 않음 |
-| 새 원시 벤치마크 결과 | RP5의 `benchmarks/runs/` 등에 기록. Git 제외 |
-| 검토한 작은 요약 | Host로 회수 후 `results/summaries/`에서 커밋 가능 |
+## RP5 최종 구조
 
-RP5에서 실제 추론·성능을 측정합니다. Host의 검사 결과나 GitHub push 성공을 RP5 검증 성공으로 기록하지 않습니다.
+```text
+/home/deepet/projects/edge-asr/
+├── .git/                 # GitHub 소스 이력
+├── .venv/                # 기존 Python 3.11 환경 (Git 제외)
+├── models/               # 기존 모델·테스트 WAV (안내 문서 외 Git 제외)
+├── data/                 # 평가 오디오·정답 (안내 문서 외 Git 제외)
+├── src/edge_asr/
+├── scripts/
+├── configs/
+├── benchmarks/runs/      # 새 원시 실행 결과 (Git 제외)
+├── results/summaries/    # 검토한 작은 요약만 버전 관리
+└── .local-backups/       # 통합 전 소스·과거 결과·Git 메타데이터 보관 (Git 제외)
+```
 
-## Host의 개발 흐름
+가중치·오디오·가상환경을 Git에 올리지 않는 것과 파일을 다른 프로젝트 폴더에 보관하는 것은 별개입니다. 한 작업 폴더 안에 함께 두고 Git 제외 규칙으로 구분합니다.
 
-현재 Host 경로는 `/d/shin/edge-asr`입니다. 최초 공개 저장소 연결 후 `origin`을 사용합니다.
+## 기존 세 폴더를 한 번만 통합
+
+이전에 rsync 배포 후 GitHub 방식으로 전환하여 `edge-asr`, `edge-asr-git`, `edge-asr-bench-20261028-01`이 생겼습니다. `scripts/consolidate_rp5.py`는 기존 `edge-asr` 경로를 유지한 채 GitHub 소스를 합치고, 나머지 두 폴더 전체를 그 안의 Git 제외 백업 폴더에 보관합니다.
+
+이 도구는 로컬 Linux 임시 저장소에서 검증했으며 실제 RP5에서는 아직 실행하지 않았습니다. 현재 작업 환경의 RP5 SSH 키 인증이 거절되어 사용자가 RP5 터미널에서 실행해야 합니다. 실행 중인 벤치마크와 Git 작업을 먼저 종료하고 통합 중에는 소스·폴더를 편집하지 않습니다.
+
+```bash
+# RP5: 기존 clone에서 최신 통합 도구 받기
+cd /home/deepet/projects/edge-asr-git &&
+git pull --ff-only origin main
+
+# 선택: 실제 복사·이동이 없는 미리보기
+/home/deepet/projects/edge-asr/.venv/bin/python scripts/consolidate_rp5.py
+```
+
+실제 적용은 다음 명령으로 수행합니다. 기본 경로는 로그인 사용자의 `~/projects` 아래입니다.
+
+```bash
+cd /home/deepet/projects/edge-asr-git &&
+git pull --ff-only origin main &&
+/home/deepet/projects/edge-asr/.venv/bin/python scripts/consolidate_rp5.py --apply &&
+cd /home/deepet/projects/edge-asr
+```
+
+통합 시 동작은 다음과 같습니다.
+
+1. 같은 GitHub 저장소의 깨끗한 main clone인지, HEAD가 origin/main과 같은지 검사합니다. 대상의 가상환경·모델 위치, 경로 충돌·symlink·Git lock·실행 중인 벤치마크도 검사합니다.
+2. 새 고유 `.local-backups/consolidate-<UTC시각>-<임의문자>/`를 만듭니다. 덮어쓸 기존 소스는 `original-files/`에 먼저 복사합니다. 원본 파일이 hard link여도 다른 링크의 내용을 바꾸지 않도록 새 파일로 교체합니다.
+3. clone의 추적 소스와 Git 메타데이터를 기존 `edge-asr`에 반영합니다. 기존 대상 `.git`이 있으면 같은 이력의 조상 또는 초기화만 된 저장소일 때만 허용하고 `original.git/`에 보존합니다. 다른 저장소·미포함 커밋은 자동 처리하지 않습니다.
+4. 기존 clone과 과거 배포본 전체를 내부 백업으로 이동합니다. 예전 벤치마크 원시 결과도 그 안에 그대로 남습니다. `.venv`·가중치·WAV 경로와 내용은 유지하며 재설치·재측정하지 않습니다.
+5. `receipt.json`에 적용 상태, 커밋, 파일 백업 목록과 옛 경로 → 새 보관 경로를 기록합니다. 실패·Ctrl-C 시 되돌리기를 시도하고 성공한 복원은 `rolled_back`으로 표시합니다. 전원 차단·복원 중 I/O 오류 등에서는 자동 복원이 보장되지 않으므로 보관 자료와 기록을 유지합니다.
+
+수정 중인 clone, 별도 `.venv`가 있는 다른 폴더, Git worktree/외부 object 의존성, 별도 파일시스템·예상 밖 링크 구조는 자동으로 통합하지 않습니다. 이유가 출력되면 그 출력을 확인합니다. 기존 자료를 삭제하거나 강제 reset하여 우회하지 않습니다. `--source`, `--target`, `--legacy-dir`로 경로를 명시할 수 있지만 현재 안내된 기본값이면 충분합니다.
+
+통합이 끝나면 `edge-asr-git`과 과거 배포 폴더는 부모 경로에서 내부 백업으로 이동한 상태입니다. 다시 clone하거나 통합 도구를 재실행할 필요가 없습니다. 이전 경로에 머물던 다른 터미널도 `cd /home/deepet/projects/edge-asr`로 이동하세요.
+
+## Host의 평소 개발
 
 ```bash
 cd /d/shin/edge-asr
-git remote -v
 git status --short
 .venv/bin/python -m unittest discover -s tests -v
 sha256sum -c experiments/m1_zipformer/SHA256SUMS
 
-# 아래 README.md는 변경 파일 선택 예시. 실제 수정 파일을 검토해 추가.
+# 실제 변경 파일을 검토해 선택. 아래 README.md는 예시.
 git add README.md
 git diff --cached --stat
 git commit -m "docs: update project guide"
@@ -33,87 +77,43 @@ git push origin main
 git rev-parse HEAD
 ```
 
-아직 커밋하지 않은 파일은 push되지 않습니다. 초기 커밋 이후 기능별 브랜치를 사용할 수 있지만 지금은 Host에서 작성하고 RP5에서는 소스를 수정하지 않는 단순한 흐름으로 시작합니다.
+아직 커밋하지 않은 파일은 push되지 않습니다. 소스·설정·문서·테스트·보존 실험과 검토한 작은 요약을 버전 관리합니다. 원시 결과·자산·백업은 제외합니다.
 
-## RP5 최초 clone
-
-기존 `/home/deepet/projects/edge-asr`에는 모델·가상환경·과거 실험이 있으므로 그대로 둡니다. 새 복제본은 별도의 `/home/deepet/projects/edge-asr-git`에 만듭니다. 해당 이름이 이미 있으면 먼저 아래의 기존 clone 확인 절차를 사용합니다. 내용이 확인되지 않은 기존 폴더를 삭제하거나 덮어쓰지 않습니다.
+## RP5의 평소 업데이트·실행
 
 ```bash
-# RP5 터미널에서 실행
-git --version &&
-cd /home/deepet/projects &&
-git clone https://github.com/shinjuyeop/edge-asr.git edge-asr-git &&
-cd edge-asr-git &&
+cd /home/deepet/projects/edge-asr &&
+git pull --ff-only origin main &&
 git rev-parse HEAD &&
 sha256sum -c experiments/m1_zipformer/SHA256SUMS
 ```
 
-공개 저장소의 HTTPS clone/pull에는 GitHub 로그인이나 RP5의 GitHub SSH 키가 필요하지 않습니다. RP5에서 GitHub에 도달할 수 있는 네트워크와 git은 필요합니다. Host → RP5 SSH 연결은 이 소스 배포 방식의 필수 조건이 아닙니다. 기존 RP5 `.git`을 초기화하거나 remote를 변경하지 않습니다.
-
-## edge-asr-git 폴더가 이미 있을 때
-
-`clone`은 최초 한 번만 필요합니다. 이미 폴더가 있다는 오류가 발생하면 같은 터미널의 다음 독립 명령은 계속 실행될 수 있습니다. 아래는 소스를 변경하지 않는 조회이며 벤치마크 실행 중에는 다른 RP5 터미널에서 확인할 수 있습니다.
+새 벤치마크가 필요한 경우에만 같은 폴더에서 실행합니다.
 
 ```bash
-git -C /home/deepet/projects/edge-asr-git remote get-url origin
-git -C /home/deepet/projects/edge-asr-git rev-parse --short HEAD
-git -C /home/deepet/projects/edge-asr-git status --short
+cd /home/deepet/projects/edge-asr &&
+.venv/bin/python scripts/benchmark_zipformer.py --asset-root .
 ```
 
-remote가 이 프로젝트 저장소인지와 측정할 커밋을 확인합니다. 이 저장소의 기존 clone이면 종료 후 아래 업데이트 절차를 사용하면 됩니다. Git 저장소가 아니거나 다른 프로젝트라면 기존 내용을 유지하고 다른 새 경로에 clone합니다.
+기존 성공 결과를 통합 때문에 다시 측정할 필요는 없습니다. Git pull은 가상환경·모델을 업데이트하지 않습니다. 실행 중에는 pull·checkout을 하지 않습니다. Host와 RP5의 HEAD가 같으면 같은 소스 커밋이며 OS·라이브러리·자산까지 같다는 뜻은 아니므로 실행 환경도 따로 기록합니다.
 
-이미 `warmup`이 시작된 것은 반복 도구의 정상 단계이며 기본 총 99회 중 처음 9회입니다. 올바른 소스로 실행한 경우 다시 시작할 필요가 없습니다. 실행 중에는 pull·checkout·두 번째 벤치마크를 수행하지 않습니다. 잘못된 소스로 실행했다면 Ctrl-C로 정리 종료하고 로그를 보존한 뒤 경로·커밋을 확인합니다. 워밍업 시작만으로 전체 측정 성공을 뜻하지 않으며 완료 시 요약과 성공/계획 수를 확인합니다.
+## 과거 결과와 회수
 
-## 기존 환경·자산으로 반복 측정
+과거 `edge-asr-bench-20261028-01/benchmarks/runs/`는 통합 기록에 출력된 `.local-backups/.../edge-asr-bench-20261028-01/benchmarks/runs/`에서 찾습니다. 그 안의 manifest에 남은 과거 경로는 당시 출처이며 새 위치로 고치지 않습니다. 새 실행은 현재 `benchmarks/runs/`에 저장됩니다.
 
-새 clone의 도구를 기존 가상환경으로 실행하고 자산 루트는 기존 프로젝트를 지정합니다. 설치·가상환경 재생성·모델 복사가 필요하지 않습니다. 실제 import와 추론 성공은 도구가 검사합니다.
-
-```bash
-/home/deepet/projects/edge-asr/.venv/bin/python \
-  /home/deepet/projects/edge-asr-git/scripts/benchmark_zipformer.py \
-  --asset-root /home/deepet/projects/edge-asr
-```
-
-새 결과는 `edge-asr-git/benchmarks/runs/` 아래의 고유 실행 폴더에 생성되며 Git에서 제외됩니다. [반복 벤치마크 안내](rp5_repeat_benchmark.md)의 측정 범위와 실패 처리 방침을 따릅니다. 새로운 Python 환경에서 후보 의존성을 비교할 때만 [설치 안내](setup.md)에 따라 별도 `.venv`를 준비합니다.
-
-## 이후 업데이트
-
-먼저 Host에서 검사·커밋·push합니다. RP5에서 실행 중인 벤치마크가 끝난 후 아래를 실행합니다.
+원시 결과 회수는 필요한 실행 폴더만 SSH/SFTP로 가져옵니다. 예를 들어 Host에서는 다음과 같습니다.
 
 ```bash
-cd /home/deepet/projects/edge-asr-git
-git status --short
-git pull --ff-only origin main
-git rev-parse HEAD
-sha256sum -c experiments/m1_zipformer/SHA256SUMS
-```
-
-Host와 RP5의 `git rev-parse HEAD` 값이 같으면 같은 소스 커밋입니다. Python 패키지·모델·OS 환경까지 같다는 뜻은 아니므로 벤치마크 환경 기록은 따로 남깁니다. Git은 `.venv`나 모델 파일을 업데이트하지 않습니다. 도구의 의존성이 바뀌면 새 환경에서 별도 검증합니다.
-
-RP5에서 수정한 소스가 있거나 브랜치가 갈라져 pull이 실패하면 로컬 변경과 커밋을 확인합니다. 원인을 해결하기 위해 `reset --hard`, `clean`, 강제 push를 사용하지 않습니다. 특정 커밋을 기준으로 고정 비교할 때는 깨끗한 복제본에서 `git checkout --detach <검증할-커밋-SHA>`를 사용하고 실행 manifest의 커밋을 확인합니다. 실행 도중에는 pull·checkout을 하지 않습니다.
-
-## 결과 회수
-
-원시 결과는 RP5 로컬에 보관합니다. 파일 전송이 필요하면 이미 준비된 SSH/SFTP 경로로 회수할 수 있습니다. 예를 들어 Host에서 다음 명령을 실행합니다.
-
-```bash
-mkdir -p results/rp5-repeat-20261028-01
+mkdir -p results/rp5-new-runs
 rsync -rz --ignore-existing \
-  rp5:/home/deepet/projects/edge-asr-git/benchmarks/runs/ \
-  results/rp5-repeat-20261028-01/
+  rp5:/home/deepet/projects/edge-asr/benchmarks/runs/ \
+  results/rp5-new-runs/
 ```
 
-`rp5`는 Host SSH 설정의 별칭이며 파일 전송에는 별도 SSH 인증이 필요합니다. 현재 이 작업 환경의 RP5 SSH 키 인증은 거절되었고 원격 배포·추론은 아직 수행하지 못했습니다. GitHub clone/pull과 Host → RP5 SSH 인증은 각각 별개입니다. 작은 `summary.md`/`summary.json`은 사용자가 RP5 터미널에서 내용을 전달해도 됩니다.
+`rp5`는 Host SSH 설정의 별칭이며 회수에는 별도 SSH 인증이 필요합니다. 공개 GitHub pull에는 GitHub 로그인·RP5 SSH 키가 필요하지 않습니다. 작은 요약을 터미널에서 전달해도 됩니다.
 
-## rsync 대안
+## 새 RP5에서 처음 시작할 때
 
-GitHub를 사용할 수 없을 때 기존 `scripts/deploy_rp5.sh`를 사용할 수 있습니다. 기본 dry-run이며 `--apply`에서 복사하고, 기존 원격 파일을 덮어쓰거나 삭제하지 않습니다. Git clone에 이 스크립트를 겹쳐 사용하지 말고 별도 새 소스 폴더를 지정합니다.
+프로젝트 폴더가 없는 새 장비에서는 `git clone https://github.com/shinjuyeop/edge-asr.git /home/deepet/projects/edge-asr`로 처음부터 한 경로에 만듭니다. 그 안에서 Python 3.11 환경·자산을 준비합니다. 이미 기존 폴더가 있는 현재 RP5에는 이 clone 명령을 사용하지 않습니다.
 
-```bash
-cd /d/shin/edge-asr
-bash scripts/deploy_rp5.sh rp5 /home/deepet/projects/edge-asr-source-copy-001
-bash scripts/deploy_rp5.sh rp5 /home/deepet/projects/edge-asr-source-copy-001 --apply
-```
-
-이 대안은 `.git`을 전송하지 않아 `git pull`할 수 없습니다. 동일 경로 업데이트도 지원하지 않으므로 변경 배포마다 새 경로를 사용합니다. 서비스 등록·재시작과 마이크 실시간 배포는 현재 구현 범위가 아닙니다.
+`scripts/deploy_rp5.sh`는 과거 rsync 배포 재현용으로 남겨 둡니다. 현재 운영 경로의 업데이트는 Git pull을 사용하며 새 배포 폴더를 계속 만들지 않습니다. 서비스 등록·마이크 실시간 배포는 아직 구현하지 않았습니다.

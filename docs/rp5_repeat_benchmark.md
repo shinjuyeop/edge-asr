@@ -10,28 +10,26 @@
 
 ## 1. Host에서 push, RP5에서 clone/pull
 
-공통 저장소는 [shinjuyeop/edge-asr](https://github.com/shinjuyeop/edge-asr)입니다. Host에서 검사한 소스를 커밋·push한 뒤, RP5 터미널에서 아래를 실행합니다. 기존 `/home/deepet/projects/edge-asr`는 보존하고 별도 clone을 만듭니다. 새 경로가 이미 있으면 기존 clone인지 확인하고 다른 새 경로를 선택하거나 업데이트 절차를 따릅니다.
+공통 저장소는 [shinjuyeop/edge-asr](https://github.com/shinjuyeop/edge-asr)입니다. RP5 작업 폴더는 `/home/deepet/projects/edge-asr` 하나로 통일합니다. 이전 세 폴더를 사용 중이라면 먼저 [한 번만 수행하는 통합 절차](deployment.md)를 따릅니다. 통합은 기존 가상환경·모델 경로를 유지하고 옛 소스·결과를 내부 백업에 보관합니다.
 
 ```bash
-cd /home/deepet/projects &&
-git clone https://github.com/shinjuyeop/edge-asr.git edge-asr-git &&
-cd edge-asr-git &&
+cd /home/deepet/projects/edge-asr &&
+git pull --ff-only origin main &&
 git rev-parse HEAD &&
 sha256sum -c experiments/m1_zipformer/SHA256SUMS
 ```
 
-이후에는 벤치마크 종료 후 `git pull --ff-only origin main`으로 업데이트합니다. Host와 RP5의 커밋 SHA를 비교하고, 실행 중에는 소스를 변경하지 않습니다. 공개 HTTPS clone/pull에는 Host → RP5 SSH 연결이나 RP5의 GitHub 인증이 필요하지 않습니다. `.venv`·모델·WAV는 Git으로 전송하지 않습니다. clone의 Git 커밋과 도구·프로브 SHA-256은 실행 기록에 남습니다. [배포 안내](deployment.md)에 일상적인 개발·업데이트 흐름과 rsync 대안을 정리했습니다.
+Host와 RP5의 커밋 SHA를 비교하고, 실행 중에는 소스를 변경하지 않습니다. 공개 HTTPS pull에는 Host → RP5 SSH 연결이나 RP5의 GitHub 인증이 필요하지 않습니다. `.venv`·모델·WAV는 같은 작업 폴더 안에 두되 Git으로 전송하지 않습니다. Git 커밋과 도구·프로브 SHA-256은 실행 기록에 남습니다. [배포 안내](deployment.md)에 통합·업데이트·과거 결과 위치를 정리했습니다.
 
-이미 폴더가 있다는 clone 오류가 나면 [기존 clone 확인 절차](deployment.md)를 따릅니다. 이미 워밍업이 시작되었다면 새 측정을 겹쳐 실행하지 말고, 소스 위치·커밋을 읽기 전용으로 확인한 뒤 진행 중인 실행을 사용합니다. clone 오류를 무시하고 다음 실행 블록을 새로 시작하지 않습니다.
+통합 후에는 새 clone이 필요하지 않습니다. 이미 측정이 완료되었다면 결과를 분석하고 필요할 때만 새 실행을 시작합니다. 진행 중인 워밍업·측정이 있으면 통합·pull·두 번째 벤치마크를 실행하지 않습니다.
 
 ## 2. RP5에서 반복 실행
 
-RP5 터미널에서 아래 명령을 한 번 실행합니다. 기존 가상환경의 Python을 절대 경로로 사용하고, 기존 프로젝트 루트는 원본 프로브의 상대 모델 경로를 해석하는 작업 디렉터리로만 사용합니다.
+새 측정이 필요할 때 RP5 터미널에서 아래 명령을 한 번 실행합니다. 소스·가상환경·모델을 같은 프로젝트 경로에서 사용합니다.
 
 ```bash
-/home/deepet/projects/edge-asr/.venv/bin/python \
-  /home/deepet/projects/edge-asr-git/scripts/benchmark_zipformer.py \
-  --asset-root /home/deepet/projects/edge-asr
+cd /home/deepet/projects/edge-asr &&
+.venv/bin/python scripts/benchmark_zipformer.py --asset-root .
 ```
 
 기본값은 1·2·4스레드 각각 별도 워밍업 3회와 측정 30회, 총 99회 프로브 실행입니다. 매 라운드 순서는 `1,2,4` → `2,4,1` → `4,1,2`로 교차합니다. 측정에는 원본 WAV 길이만큼의 입력 대기가 매번 포함되어 수분 이상 걸릴 수 있습니다. `--warmups`, `--repetitions`, `--threads`, `--timeout-s`로 조건을 변경할 수 있으며 실제 인자가 기록됩니다. 기존 TOML은 이 도구에 적용되지 않습니다.
@@ -40,7 +38,7 @@ RP5 터미널에서 아래 명령을 한 번 실행합니다. 기존 가상환�
 
 ## 3. 결과 확인·회수
 
-시작할 때 출력하는 고유 결과 폴더는 새 clone의 `benchmarks/runs/zipformer-<UTC시각>-<임의문자>/` 아래에 생성됩니다. 기존 결과 폴더를 재사용하거나 덮어쓰지 않습니다.
+시작할 때 출력하는 고유 결과 폴더는 `edge-asr/benchmarks/runs/zipformer-<UTC시각>-<임의문자>/` 아래에 생성됩니다. 기존 결과 폴더를 재사용하거나 덮어쓰지 않습니다. 통합 전 배포본의 결과는 `.local-backups/` 아래의 해당 배포 폴더에 그대로 보관되며 `receipt.json`의 경로 대응을 확인합니다.
 
 | 파일 | 내용 |
 | --- | --- |
@@ -60,7 +58,7 @@ Host로 전체 실행 폴더를 회수할 때는 새 로컬 폴더를 사용합�
 ```bash
 mkdir -p results/rp5-repeat-20261028-01
 rsync -rz --ignore-existing \
-  rp5:/home/deepet/projects/edge-asr-git/benchmarks/runs/ \
+  rp5:/home/deepet/projects/edge-asr/benchmarks/runs/ \
   results/rp5-repeat-20261028-01/
 ```
 

@@ -24,16 +24,16 @@ edge-asr check-config configs/zipformer_streaming.toml
 
 ## RP5의 새 환경
 
-기존 RP5 `.venv`와 모델을 사용하는 반복 도구는 추가 설치 없이 실행할 수 있습니다. [GitHub clone/pull 배포 문서](deployment.md)의 절차를 먼저 사용하세요. 아래는 신규 환경에서 의존성을 비교할 때의 별도 설치 절차이며 실제 RP5 실행을 확인한 기록이 아닙니다. 새 clone 안의 별도 가상환경에서만 실행합니다.
+기존 RP5 `.venv`와 모델을 사용하는 반복 도구는 추가 설치 없이 실행할 수 있습니다. [한 작업 폴더 통합·GitHub 업데이트 안내](deployment.md)를 먼저 사용하세요. 기존 `.venv`는 유지합니다. 아래는 새 비교 환경이 필요할 때만 사용하는 선택 절차이며 실제 RP5 실행을 확인한 기록이 아닙니다. `.venv-candidate`가 이미 있으면 그 환경을 덮어쓰지 말고 새 이름을 선택합니다.
 
 ```bash
 uname -m                         # 대상 기대값: aarch64
 cat /etc/os-release
 command -v python3.11
 python3.11 --version             # 3.11.x 확인
-cd /home/deepet/projects/edge-asr-git
-python3.11 -m venv .venv
-source .venv/bin/activate
+cd /home/deepet/projects/edge-asr
+python3.11 -m venv .venv-candidate
+source .venv-candidate/bin/activate
 python -m pip install -e .
 python -m unittest discover -s tests -v
 edge-asr env
