@@ -175,3 +175,5 @@ Host Linux x86_64 / Python 3.11.14에서 `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=s
 | 패키징 | 의존성 설치 없이 wheel 빌드 성공. SenseVoice/runtime/diagnostics 포함, ONNX/WAV 미포함 |
 
 이번 구현 단계에서는 RP5에 접속하지 않았고 기존 `.venv`·설치 패키지·모델·데이터·측정 결과를 변경하지 않았습니다. SenseVoice 가중치 다운로드·실제 모델 로딩·새 벤치마크도 수행하지 않았습니다. ARM64 네이티브 호환성·최소 입력 길이·메모리/속도/정확도·systemd 사용자 scope 제한 적용은 M2-2 미검증 항목입니다. Host mock 통과를 실제 RP5 성공이나 M2 전체 완료로 표시하지 않습니다. 기존 M1 수치·지표 정의·결과 파일은 소급 수정하지 않았습니다.
+
+후속 사용자 지시에 따라 개발·커밋·push 및 RP5 소스 업데이트는 main 하나로 통일합니다. 위 최초 구현 커밋 `cdb3c4e`를 main에 포함하고 임시 feature 브랜치는 정리합니다. README와 M2 실행 절차도 main 기준으로 갱신하며 실제 RP5 검증 상태는 바뀌지 않습니다.

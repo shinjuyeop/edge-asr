@@ -67,20 +67,20 @@ M2-2에서 평가가 이미 실행 중일 때 다른 터미널에서 실제 Pyth
 
 ## M2-2 RP5 실제 검증 순서 — 이번 작업에서 실행하지 않음
 
-1. 기존 RP5 `.venv`·모델·데이터·과거 결과와 Git 상태를 확인하고 보존합니다. Host의 feature 브랜치만 별도로 가져오며 main을 덮어쓰거나 강제 reset하지 않습니다.
+1. 기존 RP5 `.venv`·모델·데이터·과거 결과와 Git 상태를 확인하고 보존합니다. Host와 RP5 모두 main을 사용하며 RP5의 main을 fast-forward로 업데이트합니다. 강제 reset은 사용하지 않습니다.
 2. [sherpa 배포 SenseVoice INT8 모델](https://k2-fsa.github.io/sherpa/onnx/sense-voice/pretrained.html)의 고정 버전을 새 모델 폴더에 준비합니다. 기본 경로는 `models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/`이며 `model.int8.onnx`, `tokens.txt`가 필요합니다. 출처·리비전·라이선스·해시를 보관하고 기존 Zipformer 파일은 건드리지 않습니다.
 3. 기존 `.venv`로 `env --probe-runtime`과 `check-config --evaluation configs/sensevoice_eval.toml`을 실행합니다. 패키지가 부족하면 기존 환경을 수정하는 대신 새 후보 환경을 별도로 준비합니다.
 4. 아래 외부 제한 절차로 기존 공식 WAV 한 개부터 batch 실행합니다. 모델 로딩·메모리·언어/ITN·태그/본문·짧은 입력 실패를 확인합니다. Host mock 통과를 이 단계의 성공으로 대체하지 않습니다.
 5. `data/evaluation/kss-dev50/manifest.jsonl`로 확대하고 성공/실패·커버리지·CER·RTF·로딩/추론 RSS·CPU를 기록합니다. 필요하면 별도 실행에서 TID를 관찰합니다.
 6. 원시 결과를 Host로 회수해 체크섬·재채점·동일 입력 조건을 확인합니다. 실제 성공한 범위만 새 검증 기록으로 추가합니다. paced_stream·Refine·마이크·M2 전체 완료는 별도 판정입니다.
 
-1번의 소스 전환은 다음과 같습니다. Git 변경이 있으면 먼저 보존하고 충돌을 확인합니다. 브랜치가 이미 있으면 마지막 줄 대신 `git switch codex/m2-sensevoice-batch`로 기존 브랜치를 선택하고 원격 커밋과 대조합니다. 기존 장비의 main은 이동하지 않습니다.
+1번의 소스 업데이트는 다음과 같습니다. Git 변경이 있으면 먼저 보존하고 충돌을 확인합니다. Host 개발·커밋·push도 main에서 수행하며 별도 feature 브랜치는 만들지 않습니다. 소스 업데이트 자체는 SenseVoice 실제 추론 성공을 의미하지 않습니다.
 
 ```bash
 cd /home/deepet/projects/edge-asr
 git status --short
-git fetch origin codex/m2-sensevoice-batch
-git switch --track -c codex/m2-sensevoice-batch origin/codex/m2-sensevoice-batch
+git switch main &&
+git pull --ff-only origin main
 ```
 
 ## 외부 시간 제한과 실패 기록

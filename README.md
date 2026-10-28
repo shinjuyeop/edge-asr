@@ -106,6 +106,6 @@ git pull --ff-only origin main
 .venv/bin/python scripts/benchmark_zipformer.py --asset-root .
 ```
 
-Host에서 개발·커밋·push하고 RP5의 같은 프로젝트 저장소에서 pull·실행합니다. 가중치·WAV·가상환경·원시 결과·내부 백업은 각 장비에 둡니다. 기존 90회 결과를 통합 때문에 다시 측정할 필요는 없습니다.
+Host와 RP5 모두 `main` 하나로 관리합니다. Host의 main에서 개발·커밋·push하고 RP5의 main에서 pull·실행합니다. 별도 feature 브랜치는 만들지 않습니다. 가중치·WAV·가상환경·원시 결과·내부 백업은 각 장비에 둡니다. 기존 90회 결과를 통합 때문에 다시 측정할 필요는 없습니다.
 
-공통 batch·1배속 모사와 RP5의 단일 공식 샘플·KSS 개발용 50개 기준선을 확인했습니다. 다음은 M2-2 SenseVoice 실제 RP5 로딩·단일 WAV → 같은 KSS 50개 batch 비교 → 스레드/정밀도 비교와 추가 모델 검토 → 마이크·endpoint·서비스 통합입니다. feature 브랜치 검증은 위 M2 안내를 따르며 평소 main 업데이트와 구분합니다. 정답 시각 정렬 인식 지연과 최종 정확도 평가는 튜닝과 분리한 다화자·잡음 데이터로 확장해야 합니다. 기존 원시는 RP5 백업에 유지합니다. 설계 범위는 [아키텍처](docs/architecture.md)에 있습니다.
+공통 batch·1배속 모사와 RP5의 단일 공식 샘플·KSS 개발용 50개 기준선을 확인했습니다. 다음은 M2-2 SenseVoice 실제 RP5 로딩·단일 WAV → 같은 KSS 50개 batch 비교 → 스레드/정밀도 비교와 추가 모델 검토 → 마이크·endpoint·서비스 통합입니다. main의 소스 업데이트 후 실제 모델 검증은 위 M2 안내를 따릅니다. 정답 시각 정렬 인식 지연과 최종 정확도 평가는 튜닝과 분리한 다화자·잡음 데이터로 확장해야 합니다. 기존 원시는 RP5 백업에 유지합니다. 설계 범위는 [아키텍처](docs/architecture.md)에 있습니다.
