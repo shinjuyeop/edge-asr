@@ -21,6 +21,18 @@ class ZipformerAdapter:
                             for key, filename in MODEL_FILES.items()}
         self.recognizer = None
 
+    @property
+    def metadata(self):
+        return {"backend": "sherpa_onnx", "factory": "OnlineRecognizer.from_transducer",
+                "supported_modes": ["batch", "paced_stream"], "provider": "cpu", "feature_dim": 80,
+                "language": "ko", "language_policy": "Korean_model_not_runtime_language_argument",
+                "use_itn": None, "itn_reason": "no_separate_itn_in_this_adapter",
+                "quantization": {key: "int8_filename" if ".int8." in path.name else "unspecified_by_filename"
+                                 for key, path in self.model_files.items() if key != "tokens"},
+                "quantization_evidence": "filename_convention_not_graph_dtype_inspection",
+                "quantization_method": None, "quantization_method_reason": "배포 모델의 양자화 알고리즘은 검증하지 않았습니다.",
+                "tail_padding_s": self.model["tail_padding_s"], "output_policy": "runtime_text_unmodified"}
+
     def load(self) -> None:
         # score·manifest 검사에는 이 무거운 선택 의존성을 import하지 않는다.
         import numpy as np

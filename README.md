@@ -2,7 +2,7 @@
 
 Raspberry Pi 5(ARM64, Debian 13, RAM 8GB)에서 한국어 ASR 모델을 비교하고 실시간 배포하기 위한 연구개발 저장소입니다. Host PC에서 개발·단위 검사를 수행하고, 실제 추론·벤치마크는 RP5에서 수행합니다. 기준 인터프리터는 Python 3.11입니다.
 
-패키징, 설정 검사 CLI, 기존 프로브 반복 도구, 모델을 한 번 로드하는 공통 파일 평가·CER 재채점, [공통 1배속 스트리밍 모사](docs/streaming_evaluation.md), 배포 절차 및 실험 기록을 제공합니다. 공통 평가의 첫 어댑터는 CPU Zipformer입니다. 다른 모델 어댑터·정답 시각 정렬·마이크·서비스 배포는 아직 미구현이며 Host 모의 검사와 실제 RP5 검증을 구분합니다.
+패키징, 설정 검사 CLI, 기존 프로브 반복 도구, 모델을 한 번 로드하는 공통 파일 평가·CER 재채점, [공통 1배속 스트리밍 모사](docs/streaming_evaluation.md), 배포 절차 및 실험 기록을 제공합니다. CPU Zipformer의 batch·paced_stream과 SenseVoiceSmall INT8의 batch 어댑터를 제공합니다. SenseVoice는 Host mock 검사까지 구현했으며 실제 ARM64 모델 로딩·추론은 미검증입니다. Qwen3-ASR·정답 시각 정렬·마이크·서비스 배포는 아직 미구현입니다.
 
 초기 구성의 실제 로컬 검사 결과는 [검증 기록](docs/verification.md)에 있습니다.
 
@@ -50,7 +50,21 @@ python -m unittest discover -s tests -v
 sha256sum -c experiments/m1_zipformer/SHA256SUMS
 ```
 
-기본 설치는 외부 런타임 의존성이 없습니다. `check-config`는 설정 구조만 확인하며 모델 파일, ARM64 호환성 또는 추론 성공을 확인하지 않습니다. `python -m edge_asr`도 같은 명령을 제공합니다. 기존 RP5 가상환경으로 반복 도구를 사용할 때는 추가 설치가 필요하지 않습니다. 새 비교 환경에 선택 의존성 `.[zipformer]`를 설치하는 방법은 [환경 설치](docs/setup.md)에 있습니다.
+기본 설치는 외부 런타임 의존성이 없습니다. `check-config`는 설정 구조만 확인하며 모델 파일, ARM64 호환성 또는 추론 성공을 확인하지 않습니다. `python -m edge_asr`도 같은 명령을 제공합니다. 기존 RP5 가상환경으로 반복 도구를 사용할 때는 추가 설치가 필요하지 않습니다. 새 비교 환경에 선택 의존성 `.[zipformer]` 또는 `.[sensevoice]`를 설치하는 방법은 [환경 설치](docs/setup.md)에 있습니다.
+
+## M2-0 / M2-1 Host 구현
+
+[SenseVoice 통합 안내](docs/m2_sensevoice.md)에 비교 정책·계측 범위·외부 시간 제한·M2-2 실행 순서를 정리했습니다. 모델은 한 번 로드하고 발화마다 새 Offline 상태를 만듭니다. 기본은 배포 INT8, 한국어 `ko`, ITN 꺼짐이며 제어 태그와 raw 출력을 전사 본문과 분리합니다. `paced_stream` 요청은 실행 전에 거부합니다.
+
+```bash
+# Host에서도 모델 없이 검사 가능
+.venv/bin/python scripts/edge_asr.py check-config --evaluation configs/sensevoice_eval.toml
+.venv/bin/python scripts/edge_asr.py env
+# sherpa import로 네이티브 ORT 버전만 조회. 모델 로딩 없음
+.venv/bin/python scripts/edge_asr.py env --probe-runtime
+```
+
+새 실행에는 sherpa 네이티브 ORT와 Python onnxruntime 버전, 로딩 단계 시간·CPU/RSS, 추론 단계 자원을 나누어 기록합니다. 기존 `ko_cer_v1`·RTF 계산과 M1 결과는 유지합니다. 선택 진단 `threads --pid <실제_평가_PID>`는 Linux TID별 CPU를 관찰하며 기존 CPU 324%의 원인을 확정하지 않습니다. 가중치 다운로드·RP5 환경 변경·새 추론은 이번 Host 구현 범위에 포함하지 않습니다.
 
 ## 기존 Zipformer 실험
 
@@ -94,4 +108,4 @@ git pull --ff-only origin main
 
 Host에서 개발·커밋·push하고 RP5의 같은 프로젝트 저장소에서 pull·실행합니다. 가중치·WAV·가상환경·원시 결과·내부 백업은 각 장비에 둡니다. 기존 90회 결과를 통합 때문에 다시 측정할 필요는 없습니다.
 
-공통 batch·1배속 모사와 RP5의 단일 공식 샘플·KSS 개발용 50개 기준선을 확인했습니다. 다음은 같은 데이터의 청크 크기·스레드/양자화 비교 → 다른 모델 비교 → 마이크·endpoint·서비스 통합입니다. 정답 시각 정렬 인식 지연과 최종 정확도 평가는 튜닝과 분리한 다화자·잡음 데이터로 확장해야 합니다. 기존 원시는 RP5 백업에 유지합니다. 설계 범위는 [아키텍처](docs/architecture.md)에 있습니다.
+공통 batch·1배속 모사와 RP5의 단일 공식 샘플·KSS 개발용 50개 기준선을 확인했습니다. 다음은 M2-2 SenseVoice 실제 RP5 로딩·단일 WAV → 같은 KSS 50개 batch 비교 → 스레드/정밀도 비교와 추가 모델 검토 → 마이크·endpoint·서비스 통합입니다. feature 브랜치 검증은 위 M2 안내를 따르며 평소 main 업데이트와 구분합니다. 정답 시각 정렬 인식 지연과 최종 정확도 평가는 튜닝과 분리한 다화자·잡음 데이터로 확장해야 합니다. 기존 원시는 RP5 백업에 유지합니다. 설계 범위는 [아키텍처](docs/architecture.md)에 있습니다.

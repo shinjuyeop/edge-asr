@@ -1,6 +1,7 @@
 """모델을 한 번 로드하는 공통 파일 실행기와 추론 없는 재채점."""
 
 from datetime import datetime, timezone
+from copy import deepcopy
 from importlib.metadata import distributions
 import json
 import os
@@ -19,6 +20,7 @@ from edge_asr.benchmark import digest, process_sample, write_json
 from edge_asr.config import load_evaluation_config
 from edge_asr.dataset import load_audio, load_manifest, resolve_path
 from edge_asr.scoring import read_predictions, save_scores, write_jsonl
+from edge_asr.runtime import runtime_info
 
 
 def new_output(base: Path, prefix: str) -> Path:
@@ -71,6 +73,7 @@ class RssSampler:
 def environment() -> dict:
     return {"edge_asr": __version__, "python": sys.version, "executable": sys.executable,
             "machine": platform.machine(), "platform": platform.platform(),
+            "runtime": runtime_info(),
             "packages": sorted([{"name": d.metadata["Name"], "version": d.version} for d in distributions()],
                                key=lambda row: row["name"] or "")}
 
@@ -94,13 +97,28 @@ def evaluate(config_path: Path, manifest_path: Path, root: Path, *, output_base:
         for row in rows:
             row["streaming"] = None
     info = {"schema_version": 1, "status": "running", "started_at_utc": datetime.now(timezone.utc).isoformat(),
+            "process_id": os.getpid(),
             "root": str(root), "output_directory": str(output), "mode": mode, "config": config,
             "file_execution": "sequential", "batch_size": 1, "repetitions_per_sample": 1,
             "input_manifest": {"path": str(manifest_path), "sha256": manifest_hash, "samples": len(samples)},
             "config_sha256": digest(config_path), "source_commit": None, "source_dirty": None,
-            "model_load_s": None, "model_files": {}, "warmup": {"planned": config["evaluation"]["warmup_runs"], "successful": 0},
-            "timing_scope": "준비한 float PCM에서 새 인식 상태 생성~최종 반환. WAV I/O·변환·모델 로딩·워밍업·결과 파일 쓰기 제외. 특징 추출·flush 포함.",
+            "model_load_s": None, "model_load_cpu_s": None, "model_load_resources": None,
+            "model_load_scope": "adapter.load의 선택 런타임 import·인식기 초기화. 자산 해시를 먼저 읽으므로 cold-storage 측정이 아님.",
+            "model_metadata": {"family": config["model"]["family"], "configuration": deepcopy(config["model"])},
+            "model_files": {}, "warmup": {"planned": config["evaluation"]["warmup_runs"], "successful": 0},
+            "timing_scope": "준비한 float PCM에서 새 인식 상태 생성~최종 반환. WAV I/O·변환·모델 로딩·워밍업·결과 파일 쓰기 제외. 특징 추출·모델별 종료 처리(해당 시 flush)·출력 정리 포함.",
             "resource_scope": "추론 구간의 현재 프로세스 CPU(계측 스레드 비용 포함), 모델 상주 상태의 주 PID 표본 RSS. RSS는 경계 표본 포함·정확한 피크 아님."}
+    info["unmeasured_reasons"] = {
+        "aligned_recognition_latency_s": "정답의 음향 시각 정렬이 없습니다.",
+        "offline_refine_confirmation_latency_s": "live 구간 수집·endpoint·refine 큐를 실행하지 않았습니다.",
+        "acoustic_endpoint_latency_s": "음향적 발화 끝 검출을 실행하지 않았습니다.",
+        "ui_display_latency_s": "자막 화면을 계측하지 않았습니다.",
+    }
+    if mode == "batch":
+        info["unmeasured_reasons"].update(
+            first_partial_from_audio_start_s="batch는 부분 자막 시각을 계측하지 않습니다.",
+            finalization_from_audio_end_s="batch 처리 시간은 실시간 입력 끝 기준 지연이 아닙니다.",
+            drops="실시간 입력 큐를 실행하지 않았습니다.", backlog="실시간 입력 큐를 실행하지 않았습니다.")
     if mode == "paced_stream":
         info.update(capture_process_start_method="spawn", playback_speed=1.0,
                     timing_scope="elapsed_s/RTF는 스트림 생성·각 청크 전달/디코딩/가설 반환·flush의 활성 wall 합. 입력 대기·IPC·기록·spawn·워밍업 제외. replay_elapsed_s는 t0~최종 반환.",
@@ -125,11 +143,22 @@ def evaluate(config_path: Path, manifest_path: Path, root: Path, *, output_base:
     warmed, code = False, 0
     try:
         adapter = (adapter_factory or create_adapter)(config["model"], config["audio"]["sample_rate_hz"], root)
+        info["model_metadata"]["adapter"] = deepcopy(getattr(adapter, "metadata", None))
         info["model_files"] = {key: {"path": str(path), "sha256": digest(path)} for key, path in adapter.model_files.items()}
         write_json(output / "manifest.json", info)
-        started = time.perf_counter()
-        adapter.load()
-        info["model_load_s"] = time.perf_counter() - started
+        loading = RssSampler()
+        try:
+            with loading:
+                started, cpu_started = time.perf_counter(), time.process_time()
+                try:
+                    adapter.load()
+                finally:
+                    info["model_load_s"] = time.perf_counter() - started
+                    info["model_load_cpu_s"] = time.process_time() - cpu_started
+        finally:
+            info["model_load_resources"] = loading.metadata()
+            write_json(output / "environment.json", environment())
+            write_json(output / "manifest.json", info)
         with (output / "progress.jsonl").open("x", encoding="utf-8") as progress:
             for ordinal, (sample, row) in enumerate(zip(samples, rows), 1):
                 current = row
@@ -176,6 +205,9 @@ def evaluate(config_path: Path, manifest_path: Path, root: Path, *, output_base:
                     if not isinstance(hypothesis, str):
                         raise TypeError("어댑터가 문자열을 반환해야 합니다.")
                     row["hypothesis"], row["status"] = hypothesis, "success"
+                    metadata = getattr(adapter, "last_result_metadata", None)
+                    if metadata is not None:
+                        row["adapter_result"] = deepcopy(metadata)
                 except Exception as error:
                     row["status"], code = "failed", 1
                     row["error"] = {"stage": stage, "type": type(error).__name__, "message": str(error)}

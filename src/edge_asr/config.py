@@ -4,6 +4,8 @@ from pathlib import Path
 import math
 import tomllib
 
+from edge_asr.adapters import SUPPORTED_MODES
+
 MODEL_FAMILIES = {"zipformer", "sensevoice", "qwen3_asr"}
 
 
@@ -49,16 +51,27 @@ def load_evaluation_config(path: str | Path) -> dict:
     for section in ("model", "audio", "evaluation"):
         if not isinstance(supplied.get(section), dict):
             raise ValueError(f"[{section}] 테이블이 필요합니다.")
+    family = supplied["model"].get("family")
+    if not isinstance(family, str) or family not in SUPPORTED_MODES:
+        raise ValueError(f"아직 구현하지 않은 공통 평가 모델: {family}")
+    mode = supplied["evaluation"].get("mode", "batch")
+    if not isinstance(mode, str) or mode not in SUPPORTED_MODES[family]:
+        raise ValueError(f"{family}의 지원 평가 모드는 {SUPPORTED_MODES[family]}입니다: {mode}")
+    model_keys = {"family", "path", "num_threads", "tokens"}
+    model_keys |= ({"encoder", "decoder", "joiner", "tail_padding_s"} if family == "zipformer"
+                   else {"model_file", "language", "use_itn", "quantization"})
     allowed = {
-        "model": {"family", "path", "num_threads", "tokens", "encoder", "decoder", "joiner", "tail_padding_s"},
+        "model": model_keys,
         "audio": {"sample_rate_hz"},
         "evaluation": {"mode", "warmup_runs", "normalization", "output_dir"},
     }
     for section, keys in allowed.items():
         if set(supplied[section]) - keys:
             raise ValueError(f"알 수 없는 {section} 설정: {sorted(set(supplied[section]) - keys)}")
+    model_defaults = ({"num_threads": 2, "tail_padding_s": 0.66} if family == "zipformer"
+                      else {"num_threads": 1, "model_file": "model.int8.onnx", "tokens": "tokens.txt", "quantization": "int8"})
     config = {
-        "model": {"num_threads": 2, "tail_padding_s": 0.66, **supplied["model"]},
+        "model": {**model_defaults, **supplied["model"]},
         "audio": {"sample_rate_hz": 16000, **supplied["audio"]},
         "evaluation": {"mode": "batch", "warmup_runs": 3, "normalization": "ko_cer_v1",
                        "output_dir": "results/evaluations", **supplied["evaluation"]},
@@ -71,10 +84,21 @@ def load_evaluation_config(path: str | Path) -> dict:
         value = config[section][key]
         if type(value) is not int or value < minimum:
             raise ValueError(f"{section}.{key}는 {minimum} 이상의 정수여야 합니다.")
-    padding = config["model"]["tail_padding_s"]
-    if type(padding) not in (int, float) or not math.isfinite(padding) or not 0 <= padding <= 10:
-        raise ValueError("model.tail_padding_s는 0~10초의 유한한 수여야 합니다.")
-    for key in ("tokens", "encoder", "decoder", "joiner"):
+    if family == "zipformer":
+        padding = config["model"]["tail_padding_s"]
+        if type(padding) not in (int, float) or not math.isfinite(padding) or not 0 <= padding <= 10:
+            raise ValueError("model.tail_padding_s는 0~10초의 유한한 수여야 합니다.")
+    else:
+        language = config["model"].get("language")
+        if not isinstance(language, str) or language not in {"ko", "auto", "zh", "en", "ja", "yue"}:
+            raise ValueError("SenseVoice model.language를 명시하세요: ko/auto/zh/en/ja/yue")
+        if type(config["model"].get("use_itn")) is not bool:
+            raise ValueError("SenseVoice model.use_itn을 true/false로 명시하세요.")
+        if config["model"]["quantization"] != "int8":
+            raise ValueError("현재 SenseVoice 어댑터는 배포 INT8 모델 설정을 사용합니다.")
+        if config["audio"]["sample_rate_hz"] != 16000:
+            raise ValueError("SenseVoice 입력은 16000Hz여야 합니다.")
+    for key in ("tokens", "encoder", "decoder", "joiner", "model_file"):
         if key in config["model"] and (not isinstance(config["model"][key], str) or not config["model"][key].strip()):
             raise ValueError(f"model.{key}는 파일 경로 문자열이어야 합니다.")
     from edge_asr.metrics import NORMALIZATIONS

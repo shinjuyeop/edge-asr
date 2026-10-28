@@ -1,0 +1,19 @@
+# M2-1 Host 구현용 설정. RP5 모델 다운로드·ARM64 추론은 M2-2에서 별도 검증.
+[model]
+family = "sensevoice"
+path = "models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17"
+model_file = "model.int8.onnx"
+tokens = "tokens.txt"
+quantization = "int8" # 설정 선언. ONNX 그래프 dtype를 검사한 결과는 아님.
+num_threads = 1
+language = "ko"
+use_itn = false
+
+[audio]
+sample_rate_hz = 16000
+
+[evaluation]
+mode = "batch"
+warmup_runs = 3
+normalization = "ko_cer_v1"
+output_dir = "results/evaluations"

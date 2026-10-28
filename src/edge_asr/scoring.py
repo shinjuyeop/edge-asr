@@ -156,7 +156,7 @@ def save_scores(output: Path, rows: list[dict], policy: str, references=None) ->
              f"| Corpus RTF | {fmt(overall['rtf'])} |",
              f"| 추론 구간 평균 프로세스 CPU (%) | {fmt(overall['mean_process_cpu_percent'])} |",
              f"| 추론 구간 관측 최대 RSS (MiB) | {fmt(overall['rss_observed_max_mib'])} |", "",
-             "모델 로딩·WAV 읽기/변환·워밍업은 RTF에서 제외하고 새 스트림 생성·특징 추출·디코딩·flush·최종 가설 반환을 포함합니다.",
+             "모델 로딩·WAV 읽기/변환·워밍업은 RTF에서 제외하고 새 인식 상태·특징 추출·디코딩·모델별 종료 처리(해당 시 flush)·최종 텍스트 반환을 포함합니다.",
              "CER은 NFC 기준이며 기본 ko_cer_v1은 공백·문장부호를 제거합니다. 빈 정답은 corpus CER에서 제외하고 별도 집계합니다.",
              "이 결과는 입력 대기가 없는 파일 평가입니다. 부분 자막·실제 인식 지연·드롭·백로그를 측정한 결과가 아닙니다.", ""]
     if summary["mode"] == "paced_stream":

@@ -1,5 +1,9 @@
 # 호스트 검사
 
+`test_sensevoice.py`는 합성 NumPy/sherpa로 Offline factory 인자·언어/ITN·1회 로딩·발화별 새 상태·padding/온라인 호출 부재·본문/제어 태그/raw 분리·자산/입력 오류를 검사합니다. 공통 batch 평가·CER·로딩/추론 자원 분리·모델/음원 제거 후 재채점·CLI와 미지원 paced_stream 사전 거부도 검사합니다. 실제 SenseVoice 가중치나 추론 런타임은 사용하지 않습니다.
+
+`test_runtime_diagnostics.py`는 sherpa 네이티브 ORT와 Python 패키지 버전 구분, 기본 조회의 import 부재, probe 실패/null·모델 미생성, Linux stat 파싱·TID CPU 차분·경계 누락·PID 종료/재사용을 검사합니다. 짧은 CLI 관측은 실행 중인 Host 테스트 PID만 읽으며 RP5에 접속하지 않습니다.
+
 `test_streaming.py`는 독립 입력 프로세스와 실제 유한 큐를 사용해 1배속 입력·짧은 마지막 청크·부분 가설 부재·느린 추론의 실제 드롭·예외/Ctrl-C 자식 회수, 처리 중 청크를 제외한 백로그 재구성·격자 누락 피크, 모드 혼합·NaN 계측 거부를 검사합니다. 모델은 가짜 어댑터이며 독립 CLI의 spawn도 합성 런타임으로 검사합니다. 모델/WAV/events 제거 후 재채점도 확인합니다. 실제 RP5·ASR 검증과 구분합니다.
 
 `test_kss_subset.py`는 다운로드를 모의하고 데이터 리비전·행·음원 URL 검증, 기존 자료 보존, 실패 시 미완성 목록 발행 방지, 손상 감지와 오프라인 재사용을 검사합니다. Host에 ffmpeg가 있으면 임시 합성 44.1kHz WAV의 실제 16kHz 변환도 검사하고, 없으면 변환 검사 2개만 건너뜁니다. 외부 KSS 음원을 테스트에서 다운로드하거나 ASR을 실행하지 않습니다.

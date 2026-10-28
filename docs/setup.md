@@ -55,7 +55,7 @@ python -c 'import numpy, sherpa_onnx; print(numpy.__version__, sherpa_onnx.__ver
 
 PyPI 배포 메타데이터에서도 [NumPy 2.4.6](https://pypi.org/project/numpy/2.4.6/#files), [sherpa-onnx 2.0.1](https://pypi.org/project/sherpa-onnx/2.0.1/#files)의 CPython 3.11 Linux aarch64 wheel 존재를 확인했습니다. 메타데이터 확인과 실제 설치·추론은 구분하며 이번 실제 RP5 확인의 근거는 사용자 전달 검사 보고입니다. 전이 의존성도 대상 환경에서 설치되어야 하고 이 두 고정값만으로 전체 환경 lock을 대체하지 않습니다. wheel을 찾지 못하면 자동 소스 빌드로 우회하지 말고 Python ABI·아키텍처·전이 의존성의 wheel 가용성을 점검합니다.
 
-SenseVoice/Qwen3-ASR 런타임은 아직 의존성에 넣지 않았습니다. 모델 포맷과 실행 백엔드의 ARM64 지원을 검토한 뒤 별도 선택 의존성으로 추가합니다. 기본 설치에 PyTorch 등 무거운 패키지를 강제하지 않습니다.
+SenseVoiceSmall INT8은 같은 sherpa CPU 런타임을 사용하며 새 후보 환경용 `.[sensevoice]` 선택 의존성을 추가했습니다. 기존 RP5 환경에 설치·변경할 필요는 없습니다. 실제 SenseVoice 모델 로딩·ARM64 추론은 [M2-2 검증](m2_sensevoice.md)으로 분리합니다. Qwen3-ASR 런타임은 아직 추가하지 않았습니다. 기본 설치에 PyTorch 등 무거운 패키지를 강제하지 않습니다.
 
 ## 자산 및 환경 기록
 
@@ -63,8 +63,8 @@ SenseVoice/Qwen3-ASR 런타임은 아직 의존성에 넣지 않았습니다. �
 
 ```bash
 mkdir -p results/local-environment
-edge-asr env > results/local-environment/environment.json
+edge-asr env --probe-runtime > results/local-environment/environment.json
 python -m pip freeze --all > results/local-environment/pip-freeze.txt
 ```
 
-이는 **명령을 실행한 컴퓨터**의 정보입니다. 각 RP5 실행 결과에는 해당 장비에서 생성한 환경 정보, Git 커밋, 설정 사본, 모델·WAV 체크섬을 함께 보관합니다. `pip freeze`는 그 환경의 설치 스냅샷이며 Host의 가상환경이나 wheel을 ARM64로 복사하는 방법은 아닙니다. 전체 전이 의존성 lock과 해시 검증 설치는 RP5 후보 환경이 통과한 후 추가합니다.
+이는 **명령을 실행한 컴퓨터**의 정보입니다. 명시적 `--probe-runtime`은 sherpa를 import해 네이티브 ORT 버전을 조회하지만 모델을 생성하지 않습니다. 별도 Python onnxruntime 버전과 구분하며 미설치/미제공은 null·사유로 기록합니다. 각 RP5 실행 결과에는 해당 장비에서 생성한 환경 정보, Git 커밋, 설정 사본, 모델·WAV 체크섬을 함께 보관합니다. `pip freeze`는 그 환경의 설치 스냅샷이며 Host의 가상환경이나 wheel을 ARM64로 복사하는 방법은 아닙니다. 전체 전이 의존성 lock과 해시 검증 설치는 RP5 후보 환경이 통과한 후 추가합니다.

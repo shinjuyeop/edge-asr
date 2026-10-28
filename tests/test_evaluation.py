@@ -185,7 +185,7 @@ class EvaluationTests(unittest.TestCase):
 
     def test_unsupported_model_is_explicit(self):
         with self.assertRaisesRegex(ValueError, "아직 구현하지 않은"):
-            create_adapter({"family": "sensevoice"}, 16000, self.root)
+            create_adapter({"family": "qwen3_asr"}, 16000, self.root)
 
     def test_zipformer_load_once_and_new_stream_per_file(self):
         streams = []

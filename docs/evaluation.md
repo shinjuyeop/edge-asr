@@ -1,8 +1,8 @@
 # 공통 파일 평가 도구
 
-Zipformer를 한 번 로드하고 여러 WAV를 순차 처리하여 CER·batch RTF·추론 구간 CPU/RSS를 기록합니다. 입력·채점·실행·저장은 공통이며 모델 호출만 `adapters/zipformer.py`로 분리했습니다. 저장된 가설은 모델·오디오 없이 재채점할 수 있습니다.
+모델을 한 번 로드하고 여러 WAV를 순차 처리하여 CER·batch RTF·추론 구간 CPU/RSS를 기록합니다. 입력·채점·실행·저장은 공통이며 모델 호출은 `adapters/zipformer.py`, `adapters/sensevoice.py`로 분리했습니다. 저장된 가설은 모델·오디오 없이 재채점할 수 있습니다.
 
-기본 모드는 **CPU Zipformer transducer의 batch 평가**입니다. 온라인 모델에 전체 PCM을 대기 없이 전달하고 파일마다 새 스트림을 생성·flush합니다. `configs/zipformer_paced.toml`을 지정하면 [공통 1배속 스트리밍 모사 평가](streaming_evaluation.md)로 청크별 가설·지연·드롭·백로그를 기록합니다. 다른 모델·실제 마이크는 아직 지원하지 않습니다. 2026-10-28 공식 WAV 1개에 대한 RP5 실행 결과를 Host에서 SSH로 직접 읽고, 결과 파일의 체크섬과 Host 재채점 일치를 확인했습니다. 단일 샘플 1회 측정이며 여러 발화용 데이터 준비는 [데이터 안내](datasets.md)를 따릅니다.
+기본 모드는 **CPU Zipformer transducer의 batch 평가**입니다. 온라인 모델에 전체 PCM을 대기 없이 전달하고 파일마다 새 스트림을 생성·flush합니다. `configs/zipformer_paced.toml`을 지정하면 [공통 1배속 스트리밍 모사 평가](streaming_evaluation.md)로 청크별 가설·지연·드롭·백로그를 기록합니다. `configs/sensevoice_eval.toml`은 [SenseVoiceSmall INT8 Offline batch](m2_sensevoice.md) 설정이며 Host mock까지 검사했습니다. 실제 SenseVoice ARM64 추론·Qwen·마이크는 미검증/미구현입니다. 2026-10-28 공식 WAV 1개에 대한 Zipformer RP5 실행 결과를 Host에서 SSH로 직접 읽고, 결과 파일의 체크섬과 Host 재채점 일치를 확인했습니다. 단일 샘플 1회 측정이며 여러 발화용 데이터 준비는 [데이터 안내](datasets.md)를 따릅니다.
 
 후속 [KSS 개발용 50개 기준선](../results/summaries/zipformer-kss-dev50-20261028.md)은 Host에서 SSH로 RP5에 직접 실행하여 50/50 성공을 확인했습니다. 단일 화자의 낭독 50개를 각각 1회 처리한 개발 자료이며 CER 11.64%, RTF 0.1082입니다. 다화자·잡음·공통 스트리밍은 이 결과로 검증하지 않았습니다.
 
@@ -60,9 +60,9 @@ UTF-8 JSONL 한 줄마다 `id`, `audio_path`, 사람이 확인한 `reference`를
 
 | 파일 | 내용 |
 | --- | --- |
-| `manifest.json` | 상태·설정·입력 목록/모델/소스 해시·Git 커밋/변경 여부·모델 준비 시간·워밍업 수 |
-| `environment.json` | Python·장비·설치 패키지 버전; pip 없는 uv 환경도 지원 |
-| `predictions.jsonl` | 모든 계획 ID의 원본 정답/가설·상태·오디오 메타데이터·계측·실패 사유 |
+| `manifest.json` | 상태·설정·입력 목록/모델/소스 해시·Git 커밋/변경 여부·모델 준비 시간/CPU/RSS·언어/ITN/양자화·워밍업 수·미계측 사유 |
+| `environment.json` | Python·장비·설치 패키지 버전, sherpa 네이티브 ORT와 Python ORT 구분; pip 없는 uv 환경도 지원 |
+| `predictions.jsonl` | 모든 계획 ID의 원본 정답/가설·상태·오디오 메타데이터·계측·실패 사유, 어댑터별 선택 raw/태그 결과 |
 | `progress.jsonl` | 실행 중 완료한 파일의 기록. 파일마다 flush |
 | `scores.jsonl` | 정규화 전후 정답/가설, 편집 수·CER·RTF |
 | `summary.json`, `summary.md` | 전체와 split/condition별 집계·성공/실패/미실행·커버리지 |
@@ -70,15 +70,17 @@ UTF-8 JSONL 한 줄마다 `id`, `audio_path`, 사람이 확인한 `reference`를
 
 입력 목록의 오류·중복 ID는 모델 로딩 전에 거부합니다. WAV 누락·형식 오류·파일 추론 실패는 해당 파일을 기록하고 다음 파일을 계속 처리합니다. 워밍업 추론 실패는 남은 평가를 중단합니다. Ctrl-C에서는 완료 결과와 중단·미실행을 저장합니다. 종료 코드는 성공 0, 파일/워밍업 실패 1, 설정·목록·모델 준비 오류 2, 사용자 중단 130입니다. 요약 존재만으로 성공을 판단하지 말고 manifest와 성공/계획 수를 확인합니다.
 
-아래 측정 계약은 batch 기준입니다. paced_stream은 [별도 계약](streaming_evaluation.md)에 따라 대기 제외 처리 시간과 대기 포함 replay·큐 지표를 분리합니다. 네이티브 충돌·OOM 강제 종료·하드 타임아웃 격리는 아직 구현하지 않았습니다. 강제 종료에서는 마지막 `progress.jsonl`까지만 남고 manifest가 `running`일 수 있으며 이를 완료로 표시하지 않습니다.
+아래 측정 계약은 batch 기준입니다. paced_stream은 [별도 계약](streaming_evaluation.md)에 따라 대기 제외 처리 시간과 대기 포함 replay·큐 지표를 분리합니다. 실행기 내부의 네이티브 충돌·OOM 강제 종료·하드 타임아웃 격리는 구현하지 않았습니다. RP5 실측 전 [외부 시간 제한·실패 기록 절차](m2_sensevoice.md#외부-시간-제한과-실패-기록)를 적용합니다. 강제 종료에서는 마지막 `progress.jsonl`까지만 남고 manifest가 `running`일 수 있으며 이를 완료로 표시하지 않습니다.
 
 ## 측정 계약
 
 - `ko_cer_v1`: Unicode NFC → 공백 제거 → Unicode 범주 P 문장부호 제거. 숫자·영문 대소문자는 유지합니다. `nfc_v1`은 NFC만 적용합니다. 코드포인트 단위 편집 거리를 사용하며 동률 경로는 대각선·삭제·삽입 순서입니다.
 - Corpus CER은 성공한 비어 있지 않은 정답의 편집 수 합 / 정답 문자 수 합입니다. 파일 CER의 단순 평균이 아닙니다. 빈 정답 CER은 `null`이며 해당 샘플/비어 있지 않은 가설 수를 별도 집계합니다. 실패를 제외하므로 성공률·정답 문자 커버리지를 함께 해석합니다.
-- Corpus RTF는 성공 파일의 추론 wall time 합 / 실제 오디오 길이 합입니다. WAV 읽기·해시·float 변환·모델 로딩·워밍업·채점·파일 쓰기를 제외하고 새 스트림 생성·PCM 전달·특징 추출·디코딩·무음 flush·최종 반환을 포함합니다. 모델 준비 시간은 런타임 import·인식기 초기화 포함으로 별도 기록합니다.
+- Corpus RTF는 성공 파일의 추론 wall time 합 / 실제 오디오 길이 합입니다. WAV 읽기·해시·float 변환·모델 로딩·워밍업·채점·파일 쓰기를 제외하고 새 상태 생성·PCM 전달·특징 추출·디코딩·모델별 종료 처리·최종 전사 반환을 포함합니다. Zipformer의 기존 무음 flush는 유지하며 SenseVoice에는 적용하지 않습니다. 모델 준비 시간은 런타임 import·인식기 초기화 포함으로 별도 기록합니다. 기존 결과의 수치·정의는 바꾸지 않습니다.
 - CPU는 추론 구간의 프로세스 CPU 시간 / wall time × 100이며 코어 하나가 100%입니다. 추론 중 RSS 계측 스레드 비용도 포함합니다. RSS는 모델 상주 상태의 주 PID를 100ms 간격과 호출 전후 경계에서 관측합니다. 정확한 피크·로딩 피크·자식 메모리를 보증하지 않으며 수집 불가는 `null`과 누락 수로 남깁니다.
 - 파일 처리 시간 분포는 길이가 다른 WAV의 처리 시간 분포입니다. 부분 자막·실제 인식 지연·endpoint·드롭·백로그는 미계측 `null`이며 처리 시간으로 대체하지 않습니다. 기존 프로브의 측정 범위와 구분합니다.
+
+M2부터 로딩 단계 주 PID CPU와 관측 RSS를 `model_load_cpu_s`, `model_load_resources`에 별도로 추가합니다. 추론 RSS는 계속 모델 상주 상태의 주 PID 값이며 모델 크기만의 메모리로 해석하지 않습니다. 미계측 사유와 모델별 언어·ITN·출력 정리 정책은 [M2 비교 계약](m2_sensevoice.md#모델-간-비교-계약)을 따릅니다. KSS 50개는 개발·회귀 자료로 유지하고 최종 선정용 독립 데이터는 이후에 준비합니다.
 
 ## 재채점
 

@@ -18,6 +18,8 @@ classifiers = [
 # 2026-10-28 RP5 Codex 검사 보고에서 확인된 반복 실험 환경.
 # 기존 RP5 .venv를 변경하지 않으며, 새 환경을 구성할 때만 선택 설치한다.
 zipformer = ["numpy==2.4.6", "sherpa-onnx==2.0.1"]
+# 같은 sherpa CPU 런타임. 기존 zipformer extra와 기본 설치 의존성은 유지.
+sensevoice = ["numpy==2.4.6", "sherpa-onnx==2.0.1"]
 
 [project.scripts]
 edge-asr = "edge_asr.cli:main"

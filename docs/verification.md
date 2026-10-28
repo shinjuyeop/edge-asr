@@ -158,3 +158,20 @@ Host Linux x86_64 / Python 3.11.14에서 전체 테스트 **83개, 2.852초, 건
 [MD 요약](../results/summaries/zipformer-paced-kss-dev50-20261028.md)·[JSON](../results/summaries/zipformer-paced-kss-dev50-20261028.json)에 수치·체크섬 목록 해시·경로·측정 범위를 보관했습니다. wheel 빌드도 성공했고 새 streaming 모듈 포함 및 모델/WAV 미포함을 확인했습니다. 원시 이벤트·전사·가설·음원·wheel은 Git 제외입니다.
 
 이 결과는 단일 화자 개발 자료의 발화별 1회 모사 평가입니다. 첫 부분 시점은 입력 대기·lookahead 포함이며 정답 시각 정렬 인식 지연은 미계측입니다. 파일 끝 강제 flush를 실제 발화 endpoint로 표시하지 않습니다. 100ms 격자 백로그가 순간 피크를 놓치므로 이벤트 최대도 유지합니다. 주 PID 관측 RSS와 입력 자식의 시작 포함 생애 최고치를 합산해 동시 파이프라인 피크로 주장하지 않습니다. 실제 마이크·자막 화면·장시간 연속 서비스·튜닝 우열은 아직 검증하지 않았습니다.
+
+## 2026-10-28 M2-0 / M2-1 Host 구현·검사
+
+`codex/m2-sensevoice-batch`에서 SenseVoiceSmall INT8의 Offline batch 어댑터와 전용 설정, sherpa 네이티브 ORT/Python ORT 구분, 로딩 단계 CPU/RSS 별도 계측, 모델·언어·ITN·양자화·raw/제어 태그 메타데이터를 추가했습니다. 미지원 모드는 설정 검사에서 거부합니다. Linux 기존 PID의 TID별 CPU 관측은 선택 명령으로 제공하며 CPU 324%의 원인은 확정하지 않았습니다. [M2 안내](m2_sensevoice.md)에 비교 계약·외부 시간/메모리 제한·실패 기록과 다음 RP5 실행 순서를 남겼습니다.
+
+Host Linux x86_64 / Python 3.11.14에서 `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v`로 전체 **101개, 3.160초, 건너뜀 없이 통과**했습니다. 기존 83개에 SenseVoice 10개와 런타임/진단 8개를 추가했습니다. 합성 WAV·가짜 NumPy/sherpa로 factory·인자·새 상태·결과 추출·언어/ITN·태그 분리·잘못된 자산/입력·로딩 실패·CER·재채점·CLI·미지원 모드 사전 거부를 검사했습니다. 스레드 진단 CLI는 Host 테스트 PID만 짧게 읽었습니다.
+
+| 검사 | Host 결과 |
+| --- | --- |
+| 기존 자산·설정 보존 | 작업 전 기록한 `models/`, `data/`, `experiments/`, `results/` 기존 파일 및 Zipformer 설정 319개 SHA-256 모두 일치 |
+| Zipformer 계약 | 기존 main의 모든 어댑터 메서드 AST 일치. batch·paced·탐색 설정 3개의 정규화 결과도 일치. metadata 속성만 추가 |
+| 실제 M1 저장 결과 재채점 | `eval-20261028T055209Z-sv2lwci2` batch와 `eval-20261028T062504Z-w8s86vle` paced_stream을 임시 폴더에 재채점. 전체 summary JSON이 각각 기존 결과와 일치. 재추론 없음 |
+| 설정·환경 | SenseVoice 설정 검사 성공. Host `env --probe-runtime`은 sherpa 미설치로 native 버전 null·`unavailable` 기록. 추론 가능 판정 아님 |
+| 원본·배포 문법 | 보존 프로브 SHA-256, `bash -n scripts/deploy_rp5.sh`, M2 문서 Bash 블록 구문 검사 통과 |
+| 패키징 | 의존성 설치 없이 wheel 빌드 성공. SenseVoice/runtime/diagnostics 포함, ONNX/WAV 미포함 |
+
+이번 구현 단계에서는 RP5에 접속하지 않았고 기존 `.venv`·설치 패키지·모델·데이터·측정 결과를 변경하지 않았습니다. SenseVoice 가중치 다운로드·실제 모델 로딩·새 벤치마크도 수행하지 않았습니다. ARM64 네이티브 호환성·최소 입력 길이·메모리/속도/정확도·systemd 사용자 scope 제한 적용은 M2-2 미검증 항목입니다. Host mock 통과를 실제 RP5 성공이나 M2 전체 완료로 표시하지 않습니다. 기존 M1 수치·지표 정의·결과 파일은 소급 수정하지 않았습니다.
