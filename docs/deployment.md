@@ -65,6 +65,16 @@ cd /home/deepet/projects/edge-asr
 
 ## Host의 평소 개발
 
+2026-10-28 Host의 `rp5` SSH 별칭으로 키 인증·원격 명령 실행·결과 회수를 직접 확인했습니다. Host와 RP5가 켜져 있고 SSH 네트워크가 연결되는 동안 Host에서 코드 개발, Git push, RP5 pull·추론 실행, 결과 회수·분석을 진행합니다. 실제 추론 연산은 RP5에서 수행합니다. SSH 설정·개인 키·비밀번호는 저장소에 넣지 않습니다.
+
+```bash
+# Host에서 RP5의 현재 환경 확인
+ssh -o BatchMode=yes -o ConnectTimeout=10 rp5 \
+  'cd /home/deepet/projects/edge-asr && .venv/bin/python scripts/edge_asr.py env'
+```
+
+여러 발화의 준비·전달·실행은 [데이터 안내](datasets.md)를 따릅니다. Git은 소스와 작은 요약을 전달하고, Git 제외 음원·원시 결과는 필요한 폴더만 SSH/rsync로 전달합니다. 새 평가마다 고유 결과 폴더를 사용하며 원본·기존 실행을 덮어쓰지 않습니다.
+
 ```bash
 cd /d/shin/edge-asr
 git status --short

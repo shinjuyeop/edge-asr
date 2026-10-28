@@ -1,6 +1,6 @@
 # 한국어 ASR 벤치마크 설계
 
-이 문서는 공통 벤치마크의 측정 계약입니다. [공통 파일 평가](evaluation.md)의 manifest·CER·batch RTF·추론 CPU/RSS·재채점은 구현했고, paced/live 지연·정렬·드롭·백로그는 아직 미구현입니다. 새 도구의 실제 RP5 검증은 아직 수행하지 않았습니다. 기존 단일 샘플 로그는 [실험 기록](../experiments/m1_zipformer/README.md)의 제한된 필드만 제공합니다.
+이 문서는 공통 벤치마크의 측정 계약입니다. [공통 파일 평가](evaluation.md)의 manifest·CER·batch RTF·추론 CPU/RSS·재채점은 구현했고, paced/live 지연·정렬·드롭·백로그는 아직 미구현입니다. 실제 RP5에서 공식 샘플 1개 및 [KSS 개발용 50개](../results/summaries/zipformer-kss-dev50-20261028.md)의 batch 평가·결과 회수·재채점을 확인했습니다. 기존 단일 샘플 로그는 [실험 기록](../experiments/m1_zipformer/README.md)의 제한된 필드만 제공합니다.
 
 보존 프로브를 사용하는 [반복 도구](rp5_repeat_benchmark.md)는 별도로 구현했습니다. 원본 지연 계측점은 유지하며 자원은 모델 로딩을 포함한 전체 프로세스 범위로 수집하므로, 아래 공통 실행기의 steady-state 및 반환 시점 기준 지표와 구분합니다. [사용자가 제공한 RP5 반복 요약](../results/summaries/zipformer-repeat-20261028-reported.md)은 수신했으며 원시 자료 검증은 아직 남아 있습니다.
 

@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "run_id": "eval-20261028T055209Z-sv2lwci2",
+  "evidence": "Host 에이전트가 SSH로 RP5에서 직접 실행하고 원시 결과를 회수·체크섬 검증·Host 재채점 대조",
+  "source_commit": "b78aef06db7c9e2e30320aeb2a8e0318dd5b0b57",
+  "source_dirty": false,
+  "started_at_utc": "2026-10-28T05:52:09.351149+00:00",
+  "finished_at_utc": "2026-10-28T05:52:31.235347+00:00",
+  "verified_at_utc": "2026-10-28T05:54:33.874958+00:00",
+  "mode": "batch",
+  "normalization": "ko_cer_v1",
+  "unicode_database": "14.0.0",
+  "device": {
+    "board": "Raspberry Pi 5 Model B Rev 1.0",
+    "architecture": "aarch64",
+    "os": "Debian GNU/Linux 13.3 (trixie)",
+    "kernel": "6.12.62+rpt-rpi-2712",
+    "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+    "packages": {
+      "numpy": "2.4.6",
+      "sherpa-onnx-core": "2.0.1",
+      "sherpa_onnx": "2.0.1"
+    }
+  },
+  "dataset": {
+    "recipe": {
+      "name": "kss-dev50-v1",
+      "dataset": "Bingsu/KSS_Dataset",
+      "revision": "48fdfd7ab1dbc1a62e4e8a8b9f4c360259d51d3c",
+      "source_config": "default",
+      "source_split": "train",
+      "offset": 1000,
+      "count": 50,
+      "reference_field": "expanded_script",
+      "sample_rate_hz": 16000,
+      "channels": 1,
+      "sample_width_bytes": 2,
+      "license": "cc-by-nc-sa-4.0"
+    },
+    "reference_field": "expanded_script",
+    "project_split": "development",
+    "speakers": 1,
+    "random_sample": false,
+    "independent_test_split": false,
+    "model_training_overlap_verified": false,
+    "input_manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+    "provenance_sha256": "024be130b23674f3ef8a44638bee03de7e8c501960a73315eae0cf7f8404d1ca",
+    "ffmpeg": "ffmpeg version 4.4.2-0ubuntu0.22.04.1 Copyright (c) 2000-2021 the FFmpeg developers"
+  },
+  "model": {
+    "family": "zipformer",
+    "num_threads": 2,
+    "tail_padding_s": 0.66,
+    "files": {
+      "tokens": {
+        "name": "tokens.txt",
+        "sha256": "016bdf0965029263b7ad01b742366ee542ef0bef38261510e8176ff6f2e9e668"
+      },
+      "encoder": {
+        "name": "encoder-epoch-99-avg-1.int8.onnx",
+        "sha256": "8d0b1aa24fbedd4e3948564ab7facd151b8ce9b0c48fc987c541de2de3af5697"
+      },
+      "decoder": {
+        "name": "decoder-epoch-99-avg-1.onnx",
+        "sha256": "b29cfb4575141e50a30a22b2c4579934f3d4f45b83c9c8c08c3aef5a3fa7abfc"
+      },
+      "joiner": {
+        "name": "joiner-epoch-99-avg-1.int8.onnx",
+        "sha256": "128b80a66a1f718488af8560f9d15895109b99ff3e573f0a0130e03774ef1ced"
+      }
+    }
+  },
+  "warmup": {
+    "planned": 3,
+    "successful": 3,
+    "sample_id": "kss-train-01000"
+  },
+  "repetitions_per_sample": 1,
+  "model_load_s": 2.504775855999924,
+  "overall": {
+    "planned": 50,
+    "successful": 50,
+    "failed": 0,
+    "not_attempted": 0,
+    "interrupted": 0,
+    "complete": true,
+    "reference_character_coverage": 1.0,
+    "cer": {
+      "value": 0.1164021164021164,
+      "reference_characters": 756,
+      "errors": 88,
+      "substitutions": 71,
+      "deletions": 11,
+      "insertions": 6,
+      "scope": "successful_nonempty_references",
+      "empty_reference_samples": 0,
+      "empty_reference_nonempty_hypotheses": 0
+    },
+    "rtf": 0.10816424977110987,
+    "total_audio_s": 164.919,
+    "total_inference_wall_s": 17.83833990800167,
+    "mean_process_cpu_percent": 323.9777409672318,
+    "file_processing_s": {
+      "n": 50,
+      "mean": 0.3567667981600334,
+      "p50": 0.3386282910000773,
+      "p95": 0.5510398669998722,
+      "max": 0.6117418089997955
+    },
+    "file_rtf": {
+      "n": 50,
+      "mean": 0.10956491653983384,
+      "p50": 0.10842877740507993,
+      "p95": 0.12006092534540992,
+      "max": 0.13381544658206146
+    },
+    "rss_observed_max_mib": 246.75
+  },
+  "unmeasured": {
+    "first_partial_from_audio_start_s": null,
+    "aligned_recognition_latency_s": null,
+    "finalization_from_audio_end_s": null,
+    "drops": null,
+    "backlog": null
+  },
+  "timing_scope": "준비한 float PCM에서 새 인식 상태 생성~최종 반환. WAV I/O·변환·모델 로딩·워밍업·결과 파일 쓰기 제외. 특징 추출·flush 포함.",
+  "resource_scope": "추론 구간의 현재 프로세스 CPU(계측 스레드 비용 포함), 모델 상주 상태의 주 PID 표본 RSS. RSS는 경계 표본 포함·정확한 피크 아님.",
+  "device_snapshots": {
+    "sampling_scope": "추론 실행 전후의 두 시점만 관측. 실행 중 온도·클럭·throttling 피크 미계측.",
+    "before": {
+      "at_utc": "2026-10-28T05:52:09.344795+00:00",
+      "temperature_millicelsius": "52350",
+      "scaling_governor": "ondemand",
+      "scaling_cur_freq": "2400000",
+      "loadavg": "0.00 0.00 0.00 1/328 4314",
+      "get_throttled": {
+        "exit_code": 0,
+        "stdout": "throttled=0x0",
+        "stderr": ""
+      }
+    },
+    "after": {
+      "at_utc": "2026-10-28T05:52:31.252473+00:00",
+      "temperature_millicelsius": "74350",
+      "scaling_governor": "ondemand",
+      "scaling_cur_freq": "2400000",
+      "loadavg": "0.77 0.18 0.06 1/331 4374",
+      "get_throttled": {
+        "exit_code": 0,
+        "stdout": "throttled=0x0",
+        "stderr": ""
+      }
+    }
+  },
+  "verification": {
+    "remote_artifact_count": 8,
+    "remote_artifact_sha256": {
+      "environment.json": "0541839e0067f16226b1ddc8f65e82867b1906aa1e92921b3a7adf467cea7228",
+      "execution_context.json": "ee34d839cb5e72c94bb1ad4c793120828b5db06ad1b84b3ff155bd31298eb94d",
+      "manifest.json": "1fd7486a42b7f1ad8653c30431ccef0a5e79a3b5b28356713a5ba4107c5f3d29",
+      "predictions.jsonl": "60a48dd0c648980164b0a9e2889427103f3c272f4f3babd185aa7b4d3997fc1b",
+      "progress.jsonl": "60a48dd0c648980164b0a9e2889427103f3c272f4f3babd185aa7b4d3997fc1b",
+      "scores.jsonl": "49803cd358c81e2944aa1812c186194225420ae0b9e22e928100521b89573c28",
+      "summary.json": "8dd99736e39cfcc23412a051a3167cf1bb2a4b4f8d4bda762cc8961da391d142",
+      "summary.md": "2f1c156e68ee5e0f5f6c2f5dfd1685500fa2731d2d9b6b1ec0635120c2d25c7d"
+    },
+    "host_rescore_matches": true,
+    "planned_ids_references_audio_hashes_match": true,
+    "protected_asset_count": 7,
+    "protected_assets_unchanged": true,
+    "host_unit_tests": 73,
+    "host_unit_tests_skipped": 0
+  },
+  "raw_locations": {
+    "rp5": "/home/deepet/projects/edge-asr/results/evaluations/eval-20261028T055209Z-sv2lwci2",
+    "host": "results/evaluations/eval-20261028T055209Z-sv2lwci2",
+    "data": "data/evaluation/kss-dev50",
+    "rescore": "results/scores/score-20261028T055317Z-l2fwqx65"
+  },
+  "limitations": [
+    "단일 여성 화자의 연속 50개 낭독 발화이며 각 1회 측정. 무작위·대표 표본 아님.",
+    "배포처 train split에서 선택한 개발 자료. 모델 학습 데이터 중복 여부 미확인.",
+    "파일 처리 p50/p95는 길이가 다른 50개 파일의 분포. 스트리밍 지연·반복 측정 분위수 아님.",
+    "2스레드 설정 한 가지를 측정했으며 최적 스레드·양자화 결론 아님.",
+    "CPU는 추론 구간 프로세스 기준이며 100%가 코어 하나. 이전 paced 프로브 CPU와 범위가 다름.",
+    "RSS는 100ms 간격과 호출 경계의 관측 최대. 정확한 피크·모델 로딩 피크 아님.",
+    "기존 공식 1개 샘플의 CER과 모집단이 달라 수치 변화는 정확도 개선을 뜻하지 않음."
+  ]
+}
