@@ -72,6 +72,12 @@ sha256sum -c experiments/m1_zipformer/SHA256SUMS
 
 별도 짧은 합성 무음 검사에서 0.5초에 “응”, 1초에 “그”가 반환됐습니다. 실시간 서비스·Refine 전에 VAD·무음 처리를 검증해야 합니다. 이번 완료 범위는 실제 Offline batch이며 Streaming·Refine·M2 전체 완료를 뜻하지 않습니다.
 
+## M2-3 통제 비교
+
+M2-3의 재현 도구는 [통제 비교 절차](docs/m2_comparison.md)와 [외부 한국어 자료 선택](docs/m2_external_data.md)에 설명합니다. 기존 공통 평가기와 어댑터를 유지하면서 새 프로세스의 1/2/4스레드 반복, 온도 관찰, 별도 TID CPU 진단, FLEURS 100개와 무음·길이별 입력을 준비합니다. 자료와 원시 실행은 Git에서 제외하며 기존 M1/M2-2 기록을 덮어쓰지 않습니다.
+
+[M2-3 실제 비교 보고서](results/summaries/m2-3-comparison-20261028.md)에서 RP5 36개 실행과 Host 재채점·454개 결과 해시 일치를 확인했습니다. 외부 FLEURS 100개 CER은 Zipformer 2스레드 **57.44%**, SenseVoice 4스레드 **8.63%**였습니다. 낮은 음량 자료의 삭제 오류, SenseVoice의 무음 오인식·장문 비용, 최고 85.9°C와 throttling 이력도 함께 기록했습니다. Hybrid 채택에는 냉각·음성 구간 정책·동시 실행 지연 검증이 더 필요합니다.
+
 ## 기존 Zipformer 실험
 
 아래 모든 값은 **동일한 3.526초 WAV 단일 샘플에 대한 설정별 1회 측정**입니다. 반복 측정 통계나 모델 전체의 성능을 의미하지 않습니다. 기존 RP5에서 가져온 파일은 수정하지 않고 보존했습니다.

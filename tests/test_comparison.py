@@ -88,6 +88,20 @@ class ComparisonTests(unittest.TestCase):
                     self.assertFalse(result["limit_verified"])
                     self.assertEqual(json.loads((output / "execution.json").read_text())["exit_code"], code)
 
+    def test_cli_preserves_later_runs_and_reports_any_child_failure(self):
+        for status, expected in (("timeout", 1), ("completed", 0)):
+            with self.subTest(status=status), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                manifest = root / "manifest.jsonl"
+                manifest.write_text("fixture\n")
+                argv = ["compare_models.py", "diagnostics", "--root", str(root), "--manifest", str(manifest), "--output", str(root / "output")]
+                def git(command, **kwargs):
+                    return b"" if command[1] == "status" else "fixture-commit\n"
+                results = [{"status": status}] + [{"status": "completed"}] * 5
+                with patch.object(helper.sys, "argv", argv), patch.object(helper.subprocess, "check_output", side_effect=git), patch.object(helper, "execute", side_effect=results) as execute:
+                    self.assertEqual(helper.main(), expected)
+                    self.assertEqual(execute.call_count, 6)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -226,7 +226,7 @@ def main():
     root, output = args.root.resolve(), args.output.resolve()
     if args.phase == "select":
         print(json.dumps(freeze_selection(args.matrix.resolve(), output), ensure_ascii=False, indent=2))
-        return
+        return 0
     if subprocess.check_output(["git", "status", "--porcelain"], cwd=root).strip():
         raise ValueError("추적/미추적 소스 변경을 먼저 정리해야 합니다.")
     manifest = (root / args.manifest).resolve()
@@ -247,9 +247,12 @@ def main():
             "device_monitor_scope": "외부 관찰 프로세스 1초 sysfs/proc 표본, ASR CPU에는 제외. 시간 간 피크 보증 없음.",
             "thread_diagnostic_scope": "별도 실행, 첫 파일 측정 이후 3초. 모델 로딩/워밍업 제외, 파일 사이 I/O 포함. 주요 속도 비교에서 제외."}
     save(output / "plan.json", plan)
+    failed = False
     for number, item in enumerate(runs, 1):
-        execute(root, output / f"{number:02d}-{item['family']}-t{item['num_threads']}", item, manifest, args.phase == "diagnostics")
+        result = execute(root, output / f"{number:02d}-{item['family']}-t{item['num_threads']}", item, manifest, args.phase == "diagnostics")
+        failed = failed or result["status"] != "completed"
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

@@ -31,3 +31,5 @@ PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/prepare_m23_data.py stress
 ```
 
 기존 자료가 있으면 출처 recipe와 모든 파일 해시를 검증해 재사용하며 덮어쓰지 않는다. 새 폴더만 RP5에 전송하고 전송 전후 해시를 비교한다. 실제 실행은 [M2-3 비교 절차](m2_comparison.md)를 따른다. 무음과 연결 합성 장문은 외부 정확도 자료와 별도로 보고한다.
+
+길이별 스트레스 입력에 사용하는 KSS의 원저자는 Kyubyong Park, KSS Dataset(2018)이며 [고정 배포 카드](https://huggingface.co/datasets/Bingsu/KSS_Dataset/blob/48fdfd7ab1dbc1a62e4e8a8b9f4c360259d51d3c/README.md)의 CC BY-NC-SA 4.0 조건을 유지한다. 짧은 입력은 기존 완전한 발화 10개를 참조하고, 긴 입력은 기존 16kHz 변환본 사이에 0.3초 무음을 삽입한 연결물이다. 연결 순서·원본 ID·실제 길이를 provenance에 보관한다. 음성·전사·파생 음성은 공개 Git 저장소에 포함하지 않는다.
