@@ -13,14 +13,16 @@
 공통 저장소는 [shinjuyeop/edge-asr](https://github.com/shinjuyeop/edge-asr)입니다. Host에서 검사한 소스를 커밋·push한 뒤, RP5 터미널에서 아래를 실행합니다. 기존 `/home/deepet/projects/edge-asr`는 보존하고 별도 clone을 만듭니다. 새 경로가 이미 있으면 기존 clone인지 확인하고 다른 새 경로를 선택하거나 업데이트 절차를 따릅니다.
 
 ```bash
-cd /home/deepet/projects
-git clone https://github.com/shinjuyeop/edge-asr.git edge-asr-git
-cd edge-asr-git
-git rev-parse HEAD
+cd /home/deepet/projects &&
+git clone https://github.com/shinjuyeop/edge-asr.git edge-asr-git &&
+cd edge-asr-git &&
+git rev-parse HEAD &&
 sha256sum -c experiments/m1_zipformer/SHA256SUMS
 ```
 
 이후에는 벤치마크 종료 후 `git pull --ff-only origin main`으로 업데이트합니다. Host와 RP5의 커밋 SHA를 비교하고, 실행 중에는 소스를 변경하지 않습니다. 공개 HTTPS clone/pull에는 Host → RP5 SSH 연결이나 RP5의 GitHub 인증이 필요하지 않습니다. `.venv`·모델·WAV는 Git으로 전송하지 않습니다. clone의 Git 커밋과 도구·프로브 SHA-256은 실행 기록에 남습니다. [배포 안내](deployment.md)에 일상적인 개발·업데이트 흐름과 rsync 대안을 정리했습니다.
+
+이미 폴더가 있다는 clone 오류가 나면 [기존 clone 확인 절차](deployment.md)를 따릅니다. 이미 워밍업이 시작되었다면 새 측정을 겹쳐 실행하지 말고, 소스 위치·커밋을 읽기 전용으로 확인한 뒤 진행 중인 실행을 사용합니다. clone 오류를 무시하고 다음 실행 블록을 새로 시작하지 않습니다.
 
 ## 2. RP5에서 반복 실행
 

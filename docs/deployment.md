@@ -37,19 +37,33 @@ git rev-parse HEAD
 
 ## RP5 최초 clone
 
-기존 `/home/deepet/projects/edge-asr`에는 모델·가상환경·과거 실험이 있으므로 그대로 둡니다. 새 복제본은 별도의 `/home/deepet/projects/edge-asr-git`에 만듭니다. 해당 이름이 이미 있으면 내용을 확인하고 다른 새 경로를 선택합니다.
+기존 `/home/deepet/projects/edge-asr`에는 모델·가상환경·과거 실험이 있으므로 그대로 둡니다. 새 복제본은 별도의 `/home/deepet/projects/edge-asr-git`에 만듭니다. 해당 이름이 이미 있으면 먼저 아래의 기존 clone 확인 절차를 사용합니다. 내용이 확인되지 않은 기존 폴더를 삭제하거나 덮어쓰지 않습니다.
 
 ```bash
 # RP5 터미널에서 실행
-git --version
-cd /home/deepet/projects
-git clone https://github.com/shinjuyeop/edge-asr.git edge-asr-git
-cd edge-asr-git
-git rev-parse HEAD
+git --version &&
+cd /home/deepet/projects &&
+git clone https://github.com/shinjuyeop/edge-asr.git edge-asr-git &&
+cd edge-asr-git &&
+git rev-parse HEAD &&
 sha256sum -c experiments/m1_zipformer/SHA256SUMS
 ```
 
 공개 저장소의 HTTPS clone/pull에는 GitHub 로그인이나 RP5의 GitHub SSH 키가 필요하지 않습니다. RP5에서 GitHub에 도달할 수 있는 네트워크와 git은 필요합니다. Host → RP5 SSH 연결은 이 소스 배포 방식의 필수 조건이 아닙니다. 기존 RP5 `.git`을 초기화하거나 remote를 변경하지 않습니다.
+
+## edge-asr-git 폴더가 이미 있을 때
+
+`clone`은 최초 한 번만 필요합니다. 이미 폴더가 있다는 오류가 발생하면 같은 터미널의 다음 독립 명령은 계속 실행될 수 있습니다. 아래는 소스를 변경하지 않는 조회이며 벤치마크 실행 중에는 다른 RP5 터미널에서 확인할 수 있습니다.
+
+```bash
+git -C /home/deepet/projects/edge-asr-git remote get-url origin
+git -C /home/deepet/projects/edge-asr-git rev-parse --short HEAD
+git -C /home/deepet/projects/edge-asr-git status --short
+```
+
+remote가 이 프로젝트 저장소인지와 측정할 커밋을 확인합니다. 이 저장소의 기존 clone이면 종료 후 아래 업데이트 절차를 사용하면 됩니다. Git 저장소가 아니거나 다른 프로젝트라면 기존 내용을 유지하고 다른 새 경로에 clone합니다.
+
+이미 `warmup`이 시작된 것은 반복 도구의 정상 단계이며 기본 총 99회 중 처음 9회입니다. 올바른 소스로 실행한 경우 다시 시작할 필요가 없습니다. 실행 중에는 pull·checkout·두 번째 벤치마크를 수행하지 않습니다. 잘못된 소스로 실행했다면 Ctrl-C로 정리 종료하고 로그를 보존한 뒤 경로·커밋을 확인합니다. 워밍업 시작만으로 전체 측정 성공을 뜻하지 않으며 완료 시 요약과 성공/계획 수를 확인합니다.
 
 ## 기존 환경·자산으로 반복 측정
 

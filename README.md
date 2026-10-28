@@ -56,14 +56,16 @@ sha256sum -c experiments/m1_zipformer/SHA256SUMS
 
 ```bash
 # RP5: 기존 모델·가상환경이 있는 edge-asr는 유지하고 별도 clone
-cd /home/deepet/projects
-git clone https://github.com/shinjuyeop/edge-asr.git edge-asr-git
+cd /home/deepet/projects &&
+git clone https://github.com/shinjuyeop/edge-asr.git edge-asr-git &&
 
 # 기존 Python 3.11 환경·모델로 새 clone의 반복 도구 실행
 /home/deepet/projects/edge-asr/.venv/bin/python \
   /home/deepet/projects/edge-asr-git/scripts/benchmark_zipformer.py \
   --asset-root /home/deepet/projects/edge-asr
 ```
+
+위 명령은 최초 clone용이며 clone이 실패하면 추론을 실행하지 않습니다. `edge-asr-git`이 이미 있으면 삭제하거나 다시 clone하지 말고 [기존 clone 확인·업데이트 절차](docs/deployment.md)를 따릅니다. 이미 벤치마크가 실행 중이면 종료 전까지 pull·재실행하지 않습니다.
 
 기본 흐름은 Host에서 개발·커밋·push하고 RP5의 별도 clone에서 `git pull --ff-only origin main`으로 가져오는 방식입니다. 소스 커밋은 함께 관리하고 가중치·WAV·가상환경·원시 결과는 각 장비에 둡니다. 공개 저장소의 clone/pull은 GitHub 로그인 없이 사용할 수 있습니다. 커밋 일치 확인, 기존 RP5 보존 및 rsync 대안은 [배포](docs/deployment.md)를 따릅니다. 위 RP5 실행 명령은 아직 실제 검증하지 않았습니다.
 
