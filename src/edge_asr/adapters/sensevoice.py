@@ -1,8 +1,8 @@
 """SenseVoiceSmall INT8의 sherpa-onnx Offline batch 어댑터."""
 
+import re
 from array import array
 from pathlib import Path
-import re
 
 from edge_asr.dataset import Audio, resolve_path
 
@@ -19,22 +19,32 @@ class SenseVoiceAdapter:
         self.model = model
         self.sample_rate_hz = sample_rate_hz
         directory = resolve_path(model["path"], root)
-        self.model_files = {"model": resolve_path(model.get("model_file", "model.int8.onnx"), directory),
-                            "tokens": resolve_path(model.get("tokens", "tokens.txt"), directory)}
+        self.model_files = {
+            "model": resolve_path(model.get("model_file", "model.int8.onnx"), directory),
+            "tokens": resolve_path(model.get("tokens", "tokens.txt"), directory),
+        }
         self.recognizer = None
         self.last_result_metadata = None
 
     @property
     def metadata(self):
-        return {"backend": "sherpa_onnx", "factory": "OfflineRecognizer.from_sense_voice",
-                "supported_modes": ["batch"], "provider": "cpu", "feature_dim": FEATURE_DIM,
-                "language": self.model["language"], "use_itn": self.model["use_itn"],
-                "quantization": self.model.get("quantization", "int8"),
-                "quantization_evidence": "declared_configuration_not_graph_dtype_inspection",
-                "quantization_method": None,
-                "quantization_method_reason": "배포된 INT8 ONNX를 사용. 변환·양자화 알고리즘은 검증하지 않았습니다.",
-                "tail_padding_s": None, "tail_padding_reason": "not_used_by_offline_sensevoice",
-                "output_policy": OUTPUT_POLICY, "control_token_pattern": CONTROL_TOKEN.pattern}
+        return {
+            "backend": "sherpa_onnx",
+            "factory": "OfflineRecognizer.from_sense_voice",
+            "supported_modes": ["batch"],
+            "provider": "cpu",
+            "feature_dim": FEATURE_DIM,
+            "language": self.model["language"],
+            "use_itn": self.model["use_itn"],
+            "quantization": self.model.get("quantization", "int8"),
+            "quantization_evidence": "declared_configuration_not_graph_dtype_inspection",
+            "quantization_method": None,
+            "quantization_method_reason": "배포된 INT8 ONNX를 사용. 변환·양자화 알고리즘은 검증하지 않았습니다.",
+            "tail_padding_s": None,
+            "tail_padding_reason": "not_used_by_offline_sensevoice",
+            "output_policy": OUTPUT_POLICY,
+            "control_token_pattern": CONTROL_TOKEN.pattern,
+        }
 
     def load(self) -> None:
         if self.recognizer is not None:
@@ -49,10 +59,14 @@ class SenseVoiceAdapter:
 
         self.np = np
         self.recognizer = sherpa_onnx.OfflineRecognizer.from_sense_voice(
-            model=str(self.model_files["model"]), tokens=str(self.model_files["tokens"]),
-            num_threads=self.model["num_threads"], provider="cpu",
-            sample_rate=self.sample_rate_hz, feature_dim=FEATURE_DIM,
-            language=self.model["language"], use_itn=self.model["use_itn"],
+            model=str(self.model_files["model"]),
+            tokens=str(self.model_files["tokens"]),
+            num_threads=self.model["num_threads"],
+            provider="cpu",
+            sample_rate=self.sample_rate_hz,
+            feature_dim=FEATURE_DIM,
+            language=self.model["language"],
+            use_itn=self.model["use_itn"],
             decoding_method="greedy_search",
         )
 
@@ -60,18 +74,28 @@ class SenseVoiceAdapter:
         self.last_result_metadata = None
         if self.recognizer is None:
             raise RuntimeError("모델을 먼저 로드해야 합니다.")
-        if not isinstance(audio, Audio) or not isinstance(audio.samples, array) or audio.samples.typecode != "f":
+        if (
+            not isinstance(audio, Audio)
+            or not isinstance(audio.samples, array)
+            or audio.samples.typecode != "f"
+        ):
             raise TypeError("Audio의 float PCM 배열이 필요합니다.")
         if audio.sample_rate_hz != self.sample_rate_hz or not len(audio.samples):
             raise ValueError("비어 있지 않은 16000Hz 오디오가 필요합니다.")
         stream = self.recognizer.create_stream()
-        stream.accept_waveform(self.sample_rate_hz, self.np.frombuffer(audio.samples, dtype=self.np.float32))
+        stream.accept_waveform(
+            self.sample_rate_hz, self.np.frombuffer(audio.samples, dtype=self.np.float32)
+        )
         self.recognizer.decode_stream(stream)
         raw = stream.result.text
         if not isinstance(raw, str):
             raise TypeError("SenseVoice가 문자열 전사를 반환하지 않았습니다.")
         tags = CONTROL_TOKEN.findall(raw)
-        self.last_result_metadata = {"raw_text": raw, "special_tags": tags, "output_policy": OUTPUT_POLICY}
+        self.last_result_metadata = {
+            "raw_text": raw,
+            "special_tags": tags,
+            "output_policy": OUTPUT_POLICY,
+        }
         return CONTROL_TOKEN.sub("", raw).strip()
 
     def close(self) -> None:

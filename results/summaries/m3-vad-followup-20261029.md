@@ -86,4 +86,4 @@
 4. **냉각 원인을 확인한 후 M3-1 동시 실행으로 넘어간다.** 팬 동작·방열판 접촉·케이스 통풍·주변 온도를 확인하거나 재현 가능한 저부하 운용 조건을 정하고, 기존 외부 감시로 재검증한다. 통과 전 고부하 비교를 재개하지 않는다. 이후 Zipformer 1T+SenseVoice 1T, 1T+2T, 2T+1T를 각각 새 ID로 실행한다.
 5. **M3-1 범위는 계측용 동시 실행기까지다.** 모델별 독립 프로세스/한 번 로드, Streaming 큐와 Refine 대기 큐 분리, 포화 시 skip 이유·프레임 범위 기록, enqueue/start/finish 시각, 첫 부분 출력, CPU/RSS/TID·온도·드롭·최대 백로그를 측정한다. 단독 Streaming과 같은 입력으로 비교한다. 첫 통과 기준은 계측 완결·현재 제한 없음·입력 드롭 0·유계 큐·OOM/hang 없음이며, 서비스 지연/허용 skip 기준은 별도로 정한다. 단독 batch 결과로 동시 성능을 예측하지 않는다.
 
-공식 근거: [sherpa Silero 배포 안내](https://k2-fsa.github.io/sherpa/onnx/vad/silero-vad.html), [Silero MIT 라이선스](https://github.com/snakers4/silero-vad/blob/master/LICENSE). 실행 프로토콜은 [M3 VAD 후속 절차](../../docs/m3_vad_followup.md), 구조 계획은 [M3 사전 검증](../../docs/m3_preflight.md)을 참고한다.
+공식 근거: [sherpa Silero 배포 안내](https://k2-fsa.github.io/sherpa/onnx/vad/silero-vad.html), [Silero MIT 라이선스](https://github.com/snakers4/silero-vad/blob/master/LICENSE). 실행 프로토콜은 [M3 VAD 후속 절차](../../docs/research/m3_vad_followup.md), 구조 계획은 [M3 사전 검증](../../docs/research/m3_preflight.md)을 참고한다.

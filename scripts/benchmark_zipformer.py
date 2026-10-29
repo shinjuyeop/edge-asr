@@ -1,7 +1,7 @@
 """설치 없이 기존 RP5 가상환경에서 실행할 수 있는 진입점."""
 
-from pathlib import Path
 import sys
+from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 

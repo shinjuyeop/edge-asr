@@ -17,21 +17,35 @@ class ZipformerAdapter:
         self.model = model
         self.sample_rate_hz = sample_rate_hz
         directory = resolve_path(model["path"], root)
-        self.model_files = {key: resolve_path(model.get(key, filename), directory)
-                            for key, filename in MODEL_FILES.items()}
+        self.model_files = {
+            key: resolve_path(model.get(key, filename), directory)
+            for key, filename in MODEL_FILES.items()
+        }
         self.recognizer = None
 
     @property
     def metadata(self):
-        return {"backend": "sherpa_onnx", "factory": "OnlineRecognizer.from_transducer",
-                "supported_modes": ["batch", "paced_stream"], "provider": "cpu", "feature_dim": 80,
-                "language": "ko", "language_policy": "Korean_model_not_runtime_language_argument",
-                "use_itn": None, "itn_reason": "no_separate_itn_in_this_adapter",
-                "quantization": {key: "int8_filename" if ".int8." in path.name else "unspecified_by_filename"
-                                 for key, path in self.model_files.items() if key != "tokens"},
-                "quantization_evidence": "filename_convention_not_graph_dtype_inspection",
-                "quantization_method": None, "quantization_method_reason": "배포 모델의 양자화 알고리즘은 검증하지 않았습니다.",
-                "tail_padding_s": self.model["tail_padding_s"], "output_policy": "runtime_text_unmodified"}
+        return {
+            "backend": "sherpa_onnx",
+            "factory": "OnlineRecognizer.from_transducer",
+            "supported_modes": ["batch", "paced_stream"],
+            "provider": "cpu",
+            "feature_dim": 80,
+            "language": "ko",
+            "language_policy": "Korean_model_not_runtime_language_argument",
+            "use_itn": None,
+            "itn_reason": "no_separate_itn_in_this_adapter",
+            "quantization": {
+                key: "int8_filename" if ".int8." in path.name else "unspecified_by_filename"
+                for key, path in self.model_files.items()
+                if key != "tokens"
+            },
+            "quantization_evidence": "filename_convention_not_graph_dtype_inspection",
+            "quantization_method": None,
+            "quantization_method_reason": "배포 모델의 양자화 알고리즘은 검증하지 않았습니다.",
+            "tail_padding_s": self.model["tail_padding_s"],
+            "output_policy": "runtime_text_unmodified",
+        }
 
     def load(self) -> None:
         # score·manifest 검사에는 이 무거운 선택 의존성을 import하지 않는다.
@@ -39,11 +53,16 @@ class ZipformerAdapter:
         import sherpa_onnx
 
         self.np = np
-        self.padding = np.zeros(round(self.model["tail_padding_s"] * self.sample_rate_hz), dtype=np.float32)
+        self.padding = np.zeros(
+            round(self.model["tail_padding_s"] * self.sample_rate_hz), dtype=np.float32
+        )
         self.recognizer = sherpa_onnx.OnlineRecognizer.from_transducer(
             **{key: str(path) for key, path in self.model_files.items()},
-            num_threads=self.model["num_threads"], provider="cpu",
-            sample_rate=self.sample_rate_hz, feature_dim=80, decoding_method="greedy_search",
+            num_threads=self.model["num_threads"],
+            provider="cpu",
+            sample_rate=self.sample_rate_hz,
+            feature_dim=80,
+            decoding_method="greedy_search",
         )
 
     def transcribe(self, audio: Audio) -> str:
@@ -83,7 +102,9 @@ class ZipformerAdapter:
         return text
 
     def accept_chunk(self, stream, samples) -> str:
-        stream.accept_waveform(self.sample_rate_hz, self.np.frombuffer(samples, dtype=self.np.float32))
+        stream.accept_waveform(
+            self.sample_rate_hz, self.np.frombuffer(samples, dtype=self.np.float32)
+        )
         return self._decode_result(stream)
 
     def finish_stream(self, stream) -> str:

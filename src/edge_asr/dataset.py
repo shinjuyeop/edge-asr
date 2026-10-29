@@ -1,14 +1,14 @@
 """모델과 독립적인 JSONL 평가 목록 및 PCM16 WAV 입력."""
 
-from array import array
-from dataclasses import dataclass
 import hashlib
 import io
 import json
-from pathlib import Path
 import re
 import sys
 import wave
+from array import array
+from dataclasses import dataclass
+from pathlib import Path
 
 
 @dataclass(frozen=True)
@@ -32,9 +32,14 @@ class Audio:
         return len(self.samples) / self.sample_rate_hz
 
     def metadata(self) -> dict:
-        return {"sha256": self.sha256, "frames": len(self.samples),
-                "sample_rate_hz": self.sample_rate_hz, "channels": 1,
-                "sample_width_bytes": 2, "duration_s": self.duration_s}
+        return {
+            "sha256": self.sha256,
+            "frames": len(self.samples),
+            "sample_rate_hz": self.sample_rate_hz,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "duration_s": self.duration_s,
+        }
 
 
 def resolve_path(path: str | Path, root: Path) -> Path:
@@ -65,13 +70,22 @@ def load_manifest(path: Path, root: Path) -> tuple[list[Sample], str]:
                 if key in row and (not isinstance(row[key], str) or not row[key].strip()):
                     raise ValueError(f"{key}는 비어 있지 않은 문자열이어야 합니다.")
             expected_hash = row.get("audio_sha256")
-            if expected_hash is not None and (not isinstance(expected_hash, str) or re.fullmatch(r"[0-9a-fA-F]{64}", expected_hash) is None):
+            if expected_hash is not None and (
+                not isinstance(expected_hash, str)
+                or re.fullmatch(r"[0-9a-fA-F]{64}", expected_hash) is None
+            ):
                 raise ValueError("audio_sha256는 64자리 SHA-256 문자열이어야 합니다.")
             ids.add(row["id"])
-            samples.append(Sample(row["id"], resolve_path(row["audio_path"], root),
-                                  row["reference"], row.get("split", "evaluation"),
-                                  row.get("condition", "unspecified"),
-                                  expected_hash.lower() if expected_hash else None))
+            samples.append(
+                Sample(
+                    row["id"],
+                    resolve_path(row["audio_path"], root),
+                    row["reference"],
+                    row.get("split", "evaluation"),
+                    row.get("condition", "unspecified"),
+                    expected_hash.lower() if expected_hash else None,
+                )
+            )
         except (ValueError, TypeError) as error:
             raise ValueError(f"{path}:{number}: {error}") from error
     if not samples:
@@ -97,3 +111,18 @@ def load_audio(path: Path, sample_rate_hz: int) -> Audio:
         integers.byteswap()
     samples = array("f", (value / 32768.0 for value in integers))
     return Audio(samples, sample_rate_hz, hashlib.sha256(blob).hexdigest())
+
+
+def pcm_bytes(pcm):
+    value = array("h", pcm)
+    if sys.byteorder != "little":
+        value.byteswap()
+    return value.tobytes()
+
+
+def write_wav(path, pcm):
+    """mono PCM16/16kHz를 쓴다. bytes는 little-endian PCM, 정수 배열은 명시적으로 변환한다."""
+    data = pcm if isinstance(pcm, bytes) else pcm_bytes(pcm)
+    with wave.open(str(path), "wb") as out:
+        out.setparams((1, 2, 16000, 0, "NONE", "not compressed"))
+        out.writeframes(data)

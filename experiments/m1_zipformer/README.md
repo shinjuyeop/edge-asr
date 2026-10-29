@@ -44,7 +44,7 @@ git show archive-initial-zipformer-20261028:experiments/m1_zipformer/results/str
 
 ## 새 RP5 실행 방법 (미검증 절차)
 
-[환경 설치](../../docs/setup.md)의 새 RP5 가상환경에 `.[zipformer]`를 설치하고, 저장소 루트에서 기존 자산 경로를 새 `models/` 링크로 연결하세요. 원본이 요구하는 파일은 다음과 같습니다.
+[환경 설치](../../docs/guides/setup.md)의 새 RP5 가상환경에 `.[zipformer]`를 설치하고, 저장소 루트에서 기존 자산 경로를 새 `models/` 링크로 연결하세요. 원본이 요구하는 파일은 다음과 같습니다.
 
 ```text
 models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/
@@ -68,6 +68,6 @@ for threads in 1 2 4; do
 done
 ```
 
-이 명령도 설정별 단일 실행입니다. 워밍업·반복·지표 수집은 자동 제공하지 않습니다. 실패 로그를 확인하고, 다음 단계에서는 [공통 설계](../../docs/benchmark_design.md)에 따라 별도 실행기를 작성합니다. 새 원시 결과는 Git 제외 `runs/`에 기록합니다.
+이 명령도 설정별 단일 실행입니다. 워밍업·반복·지표 수집은 자동 제공하지 않습니다. 실패 로그를 확인하고, 다음 단계에서는 [공통 설계](../../docs/reference/benchmark_design.md)에 따라 별도 실행기를 작성합니다. 새 원시 결과는 Git 제외 `runs/`에 기록합니다.
 
-단일 실행을 이미 완료했다면 [반복 실행 도구](../../docs/rp5_repeat_benchmark.md)로 넘어갑니다. 원본 프로브를 별도 자식으로 실행하여 워밍업·교차 반복·요약·프로세스 자원을 기록하며 이 디렉터리의 원본 파일은 수정하지 않습니다.
+단일 실행을 이미 완료했다면 [반복 실행 도구](../../docs/reference/rp5_repeat_benchmark.md)로 넘어갑니다. 원본 프로브를 별도 자식으로 실행하여 워밍업·교차 반복·요약·프로세스 자원을 기록하며 이 디렉터리의 원본 파일은 수정하지 않습니다.

@@ -8,8 +8,10 @@ SUPPORTED_MODES = {"zipformer": ("batch", "paced_stream"), "sensevoice": ("batch
 def create_adapter(model: dict, sample_rate_hz: int, root: Path):
     if model["family"] == "zipformer":
         from edge_asr.adapters.zipformer import ZipformerAdapter
+
         return ZipformerAdapter(model, sample_rate_hz, root)
     if model["family"] == "sensevoice":
         from edge_asr.adapters.sensevoice import SenseVoiceAdapter
+
         return SenseVoiceAdapter(model, sample_rate_hz, root)
     raise ValueError(f"아직 구현하지 않은 모델 어댑터: {model['family']}")

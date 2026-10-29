@@ -1,5 +1,6 @@
 """버전이 명시된 문자 정규화와 문자 오류율. 외부 런타임 의존성 없음."""
 
+import math
 import unicodedata
 
 NORMALIZATIONS = ("ko_cer_v1", "nfc_v1")
@@ -10,7 +11,9 @@ def normalize(text: str, policy: str = "ko_cer_v1") -> str:
         raise ValueError(f"지원하지 않는 정규화 정책: {policy}")
     text = unicodedata.normalize("NFC", text)
     if policy == "ko_cer_v1":
-        text = "".join(c for c in text if not c.isspace() and not unicodedata.category(c).startswith("P"))
+        text = "".join(
+            c for c in text if not c.isspace() and not unicodedata.category(c).startswith("P")
+        )
     return text
 
 
@@ -31,6 +34,27 @@ def character_errors(reference: str, hypothesis: str, policy: str = "ko_cer_v1")
             current.append(min((diagonal, deletion, insertion), key=lambda value: value[0]))
         previous = current
     errors, sub, delete, insert = previous[-1]
-    return {"normalization": policy, "normalized_reference": ref, "normalized_hypothesis": hyp,
-            "reference_characters": len(ref), "substitutions": sub, "deletions": delete,
-            "insertions": insert, "errors": errors, "cer": errors / len(ref) if ref else None}
+    return {
+        "normalization": policy,
+        "normalized_reference": ref,
+        "normalized_hypothesis": hyp,
+        "reference_characters": len(ref),
+        "substitutions": sub,
+        "deletions": delete,
+        "insertions": insert,
+        "errors": errors,
+        "cer": errors / len(ref) if ref else None,
+    }
+
+
+def distribution(values: list[float]) -> dict:
+    ordered = sorted(values)
+    if not ordered:
+        return {"n": 0, "mean": None, "p50": None, "p95": None, "max": None}
+    return {
+        "n": len(ordered),
+        "mean": sum(ordered) / len(ordered),
+        "p50": ordered[math.ceil(0.50 * len(ordered)) - 1] if len(ordered) > 1 else None,
+        "p95": ordered[math.ceil(0.95 * len(ordered)) - 1] if len(ordered) > 1 else None,
+        "max": ordered[-1],
+    }

@@ -1,24 +1,38 @@
 """외부 자료 출처 검증과 합성 스트레스 입력의 정답·프레임 보존."""
+
 import copy
-import importlib.util
 import json
-from pathlib import Path
+import shutil
 import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import patch
-import shutil
 
 ROOT = Path(__file__).resolve().parents[1]
-SPEC = importlib.util.spec_from_file_location("m23_data", ROOT / "scripts/prepare_m23_data.py")
-helper = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(helper)
+from edge_asr.tools.data import external as helper
 
 
 def payload():
-    return {"partial": False, "rows": [{"row_idx": i, "truncated_cells": [], "row": {
-        "language": "Korean", "transcription": "정답", "num_samples": 16000,
-        "audio": [{"src": f"https://datasets-server.huggingface.co/cached-assets/google/fleurs/--/{helper.REVISION}/--/ko_kr/test/{i}/audio/audio.wav"}]}}
-        for i in range(helper.COUNT)]}
+    return {
+        "partial": False,
+        "rows": [
+            {
+                "row_idx": i,
+                "truncated_cells": [],
+                "row": {
+                    "language": "Korean",
+                    "transcription": "정답",
+                    "num_samples": 16000,
+                    "audio": [
+                        {
+                            "src": f"https://datasets-server.huggingface.co/cached-assets/google/fleurs/--/{helper.REVISION}/--/ko_kr/test/{i}/audio/audio.wav"
+                        }
+                    ],
+                },
+            }
+            for i in range(helper.COUNT)
+        ],
+    }
 
 
 class DataTests(unittest.TestCase):
@@ -32,10 +46,12 @@ class DataTests(unittest.TestCase):
             rows = payload()
             for i, item in enumerate(rows["rows"]):
                 item["row"].update(id=i, gender=i)
+
             def fetch(url, limit):
                 if "/rows?" in url:
                     return json.dumps(rows).encode(), {"x-revision": helper.REVISION}
                 return (b"license: cc-by-4.0" if url.endswith("README.md") else blob), {}
+
             destination = root / "data/evaluation/fleurs-fixture"
             with patch.object(helper, "fetch", side_effect=fetch):
                 result = helper.prepare_fleurs(root, destination)
@@ -52,11 +68,14 @@ class DataTests(unittest.TestCase):
         self.assertEqual(len(helper.validate_rows(source, helper.REVISION)), 100)
         with self.assertRaises(ValueError):
             helper.validate_rows(source, "changed")
-        for mutation in (lambda p: p["rows"].pop(),
-                         lambda p: p["rows"][0]["row"].update(transcription=""),
-                         lambda p: p["rows"][0]["row"].update(audio=[{"src": "https://example.com/audio.wav"}]),
-                         lambda p: p["rows"][1].update(row_idx=0)):
-            broken = copy.deepcopy(source); mutation(broken)
+        for mutation in (
+            lambda p: p["rows"].pop(),
+            lambda p: p["rows"][0]["row"].update(transcription=""),
+            lambda p: p["rows"][0]["row"].update(audio=[{"src": "https://example.com/audio.wav"}]),
+            lambda p: p["rows"][1].update(row_idx=0),
+        ):
+            broken = copy.deepcopy(source)
+            mutation(broken)
             with self.assertRaises(ValueError):
                 helper.validate_rows(broken, helper.REVISION)
 
@@ -69,8 +88,14 @@ class DataTests(unittest.TestCase):
             for index in range(12):
                 path = kss / f"{index}.wav"
                 helper.write_wav(path, b"\1\0" * (16000 * (index + 10)))
-                rows.append({"id": str(index), "audio_path": str(path.relative_to(root)),
-                             "audio_sha256": helper.sha256(path), "reference": f"문장{index}"})
+                rows.append(
+                    {
+                        "id": str(index),
+                        "audio_path": str(path.relative_to(root)),
+                        "audio_sha256": helper.sha256(path),
+                        "reference": f"문장{index}",
+                    }
+                )
             helper.write_manifest(kss / "manifest.jsonl", rows)
             destination = root / "data/evaluation/stress"
             result = helper.prepare_stress(root, destination)
@@ -84,8 +109,13 @@ class DataTests(unittest.TestCase):
                 self.assertFalse(any(audio.samples))
             long, _ = helper.load_manifest(destination / "long-120.jsonl", root)
             details = result["synthetic_long"][-1]
-            self.assertEqual(long[0].reference, " ".join(rows[int(i)]["reference"] for i in details["source_ids"]))
-            self.assertEqual(helper.load_audio(long[0].audio_path, 16000).duration_s, details["actual_s"])
+            self.assertEqual(
+                long[0].reference,
+                " ".join(rows[int(i)]["reference"] for i in details["source_ids"]),
+            )
+            self.assertEqual(
+                helper.load_audio(long[0].audio_path, 16000).duration_s, details["actual_s"]
+            )
             self.assertGreaterEqual(details["actual_s"], 120)
             (destination / "silence.jsonl").write_text("changed")
             with self.assertRaises(ValueError):

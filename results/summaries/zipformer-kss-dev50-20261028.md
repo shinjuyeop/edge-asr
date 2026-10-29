@@ -11,7 +11,7 @@
 - 모델: 기존 한국어 Zipformer의 encoder int8 / decoder float / joiner int8, CPU `num_threads=2`, 파일마다 새 스트림, flush 무음 0.66초
 - 데이터: [고정 KSS 리비전](https://huggingface.co/datasets/Bingsu/KSS_Dataset/tree/48fdfd7ab1dbc1a62e4e8a8b9f4c360259d51d3c)의 `default/train` 행 1000~1049. **여성 화자 1명의 낭독 50개, 발화별 1회**
 - 정답: 배포처 `expanded_script`, 정규화 `ko_cer_v1`(NFC·공백/문장부호 제거), Unicode 데이터베이스 14.0.0
-- 원본 44.1kHz WAV를 보존하고 Host ffmpeg로 mono PCM16 16kHz 변환. 준비 규칙·이용 조건은 [데이터 안내](../../docs/datasets.md) 참조
+- 원본 44.1kHz WAV를 보존하고 Host ffmpeg로 mono PCM16 16kHz 변환. 준비 규칙·이용 조건은 [데이터 안내](../../docs/guides/datasets.md) 참조
 - manifest SHA-256: `b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c`
 
 ## 측정 결과

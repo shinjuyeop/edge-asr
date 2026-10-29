@@ -1,33 +1,34 @@
 """고정 데이터 출처·기존 파일 보호·실제 ffmpeg 변환 검사. 외부 네트워크는 모의한다."""
 
 import copy
-import importlib.util
 import io
 import json
-from pathlib import Path
 import shutil
 import struct
 import tempfile
 import unittest
-from unittest.mock import patch
 import wave
+from pathlib import Path
+from unittest.mock import patch
 
 from edge_asr.dataset import load_audio, load_manifest
-
-SPEC = importlib.util.spec_from_file_location(
-    "prepare_kss_subset", Path(__file__).resolve().parents[1] / "scripts/prepare_kss_subset.py"
-)
-helper = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(helper)
+from edge_asr.tools.data import kss as helper
 
 
 def payload():
     rows = []
     for index in range(helper.OFFSET, helper.OFFSET + helper.COUNT):
-        url = (f"https://datasets-server.huggingface.co/cached-assets/{helper.DATASET}/--/"
-               f"{helper.REVISION}/--/default/train/{index}/audio/audio.wav?Expires=fixture")
-        rows.append({"row_idx": index, "row": {"expanded_script": f"합성 정답 {index}.",
-                                              "audio": [{"src": url}]}, "truncated_cells": []})
+        url = (
+            f"https://datasets-server.huggingface.co/cached-assets/{helper.DATASET}/--/"
+            f"{helper.REVISION}/--/default/train/{index}/audio/audio.wav?Expires=fixture"
+        )
+        rows.append(
+            {
+                "row_idx": index,
+                "row": {"expanded_script": f"합성 정답 {index}.", "audio": [{"src": url}]},
+                "truncated_cells": [],
+            }
+        )
     return {"rows": rows, "partial": False}
 
 
@@ -83,7 +84,9 @@ class SourceValidationTests(unittest.TestCase):
 class PreparationTests(unittest.TestCase):
     def fetch(self, url, limit):
         if "/rows?" in url:
-            return json.dumps(payload(), ensure_ascii=False).encode(), {"x-revision": helper.REVISION}
+            return json.dumps(payload(), ensure_ascii=False).encode(), {
+                "x-revision": helper.REVISION
+            }
         if url.endswith("README.md"):
             return b"Synthetic dataset card", {}
         return synthetic_wav(), {}

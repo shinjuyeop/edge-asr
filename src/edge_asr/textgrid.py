@@ -1,7 +1,8 @@
 """Seoul Corpus의 full-text IntervalTier를 읽는다. 범용 Praat 대체물은 아니다."""
-from dataclasses import dataclass
+
 import math
 import re
+from dataclasses import dataclass
 
 
 @dataclass(frozen=True)

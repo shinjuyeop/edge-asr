@@ -1,13 +1,13 @@
 """호스트에서 모델·WAV 없이 실행하는 설정 경계 검사."""
 
-from pathlib import Path
 import tempfile
 import unittest
+from pathlib import Path
 
 from edge_asr.config import load_config
 
 ROOT = Path(__file__).resolve().parents[1]
-EXAMPLE = ROOT / "configs" / "zipformer_streaming.toml"
+EXAMPLE = ROOT / "configs" / "legacy" / "zipformer_streaming.toml"
 
 
 class ConfigTests(unittest.TestCase):
@@ -26,7 +26,7 @@ class ConfigTests(unittest.TestCase):
             ("warmup_runs = 3", "warmup_runs = -1"),
             ("repetitions = 30", "repetitions = 0"),
             ('mode = "paced_stream"', 'mode = "live"'),
-            ('[model]', '[missing_model]'),
+            ("[model]", "[missing_model]"),
         ):
             with self.subTest(new=new), tempfile.TemporaryDirectory() as temp:
                 path = Path(temp) / "invalid.toml"

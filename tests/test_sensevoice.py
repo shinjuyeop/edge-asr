@@ -1,16 +1,16 @@
 """실제 모델·런타임 없이 SenseVoice Offline 계약과 공통 평가 호환성을 검사한다."""
 
-from array import array
 import json
 import os
-from pathlib import Path
 import subprocess
 import sys
 import tempfile
 import types
 import unittest
-from unittest.mock import Mock, patch
 import wave
+from array import array
+from pathlib import Path
+from unittest.mock import Mock, patch
 
 from edge_asr.adapters import create_adapter
 from edge_asr.adapters.sensevoice import SenseVoiceAdapter
@@ -32,8 +32,13 @@ class SenseVoiceTests(unittest.TestCase):
         for name in ("model.int8.onnx", "tokens.txt"):
             (self.directory / name).write_bytes(b"synthetic fixture, not model weights")
         self.config = self.root / "sensevoice.toml"
-        self.config.write_text((ROOT / "configs/sensevoice_eval.toml").read_text().replace(
-            "models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17", "models/fake"))
+        self.config.write_text(
+            (ROOT / "configs/sensevoice_eval.toml")
+            .read_text()
+            .replace(
+                "models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17", "models/fake"
+            )
+        )
         self.model = load_evaluation_config(self.config)["model"]
         self.streams = []
         owner = self
@@ -53,10 +58,15 @@ class SenseVoiceTests(unittest.TestCase):
 
         self.raw = RAW
         self.constructor = Mock(return_value=Recognizer())
-        self.numpy = types.SimpleNamespace(float32="float32", frombuffer=lambda samples, dtype: samples,
-                                          zeros=Mock(side_effect=AssertionError("SenseVoice에 Zipformer padding 금지")))
-        self.sherpa = types.SimpleNamespace(onnxruntime_version="fixture-native-ort",
-                                            OfflineRecognizer=types.SimpleNamespace(from_sense_voice=self.constructor))
+        self.numpy = types.SimpleNamespace(
+            float32="float32",
+            frombuffer=lambda samples, dtype: samples,
+            zeros=Mock(side_effect=AssertionError("SenseVoice에 Zipformer padding 금지")),
+        )
+        self.sherpa = types.SimpleNamespace(
+            onnxruntime_version="fixture-native-ort",
+            OfflineRecognizer=types.SimpleNamespace(from_sense_voice=self.constructor),
+        )
         self.modules = patch.dict(sys.modules, numpy=self.numpy, sherpa_onnx=self.sherpa)
         self.modules.start()
         self.addCleanup(self.modules.stop)
@@ -74,10 +84,14 @@ class SenseVoiceTests(unittest.TestCase):
         self.assertEqual(self.constructor.call_count, 1)
         self.assertEqual(len(self.streams), 2)
         self.assertIsNot(self.streams[0], self.streams[1])
-        self.assertTrue(all(s.rate == 16000 and s.samples == list(audio.samples) for s in self.streams))
+        self.assertTrue(
+            all(s.rate == 16000 and s.samples == list(audio.samples) for s in self.streams)
+        )
         kwargs = self.constructor.call_args.kwargs
-        self.assertEqual((kwargs["language"], kwargs["use_itn"], kwargs["provider"], kwargs["feature_dim"]),
-                         ("ko", False, "cpu", 80))
+        self.assertEqual(
+            (kwargs["language"], kwargs["use_itn"], kwargs["provider"], kwargs["feature_dim"]),
+            ("ko", False, "cpu", 80),
+        )
         self.assertEqual(kwargs["model"], str(self.directory / "model.int8.onnx"))
         self.numpy.zeros.assert_not_called()
         self.assertNotIn("tail_padding_s", self.model)
@@ -100,7 +114,9 @@ class SenseVoiceTests(unittest.TestCase):
         text = adapter.transcribe(Audio(array("f", [0]), 16000, "fixture"))
         self.assertEqual(text, "<주의>  한 글!")
         self.assertEqual(adapter.last_result_metadata["raw_text"], self.raw)
-        self.assertEqual(adapter.last_result_metadata["special_tags"], ["<|ko|>", "<|FUTURE_EVENT|>"])
+        self.assertEqual(
+            adapter.last_result_metadata["special_tags"], ["<|ko|>", "<|FUTURE_EVENT|>"]
+        )
         self.assertEqual(adapter.metadata["output_policy"], "sensevoice_control_tokens_v1")
         self.raw = "<|ko|><|nospeech|>"
         self.assertEqual(adapter.transcribe(Audio(array("f", [0]), 16000, "fixture")), "")
@@ -133,7 +149,16 @@ class SenseVoiceTests(unittest.TestCase):
                 wav.setparams((1, 2, 16000, 0, "NONE", "not compressed"))
                 wav.writeframes(b"\0\0" * 160)
         path = self.root / "manifest.jsonl"
-        path.write_text("".join(json.dumps({"id": name, "audio_path": name + ".wav", "reference": "한글입니다"}, ensure_ascii=False) + "\n" for name in ("a", "b")))
+        path.write_text(
+            "".join(
+                json.dumps(
+                    {"id": name, "audio_path": name + ".wav", "reference": "한글입니다"},
+                    ensure_ascii=False,
+                )
+                + "\n"
+                for name in ("a", "b")
+            )
+        )
         return path
 
     def test_common_evaluation_metadata_cer_and_model_free_rescore(self):
@@ -153,11 +178,18 @@ class SenseVoiceTests(unittest.TestCase):
         self.assertIsNone(info["model_metadata"]["adapter"]["tail_padding_s"])
         self.assertGreaterEqual(info["model_load_s"], 0)
         self.assertGreaterEqual(info["model_load_resources"]["rss_sample_count"], 1)
-        predictions = [json.loads(line) for line in (output / "predictions.jsonl").read_text().splitlines()]
+        predictions = [
+            json.loads(line) for line in (output / "predictions.jsonl").read_text().splitlines()
+        ]
         self.assertEqual(predictions[0]["adapter_result"]["raw_text"], RAW)
         self.assertEqual(predictions[0]["hypothesis"], "한 글, 입니다!")
         self.assertGreaterEqual(predictions[0]["resources"]["rss_sample_count"], 1)
-        self.assertEqual(json.loads((output / "environment.json").read_text())["runtime"]["sherpa_native_onnxruntime_version"], "fixture-native-ort")
+        self.assertEqual(
+            json.loads((output / "environment.json").read_text())["runtime"][
+                "sherpa_native_onnxruntime_version"
+            ],
+            "fixture-native-ort",
+        )
         before = (output / "predictions.jsonl").read_bytes()
         for path in (*self.directory.iterdir(), self.root / "a.wav", self.root / "b.wav"):
             path.unlink()
@@ -188,14 +220,18 @@ class SenseVoiceTests(unittest.TestCase):
 
     def test_bad_model_settings_and_streaming_are_rejected_before_output(self):
         text = self.config.read_text()
-        cases = [("language = \"ko\"", "language = \"invalid\""),
-                 ("language = \"ko\"", ""), ("use_itn = false", "use_itn = 1"),
-                 ("use_itn = false", ""), ("num_threads = 1", "num_threads = 0"),
-                 ('model_file = "model.int8.onnx"', 'model_file = " "'),
-                 ('quantization = "int8"', 'quantization = "fp32"'),
-                 ("sample_rate_hz = 16000", "sample_rate_hz = 8000"),
-                 ('family = "sensevoice"', 'family = "qwen3_asr"'),
-                 ("num_threads = 1", "num_threads = 1\ntail_padding_s = 0.66")]
+        cases = [
+            ('language = "ko"', 'language = "invalid"'),
+            ('language = "ko"', ""),
+            ("use_itn = false", "use_itn = 1"),
+            ("use_itn = false", ""),
+            ("num_threads = 1", "num_threads = 0"),
+            ('model_file = "model.int8.onnx"', 'model_file = " "'),
+            ('quantization = "int8"', 'quantization = "fp32"'),
+            ("sample_rate_hz = 16000", "sample_rate_hz = 8000"),
+            ('family = "sensevoice"', 'family = "qwen3_asr"'),
+            ("num_threads = 1", "num_threads = 1\ntail_padding_s = 0.66"),
+        ]
         for before, after in cases:
             with self.subTest(after=after):
                 self.config.write_text(text.replace(before, after))
@@ -211,8 +247,10 @@ class SenseVoiceTests(unittest.TestCase):
         manifest = self.make_manifest()
         modules = self.root / "modules"
         modules.mkdir()
-        (modules / "numpy.py").write_text("float32='float32'\ndef frombuffer(samples,dtype): return samples\n")
-        (modules / "sherpa_onnx.py").write_text('''
+        (modules / "numpy.py").write_text(
+            "float32='float32'\ndef frombuffer(samples,dtype): return samples\n"
+        )
+        (modules / "sherpa_onnx.py").write_text("""
 from types import SimpleNamespace
 onnxruntime_version = 'fixture-native-ort'
 class Stream:
@@ -224,12 +262,36 @@ class OfflineRecognizer:
         return OfflineRecognizer()
     def create_stream(self): return Stream()
     def decode_stream(self, stream): stream.result = SimpleNamespace(text='<|ko|>한글입니다')
-''')
+""")
         command = [sys.executable, str(ROOT / "scripts/edge_asr.py")]
         env = {**os.environ, "PYTHONPATH": str(modules)}
-        result = subprocess.run([*command, "evaluate", "--root", str(self.root), "--config", str(self.config),
-                                 "--manifest", str(manifest)], env=env, capture_output=True, text=True)
+        result = subprocess.run(
+            [
+                *command,
+                "evaluate",
+                "--root",
+                str(self.root),
+                "--config",
+                str(self.config),
+                "--manifest",
+                str(manifest),
+            ],
+            env=env,
+            capture_output=True,
+            text=True,
+        )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         output = next((self.root / "results/evaluations").iterdir())
-        result = subprocess.run([*command, "score", "--root", str(self.root), "--predictions", str(output / "predictions.jsonl")], capture_output=True, text=True)
+        result = subprocess.run(
+            [
+                *command,
+                "score",
+                "--root",
+                str(self.root),
+                "--predictions",
+                str(output / "predictions.jsonl"),
+            ],
+            capture_output=True,
+            text=True,
+        )
         self.assertEqual(result.returncode, 0, result.stderr)

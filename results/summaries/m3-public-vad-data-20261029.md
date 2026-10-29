@@ -40,4 +40,4 @@ Host와 RP5 양쪽의 **`data/review/m3-public-vad-audio-20261029-01/index.html`
 
 이번 98개는 개발용 검수 후보이며 최종 독립 평가 세트가 아니다. 모델 학습 중복도 미확인이다. 기존 5/9 누락·4/6 잡음 오탐, native 활성 30초 제한, Zipformer 2T의 냉각 중단은 해결됐다고 보지 않는다. 고부하 동시 ASR 실행은 재개하지 않았다.
 
-[기계 판독 요약](m3-public-vad-data-20261029.json), [재현 절차](../../docs/m3_public_vad_data.md).
+[기계 판독 요약](m3-public-vad-data-20261029.json), [재현 절차](../../docs/research/m3_public_vad_data.md).

@@ -1,6 +1,6 @@
 # Zipformer KSS 50개 발화 1배속 스트리밍 모사 기준선
 
-2026-10-28 Host에서 SSH로 RP5의 기존 Python 환경을 직접 실행했습니다. **음성의 실제 길이에 맞춰 청크를 입력하면서 추론**하며 스피커 소리·마이크는 사용하지 않습니다. [JSON 요약](zipformer-paced-kss-dev50-20261028.json)에 반올림 전 값·원시 자료 체크섬 목록의 해시·검증 범위를 남깁니다. 재현 절차는 [공통 1배속 평가](../../docs/streaming_evaluation.md)를 따릅니다.
+2026-10-28 Host에서 SSH로 RP5의 기존 Python 환경을 직접 실행했습니다. **음성의 실제 길이에 맞춰 청크를 입력하면서 추론**하며 스피커 소리·마이크는 사용하지 않습니다. [JSON 요약](zipformer-paced-kss-dev50-20261028.json)에 반올림 전 값·원시 자료 체크섬 목록의 해시·검증 범위를 남깁니다. 재현 절차는 [공통 1배속 평가](../../docs/guides/streaming_evaluation.md)를 따릅니다.
 
 ## 조건
 

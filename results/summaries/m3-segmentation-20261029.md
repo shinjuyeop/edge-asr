@@ -97,4 +97,4 @@ WAV 끝 대리 지연은 실제 음성 끝 정렬이 없는 10개 짧은 원음�
 3. **물리적 냉각 확인 후 고부하 조건을 재검증한다.** 팬 동작·히트싱크 접촉·케이스 통풍·주변 온도를 확인하거나 재현 가능한 부하 제한을 정한다. 통과 전 ASR 동시 부하를 재개하지 않는다.
 4. 이후 M3-1에서는 공통 PCM을 Zipformer와 Refine에 공급하고, ASR별 독립 프로세스·Refine 제한 큐·enqueue/start/finish 시각·skip/드롭·CPU/RSS·온도를 계측한다. 1T+1T, 1T+2T, 2T+1T의 실제 동시 성능을 단독 결과로 예측하지 않는다. 서비스 병합/UI는 별도 단계다.
 
-[실행 절차](../../docs/m3_segmentation.md), [이전 VAD 검사](m3-vad-followup-20261029.md), [M3-0 냉각·음량 결과](m3-0-preflight-20261029.md)를 함께 참고한다.
+[실행 절차](../../docs/research/m3_segmentation.md), [이전 VAD 검사](m3-vad-followup-20261029.md), [M3-0 냉각·음량 결과](m3-0-preflight-20261029.md)를 함께 참고한다.

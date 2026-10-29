@@ -2,16 +2,19 @@
 
 import math
 import os
-from pathlib import Path
 import time
+from pathlib import Path
 
 
 def _stat(path):
     text = path.read_text()
     left, right = text.index("("), text.rindex(")")
-    fields = text[right + 2:].split()
-    return {"name": text[left + 1:right], "cpu_ticks": int(fields[11]) + int(fields[12]),
-            "start_ticks": int(fields[19])}
+    fields = text[right + 2 :].split()
+    return {
+        "name": text[left + 1 : right],
+        "cpu_ticks": int(fields[11]) + int(fields[12]),
+        "start_ticks": int(fields[19]),
+    }
 
 
 def thread_snapshot(pid, proc_root=Path("/proc")):
@@ -25,8 +28,12 @@ def thread_snapshot(pid, proc_root=Path("/proc")):
             threads[path.name] = _stat(path / "stat")
         except (OSError, ValueError, IndexError):
             missing += 1  # 관측 중 종료된 TID 등. 0% 사용으로 간주하지 않는다.
-    return {"at_monotonic_s": time.monotonic(), "process_start_ticks": identity,
-            "threads": threads, "unreadable_threads": missing}
+    return {
+        "at_monotonic_s": time.monotonic(),
+        "process_start_ticks": identity,
+        "threads": threads,
+        "unreadable_threads": missing,
+    }
 
 
 def observe_threads(pid, duration_s=3.0, interval_s=0.1):
@@ -66,20 +73,33 @@ def observe_threads(pid, duration_s=3.0, interval_s=0.1):
             if cpu < 0 or wall <= 0:
                 raise ValueError("TID CPU 카운터·단조 시계가 역행했습니다.")
             key = (tid, thread["start_ticks"])
-            item = totals.setdefault(key, {"tid": int(tid), "name": thread["name"],
-                                           "thread_start_ticks": thread["start_ticks"],
-                                           "observed_cpu_s": 0.0, "paired_observation_s": 0.0})
+            item = totals.setdefault(
+                key,
+                {
+                    "tid": int(tid),
+                    "name": thread["name"],
+                    "thread_start_ticks": thread["start_ticks"],
+                    "observed_cpu_s": 0.0,
+                    "paired_observation_s": 0.0,
+                },
+            )
             item["observed_cpu_s"] += cpu
             item["paired_observation_s"] += wall
     for item in totals.values():
         wall = item["paired_observation_s"]
         item["mean_cpu_percent"] = item["observed_cpu_s"] / wall * 100 if wall else None
-    return {"schema_version": 1, "kind": "existing_pid_thread_observation", "pid": pid,
-            "status": status, "requested_duration_s": duration_s, "interval_s": interval_s,
-            "observed_wall_s": samples[-1]["at_monotonic_s"] - start,
-            "thread_count_observed_max": max(len(s["threads"]) for s in samples),
-            "threads": sorted(totals.values(), key=lambda item: item["observed_cpu_s"], reverse=True),
-            "snapshots": samples,
-            "scope": "코어 하나가 100%. 연속 두 표본에 동일 시작 시각으로 존재한 TID의 CPU 차분만 포함. 생성/소멸 경계 CPU는 누락 가능.",
-            "runtime_thread_roles": None,
-            "runtime_thread_roles_reason": "스레드 이름/개수만으로 ORT 세션·spinning의 원인을 확정하지 않습니다."}
+    return {
+        "schema_version": 1,
+        "kind": "existing_pid_thread_observation",
+        "pid": pid,
+        "status": status,
+        "requested_duration_s": duration_s,
+        "interval_s": interval_s,
+        "observed_wall_s": samples[-1]["at_monotonic_s"] - start,
+        "thread_count_observed_max": max(len(s["threads"]) for s in samples),
+        "threads": sorted(totals.values(), key=lambda item: item["observed_cpu_s"], reverse=True),
+        "snapshots": samples,
+        "scope": "코어 하나가 100%. 연속 두 표본에 동일 시작 시각으로 존재한 TID의 CPU 차분만 포함. 생성/소멸 경계 CPU는 누락 가능.",
+        "runtime_thread_roles": None,
+        "runtime_thread_roles_reason": "스레드 이름/개수만으로 ORT 세션·spinning의 원인을 확정하지 않습니다.",
+    }

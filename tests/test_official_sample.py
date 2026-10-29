@@ -1,18 +1,13 @@
 """준비 도구의 파일 검증·덮어쓰기 거부. 실제 외부 오디오 다운로드 없음."""
 
 import hashlib
-import importlib.util
 import json
-from pathlib import Path
 import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
-SPEC = importlib.util.spec_from_file_location(
-    "prepare_korean_test0", Path(__file__).resolve().parents[1] / "scripts/prepare_korean_test0.py"
-)
-helper = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(helper)
+from edge_asr.tools.data import official_sample as helper
 
 
 class OfficialSampleTests(unittest.TestCase):

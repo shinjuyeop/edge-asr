@@ -1,139 +1,73 @@
 # edge-asr
 
-Raspberry Pi 5(ARM64, Debian 13, RAM 8GB)에서 한국어 ASR 모델을 비교하고 실시간 배포하기 위한 연구개발 저장소입니다. Host PC에서 개발·단위 검사를 수행하고, 실제 추론·벤치마크는 RP5에서 수행합니다. 기준 인터프리터는 Python 3.11입니다.
+Raspberry Pi 5(ARM64, Debian 13, RAM 8GB)에서 한국어 ASR 모델을 비교하고 실시간 배포하기 위한 연구 저장소입니다. **Host에서 개발하고 RP5에서 실제 추론·성능을 검증합니다.** 기준 Python은 3.11이며 모델·오디오·가상환경·원시 결과는 각 장비에 보존합니다.
 
-패키징, 설정 검사 CLI, 기존 프로브 반복 도구, 모델을 한 번 로드하는 공통 파일 평가·CER 재채점, [공통 1배속 스트리밍 모사](docs/streaming_evaluation.md), 배포 절차 및 실험 기록을 제공합니다. CPU Zipformer의 batch·paced_stream과 SenseVoiceSmall INT8의 batch 어댑터를 제공합니다. 두 모델의 RP5 실제 batch 추론과 Host 재채점을 확인했습니다. Qwen3-ASR·정답 시각 정렬·마이크·서비스 배포는 아직 미구현입니다.
+Zipformer INT8의 batch/1배속 모사와 SenseVoiceSmall INT8의 batch 평가를 구현했습니다. 공통 입력·CER·RTF·CPU/RSS·실패 기록·재채점을 사용합니다. 현재는 VAD와 발화 구간 정책을 검증하는 M3 단계입니다. [현재 상태·다음 작업](docs/status.md), [전체 문서](docs/README.md), [실측 기록](results/summaries/README.md)을 참고하세요.
 
-초기 구성의 실제 로컬 검사 결과는 [검증 기록](docs/verification.md)에 있습니다.
+## 빠른 시작
 
-새 기능은 [공통 파일 평가](docs/evaluation.md)입니다. 사람이 확인한 WAV·정답 목록을 준비한 뒤 `.venv/bin/python scripts/edge_asr.py evaluate --manifest data/evaluation/manifest.jsonl`로 CER·batch RTF·추론 CPU/RSS를 평가합니다. 저장 가설은 `score`로 재추론 없이 채점합니다. 2026-10-28 공식 WAV 단일 샘플 1회 평가가 RP5에서 성공했고 Host의 SSH 결과 회수·체크섬·재채점 대조도 확인했습니다.
-
-첫 동작 확인에는 배포처 전사를 사용할 수 있습니다. `.venv/bin/python scripts/prepare_korean_test0.py`로 기존 공식 `0.wav`의 해시를 확인해 목록을 만든 뒤 `evaluate --manifest data/evaluation/official-test0.jsonl`로 실행합니다. 스피커·수동 청취·모델 다운로드가 필요하지 않습니다. 준비와 실행 명령은 [평가 안내](docs/evaluation.md)에 있습니다.
-
-여러 발화의 개발 기준선은 [KSS 데이터 준비 안내](docs/datasets.md)를 따릅니다. Host에서 `.venv/bin/python scripts/prepare_kss_subset.py`로 고정한 50개 발화·전사를 준비하고 RP5에서 같은 공통 평가기로 실행합니다. 단일 여성 화자의 낭독이며 프로젝트의 development 자료로 사용합니다. 데이터·전사는 Git에 포함하지 않습니다.
-
-Host에서 SSH로 직접 실행한 [KSS 개발용 50개 기준선](results/summaries/zipformer-kss-dev50-20261028.md)은 50/50 성공, 총 164.919초, CER **11.64%**, batch RTF **0.1082**, 관측 최대 RSS **246.75 MiB**입니다. 2스레드 설정으로 발화별 1회 측정했으며 단일 화자의 개발 자료 결과입니다. 결과 회수·체크섬·Host 재채점 일치를 확인했습니다.
-
-같은 50개를 **1배속 입력 중 추론**한 [공통 paced_stream 기준선](results/summaries/zipformer-paced-kss-dev50-20261028.md)도 RP5에서 50/50 성공했습니다. 첫 부분 가설 시점 p50/p95 **0.832/1.432초**, 파일 끝 기준 최종 지연 **0.062/0.113초**, 큐 드롭 **0/1,678청크**, CER **11.64%**입니다. 입력 큐 백로그 이벤트 최대는 0.1초였으며 실제 정답 정렬 인식 지연·마이크·endpoint는 미계측입니다. 설정은 `configs/zipformer_paced.toml`입니다.
-
-2026-10-28 사용자가 전달한 RP5 반복 요약에서는 동일 WAV를 스레드별 30회 측정해 총 90/90회 성공했고 워밍업 9회도 실패가 없었습니다. 후속 [RP5 Codex 검사 보고](results/summaries/rp5-consolidation-audit-20261028.json)에서 한 폴더 통합, 자산·기록 일치 및 RP5 단위 테스트 35개 통과가 확인됐다고 보고됐습니다. 실측 환경은 Python 3.11.18 / NumPy 2.4.6 / sherpa-onnx 2.0.1이고, [이번 조건의 잠정 기준값](results/summaries/zipformer-repeat-20261028-reported.md)은 2스레드입니다. 이 기록은 사용자가 전달한 검사 보고에 근거하며 Host 에이전트의 직접 원격 실행이나 원본 JSON 전송을 뜻하지 않습니다.
-
-## 디렉터리
-
-| 경로 | 역할 |
-| --- | --- |
-| `src/edge_asr/` | 공통 입력·실행·채점·저장, 모델별 `adapters/`, 프로브 반복 도구 |
-| `configs/` | 버전 관리하는 실험 설정 예시 |
-| `benchmarks/` | 평가 절차와 데이터셋 명세; 실행 산출물은 `runs/`에 보관하고 Git 제외 |
-| `scripts/` | Host → RP5 소스 배포 등 운영 도구 |
-| `tests/` | 모델·오디오 없이 호스트에서 수행하는 검사 |
-| `docs/` | 설치, 아키텍처, 벤치마크 정의, 배포 절차 |
-| `experiments/` | 모델별 탐색 실험, 원본 및 작은 결과 요약 |
-| `models/`, `data/` | 로컬 가중치·오디오; 안내 문서만 버전 관리 |
-| `results/` | 로컬 실행 결과; `summaries/`의 작은 MD/JSON/CSV만 검토 후 버전 관리 가능 |
-
-원시 실행 결과는 Git에서 제외하고 현재 브랜치에는 작은 요약만 유지합니다. 초기 로그 3개는 `archive-initial-zipformer-20261028` 태그에 보관했습니다. 프로브·모델·가상환경·2스레드 기준선은 이 정리로 바뀌지 않습니다.
-
-## Host에서 시작
-
-저장소 루트에서 실행합니다. Windows Host는 WSL/Bash를 사용하면 아래 배포 스크립트를 그대로 사용할 수 있습니다.
+이미 준비된 Host/RP5 `.venv`를 사용합니다. 새 환경 설치는 [설치 안내](docs/guides/setup.md)를 따릅니다. Debian 13의 시스템 Python을 프로젝트의 3.11로 가정하지 않습니다.
 
 ```bash
-cd /d/shin/edge-asr
-python3.11 -m venv .venv
-source .venv/bin/activate
-python -m pip install -e .
-edge-asr env
-edge-asr check-config configs/zipformer_streaming.toml
-edge-asr check-config --evaluation configs/zipformer_eval.toml
-python -m unittest discover -s tests -v
-sha256sum -c experiments/m1_zipformer/SHA256SUMS
-```
-
-기본 설치는 외부 런타임 의존성이 없습니다. `check-config`는 설정 구조만 확인하며 모델 파일, ARM64 호환성 또는 추론 성공을 확인하지 않습니다. `python -m edge_asr`도 같은 명령을 제공합니다. 기존 RP5 가상환경으로 반복 도구를 사용할 때는 추가 설치가 필요하지 않습니다. 새 비교 환경에 선택 의존성 `.[zipformer]` 또는 `.[sensevoice]`를 설치하는 방법은 [환경 설치](docs/setup.md)에 있습니다.
-
-## M2-0 / M2-1 Host 구현
-
-[SenseVoice 통합 안내](docs/m2_sensevoice.md)에 비교 정책·계측 범위·외부 시간 제한·M2-2 실행 순서를 정리했습니다. 모델은 한 번 로드하고 발화마다 새 Offline 상태를 만듭니다. 기본은 배포 INT8, 한국어 `ko`, ITN 꺼짐이며 제어 태그와 raw 출력을 전사 본문과 분리합니다. `paced_stream` 요청은 실행 전에 거부합니다.
-
-```bash
-# Host에서도 모델 없이 검사 가능
-.venv/bin/python scripts/edge_asr.py check-config --evaluation configs/sensevoice_eval.toml
+# 저장소 루트에서 실행. 기존 RP5 환경에는 재설치 불필요.
 .venv/bin/python scripts/edge_asr.py env
-# sherpa import로 네이티브 ORT 버전만 조회. 모델 로딩 없음
-.venv/bin/python scripts/edge_asr.py env --probe-runtime
+.venv/bin/python scripts/edge_asr.py check-config --evaluation configs/zipformer_eval.toml
+.venv/bin/python scripts/edge_asr.py tools list
+
+# 준비된 자료가 있을 때 RP5에서 실제 평가
+.venv/bin/python scripts/edge_asr.py evaluate \
+  --config configs/zipformer_eval.toml \
+  --manifest data/evaluation/kss-dev50/manifest.jsonl
 ```
 
-새 실행에는 sherpa 네이티브 ORT와 Python onnxruntime 버전, 로딩 단계 시간·CPU/RSS, 추론 단계 자원을 나누어 기록합니다. 기존 `ko_cer_v1`·RTF 계산과 M1 결과는 유지합니다. 선택 진단 `threads --pid <실제_평가_PID>`는 Linux TID별 CPU를 관찰하며 기존 CPU 324%의 원인을 확정하지 않습니다. 가중치 다운로드·RP5 환경 변경·새 추론은 이번 Host 구현 범위에 포함하지 않습니다.
+설치된 환경에서는 `edge-asr` 또는 `python -m edge_asr`도 같은 CLI입니다. 평가용 WAV/정답 목록이 없으면 [데이터 준비](docs/guides/datasets.md)부터 진행합니다. 데이터 준비·VAD 진단·결과 집계는 `edge-asr tools <명령>`에 모았으며, [이전 scripts 명령 이행표](docs/reference/tooling.md)를 제공합니다.
 
-## M2-2 RP5 batch 검증
+## 폴더와 코드 역할
 
-[SenseVoice 실제 측정 기록](results/summaries/sensevoice-kss-dev50-20261028.md)은 기존 환경에 패키지를 설치하지 않고 새 모델 폴더만 추가해 실행했습니다. 동일 KSS 개발 자료 50/50 성공, CER **5.16%**, batch RTF **0.0982**, 추론 구간 관측 최대 RSS **554.14 MiB**입니다. `ko`·ITN 꺼짐·1스레드·발화별 1회 측정이며 기존 Zipformer 2스레드 결과와 통제된 속도 순위로 비교하지 않습니다. 원시 기록 37개 해시와 Host 재채점 일치, 기존 자산/환경 파일 2,028개 보존을 확인했습니다.
+```text
+src/edge_asr/
+  adapters/          Zipformer·SenseVoice 모델별 호출
+  tools/
+    data/            데이터 준비·검수 결정 반영
+    probes/          RP5 측정·외부 온도/시간 제한
+    reports/         원시 검증·추론 없는 집계
+    maintenance/     과거 작업 폴더 통합
+  artifacts.py       공통 해시·JSON 산출물
+  resources.py       프로세스 CPU/RSS 표본
+  dataset.py         manifest·PCM16 WAV
+  evaluation.py      공통 ASR 실행
+  streaming.py       독립 입력·유한 큐·1배속 모사
+  segmentation.py    공통 PCM 버퍼·발화 구간 상한
+configs/             현재 모델 설정; legacy/는 M1 탐색 설정
+scripts/             공통 CLI·M1 반복·선택 배포 진입점
+benchmarks/          평가 입력·측정 명세
+experiments/         보존 원본·참고 코드
+results/summaries/   버전 관리하는 작은 검증 보고서
+models/, data/       로컬 모델·오디오·검수 자료
+results/             로컬 원시 실행·회수 기록
+```
 
-별도 짧은 합성 무음 검사에서 0.5초에 “응”, 1초에 “그”가 반환됐습니다. 실시간 서비스·Refine 전에 VAD·무음 처리를 검증해야 합니다. 이번 완료 범위는 실제 Offline batch이며 Streaming·Refine·M2 전체 완료를 뜻하지 않습니다.
+공통 패키지와 모델 어댑터는 실행 도구를 import하지 않습니다. 도구는 공통 계약을 재사용하며 선택한 명령만 지연 import합니다. [구조와 확장 경계](docs/reference/architecture.md), [지표 정의](docs/reference/benchmark_design.md).
 
-## M2-3 통제 비교
-
-M2-3의 재현 도구는 [통제 비교 절차](docs/m2_comparison.md)와 [외부 한국어 자료 선택](docs/m2_external_data.md)에 설명합니다. 기존 공통 평가기와 어댑터를 유지하면서 새 프로세스의 1/2/4스레드 반복, 온도 관찰, 별도 TID CPU 진단, FLEURS 100개와 무음·길이별 입력을 준비합니다. 자료와 원시 실행은 Git에서 제외하며 기존 M1/M2-2 기록을 덮어쓰지 않습니다.
-
-[M2-3 실제 비교 보고서](results/summaries/m2-3-comparison-20261028.md)에서 RP5 36개 실행과 Host 재채점·454개 결과 해시 일치를 확인했습니다. 외부 FLEURS 100개 CER은 Zipformer 2스레드 **57.44%**, SenseVoice 4스레드 **8.63%**였습니다. 낮은 음량 자료의 삭제 오류, SenseVoice의 무음 오인식·장문 비용, 최고 85.9°C와 throttling 이력도 함께 기록했습니다. Hybrid 채택에는 냉각·음성 구간 정책·동시 실행 지연 검증이 더 필요합니다.
-
-[M3-0 사전 검증 절차](docs/m3_preflight.md)는 원본 보존 음량 파생본, 1Hz 현재 제한 감시와 180초 부하 검사, VAD·3/5/8초 구간 후보 및 M3-1 동시 실행 계획을 정의합니다. 실제 결과는 별도 실행 기록으로 보고하며, 냉각 허용 조건 위반 시 통제 비교를 중단합니다. 이미 분석한 FLEURS 100개는 최종 독립 평가로 재사용하지 않습니다.
-
-[M3-0 실측 보고서](results/summaries/m3-0-preflight-20261029.md)에서 KSS 음량 조건 900건과 공통 RMS 개발 후보를 확인했습니다. SenseVoice 1T 8분 부하는 통과했지만, 기존 Zipformer 2T는 75°C 중단선 초과로 종료했습니다(현재 throttling 비트는 0). VAD 실측과 Hybrid 동시 실행은 미검증이며 M3 전체 완료를 의미하지 않습니다. Host/RP5 단위 테스트는 각각 127개 통과했고 기존 보호 파일 3,226개를 보존했습니다.
-
-[후속 VAD 실측 보고서](results/summaries/m3-vad-followup-20261029.md)에서는 Silero VAD를 기존 RP5 환경에서 실행하고 연속 전처리 API를 검증했습니다. 1배속 연속 입력 9개 구간의 전체 누락은 원음 5개·RMS 0개, 합성 잡음 6개의 오탐은 원음 2개·RMS 4개여서 **VAD 정책은 아직 채택하지 않았습니다**. 길이 설정은 강제 상한이 아니므로 별도 활성 구간 처리가 필요합니다. Host/RP5 134개 테스트 통과, 보호 파일 3,801개 보존을 확인했습니다. 고부하 냉각 조건이 해결되지 않아 Hybrid 동시 실행은 계속 보류합니다.
-
-[연속 구간 처리 실측 보고서](results/summaries/m3-segmentation-20261029.md)에서는 공통 전처리·VAD·외부 PCM 구간 상한과 독립 입력 큐를 연결했습니다. 수정 후 1,048행·구간 PCM 1,749개를 검증했고 1배속 52회 재생의 3,084청크에서 드롭 0을 확인했습니다. 초기 활성 native flush 실패도 보존했습니다. 현재는 native 활성 30초 예산을 넘으면 중단하며, VAD 누락·오탐과 고부하 냉각은 여전히 미해결입니다. Host/RP5 각 144개 테스트와 보호 파일 4,073개 보존을 확인했으며 M3-1 동시 ASR 완료를 의미하지 않습니다.
-
-[공개 VAD 자료 준비 안내](docs/m3_public_vad_data.md)는 Seoul Corpus의 시간 라벨·음성 및 실제 잡음으로 검수 후보를 만듭니다. 원본을 보존하고 정답이 null인 별도 목록·로컬 청취 페이지를 생성합니다. 검수가 끝나기 전에는 ASR/VAD 정확도 평가에 사용하지 않습니다.
-
-[자료 준비 검증 기록](results/summaries/m3-public-vad-data-20261029.md)에서 40명 화자의 짧은 발화 80개·긴 발화 13개와 잡음 5개를 준비하고 Host/RP5 각 152개 테스트 및 전송 파일 일치를 확인했습니다. 이는 자료 준비 결과이며 새로운 모델 정확도·VAD 성능 결과가 아닙니다.
-
-[VAD 구간 주석과 예비 비교](docs/m3_vad_annotations.md)는 검수 결정 반영, 불명확 구간을 제외한 프레임 채점, 화자 보류, 기존 Silero의 RP5 진단과 Host 재채점을 제공합니다. 배포 라벨 예비 점검과 실제 청취 검수 정답을 구분하며, 미검수 잡음을 무음 정답으로 취급하지 않습니다.
-
-[RP5 예비 비교 결과](results/summaries/m3-vad-provisional-20261029.md)는 개발용 80개 × 두 조건 160/160 성공과 보류 18개 미실행을 확인했습니다. 배포 라벨 기준 초단문 전체 누락은 원음 9/64·RMS 4/64였으나 RMS의 새 누락 1개와 비음성 구간 검출 증가가 있어 정책 채택은 보류합니다. Host/RP5 각 163개 테스트와 기존 3,973개 자산 보존을 확인했습니다. 실제 사람 검수 정답·endpoint·ASR/Hybrid 지연은 아직 미확정입니다.
-
-## 기존 Zipformer 실험
-
-아래 모든 값은 **동일한 3.526초 WAV 단일 샘플에 대한 설정별 1회 측정**입니다. 반복 측정 통계나 모델 전체의 성능을 의미하지 않습니다. 기존 RP5에서 가져온 파일은 수정하지 않고 보존했습니다.
-
-| 측정 모드 | 스레드 | 결과 | 출처 |
-| --- | --- | --- | --- |
-| 파일 일괄 처리 | 미상 | RTF 0.110 | 사용자 제공 기존 측정값; 원시 로그 없음 |
-| 오디오 속도 모사 스트리밍 | 2 | 오디오 시작 기준 첫 부분 출력 0.837초; 최종 처리 지연 0.064초 | 보존된 원시 로그 |
-
-0.837초에는 오디오가 입력될 때까지의 대기가 포함됩니다. 이를 실제 인식 처리 지연으로 해석하면 안 됩니다. 0.064초는 파일 끝 이후 결과 확정까지의 프로브 측정값이며 실제 발화 끝의 endpoint 지연은 아닙니다. 파일 일괄 처리 RTF와 스트리밍 전체 경과 시간은 서로 다른 측정입니다.
-
-1·2·4스레드 요약과 보관 태그의 원시 결과 위치, 측정 한계 및 무결성 확인 방법은 [실험 README](experiments/m1_zipformer/README.md), 지표 정의는 [벤치마크 설계](docs/benchmark_design.md)를 참고하세요.
-
-위 기존 1회 측정과 별도로, [2026-10-28 반복 요약](results/summaries/zipformer-repeat-20261028-reported.md)에서 2스레드의 첫 부분 시점 p50/p95는 0.831/0.835초, 최종 지연 p50/p95는 0.064/0.086초로 보고됐습니다. 같은 WAV 한 개의 반복이며 여러 발화에서의 정확도·실시간 서비스 검증은 아닙니다.
-
-## RP5 배포와 다음 구현
-
-RP5 작업 폴더는 **`/home/deepet/projects/edge-asr` 하나**로 통일합니다. 소스·`.git`·기존 `.venv`·모델·데이터·실행 결과를 이 안에 두고, Git에는 소스와 작은 요약만 올립니다.
-
-현재 RP5는 사용자 전달 검사 보고 기준으로 통합 완료입니다. 아래는 아직 `edge-asr`, `edge-asr-git`, `edge-asr-bench-20261028-01` 세 폴더를 사용하는 경우에만 수행하는 일회성 절차입니다. 이미 통합한 장비에서는 재실행하지 않습니다.
+## 개발·검증·동기화
 
 ```bash
-cd /home/deepet/projects/edge-asr-git &&
-git pull --ff-only origin main &&
-/home/deepet/projects/edge-asr/.venv/bin/python scripts/consolidate_rp5.py --apply &&
-cd /home/deepet/projects/edge-asr
+# Host, 모델 없이 전체 회귀 검사
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v
+# Host의 선택 개발 도구: pip install -e '.[dev]'
+ruff check src tests scripts
+ruff format --check src tests scripts
+# 원본 확인
+sha256sum -c experiments/m1_zipformer/SHA256SUMS
+sha256sum -c experiments/m1_zipformer/reference/SHA256SUMS
 ```
 
-통합 도구는 기존 `edge-asr` 경로를 유지합니다. 다른 두 폴더는 그 안의 `.local-backups/consolidate-<시각>-<임의문자>/`에 보관하므로 프로젝트 부모 아래에는 작업 폴더 하나만 남습니다. 모델·가상환경을 옮기거나 다시 설치하지 않으며 기존 소스 충돌은 백업 후 반영합니다. 현재 RP5에서는 `0297f0a` 커밋 기준 추적 파일 39개가 소스 백업과 일치하고 통합 영수증이 `completed`라고 보고됐습니다. 미리보기·거부 조건·복원 기록은 [배포 안내](docs/deployment.md)를 따릅니다.
+Host `/d/shin/edge-asr`와 RP5 `/home/deepet/projects/edge-asr`는 **main 하나**로 관리합니다. Host에서 commit/push한 뒤 RP5에서 `git pull --ff-only origin main`으로 소스를 갱신합니다. 모델·자료·원시 결과는 Git에 포함하지 않고 새 경로에 별도로 전달해 해시를 확인합니다. [배포·보존 절차](docs/guides/deployment.md), [테스트 범위](tests/README.md).
 
-통합 후 평소 사용법은 다음과 같습니다. 벤치마크는 새 측정이 필요할 때만 실행합니다.
+## 현재 확인한 범위
 
-```bash
-cd /home/deepet/projects/edge-asr &&
-git pull --ff-only origin main
+- M1/M2: Zipformer batch·paced_stream과 SenseVoice batch를 RP5에서 실행하고 Host 재채점을 대조했습니다. 모델 간 비교에는 같은 자료·정규화·실행 조건과 각 기록의 한계를 확인해야 합니다.
+- M3: 공개 자료 98개 중 18개를 보류하고 개발 80개 × 원음/RMS로 실제 VAD 160회를 확인했습니다. 배포 라벨 예비 비교에서 초단문 전체 누락은 9/64·4/64였으나 RMS의 새 누락과 비음성 검출 증가가 남았습니다. [예비 결과](results/summaries/m3-vad-provisional-20261029.md).
+- 다음 과제: 실제 청취/파형 검수, native 활성 30초 한계, 고부하 냉각 조건입니다. 실제 endpoint·Hybrid 동시 실행·마이크·Qwen3-ASR은 후속 범위입니다. 기존 단독 batch 수치로 동시 성능을 추정하지 않습니다.
 
-# 새 측정을 할 때만 실행
-.venv/bin/python scripts/benchmark_zipformer.py --asset-root .
-```
-
-Host와 RP5 모두 `main` 하나로 관리합니다. Host의 main에서 개발·커밋·push하고 RP5의 main에서 pull·실행합니다. 별도 feature 브랜치는 만들지 않습니다. 가중치·WAV·가상환경·원시 결과·내부 백업은 각 장비에 둡니다. 기존 90회 결과를 통합 때문에 다시 측정할 필요는 없습니다.
-
-Zipformer·SenseVoice의 RP5 batch와 Zipformer의 1배속 모사 기준선을 확인했습니다. 다음은 같은 스레드/실행 제한 조건의 비교와 VAD·무음 검증 → 추가 모델·Refine 구조 검토 → 마이크·endpoint·서비스 통합입니다. 정답 시각 정렬 인식 지연과 최종 정확도 평가는 튜닝과 분리한 다화자·잡음 데이터로 확장해야 합니다. 기존 원시는 RP5 백업에 유지합니다. 설계 범위는 [아키텍처](docs/architecture.md)에 있습니다.
+초기 Zipformer 3.526초 WAV의 1/2/4스레드 결과는 **동일 단일 샘플의 각 1회 측정**입니다. [보존 기록](experiments/m1_zipformer/README.md)에서 출처와 한계를 확인할 수 있습니다. 과거 보고서의 수치·환경을 현재 조건으로 소급 변경하지 않습니다.
