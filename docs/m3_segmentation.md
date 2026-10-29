@@ -43,3 +43,15 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv/bin/python -m unittest discover -
 5. 첫 실패는 `results/preflight/m3-segments-20261029-01`, 수정 후 검증은 새 `results/preflight/m3-segments-20261029-02`에 보존한다. 입력 목록은 동일한 `data/evaluation/m3-segments-20261029-01`을 사용한다. 작은 요약만 Git에 보존하며 기존 파일/설치 환경 해시를 재검사하고 Host/GitHub/RP5 main을 맞춘다.
 
 다음에는 사람 검수 음성 경계와 자연 초단문/현장 잡음 개발 자료를 확보해야 한다. 실제 모델 동시 실행은 냉각·VAD 정책 합격 이후 별도 M3-1 단계에서 한다.
+
+## 실측 결과와 추가 경계 검사
+
+[2026-10-29 보고서](../results/summaries/m3-segmentation-20261029.md)에 초기 실패와 수정 후 검증을 함께 기록했다. 기본 1배속 목록에서 강제 분할이 발생하지 않아 `boundary-plan.json`을 별도로 만들고, 빠른 입력에서 두 정책 모두 5초를 넘긴 `kss-train-01025-clean` 하나의 3/5초 경계를 각각 1배속으로 확인했다. 이 사후 선정은 코드 분기의 검증이며 정확도/성능 정책 선정이 아니다. native 설정·입력 전처리·원본을 바꾸지 않았으며 기본 48행과 별도 4행으로 보고한다.
+
+```bash
+# Host: 완료/통제/입력·구간 PCM/큐 이벤트를 검증한 뒤 기본 네 실행 집계
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/summarize_segment_probe.py \
+  --base results/preflight/m3-segments-20261029-02 --output <새_요약.json>
+```
+
+집계기는 기본 1,044행을 검사한다. 별도 경계 4행의 `verify_row()`·원시 이벤트 검증은 `boundary-analysis.json`에 기록했다. 강제 구간 끝 시각부터의 반환 시간과 자연 WAV 끝 대리 지연은 별도다. 두 값 모두 ASR 인식 지연이 아니다.

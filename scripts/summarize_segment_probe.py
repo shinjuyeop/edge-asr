@@ -126,6 +126,7 @@ def summarize(root, base, data):
                     'parent_cpu_percent_over_call':sum(r['process_cpu_s'] for r in group)/sum(r['call_wall_s'] for r in group)*100,
                     'parent_peak_rss_mib':max(r['resources']['rss_observed_max_mib'] for r in group),
                     'endpoint_wav_end_wall_proxy_s':distribution([r['endpoint_from_source_wav_end_wall_s'] for r in positive if r['endpoint_from_source_wav_end_wall_s'] is not None]),
+                    'hard_boundary_publish_delay_s':distribution([s['emitted_at_wall_s']-s['owned_end_frame']/16000 for s in segments if s['reason']=='hard_limit' and s['emitted_at_wall_s'] is not None]),
                     'dropped_chunks':sum(r['replay']['dropped_chunks'] for r in group) if paced else None,
                     'max_queued_audio_s':max(r['replay']['backlog']['event_max_audio_s'] for r in group) if paced else None,
                     'queue_wait_s':distribution([v for r in group for v in r['replay']['queue_wait_s_values']]) if paced else None,
