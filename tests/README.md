@@ -1,5 +1,7 @@
 # 호스트 검사
 
+`test_vad_annotations.py`, `test_vad_annotation_summary.py`는 구간 합집합·불명확 구간 제외·검수자/해시 검증·음수 endpoint·EOF/강제 분할 제외, 보류 표본 배제, 실패 원시 보존과 양쪽 성공 표본 재채점을 검사합니다. 배포 라벨 비교를 사람이 검수한 정답 결과로 바꾸지 않으며, 실제 RP5 VAD 검증과 구분합니다.
+
 `test_public_vad_review.py`, `test_public_vad_audio.py`는 합성 TextGrid의 인코딩·중복 tier·손상·경계, 모델 출력과 무관한 후보 선정, 원본 해시·경로·출력 보존과 null 정답의 평가 거부를 검사합니다. Host ffmpeg가 있으면 합성 44.1kHz 음원의 실제 변환·절취도 확인합니다. 공개 음원 다운로드·사람 청취·RP5 모델 추론을 대신하는 검사가 아닙니다.
 
 `test_sensevoice.py`는 합성 NumPy/sherpa로 Offline factory 인자·언어/ITN·1회 로딩·발화별 새 상태·padding/온라인 호출 부재·본문/제어 태그/raw 분리·자산/입력 오류를 검사합니다. 공통 batch 평가·CER·로딩/추론 자원 분리·모델/음원 제거 후 재채점·CLI와 미지원 paced_stream 사전 거부도 검사합니다. 실제 SenseVoice 가중치나 추론 런타임은 사용하지 않습니다.
