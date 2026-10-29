@@ -75,6 +75,6 @@ PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/prepare_vad_annotations.py \
 
 기본 모드 `reviewed`는 미검수/예비 라벨이 있으면 모델 로딩 전에 거부한다. 예비 진단을 하려면 `--mode provisional`을 명시한다. 53°C 이하 3회 시작 조건·75°C 중단선·현재 제한/새 이력/계측 결측 감시·600초/4GiB 외부 제한을 유지한다. 온도/클럭과 TID 관측 원시도 저장한다. 파일별 Python 오류나 native 활성 예산 초과는 실패 행으로 남기고 채점하지 않는다. 네이티브 중단·전체 실행 실패는 외부 기록으로 보존한다.
 
-호출 RTF는 **전처리·VAD·구간 콜백의 호출 wall 시간 / 문맥을 포함한 WAV 길이**다. 파일 읽기·해시·채점과 모델 로딩은 제외한다. RSS 샘플러 오버헤드는 호출에 포함된다. 로딩/워밍업은 별도 기록한다. ASR batch RTF와 비교하지 않는다.
+호출 RTF는 **전처리·VAD·구간 콜백의 호출 wall 시간 / 문맥을 포함한 WAV 길이**다. WAV 파일 읽기·원본 해시 검증·채점과 모델 로딩은 제외한다. 공통 PCM/구간 payload 해시 계산과 RSS 샘플러 오버헤드는 호출에 포함된다. 로딩/워밍업은 별도 기록한다. ASR batch RTF와 비교하지 않는다.
 
 Host 회수 후 `summarize_annotated_vad.py --annotations ... --runs ... --output <새_JSON>`로 재채점한다. 소스·설정·음원/PCM 해시·주석·표본 누락/중복·열 통제·실패 수를 검증한다. 표는 양쪽에서 성공한 같은 표본만 사용하며 제외된 실패 ID/오류도 함께 보고한다. 실제 계측이 없는 항목은 0으로 채우지 않는다.

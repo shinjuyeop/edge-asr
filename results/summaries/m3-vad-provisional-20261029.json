@@ -1,0 +1,447 @@
+{
+  "schema": "annotated-vad-comparison-v1",
+  "source_commit": "c4ec5c8d7b64564e7b27ec41df089651d357fee6",
+  "mode": "provisional",
+  "annotation_sha256": "81bfb4eb9c7e1da282b06d2bd687acc712f35c2d5197f99e99b166a9162cf751",
+  "planned_per_policy": 80,
+  "paired_successful": 80,
+  "holdout_not_executed": 18,
+  "table": {
+    "long": {
+      "identity": {
+        "successful": 11,
+        "frame_counts": {
+          "speech_frames": 1587288,
+          "non_speech_frames": 7645,
+          "ignored_frames": 161753,
+          "true_positive_frames": 1538041,
+          "false_negative_frames": 49247,
+          "false_positive_frames": 384,
+          "true_negative_frames": 7261,
+          "predicted_in_ignored_frames": 38884
+        },
+        "speech_miss_fraction": 0.03102587558149498,
+        "non_speech_false_alarm_fraction": 0.05022890778286462,
+        "target_eligible": 11,
+        "target_fully_missed": 0,
+        "clips_with_emissions": 11,
+        "audio_s": 109.792875,
+        "call_wall_s": 3.315614178965916,
+        "pipeline_rtf": 0.03019881006819355,
+        "mean_process_cpu_percent": 100.0758498093668,
+        "rss_observed_max_mib": 73.328125,
+        "endpoint_audio_timeline_s": {
+          "n": 0,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        }
+      },
+      "rms26": {
+        "successful": 11,
+        "frame_counts": {
+          "speech_frames": 1587288,
+          "non_speech_frames": 7645,
+          "ignored_frames": 161753,
+          "true_positive_frames": 1554297,
+          "false_negative_frames": 32991,
+          "false_positive_frames": 2403,
+          "true_negative_frames": 5242,
+          "predicted_in_ignored_frames": 42056
+        },
+        "speech_miss_fraction": 0.020784507915387756,
+        "non_speech_false_alarm_fraction": 0.3143230869849575,
+        "target_eligible": 11,
+        "target_fully_missed": 0,
+        "clips_with_emissions": 11,
+        "audio_s": 109.792875,
+        "call_wall_s": 3.276879052951699,
+        "pipeline_rtf": 0.029846008249184652,
+        "mean_process_cpu_percent": 100.1285821045029,
+        "rss_observed_max_mib": 74.046875,
+        "endpoint_audio_timeline_s": {
+          "n": 0,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        }
+      }
+    },
+    "noise_candidate": {
+      "identity": {
+        "successful": 5,
+        "frame_counts": {
+          "speech_frames": 0,
+          "non_speech_frames": 0,
+          "ignored_frames": 2402586,
+          "true_positive_frames": 0,
+          "false_negative_frames": 0,
+          "false_positive_frames": 0,
+          "true_negative_frames": 0,
+          "predicted_in_ignored_frames": 5504
+        },
+        "speech_miss_fraction": null,
+        "non_speech_false_alarm_fraction": null,
+        "target_eligible": 0,
+        "target_fully_missed": null,
+        "clips_with_emissions": 1,
+        "audio_s": 150.161625,
+        "call_wall_s": 4.13688587701472,
+        "pipeline_rtf": 0.02754955453508658,
+        "mean_process_cpu_percent": 100.0934527347433,
+        "rss_observed_max_mib": 75.171875,
+        "endpoint_audio_timeline_s": {
+          "n": 0,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        }
+      },
+      "rms26": {
+        "successful": 5,
+        "frame_counts": {
+          "speech_frames": 0,
+          "non_speech_frames": 0,
+          "ignored_frames": 2402586,
+          "true_positive_frames": 0,
+          "false_negative_frames": 0,
+          "false_positive_frames": 0,
+          "true_negative_frames": 0,
+          "predicted_in_ignored_frames": 12160
+        },
+        "speech_miss_fraction": null,
+        "non_speech_false_alarm_fraction": null,
+        "target_eligible": 0,
+        "target_fully_missed": null,
+        "clips_with_emissions": 1,
+        "audio_s": 150.161625,
+        "call_wall_s": 4.124073727012728,
+        "pipeline_rtf": 0.02746423213662431,
+        "mean_process_cpu_percent": 100.0981956738733,
+        "rss_observed_max_mib": 75.5,
+        "endpoint_audio_timeline_s": {
+          "n": 0,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        }
+      }
+    },
+    "short": {
+      "identity": {
+        "successful": 64,
+        "frame_counts": {
+          "speech_frames": 473327,
+          "non_speech_frames": 173767,
+          "ignored_frames": 727137,
+          "true_positive_frames": 346063,
+          "false_negative_frames": 127264,
+          "false_positive_frames": 28254,
+          "true_negative_frames": 145513,
+          "predicted_in_ignored_frames": 156538
+        },
+        "speech_miss_fraction": 0.2688712032062401,
+        "non_speech_false_alarm_fraction": 0.16259704086506643,
+        "target_eligible": 64,
+        "target_fully_missed": 9,
+        "clips_with_emissions": 56,
+        "audio_s": 85.8894375,
+        "call_wall_s": 2.4541449709795415,
+        "pipeline_rtf": 0.028573303568084744,
+        "mean_process_cpu_percent": 100.09257855780027,
+        "rss_observed_max_mib": 73.03125,
+        "endpoint_audio_timeline_s": {
+          "n": 0,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        }
+      },
+      "rms26": {
+        "successful": 64,
+        "frame_counts": {
+          "speech_frames": 473327,
+          "non_speech_frames": 173767,
+          "ignored_frames": 727137,
+          "true_positive_frames": 379286,
+          "false_negative_frames": 94041,
+          "false_positive_frames": 37665,
+          "true_negative_frames": 136102,
+          "predicted_in_ignored_frames": 189780
+        },
+        "speech_miss_fraction": 0.1986808274195218,
+        "non_speech_false_alarm_fraction": 0.2167557706584104,
+        "target_eligible": 64,
+        "target_fully_missed": 4,
+        "clips_with_emissions": 60,
+        "audio_s": 85.8894375,
+        "call_wall_s": 2.4252158269810025,
+        "pipeline_rtf": 0.0282364851554768,
+        "mean_process_cpu_percent": 100.11645685252323,
+        "rss_observed_max_mib": 71.59375,
+        "endpoint_audio_timeline_s": {
+          "n": 0,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        }
+      }
+    }
+  },
+  "policies": {
+    "identity": {
+      "failures": [],
+      "loading": {
+        "wall_s": 0.09435079300601501,
+        "process_cpu_s": 0.32734574,
+        "resources": {
+          "sample_interval_s": 0.1,
+          "rss_observed_max_mib": 64.9375,
+          "rss_sample_count": 2,
+          "rss_missing_count": 0,
+          "rss_samples": [
+            {
+              "monotonic_s": 94652.369098771,
+              "rss_mib": 26.703125
+            },
+            {
+              "monotonic_s": 94652.46330421,
+              "rss_mib": 64.9375
+            }
+          ]
+        }
+      },
+      "warmup_call_s": 0.03612645299290307,
+      "max_temperature_c": 59.5,
+      "thermal_samples": 11,
+      "runtime": {
+        "sherpa_package_version": "2.0.1",
+        "sherpa_core_package_version": "2.0.1",
+        "python_onnxruntime_package_version": "1.31.1",
+        "sherpa_native_onnxruntime_version": "1.28.2",
+        "native_version_source": "sherpa_onnx.onnxruntime_version",
+        "status": "available",
+        "reason": null
+      }
+    },
+    "rms26": {
+      "failures": [],
+      "loading": {
+        "wall_s": 0.09166134799306747,
+        "process_cpu_s": 0.32471172299999995,
+        "resources": {
+          "sample_interval_s": 0.1,
+          "rss_observed_max_mib": 64.9375,
+          "rss_sample_count": 2,
+          "rss_missing_count": 0,
+          "rss_samples": [
+            {
+              "monotonic_s": 94672.548948456,
+              "rss_mib": 26.703125
+            },
+            {
+              "monotonic_s": 94672.640472932,
+              "rss_mib": 64.9375
+            }
+          ]
+        }
+      },
+      "warmup_call_s": 0.03595208199112676,
+      "max_temperature_c": 60.6,
+      "thermal_samples": 11,
+      "runtime": {
+        "sherpa_package_version": "2.0.1",
+        "sherpa_core_package_version": "2.0.1",
+        "python_onnxruntime_package_version": "1.31.1",
+        "sherpa_native_onnxruntime_version": "1.28.2",
+        "native_version_source": "sherpa_onnx.onnxruntime_version",
+        "status": "available",
+        "reason": null
+      }
+    }
+  },
+  "scope": "배포 주석 예비 비교와 사람 검수 정답 분리. 표는 양쪽 성공한 같은 표본만 집계. 실패는 policies에 보존.",
+  "gold_accuracy_available": false,
+  "asr_cer": null,
+  "asr_rtf": null,
+  "streaming_first_text_s": null,
+  "refine_delay_s": null,
+  "date": "2026-10-29",
+  "status": "provisional_rp5_validation_complete_human_review_pending",
+  "diagnostics": {
+    "identity": {
+      "all_successful": {
+        "successful": 80,
+        "frame_counts": {
+          "speech_frames": 2060615,
+          "non_speech_frames": 181412,
+          "ignored_frames": 3291476,
+          "true_positive_frames": 1884104,
+          "false_negative_frames": 176511,
+          "false_positive_frames": 28638,
+          "true_negative_frames": 152774,
+          "predicted_in_ignored_frames": 200926
+        },
+        "speech_miss_fraction": 0.0856593783894614,
+        "non_speech_false_alarm_fraction": 0.15786166295504156,
+        "target_eligible": 75,
+        "target_fully_missed": 9,
+        "clips_with_emissions": 68,
+        "audio_s": 345.8439375,
+        "call_wall_s": 9.906645026960177,
+        "pipeline_rtf": 0.028644842233095897,
+        "mean_process_cpu_percent": 100.08734472686037,
+        "rss_observed_max_mib": 75.171875,
+        "endpoint_audio_timeline_s": {
+          "n": 0,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        }
+      },
+      "loading_wall_s": 0.09435079300601501,
+      "loading_rss_mib": 64.9375,
+      "admission_c": 50.7,
+      "peak_c": 59.5,
+      "clock_khz_range": [
+        2400000,
+        2400000
+      ],
+      "observed_current_limits": [
+        0
+      ],
+      "history_flags": [
+        917504
+      ],
+      "tid_samples": 10,
+      "observed_thread_counts": [
+        5
+      ],
+      "main_tid_matched_intervals": 9,
+      "main_tid_sampled_cpu_percent": 100.03653404741203
+    },
+    "rms26": {
+      "all_successful": {
+        "successful": 80,
+        "frame_counts": {
+          "speech_frames": 2060615,
+          "non_speech_frames": 181412,
+          "ignored_frames": 3291476,
+          "true_positive_frames": 1933583,
+          "false_negative_frames": 127032,
+          "false_positive_frames": 40068,
+          "true_negative_frames": 141344,
+          "predicted_in_ignored_frames": 243996
+        },
+        "speech_miss_fraction": 0.06164761491108237,
+        "non_speech_false_alarm_fraction": 0.22086741781139066,
+        "target_eligible": 75,
+        "target_fully_missed": 4,
+        "clips_with_emissions": 72,
+        "audio_s": 345.8439375,
+        "call_wall_s": 9.82616860694543,
+        "pipeline_rtf": 0.02841214646691741,
+        "mean_process_cpu_percent": 100.11283616736165,
+        "rss_observed_max_mib": 75.5,
+        "endpoint_audio_timeline_s": {
+          "n": 0,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        }
+      },
+      "loading_wall_s": 0.09166134799306747,
+      "loading_rss_mib": 64.9375,
+      "admission_c": 52.35,
+      "peak_c": 60.6,
+      "clock_khz_range": [
+        1500000,
+        2400000
+      ],
+      "observed_current_limits": [
+        0
+      ],
+      "history_flags": [
+        917504
+      ],
+      "tid_samples": 10,
+      "observed_thread_counts": [
+        5
+      ],
+      "main_tid_matched_intervals": 9,
+      "main_tid_sampled_cpu_percent": 99.6883173204784
+    }
+  },
+  "tests": {
+    "host": {
+      "count": 163,
+      "seconds": 9.199,
+      "passed": true,
+      "log_sha256": "f855ae4df92a2b95479af038934c519ed4797b165a49442247a9d6495763c040"
+    },
+    "rp5": {
+      "count": 163,
+      "seconds": 13.829,
+      "passed": true,
+      "log_sha256": "c1289d449550ac526382a5e411e989af05ae963b458d0066b537ddd82daf4b58"
+    }
+  },
+  "preservation": {
+    "status": "passed",
+    "protected_files_unchanged": 3973,
+    "packages_unchanged": true,
+    "python_unchanged": true,
+    "annotation_sha256": "81bfb4eb9c7e1da282b06d2bd687acc712f35c2d5197f99e99b166a9162cf751",
+    "held_out_not_executed": 18
+  },
+  "verified_raw_files": 18,
+  "review_focus": {
+    "scope": "오류 원인 조사용 목록. 고정된 개발/보류 집합을 바꾸거나 정답을 자동 확정하지 않음.",
+    "no_longer_fully_missed": [
+      "seoul-s09f17f1-u0002",
+      "seoul-s13m26m1-u0005",
+      "seoul-s14m23m1-u0007",
+      "seoul-s14m23m1-u0013",
+      "seoul-s29f37m1-u0041",
+      "seoul-s39f43f1-u0010"
+    ],
+    "newly_fully_missed": [
+      "seoul-s17f24f1-u0032"
+    ],
+    "still_fully_missed": [
+      "seoul-s12m23f1-u0030",
+      "seoul-s18f27m1-u0002",
+      "seoul-s21m31m1-u0002"
+    ],
+    "unreviewed_noise_emissions": {
+      "identity": [
+        "noise-free-sound-0002"
+      ],
+      "rms26": [
+        "noise-free-sound-0002"
+      ]
+    }
+  },
+  "evidence_sha256": {
+    "results/preflight/m3-vad-annotations-20261029-01/verification.json": "fafba4f823585f9f73bfb228441b13786ca43a2fd48325af8c6993d11edacbbb",
+    "results/preflight/m3-vad-annotations-20261029-01/summary.json": "ead71e0dedc1fb8ca1c6546fb05e9f6de9efd43c1a2068f2fb625684dbd88a29",
+    "results/preflight/m3-vad-annotations-20261029-01/review-focus.json": "fbb8aab2550b5ffa50ea27dd664045de135f00509d78bd48bc83bf884a1234b5",
+    "data/review/m3-vad-annotations-20261029-01/provenance.json": "01b8a8008bc8ec455891090c83ddd8f5124471580640a936a53fa12690c0d896"
+  },
+  "limitations_ko": [
+    "배포 라벨 예비 비교이며 이번 프로젝트의 사람 청취 검수 미완료. 정답 기반 endpoint는 모두 null.",
+    "32명 개발 화자/80개, 각 조건 1회. 보류 8명/18개 미실행. 모델 학습 데이터 중복 미확인.",
+    "잡음은 전체 ignore여서 검출이 있어도 오탐률로 부르지 않음. 긴 발화의 비음성 분모는 약 0.478초로 작음.",
+    "원음→RMS 순서, 시작 온도/클럭 조건이 같지 않음. 작은 RTF 차이를 속도 개선으로 해석하지 않음.",
+    "새 ASR/Hybrid 추론, 실제 시계 Streaming/Refine 지연, 입력 드롭/백로그는 이번 범위에서 측정하지 않음.",
+    "기존 고부하 냉각 문제와 native 활성 30초 제한은 해결된 것으로 간주하지 않음."
+  ]
+}
