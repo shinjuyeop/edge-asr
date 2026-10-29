@@ -1,6 +1,7 @@
 """실제 모델·RP5 없이 파생 자료 보존 및 통제 실패 전파를 검사한다."""
 from array import array
 import importlib.util
+from copy import deepcopy
 import json
 from pathlib import Path
 import tempfile
@@ -18,6 +19,7 @@ def script(name):
 
 guard = script("m30_thermal_run")
 data = script("prepare_m30_audio")
+report = script("summarize_m30")
 COOL = {"temperature_mc": 52000, "current_limits": 0, "history_limits": 14, "cpu0_freq_khz": 2400000}
 
 
@@ -73,6 +75,18 @@ class PreflightTests(unittest.TestCase):
                 self.assertEqual({r.reference for r in rows}, {"안녕하세요"})
                 for row in rows: self.assertEqual(data.digest(row.audio_path), row.audio_sha256)
             with self.assertRaises(ValueError): data.prepare(root, output)
+
+    def test_common_selection_rejects_clipping_clean_regression_and_missing_results(self):
+        fixture = {p: {m: {c: {"complete": True, "successful": 50, "cer": {"value": .1}} for c in ("clean", "quiet24", "quiet24_noise55")} for m in ("zipformer", "sensevoice")} for p in ("identity", "gain12", "rms26")}
+        clip = {"identity": 0, "gain12": 1, "rms26": 0}
+        self.assertEqual(report.select_policy(fixture, clip)["selected_common_policy"], "identity")
+        fixture["rms26"]["zipformer"]["quiet24"]["cer"]["value"] = .01
+        self.assertEqual(report.select_policy(fixture, clip)["selected_common_policy"], "rms26")
+        fixture["rms26"]["sensevoice"]["clean"]["cer"]["value"] = .12
+        self.assertEqual(report.select_policy(fixture, clip)["selected_common_policy"], "identity")
+        for mutation in (lambda f: f.pop("gain12"), lambda f: f["identity"]["zipformer"]["clean"].update(complete=False)):
+            bad = deepcopy(fixture); mutation(bad)
+            with self.assertRaises(ValueError): report.select_policy(bad, clip)
 
 
 if __name__ == "__main__": unittest.main()
