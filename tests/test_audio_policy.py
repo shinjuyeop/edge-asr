@@ -1,12 +1,38 @@
 from array import array
 import math
+import hashlib
+import random
 import unittest
 
-from edge_asr.audio_policy import preprocess
+from edge_asr.audio_policy import AudioPreprocessor, preprocess
 from edge_asr.thermal import rejection
 
 
 class AudioPolicyTests(unittest.TestCase):
+    def test_block_state_matches_frozen_m30_golden_outputs(self):
+        rng = random.Random(730)
+        audio = array("f", [0.0]*1600 + [rng.uniform(-.003,.003) for _ in range(1700)] + [rng.uniform(-.8,.8) for _ in range(1700)] + [0.0]*1600)
+        # df3a7fb의 기존 preprocess에서 얻은 SHA-256. 새 구현으로 기대값을 만들지 않는다.
+        expected = {"identity": "529d9797914611d21d4755ab8d58b6e3e5c196917f8e3a26d5fc39935486e10f",
+                    "gain12": "e9cf46d5892108ddf8fe7acfc14e5c08e29f41738c627fa52d038c23f647c9ac",
+                    "rms26": "65269dbcf18bc5ff599224e92f06b13dea7cafd793d8bab5486d0f2d25a046f5"}
+        for policy, sha in expected.items():
+            processor = AudioPreprocessor(policy); output = array("h")
+            for start in range(0, len(audio), 1600):
+                block, _ = processor.process_block(audio[start:start+1600], final=start+1600>=len(audio)); output.extend(block)
+            self.assertEqual(hashlib.sha256(output.tobytes()).hexdigest(), sha)
+            self.assertEqual(hashlib.sha256(preprocess(audio, policy)[0].tobytes()).hexdigest(), sha)
+
+    def test_state_survives_blocks_and_reset_is_explicit(self):
+        audio = array("f", [.002, -.002]*800); processor = AudioPreprocessor("rms26")
+        first, a = processor.process_block(audio); _, b = processor.process_block(audio)
+        self.assertGreater(b["gain"], a["gain"])
+        with self.assertRaises(ValueError): processor.process_block(audio[:3])
+        processor.process_block(audio[:3], final=True)
+        with self.assertRaises(ValueError): processor.process_block(audio)
+        processor.reset(); reset, trace = processor.process_block(audio)
+        self.assertEqual(first, reset); self.assertEqual(trace["start_frame"], 0)
+
     def test_identity_is_exact_for_pcm16(self):
         integers = [-32768, -100, 0, 100, 32767]
         output, _ = preprocess(array("f", (x / 32768 for x in integers)), "identity")

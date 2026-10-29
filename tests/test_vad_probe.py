@@ -26,6 +26,21 @@ class FakeVad:
 
 
 class VadProbeTests(unittest.TestCase):
+    def test_paced_clock_is_measured_separately_from_audio_timeline(self):
+        class Clock:
+            now = 0.0
+            def clock(self): return self.now
+            def sleep(self, seconds): self.now += seconds
+        clock = Clock(); timing = {}
+        rows = collect_segments(FakeVad(), array("f", [0]*1600), lambda x:x, paced=True,
+                                telemetry=timing, clock=clock.clock, sleep=clock.sleep)
+        self.assertAlmostEqual(timing["elapsed_wall_s"], .1)
+        self.assertEqual(timing["input_lateness_s"], [0,0,0,0])
+        m = source_metrics(rows, 100, 1300, expected_speech=True)
+        self.assertAlmostEqual(m["endpoint_from_source_wav_end_wall_s"], (1536-1300)/16000)
+        self.assertIsNone(m["acoustic_endpoint_delay_s"])
+        self.assertIsNone(timing["input_drops"])
+
     def test_native_configuration_contract_with_mock_runtime_only(self):
         root = Path(__file__).resolve().parents[1]
         spec = importlib.util.spec_from_file_location("vad_script", root / "scripts/m30_vad_probe.py")
