@@ -60,9 +60,10 @@ def source_metrics(segments, source_start, source_end, *, expected_speech, rate=
     if not 0 <= source_start < source_end: raise ValueError("원본 WAV 범위가 필요합니다.")
     overlap = [s for s in segments if min(s["owned_end_frame"], source_end) > max(s["owned_start_frame"], source_start)]
     last = overlap[-1] if overlap else None
-    proxy = ((last["emitted_at_audio_frame"] - source_end) / rate if last and not last["after_flush"] else None)
+    endpoint = last is not None and last.get("endpoint_eligible", not last["after_flush"])
+    proxy = ((last["emitted_at_audio_frame"] - source_end) / rate if endpoint else None)
     wall_proxy = (last["emitted_at_wall_s"] - source_end/rate
-                  if last and not last["after_flush"] and last.get("emitted_at_wall_s") is not None else None)
+                  if endpoint and last.get("emitted_at_wall_s") is not None else None)
     return {"expected_speech": expected_speech, "detected_segments": len(segments),
             "speech_clip_fully_missed": not overlap if expected_speech else None,
             "silence_or_noise_triggered": bool(segments) if not expected_speech else None,

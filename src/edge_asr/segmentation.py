@@ -1,6 +1,6 @@
 """100ms 공통 전처리 → 512프레임 VAD → 유한 PCM 버퍼와 구간 상한.
 
-ASR/텍스트 병합은 수행하지 않는다. sherpa 2.0.1의 flush는 신경망 reset이 아니다.
+ASR/텍스트 병합은 수행하지 않는다. 활성 VAD의 native flush는 호출하지 않는다.
 """
 
 from array import array
@@ -54,21 +54,27 @@ class SegmentPipeline:
     VAD 음성 이외 프레임의 생략은 입력 드롭과 별개이며, 단어 보존을 보증하지 않는다.
     """
     def __init__(self, vad, policy, max_segment_s, emit, *, convert=list,
-                 context_frames=3200, clock=time.perf_counter):
+                 context_frames=3200, native_budget_frames=30*RATE, clock=time.perf_counter):
         if type(max_segment_s) is not int or max_segment_s not in (3, 5, 8):
             raise ValueError("소유 구간 상한은 3/5/8초여야 합니다.")
         if type(context_frames) is not int or not 0 <= context_frames <= 3200:
             raise ValueError("문맥은 0~3200프레임이어야 합니다.")
+        if type(native_budget_frames) is not int or native_budget_frames < max_segment_s*RATE+WINDOW:
+            raise ValueError("native 예산은 소유 구간 상한+한 윈도 이상이어야 합니다.")
         self.vad, self.emit, self.convert = vad, emit, convert
         self.processor = AudioPreprocessor(policy)
         self.maximum = max_segment_s * RATE
         self.context = context_frames
+        self.native_budget = native_budget_frames
         # 활성 구간+왼쪽 문맥+VAD lookback/종료 대기+100ms 입력 여유.
         self.ring = PcmRing(self.maximum + context_frames + RATE)
         self.pending = array("h")
-        self.fed = self.owned_end = self.segment_id = self.hard_flushes = 0
+        self.fed = self.owned_end = self.segment_id = self.hard_emissions = 0
+        self.native_start = None
+        self.committed_tail_overhang = 0
+        self.native_budget_exhausted = False
         self.closed = self.final_input = False
-        self.clock, self.epoch = clock, clock()
+        self.clock = clock
         self.pcm_digest = hashlib.sha256()
         self.clipped = 0
         self.native_active_peak = self.pending_peak = self.payload_peak = 0
@@ -89,6 +95,33 @@ class SegmentPipeline:
             del self.pending[:WINDOW]
             self._window(block)
 
+    def _emit(self, start, end, reason):
+        native_end = end
+        end = min(end, self.ring.end)
+        begin = max(start, self.owned_end)
+        if begin >= end:
+            return
+        if end - begin > self.maximum:
+            raise ValueError("강제 구간 상한 위반")
+        context_start = max(0, begin - self.context)
+        pcm = self.ring.read(context_start, end)
+        row = {"segment_id": self.segment_id, "reason": reason,
+               "raw_start_frame": start, "raw_end_frame": native_end,
+               "owned_start_frame": begin, "owned_end_frame": end,
+               "context_start_frame": context_start, "context_end_frame": end,
+               "emitted_at_audio_frame": min(self.fed, self.ring.end),
+               "available_input_frame": self.ring.end,
+               "emitted_monotonic_s": self.clock(), "emitted_at_wall_s": None,
+               "after_flush": reason == "eof", "endpoint_eligible": reason == "vad_end",
+               "overlap_removed_frames": max(0, begin - start),
+               "payload_frames": len(pcm),
+               "payload_sha256": hashlib.sha256(pcm_bytes(pcm)).hexdigest(),
+               "owned_pcm_sha256": hashlib.sha256(pcm_bytes(pcm[begin-context_start:])).hexdigest()}
+        self.emit(row, pcm)
+        self.payload_peak = max(self.payload_peak, len(pcm))
+        self.segment_id += 1
+        self.owned_end = end
+
     def _drain(self, reason):
         while not self.vad.empty():
             front = self.vad.front
@@ -97,34 +130,17 @@ class SegmentPipeline:
             # native 참조는 pop 전에 읽는다.
             self.vad.pop()
             if not 0 <= start < end <= self.fed:
-                raise ValueError("VAD가 잘못된 프레임 범위를 반환했습니다.")
-            end = min(end, self.ring.end)
-            begin = max(start, self.owned_end)
-            if begin >= end:
-                continue  # EOF의 가상 0 패딩/이미 소유한 겹침. 새 구간을 만들지 않는다.
-            if end - begin > self.maximum:
-                raise ValueError("강제 구간 상한 위반")
-            context_start = max(0, begin - self.context)
-            pcm = self.ring.read(context_start, end)
-            row = {"segment_id": self.segment_id, "reason": reason,
-                   "raw_start_frame": start, "raw_end_frame": end,
-                   "owned_start_frame": begin, "owned_end_frame": end,
-                   "context_start_frame": context_start, "context_end_frame": end,
-                   "emitted_at_audio_frame": min(self.fed, self.ring.end),
-                   "available_input_frame": self.ring.end,
-                   "emitted_monotonic_s": self.clock(),
-                   "emitted_at_wall_s": None,
-                   "after_flush": reason != "vad_end",
-                   "overlap_removed_frames": max(0, begin - start),
-                   "payload_frames": len(pcm),
-                   "payload_sha256": hashlib.sha256(pcm_bytes(pcm)).hexdigest(),
-                   "owned_pcm_sha256": hashlib.sha256(pcm_bytes(pcm[begin-context_start:])).hexdigest()}
-            self.emit(row, pcm)
-            self.payload_peak = max(self.payload_peak, len(pcm))
-            self.segment_id += 1
-            self.owned_end = end
+                raise ValueError(f"VAD 구간 오류: start={start}, end={end}, fed={self.fed}")
+            # 종료 무음 대기가 나중에 빠지면서 이미 확정한 tail보다 native 끝이 앞설 수 있다.
+            # 확정 구간은 되돌리지 않으며 해당 여분을 계측한다. 음소 끝으로 해석하지 않는다.
+            self.committed_tail_overhang += max(0, self.owned_end-end)
+            self._emit(start, end, reason)
+            self.native_start = None
 
     def _window(self, block):
+        if self.native_start is not None and self.fed+WINDOW-self.native_start > self.native_budget:
+            self.native_budget_exhausted = True
+            raise RuntimeError("native_active_budget_exhausted: 활성 VAD 30초 예산; reset/재입력 없이 중단")
         self.vad.accept_waveform(self.convert(array("f", (x / 32768 for x in block))))
         self.fed += WINDOW
         self._drain("vad_end")
@@ -133,17 +149,17 @@ class SegmentPipeline:
             start = int(self.vad.current_segment.start)
             if not 0 <= start < self.fed:
                 raise ValueError("잘못된 활성 VAD 시작점")
+            self.native_start = start
             active = self.fed - start
             self.native_active_peak = max(self.native_active_peak, active)
-            if active > self.maximum:
-                raise ValueError("활성 VAD 버퍼가 상한을 넘었습니다.")
-            # 다음 32ms를 받으면 초과하는 경우 지금 확정한다. 최대 511프레임 일찍 분할.
-            if active + WINDOW > self.maximum:
-                self.vad.flush()
-                self.hard_flushes += 1
-                self._drain("hard_limit")
-                if self.vad.is_speech_detected():
-                    raise ValueError("flush 후 VAD 활성 상태가 정리되지 않았습니다.")
+            if active > self.native_budget:
+                raise ValueError("활성 VAD 버퍼 예산 위반")
+            begin = max(start, self.owned_end)
+            # native VAD 상태를 바꾸지 않고 도착한 공통 PCM의 소유 구간만 확정한다.
+            while min(self.fed,self.ring.end)-begin >= self.maximum:
+                self._emit(begin,begin+self.maximum,"hard_limit")
+                self.hard_emissions += 1
+                begin = self.owned_end
 
     def finish(self):
         if self.closed or self.ring.end == 0:
@@ -162,10 +178,13 @@ class SegmentPipeline:
         return {"complete": self.closed, "frames": self.ring.end,
                 "processed_pcm_sha256": self.pcm_digest.hexdigest(),
                 "newly_clipped_samples": self.clipped, "segments": self.segment_id,
-                "hard_flushes": self.hard_flushes, "owned_max_frames": self.maximum,
+                "hard_limit_emissions": self.hard_emissions, "owned_max_frames": self.maximum,
                 "context_frames": self.context, "ring_capacity_frames": self.ring.capacity,
                 "ring_peak_frames": self.ring.peak, "pending_peak_frames": self.pending_peak,
                 "native_active_peak_frames": self.native_active_peak,
+                "native_budget_frames": self.native_budget,
+                "native_budget_exhausted": self.native_budget_exhausted,
+                "committed_tail_overhang_frames": self.committed_tail_overhang,
                 "payload_peak_frames": self.payload_peak, "native_accepted_frames": self.fed,
                 "actual_acoustic_endpoint_s": None, "word_preservation": None}
 

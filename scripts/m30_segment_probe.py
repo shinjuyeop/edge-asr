@@ -47,7 +47,7 @@ def probe(root, model, manifest, output, policy, *, paced=False, maxima=(3, 5, 8
                          "sample_rate": 16000, "vad_window_frames": 512, "num_threads": 1,
                          "threshold": .5, "min_speech_s": .1, "min_silence_s": .3,
                          "native_soft_limit_s": 5, "prefix_frames": 8000, "suffix_frames": 16000,
-                         "context_frames": 3200, "native_buffer_s": {str(m):m+1 for m in maxima},
+                         "context_frames": 3200, "native_buffer_s": 31, "native_active_budget_s": 30,
                          "producer": SETTINGS if paced else None}, "loading_s": {},
             "scope": "실험용 WAV 입력. 동일 PCM의 구간 payload 검증. ASR/마이크/단어 보존 검증 아님."}
     save(output / "worker.json", info)
@@ -63,7 +63,7 @@ def probe(root, model, manifest, output, policy, *, paced=False, maxima=(3, 5, 8
                                        min_silence_duration=.3, max_speech_duration=5, window_size=512).items():
                     setattr(config.silero_vad, key, value)
                 began = time.perf_counter()
-                vad = sherpa.VoiceActivityDetector(config, buffer_size_in_seconds=maximum+1)
+                vad = sherpa.VoiceActivityDetector(config, buffer_size_in_seconds=31)
                 info['loading_s'][str(maximum)] = time.perf_counter()-began
                 save(output / 'worker.json', info)
                 for sample in samples:

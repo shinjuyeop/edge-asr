@@ -12,6 +12,7 @@ from edge_asr.audio_policy import preprocess
 from edge_asr.dataset import Audio
 from edge_asr.segmentation import PcmRing, SegmentPipeline, SegmentReplayAdapter, pcm_bytes
 from edge_asr.streaming import run_paced
+from edge_asr.vad_probe import source_metrics
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
@@ -26,7 +27,7 @@ class Vad:
 
     def reset(self):
         self.resets += 1
-        self.frame = 0; self.start = None; self.queue = []; self.blocks = 0
+        self.frame = 0; self.start = None; self.queue = []; self.blocks = 0; self.flushes = 0
 
     def accept_waveform(self, block):
         if self.delay: time.sleep(self.delay)
@@ -45,6 +46,7 @@ class Vad:
     def front(self): return self.queue[0]
     def pop(self): self.queue.pop(0)
     def flush(self):
+        self.flushes += 1
         if self.start is not None:
             self.queue.append(SimpleNamespace(start=self.start, samples=[0]*(self.frame-self.start)))
             self.start = None
@@ -72,7 +74,8 @@ class SegmentTests(unittest.TestCase):
         for maximum in (3,5,8):
             with self.subTest(maximum=maximum):
                 vad=Vad();p,rows=run(samples,maximum,vad=vad)
-                self.assertGreater(p.hard_flushes,0);self.assertEqual(vad.resets,2)
+                self.assertGreater(p.hard_emissions,0);self.assertEqual(vad.resets,2)
+                self.assertEqual(vad.flushes,1)  # EOF 한 번만. 활성 flush 후 음수 native 구간 재발 방지.
                 owned=array('h');last=0
                 for row,pcm in rows:
                     self.assertEqual(row['owned_start_frame'],last)
@@ -82,10 +85,12 @@ class SegmentTests(unittest.TestCase):
                     owned.extend(pcm[row['owned_start_frame']-row['context_start_frame']:])
                     if row['reason']=='hard_limit':
                         self.assertLess(row['emitted_at_audio_frame'],len(samples))
-                        self.assertLessEqual(maximum*16000-(last-row['owned_start_frame']),511)
+                        self.assertEqual(last-row['owned_start_frame'],maximum*16000)
+                        self.assertLessEqual(row['emitted_at_audio_frame']-last,511)
+                        self.assertFalse(row['endpoint_eligible'])
                 self.assertEqual(last,len(samples));self.assertEqual(owned,preprocess(samples,'identity')[0])
                 self.assertLessEqual(p.ring.peak,p.ring.capacity)
-                self.assertLessEqual(p.native_active_peak,maximum*16000)
+                self.assertLessEqual(p.native_active_peak,p.native_budget)
                 self.assertLessEqual(p.pending_peak,1600+511)
 
     def test_silence_and_natural_end_are_separate_from_hard_limit(self):
@@ -113,6 +118,27 @@ class SegmentTests(unittest.TestCase):
             @property
             def current_segment(self):return SimpleNamespace(start=-1)
         with self.assertRaises(ValueError):run(array('f',[0]*1600),vad=Invalid())
+
+    def test_native_active_budget_stops_before_buffer_overflow(self):
+        p=SegmentPipeline(Vad(),'identity',3,lambda *a:None,native_budget_frames=48000+512)
+        with self.assertRaisesRegex(RuntimeError,'native_active_budget_exhausted'):
+            for _ in range(45):p.accept(array('f',[.01]*1600))
+        self.assertTrue(p.native_budget_exhausted)
+        self.assertLessEqual(p.fed,p.native_budget)
+        self.assertEqual(p.hard_emissions,1)
+        self.assertFalse(p.closed)
+
+    def test_native_end_retraction_is_recorded_without_retracting_owned_pcm(self):
+        class Retracting(Vad):
+            def accept_waveform(self,block):
+                super().accept_waveform(block)
+                if self.blocks==95:
+                    self.queue=[SimpleNamespace(start=0,samples=[0]*44000)];self.start=None
+        p,rows=run(array('f',[.02]*50000),vad=Retracting(lambda i:i<95))
+        self.assertEqual(len(rows),1);self.assertEqual(rows[0][0]['owned_end_frame'],48000)
+        self.assertEqual(p.committed_tail_overhang,4000)
+        metrics=source_metrics([rows[0][0]],0,48000,expected_speech=True)
+        self.assertIsNone(metrics['endpoint_from_source_wav_end_audio_s'])
 
     def test_independent_paced_capture_and_overload_are_not_false_success(self):
         for delay in (0,.09):
