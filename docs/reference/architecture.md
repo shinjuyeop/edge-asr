@@ -11,6 +11,7 @@
 | `streaming.py` | 독립 입력 프로세스·유한 큐·1배속 시계·이벤트 |
 | `audio_policy.py`, `segmentation.py` | 100ms 전처리 상태·공통 PCM·발화 구간 소유권/문맥 |
 | `vad.py`, `vad_probe.py`, `vad_annotations.py` | 검증한 VAD 설정·구간 진단·주석 검증/채점 |
+| `vad_probability.py`, `cooling.py` | 선택적 확률 VAD 실험·읽기 전용 냉각 센서/과거 기록 진단 |
 | `artifacts.py`, `resources.py` | 해시/JSON 산출물·CPU/RSS 표본 |
 | `runtime.py`, `diagnostics.py`, `thermal.py` | 네이티브/Python 런타임 구분·TID CPU·온도/제한 상태 |
 | `tools/data/` | 원본 보존·자료 파생·출처/해시·검수 결정 반영 |

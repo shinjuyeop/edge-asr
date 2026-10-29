@@ -17,7 +17,7 @@ from edge_asr.vad import MODEL_SHA, create_vad
 from edge_asr.vad_annotations import load_annotations, score_segments, select_development
 
 
-def measure(vad, audio, row, policy, convert):
+def measure(vad, audio, row, policy, convert, *, native_budget_frames=30 * 16000):
     segments = []
     began, cpu = time.perf_counter(), time.process_time()
     rss = RssSampler()
@@ -35,7 +35,12 @@ def measure(vad, audio, row, policy, convert):
     try:
         with rss:
             pipeline = SegmentPipeline(
-                vad, policy, 5, lambda event, pcm: segments.append(event), convert=convert
+                vad,
+                policy,
+                5,
+                lambda event, pcm: segments.append(event),
+                convert=convert,
+                native_budget_frames=native_budget_frames,
             )
             for offset in range(0, len(audio.samples), 1600):
                 pipeline.accept(
@@ -66,7 +71,9 @@ def measure(vad, audio, row, policy, convert):
     return result
 
 
-def probe(root, model, annotations, output, policy, mode):
+def probe(root, model, annotations, output, policy, mode, *, backend="native"):
+    if backend not in ("native", "bounded"):
+        raise ValueError("알 수 없는 VAD 백엔드")
     rows, sha = load_annotations(annotations, root)
     receipt = json.loads((annotations.parent / "provenance.json").read_text())
     if receipt["files"][annotations.name] != sha:
@@ -80,12 +87,21 @@ def probe(root, model, annotations, output, policy, mode):
     if (output / "worker.json").exists():
         raise FileExistsError("기존 실행을 덮어쓰지 않습니다.")
     output.mkdir(parents=True, exist_ok=True)
+    settings = dict(SETTINGS)
+    if backend == "bounded":
+        settings.update(
+            native_buffer_s=None,
+            native_active_budget_s=None,
+            native_soft_limit_s=None,
+            probability_soft_limit_s=5,
+        )
     info = {
         "status": "running",
         "process_id": os.getpid(),
         "mode": mode,
         "policy": policy,
-        "settings": SETTINGS,
+        "settings": settings,
+        "backend": backend,
         "annotation_sha256": sha,
         "model_sha256": MODEL_SHA,
         "planned_ids": [r["id"] for r in selected],
@@ -99,7 +115,14 @@ def probe(root, model, annotations, output, policy, mode):
         with RssSampler() as loading:
             import numpy as np
 
-            vad = create_vad(model, soft_limit_s=5, buffer_s=31)
+            if backend == "native":
+                vad = create_vad(model, soft_limit_s=5, buffer_s=31)
+            else:
+                from edge_asr.vad_probability import BoundedProbabilityVad, K2SileroProbability
+
+                probability = K2SileroProbability(model)
+                vad = BoundedProbabilityVad(probability)
+                info["probability_runtime"] = probability.metadata()
         info["loading"] = {
             "wall_s": time.perf_counter() - began,
             "process_cpu_s": time.process_time() - cpu,
@@ -113,7 +136,17 @@ def probe(root, model, annotations, output, policy, mode):
             audio = load_audio(root / row["audio_path"], 16000)
             if audio.sha256 != row["audio_sha256"] or len(audio.samples) != row["frames"]:
                 raise ValueError("WAV 해시/길이 불일치")
-            return measure(vad, audio, row, policy, convert)
+            result = measure(
+                vad,
+                audio,
+                row,
+                policy,
+                convert,
+                native_budget_frames=None if backend == "bounded" else 30 * 16000,
+            )
+            if backend == "bounded":
+                result["bounded_vad"] = vad.metadata()
+            return result
 
         warm = next((r for r in selected if r["category"] == "short"), selected[0])
         warm_result = call(warm)
@@ -147,8 +180,14 @@ def main():
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--policy", choices=["identity", "rms26"], required=True)
     p.add_argument("--mode", choices=["reviewed", "provisional"], default="reviewed")
+    p.add_argument(
+        "--backend",
+        choices=["native", "bounded"],
+        default="native",
+        help="bounded는 기존 Python ORT를 쓰는 실험용 경로; 네이티브와 동등성 미검증",
+    )
     a = p.parse_args()
-    probe(Path.cwd(), a.model, a.annotations, a.output, a.policy, a.mode)
+    probe(Path.cwd(), a.model, a.annotations, a.output, a.policy, a.mode, backend=a.backend)
 
 
 if __name__ == "__main__":

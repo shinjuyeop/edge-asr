@@ -71,6 +71,8 @@ def summarize(root, annotations, runs):
     for policy in ("identity", "rms26"):
         folder = runs / policy
         info = json.loads((folder / "worker.json").read_text())
+        if info.get("backend", "native") != "native":
+            raise ValueError("실험용 확률 VAD는 기존 네이티브 비교표에 합치지 않습니다.")
         control = json.loads((folder / "execution.json").read_text())
         selected = select_development(refs, info["mode"])
         expected = {r["id"]: r for r in selected}

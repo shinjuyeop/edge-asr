@@ -1,0 +1,97 @@
+{
+  "schema": "cooling-audit-v1",
+  "historical_runs": [
+    {
+      "run": "results/preflight/m3-0-20261029-01/long-load-zipformer-t2",
+      "source_sha256": {
+        "execution.json": "cab733dcd9b328cbcf84ad999da2697b03f0a05bcb75dcb5013f70e3229bdcd6",
+        "thermal.jsonl": "e05b1f7ddb39c68b8898811cf96f9f2af2bd622012cd5bbab4658ed1c8287069"
+      },
+      "status": "control_rejected",
+      "control_valid": false,
+      "rejection": "temperature_limit",
+      "thermal_sample_count": 15,
+      "before": {
+        "at_utc": "2026-10-29T04:10:28.199103+00:00",
+        "elapsed_from_before_s": 0.0,
+        "temperature_c": 52.9,
+        "fan_rpm": 3152,
+        "cpu0_freq_khz": 1500000,
+        "current_limits": 0,
+        "history_limits": 14
+      },
+      "after": {
+        "at_utc": "2026-10-29T04:10:42.302681+00:00",
+        "elapsed_from_before_s": 14.103577215995756,
+        "temperature_c": 77.1,
+        "fan_rpm": 8688,
+        "cpu0_freq_khz": 2400000,
+        "current_limits": 0,
+        "history_limits": 14
+      },
+      "software_stop_mc": 75000,
+      "first_observed_software_temperature_limit": {
+        "at_utc": "2026-10-29T04:10:42.288971+00:00",
+        "elapsed_from_before_s": 14.08987494900066,
+        "temperature_c": 76.0,
+        "fan_rpm": 8688,
+        "cpu0_freq_khz": 2400000,
+        "current_limits": 0,
+        "history_limits": 14
+      },
+      "first_observed_current_limit": null,
+      "current_limit_observed": false,
+      "new_history_bits": 0,
+      "telemetry_missing_samples": 0,
+      "fan_missing_samples": 0,
+      "fan_positive_samples": 17,
+      "fan_rpm_max": 8688,
+      "temperature_mc_max_monitor": 76000,
+      "temperature_mc_max_with_before_after": 77100,
+      "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+    },
+    {
+      "run": "results/preflight/m3-0-20261029-01/long-load-sensevoice-t1",
+      "source_sha256": {
+        "execution.json": "70d27fc6c95f0e705cdb41e517804db55794ce552edc8839eee7e7c6c1e03f4e",
+        "thermal.jsonl": "9db8d48dff5daa1f0996eedf52af7895039583427e48534fb6682235eb3ddade"
+      },
+      "status": "completed",
+      "control_valid": true,
+      "rejection": null,
+      "thermal_sample_count": 480,
+      "before": {
+        "at_utc": "2026-10-29T03:59:54.780770+00:00",
+        "elapsed_from_before_s": 0.0,
+        "temperature_c": 51.8,
+        "fan_rpm": 3098,
+        "cpu0_freq_khz": 1500000,
+        "current_limits": 0,
+        "history_limits": 14
+      },
+      "after": {
+        "at_utc": "2026-10-29T04:07:59.275150+00:00",
+        "elapsed_from_before_s": 484.4943821980123,
+        "temperature_c": 67.75,
+        "fan_rpm": 7272,
+        "cpu0_freq_khz": 2400000,
+        "current_limits": 0,
+        "history_limits": 14
+      },
+      "software_stop_mc": 75000,
+      "first_observed_software_temperature_limit": null,
+      "first_observed_current_limit": null,
+      "current_limit_observed": false,
+      "new_history_bits": 0,
+      "telemetry_missing_samples": 0,
+      "fan_missing_samples": 0,
+      "fan_positive_samples": 482,
+      "fan_rpm_max": 10200,
+      "temperature_mc_max_monitor": 73800,
+      "temperature_mc_max_with_before_after": 73800,
+      "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+    }
+  ],
+  "live": null,
+  "scope": "과거 기록을 수정하지 않음. 순간 센서 조회는 고부하 냉각 합격 판정이 아님."
+}

@@ -28,6 +28,7 @@ COMMANDS = {
     "summarize-vad": "reports.vad",
     "summarize-segments": "reports.segments",
     "summarize-annotated-vad": "reports.annotated_vad",
+    "inspect-cooling": "reports.cooling",
     "consolidate": "maintenance.consolidate",
     "repeat-zipformer": "edge_asr.benchmark",
 }

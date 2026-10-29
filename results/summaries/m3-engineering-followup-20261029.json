@@ -1,0 +1,52 @@
+{
+  "schema": "m3-engineering-followup-v1",
+  "date": "2026-10-29",
+  "base_commit": "7485367",
+  "status": "host_verified_rp5_unreachable",
+  "host": {
+    "python": "3.11.14",
+    "unit_tests": {"total": 184, "status": "passed", "duration_s": 10.236},
+    "ruff_check": "passed",
+    "ruff_format_check": "passed",
+    "deploy_shell_syntax": "passed",
+    "git_diff_check": "passed",
+    "wheel_build": "passed",
+    "wheel_commands_imported_without_native_runtime": 25,
+    "real_neural_inference_this_step": false,
+    "vad_saved_rows_rescored_unchanged": 160,
+    "zipformer_paced_saved_rows_rescored_unchanged": 50,
+    "m1_probe_sha256_check": "passed",
+    "vad_weights_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+    "mock_continuous_probability_audio_s": 131.072,
+    "mock_pcm_frames": 560137,
+    "mock_owned_segment_caps_s": [3, 5, 8],
+    "mock_owned_pcm_byte_equality": true,
+    "scope_ko": "합성 확률·PCM·모의 ORT 계약 검사. 실제 모델·ARM64·인식 정확도·실시간 지연 검증 아님."
+  },
+  "listening": {
+    "observation_revision": "listening-observations-20261029-03",
+    "sha256": "9d1e51192db3f779c376e230143002dd3e3055173002328dc5ca824c62c4f760",
+    "uncertain_cases": 5,
+    "user_decision_ko": "판단 어려움",
+    "promoted_to_gold": 0,
+    "existing_annotations_modified": false
+  },
+  "rp5": {
+    "host": "192.168.1.32",
+    "ssh_status": "unreachable",
+    "last_error": "No route to host",
+    "new_source_pulled": false,
+    "live_cooling_checked": false,
+    "new_inference_executed": false,
+    "packages_changed": false,
+    "models_changed": false,
+    "historical_cooling_report": "m3-cooling-audit-20261029.json"
+  },
+  "unverified_ko": [
+    "Python ORT의 실제 ARM64 가중치 로딩·확률·native 대비 구간 동등성",
+    "실제 30초 초과 연속 활성 입력과 RSS 추이",
+    "현재 냉각·고부하 통과·물리적 방열 상태",
+    "확정 음성/비음성 라벨·실제 음소 종료 지연",
+    "마이크·입력 드롭/백로그·Hybrid 동시 실행 성능"
+  ]
+}

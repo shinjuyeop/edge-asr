@@ -22,6 +22,8 @@ zipformer = ["numpy==2.4.6", "sherpa-onnx==2.0.1"]
 sensevoice = ["numpy==2.4.6", "sherpa-onnx==2.0.1"]
 # Host 정적 검사 도구. RP5의 기존 환경에는 설치하지 않는다.
 dev = ["ruff==0.14.14"]
+# 기존 가중치의 실험용 확률 VAD. 기존 RP5 환경에는 설치하지 않는다.
+vad-probability = ["numpy==2.4.6", "onnxruntime==1.31.1"]
 
 [project.scripts]
 edge-asr = "edge_asr.cli:main"

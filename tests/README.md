@@ -1,5 +1,7 @@
 # 호스트 검사
 
+`test_vad_probability.py`는 실제 가중치 없이 ORT 생성 인자·h/c 상태 전달·오류·히스테리시스·131.072초 지속 확률·35초 PCM의 3/5/8초 소유권/문맥/유한 버퍼를 검사한다. 강제 구간마다 reset하지 않으며 기본 native 안전 제한을 유지한다. `test_cooling.py`는 가상 sysfs와 합성 과거 기록으로 다중 팬·결측·읽기 전용·소프트웨어 정지/현재 제한/과거 이력 구분을 검사한다. ARM64 모델 실행·냉각 재시험 통과를 뜻하지 않는다.
+
 `test_vad_annotations.py`, `test_vad_annotation_summary.py`는 구간 합집합·불명확 구간 제외·검수자/해시 검증·음수 endpoint·EOF/강제 분할 제외, 보류 표본 배제, 실패 원시 보존과 양쪽 성공 표본 재채점을 검사합니다. 배포 라벨 비교를 사람이 검수한 정답 결과로 바꾸지 않으며, 실제 RP5 VAD 검증과 구분합니다.
 
 `test_public_vad_review.py`, `test_public_vad_audio.py`는 합성 TextGrid의 인코딩·중복 tier·손상·경계, 모델 출력과 무관한 후보 선정, 원본 해시·경로·출력 보존과 null 정답의 평가 거부를 검사합니다. Host ffmpeg가 있으면 합성 44.1kHz 음원의 실제 변환·절취도 확인합니다. 공개 음원 다운로드·사람 청취·RP5 모델 추론을 대신하는 검사가 아닙니다.

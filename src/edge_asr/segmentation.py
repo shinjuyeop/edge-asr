@@ -64,7 +64,11 @@ class SegmentPipeline:
             raise ValueError("소유 구간 상한은 3/5/8초여야 합니다.")
         if type(context_frames) is not int or not 0 <= context_frames <= 3200:
             raise ValueError("문맥은 0~3200프레임이어야 합니다.")
-        if (
+        if native_budget_frames is None:
+            capacity = getattr(vad, "max_audio_buffer_frames", None)
+            if type(capacity) is not int or capacity != 0:
+                raise ValueError("파형 축적이 없는 VAD만 활성 예산 해제를 허용합니다.")
+        elif (
             type(native_budget_frames) is not int
             or native_budget_frames < max_segment_s * RATE + WINDOW
         ):
@@ -155,7 +159,8 @@ class SegmentPipeline:
 
     def _window(self, block):
         if (
-            self.native_start is not None
+            self.native_budget is not None
+            and self.native_start is not None
             and self.fed + WINDOW - self.native_start > self.native_budget
         ):
             self.native_budget_exhausted = True
@@ -173,7 +178,7 @@ class SegmentPipeline:
             self.native_start = start
             active = self.fed - start
             self.native_active_peak = max(self.native_active_peak, active)
-            if active > self.native_budget:
+            if self.native_budget is not None and active > self.native_budget:
                 raise ValueError("활성 VAD 버퍼 예산 위반")
             begin = max(start, self.owned_end)
             # native VAD 상태를 바꾸지 않고 도착한 공통 PCM의 소유 구간만 확정한다.

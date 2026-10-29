@@ -141,7 +141,7 @@ class AnnotationSummaryTests(unittest.TestCase):
             self.assertEqual(result["policies"]["rms26"]["failures"][0]["id"], "noise")
 
     def test_tampered_score_missing_sample_and_bad_thermal_are_rejected(self):
-        for change in ("score", "missing", "holdout", "thermal", "nan"):
+        for change in ("score", "missing", "holdout", "thermal", "nan", "backend"):
             with self.subTest(change=change), tempfile.TemporaryDirectory() as d:
                 root = Path(d)
                 annotations, runs = self.setup_run(root)
@@ -155,6 +155,10 @@ class AnnotationSummaryTests(unittest.TestCase):
                     rows[1]["id"] = "held"
                 elif change == "nan":
                     rows[0]["call_wall_s"] = float("nan")
+                elif change == "backend":
+                    info = json.loads((folder / "worker.json").read_text())
+                    info["backend"] = "bounded"
+                    write(folder / "worker.json", info)
                 else:
                     thermal = summary.read_jsonl(folder / "thermal.jsonl")
                     thermal[0]["temperature_mc"] = 76000

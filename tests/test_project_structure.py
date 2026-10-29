@@ -43,6 +43,7 @@ for command in COMMANDS:
     import_module(module_name(command))
 assert 'numpy' not in sys.modules
 assert 'sherpa_onnx' not in sys.modules
+assert 'onnxruntime' not in sys.modules
 assert 'edge_asr.evaluation' not in sys.modules
 """
         env = {**os.environ, "PYTHONPATH": str(ROOT / "src"), "PYTHONDONTWRITEBYTECODE": "1"}
