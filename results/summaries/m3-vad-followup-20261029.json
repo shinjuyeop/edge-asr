@@ -1,0 +1,1342 @@
+{
+  "schema_version": 1,
+  "campaign_id": "m3-vad-20261029-01",
+  "date": "2026-10-29",
+  "status": "vad_rp5_execution_verified_prerequisite_gate_failed",
+  "summary_ko": "VAD 실제 실행은 성공. 원음 연속 누락/RMS 잡음 오탐/강제 구간 상한 부재와 미해결 냉각 조건 때문에 정책 채택 및 Hybrid 동시 실행 보류.",
+  "report_path": "results/summaries/m3-vad-followup-20261029.md",
+  "raw_directory": "results/preflight/m3-vad-20261029-01",
+  "vad_input_policy_approved": null,
+  "hybrid_concurrency_verified": false,
+  "new_asr_cer": null,
+  "actual_acoustic_endpoint_delay_s": null,
+  "input_drops": null,
+  "backlog": null,
+  "model": {
+    "downloaded_at_utc": "2026-10-29T04:36:03.934638+00:00",
+    "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/silero_vad.onnx",
+    "documentation": "https://k2-fsa.github.io/sherpa/onnx/vad/silero-vad.html",
+    "sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+    "bytes": 643854,
+    "variant": "k2-fsa exported 16kHz Silero; non-INT8 filename; no local conversion",
+    "license_source": "https://github.com/snakers4/silero-vad/blob/master/LICENSE",
+    "license": "MIT",
+    "hash_scope": "공식 배포에서 내려받은 바이트의 로컬 고정 해시; 공급자 별도 서명 검증 아님",
+    "authorization": "사용자의 후속 단계 진행 지시에 따라 VAD 파일만 추가. 기존 ASR 모델/환경 변경 없음"
+  },
+  "runtime": {
+    "sherpa_package_version": "2.0.1",
+    "sherpa_core_package_version": "2.0.1",
+    "python_onnxruntime_package_version": "1.31.1",
+    "sherpa_native_onnxruntime_version": "1.28.2",
+    "native_version_source": "sherpa_onnx.onnxruntime_version",
+    "status": "available",
+    "reason": null
+  },
+  "physical_cooling_user_report": "팬·히트싱크가 설치되어 있고 변경 없음",
+  "thermal_high_load_status": "이전 Zipformer 2T 75°C 중단 기준 실패 미해결. 이번 경량 VAD 결과로 재승인하지 않음.",
+  "tests": {
+    "host": {
+      "passed": 134,
+      "elapsed_s": 4.993,
+      "log_sha256": "338d6ac5ee7ec63c38d87e00760a21b0eccacfd58f7a2a8e02f94949ada3fa16"
+    },
+    "rp5": {
+      "passed": 134,
+      "elapsed_s": 8.994,
+      "log_sha256": "e75a705512ad4c8611c8a1e1c770f1182ff8218442174ed64dba6d96a13ae6bd"
+    },
+    "source_commit": "bbcea5ae41a6e6aebc64931a646c02694c334893",
+    "scope_ko": "단위 테스트와 실제 ARM64 VAD 실행을 구분. 기존 ASR는 이번에 재실행하지 않음."
+  },
+  "preservation": {
+    "at_utc": "2026-10-29T05:06:49.168586+00:00",
+    "protected_files_checked": 3801,
+    "missing": [],
+    "changed": [],
+    "packages_equal": true,
+    "first_artifact_set_checked": 48,
+    "first_artifact_set_changed": [],
+    "device_after": {
+      "at_utc": "2026-10-29T05:06:49.168613+00:00",
+      "monotonic_s": 85764.922323121,
+      "temperature_mc": 51800,
+      "cpu0_freq_khz": 2400000,
+      "governor": "ondemand",
+      "throttled_flags": 917504,
+      "current_limits": 0,
+      "history_limits": 14,
+      "fan_rpm": 2957
+    },
+    "vad_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+    "status": "passed"
+  },
+  "host_transfer": {
+    "rp5_files_checked": 67,
+    "mismatches": [],
+    "status": "passed",
+    "checksum_manifest_sha256": "bd7eedfd8216853672cab2e7831cbd3d9d34e840e874702e1584f2e176a0476f"
+  },
+  "continuous_paced_supplement": {
+    "identity": {
+      "source_commit": "bbcea5ae41a6e6aebc64931a646c02694c334893",
+      "manifest_sha256": "fd5e93ba12707f6e93068ad24f4af5f2f766ba24156cd529df968ba0494f2caa",
+      "segment_file_sha256": "9368d4a50d9746a65a0493e645e0afb2d33d2562fc53f9a38ebeed7d06ddca24",
+      "control_valid": true,
+      "component_count": 9,
+      "whole_components_missed": 5,
+      "components": [
+        {
+          "id": "kss-train-01023-clean",
+          "whole_clip_missed": false,
+          "wav_end_wall_proxy_s": 0.26263458500278647
+        },
+        {
+          "id": "kss-train-01011-clean",
+          "whole_clip_missed": false,
+          "wav_end_wall_proxy_s": 0.31484217600384756
+        },
+        {
+          "id": "kss-train-01010-clean",
+          "whole_clip_missed": false,
+          "wav_end_wall_proxy_s": 0.2607027739996557
+        },
+        {
+          "id": "kss-train-01023-quiet24",
+          "whole_clip_missed": true,
+          "wav_end_wall_proxy_s": null
+        },
+        {
+          "id": "kss-train-01011-quiet24",
+          "whole_clip_missed": true,
+          "wav_end_wall_proxy_s": null
+        },
+        {
+          "id": "kss-train-01010-quiet24",
+          "whole_clip_missed": false,
+          "wav_end_wall_proxy_s": -0.03599712800118127
+        },
+        {
+          "id": "kss-train-01023-quiet24_noise55",
+          "whole_clip_missed": true,
+          "wav_end_wall_proxy_s": null
+        },
+        {
+          "id": "kss-train-01011-quiet24_noise55",
+          "whole_clip_missed": true,
+          "wav_end_wall_proxy_s": null
+        },
+        {
+          "id": "kss-train-01010-quiet24_noise55",
+          "whole_clip_missed": true,
+          "wav_end_wall_proxy_s": null
+        }
+      ],
+      "segments_match_unpaced_5s": true,
+      "start_temperature_c": 49.6,
+      "max_temperature_c": 52.35,
+      "current_limit_values": [
+        0
+      ],
+      "history_limit_values": [
+        14
+      ],
+      "elapsed_wall_s": 22.205787576996954,
+      "actual_acoustic_endpoint_s": null
+    },
+    "rms26": {
+      "source_commit": "bbcea5ae41a6e6aebc64931a646c02694c334893",
+      "manifest_sha256": "07a88b05107f6c0d5554a801cdd97ccaf774b0c495bdc934bdacd293170cceb6",
+      "segment_file_sha256": "93ddd626b80b9b9e949099b8778ac46af9f7c2582ccf3e8dde87cb822454a812",
+      "control_valid": true,
+      "component_count": 9,
+      "whole_components_missed": 0,
+      "components": [
+        {
+          "id": "kss-train-01023-clean",
+          "whole_clip_missed": false,
+          "wav_end_wall_proxy_s": 0.26264687000610865
+        },
+        {
+          "id": "kss-train-01011-clean",
+          "whole_clip_missed": false,
+          "wav_end_wall_proxy_s": 0.31490161600825406
+        },
+        {
+          "id": "kss-train-01010-clean",
+          "whole_clip_missed": false,
+          "wav_end_wall_proxy_s": 0.2607389980094741
+        },
+        {
+          "id": "kss-train-01023-quiet24",
+          "whole_clip_missed": false,
+          "wav_end_wall_proxy_s": 0.25443934500869325
+        },
+        {
+          "id": "kss-train-01011-quiet24",
+          "whole_clip_missed": false,
+          "wav_end_wall_proxy_s": 0.30639844200469035
+        },
+        {
+          "id": "kss-train-01010-quiet24",
+          "whole_clip_missed": false,
+          "wav_end_wall_proxy_s": 0.28443171800987344
+        },
+        {
+          "id": "kss-train-01023-quiet24_noise55",
+          "whole_clip_missed": false,
+          "wav_end_wall_proxy_s": 0.47015128900133973
+        },
+        {
+          "id": "kss-train-01011-quiet24_noise55",
+          "whole_clip_missed": false,
+          "wav_end_wall_proxy_s": 0.5221667210013834
+        },
+        {
+          "id": "kss-train-01010-quiet24_noise55",
+          "whole_clip_missed": false,
+          "wav_end_wall_proxy_s": 0.5641457270050871
+        }
+      ],
+      "segments_match_unpaced_5s": true,
+      "start_temperature_c": 51.25,
+      "max_temperature_c": 52.35,
+      "current_limit_values": [
+        0
+      ],
+      "history_limit_values": [
+        14
+      ],
+      "elapsed_wall_s": 22.20579763400019,
+      "actual_acoustic_endpoint_s": null
+    }
+  },
+  "runs": {
+    "unpaced-identity": {
+      "source_commit": "fad62a45d18842db07df790f1ac31179fbc3e43b",
+      "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+      "settings": {
+        "sample_rate": 16000,
+        "num_threads": 1,
+        "window_size": 512,
+        "threshold": 0.5,
+        "min_speech_duration": 0.1,
+        "min_silence_duration": 0.3,
+        "max_speech_duration_candidates": [
+          3,
+          5,
+          8
+        ],
+        "buffer_size_in_seconds": 123.586875,
+        "maximum_is_hard_limit": false
+      },
+      "total_rows": 498,
+      "start_temperature_c": 52.35,
+      "max_temperature_c": 61.7,
+      "current_limit_values": [
+        0
+      ],
+      "history_limit_values": [
+        14
+      ],
+      "segment_file_sha256": "d627ab0d3435932634ad66c1a7fb4bdde0d6fcc114a69aacd02a75bf35291cd3",
+      "candidates": {
+        "3": {
+          "overall": {
+            "files": 166,
+            "speech_files": 154,
+            "speech_clips_fully_missed": 0,
+            "negative_files": 12,
+            "negative_files_triggered": 2,
+            "segments": 271,
+            "max_segment_s": 6.112,
+            "segments_exceeding_soft_max": 111,
+            "endpoint_wav_end_audio_proxy_s": {
+              "n": 146,
+              "mean": 0.28747559931506855,
+              "p50": 0.2930625,
+              "p95": 0.8405625,
+              "max": 1.0
+            },
+            "endpoint_wav_end_wall_proxy_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "processing_rtf_including_padded_audio": 0.008731711112839186,
+            "process_cpu_percent_over_call_wall": 100.10176566052714,
+            "observed_peak_rss_mib": 90.65625,
+            "paced_input_lateness_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "actual_acoustic_endpoint_s": null,
+            "input_drops": null,
+            "queue_backlog": null
+          },
+          "negative_trigger_ids": [
+            "noise-35-0",
+            "noise-35-1"
+          ],
+          "silence": {
+            "files": 6,
+            "speech_files": 0,
+            "speech_clips_fully_missed": 0,
+            "negative_files": 6,
+            "negative_files_triggered": 0,
+            "segments": 0,
+            "max_segment_s": null,
+            "segments_exceeding_soft_max": 0
+          },
+          "noise": {
+            "noise_-35dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 2,
+              "segments": 2,
+              "max_segment_s": 0.312,
+              "segments_exceeding_soft_max": 0
+            },
+            "noise_-45dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 0,
+              "segments": 0,
+              "max_segment_s": null,
+              "segments_exceeding_soft_max": 0
+            },
+            "noise_-55dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 0,
+              "segments": 0,
+              "max_segment_s": null,
+              "segments_exceeding_soft_max": 0
+            }
+          },
+          "continuous_components": [
+            {
+              "id": "kss-train-01023-clean",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01011-clean",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01010-clean",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01023-quiet24",
+              "whole_clip_missed": true
+            },
+            {
+              "id": "kss-train-01011-quiet24",
+              "whole_clip_missed": true
+            },
+            {
+              "id": "kss-train-01010-quiet24",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01023-quiet24_noise55",
+              "whole_clip_missed": true
+            },
+            {
+              "id": "kss-train-01011-quiet24_noise55",
+              "whole_clip_missed": true
+            },
+            {
+              "id": "kss-train-01010-quiet24_noise55",
+              "whole_clip_missed": true
+            }
+          ]
+        },
+        "5": {
+          "overall": {
+            "files": 166,
+            "speech_files": 154,
+            "speech_clips_fully_missed": 0,
+            "negative_files": 12,
+            "negative_files_triggered": 2,
+            "segments": 244,
+            "max_segment_s": 6.112,
+            "segments_exceeding_soft_max": 8,
+            "endpoint_wav_end_audio_proxy_s": {
+              "n": 124,
+              "mean": 0.4171335685483871,
+              "p50": 0.549375,
+              "p95": 1.0,
+              "max": 1.0
+            },
+            "endpoint_wav_end_wall_proxy_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "processing_rtf_including_padded_audio": 0.008869160410626874,
+            "process_cpu_percent_over_call_wall": 100.10623199822992,
+            "observed_peak_rss_mib": 114.359375,
+            "paced_input_lateness_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "actual_acoustic_endpoint_s": null,
+            "input_drops": null,
+            "queue_backlog": null
+          },
+          "negative_trigger_ids": [
+            "noise-35-0",
+            "noise-35-1"
+          ],
+          "silence": {
+            "files": 6,
+            "speech_files": 0,
+            "speech_clips_fully_missed": 0,
+            "negative_files": 6,
+            "negative_files_triggered": 0,
+            "segments": 0,
+            "max_segment_s": null,
+            "segments_exceeding_soft_max": 0
+          },
+          "noise": {
+            "noise_-35dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 2,
+              "segments": 2,
+              "max_segment_s": 0.312,
+              "segments_exceeding_soft_max": 0
+            },
+            "noise_-45dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 0,
+              "segments": 0,
+              "max_segment_s": null,
+              "segments_exceeding_soft_max": 0
+            },
+            "noise_-55dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 0,
+              "segments": 0,
+              "max_segment_s": null,
+              "segments_exceeding_soft_max": 0
+            }
+          },
+          "continuous_components": [
+            {
+              "id": "kss-train-01023-clean",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01011-clean",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01010-clean",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01023-quiet24",
+              "whole_clip_missed": true
+            },
+            {
+              "id": "kss-train-01011-quiet24",
+              "whole_clip_missed": true
+            },
+            {
+              "id": "kss-train-01010-quiet24",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01023-quiet24_noise55",
+              "whole_clip_missed": true
+            },
+            {
+              "id": "kss-train-01011-quiet24_noise55",
+              "whole_clip_missed": true
+            },
+            {
+              "id": "kss-train-01010-quiet24_noise55",
+              "whole_clip_missed": true
+            }
+          ]
+        },
+        "8": {
+          "overall": {
+            "files": 166,
+            "speech_files": 154,
+            "speech_clips_fully_missed": 0,
+            "negative_files": 12,
+            "negative_files_triggered": 2,
+            "segments": 243,
+            "max_segment_s": 6.564,
+            "segments_exceeding_soft_max": 0,
+            "endpoint_wav_end_audio_proxy_s": {
+              "n": 119,
+              "mean": 0.4229443277310925,
+              "p50": 0.5850625,
+              "p95": 1.0,
+              "max": 1.0
+            },
+            "endpoint_wav_end_wall_proxy_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "processing_rtf_including_padded_audio": 0.008883098897504728,
+            "process_cpu_percent_over_call_wall": 100.10642118742756,
+            "observed_peak_rss_mib": 114.796875,
+            "paced_input_lateness_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "actual_acoustic_endpoint_s": null,
+            "input_drops": null,
+            "queue_backlog": null
+          },
+          "negative_trigger_ids": [
+            "noise-35-0",
+            "noise-35-1"
+          ],
+          "silence": {
+            "files": 6,
+            "speech_files": 0,
+            "speech_clips_fully_missed": 0,
+            "negative_files": 6,
+            "negative_files_triggered": 0,
+            "segments": 0,
+            "max_segment_s": null,
+            "segments_exceeding_soft_max": 0
+          },
+          "noise": {
+            "noise_-35dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 2,
+              "segments": 2,
+              "max_segment_s": 0.312,
+              "segments_exceeding_soft_max": 0
+            },
+            "noise_-45dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 0,
+              "segments": 0,
+              "max_segment_s": null,
+              "segments_exceeding_soft_max": 0
+            },
+            "noise_-55dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 0,
+              "segments": 0,
+              "max_segment_s": null,
+              "segments_exceeding_soft_max": 0
+            }
+          },
+          "continuous_components": [
+            {
+              "id": "kss-train-01023-clean",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01011-clean",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01010-clean",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01023-quiet24",
+              "whole_clip_missed": true
+            },
+            {
+              "id": "kss-train-01011-quiet24",
+              "whole_clip_missed": true
+            },
+            {
+              "id": "kss-train-01010-quiet24",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01023-quiet24_noise55",
+              "whole_clip_missed": true
+            },
+            {
+              "id": "kss-train-01011-quiet24_noise55",
+              "whole_clip_missed": true
+            },
+            {
+              "id": "kss-train-01010-quiet24_noise55",
+              "whole_clip_missed": true
+            }
+          ]
+        }
+      }
+    },
+    "unpaced-rms26": {
+      "source_commit": "fad62a45d18842db07df790f1ac31179fbc3e43b",
+      "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+      "settings": {
+        "sample_rate": 16000,
+        "num_threads": 1,
+        "window_size": 512,
+        "threshold": 0.5,
+        "min_speech_duration": 0.1,
+        "min_silence_duration": 0.3,
+        "max_speech_duration_candidates": [
+          3,
+          5,
+          8
+        ],
+        "buffer_size_in_seconds": 123.586875,
+        "maximum_is_hard_limit": false
+      },
+      "total_rows": 498,
+      "start_temperature_c": 52.35,
+      "max_temperature_c": 62.8,
+      "current_limit_values": [
+        0
+      ],
+      "history_limit_values": [
+        14
+      ],
+      "segment_file_sha256": "0ab8a48fb8cf83da69729e6b6cd577689f3875cb33ed70a15e1a6fdee5764c5f",
+      "candidates": {
+        "3": {
+          "overall": {
+            "files": 166,
+            "speech_files": 154,
+            "speech_clips_fully_missed": 0,
+            "negative_files": 12,
+            "negative_files_triggered": 4,
+            "segments": 261,
+            "max_segment_s": 4.96,
+            "segments_exceeding_soft_max": 102,
+            "endpoint_wav_end_audio_proxy_s": {
+              "n": 154,
+              "mean": 0.1215454545454546,
+              "p50": 0.1400625,
+              "p95": 0.4314375,
+              "max": 0.5305
+            },
+            "endpoint_wav_end_wall_proxy_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "processing_rtf_including_padded_audio": 0.008670337979041966,
+            "process_cpu_percent_over_call_wall": 100.09743916638503,
+            "observed_peak_rss_mib": 90.40625,
+            "paced_input_lateness_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "actual_acoustic_endpoint_s": null,
+            "input_drops": null,
+            "queue_backlog": null
+          },
+          "negative_trigger_ids": [
+            "noise-45-0",
+            "noise-45-1",
+            "noise-35-0",
+            "noise-35-1"
+          ],
+          "silence": {
+            "files": 6,
+            "speech_files": 0,
+            "speech_clips_fully_missed": 0,
+            "negative_files": 6,
+            "negative_files_triggered": 0,
+            "segments": 0,
+            "max_segment_s": null,
+            "segments_exceeding_soft_max": 0
+          },
+          "noise": {
+            "noise_-35dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 2,
+              "segments": 2,
+              "max_segment_s": 0.44,
+              "segments_exceeding_soft_max": 0
+            },
+            "noise_-45dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 2,
+              "segments": 2,
+              "max_segment_s": 0.376,
+              "segments_exceeding_soft_max": 0
+            },
+            "noise_-55dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 0,
+              "segments": 0,
+              "max_segment_s": null,
+              "segments_exceeding_soft_max": 0
+            }
+          },
+          "continuous_components": [
+            {
+              "id": "kss-train-01023-clean",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01011-clean",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01010-clean",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01023-quiet24",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01011-quiet24",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01010-quiet24",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01023-quiet24_noise55",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01011-quiet24_noise55",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01010-quiet24_noise55",
+              "whole_clip_missed": false
+            }
+          ]
+        },
+        "5": {
+          "overall": {
+            "files": 166,
+            "speech_files": 154,
+            "speech_clips_fully_missed": 0,
+            "negative_files": 12,
+            "negative_files_triggered": 4,
+            "segments": 245,
+            "max_segment_s": 5.824,
+            "segments_exceeding_soft_max": 4,
+            "endpoint_wav_end_audio_proxy_s": {
+              "n": 154,
+              "mean": 0.24144155844155837,
+              "p50": 0.257125,
+              "p95": 0.46525,
+              "max": 0.5305
+            },
+            "endpoint_wav_end_wall_proxy_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "processing_rtf_including_padded_audio": 0.008736131443576168,
+            "process_cpu_percent_over_call_wall": 100.06040085354743,
+            "observed_peak_rss_mib": 113.859375,
+            "paced_input_lateness_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "actual_acoustic_endpoint_s": null,
+            "input_drops": null,
+            "queue_backlog": null
+          },
+          "negative_trigger_ids": [
+            "noise-45-0",
+            "noise-45-1",
+            "noise-35-0",
+            "noise-35-1"
+          ],
+          "silence": {
+            "files": 6,
+            "speech_files": 0,
+            "speech_clips_fully_missed": 0,
+            "negative_files": 6,
+            "negative_files_triggered": 0,
+            "segments": 0,
+            "max_segment_s": null,
+            "segments_exceeding_soft_max": 0
+          },
+          "noise": {
+            "noise_-35dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 2,
+              "segments": 2,
+              "max_segment_s": 0.44,
+              "segments_exceeding_soft_max": 0
+            },
+            "noise_-45dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 2,
+              "segments": 2,
+              "max_segment_s": 0.376,
+              "segments_exceeding_soft_max": 0
+            },
+            "noise_-55dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 0,
+              "segments": 0,
+              "max_segment_s": null,
+              "segments_exceeding_soft_max": 0
+            }
+          },
+          "continuous_components": [
+            {
+              "id": "kss-train-01023-clean",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01011-clean",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01010-clean",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01023-quiet24",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01011-quiet24",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01010-quiet24",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01023-quiet24_noise55",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01011-quiet24_noise55",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01010-quiet24_noise55",
+              "whole_clip_missed": false
+            }
+          ]
+        },
+        "8": {
+          "overall": {
+            "files": 166,
+            "speech_files": 154,
+            "speech_clips_fully_missed": 0,
+            "negative_files": 12,
+            "negative_files_triggered": 4,
+            "segments": 245,
+            "max_segment_s": 5.848,
+            "segments_exceeding_soft_max": 0,
+            "endpoint_wav_end_audio_proxy_s": {
+              "n": 154,
+              "mean": 0.2482987012987013,
+              "p50": 0.2593125,
+              "p95": 0.46525,
+              "max": 0.5305
+            },
+            "endpoint_wav_end_wall_proxy_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "processing_rtf_including_padded_audio": 0.00872988101404495,
+            "process_cpu_percent_over_call_wall": 100.09474953406759,
+            "observed_peak_rss_mib": 113.609375,
+            "paced_input_lateness_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "actual_acoustic_endpoint_s": null,
+            "input_drops": null,
+            "queue_backlog": null
+          },
+          "negative_trigger_ids": [
+            "noise-45-0",
+            "noise-45-1",
+            "noise-35-0",
+            "noise-35-1"
+          ],
+          "silence": {
+            "files": 6,
+            "speech_files": 0,
+            "speech_clips_fully_missed": 0,
+            "negative_files": 6,
+            "negative_files_triggered": 0,
+            "segments": 0,
+            "max_segment_s": null,
+            "segments_exceeding_soft_max": 0
+          },
+          "noise": {
+            "noise_-35dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 2,
+              "segments": 2,
+              "max_segment_s": 0.44,
+              "segments_exceeding_soft_max": 0
+            },
+            "noise_-45dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 2,
+              "segments": 2,
+              "max_segment_s": 0.376,
+              "segments_exceeding_soft_max": 0
+            },
+            "noise_-55dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 0,
+              "segments": 0,
+              "max_segment_s": null,
+              "segments_exceeding_soft_max": 0
+            }
+          },
+          "continuous_components": [
+            {
+              "id": "kss-train-01023-clean",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01011-clean",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01010-clean",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01023-quiet24",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01011-quiet24",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01010-quiet24",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01023-quiet24_noise55",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01011-quiet24_noise55",
+              "whole_clip_missed": false
+            },
+            {
+              "id": "kss-train-01010-quiet24_noise55",
+              "whole_clip_missed": false
+            }
+          ]
+        }
+      }
+    },
+    "paced-identity": {
+      "source_commit": "fad62a45d18842db07df790f1ac31179fbc3e43b",
+      "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+      "settings": {
+        "sample_rate": 16000,
+        "num_threads": 1,
+        "window_size": 512,
+        "threshold": 0.5,
+        "min_speech_duration": 0.1,
+        "min_silence_duration": 0.3,
+        "max_speech_duration_candidates": [
+          5
+        ],
+        "buffer_size_in_seconds": 13.0,
+        "maximum_is_hard_limit": false
+      },
+      "total_rows": 22,
+      "start_temperature_c": 52.9,
+      "max_temperature_c": 55.65,
+      "current_limit_values": [
+        0
+      ],
+      "history_limit_values": [
+        14
+      ],
+      "segment_file_sha256": "6ad72de281317cacc943ac61ac1c3e5b3fa591d89333ad8bcee496e73c4e9f3f",
+      "candidates": {
+        "5": {
+          "overall": {
+            "files": 22,
+            "speech_files": 10,
+            "speech_clips_fully_missed": 0,
+            "negative_files": 12,
+            "negative_files_triggered": 2,
+            "segments": 12,
+            "max_segment_s": 2.2,
+            "segments_exceeding_soft_max": 0,
+            "endpoint_wav_end_audio_proxy_s": {
+              "n": 10,
+              "mean": 0.2811125,
+              "p50": 0.2733125,
+              "p95": 0.32775,
+              "max": 0.32775
+            },
+            "endpoint_wav_end_wall_proxy_s": {
+              "n": 10,
+              "mean": 0.2823777345981565,
+              "p50": 0.274979199000867,
+              "p95": 0.32888094499125153,
+              "max": 0.32888094499125153
+            },
+            "processing_rtf_including_padded_audio": 0.01280983512958751,
+            "process_cpu_percent_over_call_wall": 1.4859922190705197,
+            "observed_peak_rss_mib": 67.875,
+            "paced_input_lateness_s": {
+              "n": 2599,
+              "mean": 6.232991310877492e-05,
+              "p50": 6.229600112428457e-05,
+              "p95": 6.509199680293509e-05,
+              "max": 0.0003270310006335819
+            },
+            "actual_acoustic_endpoint_s": null,
+            "input_drops": null,
+            "queue_backlog": null
+          },
+          "negative_trigger_ids": [
+            "noise-35-0",
+            "noise-35-1"
+          ],
+          "silence": {
+            "files": 6,
+            "speech_files": 0,
+            "speech_clips_fully_missed": 0,
+            "negative_files": 6,
+            "negative_files_triggered": 0,
+            "segments": 0,
+            "max_segment_s": null,
+            "segments_exceeding_soft_max": 0
+          },
+          "noise": {
+            "noise_-35dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 2,
+              "segments": 2,
+              "max_segment_s": 0.312,
+              "segments_exceeding_soft_max": 0
+            },
+            "noise_-45dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 0,
+              "segments": 0,
+              "max_segment_s": null,
+              "segments_exceeding_soft_max": 0
+            },
+            "noise_-55dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 0,
+              "segments": 0,
+              "max_segment_s": null,
+              "segments_exceeding_soft_max": 0
+            }
+          },
+          "continuous_components": []
+        }
+      }
+    },
+    "paced-rms26": {
+      "source_commit": "fad62a45d18842db07df790f1ac31179fbc3e43b",
+      "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+      "settings": {
+        "sample_rate": 16000,
+        "num_threads": 1,
+        "window_size": 512,
+        "threshold": 0.5,
+        "min_speech_duration": 0.1,
+        "min_silence_duration": 0.3,
+        "max_speech_duration_candidates": [
+          5
+        ],
+        "buffer_size_in_seconds": 13.0,
+        "maximum_is_hard_limit": false
+      },
+      "total_rows": 22,
+      "start_temperature_c": 50.7,
+      "max_temperature_c": 53.45,
+      "current_limit_values": [
+        0
+      ],
+      "history_limit_values": [
+        14
+      ],
+      "segment_file_sha256": "42cab2034f1eae39d75ed507aca222597f82eeb6e60c1950d7eea6e32c10940a",
+      "candidates": {
+        "5": {
+          "overall": {
+            "files": 22,
+            "speech_files": 10,
+            "speech_clips_fully_missed": 0,
+            "negative_files": 12,
+            "negative_files_triggered": 4,
+            "segments": 14,
+            "max_segment_s": 2.2,
+            "segments_exceeding_soft_max": 0,
+            "endpoint_wav_end_audio_proxy_s": {
+              "n": 10,
+              "mean": 0.27791249999999995,
+              "p50": 0.2733125,
+              "p95": 0.32775,
+              "max": 0.32775
+            },
+            "endpoint_wav_end_wall_proxy_s": {
+              "n": 10,
+              "mean": 0.27923790789911285,
+              "p50": 0.27491241199639616,
+              "p95": 0.32887482899590403,
+              "max": 0.32887482899590403
+            },
+            "processing_rtf_including_padded_audio": 0.013073717802763824,
+            "process_cpu_percent_over_call_wall": 1.5195264169200842,
+            "observed_peak_rss_mib": 68.421875,
+            "paced_input_lateness_s": {
+              "n": 2599,
+              "mean": 6.280224680475415e-05,
+              "p50": 6.265200162314244e-05,
+              "p95": 6.60269982182271e-05,
+              "max": 0.0002897190023212204
+            },
+            "actual_acoustic_endpoint_s": null,
+            "input_drops": null,
+            "queue_backlog": null
+          },
+          "negative_trigger_ids": [
+            "noise-45-0",
+            "noise-45-1",
+            "noise-35-0",
+            "noise-35-1"
+          ],
+          "silence": {
+            "files": 6,
+            "speech_files": 0,
+            "speech_clips_fully_missed": 0,
+            "negative_files": 6,
+            "negative_files_triggered": 0,
+            "segments": 0,
+            "max_segment_s": null,
+            "segments_exceeding_soft_max": 0
+          },
+          "noise": {
+            "noise_-35dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 2,
+              "segments": 2,
+              "max_segment_s": 0.44,
+              "segments_exceeding_soft_max": 0
+            },
+            "noise_-45dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 2,
+              "segments": 2,
+              "max_segment_s": 0.376,
+              "segments_exceeding_soft_max": 0
+            },
+            "noise_-55dbfs": {
+              "files": 2,
+              "speech_files": 0,
+              "speech_clips_fully_missed": 0,
+              "negative_files": 2,
+              "negative_files_triggered": 0,
+              "segments": 0,
+              "max_segment_s": null,
+              "segments_exceeding_soft_max": 0
+            }
+          },
+          "continuous_components": []
+        }
+      }
+    }
+  },
+  "limitations_ko": [
+    "개발 자료와 합성 잡음이며 최종 독립 평가 아님.",
+    "여러 후보에서 같은 입력을 반복하므로 독립 표본으로 합치지 않음.",
+    "누락은 WAV 범위 겹침 검사이며 단어·음소 보존을 보장하지 않음.",
+    "대리 지연은 WAV 끝 기준이며 음수/누락 null을 보존.",
+    "같은 스레드의 1배속 입력기로 수집 큐 드롭/백로그 미측정.",
+    "RMS WAV는 사전 생성. 연속 전처리+VAD 결합 1배속 미실행.",
+    "VAD max_speech_duration은 soft 기준. 서비스 hard 상한 미구현.",
+    "1Hz 온도 표본과 기존 이력 비트로 모든 순간적 제한을 배제할 수 없음.",
+    "고정 클럭·주변 온도·열평형 통제 아님."
+  ],
+  "executions": {
+    "native-initial": {
+      "source_commit": "df3a7fbcb439540e851b325ff528ba0f6fdfc206",
+      "status": "completed",
+      "vad_rows": 150,
+      "execution_sha256": "3168aed640882edd37e50180f5f4a77dcb2137b87c5e8fe64f0894946617320b"
+    },
+    "paced-continuous-identity": {
+      "source_commit": "bbcea5ae41a6e6aebc64931a646c02694c334893",
+      "status": "completed",
+      "vad_rows": 1,
+      "execution_sha256": "66a38b78e705d7a1651a82c19f2f13933510fee31abbe6db0fe8a3a2a028d3f0"
+    },
+    "paced-continuous-rms26": {
+      "source_commit": "bbcea5ae41a6e6aebc64931a646c02694c334893",
+      "status": "completed",
+      "vad_rows": 1,
+      "execution_sha256": "494e2795fddbbc849ee4b75095bf120dcd2d477c1bd90e364cbc3185ed586408"
+    },
+    "paced-identity": {
+      "source_commit": "fad62a45d18842db07df790f1ac31179fbc3e43b",
+      "status": "completed",
+      "vad_rows": 22,
+      "execution_sha256": "dac60b4cdf17b096bbb14dc6d30484c71b8368ba11d50c032a5f5365c7762f8d"
+    },
+    "paced-rms26": {
+      "source_commit": "fad62a45d18842db07df790f1ac31179fbc3e43b",
+      "status": "completed",
+      "vad_rows": 22,
+      "execution_sha256": "667d065cec016d5223a4413a72a58e7822f7fc07832754685408f4638b2ac0bb"
+    },
+    "preprocessing-regression": {
+      "source_commit": "fad62a45d18842db07df790f1ac31179fbc3e43b",
+      "status": "completed",
+      "vad_rows": 0,
+      "execution_sha256": "fafbe1e59dad2a51c5f5b55988add6d0e0fadb865ba5576b935260e554c38ba8"
+    },
+    "unpaced-identity": {
+      "source_commit": "fad62a45d18842db07df790f1ac31179fbc3e43b",
+      "status": "completed",
+      "vad_rows": 498,
+      "execution_sha256": "535c465f6c8183e5c6ac3800704f3b8abb6e6c3d6b26f72f1740e2c754ddde59"
+    },
+    "unpaced-rms26": {
+      "source_commit": "fad62a45d18842db07df790f1ac31179fbc3e43b",
+      "status": "completed",
+      "vad_rows": 498,
+      "execution_sha256": "34050356e955b00d50fbc77c0558d7ce48ccb07d463ad301902a037a43f5c283"
+    }
+  },
+  "vad_row_count": 1192,
+  "preprocessing": {
+    "host_pcm_regression": {
+      "checked_preexisting_pcm_files": 450,
+      "all_equal": true,
+      "scope": "기존 M3-0 파생 PCM, 파일 API, 새 블록 API 바이트 일치. Host 검사."
+    },
+    "rp5_pcm_files_equal": 450,
+    "scope_ko": "이미 읽은 PCM의 파일 호출 계산. 입력 수집/I/O/ASR 미포함.",
+    "policies": {
+      "identity": {
+        "files": 150,
+        "compute_rtf": 0.0254293030578897,
+        "process_cpu_percent": 99.98558729774122
+      },
+      "gain12": {
+        "files": 150,
+        "compute_rtf": 0.025439789933039345,
+        "process_cpu_percent": 99.98862962466085
+      },
+      "rms26": {
+        "files": 150,
+        "compute_rtf": 0.02545768273711212,
+        "process_cpu_percent": 99.98749736313263
+      }
+    }
+  }
+}
