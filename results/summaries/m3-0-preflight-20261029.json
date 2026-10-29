@@ -1,0 +1,1572 @@
+{
+  "milestone": "M3-0",
+  "status": "partial_vad_not_measured_higher_load_cooling_rejected",
+  "run_id": "m3-0-20261029-01",
+  "baseline_commit": "d7bb3bdec72f159d8d9ee55d187290ccbbafbd14",
+  "measurement_commits": {
+    "initial_load": "e63881a",
+    "volume_and_preprocessing": "6da200d",
+    "extended_load": "a1feed1"
+  },
+  "conditions": {
+    "threads_per_model": 1,
+    "warmups_each": 3,
+    "volume_runs": 6,
+    "predictions_successful": 900,
+    "unique_source_utterances": 50,
+    "independent_final_test": false,
+    "normalization": "ko_cer_v1"
+  },
+  "volume": {
+    "schema_version": 1,
+    "comparisons": {
+      "identity": {
+        "zipformer": {
+          "clean": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.1164021164021164,
+              "reference_characters": 756,
+              "errors": 88,
+              "substitutions": 71,
+              "deletions": 11,
+              "insertions": 6,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.13583673835595245,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 22.402059052925324,
+            "mean_process_cpu_percent": 100.14651903647388,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.4480411810585065,
+              "p50": 0.42546196599141695,
+              "p95": 0.6925922280061059,
+              "max": 0.7695752470026491
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.13757884231890144,
+              "p50": 0.13633776807634299,
+              "p95": 0.15053210451098312,
+              "max": 0.1679728420131603
+            },
+            "rss_observed_max_mib": 254.28125
+          },
+          "quiet24": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.7711640211640212,
+              "reference_characters": 756,
+              "errors": 583,
+              "substitutions": 22,
+              "deletions": 559,
+              "insertions": 2,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.1350775805574507,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 22.276859507954214,
+            "mean_process_cpu_percent": 100.14127897172642,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.4455371901590843,
+              "p50": 0.42291479800769594,
+              "p95": 0.6923329290002584,
+              "max": 0.7659150719991885
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.13674924012235365,
+              "p50": 0.135674219120537,
+              "p95": 0.1497369412935556,
+              "max": 0.1665147676299122
+            },
+            "rss_observed_max_mib": 254.28125
+          },
+          "quiet24_noise55": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.8148148148148148,
+              "reference_characters": 756,
+              "errors": 616,
+              "substitutions": 61,
+              "deletions": 552,
+              "insertions": 3,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.1350751838840395,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 22.276464250971912,
+            "mean_process_cpu_percent": 100.13701634462365,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.4455292850194382,
+              "p50": 0.42270070500671864,
+              "p95": 0.6890963129990268,
+              "max": 0.7695066180021968
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.13671844725240673,
+              "p50": 0.13576568278259682,
+              "p95": 0.14940997026830533,
+              "max": 0.1664996898304471
+            },
+            "rss_observed_max_mib": 254.28125
+          }
+        },
+        "sensevoice": {
+          "clean": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.051587301587301584,
+              "reference_characters": 756,
+              "errors": 39,
+              "substitutions": 25,
+              "deletions": 9,
+              "insertions": 5,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.09798638093853698,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 16.159815958002582,
+            "mean_process_cpu_percent": 100.10460328286743,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.32319631916005165,
+              "p50": 0.31612707499880344,
+              "p95": 0.504016077000415,
+              "max": 0.5729544269997859
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.09925519751818399,
+              "p50": 0.09755030850665936,
+              "p95": 0.11052445507213007,
+              "max": 0.12557655988677077
+            },
+            "rss_observed_max_mib": 554.875
+          },
+          "quiet24": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.04365079365079365,
+              "reference_characters": 756,
+              "errors": 33,
+              "substitutions": 27,
+              "deletions": 3,
+              "insertions": 3,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.09775133619529099,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 16.121052613991196,
+            "mean_process_cpu_percent": 100.1201346058011,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.3224210522798239,
+              "p50": 0.3137051869998686,
+              "p95": 0.5084066470008111,
+              "max": 0.5757983929943293
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.0988534295818123,
+              "p50": 0.0972122384047428,
+              "p95": 0.11020201866587229,
+              "max": 0.12280456773323786
+            },
+            "rss_observed_max_mib": 554.875
+          },
+          "quiet24_noise55": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.08333333333333333,
+              "reference_characters": 756,
+              "errors": 63,
+              "substitutions": 43,
+              "deletions": 13,
+              "insertions": 7,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.09776001135124461,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 16.12248331203591,
+            "mean_process_cpu_percent": 100.11959583142946,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.3224496662407182,
+              "p50": 0.3132467569957953,
+              "p95": 0.5081858129997272,
+              "max": 0.5755498540092958
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.09885783847413554,
+              "p50": 0.09729297084461784,
+              "p95": 0.10977506871567051,
+              "max": 0.12297218384455896
+            },
+            "rss_observed_max_mib": 554.875
+          }
+        }
+      },
+      "gain12": {
+        "sensevoice": {
+          "clean": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.06084656084656084,
+              "reference_characters": 756,
+              "errors": 46,
+              "substitutions": 27,
+              "deletions": 9,
+              "insertions": 10,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.09845522358260106,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 16.237137018018984,
+            "mean_process_cpu_percent": 100.10525632050799,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.3247427403603797,
+              "p50": 0.3173024930001702,
+              "p95": 0.5063260239985539,
+              "max": 0.576281863002805
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.09973820169593207,
+              "p50": 0.09783030214702651,
+              "p95": 0.1108797462542116,
+              "max": 0.1266630081679998
+            },
+            "rss_observed_max_mib": 557.625
+          },
+          "quiet24": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.041005291005291,
+              "reference_characters": 756,
+              "errors": 31,
+              "substitutions": 24,
+              "deletions": 3,
+              "insertions": 4,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.09829208246465893,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 16.210231947989087,
+            "mean_process_cpu_percent": 100.10838841829843,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.32420463895978174,
+              "p50": 0.31576622198917903,
+              "p95": 0.510026347998064,
+              "max": 0.5768281450000359
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.09943602520445814,
+              "p50": 0.09786467092796522,
+              "p95": 0.1104540363849031,
+              "max": 0.12461113584900849
+            },
+            "rss_observed_max_mib": 557.625
+          },
+          "quiet24_noise55": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.07804232804232804,
+              "reference_characters": 756,
+              "errors": 59,
+              "substitutions": 43,
+              "deletions": 8,
+              "insertions": 8,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.0983113108981752,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 16.213403082016157,
+            "mean_process_cpu_percent": 100.07901100046067,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.3242680616403231,
+              "p50": 0.3161335769982543,
+              "p95": 0.5102938869968057,
+              "max": 0.5764679380081361
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.09944751958475326,
+              "p50": 0.09779675735447775,
+              "p95": 0.1099844939101834,
+              "max": 0.12461481487802498
+            },
+            "rss_observed_max_mib": 557.625
+          }
+        },
+        "zipformer": {
+          "clean": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.14682539682539683,
+              "reference_characters": 756,
+              "errors": 111,
+              "substitutions": 89,
+              "deletions": 13,
+              "insertions": 9,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.1362118312564531,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 22.46391899898299,
+            "mean_process_cpu_percent": 100.12590236377834,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.4492783799796598,
+              "p50": 0.425993570999708,
+              "p95": 0.6942571609979495,
+              "max": 0.771159367999644
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.13794074954793348,
+              "p50": 0.13692871922011454,
+              "p95": 0.15101738081095203,
+              "max": 0.16735827224325972
+            },
+            "rss_observed_max_mib": 251.71875
+          },
+          "quiet24": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.13095238095238096,
+              "reference_characters": 756,
+              "errors": 99,
+              "substitutions": 75,
+              "deletions": 22,
+              "insertions": 2,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.13608973562730994,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 22.443783109920332,
+            "mean_process_cpu_percent": 100.14337573982996,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.44887566219840663,
+              "p50": 0.4260609420016408,
+              "p95": 0.693634581999504,
+              "max": 0.770369602003484
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.13782735717807867,
+              "p50": 0.13665326440686315,
+              "p95": 0.1511150720722081,
+              "max": 0.16816153984951565
+            },
+            "rss_observed_max_mib": 251.71875
+          },
+          "quiet24_noise55": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.3584656084656085,
+              "reference_characters": 756,
+              "errors": 271,
+              "substitutions": 169,
+              "deletions": 90,
+              "insertions": 12,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.13604778100191803,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 22.43686399505532,
+            "mean_process_cpu_percent": 100.14231132279312,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.4487372799011064,
+              "p50": 0.4265928339882521,
+              "p95": 0.6925308510108152,
+              "max": 0.7715991480072262
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.13775851391248148,
+              "p50": 0.13663375013191098,
+              "p95": 0.15086228833637377,
+              "max": 0.16692807234993665
+            },
+            "rss_observed_max_mib": 251.71875
+          }
+        }
+      },
+      "rms26": {
+        "zipformer": {
+          "clean": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.12169312169312169,
+              "reference_characters": 756,
+              "errors": 92,
+              "substitutions": 74,
+              "deletions": 12,
+              "insertions": 6,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.13632444541250135,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 22.482491212984314,
+            "mean_process_cpu_percent": 100.1295397904963,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.4496498242596863,
+              "p50": 0.42733447199861985,
+              "p95": 0.6944346469972515,
+              "max": 0.7702821790007874
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.13806840918876181,
+              "p50": 0.1368839367247871,
+              "p95": 0.15140382808074399,
+              "max": 0.16850903151615806
+            },
+            "rss_observed_max_mib": 254.5625
+          },
+          "quiet24": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.15079365079365079,
+              "reference_characters": 756,
+              "errors": 114,
+              "substitutions": 79,
+              "deletions": 28,
+              "insertions": 7,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.1362738795777344,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 22.474151946080383,
+            "mean_process_cpu_percent": 100.13577548551255,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.4494830389216077,
+              "p50": 0.42669896699953824,
+              "p95": 0.6947955009964062,
+              "max": 0.7709717019897653
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.1380131463911777,
+              "p50": 0.13686674735917728,
+              "p95": 0.1514298855240113,
+              "max": 0.16841128541865277
+            },
+            "rss_observed_max_mib": 254.5625
+          },
+          "quiet24_noise55": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.33201058201058203,
+              "reference_characters": 756,
+              "errors": 251,
+              "substitutions": 166,
+              "deletions": 71,
+              "insertions": 14,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.1362311818775624,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 22.46711028406571,
+            "mean_process_cpu_percent": 100.15194254402404,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.4493422056813142,
+              "p50": 0.4269672650116263,
+              "p95": 0.6939202350040432,
+              "max": 0.7712782789894845
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.13795739376103194,
+              "p50": 0.13689445167978956,
+              "p95": 0.15107221971321616,
+              "max": 0.16752448998790884
+            },
+            "rss_observed_max_mib": 254.5625
+          }
+        },
+        "sensevoice": {
+          "clean": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.05555555555555555,
+              "reference_characters": 756,
+              "errors": 42,
+              "substitutions": 25,
+              "deletions": 8,
+              "insertions": 9,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.09864333906339352,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 16.268160834995797,
+            "mean_process_cpu_percent": 100.10716354590423,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.3253632166999159,
+              "p50": 0.3167686410015449,
+              "p95": 0.5072630000067875,
+              "max": 0.5771508769976208
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.09994747518161723,
+              "p50": 0.09792164673439277,
+              "p95": 0.11094166685633383,
+              "max": 0.128338074362778
+            },
+            "rss_observed_max_mib": 556.4375
+          },
+          "quiet24": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.042328042328042326,
+              "reference_characters": 756,
+              "errors": 32,
+              "substitutions": 24,
+              "deletions": 4,
+              "insertions": 4,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.0984897386111057,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 16.24282920200494,
+            "mean_process_cpu_percent": 100.10760485613493,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.3248565840400988,
+              "p50": 0.31540648300142493,
+              "p95": 0.5117010709946044,
+              "max": 0.5785564240068197
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.09961969090234313,
+              "p50": 0.09798670687364668,
+              "p95": 0.11034447205374003,
+              "max": 0.1259957033179898
+            },
+            "rss_observed_max_mib": 556.4375
+          },
+          "quiet24_noise55": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.07671957671957672,
+              "reference_characters": 756,
+              "errors": 58,
+              "substitutions": 42,
+              "deletions": 8,
+              "insertions": 8,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.0984808025879896,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 16.241355482008657,
+            "mean_process_cpu_percent": 100.0942255651524,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.32482710964017314,
+              "p50": 0.31589491199702024,
+              "p95": 0.5112667709909147,
+              "max": 0.5778760859975591
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.09961154489982228,
+              "p50": 0.09812332183206063,
+              "p95": 0.11021155773229509,
+              "max": 0.12580163109605833
+            },
+            "rss_observed_max_mib": 556.4375
+          }
+        }
+      }
+    },
+    "selection": {
+      "selected_common_policy": "rms26",
+      "candidates": {
+        "identity": {
+          "eligible": true,
+          "newly_clipped_samples": 0,
+          "clean_cer_regression": {
+            "zipformer": 0.0,
+            "sensevoice": 0.0
+          },
+          "mean_development_cer": 0.3134920634920635
+        },
+        "gain12": {
+          "eligible": false,
+          "newly_clipped_samples": 100309,
+          "clean_cer_regression": {
+            "zipformer": 0.030423280423280435,
+            "sensevoice": 0.009259259259259259
+          },
+          "mean_development_cer": 0.13602292768959437
+        },
+        "rms26": {
+          "eligible": true,
+          "newly_clipped_samples": 0,
+          "clean_cer_regression": {
+            "zipformer": 0.005291005291005291,
+            "sensevoice": 0.003968253968253968
+          },
+          "mean_development_cer": 0.12985008818342153
+        }
+      },
+      "scope": "KSS 합성 음량 개발 규칙. VAD·실제 잡음·연속 상태·독립 최종 평가 합격을 뜻하지 않음."
+    },
+    "evidence": [
+      {
+        "run": "volume-01-identity-zipformer",
+        "manifest_sha256": "51f7a619cc7ff2d7e065848a4ff9013f03b597d687dd511ba47328f0a3698f06",
+        "predictions_sha256": "464cbbff3346281eee70623ca4ec9c3372b3e40ace551658c753db428b71d8fd",
+        "rescore_equal": true
+      },
+      {
+        "run": "volume-02-identity-sensevoice",
+        "manifest_sha256": "4fe03000dcd74c2a7824283095068ac042992a5e11e3aa7c4d09b368fda56b3d",
+        "predictions_sha256": "20fa9fcabaa94e3fad1be32ebce6911f41094302714e929d966c4d1858ecadc9",
+        "rescore_equal": true
+      },
+      {
+        "run": "volume-03-gain12-sensevoice",
+        "manifest_sha256": "1449ec87908283b00bc4f1c1248ef925842f43d52894c48f145751f8b335d3a9",
+        "predictions_sha256": "41725c4ff2f5040e6cb2e1d1b326989dc6b6ae52d03b1ebb39fd4938eaa845eb",
+        "rescore_equal": true
+      },
+      {
+        "run": "volume-04-gain12-zipformer",
+        "manifest_sha256": "d430b408c2813b563ef733d335ec4fbfcfa525382c76bae100ad670c0b5eb276",
+        "predictions_sha256": "62ba9839ff92aeaa7e9bc348eb6e66390999611498b7550d5453346079e9aeba",
+        "rescore_equal": true
+      },
+      {
+        "run": "volume-05-rms26-zipformer",
+        "manifest_sha256": "6cb30a32ce58ee4e925e9804e9c238a6eb85a1e842a2a8a16656a9355df94727",
+        "predictions_sha256": "55186abf285660434379450301e19c26755f4330bc18adfa247e60b5fac4fb14",
+        "rescore_equal": true
+      },
+      {
+        "run": "volume-06-rms26-sensevoice",
+        "manifest_sha256": "65a16177ae4caea8aba8814fffa4208fa9ef39093950daab0e0567e0db7fab5c",
+        "predictions_sha256": "db08164d88fe494b90d89a0082a4d39516099e6a28d249df281c4e2a823f1c87",
+        "rescore_equal": true
+      }
+    ],
+    "unmeasured": {
+      "streaming_first_partial_s": null,
+      "refine_queue_s": null,
+      "endpoint_delay_s": null,
+      "real_acoustic_recognition_latency_s": null
+    }
+  },
+  "thermal_volume": {
+    "volume-01-identity-zipformer": {
+      "status": "completed",
+      "start_c": 51.8,
+      "max_c": 69.95,
+      "current_flags": [
+        0
+      ],
+      "history_flags": [
+        14
+      ],
+      "freq_range_mhz": [
+        1500.0,
+        2400.0
+      ]
+    },
+    "volume-02-identity-sensevoice": {
+      "status": "completed",
+      "start_c": 52.35,
+      "max_c": 67.75,
+      "current_flags": [
+        0
+      ],
+      "history_flags": [
+        14
+      ],
+      "freq_range_mhz": [
+        1500.0,
+        2400.0
+      ]
+    },
+    "volume-03-gain12-sensevoice": {
+      "status": "completed",
+      "start_c": 52.9,
+      "max_c": 67.75,
+      "current_flags": [
+        0
+      ],
+      "history_flags": [
+        14
+      ],
+      "freq_range_mhz": [
+        1500.0,
+        2400.0
+      ]
+    },
+    "volume-04-gain12-zipformer": {
+      "status": "completed",
+      "start_c": 52.35,
+      "max_c": 68.85,
+      "current_flags": [
+        0
+      ],
+      "history_flags": [
+        14
+      ],
+      "freq_range_mhz": [
+        1500.0,
+        2400.0
+      ]
+    },
+    "volume-05-rms26-zipformer": {
+      "status": "completed",
+      "start_c": 52.35,
+      "max_c": 68.85,
+      "current_flags": [
+        0
+      ],
+      "history_flags": [
+        14
+      ],
+      "freq_range_mhz": [
+        1500.0,
+        2400.0
+      ]
+    },
+    "volume-06-rms26-sensevoice": {
+      "status": "completed",
+      "start_c": 52.35,
+      "max_c": 68.85,
+      "current_flags": [
+        0
+      ],
+      "history_flags": [
+        14
+      ],
+      "freq_range_mhz": [
+        1500.0,
+        2400.0
+      ]
+    }
+  },
+  "initial_load": {
+    "zipformer": {
+      "status": "completed",
+      "duration_s": 180.4643000990036,
+      "calls": 400,
+      "warmup_runs": 3,
+      "full_cycles": 8,
+      "first_cycle_wall_s": 22.556054807966575,
+      "last_cycle_wall_s": 22.549388690997148,
+      "last_over_first_cycle_wall_ratio": 0.9997044644098367,
+      "paired_file_ratio_median": 0.9995073682929118,
+      "cpu_percent": 100.1548536310467,
+      "rss_mib": 265.84375,
+      "start_temp_c": 49.6,
+      "max_temp_c": 67.2,
+      "last_temp_c": 67.2,
+      "freq_range_mhz": [
+        2400.0,
+        2400.0
+      ],
+      "current_flags": [
+        0
+      ],
+      "history_flags": [
+        14
+      ],
+      "fan_rpm_range": [
+        2898,
+        5175
+      ],
+      "tid_cpu_percent": [
+        99.95231957854539,
+        0.1732951135402069,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "thread_count_max": 5,
+      "scope": "180초 반복의 첫/마지막 완전한 KSS 50개 사이 비교. 장시간 서비스·동시 실행 성능은 아님."
+    },
+    "sensevoice": {
+      "status": "completed",
+      "duration_s": 180.18134310899768,
+      "calls": 556,
+      "warmup_runs": 3,
+      "full_cycles": 11,
+      "first_cycle_wall_s": 16.232473103053053,
+      "last_cycle_wall_s": 16.20137285698729,
+      "last_over_first_cycle_wall_ratio": 0.998084072225574,
+      "paired_file_ratio_median": 0.9981738575129668,
+      "cpu_percent": 100.12958806794782,
+      "rss_mib": 567.21875,
+      "start_temp_c": 52.9,
+      "max_temp_c": 68.85,
+      "last_temp_c": 67.75,
+      "freq_range_mhz": [
+        1500.0,
+        2400.0
+      ],
+      "current_flags": [
+        0
+      ],
+      "history_flags": [
+        14
+      ],
+      "fan_rpm_range": [
+        3107,
+        7178
+      ],
+      "tid_cpu_percent": [
+        99.96718333606466,
+        0.13932357151848618,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "thread_count_max": 5,
+      "scope": "180초 반복의 첫/마지막 완전한 KSS 50개 사이 비교. 장시간 서비스·동시 실행 성능은 아님."
+    }
+  },
+  "audio_arithmetic": {
+    "development": {
+      "identity": {
+        "clean": {
+          "n": 50,
+          "newly_clipped_samples": 0,
+          "frames": 2638704,
+          "median_input_rms_dbfs": -19.703699150143606,
+          "median_output_rms_dbfs": -19.703699150143606,
+          "host_preprocessing_s": 1.9527136270189658
+        },
+        "quiet24": {
+          "n": 50,
+          "newly_clipped_samples": 0,
+          "frames": 2638704,
+          "median_input_rms_dbfs": -43.70368848630601,
+          "median_output_rms_dbfs": -43.70368848630601,
+          "host_preprocessing_s": 2.011150950973388
+        },
+        "quiet24_noise55": {
+          "n": 50,
+          "newly_clipped_samples": 0,
+          "frames": 2638704,
+          "median_input_rms_dbfs": -43.39155173357514,
+          "median_output_rms_dbfs": -43.39155173357514,
+          "host_preprocessing_s": 1.9833090889733285
+        }
+      },
+      "gain12": {
+        "clean": {
+          "n": 50,
+          "newly_clipped_samples": 100309,
+          "frames": 2638704,
+          "median_input_rms_dbfs": -19.703699150143606,
+          "median_output_rms_dbfs": -8.672057113009451,
+          "host_preprocessing_s": 2.0048741560894996
+        },
+        "quiet24": {
+          "n": 50,
+          "newly_clipped_samples": 0,
+          "frames": 2638704,
+          "median_input_rms_dbfs": -43.70368848630601,
+          "median_output_rms_dbfs": -31.703675519580756,
+          "host_preprocessing_s": 1.9861270607216284
+        },
+        "quiet24_noise55": {
+          "n": 50,
+          "newly_clipped_samples": 0,
+          "frames": 2638704,
+          "median_input_rms_dbfs": -43.39155173357514,
+          "median_output_rms_dbfs": -31.39155431716514,
+          "host_preprocessing_s": 2.006614327779971
+        }
+      },
+      "rms26": {
+        "clean": {
+          "n": 50,
+          "newly_clipped_samples": 0,
+          "frames": 2638704,
+          "median_input_rms_dbfs": -19.703699150143606,
+          "median_output_rms_dbfs": -19.67680584751936,
+          "host_preprocessing_s": 2.05216290790122
+        },
+        "quiet24": {
+          "n": 50,
+          "newly_clipped_samples": 0,
+          "frames": 2638704,
+          "median_input_rms_dbfs": -43.70368848630601,
+          "median_output_rms_dbfs": -27.755330056422643,
+          "host_preprocessing_s": 1.9566474321181886
+        },
+        "quiet24_noise55": {
+          "n": 50,
+          "newly_clipped_samples": 0,
+          "frames": 2638704,
+          "median_input_rms_dbfs": -43.39155173357514,
+          "median_output_rms_dbfs": -27.013322084208113,
+          "host_preprocessing_s": 1.97379379713675
+        }
+      }
+    },
+    "noise_only_gaussian_3s_minus55_dbfs": {
+      "identity": {
+        "input_rms_dbfs": -55.00000000005954,
+        "output_rms_dbfs": -54.999859163237616,
+        "newly_clipped_samples": 0
+      },
+      "gain12": {
+        "input_rms_dbfs": -55.00000000005954,
+        "output_rms_dbfs": -43.0000679467996,
+        "newly_clipped_samples": 0
+      },
+      "rms26": {
+        "input_rms_dbfs": -55.00000000005954,
+        "output_rms_dbfs": -31.591860557851795,
+        "newly_clipped_samples": 0
+      }
+    },
+    "scope": "Host PCM 산술 검증. ASR 실측·실제 환경 잡음·청감 검증 아님."
+  },
+  "preprocessing_compute": {
+    "identity": {
+      "count": 150,
+      "total_wall_s": 12.076765837104176,
+      "total_audio_s": 494.7569999999999,
+      "preprocessing_rtf": 0.02440948958196484,
+      "cpu_percent": 99.98042642263614,
+      "all_host_pcm_equal": true
+    },
+    "gain12": {
+      "count": 150,
+      "total_wall_s": 12.133010005025426,
+      "total_audio_s": 494.7569999999999,
+      "preprocessing_rtf": 0.024523169970360054,
+      "cpu_percent": 99.98683346486315,
+      "all_host_pcm_equal": true
+    },
+    "rms26": {
+      "count": 150,
+      "total_wall_s": 12.110568593940116,
+      "total_audio_s": 494.7569999999999,
+      "preprocessing_rtf": 0.024477811519473435,
+      "cpu_percent": 99.95998650350305,
+      "all_host_pcm_equal": true
+    }
+  },
+  "segment_duration_arithmetic": {
+    "scope": "KSS WAV 전체 길이 기준 산술 분할 부담. VAD/단어 경계/endpoint 실측 아님.",
+    "count": 50,
+    "max_duration_s": 5.853,
+    "candidates": {
+      "3": {
+        "wav_longer_than_cap": 34,
+        "min_fixed_segments": 84,
+        "fixed_internal_cuts": 34
+      },
+      "5": {
+        "wav_longer_than_cap": 4,
+        "min_fixed_segments": 54,
+        "fixed_internal_cuts": 4
+      },
+      "8": {
+        "wav_longer_than_cap": 0,
+        "min_fixed_segments": 50,
+        "fixed_internal_cuts": 0
+      }
+    }
+  },
+  "m2_posthoc": {
+    "scope": "M2-3 저장 전사 사후 재채점. RMS -45 dBFS, 길이 8/15초 경계의 탐색 통계. 인과·독립 최종 평가 아님.",
+    "models": {
+      "zipformer": {
+        "8to15": {
+          "n": 76,
+          "ref": 3150,
+          "errors": 1684,
+          "deletions": 1504,
+          "empty_hypotheses": 35,
+          "cer": 0.5346031746031746,
+          "median_rms": -43.71759828584084,
+          "mean_duration_s": 11.643947368421053
+        },
+        "above45": {
+          "n": 52,
+          "ref": 2390,
+          "errors": 545,
+          "deletions": 309,
+          "empty_hypotheses": 1,
+          "cer": 0.2280334728033473,
+          "median_rms": -33.95984649914763,
+          "mean_duration_s": 11.191153846153846
+        },
+        "above45_8to15": {
+          "n": 40,
+          "ref": 1824,
+          "errors": 374,
+          "deletions": 195,
+          "empty_hypotheses": 1,
+          "cer": 0.2050438596491228,
+          "median_rms": -33.69417103227795,
+          "mean_duration_s": 11.295
+        },
+        "below45": {
+          "n": 48,
+          "ref": 2037,
+          "errors": 1998,
+          "deletions": 1997,
+          "empty_hypotheses": 45,
+          "cer": 0.9808541973490427,
+          "median_rms": -53.66495703117869,
+          "mean_duration_s": 13.272499999999999
+        },
+        "below45_8to15": {
+          "n": 36,
+          "ref": 1326,
+          "errors": 1310,
+          "deletions": 1309,
+          "empty_hypotheses": 34,
+          "cer": 0.9879336349924586,
+          "median_rms": -53.786462053758314,
+          "mean_duration_s": 12.031666666666666
+        },
+        "le8": {
+          "n": 8,
+          "ref": 256,
+          "errors": 50,
+          "deletions": 24,
+          "empty_hypotheses": 0,
+          "cer": 0.1953125,
+          "median_rms": -29.36489089544037,
+          "mean_duration_s": 6.2325
+        },
+        "above45_le8": {
+          "n": 7,
+          "ref": 227,
+          "errors": 44,
+          "deletions": 18,
+          "empty_hypotheses": 0,
+          "cer": 0.19383259911894274,
+          "median_rms": -23.535143584575856,
+          "mean_duration_s": 6.077142857142857
+        },
+        "over15": {
+          "n": 16,
+          "ref": 1021,
+          "errors": 809,
+          "deletions": 778,
+          "empty_hypotheses": 11,
+          "cer": 0.7923604309500489,
+          "median_rms": -52.036219575964076,
+          "mean_duration_s": 17.763749999999998
+        },
+        "above45_over15": {
+          "n": 5,
+          "ref": 339,
+          "errors": 127,
+          "deletions": 96,
+          "empty_hypotheses": 0,
+          "cer": 0.3746312684365782,
+          "median_rms": -35.052855307646766,
+          "mean_duration_s": 17.52
+        },
+        "below45_over15": {
+          "n": 11,
+          "ref": 682,
+          "errors": 682,
+          "deletions": 682,
+          "empty_hypotheses": 11,
+          "cer": 1.0,
+          "median_rms": -53.157151761598456,
+          "mean_duration_s": 17.874545454545455
+        },
+        "below45_le8": {
+          "n": 1,
+          "ref": 29,
+          "errors": 6,
+          "deletions": 6,
+          "empty_hypotheses": 0,
+          "cer": 0.20689655172413793,
+          "median_rms": -45.66703527223244,
+          "mean_duration_s": 7.32
+        }
+      },
+      "sensevoice": {
+        "8to15": {
+          "n": 76,
+          "ref": 3150,
+          "errors": 244,
+          "deletions": 101,
+          "empty_hypotheses": 0,
+          "cer": 0.07746031746031747,
+          "median_rms": -43.71759828584084,
+          "mean_duration_s": 11.643947368421053
+        },
+        "above45": {
+          "n": 52,
+          "ref": 2390,
+          "errors": 201,
+          "deletions": 83,
+          "empty_hypotheses": 0,
+          "cer": 0.08410041841004184,
+          "median_rms": -33.95984649914763,
+          "mean_duration_s": 11.191153846153846
+        },
+        "above45_8to15": {
+          "n": 40,
+          "ref": 1824,
+          "errors": 156,
+          "deletions": 65,
+          "empty_hypotheses": 0,
+          "cer": 0.08552631578947369,
+          "median_rms": -33.69417103227795,
+          "mean_duration_s": 11.295
+        },
+        "below45": {
+          "n": 48,
+          "ref": 2037,
+          "errors": 181,
+          "deletions": 63,
+          "empty_hypotheses": 0,
+          "cer": 0.08885616102110948,
+          "median_rms": -53.66495703117869,
+          "mean_duration_s": 13.272499999999999
+        },
+        "below45_8to15": {
+          "n": 36,
+          "ref": 1326,
+          "errors": 88,
+          "deletions": 36,
+          "empty_hypotheses": 0,
+          "cer": 0.06636500754147813,
+          "median_rms": -53.786462053758314,
+          "mean_duration_s": 12.031666666666666
+        },
+        "le8": {
+          "n": 8,
+          "ref": 256,
+          "errors": 22,
+          "deletions": 9,
+          "empty_hypotheses": 0,
+          "cer": 0.0859375,
+          "median_rms": -29.36489089544037,
+          "mean_duration_s": 6.2325
+        },
+        "above45_le8": {
+          "n": 7,
+          "ref": 227,
+          "errors": 22,
+          "deletions": 9,
+          "empty_hypotheses": 0,
+          "cer": 0.09691629955947137,
+          "median_rms": -23.535143584575856,
+          "mean_duration_s": 6.077142857142857
+        },
+        "over15": {
+          "n": 16,
+          "ref": 1021,
+          "errors": 116,
+          "deletions": 36,
+          "empty_hypotheses": 0,
+          "cer": 0.11361410381978453,
+          "median_rms": -52.036219575964076,
+          "mean_duration_s": 17.763749999999998
+        },
+        "above45_over15": {
+          "n": 5,
+          "ref": 339,
+          "errors": 23,
+          "deletions": 9,
+          "empty_hypotheses": 0,
+          "cer": 0.06784660766961652,
+          "median_rms": -35.052855307646766,
+          "mean_duration_s": 17.52
+        },
+        "below45_over15": {
+          "n": 11,
+          "ref": 682,
+          "errors": 93,
+          "deletions": 27,
+          "empty_hypotheses": 0,
+          "cer": 0.13636363636363635,
+          "median_rms": -53.157151761598456,
+          "mean_duration_s": 17.874545454545455
+        },
+        "below45_le8": {
+          "n": 1,
+          "ref": 29,
+          "errors": 0,
+          "deletions": 0,
+          "empty_hypotheses": 0,
+          "cer": 0.0,
+          "median_rms": -45.66703527223244,
+          "mean_duration_s": 7.32
+        }
+      }
+    }
+  },
+  "vad": {
+    "status": "not_measured",
+    "reason": "새 VAD 가중치 추가 허용 여부 대기. 기존 자산에 VAD 가중치 없음. 가중치 다운로드 없음. Host mock 검증은 실제 VAD 검증과 별도.",
+    "endpoint_latency_s": null,
+    "short_utterance_miss_rate": null
+  },
+  "core_regression": {
+    "src/edge_asr/evaluation.py": {
+      "baseline_equal": true,
+      "sha256": "2a001a46542d9aaa87a98d467773ebb61bae38607f334ef2bcdaaff9802d9410"
+    },
+    "src/edge_asr/streaming.py": {
+      "baseline_equal": true,
+      "sha256": "240afc53a9b6831e4385df0bcd2758520f92ee15929b618ec043a9aec39c03e9"
+    },
+    "src/edge_asr/scoring.py": {
+      "baseline_equal": true,
+      "sha256": "9c78008e1ab6fb0d3bba0dfe341e17ef3ef8393756fba179fdde154572c3d57a"
+    },
+    "src/edge_asr/metrics.py": {
+      "baseline_equal": true,
+      "sha256": "2b4a4ed09f3f8880d1e5fb39cac1b050bc729728e0323aef484569e58477c480"
+    },
+    "src/edge_asr/config.py": {
+      "baseline_equal": true,
+      "sha256": "33bac133664e618d482a91d9480d2ce4e7de737b6536c6ba2ab30b303364d946"
+    },
+    "src/edge_asr/adapters/zipformer.py": {
+      "baseline_equal": true,
+      "sha256": "f253a41e74e7bd0b418a99ef0795e8e6188dcb1da76be31786e59813c4f3a6d6"
+    },
+    "src/edge_asr/adapters/sensevoice.py": {
+      "baseline_equal": true,
+      "sha256": "a1f99db122643dbd2b17d4ea79758e1720dca0341061e5104d061c48d814d991"
+    },
+    "configs/zipformer_eval.toml": {
+      "baseline_equal": true,
+      "sha256": "00beb9bb099a137eb05a731a25ff7f5d9158a8324e3a2d6834b16f5816f91511"
+    },
+    "configs/sensevoice_eval.toml": {
+      "baseline_equal": true,
+      "sha256": "a2bc9a87ef8d2d60e4afe354bb7e3c3961bc948b72d5d33da749f42ab8ce8d77"
+    }
+  },
+  "host_tests": {
+    "tests": 127,
+    "status": "passed",
+    "actual_arm64_vad": false
+  },
+  "extended_cooling": {
+    "sensevoice_t1": {
+      "status": "completed",
+      "control_valid": true,
+      "duration_s": 480.1813020910049,
+      "calls": 1488,
+      "complete_cycles": 29,
+      "last_over_first_cycle_wall_ratio": 0.9981781302815567,
+      "mean_inference_cpu_percent": 100.12342905586932,
+      "rss_mib": 568.578125,
+      "start_temp_c": 51.8,
+      "max_temp_c": 73.8,
+      "final_temp_c": 67.75,
+      "current_limits_observed": [
+        0
+      ],
+      "history_limits_observed": [
+        14
+      ],
+      "fan_rpm_range": [
+        3097,
+        10200
+      ],
+      "minute_mean_temperature_c": {
+        "0": 65.495,
+        "1": 68.98983050847458,
+        "2": 69.70762711864407,
+        "3": 69.29916666666666,
+        "4": 69.455,
+        "5": 70.51864406779661,
+        "6": 72.15,
+        "7": 72.57166666666667
+      }
+    },
+    "zipformer_t2": {
+      "status": "control_rejected",
+      "control_valid": false,
+      "rejection": "temperature_limit",
+      "planned_duration_s": 480,
+      "seconds_from_admission_to_rejection": 14.08987494900066,
+      "completed_calls_before_abort": 30,
+      "start_temp_c": 52.9,
+      "first_rejected_temp_c": 76.0,
+      "max_with_after_c": 77.1,
+      "current_limits_observed": [
+        0
+      ],
+      "history_limits_observed": [
+        14
+      ],
+      "completed_call_cpu_percent_diagnostic_only": 329.1504281627262,
+      "inference_peak_rss_mib": null,
+      "rss_reason": "강제 종료 전 집계되지 않음. 성공한 실행의 RSS로 대체하지 않음.",
+      "tid_cpu_percent_diagnostic_only": [
+        100.0217508143895,
+        89.23908775756645,
+        73.73520090070986,
+        54.970254563702845,
+        0.12414099054146943,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exit_code": -15,
+      "admission_wait_s": 148.87059266900178,
+      "scope": "실패 실행의 중단 전 진단. RTF 성공 비교 및 동시 실행 성능으로 사용하지 않음."
+    }
+  },
+  "preservation": {
+    "at_utc": "2026-10-29T04:13:13.023730+00:00",
+    "protected_files_checked": 3226,
+    "missing": [],
+    "changed": [],
+    "packages_equal": true,
+    "packages": [
+      [
+        "cffi",
+        "2.1.1"
+      ],
+      [
+        "flatbuffers",
+        "25.12.19"
+      ],
+      [
+        "numpy",
+        "2.4.6"
+      ],
+      [
+        "onnxruntime",
+        "1.31.1"
+      ],
+      [
+        "packaging",
+        "26.3"
+      ],
+      [
+        "protobuf",
+        "7.36.2"
+      ],
+      [
+        "pycparser",
+        "3.12"
+      ],
+      [
+        "sherpa-onnx-core",
+        "2.0.1"
+      ],
+      [
+        "sherpa_onnx",
+        "2.0.1"
+      ],
+      [
+        "sounddevice",
+        "0.5.6"
+      ],
+      [
+        "soundfile",
+        "0.14.0"
+      ],
+      [
+        "typing_extensions",
+        "4.16.0"
+      ]
+    ],
+    "status": "passed",
+    "device_after": {
+      "at_utc": "2026-10-29T04:13:13.023752+00:00",
+      "monotonic_s": 82548.777462408,
+      "temperature_mc": 57850,
+      "cpu0_freq_khz": 2400000,
+      "governor": "ondemand",
+      "throttled_flags": 917504,
+      "current_limits": 0,
+      "history_limits": 14,
+      "fan_rpm": 3107
+    },
+    "tracked_status": ""
+  },
+  "rp5_unit_tests": {
+    "tests": 127,
+    "status": "passed",
+    "runtime_vad_inference": false
+  },
+  "transfer_verification": {
+    "remote_artifacts_checked": 117,
+    "mismatches": [],
+    "status": "passed",
+    "remote_checksums_sha256": "e219c802706a630c93a50b2e8322d46935497def6b663452c0b5bb806a8d3ff0"
+  }
+}
