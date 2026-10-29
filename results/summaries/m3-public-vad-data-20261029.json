@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-29",
+  "status": "data_preparation_complete_human_review_pending",
+  "source_commit": "db070df6099acafbe64e2a8e66c9eae0e4105e8f",
+  "seoul": {
+    "source": "https://www.openslr.org/113/",
+    "license": "CC BY-NC 2.0",
+    "user_confirmed_purpose": "personal_academic_research",
+    "original_audio_files": 240,
+    "label_files_parsed": 240,
+    "quarantined_labels": 0
+  },
+  "review": {
+    "candidate_counts": {
+      "short": 80,
+      "long": 13,
+      "noise_candidate": 5
+    },
+    "speakers": 40,
+    "clips": 98,
+    "total_clip_duration_s": 388.57762500000007,
+    "selected_original_flacs": 47,
+    "packet_path": "data/review/m3-public-vad-audio-20261029-01",
+    "packet_provenance_sha256": "8cafc15b452efcd74d22720f41dc3525bdd8cdc0fb6758420d2c2f7e4ceee8f3",
+    "candidate_sha256": "3073062809555cd2d6918efc0f3fb015c8c45755fb05936442ceb47db2e60a43",
+    "label_audit_sha256": "b4110805111e4c143f6ac43d77ffea1aec07ce2b26254533e33cd3191b151db5",
+    "repeated_preparation_identical": true
+  },
+  "tests": {
+    "host": {
+      "count": 152,
+      "seconds": 7.738,
+      "passed": true,
+      "log_sha256": "5aacaa44a72947402dfc05cbafc1dc1eae65aec376258227af3dca0e3645cac4"
+    },
+    "rp5": {
+      "count": 152,
+      "seconds": 13.715,
+      "passed": true,
+      "log_sha256": "d7a16067911af751e6a4823ddf96d9b8c2fbb9c2e1057560b842b80f23b7b66b"
+    }
+  },
+  "rp5_verification": {
+    "status": "passed",
+    "source_commit": "db070df6099acafbe64e2a8e66c9eae0e4105e8f",
+    "protected_existing_files_unchanged": 3819,
+    "expected_tracked_document_changes": [
+      "data/README.md"
+    ],
+    "packages_unchanged": true,
+    "python_unchanged": true,
+    "packet_files_verified": 147,
+    "packet_provenance_sha256": "8cafc15b452efcd74d22720f41dc3525bdd8cdc0fb6758420d2c2f7e4ceee8f3",
+    "wav_count_verified": 98,
+    "total_wav_duration_s": 388.57762500000007,
+    "unreviewed_manifest_rejected": "/home/deepet/projects/edge-asr/data/review/m3-public-vad-audio-20261029-01/review.jsonl:1: reference 문자열이 필요합니다.",
+    "asr_vad_inference_performed": false
+  },
+  "new_asr_vad_inference": false,
+  "new_cer": null,
+  "new_rtf": null,
+  "new_endpoint_delay_s": null,
+  "gold_annotations_finalized": false,
+  "limitations_ko": [
+    "개발용 후보이며 최종 독립 평가 세트가 아니다. 모델 학습 자료 중복 미확인.",
+    "배포 라벨·문맥 속 면접자 발화·잡음의 말소리 포함 여부를 아직 청취 검수하지 않았다.",
+    "최종 검수 결정 파일 및 구간 정답 기반 채점 연결은 후속 구현이다.",
+    "기존 고부하 냉각 실패·VAD 누락/오탐·native 활성 30초 제한은 해결된 것으로 간주하지 않는다."
+  ],
+  "evidence": {
+    "results/preflight/m3-public-vad-data-20261029-01/verification.json": "531df0992491ea9b3191c45b094e592b8581e3721d5de1559b8b6b6db2c7b92c",
+    "results/preflight/m3-public-vad-data-20261029-01/rp5-before.json": "9058c4851ce9986544f1eaf463fd1d085876aa63b6bfd472350aee46b6062206",
+    "data/sources/seoul-corpus-20261029-01/audio-acquisition.json": "8afbaa084d223867f622f5e29132e35f20d0935f60b8cfd6485405bca150785d"
+  }
+}
