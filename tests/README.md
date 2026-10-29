@@ -1,5 +1,7 @@
 # 호스트 검사
 
+`test_public_vad_review.py`, `test_public_vad_audio.py`는 합성 TextGrid의 인코딩·중복 tier·손상·경계, 모델 출력과 무관한 후보 선정, 원본 해시·경로·출력 보존과 null 정답의 평가 거부를 검사합니다. Host ffmpeg가 있으면 합성 44.1kHz 음원의 실제 변환·절취도 확인합니다. 공개 음원 다운로드·사람 청취·RP5 모델 추론을 대신하는 검사가 아닙니다.
+
 `test_sensevoice.py`는 합성 NumPy/sherpa로 Offline factory 인자·언어/ITN·1회 로딩·발화별 새 상태·padding/온라인 호출 부재·본문/제어 태그/raw 분리·자산/입력 오류를 검사합니다. 공통 batch 평가·CER·로딩/추론 자원 분리·모델/음원 제거 후 재채점·CLI와 미지원 paced_stream 사전 거부도 검사합니다. 실제 SenseVoice 가중치나 추론 런타임은 사용하지 않습니다.
 
 `test_runtime_diagnostics.py`는 sherpa 네이티브 ORT와 Python 패키지 버전 구분, 기본 조회의 import 부재, probe 실패/null·모델 미생성, Linux stat 파싱·TID CPU 차분·경계 누락·PID 종료/재사용을 검사합니다. 짧은 CLI 관측은 실행 중인 Host 테스트 PID만 읽으며 RP5에 접속하지 않습니다.
