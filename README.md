@@ -68,6 +68,7 @@ Host `/d/shin/edge-asr`와 RP5 `/home/deepet/projects/edge-asr`는 **main 하나
 
 - M1/M2: Zipformer batch·paced_stream과 SenseVoice batch를 RP5에서 실행하고 Host 재채점을 대조했습니다. 모델 간 비교에는 같은 자료·정규화·실행 조건과 각 기록의 한계를 확인해야 합니다.
 - M3: 공개 자료 98개 중 18개를 보류하고 개발 80개 × 원음/RMS로 실제 VAD 160회를 확인했습니다. 배포 라벨 예비 비교에서 초단문 전체 누락은 9/64·4/64였으나 RMS의 새 누락과 비음성 검출 증가가 남았습니다. [예비 결과](results/summaries/m3-vad-provisional-20261029.md).
-- 다음 과제: 실제 청취/파형 검수, native 활성 30초 한계, 고부하 냉각 조건입니다. 실제 endpoint·Hybrid 동시 실행·마이크·Qwen3-ASR은 후속 범위입니다. 기존 단독 batch 수치로 동시 성능을 추정하지 않습니다.
+- 추가 공학 검사: 중첩 입력에서 bounded VAD의 실제 연속 활성 37.572초/34.788초와 3/5/8초 구간·유한 버퍼를 검증했습니다. native는 같은 입력에서 30초 안전 예산으로 중단했습니다. 기본 경로·안전 제한·전처리 미승인 상태는 유지하며 자연 장문/실서비스 검증과 구분합니다. [추가 RP5 결과](results/summaries/m3-vad-overlap-rp5-20261102.md).
+- 다음 과제: 확정 구간 주석, 자연 장문·마이크·장시간 운영, 고부하 냉각 조건입니다. 실제 endpoint·Hybrid 동시 실행·Qwen3-ASR은 후속 범위입니다. 기존 단독 batch 수치로 동시 성능을 추정하지 않습니다.
 
 초기 Zipformer 3.526초 WAV의 1/2/4스레드 결과는 **동일 단일 샘플의 각 1회 측정**입니다. [보존 기록](experiments/m1_zipformer/README.md)에서 출처와 한계를 확인할 수 있습니다. 과거 보고서의 수치·환경을 현재 조건으로 소급 변경하지 않습니다.

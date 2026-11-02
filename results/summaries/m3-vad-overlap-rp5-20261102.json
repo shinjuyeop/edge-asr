@@ -1,0 +1,1972 @@
+{
+  "schema": "vad-overlap-arm64-validation-v1",
+  "date": "2026-11-02",
+  "source_commit": "03ac6d5e86c7a6ef154017b6d129d6e8936feb3c",
+  "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+  "core_source_equal_to_e90854d": {
+    "src/edge_asr/vad.py": "ca8f9f533de56514d6516cc194455049ab47d97b51c6b304d1f80f74b4757154",
+    "src/edge_asr/vad_probability.py": "309d275865843dc30380e329a89b8e8a09d5b8cd3ab196eba5773a4721954c65",
+    "src/edge_asr/segmentation.py": "6d2ee837da7bf7332efcc1033db752e7aef9b65b9d394dcfa00017197a6ea2c3",
+    "src/edge_asr/tools/probes/vad_duration.py": "2380664cf175b0fc1bc9dc834a337b06ca0b5c7b8690ee3fe99e35dcd3f49e6c"
+  },
+  "planned": 36,
+  "completed": 30,
+  "native_guard_failures": 6,
+  "other_failures": 0,
+  "bounded_over_30s_cases": [
+    [
+      3,
+      "identity",
+      3
+    ],
+    [
+      3,
+      "identity",
+      5
+    ],
+    [
+      3,
+      "identity",
+      8
+    ],
+    [
+      3,
+      "rms26",
+      3
+    ],
+    [
+      3,
+      "rms26",
+      5
+    ],
+    [
+      3,
+      "rms26",
+      8
+    ]
+  ],
+  "continuous_over_30s_proven": true,
+  "cases": {
+    "tracks-1": {
+      "input": {
+        "audio_path": "data/evaluation/m3-vad-overlap-20261102-01/tracks-1/audio.wav",
+        "audio_sha256": "c996971cb6b9ead4280d6eac6730f3ec910a129386b366fb4ff7a9e3aa3a3a02",
+        "frames": 1440000,
+        "source_manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+        "base_frames": 2638704,
+        "track_count": 1,
+        "phase_frames": [
+          0
+        ],
+        "mixing": "PCM16 arithmetic mean, round ties to even, no gain/limiter/filter",
+        "expected_processed": {
+          "identity": {
+            "pcm_sha256": "5e8fafc1cbf82a64f93c53e97eb8c00114c6a99b66b44fc019f85f05a520bbd4",
+            "newly_clipped_samples": 0
+          },
+          "rms26": {
+            "pcm_sha256": "cf2975e6048a176aa06c28bb7082bdf691153b048ee440263cf018598af12213",
+            "newly_clipped_samples": 0
+          }
+        },
+        "scope_ko": "기존 개발 발화를 고정 위상으로 겹친 비정상 공학 입력. 1트랙은 대조군. 모델 출력으로 고르지 않으며 자연 장문/CER/최종 독립 평가에 사용하지 않음."
+      },
+      "source_count": 50,
+      "arms": {
+        "bounded": {
+          "status": "completed",
+          "failed_samples": 0,
+          "runtime": {
+            "sherpa_package_version": "2.0.1",
+            "sherpa_core_package_version": "2.0.1",
+            "python_onnxruntime_package_version": "1.31.1",
+            "sherpa_native_onnxruntime_version": null,
+            "native_version_source": "sherpa_onnx.onnxruntime_version",
+            "status": "not_imported",
+            "reason": "선택 런타임을 아직 import하지 않았습니다."
+          },
+          "probability_runtime": {
+            "backend": "python_onnxruntime_k2_v4_experimental",
+            "python_onnxruntime_version": "1.31.1",
+            "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+            "num_threads": 1,
+            "providers": [
+              "CPUExecutionProvider"
+            ],
+            "recurrent_state_bytes": 1024,
+            "reset_count": 2,
+            "windows_since_reset": 0,
+            "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+          },
+          "rows": [
+            {
+              "policy": "identity",
+              "cap_s": 3,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 6.948,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 42,
+              "hard_emissions": 19,
+              "ring_capacity_frames": 67200,
+              "ring_peak_frames": 67200,
+              "payload_peak_frames": 51200,
+              "rss_observed_max_mib": 79.5625,
+              "rss_position_min_mib": 79.5625,
+              "rss_position_max_mib": 79.5625,
+              "rss_first_position_mib": 79.5625,
+              "rss_last_position_mib": 79.5625,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 3,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "identity",
+              "cap_s": 5,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 6.948,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 31,
+              "hard_emissions": 8,
+              "ring_capacity_frames": 99200,
+              "ring_peak_frames": 99200,
+              "payload_peak_frames": 83200,
+              "rss_observed_max_mib": 81.0625,
+              "rss_position_min_mib": 80.5625,
+              "rss_position_max_mib": 81.0625,
+              "rss_first_position_mib": 80.5625,
+              "rss_last_position_mib": 81.0625,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 4,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "identity",
+              "cap_s": 8,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 6.948,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 23,
+              "hard_emissions": 0,
+              "ring_capacity_frames": 147200,
+              "ring_peak_frames": 147200,
+              "payload_peak_frames": 113280,
+              "rss_observed_max_mib": 81.0625,
+              "rss_position_min_mib": 81.0625,
+              "rss_position_max_mib": 81.0625,
+              "rss_first_position_mib": 81.0625,
+              "rss_last_position_mib": 81.0625,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 5,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 3,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 6.948,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 42,
+              "hard_emissions": 19,
+              "ring_capacity_frames": 67200,
+              "ring_peak_frames": 67200,
+              "payload_peak_frames": 51200,
+              "rss_observed_max_mib": 81.0625,
+              "rss_position_min_mib": 81.0625,
+              "rss_position_max_mib": 81.0625,
+              "rss_first_position_mib": 81.0625,
+              "rss_last_position_mib": 81.0625,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 6,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 5,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 6.948,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 31,
+              "hard_emissions": 8,
+              "ring_capacity_frames": 99200,
+              "ring_peak_frames": 99200,
+              "payload_peak_frames": 83200,
+              "rss_observed_max_mib": 81.5625,
+              "rss_position_min_mib": 81.5625,
+              "rss_position_max_mib": 81.5625,
+              "rss_first_position_mib": 81.5625,
+              "rss_last_position_mib": 81.5625,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 7,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 8,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 6.948,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 23,
+              "hard_emissions": 0,
+              "ring_capacity_frames": 147200,
+              "ring_peak_frames": 147200,
+              "payload_peak_frames": 113280,
+              "rss_observed_max_mib": 81.5625,
+              "rss_position_min_mib": 81.5625,
+              "rss_position_max_mib": 81.5625,
+              "rss_first_position_mib": 81.5625,
+              "rss_last_position_mib": 81.5625,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 8,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            }
+          ],
+          "thermal": {
+            "control_valid": true,
+            "before": {
+              "at_utc": "2026-11-02T07:57:04.174609+00:00",
+              "monotonic_s": 6329.690289618,
+              "temperature_mc": 52350,
+              "cpu0_freq_khz": 1500000,
+              "governor": "ondemand",
+              "throttled_flags": 0,
+              "current_limits": 0,
+              "history_limits": 0,
+              "fan_rpm": 3037
+            },
+            "after": {
+              "at_utc": "2026-11-02T07:57:36.608535+00:00",
+              "monotonic_s": 6362.124211602,
+              "temperature_mc": 60050,
+              "cpu0_freq_khz": 2400000,
+              "governor": "ondemand",
+              "throttled_flags": 0,
+              "current_limits": 0,
+              "history_limits": 0,
+              "fan_rpm": 5108
+            },
+            "samples": 32,
+            "max_temperature_c": 64.45,
+            "policy": {
+              "admission_mc": 53000,
+              "admission_consecutive": 3,
+              "stop_mc": 75000,
+              "interval_s": 1,
+              "timeout_s": 600,
+              "address_space_bytes": 4294967296,
+              "scope": "1Hz 표본. 고정 클럭 보장 아님. 현재 제한/새 이력/결측/75°C에서 중단."
+            }
+          }
+        },
+        "native": {
+          "status": "completed",
+          "failed_samples": 0,
+          "runtime": {
+            "sherpa_package_version": "2.0.1",
+            "sherpa_core_package_version": "2.0.1",
+            "python_onnxruntime_package_version": "1.31.1",
+            "sherpa_native_onnxruntime_version": "1.28.2",
+            "native_version_source": "sherpa_onnx.onnxruntime_version",
+            "status": "available",
+            "reason": null
+          },
+          "probability_runtime": null,
+          "rows": [
+            {
+              "policy": "identity",
+              "cap_s": 3,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 6.948,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 42,
+              "hard_emissions": 19,
+              "ring_capacity_frames": 67200,
+              "ring_peak_frames": 67200,
+              "payload_peak_frames": 51200,
+              "rss_observed_max_mib": 80.984375,
+              "rss_position_min_mib": 77.984375,
+              "rss_position_max_mib": 80.984375,
+              "rss_first_position_mib": 77.984375,
+              "rss_last_position_mib": 80.984375,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "identity",
+              "cap_s": 5,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 6.948,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 31,
+              "hard_emissions": 8,
+              "ring_capacity_frames": 99200,
+              "ring_peak_frames": 99200,
+              "payload_peak_frames": 83200,
+              "rss_observed_max_mib": 82.484375,
+              "rss_position_min_mib": 82.484375,
+              "rss_position_max_mib": 82.484375,
+              "rss_first_position_mib": 82.484375,
+              "rss_last_position_mib": 82.484375,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "identity",
+              "cap_s": 8,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 6.948,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 23,
+              "hard_emissions": 0,
+              "ring_capacity_frames": 147200,
+              "ring_peak_frames": 147200,
+              "payload_peak_frames": 113280,
+              "rss_observed_max_mib": 82.484375,
+              "rss_position_min_mib": 82.484375,
+              "rss_position_max_mib": 82.484375,
+              "rss_first_position_mib": 82.484375,
+              "rss_last_position_mib": 82.484375,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 3,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 6.948,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 42,
+              "hard_emissions": 19,
+              "ring_capacity_frames": 67200,
+              "ring_peak_frames": 67200,
+              "payload_peak_frames": 51200,
+              "rss_observed_max_mib": 82.484375,
+              "rss_position_min_mib": 82.484375,
+              "rss_position_max_mib": 82.484375,
+              "rss_first_position_mib": 82.484375,
+              "rss_last_position_mib": 82.484375,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 5,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 6.948,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 31,
+              "hard_emissions": 8,
+              "ring_capacity_frames": 99200,
+              "ring_peak_frames": 99200,
+              "payload_peak_frames": 83200,
+              "rss_observed_max_mib": 82.484375,
+              "rss_position_min_mib": 82.484375,
+              "rss_position_max_mib": 82.484375,
+              "rss_first_position_mib": 82.484375,
+              "rss_last_position_mib": 82.484375,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 8,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 6.948,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 23,
+              "hard_emissions": 0,
+              "ring_capacity_frames": 147200,
+              "ring_peak_frames": 147200,
+              "payload_peak_frames": 113280,
+              "rss_observed_max_mib": 82.484375,
+              "rss_position_min_mib": 82.484375,
+              "rss_position_max_mib": 82.484375,
+              "rss_first_position_mib": 82.484375,
+              "rss_last_position_mib": 82.484375,
+              "resets_during_session": null,
+              "probability_runtime": null
+            }
+          ],
+          "thermal": {
+            "control_valid": true,
+            "before": {
+              "at_utc": "2026-11-02T07:58:17.943892+00:00",
+              "monotonic_s": 6403.459571367,
+              "temperature_mc": 52900,
+              "cpu0_freq_khz": 1500000,
+              "governor": "ondemand",
+              "throttled_flags": 0,
+              "current_limits": 0,
+              "history_limits": 0,
+              "fan_rpm": 3070
+            },
+            "after": {
+              "at_utc": "2026-11-02T07:58:48.217131+00:00",
+              "monotonic_s": 6433.732807734,
+              "temperature_mc": 61150,
+              "cpu0_freq_khz": 2400000,
+              "governor": "ondemand",
+              "throttled_flags": 0,
+              "current_limits": 0,
+              "history_limits": 0,
+              "fan_rpm": 5125
+            },
+            "samples": 30,
+            "max_temperature_c": 62.8,
+            "policy": {
+              "admission_mc": 53000,
+              "admission_consecutive": 3,
+              "stop_mc": 75000,
+              "interval_s": 1,
+              "timeout_s": 600,
+              "address_space_bytes": 4294967296,
+              "scope": "1Hz 표본. 고정 클럭 보장 아님. 현재 제한/새 이력/결측/75°C에서 중단."
+            }
+          }
+        }
+      },
+      "comparisons": [
+        {
+          "policy": "identity",
+          "cap_s": 3,
+          "native_status": "completed",
+          "comparable_native_events": 42,
+          "events_equal_or_prefix": true
+        },
+        {
+          "policy": "identity",
+          "cap_s": 5,
+          "native_status": "completed",
+          "comparable_native_events": 31,
+          "events_equal_or_prefix": true
+        },
+        {
+          "policy": "identity",
+          "cap_s": 8,
+          "native_status": "completed",
+          "comparable_native_events": 23,
+          "events_equal_or_prefix": true
+        },
+        {
+          "policy": "rms26",
+          "cap_s": 3,
+          "native_status": "completed",
+          "comparable_native_events": 42,
+          "events_equal_or_prefix": true
+        },
+        {
+          "policy": "rms26",
+          "cap_s": 5,
+          "native_status": "completed",
+          "comparable_native_events": 31,
+          "events_equal_or_prefix": true
+        },
+        {
+          "policy": "rms26",
+          "cap_s": 8,
+          "native_status": "completed",
+          "comparable_native_events": 23,
+          "events_equal_or_prefix": true
+        }
+      ]
+    },
+    "tracks-2": {
+      "input": {
+        "audio_path": "data/evaluation/m3-vad-overlap-20261102-01/tracks-2/audio.wav",
+        "audio_sha256": "2def48bffae630b8580ae2d19c8ccdd4a65dceb399de3d6638ac2e35a7c4965a",
+        "frames": 1440000,
+        "source_manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+        "base_frames": 2638704,
+        "track_count": 2,
+        "phase_frames": [
+          0,
+          1319352
+        ],
+        "mixing": "PCM16 arithmetic mean, round ties to even, no gain/limiter/filter",
+        "expected_processed": {
+          "identity": {
+            "pcm_sha256": "f5391df6016a3661f063dd1ce8a9dc8447dc1cdcf3f47107af66af899aea50b4",
+            "newly_clipped_samples": 0
+          },
+          "rms26": {
+            "pcm_sha256": "db0807ef0e7af5116b1544026a77244e173f54e53b9d1ee9d3256bd1bbfc8384",
+            "newly_clipped_samples": 0
+          }
+        },
+        "scope_ko": "기존 개발 발화를 고정 위상으로 겹친 비정상 공학 입력. 1트랙은 대조군. 모델 출력으로 고르지 않으며 자연 장문/CER/최종 독립 평가에 사용하지 않음."
+      },
+      "source_count": 50,
+      "arms": {
+        "bounded": {
+          "status": "completed",
+          "failed_samples": 0,
+          "runtime": {
+            "sherpa_package_version": "2.0.1",
+            "sherpa_core_package_version": "2.0.1",
+            "python_onnxruntime_package_version": "1.31.1",
+            "sherpa_native_onnxruntime_version": null,
+            "native_version_source": "sherpa_onnx.onnxruntime_version",
+            "status": "not_imported",
+            "reason": "선택 런타임을 아직 import하지 않았습니다."
+          },
+          "probability_runtime": {
+            "backend": "python_onnxruntime_k2_v4_experimental",
+            "python_onnxruntime_version": "1.31.1",
+            "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+            "num_threads": 1,
+            "providers": [
+              "CPUExecutionProvider"
+            ],
+            "recurrent_state_bytes": 1024,
+            "reset_count": 2,
+            "windows_since_reset": 0,
+            "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+          },
+          "rows": [
+            {
+              "policy": "identity",
+              "cap_s": 3,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 9.988,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 34,
+              "hard_emissions": 24,
+              "ring_capacity_frames": 67200,
+              "ring_peak_frames": 67200,
+              "payload_peak_frames": 51200,
+              "rss_observed_max_mib": 78.625,
+              "rss_position_min_mib": 78.625,
+              "rss_position_max_mib": 78.625,
+              "rss_first_position_mib": 78.625,
+              "rss_last_position_mib": 78.625,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 3,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "identity",
+              "cap_s": 5,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 9.988,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 22,
+              "hard_emissions": 11,
+              "ring_capacity_frames": 99200,
+              "ring_peak_frames": 99200,
+              "payload_peak_frames": 83200,
+              "rss_observed_max_mib": 80.125,
+              "rss_position_min_mib": 79.625,
+              "rss_position_max_mib": 80.125,
+              "rss_first_position_mib": 79.625,
+              "rss_last_position_mib": 80.125,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 4,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "identity",
+              "cap_s": 8,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 9.988,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 15,
+              "hard_emissions": 5,
+              "ring_capacity_frames": 147200,
+              "ring_peak_frames": 147200,
+              "payload_peak_frames": 131200,
+              "rss_observed_max_mib": 80.125,
+              "rss_position_min_mib": 80.125,
+              "rss_position_max_mib": 80.125,
+              "rss_first_position_mib": 80.125,
+              "rss_last_position_mib": 80.125,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 5,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 3,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 9.988,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 35,
+              "hard_emissions": 24,
+              "ring_capacity_frames": 67200,
+              "ring_peak_frames": 67200,
+              "payload_peak_frames": 51200,
+              "rss_observed_max_mib": 80.125,
+              "rss_position_min_mib": 80.125,
+              "rss_position_max_mib": 80.125,
+              "rss_first_position_mib": 80.125,
+              "rss_last_position_mib": 80.125,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 6,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 5,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 9.988,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 23,
+              "hard_emissions": 11,
+              "ring_capacity_frames": 99200,
+              "ring_peak_frames": 99200,
+              "payload_peak_frames": 83200,
+              "rss_observed_max_mib": 80.125,
+              "rss_position_min_mib": 80.125,
+              "rss_position_max_mib": 80.125,
+              "rss_first_position_mib": 80.125,
+              "rss_last_position_mib": 80.125,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 7,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 8,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 9.988,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 16,
+              "hard_emissions": 5,
+              "ring_capacity_frames": 147200,
+              "ring_peak_frames": 147200,
+              "payload_peak_frames": 131200,
+              "rss_observed_max_mib": 83.625,
+              "rss_position_min_mib": 83.625,
+              "rss_position_max_mib": 83.625,
+              "rss_first_position_mib": 83.625,
+              "rss_last_position_mib": 83.625,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 8,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            }
+          ],
+          "thermal": {
+            "control_valid": true,
+            "before": {
+              "at_utc": "2026-11-02T07:59:45.749464+00:00",
+              "monotonic_s": 6491.26514493,
+              "temperature_mc": 52350,
+              "cpu0_freq_khz": 1500000,
+              "governor": "ondemand",
+              "throttled_flags": 0,
+              "current_limits": 0,
+              "history_limits": 0,
+              "fan_rpm": 3081
+            },
+            "after": {
+              "at_utc": "2026-11-02T08:00:17.982176+00:00",
+              "monotonic_s": 6523.497852056,
+              "temperature_mc": 60050,
+              "cpu0_freq_khz": 2400000,
+              "governor": "ondemand",
+              "throttled_flags": 0,
+              "current_limits": 0,
+              "history_limits": 0,
+              "fan_rpm": 5144
+            },
+            "samples": 32,
+            "max_temperature_c": 64.45,
+            "policy": {
+              "admission_mc": 53000,
+              "admission_consecutive": 3,
+              "stop_mc": 75000,
+              "interval_s": 1,
+              "timeout_s": 600,
+              "address_space_bytes": 4294967296,
+              "scope": "1Hz 표본. 고정 클럭 보장 아님. 현재 제한/새 이력/결측/75°C에서 중단."
+            }
+          }
+        },
+        "native": {
+          "status": "completed",
+          "failed_samples": 0,
+          "runtime": {
+            "sherpa_package_version": "2.0.1",
+            "sherpa_core_package_version": "2.0.1",
+            "python_onnxruntime_package_version": "1.31.1",
+            "sherpa_native_onnxruntime_version": "1.28.2",
+            "native_version_source": "sherpa_onnx.onnxruntime_version",
+            "status": "available",
+            "reason": null
+          },
+          "probability_runtime": null,
+          "rows": [
+            {
+              "policy": "identity",
+              "cap_s": 3,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 9.988,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 34,
+              "hard_emissions": 24,
+              "ring_capacity_frames": 67200,
+              "ring_peak_frames": 67200,
+              "payload_peak_frames": 51200,
+              "rss_observed_max_mib": 83.125,
+              "rss_position_min_mib": 77.96875,
+              "rss_position_max_mib": 82.625,
+              "rss_first_position_mib": 77.96875,
+              "rss_last_position_mib": 82.625,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "identity",
+              "cap_s": 5,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 9.988,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 22,
+              "hard_emissions": 11,
+              "ring_capacity_frames": 99200,
+              "ring_peak_frames": 99200,
+              "payload_peak_frames": 83200,
+              "rss_observed_max_mib": 86.125,
+              "rss_position_min_mib": 80.5,
+              "rss_position_max_mib": 86.125,
+              "rss_first_position_mib": 86.125,
+              "rss_last_position_mib": 82.5,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "identity",
+              "cap_s": 8,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 9.988,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 15,
+              "hard_emissions": 5,
+              "ring_capacity_frames": 147200,
+              "ring_peak_frames": 147200,
+              "payload_peak_frames": 131200,
+              "rss_observed_max_mib": 85.5,
+              "rss_position_min_mib": 85.5,
+              "rss_position_max_mib": 85.5,
+              "rss_first_position_mib": 85.5,
+              "rss_last_position_mib": 85.5,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 3,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 9.988,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 35,
+              "hard_emissions": 24,
+              "ring_capacity_frames": 67200,
+              "ring_peak_frames": 67200,
+              "payload_peak_frames": 51200,
+              "rss_observed_max_mib": 85.5,
+              "rss_position_min_mib": 85.5,
+              "rss_position_max_mib": 85.5,
+              "rss_first_position_mib": 85.5,
+              "rss_last_position_mib": 85.5,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 5,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 9.988,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 23,
+              "hard_emissions": 11,
+              "ring_capacity_frames": 99200,
+              "ring_peak_frames": 99200,
+              "payload_peak_frames": 83200,
+              "rss_observed_max_mib": 85.5,
+              "rss_position_min_mib": 85.5,
+              "rss_position_max_mib": 85.5,
+              "rss_first_position_mib": 85.5,
+              "rss_last_position_mib": 85.5,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 8,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 9.988,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 16,
+              "hard_emissions": 5,
+              "ring_capacity_frames": 147200,
+              "ring_peak_frames": 147200,
+              "payload_peak_frames": 131200,
+              "rss_observed_max_mib": 85.5,
+              "rss_position_min_mib": 85.5,
+              "rss_position_max_mib": 85.5,
+              "rss_first_position_mib": 85.5,
+              "rss_last_position_mib": 85.5,
+              "resets_during_session": null,
+              "probability_runtime": null
+            }
+          ],
+          "thermal": {
+            "control_valid": true,
+            "before": {
+              "at_utc": "2026-11-02T08:01:23.452991+00:00",
+              "monotonic_s": 6588.968673659,
+              "temperature_mc": 51800,
+              "cpu0_freq_khz": 1500000,
+              "governor": "ondemand",
+              "throttled_flags": 0,
+              "current_limits": 0,
+              "history_limits": 0,
+              "fan_rpm": 3092
+            },
+            "after": {
+              "at_utc": "2026-11-02T08:01:53.596449+00:00",
+              "monotonic_s": 6619.112125083,
+              "temperature_mc": 62800,
+              "cpu0_freq_khz": 2400000,
+              "governor": "ondemand",
+              "throttled_flags": 0,
+              "current_limits": 0,
+              "history_limits": 0,
+              "fan_rpm": 5161
+            },
+            "samples": 30,
+            "max_temperature_c": 63.9,
+            "policy": {
+              "admission_mc": 53000,
+              "admission_consecutive": 3,
+              "stop_mc": 75000,
+              "interval_s": 1,
+              "timeout_s": 600,
+              "address_space_bytes": 4294967296,
+              "scope": "1Hz 표본. 고정 클럭 보장 아님. 현재 제한/새 이력/결측/75°C에서 중단."
+            }
+          }
+        }
+      },
+      "comparisons": [
+        {
+          "policy": "identity",
+          "cap_s": 3,
+          "native_status": "completed",
+          "comparable_native_events": 34,
+          "events_equal_or_prefix": true
+        },
+        {
+          "policy": "identity",
+          "cap_s": 5,
+          "native_status": "completed",
+          "comparable_native_events": 22,
+          "events_equal_or_prefix": true
+        },
+        {
+          "policy": "identity",
+          "cap_s": 8,
+          "native_status": "completed",
+          "comparable_native_events": 15,
+          "events_equal_or_prefix": true
+        },
+        {
+          "policy": "rms26",
+          "cap_s": 3,
+          "native_status": "completed",
+          "comparable_native_events": 35,
+          "events_equal_or_prefix": true
+        },
+        {
+          "policy": "rms26",
+          "cap_s": 5,
+          "native_status": "completed",
+          "comparable_native_events": 23,
+          "events_equal_or_prefix": true
+        },
+        {
+          "policy": "rms26",
+          "cap_s": 8,
+          "native_status": "completed",
+          "comparable_native_events": 16,
+          "events_equal_or_prefix": true
+        }
+      ]
+    },
+    "tracks-3": {
+      "input": {
+        "audio_path": "data/evaluation/m3-vad-overlap-20261102-01/tracks-3/audio.wav",
+        "audio_sha256": "94627ec27e44ccd98026562e8c26746eb2964bc456248bce60f551109eeb56a7",
+        "frames": 1440000,
+        "source_manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+        "base_frames": 2638704,
+        "track_count": 3,
+        "phase_frames": [
+          0,
+          879568,
+          1759136
+        ],
+        "mixing": "PCM16 arithmetic mean, round ties to even, no gain/limiter/filter",
+        "expected_processed": {
+          "identity": {
+            "pcm_sha256": "d188c342cddd613cab0a26859592a6b39f0fa8c5e60205d79814a7c342882430",
+            "newly_clipped_samples": 0
+          },
+          "rms26": {
+            "pcm_sha256": "d561c4e95d5070dd92a2673d55eeed16b614717538b9acc659caf4041e5a2e9e",
+            "newly_clipped_samples": 0
+          }
+        },
+        "scope_ko": "기존 개발 발화를 고정 위상으로 겹친 비정상 공학 입력. 1트랙은 대조군. 모델 출력으로 고르지 않으며 자연 장문/CER/최종 독립 평가에 사용하지 않음."
+      },
+      "source_count": 50,
+      "arms": {
+        "bounded": {
+          "status": "completed",
+          "failed_samples": 0,
+          "runtime": {
+            "sherpa_package_version": "2.0.1",
+            "sherpa_core_package_version": "2.0.1",
+            "python_onnxruntime_package_version": "1.31.1",
+            "sherpa_native_onnxruntime_version": null,
+            "native_version_source": "sherpa_onnx.onnxruntime_version",
+            "status": "not_imported",
+            "reason": "선택 런타임을 아직 import하지 않았습니다."
+          },
+          "probability_runtime": {
+            "backend": "python_onnxruntime_k2_v4_experimental",
+            "python_onnxruntime_version": "1.31.1",
+            "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+            "num_threads": 1,
+            "providers": [
+              "CPUExecutionProvider"
+            ],
+            "recurrent_state_bytes": 1024,
+            "reset_count": 2,
+            "windows_since_reset": 0,
+            "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+          },
+          "rows": [
+            {
+              "policy": "identity",
+              "cap_s": 3,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 37.572,
+              "over_30s_active_observed": true,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 31,
+              "hard_emissions": 27,
+              "ring_capacity_frames": 67200,
+              "ring_peak_frames": 67200,
+              "payload_peak_frames": 51200,
+              "rss_observed_max_mib": 78.9375,
+              "rss_position_min_mib": 78.9375,
+              "rss_position_max_mib": 78.9375,
+              "rss_first_position_mib": 78.9375,
+              "rss_last_position_mib": 78.9375,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 3,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "identity",
+              "cap_s": 5,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 37.572,
+              "over_30s_active_observed": true,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 20,
+              "hard_emissions": 16,
+              "ring_capacity_frames": 99200,
+              "ring_peak_frames": 99200,
+              "payload_peak_frames": 83200,
+              "rss_observed_max_mib": 80.4375,
+              "rss_position_min_mib": 79.9375,
+              "rss_position_max_mib": 80.4375,
+              "rss_first_position_mib": 79.9375,
+              "rss_last_position_mib": 80.4375,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 4,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "identity",
+              "cap_s": 8,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 37.572,
+              "over_30s_active_observed": true,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 13,
+              "hard_emissions": 9,
+              "ring_capacity_frames": 147200,
+              "ring_peak_frames": 147200,
+              "payload_peak_frames": 131200,
+              "rss_observed_max_mib": 80.4375,
+              "rss_position_min_mib": 80.4375,
+              "rss_position_max_mib": 80.4375,
+              "rss_first_position_mib": 80.4375,
+              "rss_last_position_mib": 80.4375,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 5,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 3,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 34.788,
+              "over_30s_active_observed": true,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 32,
+              "hard_emissions": 27,
+              "ring_capacity_frames": 67200,
+              "ring_peak_frames": 67200,
+              "payload_peak_frames": 51200,
+              "rss_observed_max_mib": 80.4375,
+              "rss_position_min_mib": 80.4375,
+              "rss_position_max_mib": 80.4375,
+              "rss_first_position_mib": 80.4375,
+              "rss_last_position_mib": 80.4375,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 6,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 5,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 34.788,
+              "over_30s_active_observed": true,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 20,
+              "hard_emissions": 15,
+              "ring_capacity_frames": 99200,
+              "ring_peak_frames": 99200,
+              "payload_peak_frames": 83200,
+              "rss_observed_max_mib": 80.4375,
+              "rss_position_min_mib": 80.4375,
+              "rss_position_max_mib": 80.4375,
+              "rss_first_position_mib": 80.4375,
+              "rss_last_position_mib": 80.4375,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 7,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 8,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 34.788,
+              "over_30s_active_observed": true,
+              "native_guard_observed": false,
+              "input_frames_processed": 1440000,
+              "native_accepted_frames": 1440256,
+              "segments": 14,
+              "hard_emissions": 9,
+              "ring_capacity_frames": 147200,
+              "ring_peak_frames": 147200,
+              "payload_peak_frames": 131200,
+              "rss_observed_max_mib": 80.4375,
+              "rss_position_min_mib": 80.4375,
+              "rss_position_max_mib": 80.4375,
+              "rss_first_position_mib": 80.4375,
+              "rss_last_position_mib": 80.4375,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 8,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            }
+          ],
+          "thermal": {
+            "control_valid": true,
+            "before": {
+              "at_utc": "2026-11-02T08:02:36.872341+00:00",
+              "monotonic_s": 6662.388029543,
+              "temperature_mc": 52900,
+              "cpu0_freq_khz": 1500000,
+              "governor": "ondemand",
+              "throttled_flags": 0,
+              "current_limits": 0,
+              "history_limits": 0,
+              "fan_rpm": 3110
+            },
+            "after": {
+              "at_utc": "2026-11-02T08:03:09.156173+00:00",
+              "monotonic_s": 6694.671848283,
+              "temperature_mc": 61700,
+              "cpu0_freq_khz": 2400000,
+              "governor": "ondemand",
+              "throttled_flags": 0,
+              "current_limits": 0,
+              "history_limits": 0,
+              "fan_rpm": 5175
+            },
+            "samples": 32,
+            "max_temperature_c": 65.0,
+            "policy": {
+              "admission_mc": 53000,
+              "admission_consecutive": 3,
+              "stop_mc": 75000,
+              "interval_s": 1,
+              "timeout_s": 600,
+              "address_space_bytes": 4294967296,
+              "scope": "1Hz 표본. 고정 클럭 보장 아님. 현재 제한/새 이력/결측/75°C에서 중단."
+            }
+          }
+        },
+        "native": {
+          "status": "completed_with_failures",
+          "failed_samples": 6,
+          "runtime": {
+            "sherpa_package_version": "2.0.1",
+            "sherpa_core_package_version": "2.0.1",
+            "python_onnxruntime_package_version": "1.31.1",
+            "sherpa_native_onnxruntime_version": "1.28.2",
+            "native_version_source": "sherpa_onnx.onnxruntime_version",
+            "status": "available",
+            "reason": null
+          },
+          "probability_runtime": null,
+          "rows": [
+            {
+              "policy": "identity",
+              "cap_s": 3,
+              "status": "failed",
+              "error": "RuntimeError: native_active_budget_exhausted: 활성 VAD 30초 예산; reset/재입력 없이 중단",
+              "active_peak_s": 29.988,
+              "over_30s_active_observed": false,
+              "native_guard_observed": true,
+              "input_frames_processed": 763200,
+              "native_accepted_frames": 761344,
+              "segments": 15,
+              "hard_emissions": 13,
+              "ring_capacity_frames": 67200,
+              "ring_peak_frames": 67200,
+              "payload_peak_frames": 51200,
+              "rss_observed_max_mib": 81.21875,
+              "rss_position_min_mib": 77.96875,
+              "rss_position_max_mib": 80.71875,
+              "rss_first_position_mib": 77.96875,
+              "rss_last_position_mib": 80.71875,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "identity",
+              "cap_s": 5,
+              "status": "failed",
+              "error": "RuntimeError: native_active_budget_exhausted: 활성 VAD 30초 예산; reset/재입력 없이 중단",
+              "active_peak_s": 29.988,
+              "over_30s_active_observed": false,
+              "native_guard_observed": true,
+              "input_frames_processed": 763200,
+              "native_accepted_frames": 761344,
+              "segments": 10,
+              "hard_emissions": 8,
+              "ring_capacity_frames": 99200,
+              "ring_peak_frames": 99200,
+              "payload_peak_frames": 83200,
+              "rss_observed_max_mib": 86.71875,
+              "rss_position_min_mib": 75.734375,
+              "rss_position_max_mib": 86.71875,
+              "rss_first_position_mib": 86.71875,
+              "rss_last_position_mib": 83.234375,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "identity",
+              "cap_s": 8,
+              "status": "failed",
+              "error": "RuntimeError: native_active_budget_exhausted: 활성 VAD 30초 예산; reset/재입력 없이 중단",
+              "active_peak_s": 29.988,
+              "over_30s_active_observed": false,
+              "native_guard_observed": true,
+              "input_frames_processed": 763200,
+              "native_accepted_frames": 761344,
+              "segments": 6,
+              "hard_emissions": 4,
+              "ring_capacity_frames": 147200,
+              "ring_peak_frames": 147200,
+              "payload_peak_frames": 131200,
+              "rss_observed_max_mib": 89.234375,
+              "rss_position_min_mib": 78.375,
+              "rss_position_max_mib": 89.234375,
+              "rss_first_position_mib": 89.234375,
+              "rss_last_position_mib": 83.0,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 3,
+              "status": "failed",
+              "error": "RuntimeError: native_active_budget_exhausted: 활성 VAD 30초 예산; reset/재입력 없이 중단",
+              "active_peak_s": 29.988,
+              "over_30s_active_observed": false,
+              "native_guard_observed": true,
+              "input_frames_processed": 1364800,
+              "native_accepted_frames": 1363456,
+              "segments": 29,
+              "hard_emissions": 25,
+              "ring_capacity_frames": 67200,
+              "ring_peak_frames": 67200,
+              "payload_peak_frames": 51200,
+              "rss_observed_max_mib": 88.296875,
+              "rss_position_min_mib": 77.765625,
+              "rss_position_max_mib": 88.296875,
+              "rss_first_position_mib": 87.0,
+              "rss_last_position_mib": 88.296875,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 5,
+              "status": "failed",
+              "error": "RuntimeError: native_active_budget_exhausted: 활성 VAD 30초 예산; reset/재입력 없이 중단",
+              "active_peak_s": 29.988,
+              "over_30s_active_observed": false,
+              "native_guard_observed": true,
+              "input_frames_processed": 1364800,
+              "native_accepted_frames": 1363456,
+              "segments": 18,
+              "hard_emissions": 14,
+              "ring_capacity_frames": 99200,
+              "ring_peak_frames": 99200,
+              "payload_peak_frames": 83200,
+              "rss_observed_max_mib": 88.515625,
+              "rss_position_min_mib": 77.84375,
+              "rss_position_max_mib": 88.515625,
+              "rss_first_position_mib": 86.796875,
+              "rss_last_position_mib": 88.515625,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 8,
+              "status": "failed",
+              "error": "RuntimeError: native_active_budget_exhausted: 활성 VAD 30초 예산; reset/재입력 없이 중단",
+              "active_peak_s": 29.988,
+              "over_30s_active_observed": false,
+              "native_guard_observed": true,
+              "input_frames_processed": 1364800,
+              "native_accepted_frames": 1363456,
+              "segments": 12,
+              "hard_emissions": 8,
+              "ring_capacity_frames": 147200,
+              "ring_peak_frames": 147200,
+              "payload_peak_frames": 131200,
+              "rss_observed_max_mib": 91.109375,
+              "rss_position_min_mib": 79.875,
+              "rss_position_max_mib": 91.109375,
+              "rss_first_position_mib": 90.515625,
+              "rss_last_position_mib": 91.109375,
+              "resets_during_session": null,
+              "probability_runtime": null
+            }
+          ],
+          "thermal": {
+            "control_valid": true,
+            "before": {
+              "at_utc": "2026-11-02T08:03:56.545461+00:00",
+              "monotonic_s": 6742.061143589,
+              "temperature_mc": 52350,
+              "cpu0_freq_khz": 1500000,
+              "governor": "ondemand",
+              "throttled_flags": 0,
+              "current_limits": 0,
+              "history_limits": 0,
+              "fan_rpm": 3120
+            },
+            "after": {
+              "at_utc": "2026-11-02T08:04:25.683939+00:00",
+              "monotonic_s": 6771.199615636,
+              "temperature_mc": 61700,
+              "cpu0_freq_khz": 2400000,
+              "governor": "ondemand",
+              "throttled_flags": 0,
+              "current_limits": 0,
+              "history_limits": 0,
+              "fan_rpm": 5180
+            },
+            "samples": 29,
+            "max_temperature_c": 63.9,
+            "policy": {
+              "admission_mc": 53000,
+              "admission_consecutive": 3,
+              "stop_mc": 75000,
+              "interval_s": 1,
+              "timeout_s": 600,
+              "address_space_bytes": 4294967296,
+              "scope": "1Hz 표본. 고정 클럭 보장 아님. 현재 제한/새 이력/결측/75°C에서 중단."
+            }
+          }
+        }
+      },
+      "comparisons": [
+        {
+          "policy": "identity",
+          "cap_s": 3,
+          "native_status": "failed",
+          "comparable_native_events": 15,
+          "events_equal_or_prefix": true
+        },
+        {
+          "policy": "identity",
+          "cap_s": 5,
+          "native_status": "failed",
+          "comparable_native_events": 10,
+          "events_equal_or_prefix": true
+        },
+        {
+          "policy": "identity",
+          "cap_s": 8,
+          "native_status": "failed",
+          "comparable_native_events": 6,
+          "events_equal_or_prefix": true
+        },
+        {
+          "policy": "rms26",
+          "cap_s": 3,
+          "native_status": "failed",
+          "comparable_native_events": 29,
+          "events_equal_or_prefix": true
+        },
+        {
+          "policy": "rms26",
+          "cap_s": 5,
+          "native_status": "failed",
+          "comparable_native_events": 18,
+          "events_equal_or_prefix": true
+        },
+        {
+          "policy": "rms26",
+          "cap_s": 8,
+          "native_status": "failed",
+          "comparable_native_events": 12,
+          "events_equal_or_prefix": true
+        }
+      ]
+    }
+  },
+  "tests": {
+    "host": {
+      "count": 190,
+      "seconds": 12.848,
+      "passed": true
+    },
+    "rp5": {
+      "count": 190,
+      "seconds": 26.341,
+      "passed": true
+    }
+  },
+  "preservation": {
+    "protected_files": 4009,
+    "changed": [],
+    "missing": [],
+    "packages": {
+      "numpy": "2.4.6",
+      "sherpa-onnx": "2.0.1",
+      "sherpa-onnx-core": "2.0.1",
+      "onnxruntime": "1.31.1"
+    },
+    "packages_unchanged": true,
+    "python_unchanged": true,
+    "source_commit": "03ac6d5e86c7a6ef154017b6d129d6e8936feb3c",
+    "working_tree_clean": true,
+    "reboot_between_experiment_and_audit": true,
+    "scope_ko": "실험 이후 사용자 전원 재시작 후 기존 보호 파일을 대조. 새 부팅의 제한 이력으로 이전 실행을 판단하지 않음."
+  },
+  "evidence_sha256": {
+    "results/maintenance/m3-vad-overlap-20261102-01/plan.json": "90a1b70903215b63bccbede235fb467c1bfb47d9fa85673645f161ebde980486",
+    "results/maintenance/m3-vad-overlap-20261102-01/transfer-manifest.json": "60998b2f9e3eda28ecd33537fa21a20a31dea72667daf833f2811f34e2d4d390",
+    "data/evaluation/m3-vad-overlap-20261102-01/provenance.json": "733b5788b03bc08b8a016ac18c4311079ff82a7d7f3904eb928c46a4efd74388",
+    "data/evaluation/m3-vad-overlap-20261102-01/tracks-1/manifest.json": "f5b908918eab693abc83e3369670064d7ecbd63300bcfaebc6318d81f1b0beaf",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-1/bounded/worker.json": "9b83c0a5dbd11ca384f9a1be0bb7829b833e8141d9b5b8de293cad4d3d521a52",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-1/bounded/execution.json": "0f2228ae7d0fda79402ff60bd6ee059f4ff69acba5c5494f39543d10aa8b531e",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-1/bounded/thermal.jsonl": "99e9c87caee70fed65474933c55a64f89ccfc2d7e7b6238b11c519da7b9fbf77",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-1/bounded/samples.jsonl": "ef2ecb88142aacd5207f6ba193b1d3fb345459c14bbf0eef1b368dec5c68e328",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-1/native/worker.json": "b16f1d2ab15c58bea788094781c2e72733d403b69ec1bbaa7016951975272e2e",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-1/native/execution.json": "f6f34dd2b103c1ff2bc5ab2f5d6698d2a81e79cdbd3845ecf6e6beefcf06326e",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-1/native/thermal.jsonl": "4047df2f5b598066c2c88bf03ab2a04b0449e157e362b8c23f56f1caebbdeed5",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-1/native/samples.jsonl": "1ed5307dcdb2427c43f56bcf68d9207aedb4aac2254de6fce2367480ed9da2d5",
+    "data/evaluation/m3-vad-overlap-20261102-01/tracks-2/manifest.json": "f44ca9da6f4b3dac057d9deb39078c31f078df367a4a9b71b080019c69975b61",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-2/bounded/worker.json": "10937b81fb267804129b89158424201f1589141a14947fbfe64199bda2e40e6c",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-2/bounded/execution.json": "c16cf8ac8a33d7aaf68158ff4fe1f5c3461c407121099a5cab995f435d53cd12",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-2/bounded/thermal.jsonl": "6257e3f7416b15753ff00fe72be391771b03311374f7b58f3005d38ed78d0104",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-2/bounded/samples.jsonl": "40765296e4bf5daebcc3c350fdad8611667da9b82de527769957b82102820a7d",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-2/native/worker.json": "5b57eb5f6d7bdc0aad3ead7233d32d2118e7cbc69bfaa9e64e6873815feb1c26",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-2/native/execution.json": "325249e2c507b876e5976b98d092b21b96ec1cf9942dbdbe7c02bf03ff3cf872",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-2/native/thermal.jsonl": "b1c42da918ce1c997905c82a63764c5e926d22a6f295e428a4fe717c860572a2",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-2/native/samples.jsonl": "1819b1b1e3d63cd286375246ce80e90a47be3620f62964ce221f329b830a3fa2",
+    "data/evaluation/m3-vad-overlap-20261102-01/tracks-3/manifest.json": "dfd797c172fe1556d5071fadaae4a4346af5031b7893389a2a68550604d11f04",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-3/bounded/worker.json": "2d000891c87ff73984291e5412106f51e4b25c61ddf201e0918e1b3c2e15e72d",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-3/bounded/execution.json": "155c48eec5a95177663b893cc71f6cb894f35cf18910866d95376b684c7c7fba",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-3/bounded/thermal.jsonl": "fb8af0119b8cc91bc413c19484fc1c5814f4b532df2a63943f3ac7babf3090c1",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-3/bounded/samples.jsonl": "8859e54cec4b16e536cb2cb1687fd003f40bf4e7013eeabf3ee3136502355c92",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-3/native/worker.json": "92e29c7d882eca6da5e36af32df64a185dc0d38bee41980219c76945d647f53a",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-3/native/execution.json": "87d99271abb9c70bcb6633bf984e16a8976592eb8b9b083042d7699b1433690a",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-3/native/thermal.jsonl": "241bfcf578ebacee739e3cb300e593e12b22b154c3adb58a02948a532e44eebb",
+    "results/preflight/m3-vad-overlap-20261102-01/tracks-3/native/samples.jsonl": "e0e108a4b68915f814b8091b1c402a9afe8607a048cec9dedece16e897004b6b",
+    "results/maintenance/m3-vad-overlap-20261102-01/preservation-after.json": "908b8a1a478bfca49df84b860deec40f1380d4d2c046f0937aa402c1f3de815f",
+    "results/maintenance/m3-vad-overlap-20261102-01/host-tests.log": "1d739163e51ccc789209e8cbf03a20d2d1949262c9a5ad6bac8095cd2b83c2d5",
+    "results/maintenance/m3-vad-overlap-20261102-01/rp5-tests.log": "59cc38b52b94c4d80725707d1e5028efdf6b4a8e0beb5cf343b08b700734bd3b",
+    "results/maintenance/m3-vad-overlap-20261102-01/analyze.py": "4c7418bafd074670827508ebebeac08e2dbde5e4bead21ba735f93c0cc559f53",
+    "results/maintenance/m3-vad-overlap-20261102-01/preservation-before.json": "211227540222b6c15b8c195a6cd29b059a6af9b1b9a1eec13868be76aabfa92c",
+    "results/maintenance/m3-vad-overlap-20261102-01/cooling-before.json": "7e943ab233c89d2307085795addcacfbe33fa220bc6f88b83a6b628314b7ad07",
+    "results/maintenance/m3-vad-overlap-20261102-01/cooling-after-reboot.json": "d1be93435debf59c133ec51d2f34b9e5c137b48856eb6f2cf1a1dd035024860c"
+  },
+  "gold_accuracy_available": false,
+  "asr_cer": null,
+  "asr_rtf": null,
+  "streaming_first_text_s": null,
+  "refine_delay_s": null,
+  "production_default_changed": false,
+  "normalization_approved": false,
+  "scope_ko": "모델 출력과 무관하게 고정한 비정상 중첩 음성의 공학적 지속 활성/버퍼 검증. 성공/예상 중단/다른 실패 분리. 자연 장문·정확도·실시간 Hybrid 성능 검증 아님.",
+  "status": "engineered_continuous_activity_verified",
+  "raw_files_recovered_and_verified": 42,
+  "recovered_after_reboot": true,
+  "live_after_reboot": {
+    "host": "raspberrypi",
+    "machine": "aarch64",
+    "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+    "telemetry": {
+      "at_utc": "2026-11-02T08:17:39.470770+00:00",
+      "monotonic_s": 418.225444839,
+      "temperature_mc": 52900,
+      "cpu0_freq_khz": 2400000,
+      "governor": "ondemand",
+      "throttled_flags": 0,
+      "current_limits": 0,
+      "history_limits": 0,
+      "fan_rpm": 3003
+    },
+    "inventory": {
+      "device_model": {
+        "value": "Raspberry Pi 5 Model B Rev 1.0",
+        "error": null
+      },
+      "thermal_zones": [
+        {
+          "path": "/sys/class/thermal/thermal_zone0",
+          "type": {
+            "value": "cpu-thermal",
+            "error": null
+          },
+          "temperature_mc": {
+            "value": 52900,
+            "error": null
+          },
+          "trips": [
+            {
+              "name": "trip_point_0_temp",
+              "temperature_mc": {
+                "value": 110000,
+                "error": null
+              },
+              "type": {
+                "value": "critical",
+                "error": null
+              },
+              "hysteresis_mc": {
+                "value": 0,
+                "error": null
+              }
+            },
+            {
+              "name": "trip_point_1_temp",
+              "temperature_mc": {
+                "value": 50000,
+                "error": null
+              },
+              "type": {
+                "value": "active",
+                "error": null
+              },
+              "hysteresis_mc": {
+                "value": 5000,
+                "error": null
+              }
+            },
+            {
+              "name": "trip_point_2_temp",
+              "temperature_mc": {
+                "value": 60000,
+                "error": null
+              },
+              "type": {
+                "value": "active",
+                "error": null
+              },
+              "hysteresis_mc": {
+                "value": 5000,
+                "error": null
+              }
+            },
+            {
+              "name": "trip_point_3_temp",
+              "temperature_mc": {
+                "value": 67500,
+                "error": null
+              },
+              "type": {
+                "value": "active",
+                "error": null
+              },
+              "hysteresis_mc": {
+                "value": 5000,
+                "error": null
+              }
+            },
+            {
+              "name": "trip_point_4_temp",
+              "temperature_mc": {
+                "value": 75000,
+                "error": null
+              },
+              "type": {
+                "value": "active",
+                "error": null
+              },
+              "hysteresis_mc": {
+                "value": 5000,
+                "error": null
+              }
+            }
+          ]
+        }
+      ],
+      "cooling_devices": [
+        {
+          "path": "/sys/class/thermal/cooling_device0",
+          "type": {
+            "value": "pwm-fan",
+            "error": null
+          },
+          "current_state": {
+            "value": 1,
+            "error": null
+          },
+          "max_state": {
+            "value": 4,
+            "error": null
+          }
+        }
+      ],
+      "fans": [
+        {
+          "path": "/sys/class/hwmon/hwmon3/fan1_input",
+          "driver_name": {
+            "value": "pwmfan",
+            "error": null
+          },
+          "rpm": {
+            "value": 3003,
+            "error": null
+          },
+          "pwm1": {
+            "value": 75,
+            "error": null
+          },
+          "pwm1_enable": {
+            "value": 1,
+            "error": null
+          }
+        }
+      ],
+      "fan_sensor_status": "exposed",
+      "cpu_frequency": [
+        {
+          "path": "/sys/devices/system/cpu/cpu0/cpufreq",
+          "scaling_governor": {
+            "value": "ondemand",
+            "error": null
+          },
+          "scaling_cur_freq": {
+            "value": 2400000,
+            "error": null
+          },
+          "scaling_min_freq": {
+            "value": 1500000,
+            "error": null
+          },
+          "scaling_max_freq": {
+            "value": 2400000,
+            "error": null
+          }
+        },
+        {
+          "path": "/sys/devices/system/cpu/cpu1/cpufreq",
+          "scaling_governor": {
+            "value": "ondemand",
+            "error": null
+          },
+          "scaling_cur_freq": {
+            "value": 2400000,
+            "error": null
+          },
+          "scaling_min_freq": {
+            "value": 1500000,
+            "error": null
+          },
+          "scaling_max_freq": {
+            "value": 2400000,
+            "error": null
+          }
+        },
+        {
+          "path": "/sys/devices/system/cpu/cpu2/cpufreq",
+          "scaling_governor": {
+            "value": "ondemand",
+            "error": null
+          },
+          "scaling_cur_freq": {
+            "value": 2400000,
+            "error": null
+          },
+          "scaling_min_freq": {
+            "value": 1500000,
+            "error": null
+          },
+          "scaling_max_freq": {
+            "value": 2400000,
+            "error": null
+          }
+        },
+        {
+          "path": "/sys/devices/system/cpu/cpu3/cpufreq",
+          "scaling_governor": {
+            "value": "ondemand",
+            "error": null
+          },
+          "scaling_cur_freq": {
+            "value": 2400000,
+            "error": null
+          },
+          "scaling_min_freq": {
+            "value": 1500000,
+            "error": null
+          },
+          "scaling_max_freq": {
+            "value": 2400000,
+            "error": null
+          }
+        }
+      ],
+      "scope": "읽기 전용 순간 표본. 팬 RPM은 방열판 접촉·통풍·장기 냉각 성능을 보증하지 않음."
+    },
+    "scope": "이 명령이 실행된 기기만 관찰. Host에서 실행한 값은 RP5 실측이 아님."
+  }
+}
