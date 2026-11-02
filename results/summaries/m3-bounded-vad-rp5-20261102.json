@@ -1,0 +1,1833 @@
+{
+  "schema": "bounded-vad-arm64-validation-v1",
+  "date": "2026-11-02",
+  "annotation_sha256": "81bfb4eb9c7e1da282b06d2bd687acc712f35c2d5197f99e99b166a9162cf751",
+  "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+  "planned_per_run": 80,
+  "holdout_not_executed": 18,
+  "comparison": {
+    "native/identity": {
+      "overall": {
+        "successful": 80,
+        "frame_counts": {
+          "speech_frames": 2060615,
+          "non_speech_frames": 181412,
+          "ignored_frames": 3291476,
+          "true_positive_frames": 1884104,
+          "false_negative_frames": 176511,
+          "false_positive_frames": 28638,
+          "true_negative_frames": 152774,
+          "predicted_in_ignored_frames": 200926
+        },
+        "speech_miss_fraction": 0.0856593783894614,
+        "non_speech_false_alarm_fraction": 0.15786166295504156,
+        "target_eligible": 75,
+        "target_fully_missed": 9,
+        "clips_with_emissions": 68,
+        "audio_s": 345.8439375,
+        "call_wall_s": 9.49370483500752,
+        "pipeline_rtf": 0.027450834915987276,
+        "mean_process_cpu_percent": 100.05981035950833,
+        "rss_observed_max_mib": 76.078125,
+        "endpoint_audio_timeline_s": {
+          "n": 0,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        }
+      },
+      "categories": {
+        "long": {
+          "successful": 11,
+          "frame_counts": {
+            "speech_frames": 1587288,
+            "non_speech_frames": 7645,
+            "ignored_frames": 161753,
+            "true_positive_frames": 1538041,
+            "false_negative_frames": 49247,
+            "false_positive_frames": 384,
+            "true_negative_frames": 7261,
+            "predicted_in_ignored_frames": 38884
+          },
+          "speech_miss_fraction": 0.03102587558149498,
+          "non_speech_false_alarm_fraction": 0.05022890778286462,
+          "target_eligible": 11,
+          "target_fully_missed": 0,
+          "clips_with_emissions": 11,
+          "audio_s": 109.792875,
+          "call_wall_s": 3.1699261579997255,
+          "pipeline_rtf": 0.0288718749554534,
+          "mean_process_cpu_percent": 100.068547621994,
+          "rss_observed_max_mib": 72.59375,
+          "endpoint_audio_timeline_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "noise_candidate": {
+          "successful": 5,
+          "frame_counts": {
+            "speech_frames": 0,
+            "non_speech_frames": 0,
+            "ignored_frames": 2402586,
+            "true_positive_frames": 0,
+            "false_negative_frames": 0,
+            "false_positive_frames": 0,
+            "true_negative_frames": 0,
+            "predicted_in_ignored_frames": 5504
+          },
+          "speech_miss_fraction": null,
+          "non_speech_false_alarm_fraction": null,
+          "target_eligible": 0,
+          "target_fully_missed": null,
+          "clips_with_emissions": 1,
+          "audio_s": 150.161625,
+          "call_wall_s": 3.980408962999718,
+          "pipeline_rtf": 0.026507497924318002,
+          "mean_process_cpu_percent": 100.05247784887688,
+          "rss_observed_max_mib": 76.078125,
+          "endpoint_audio_timeline_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "short": {
+          "successful": 64,
+          "frame_counts": {
+            "speech_frames": 473327,
+            "non_speech_frames": 173767,
+            "ignored_frames": 727137,
+            "true_positive_frames": 346063,
+            "false_negative_frames": 127264,
+            "false_positive_frames": 28254,
+            "true_negative_frames": 145513,
+            "predicted_in_ignored_frames": 156538
+          },
+          "speech_miss_fraction": 0.2688712032062401,
+          "non_speech_false_alarm_fraction": 0.16259704086506643,
+          "target_eligible": 64,
+          "target_fully_missed": 9,
+          "clips_with_emissions": 56,
+          "audio_s": 85.8894375,
+          "call_wall_s": 2.3433697140080767,
+          "pipeline_rtf": 0.027283561078253384,
+          "mean_process_cpu_percent": 100.0604461593684,
+          "rss_observed_max_mib": 72.078125,
+          "endpoint_audio_timeline_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          }
+        }
+      },
+      "loading": {
+        "wall_s": 0.1369106769998325,
+        "process_cpu_s": 0.330952734,
+        "resources": {
+          "sample_interval_s": 0.1,
+          "rss_observed_max_mib": 63.90625,
+          "rss_sample_count": 3,
+          "rss_missing_count": 0,
+          "rss_samples": [
+            {
+              "monotonic_s": 4159.228424815,
+              "rss_mib": 24.6875
+            },
+            {
+              "monotonic_s": 4159.333453062,
+              "rss_mib": 44.421875
+            },
+            {
+              "monotonic_s": 4159.365187566,
+              "rss_mib": 63.90625
+            }
+          ]
+        }
+      },
+      "warmup_s": 0.03459883000050468,
+      "thermal": {
+        "source_commit": "69b162ee3bd91450935f13452a9d81b32b88c6e1",
+        "control_valid": true,
+        "before": {
+          "at_utc": "2026-11-02T07:20:53.529813+00:00",
+          "monotonic_s": 4159.045495192,
+          "temperature_mc": 51250,
+          "cpu0_freq_khz": 1500000,
+          "governor": "ondemand",
+          "throttled_flags": 0,
+          "current_limits": 0,
+          "history_limits": 0,
+          "fan_rpm": 2980
+        },
+        "after": {
+          "at_utc": "2026-11-02T07:21:04.636007+00:00",
+          "monotonic_s": 4170.151682485,
+          "temperature_mc": 57300,
+          "cpu0_freq_khz": 2400000,
+          "governor": "ondemand",
+          "throttled_flags": 0,
+          "current_limits": 0,
+          "history_limits": 0,
+          "fan_rpm": 4995
+        },
+        "max_temperature_c": 61.15,
+        "thermal_samples": 11,
+        "policy": {
+          "admission_mc": 53000,
+          "admission_consecutive": 3,
+          "stop_mc": 75000,
+          "interval_s": 1,
+          "timeout_s": 600,
+          "address_space_bytes": 4294967296,
+          "scope": "1Hz 표본. 고정 클럭 보장 아님. 현재 제한/새 이력/결측/75°C에서 중단."
+        }
+      },
+      "settings": {
+        "rate": 16000,
+        "num_threads": 1,
+        "window": 512,
+        "threshold": 0.5,
+        "min_speech_s": 0.1,
+        "min_silence_s": 0.3,
+        "hard_limit_s": 5,
+        "native_soft_limit_s": 5,
+        "native_buffer_s": 31,
+        "native_active_budget_s": 30,
+        "prefix_frames": 0,
+        "suffix_frames": 0,
+        "paced": false,
+        "repetitions": 1,
+        "warmups": 1
+      },
+      "runtime": {
+        "sherpa_package_version": "2.0.1",
+        "sherpa_core_package_version": "2.0.1",
+        "python_onnxruntime_package_version": "1.31.1",
+        "sherpa_native_onnxruntime_version": "1.28.2",
+        "native_version_source": "sherpa_onnx.onnxruntime_version",
+        "status": "available",
+        "reason": null
+      },
+      "probability_runtime": null
+    },
+    "bounded/identity": {
+      "overall": {
+        "successful": 80,
+        "frame_counts": {
+          "speech_frames": 2060615,
+          "non_speech_frames": 181412,
+          "ignored_frames": 3291476,
+          "true_positive_frames": 1884104,
+          "false_negative_frames": 176511,
+          "false_positive_frames": 28638,
+          "true_negative_frames": 152774,
+          "predicted_in_ignored_frames": 200926
+        },
+        "speech_miss_fraction": 0.0856593783894614,
+        "non_speech_false_alarm_fraction": 0.15786166295504156,
+        "target_eligible": 75,
+        "target_fully_missed": 9,
+        "clips_with_emissions": 68,
+        "audio_s": 345.8439375,
+        "call_wall_s": 11.606718974001524,
+        "pipeline_rtf": 0.033560567977287514,
+        "mean_process_cpu_percent": 100.39091469432582,
+        "rss_observed_max_mib": 72.296875,
+        "endpoint_audio_timeline_s": {
+          "n": 0,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        }
+      },
+      "categories": {
+        "long": {
+          "successful": 11,
+          "frame_counts": {
+            "speech_frames": 1587288,
+            "non_speech_frames": 7645,
+            "ignored_frames": 161753,
+            "true_positive_frames": 1538041,
+            "false_negative_frames": 49247,
+            "false_positive_frames": 384,
+            "true_negative_frames": 7261,
+            "predicted_in_ignored_frames": 38884
+          },
+          "speech_miss_fraction": 0.03102587558149498,
+          "non_speech_false_alarm_fraction": 0.05022890778286462,
+          "target_eligible": 11,
+          "target_fully_missed": 0,
+          "clips_with_emissions": 11,
+          "audio_s": 109.792875,
+          "call_wall_s": 3.6820601049994366,
+          "pipeline_rtf": 0.033536421238622605,
+          "mean_process_cpu_percent": 100.12190330609944,
+          "rss_observed_max_mib": 68.90625,
+          "endpoint_audio_timeline_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "noise_candidate": {
+          "successful": 5,
+          "frame_counts": {
+            "speech_frames": 0,
+            "non_speech_frames": 0,
+            "ignored_frames": 2402586,
+            "true_positive_frames": 0,
+            "false_negative_frames": 0,
+            "false_positive_frames": 0,
+            "true_negative_frames": 0,
+            "predicted_in_ignored_frames": 5504
+          },
+          "speech_miss_fraction": null,
+          "non_speech_false_alarm_fraction": null,
+          "target_eligible": 0,
+          "target_fully_missed": null,
+          "clips_with_emissions": 1,
+          "audio_s": 150.161625,
+          "call_wall_s": 5.019096319999335,
+          "pipeline_rtf": 0.03342462709763121,
+          "mean_process_cpu_percent": 100.75849343334916,
+          "rss_observed_max_mib": 72.296875,
+          "endpoint_audio_timeline_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "short": {
+          "successful": 64,
+          "frame_counts": {
+            "speech_frames": 473327,
+            "non_speech_frames": 173767,
+            "ignored_frames": 727137,
+            "true_positive_frames": 346063,
+            "false_negative_frames": 127264,
+            "false_positive_frames": 28254,
+            "true_negative_frames": 145513,
+            "predicted_in_ignored_frames": 156538
+          },
+          "speech_miss_fraction": 0.2688712032062401,
+          "non_speech_false_alarm_fraction": 0.16259704086506643,
+          "target_eligible": 64,
+          "target_fully_missed": 9,
+          "clips_with_emissions": 56,
+          "audio_s": 85.8894375,
+          "call_wall_s": 2.9055625490027523,
+          "pipeline_rtf": 0.033829102082578576,
+          "mean_process_cpu_percent": 100.09685907461235,
+          "rss_observed_max_mib": 67.453125,
+          "endpoint_audio_timeline_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          }
+        }
+      },
+      "loading": {
+        "wall_s": 0.1485928510001031,
+        "process_cpu_s": 0.33205696100000004,
+        "resources": {
+          "sample_interval_s": 0.1,
+          "rss_observed_max_mib": 65.953125,
+          "rss_sample_count": 3,
+          "rss_missing_count": 0,
+          "rss_samples": [
+            {
+              "monotonic_s": 4183.427950315,
+              "rss_mib": 24.6875
+            },
+            {
+              "monotonic_s": 4183.561012109,
+              "rss_mib": 55.03125
+            },
+            {
+              "monotonic_s": 4183.576389017,
+              "rss_mib": 65.953125
+            }
+          ]
+        }
+      },
+      "warmup_s": 0.04326143499929458,
+      "thermal": {
+        "source_commit": "69b162ee3bd91450935f13452a9d81b32b88c6e1",
+        "control_valid": true,
+        "before": {
+          "at_utc": "2026-11-02T07:21:17.775859+00:00",
+          "monotonic_s": 4183.29154164,
+          "temperature_mc": 51250,
+          "cpu0_freq_khz": 1500000,
+          "governor": "ondemand",
+          "throttled_flags": 0,
+          "current_limits": 0,
+          "history_limits": 0,
+          "fan_rpm": 3000
+        },
+        "after": {
+          "at_utc": "2026-11-02T07:21:30.860426+00:00",
+          "monotonic_s": 4196.37610282,
+          "temperature_mc": 60050,
+          "cpu0_freq_khz": 2400000,
+          "governor": "ondemand",
+          "throttled_flags": 0,
+          "current_limits": 0,
+          "history_limits": 0,
+          "fan_rpm": 5014
+        },
+        "max_temperature_c": 60.6,
+        "thermal_samples": 13,
+        "policy": {
+          "admission_mc": 53000,
+          "admission_consecutive": 3,
+          "stop_mc": 75000,
+          "interval_s": 1,
+          "timeout_s": 600,
+          "address_space_bytes": 4294967296,
+          "scope": "1Hz 표본. 고정 클럭 보장 아님. 현재 제한/새 이력/결측/75°C에서 중단."
+        }
+      },
+      "settings": {
+        "rate": 16000,
+        "num_threads": 1,
+        "window": 512,
+        "threshold": 0.5,
+        "min_speech_s": 0.1,
+        "min_silence_s": 0.3,
+        "hard_limit_s": 5,
+        "native_soft_limit_s": null,
+        "native_buffer_s": null,
+        "native_active_budget_s": null,
+        "prefix_frames": 0,
+        "suffix_frames": 0,
+        "paced": false,
+        "repetitions": 1,
+        "warmups": 1,
+        "probability_soft_limit_s": 5
+      },
+      "runtime": {
+        "sherpa_package_version": "2.0.1",
+        "sherpa_core_package_version": "2.0.1",
+        "python_onnxruntime_package_version": "1.31.1",
+        "sherpa_native_onnxruntime_version": null,
+        "native_version_source": "sherpa_onnx.onnxruntime_version",
+        "status": "not_imported",
+        "reason": "선택 런타임을 아직 import하지 않았습니다."
+      },
+      "probability_runtime": {
+        "backend": "python_onnxruntime_k2_v4_experimental",
+        "python_onnxruntime_version": "1.31.1",
+        "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+        "num_threads": 1,
+        "providers": [
+          "CPUExecutionProvider"
+        ],
+        "recurrent_state_bytes": 1024,
+        "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+      }
+    },
+    "bounded/rms26": {
+      "overall": {
+        "successful": 80,
+        "frame_counts": {
+          "speech_frames": 2060615,
+          "non_speech_frames": 181412,
+          "ignored_frames": 3291476,
+          "true_positive_frames": 1933583,
+          "false_negative_frames": 127032,
+          "false_positive_frames": 40068,
+          "true_negative_frames": 141344,
+          "predicted_in_ignored_frames": 243996
+        },
+        "speech_miss_fraction": 0.06164761491108237,
+        "non_speech_false_alarm_fraction": 0.22086741781139066,
+        "target_eligible": 75,
+        "target_fully_missed": 4,
+        "clips_with_emissions": 72,
+        "audio_s": 345.8439375,
+        "call_wall_s": 11.608494622997569,
+        "pipeline_rtf": 0.03356570222659337,
+        "mean_process_cpu_percent": 100.24366466041506,
+        "rss_observed_max_mib": 72.375,
+        "endpoint_audio_timeline_s": {
+          "n": 0,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        }
+      },
+      "categories": {
+        "long": {
+          "successful": 11,
+          "frame_counts": {
+            "speech_frames": 1587288,
+            "non_speech_frames": 7645,
+            "ignored_frames": 161753,
+            "true_positive_frames": 1554297,
+            "false_negative_frames": 32991,
+            "false_positive_frames": 2403,
+            "true_negative_frames": 5242,
+            "predicted_in_ignored_frames": 42056
+          },
+          "speech_miss_fraction": 0.020784507915387756,
+          "non_speech_false_alarm_fraction": 0.3143230869849575,
+          "target_eligible": 11,
+          "target_fully_missed": 0,
+          "clips_with_emissions": 11,
+          "audio_s": 109.792875,
+          "call_wall_s": 3.6885631149998517,
+          "pipeline_rtf": 0.03359565103837432,
+          "mean_process_cpu_percent": 100.10667064321464,
+          "rss_observed_max_mib": 69.015625,
+          "endpoint_audio_timeline_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "noise_candidate": {
+          "successful": 5,
+          "frame_counts": {
+            "speech_frames": 0,
+            "non_speech_frames": 0,
+            "ignored_frames": 2402586,
+            "true_positive_frames": 0,
+            "false_negative_frames": 0,
+            "false_positive_frames": 0,
+            "true_negative_frames": 0,
+            "predicted_in_ignored_frames": 12160
+          },
+          "speech_miss_fraction": null,
+          "non_speech_false_alarm_fraction": null,
+          "target_eligible": 0,
+          "target_fully_missed": null,
+          "clips_with_emissions": 1,
+          "audio_s": 150.161625,
+          "call_wall_s": 5.006083727000259,
+          "pipeline_rtf": 0.033337969850820805,
+          "mean_process_cpu_percent": 100.45075956037321,
+          "rss_observed_max_mib": 72.375,
+          "endpoint_audio_timeline_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "short": {
+          "successful": 64,
+          "frame_counts": {
+            "speech_frames": 473327,
+            "non_speech_frames": 173767,
+            "ignored_frames": 727137,
+            "true_positive_frames": 379286,
+            "false_negative_frames": 94041,
+            "false_positive_frames": 37665,
+            "true_negative_frames": 136102,
+            "predicted_in_ignored_frames": 189780
+          },
+          "speech_miss_fraction": 0.1986808274195218,
+          "non_speech_false_alarm_fraction": 0.2167557706584104,
+          "target_eligible": 64,
+          "target_fully_missed": 4,
+          "clips_with_emissions": 60,
+          "audio_s": 85.8894375,
+          "call_wall_s": 2.9138477809974574,
+          "pipeline_rtf": 0.033925566004521304,
+          "mean_process_cpu_percent": 100.06128611158712,
+          "rss_observed_max_mib": 67.515625,
+          "endpoint_audio_timeline_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          }
+        }
+      },
+      "loading": {
+        "wall_s": 0.13657189400055358,
+        "process_cpu_s": 0.330245983,
+        "resources": {
+          "sample_interval_s": 0.1,
+          "rss_observed_max_mib": 66.0,
+          "rss_sample_count": 3,
+          "rss_missing_count": 0,
+          "rss_samples": [
+            {
+              "monotonic_s": 4216.687652619,
+              "rss_mib": 24.71875
+            },
+            {
+              "monotonic_s": 4216.809365762,
+              "rss_mib": 55.0625
+            },
+            {
+              "monotonic_s": 4216.824093976,
+              "rss_mib": 66.0
+            }
+          ]
+        }
+      },
+      "warmup_s": 0.043112641999869084,
+      "thermal": {
+        "source_commit": "69b162ee3bd91450935f13452a9d81b32b88c6e1",
+        "control_valid": true,
+        "before": {
+          "at_utc": "2026-11-02T07:21:51.029918+00:00",
+          "monotonic_s": 4216.545600236,
+          "temperature_mc": 52900,
+          "cpu0_freq_khz": 1500000,
+          "governor": "ondemand",
+          "throttled_flags": 0,
+          "current_limits": 0,
+          "history_limits": 0,
+          "fan_rpm": 3019
+        },
+        "after": {
+          "at_utc": "2026-11-02T07:22:04.129700+00:00",
+          "monotonic_s": 4229.645375273,
+          "temperature_mc": 60050,
+          "cpu0_freq_khz": 2400000,
+          "governor": "ondemand",
+          "throttled_flags": 0,
+          "current_limits": 0,
+          "history_limits": 0,
+          "fan_rpm": 5036
+        },
+        "max_temperature_c": 60.6,
+        "thermal_samples": 13,
+        "policy": {
+          "admission_mc": 53000,
+          "admission_consecutive": 3,
+          "stop_mc": 75000,
+          "interval_s": 1,
+          "timeout_s": 600,
+          "address_space_bytes": 4294967296,
+          "scope": "1Hz 표본. 고정 클럭 보장 아님. 현재 제한/새 이력/결측/75°C에서 중단."
+        }
+      },
+      "settings": {
+        "rate": 16000,
+        "num_threads": 1,
+        "window": 512,
+        "threshold": 0.5,
+        "min_speech_s": 0.1,
+        "min_silence_s": 0.3,
+        "hard_limit_s": 5,
+        "native_soft_limit_s": null,
+        "native_buffer_s": null,
+        "native_active_budget_s": null,
+        "prefix_frames": 0,
+        "suffix_frames": 0,
+        "paced": false,
+        "repetitions": 1,
+        "warmups": 1,
+        "probability_soft_limit_s": 5
+      },
+      "runtime": {
+        "sherpa_package_version": "2.0.1",
+        "sherpa_core_package_version": "2.0.1",
+        "python_onnxruntime_package_version": "1.31.1",
+        "sherpa_native_onnxruntime_version": null,
+        "native_version_source": "sherpa_onnx.onnxruntime_version",
+        "status": "not_imported",
+        "reason": "선택 런타임을 아직 import하지 않았습니다."
+      },
+      "probability_runtime": {
+        "backend": "python_onnxruntime_k2_v4_experimental",
+        "python_onnxruntime_version": "1.31.1",
+        "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+        "num_threads": 1,
+        "providers": [
+          "CPUExecutionProvider"
+        ],
+        "recurrent_state_bytes": 1024,
+        "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+      }
+    },
+    "native/rms26": {
+      "overall": {
+        "successful": 80,
+        "frame_counts": {
+          "speech_frames": 2060615,
+          "non_speech_frames": 181412,
+          "ignored_frames": 3291476,
+          "true_positive_frames": 1933583,
+          "false_negative_frames": 127032,
+          "false_positive_frames": 40068,
+          "true_negative_frames": 141344,
+          "predicted_in_ignored_frames": 243996
+        },
+        "speech_miss_fraction": 0.06164761491108237,
+        "non_speech_false_alarm_fraction": 0.22086741781139066,
+        "target_eligible": 75,
+        "target_fully_missed": 4,
+        "clips_with_emissions": 72,
+        "audio_s": 345.8439375,
+        "call_wall_s": 9.562326963003215,
+        "pipeline_rtf": 0.027649254262273184,
+        "mean_process_cpu_percent": 100.12567945065344,
+        "rss_observed_max_mib": 75.03125,
+        "endpoint_audio_timeline_s": {
+          "n": 0,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        }
+      },
+      "categories": {
+        "long": {
+          "successful": 11,
+          "frame_counts": {
+            "speech_frames": 1587288,
+            "non_speech_frames": 7645,
+            "ignored_frames": 161753,
+            "true_positive_frames": 1554297,
+            "false_negative_frames": 32991,
+            "false_positive_frames": 2403,
+            "true_negative_frames": 5242,
+            "predicted_in_ignored_frames": 42056
+          },
+          "speech_miss_fraction": 0.020784507915387756,
+          "non_speech_false_alarm_fraction": 0.3143230869849575,
+          "target_eligible": 11,
+          "target_fully_missed": 0,
+          "clips_with_emissions": 11,
+          "audio_s": 109.792875,
+          "call_wall_s": 3.19745179399888,
+          "pipeline_rtf": 0.029122580076338105,
+          "mean_process_cpu_percent": 100.11828841354914,
+          "rss_observed_max_mib": 72.03125,
+          "endpoint_audio_timeline_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "noise_candidate": {
+          "successful": 5,
+          "frame_counts": {
+            "speech_frames": 0,
+            "non_speech_frames": 0,
+            "ignored_frames": 2402586,
+            "true_positive_frames": 0,
+            "false_negative_frames": 0,
+            "false_positive_frames": 0,
+            "true_negative_frames": 0,
+            "predicted_in_ignored_frames": 12160
+          },
+          "speech_miss_fraction": null,
+          "non_speech_false_alarm_fraction": null,
+          "target_eligible": 0,
+          "target_fully_missed": null,
+          "clips_with_emissions": 1,
+          "audio_s": 150.161625,
+          "call_wall_s": 4.00973225800044,
+          "pipeline_rtf": 0.026702776145372965,
+          "mean_process_cpu_percent": 100.12544807672694,
+          "rss_observed_max_mib": 75.03125,
+          "endpoint_audio_timeline_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "short": {
+          "successful": 64,
+          "frame_counts": {
+            "speech_frames": 473327,
+            "non_speech_frames": 173767,
+            "ignored_frames": 727137,
+            "true_positive_frames": 379286,
+            "false_negative_frames": 94041,
+            "false_positive_frames": 37665,
+            "true_negative_frames": 136102,
+            "predicted_in_ignored_frames": 189780
+          },
+          "speech_miss_fraction": 0.1986808274195218,
+          "non_speech_false_alarm_fraction": 0.2167557706584104,
+          "target_eligible": 64,
+          "target_fully_missed": 4,
+          "clips_with_emissions": 60,
+          "audio_s": 85.8894375,
+          "call_wall_s": 2.3551429110038953,
+          "pipeline_rtf": 0.027420634941332515,
+          "mean_process_cpu_percent": 100.13610779121431,
+          "rss_observed_max_mib": 72.03125,
+          "endpoint_audio_timeline_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          }
+        }
+      },
+      "loading": {
+        "wall_s": 0.0923824080000486,
+        "process_cpu_s": 0.325462421,
+        "resources": {
+          "sample_interval_s": 0.1,
+          "rss_observed_max_mib": 63.90625,
+          "rss_sample_count": 2,
+          "rss_missing_count": 0,
+          "rss_samples": [
+            {
+              "monotonic_s": 4264.021283373,
+              "rss_mib": 24.671875
+            },
+            {
+              "monotonic_s": 4264.113536762,
+              "rss_mib": 63.90625
+            }
+          ]
+        }
+      },
+      "warmup_s": 0.03460768100012501,
+      "thermal": {
+        "source_commit": "69b162ee3bd91450935f13452a9d81b32b88c6e1",
+        "control_valid": true,
+        "before": {
+          "at_utc": "2026-11-02T07:22:38.373029+00:00",
+          "monotonic_s": 4263.888711032,
+          "temperature_mc": 52900,
+          "cpu0_freq_khz": 1500000,
+          "governor": "ondemand",
+          "throttled_flags": 0,
+          "current_limits": 0,
+          "history_limits": 0,
+          "fan_rpm": 3041
+        },
+        "after": {
+          "at_utc": "2026-11-02T07:22:49.498029+00:00",
+          "monotonic_s": 4275.013704738,
+          "temperature_mc": 59500,
+          "cpu0_freq_khz": 2400000,
+          "governor": "ondemand",
+          "throttled_flags": 0,
+          "current_limits": 0,
+          "history_limits": 0,
+          "fan_rpm": 5049
+        },
+        "max_temperature_c": 60.6,
+        "thermal_samples": 11,
+        "policy": {
+          "admission_mc": 53000,
+          "admission_consecutive": 3,
+          "stop_mc": 75000,
+          "interval_s": 1,
+          "timeout_s": 600,
+          "address_space_bytes": 4294967296,
+          "scope": "1Hz 표본. 고정 클럭 보장 아님. 현재 제한/새 이력/결측/75°C에서 중단."
+        }
+      },
+      "settings": {
+        "rate": 16000,
+        "num_threads": 1,
+        "window": 512,
+        "threshold": 0.5,
+        "min_speech_s": 0.1,
+        "min_silence_s": 0.3,
+        "hard_limit_s": 5,
+        "native_soft_limit_s": 5,
+        "native_buffer_s": 31,
+        "native_active_budget_s": 30,
+        "prefix_frames": 0,
+        "suffix_frames": 0,
+        "paced": false,
+        "repetitions": 1,
+        "warmups": 1
+      },
+      "runtime": {
+        "sherpa_package_version": "2.0.1",
+        "sherpa_core_package_version": "2.0.1",
+        "python_onnxruntime_package_version": "1.31.1",
+        "sherpa_native_onnxruntime_version": "1.28.2",
+        "native_version_source": "sherpa_onnx.onnxruntime_version",
+        "status": "available",
+        "reason": null
+      },
+      "probability_runtime": null
+    }
+  },
+  "equivalence": {
+    "identity": {
+      "event_and_payload_matches": 80,
+      "score_matches": 80,
+      "old_native_event_and_score_matches": 80
+    },
+    "rms26": {
+      "event_and_payload_matches": 80,
+      "score_matches": 80,
+      "old_native_event_and_score_matches": 80
+    }
+  },
+  "duration": {
+    "01": {
+      "input": {
+        "schema": "vad-duration-input-v1",
+        "audio_path": "data/evaluation/m3-vad-duration-20261102-01/voiced-loop-45s.wav",
+        "audio_sha256": "973bd7b1403bdbc6f7d880480ef268645c989e2c63c4573e02623eb701b7e008",
+        "frames": 720000,
+        "sample_rate": 16000,
+        "source_id": "seoul-s06f18m2-u0085",
+        "source_audio_sha256": "a15be4402aca803831918a115c217d273e0f26cbb7be9dd083f56c7dfa548eac",
+        "source_annotations_sha256": "81bfb4eb9c7e1da282b06d2bd687acc712f35c2d5197f99e99b166a9162cf751",
+        "source_region_frames": [
+          43256,
+          59016
+        ],
+        "selection": "first development long clip; longest corpus-provisional speech region; model-independent",
+        "scope_ko": "약 0.985초 원본 음성 구간을 45초로 반복한 비정상 파생 입력. 지속 상태/버퍼 공학 점검만 사용. 자연 장문·인식 정확도 평가 아님.",
+        "expected_processed": {
+          "identity": {
+            "pcm_sha256": "6624896d2c65e5bd94e3d437dd9215aaa9dad4c38d1744ec50516327734be413",
+            "newly_clipped_samples": 0
+          },
+          "rms26": {
+            "pcm_sha256": "6624896d2c65e5bd94e3d437dd9215aaa9dad4c38d1744ec50516327734be413",
+            "newly_clipped_samples": 0
+          }
+        }
+      },
+      "arms": {
+        "bounded": {
+          "status": "completed",
+          "thermal": {
+            "source_commit": "a4744d8ed9096fb22b6ed0a5ff6d40c103660ec3",
+            "control_valid": true,
+            "before": {
+              "at_utc": "2026-11-02T07:26:54.186594+00:00",
+              "monotonic_s": 4519.702273558,
+              "temperature_mc": 52350,
+              "cpu0_freq_khz": 1500000,
+              "governor": "ondemand",
+              "throttled_flags": 0,
+              "current_limits": 0,
+              "history_limits": 0,
+              "fan_rpm": 3015
+            },
+            "after": {
+              "at_utc": "2026-11-02T07:27:10.232073+00:00",
+              "monotonic_s": 4535.747749636,
+              "temperature_mc": 61150,
+              "cpu0_freq_khz": 2400000,
+              "governor": "ondemand",
+              "throttled_flags": 0,
+              "current_limits": 0,
+              "history_limits": 0,
+              "fan_rpm": 5022
+            },
+            "max_temperature_c": 60.6,
+            "thermal_samples": 16,
+            "policy": {
+              "admission_mc": 53000,
+              "admission_consecutive": 3,
+              "stop_mc": 75000,
+              "interval_s": 1,
+              "timeout_s": 600,
+              "address_space_bytes": 4294967296,
+              "scope": "1Hz 표본. 고정 클럭 보장 아님. 현재 제한/새 이력/결측/75°C에서 중단."
+            }
+          },
+          "rows": [
+            {
+              "policy": "identity",
+              "cap_s": 3,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 5.892,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 16,
+              "hard_emissions": 8,
+              "owned_frames": 701632,
+              "ring_capacity_frames": 67200,
+              "ring_peak_frames": 67200,
+              "rss_observed_max_mib": 72.671875,
+              "rss_position_min_mib": 72.671875,
+              "rss_position_max_mib": 72.671875,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 3,
+                "windows_since_reset": 1407,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "identity",
+              "cap_s": 5,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 5.892,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 15,
+              "hard_emissions": 7,
+              "owned_frames": 701632,
+              "ring_capacity_frames": 99200,
+              "ring_peak_frames": 99200,
+              "rss_observed_max_mib": 73.671875,
+              "rss_position_min_mib": 73.671875,
+              "rss_position_max_mib": 73.671875,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 4,
+                "windows_since_reset": 1407,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "identity",
+              "cap_s": 8,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 5.892,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 8,
+              "hard_emissions": 0,
+              "owned_frames": 701632,
+              "ring_capacity_frames": 147200,
+              "ring_peak_frames": 147200,
+              "rss_observed_max_mib": 73.671875,
+              "rss_position_min_mib": 73.671875,
+              "rss_position_max_mib": 73.671875,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 5,
+                "windows_since_reset": 1407,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 3,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 5.892,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 16,
+              "hard_emissions": 8,
+              "owned_frames": 701632,
+              "ring_capacity_frames": 67200,
+              "ring_peak_frames": 67200,
+              "rss_observed_max_mib": 74.171875,
+              "rss_position_min_mib": 73.671875,
+              "rss_position_max_mib": 74.171875,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 6,
+                "windows_since_reset": 1407,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 5,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 5.892,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 15,
+              "hard_emissions": 7,
+              "owned_frames": 701632,
+              "ring_capacity_frames": 99200,
+              "ring_peak_frames": 99200,
+              "rss_observed_max_mib": 74.171875,
+              "rss_position_min_mib": 74.171875,
+              "rss_position_max_mib": 74.171875,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 7,
+                "windows_since_reset": 1407,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 8,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 5.892,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 8,
+              "hard_emissions": 0,
+              "owned_frames": 701632,
+              "ring_capacity_frames": 147200,
+              "ring_peak_frames": 147200,
+              "rss_observed_max_mib": 74.171875,
+              "rss_position_min_mib": 74.171875,
+              "rss_position_max_mib": 74.171875,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 8,
+                "windows_since_reset": 1407,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            }
+          ]
+        },
+        "native": {
+          "status": "completed",
+          "thermal": {
+            "source_commit": "a4744d8ed9096fb22b6ed0a5ff6d40c103660ec3",
+            "control_valid": true,
+            "before": {
+              "at_utc": "2026-11-02T07:27:26.378290+00:00",
+              "monotonic_s": 4551.893971129,
+              "temperature_mc": 52350,
+              "cpu0_freq_khz": 1500000,
+              "governor": "ondemand",
+              "throttled_flags": 0,
+              "current_limits": 0,
+              "history_limits": 0,
+              "fan_rpm": 3038
+            },
+            "after": {
+              "at_utc": "2026-11-02T07:27:41.545014+00:00",
+              "monotonic_s": 4567.060688616,
+              "temperature_mc": 60600,
+              "cpu0_freq_khz": 2400000,
+              "governor": "ondemand",
+              "throttled_flags": 0,
+              "current_limits": 0,
+              "history_limits": 0,
+              "fan_rpm": 5057
+            },
+            "max_temperature_c": 61.7,
+            "thermal_samples": 15,
+            "policy": {
+              "admission_mc": 53000,
+              "admission_consecutive": 3,
+              "stop_mc": 75000,
+              "interval_s": 1,
+              "timeout_s": 600,
+              "address_space_bytes": 4294967296,
+              "scope": "1Hz 표본. 고정 클럭 보장 아님. 현재 제한/새 이력/결측/75°C에서 중단."
+            }
+          },
+          "rows": [
+            {
+              "policy": "identity",
+              "cap_s": 3,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 5.892,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 16,
+              "hard_emissions": 8,
+              "owned_frames": 701632,
+              "ring_capacity_frames": 67200,
+              "ring_peak_frames": 67200,
+              "rss_observed_max_mib": 74.484375,
+              "rss_position_min_mib": 70.765625,
+              "rss_position_max_mib": 74.484375,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "identity",
+              "cap_s": 5,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 5.892,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 15,
+              "hard_emissions": 7,
+              "owned_frames": 701632,
+              "ring_capacity_frames": 99200,
+              "ring_peak_frames": 99200,
+              "rss_observed_max_mib": 77.484375,
+              "rss_position_min_mib": 77.484375,
+              "rss_position_max_mib": 77.484375,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "identity",
+              "cap_s": 8,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 5.892,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 8,
+              "hard_emissions": 0,
+              "owned_frames": 701632,
+              "ring_capacity_frames": 147200,
+              "ring_peak_frames": 147200,
+              "rss_observed_max_mib": 77.484375,
+              "rss_position_min_mib": 77.484375,
+              "rss_position_max_mib": 77.484375,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 3,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 5.892,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 16,
+              "hard_emissions": 8,
+              "owned_frames": 701632,
+              "ring_capacity_frames": 67200,
+              "ring_peak_frames": 67200,
+              "rss_observed_max_mib": 77.484375,
+              "rss_position_min_mib": 77.484375,
+              "rss_position_max_mib": 77.484375,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 5,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 5.892,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 15,
+              "hard_emissions": 7,
+              "owned_frames": 701632,
+              "ring_capacity_frames": 99200,
+              "ring_peak_frames": 99200,
+              "rss_observed_max_mib": 77.484375,
+              "rss_position_min_mib": 77.484375,
+              "rss_position_max_mib": 77.484375,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 8,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 5.892,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 8,
+              "hard_emissions": 0,
+              "owned_frames": 701632,
+              "ring_capacity_frames": 147200,
+              "ring_peak_frames": 147200,
+              "rss_observed_max_mib": 77.484375,
+              "rss_position_min_mib": 77.484375,
+              "rss_position_max_mib": 77.484375,
+              "resets_during_session": null,
+              "probability_runtime": null
+            }
+          ]
+        }
+      }
+    },
+    "02": {
+      "input": {
+        "schema": "vad-duration-input-v1",
+        "audio_path": "data/evaluation/m3-vad-duration-20261102-02/corpus-speech-compacted-90s.wav",
+        "audio_sha256": "66da1b569a4f0790f205f9485eb36f612c60ea31a2f9add0e7294c369dd12ebe",
+        "frames": 1440000,
+        "sample_rate": 16000,
+        "source_annotations_sha256": "81bfb4eb9c7e1da282b06d2bd687acc712f35c2d5197f99e99b166a9162cf751",
+        "selection": "development long clips in canonical order; concatenate corpus-provisional speech intervals; truncate at 90s; no model-output-based region selection",
+        "posthoc_reason": "45s repetition produced only 5.892s active spans; separate new engineering input, no threshold changes",
+        "scope_ko": "배포 예비 음성 구간만 접합한 비정상 90초 입력. 자연 음성/정확도/최종 독립 평가 아님. 첫 실패 입력도 보존.",
+        "expected_processed": {
+          "identity": {
+            "pcm_sha256": "6319abc6419e3da52ecaf3dd6d2b091ffb7a048cf78e60aff6f11569a863d2a5",
+            "newly_clipped_samples": 0
+          },
+          "rms26": {
+            "pcm_sha256": "00a52e3d75879549c6052680306ba9a11e0b80b3db666ba2f089bfc70dcda3fb",
+            "newly_clipped_samples": 0
+          }
+        },
+        "source_region_count": 1127,
+        "source_ids": [
+          "seoul-s06f18m2-u0085",
+          "seoul-s13m26m2-u0351",
+          "seoul-s18f27m1-u0164",
+          "seoul-s22m37m1-u0199",
+          "seoul-s24m36f3-u0448",
+          "seoul-s27f32f1-u0176",
+          "seoul-s29f37m4-u0171",
+          "seoul-s31m43m1-u0090",
+          "seoul-s34m47f1-u0191",
+          "seoul-s38f46f1-u0080"
+        ]
+      },
+      "arms": {
+        "bounded": {
+          "status": "completed",
+          "thermal": {
+            "source_commit": "a4744d8ed9096fb22b6ed0a5ff6d40c103660ec3",
+            "control_valid": true,
+            "before": {
+              "at_utc": "2026-11-02T07:30:28.249544+00:00",
+              "monotonic_s": 4733.765225224,
+              "temperature_mc": 52900,
+              "cpu0_freq_khz": 1500000,
+              "governor": "ondemand",
+              "throttled_flags": 0,
+              "current_limits": 0,
+              "history_limits": 0,
+              "fan_rpm": 3040
+            },
+            "after": {
+              "at_utc": "2026-11-02T07:31:00.572042+00:00",
+              "monotonic_s": 4766.087717691,
+              "temperature_mc": 60050,
+              "cpu0_freq_khz": 2400000,
+              "governor": "ondemand",
+              "throttled_flags": 0,
+              "current_limits": 0,
+              "history_limits": 0,
+              "fan_rpm": 5102
+            },
+            "max_temperature_c": 66.1,
+            "thermal_samples": 32,
+            "policy": {
+              "admission_mc": 53000,
+              "admission_consecutive": 3,
+              "stop_mc": 75000,
+              "interval_s": 1,
+              "timeout_s": 600,
+              "address_space_bytes": 4294967296,
+              "scope": "1Hz 표본. 고정 클럭 보장 아님. 현재 제한/새 이력/결측/75°C에서 중단."
+            }
+          },
+          "rows": [
+            {
+              "policy": "identity",
+              "cap_s": 3,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 10.756,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 34,
+              "hard_emissions": 21,
+              "owned_frames": 1244480,
+              "ring_capacity_frames": 67200,
+              "ring_peak_frames": 67200,
+              "rss_observed_max_mib": 81.078125,
+              "rss_position_min_mib": 81.078125,
+              "rss_position_max_mib": 81.078125,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 3,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "identity",
+              "cap_s": 5,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 10.756,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 22,
+              "hard_emissions": 9,
+              "owned_frames": 1244480,
+              "ring_capacity_frames": 99200,
+              "ring_peak_frames": 99200,
+              "rss_observed_max_mib": 82.359375,
+              "rss_position_min_mib": 81.859375,
+              "rss_position_max_mib": 82.359375,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 4,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "identity",
+              "cap_s": 8,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 10.756,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 17,
+              "hard_emissions": 5,
+              "owned_frames": 1244480,
+              "ring_capacity_frames": 147200,
+              "ring_peak_frames": 147200,
+              "rss_observed_max_mib": 82.359375,
+              "rss_position_min_mib": 82.359375,
+              "rss_position_max_mib": 82.359375,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 5,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 3,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 11.3,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 33,
+              "hard_emissions": 20,
+              "owned_frames": 1401536,
+              "ring_capacity_frames": 67200,
+              "ring_peak_frames": 67200,
+              "rss_observed_max_mib": 82.359375,
+              "rss_position_min_mib": 82.359375,
+              "rss_position_max_mib": 82.359375,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 6,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 5,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 11.3,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 27,
+              "hard_emissions": 14,
+              "owned_frames": 1401536,
+              "ring_capacity_frames": 99200,
+              "ring_peak_frames": 99200,
+              "rss_observed_max_mib": 82.359375,
+              "rss_position_min_mib": 82.359375,
+              "rss_position_max_mib": 82.359375,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 7,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 8,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 11.3,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 18,
+              "hard_emissions": 5,
+              "owned_frames": 1401536,
+              "ring_capacity_frames": 147200,
+              "ring_peak_frames": 147200,
+              "rss_observed_max_mib": 82.359375,
+              "rss_position_min_mib": 82.359375,
+              "rss_position_max_mib": 82.359375,
+              "resets_during_session": 1,
+              "probability_runtime": {
+                "backend": "python_onnxruntime_k2_v4_experimental",
+                "python_onnxruntime_version": "1.31.1",
+                "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+                "num_threads": 1,
+                "providers": [
+                  "CPUExecutionProvider"
+                ],
+                "recurrent_state_bytes": 1024,
+                "reset_count": 8,
+                "windows_since_reset": 2813,
+                "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+              }
+            }
+          ]
+        },
+        "native": {
+          "status": "completed",
+          "thermal": {
+            "source_commit": "a4744d8ed9096fb22b6ed0a5ff6d40c103660ec3",
+            "control_valid": true,
+            "before": {
+              "at_utc": "2026-11-02T07:31:43.851354+00:00",
+              "monotonic_s": 4809.367036941,
+              "temperature_mc": 51800,
+              "cpu0_freq_khz": 1500000,
+              "governor": "ondemand",
+              "throttled_flags": 0,
+              "current_limits": 0,
+              "history_limits": 0,
+              "fan_rpm": 3065
+            },
+            "after": {
+              "at_utc": "2026-11-02T07:32:15.143239+00:00",
+              "monotonic_s": 4840.658915018,
+              "temperature_mc": 61150,
+              "cpu0_freq_khz": 2400000,
+              "governor": "ondemand",
+              "throttled_flags": 0,
+              "current_limits": 0,
+              "history_limits": 0,
+              "fan_rpm": 5137
+            },
+            "max_temperature_c": 65.55,
+            "thermal_samples": 31,
+            "policy": {
+              "admission_mc": 53000,
+              "admission_consecutive": 3,
+              "stop_mc": 75000,
+              "interval_s": 1,
+              "timeout_s": 600,
+              "address_space_bytes": 4294967296,
+              "scope": "1Hz 표본. 고정 클럭 보장 아님. 현재 제한/새 이력/결측/75°C에서 중단."
+            }
+          },
+          "rows": [
+            {
+              "policy": "identity",
+              "cap_s": 3,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 10.756,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 34,
+              "hard_emissions": 21,
+              "owned_frames": 1244480,
+              "ring_capacity_frames": 67200,
+              "ring_peak_frames": 67200,
+              "rss_observed_max_mib": 83.78125,
+              "rss_position_min_mib": 78.9375,
+              "rss_position_max_mib": 83.28125,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "identity",
+              "cap_s": 5,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 10.756,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 22,
+              "hard_emissions": 9,
+              "owned_frames": 1244480,
+              "ring_capacity_frames": 99200,
+              "ring_peak_frames": 99200,
+              "rss_observed_max_mib": 86.0625,
+              "rss_position_min_mib": 85.5625,
+              "rss_position_max_mib": 86.0625,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "identity",
+              "cap_s": 8,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 10.756,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 17,
+              "hard_emissions": 5,
+              "owned_frames": 1244480,
+              "ring_capacity_frames": 147200,
+              "ring_peak_frames": 147200,
+              "rss_observed_max_mib": 86.5625,
+              "rss_position_min_mib": 80.34375,
+              "rss_position_max_mib": 86.5625,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 3,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 11.3,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 33,
+              "hard_emissions": 20,
+              "owned_frames": 1401536,
+              "ring_capacity_frames": 67200,
+              "ring_peak_frames": 67200,
+              "rss_observed_max_mib": 88.34375,
+              "rss_position_min_mib": 80.34375,
+              "rss_position_max_mib": 88.34375,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 5,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 11.3,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 27,
+              "hard_emissions": 14,
+              "owned_frames": 1401536,
+              "ring_capacity_frames": 99200,
+              "ring_peak_frames": 99200,
+              "rss_observed_max_mib": 86.34375,
+              "rss_position_min_mib": 86.34375,
+              "rss_position_max_mib": 86.34375,
+              "resets_during_session": null,
+              "probability_runtime": null
+            },
+            {
+              "policy": "rms26",
+              "cap_s": 8,
+              "status": "completed",
+              "error": null,
+              "active_peak_s": 11.3,
+              "over_30s_active_observed": false,
+              "native_guard_observed": false,
+              "segments": 18,
+              "hard_emissions": 5,
+              "owned_frames": 1401536,
+              "ring_capacity_frames": 147200,
+              "ring_peak_frames": 147200,
+              "rss_observed_max_mib": 87.84375,
+              "rss_position_min_mib": 80.34375,
+              "rss_position_max_mib": 87.84375,
+              "resets_during_session": null,
+              "probability_runtime": null
+            }
+          ]
+        }
+      }
+    }
+  },
+  "gold_accuracy_available": false,
+  "asr_cer": null,
+  "asr_rtf": null,
+  "streaming_first_text_s": null,
+  "refine_delay_s": null,
+  "evidence_sha256": {
+    "results/preflight/m3-bounded-vad-20261102-01/native/identity/worker.json": "fba4e44ecdacf5f2bd53c0d7b4eef32c292052be390eba584040865bc4b1cdb1",
+    "results/preflight/m3-bounded-vad-20261102-01/native/identity/execution.json": "c0e590777e4ca64ca24232ff90b659c6509d3e4ef61e235c04c5bf92fd4e8ce7",
+    "results/preflight/m3-bounded-vad-20261102-01/native/identity/thermal.jsonl": "9219ac22400333c9923838a0943c5f6b42cda65769766014f23572907bd8c2b6",
+    "results/preflight/m3-bounded-vad-20261102-01/native/identity/samples.jsonl": "f9c8cdd83c676be7e2a7fefc3e7506f5d8f9422c8904cca7b61d1ea5e7ed86b7",
+    "results/preflight/m3-bounded-vad-20261102-01/native/identity/warmup.json": "bb95e228d260033224d6b61841a1b539d97bd567b55e621fd0969b431416aada",
+    "results/preflight/m3-bounded-vad-20261102-01/bounded/identity/worker.json": "f94c658dd2fe79684141de32b3f9930d524cedfdf2656beda1e83263c8644e37",
+    "results/preflight/m3-bounded-vad-20261102-01/bounded/identity/execution.json": "ff319bff02ee5555818f5c8a4d4ff93cb3c473afd5734b379832651bc1d812b1",
+    "results/preflight/m3-bounded-vad-20261102-01/bounded/identity/thermal.jsonl": "711e7fe24e996071d86610139b06431e9deb33dad65fba06ee578d9eb0677a40",
+    "results/preflight/m3-bounded-vad-20261102-01/bounded/identity/samples.jsonl": "d799ff9d64827d5979fbdb262ea9c9360e245ba1f027aad43cd8d439c9989ff4",
+    "results/preflight/m3-bounded-vad-20261102-01/bounded/identity/warmup.json": "88536d7eb21e0cdc5f0bf17848bc5a8e57be945b0e04fff2b7b93f2887cda2d7",
+    "results/preflight/m3-bounded-vad-20261102-01/bounded/rms26/worker.json": "aa5f0a18910c6c2a138582d065b25810f48347dc84c497b6d243e301c4c61e96",
+    "results/preflight/m3-bounded-vad-20261102-01/bounded/rms26/execution.json": "f62e795cdf0ad8da955c04af8cce54cd8798188b0e57e2c2638aaf70526c9c22",
+    "results/preflight/m3-bounded-vad-20261102-01/bounded/rms26/thermal.jsonl": "b4a2bfc3da732cf89cdf3f54da71c94a60cce5c9ef9e3c73ce1e7e64b455cb66",
+    "results/preflight/m3-bounded-vad-20261102-01/bounded/rms26/samples.jsonl": "a7623d168a82bb52308108cc278b94655dd712252d1d527accff7fda43e47019",
+    "results/preflight/m3-bounded-vad-20261102-01/bounded/rms26/warmup.json": "bdbaa9a06724f23a40bfd7cc48025126b7dc9d056a892414aae29651bd462849",
+    "results/preflight/m3-bounded-vad-20261102-01/native/rms26/worker.json": "a4e33ea5c5544e1e04329c09f996af2fc8863af60b036027ecc093279f848d42",
+    "results/preflight/m3-bounded-vad-20261102-01/native/rms26/execution.json": "daf1fc38f220dafca792bcf2b7b3cc25ad72ea59f65b26baa4b07eae8b3afab2",
+    "results/preflight/m3-bounded-vad-20261102-01/native/rms26/thermal.jsonl": "1bba2bb96cd78050c17f407ea2d8d448b95d0a760ad75600086d7ec22578f0e0",
+    "results/preflight/m3-bounded-vad-20261102-01/native/rms26/samples.jsonl": "09cba7647efb5f464002726e90b7172afaa1f0f6b5147724384ae55206d1cad8",
+    "results/preflight/m3-bounded-vad-20261102-01/native/rms26/warmup.json": "22ce5e1fed143ffed11f0ca6a3a4b8c2aeeb9f6a0614df0365658669a6aa6fbb",
+    "results/preflight/m3-vad-annotations-20261029-01/identity/samples.jsonl": "23da51c9a52eddf763cab33a54d299c5516673ba8cc82173cf15345c11f50eb8",
+    "results/preflight/m3-vad-annotations-20261029-01/rms26/samples.jsonl": "afc8b01a2186ee3638403d37faef744b60bddacb6802ce8904adfca05e1de762",
+    "data/evaluation/m3-vad-duration-20261102-01/manifest.json": "735725fbce8f30751e57737ab6662a64e18aeafb69ec583b8e5d0fd1d4ff3169",
+    "results/preflight/m3-vad-duration-20261102-01/bounded/worker.json": "61f7f855ca920ac693f49be53cd7aa4097d053af44856a33b871d5adbc927a89",
+    "results/preflight/m3-vad-duration-20261102-01/bounded/execution.json": "3921d62ed18fffe7c399c750caef670ee9d84249129e61477314f4fe761fd9b8",
+    "results/preflight/m3-vad-duration-20261102-01/bounded/thermal.jsonl": "0da8a572e8148b214e99df6981a2f81fecfcb622161f94eb61f76157192f8101",
+    "results/preflight/m3-vad-duration-20261102-01/bounded/samples.jsonl": "e93214d982ab263512de87e4eb39b5584eec93f6499ec6ec85557dbc5635b4ec",
+    "results/preflight/m3-vad-duration-20261102-01/native/worker.json": "5bc6c5581e06b1581601d2fa5f9fc82e6fc85c2c0faab0001960491e2cabbb6d",
+    "results/preflight/m3-vad-duration-20261102-01/native/execution.json": "7ae18f36db0d6a9ecc65a10b24f1173916f17659b3f430ab0321f48449575925",
+    "results/preflight/m3-vad-duration-20261102-01/native/thermal.jsonl": "ea98f1fadab53ee5c5e1624548de7a66d7cdca506bfb22cec1441495948ed303",
+    "results/preflight/m3-vad-duration-20261102-01/native/samples.jsonl": "48c458a311ebd3163e6432ead61696b02b6a1281976e77dde894768f9b7d96a8",
+    "data/evaluation/m3-vad-duration-20261102-02/manifest.json": "26f00184140fab518359d7d749a8da8e8ffdea39b80f249f6133cc3f544e3a16",
+    "results/preflight/m3-vad-duration-20261102-02/bounded/worker.json": "92448367712094f848baccddf071e226ff983ad463fcb2aea33ddbeced350ce7",
+    "results/preflight/m3-vad-duration-20261102-02/bounded/execution.json": "6ab08afa5b59000a0df5328548ac82ab5c9d330723453778cd523afb0c9898e6",
+    "results/preflight/m3-vad-duration-20261102-02/bounded/thermal.jsonl": "edb93c7a09e28beb9ccbc15085309a826b82f0073fb1c0f34fbb97b8cc05a062",
+    "results/preflight/m3-vad-duration-20261102-02/bounded/samples.jsonl": "eb8e0ad54b231fd35c9f982afe9c6ff8bd9854bb7eee87e5fe5450fd6fb989b5",
+    "results/preflight/m3-vad-duration-20261102-02/native/worker.json": "b92546354796b3757c80ffe329be9e56109a7d458812e0aa0a8d8f161fc71b8d",
+    "results/preflight/m3-vad-duration-20261102-02/native/execution.json": "8e632f4b41a2800b7faddeaca1dfd8fc35cbccb4b28fcc0ffa62b067f9ce6e5d",
+    "results/preflight/m3-vad-duration-20261102-02/native/thermal.jsonl": "c6dc97699eb57144deb98d55ebfd8184291da38aa923fe610d91d67263f91e8e",
+    "results/preflight/m3-vad-duration-20261102-02/native/samples.jsonl": "b8151e6bf9c9e042b9db54ae81b07cdce2e8cf5d70f4441531bab9adc55101df",
+    "results/maintenance/m3-bounded-vad-20261102-01/analyze.py": "b2d6434ea854729815477a41e9afa11ead47ff2eab80966f71237163e5653cec",
+    "results/maintenance/m3-bounded-vad-20261102-01/validated.json": "ba96c0b69e03b38f1bfb3b1917f1eea643bc6bd2cd3af2322718ec1309d67b59",
+    "results/maintenance/m3-bounded-vad-20261102-01/plan.json": "8e48203da45c0c0531d4321945836dc061e3638043cf70b01444f43894abbfea",
+    "results/maintenance/m3-bounded-vad-20261102-01/duration-plan.json": "ffdf15b80f5434e25aad6a6d15883cc0bc62765f168b5c925342d51104628998",
+    "results/maintenance/m3-bounded-vad-20261102-01/duration-plan-02.json": "fabdba288d65efa8265edf0169bf38a3c7c8982f6875afbdfa276786626ec0c6",
+    "results/maintenance/m3-bounded-vad-20261102-01/preservation-before.json": "a13f223fe8c5c0f3386dc632e5f3c5a272804ac3f44e2d4e1201b33e92c20b9d",
+    "results/maintenance/m3-bounded-vad-20261102-01/preservation-after.json": "5ecd880b513442c7cf38620f922f4840b508c89f7be793b9dbb1782498da84d1",
+    "results/maintenance/m3-bounded-vad-20261102-01/cooling-before.json": "dfd57605b713db9d67835f1906aaeb15f267d0002ed4ec06b1c558b5e1a15cb7",
+    "results/maintenance/m3-bounded-vad-20261102-01/cooling-after.json": "fc8367051880a1ec27242cfcea7c82f372bb729f8d1a4fb3f871839b4686debc"
+  },
+  "scope_ko": "동일 표본의 백엔드 계약 비교와 사후 공학 입력의 지속 상태 점검. 반복 성능 시험·정책 승인·실시간 ASR 검증 아님.",
+  "status": "arm64_contract_verified_continuous_30s_unproven",
+  "continuous_active_over_30s_proven": false,
+  "baseline_native_guard_kept": true,
+  "normalization_approved": false,
+  "preservation": {
+    "protected_files": 3930,
+    "changed": [],
+    "missing": [],
+    "packages": {
+      "numpy": "2.4.6",
+      "sherpa-onnx": "2.0.1",
+      "sherpa-onnx-core": "2.0.1",
+      "onnxruntime": "1.31.1"
+    },
+    "packages_unchanged": true,
+    "python_unchanged": true,
+    "source_commit": "a4744d8ed9096fb22b6ed0a5ff6d40c103660ec3",
+    "working_tree_clean": true
+  },
+  "tests": {
+    "host": {
+      "passed": true,
+      "count": 187,
+      "seconds": 12.616,
+      "log_sha256": "22682aea96e03b95c4eed2dee3880afabb8527a782d69ac108cc1a0a4755324e"
+    },
+    "rp5": {
+      "passed": true,
+      "count": 187,
+      "seconds": 26.047,
+      "log_sha256": "9b9ec37241cc9afc2d5388c2e0ba2285e42940411d2b7bc569bce65ccd0a1294"
+    }
+  },
+  "sync": {
+    "method": "HTTPS fetch + fast-forward merge",
+    "reason": "RP5 GitHub SSH publickey authentication failed",
+    "rp5_origin_preserved": "git@github.com:shinjuyeop/edge-asr.git",
+    "runtime_packages_installed": false,
+    "new_model_downloaded": false
+  },
+  "remaining_ko": [
+    "실제 30초 초과 연속 활성: 45초 반복/90초 접합 입력도 각각 최대 5.892초/11.3초로 미충족",
+    "사람 검수 정답과 실제 음소 종료 지연: 5개 청취 메모는 판단 어려움 유지",
+    "Zipformer 2T 고부하 냉각 재검증: 이번 VAD 통과로 대체하지 않음",
+    "마이크·독립 입력 큐·Hybrid 동시 ASR 실측은 미실행"
+  ]
+}
