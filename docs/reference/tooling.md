@@ -51,3 +51,5 @@ edge-asr tools list
 `edge-asr tools prepare-vad-overlap --output <새 data 경로>`는 기존 개발 WAV 목록에서 1/2/3트랙의 고정 위상 평균 입력과 `vad-duration-input-v1`을 만든다. 원본 해시와 개발 split을 확인하고 기존 출력은 거부한다. 중첩 입력에는 확정 전사를 붙이지 않는다.
 
 `thermal-run --temperature-policy warn75-stop80`은 승인된 별도 75°C 경고/80°C 중단 정책이다. 기본 `legacy75`는 과거와 같은 75°C 중단이다. [정책·실행 범위](../research/m3_thermal_policy.md)와 새 영수증의 정책 ID를 확인한다.
+
+`thermal-run --temperature-policy operational`은 기본 열 보호를 유지한 운영 부하 검사다. 온도/감속을 기록하며 계속 실행하고 저전압/계측 누락/외부 제한 실패를 구분한다. `operational_valid`와 `control_valid=false`를 함께 기록하므로 기존 통제 비교 집계에 합치지 않는다. `probe-load`의 호출별 monotonic 시각으로 열·TID 표본을 연결할 수 있다.

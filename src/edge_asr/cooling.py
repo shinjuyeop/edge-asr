@@ -120,7 +120,8 @@ def summarize_history(folder):
             if row.get(key) is not None and (type(row[key]) is not int or row[key] < 0):
                 raise ValueError("잘못된 과거 계측값: " + key)
     stop = receipt["policy"]["stop_mc"]
-    if type(stop) is not int or stop <= 0:
+    operational = receipt["policy"].get("name") == "operational"
+    if not (operational and stop is None) and (type(stop) is not int or stop <= 0):
         raise ValueError("기록된 프로젝트 온도 중단 기준 오류")
 
     def point(row):
@@ -163,7 +164,9 @@ def summarize_history(folder):
         "after": point(after) if after else None,
         "software_stop_mc": stop,
         "first_observed_software_temperature_limit": first(
-            lambda r: r.get("temperature_mc") is not None and r["temperature_mc"] >= stop
+            lambda r: stop is not None
+            and r.get("temperature_mc") is not None
+            and r["temperature_mc"] >= stop
         ),
         "first_observed_current_limit": first(lambda r: bool(r.get("current_limits"))),
         "current_limit_observed": any(observed_current) if observed_current else None,

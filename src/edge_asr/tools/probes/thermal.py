@@ -1,4 +1,4 @@
-"""RP5의 엄격한 온도/현재 제한 감시. 조건 위반은 성공한 평가와 구분해 중단한다."""
+"""RP5 열 계측과 제한 감시. 통제 비교와 기본 열 보호 하의 운영 검사를 구분한다."""
 
 import argparse
 import json
@@ -50,6 +50,7 @@ def terminate(process):
 
 def run(root, output, command, *, temperature_policy="legacy75"):
     settings = policy_settings(temperature_policy)
+    operational = temperature_policy == "operational"
     output.mkdir(parents=True, exist_ok=False)
     record = {
         "schema_version": 1,
@@ -85,6 +86,22 @@ def run(root, output, command, *, temperature_policy="legacy75"):
             "first_sample": None,
             "scope": "monitor/after 관측의 온도 경고; 현재 제한 등 중단 판정과 별도",
         }
+    if operational:
+        record.update(evaluation_scope="operational_sustained_load", operational_valid=False)
+        record["policy"].update(
+            allow_thermal_limits=True,
+            firmware_thermal_protection="unchanged",
+            scope="운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
+        )
+
+    def reject(row):
+        return rejection(
+            row,
+            record["before"]["history_limits"],
+            max_temperature_mc=settings["stop_mc"],
+            allow_thermal_limits=operational,
+        )
+
     save(receipt, record)
     try:
         record["before"] = admit(output)
@@ -130,15 +147,11 @@ def run(root, output, command, *, temperature_policy="legacy75"):
             reason = None
             try:
                 while process.poll() is None:
-                    row = sample()
+                    row = sample(measure_arm_clock=True) if operational else sample()
                     monitor.write(json.dumps(row) + "\n")
                     monitor.flush()
                     warn(row, "monitor")
-                    reason = rejection(
-                        row,
-                        record["before"]["history_limits"],
-                        max_temperature_mc=settings["stop_mc"],
-                    )
+                    reason = reject(row)
                     if reason:
                         record.update(rejection=reason, rejected_sample=row)
                         terminate(process)
@@ -175,22 +188,20 @@ def run(root, output, command, *, temperature_policy="legacy75"):
                 record["exit_code"] = process.wait()
             finally:
                 terminate(process)
-            after = sample()
+            after = sample(measure_arm_clock=True) if operational else sample()
             warn(after, "after")
-        reason = reason or rejection(
-            after,
-            record["before"]["history_limits"],
-            max_temperature_mc=settings["stop_mc"],
-        )
+        reason = reason or reject(after)
         record["after"] = after
         record["status"] = (
-            "control_rejected"
+            ("operational_rejected" if operational else "control_rejected")
             if reason
             else "completed"
             if record["exit_code"] == 0 and record["limit_verified"]
             else "failed_or_unverified"
         )
-        record["control_valid"] = record["status"] == "completed"
+        record["control_valid"] = record["status"] == "completed" and not operational
+        if operational:
+            record["operational_valid"] = record["status"] == "completed"
         if reason:
             record["rejection"] = reason
     except (Exception, KeyboardInterrupt) as error:
@@ -210,7 +221,7 @@ def run(root, output, command, *, temperature_policy="legacy75"):
         ),
         flush=True,
     )
-    return 0 if record["control_valid"] else 1
+    return 0 if record.get("operational_valid", record["control_valid"]) else 1
 
 
 def main():
@@ -218,9 +229,9 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument(
         "--temperature-policy",
-        choices=("legacy75", "warn75-stop80"),
+        choices=("legacy75", "warn75-stop80", "operational"),
         default="legacy75",
-        help="기본은 과거 75°C 중단. 새 승인 조건은 75°C 경고/80°C 중단, 폴링 대기 0.25초",
+        help="legacy75: 75°C 중단, warn75-stop80: 75°C 경고/80°C 중단, operational: 기본 열 보호 아래 온도/감속을 기록하며 계속 실행",
     )
     parser.add_argument("command", nargs=argparse.REMAINDER)
     args = parser.parse_args()

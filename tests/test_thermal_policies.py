@@ -6,6 +6,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import Mock, patch
 
+from edge_asr import thermal
 from edge_asr.thermal import policy_settings, rejection, temperature_warning
 from edge_asr.tools.probes import thermal as guard
 
@@ -43,7 +44,83 @@ class ThermalPolicyTests(unittest.TestCase):
                 guard.run(Path(directory), out, ["false"], temperature_policy="stop100")
             self.assertFalse(out.exists())
 
+    def test_actual_arm_clock_is_optional_and_does_not_replace_sysfs_frequency(self):
+        for output, expected in (("frequency(0)=1500000000", 1500000000), ("bad", None)):
+            with (
+                self.subTest(output=output),
+                patch.object(
+                    thermal.subprocess,
+                    "run",
+                    side_effect=[
+                        Mock(returncode=0, stdout="throttled=0x40004"),
+                        Mock(returncode=0, stdout=output),
+                    ],
+                ),
+                patch.object(Path, "read_text", return_value="2400000"),
+            ):
+                row = thermal.sample(measure_arm_clock=True)
+                self.assertEqual(row["arm_clock_hz"], expected)
+                self.assertEqual(row["cpu0_freq_khz"], 2400000)
+                self.assertEqual(row["current_limits"], 4)
+                self.assertEqual(row["history_limits"], 4)
+
+    def test_operational_allows_thermal_limits_but_not_voltage_or_missing_data(self):
+        settings = policy_settings("operational")
+        self.assertIsNone(settings["stop_mc"])
+        hot = {**COOL, "temperature_mc": 86000, "current_limits": 14, "history_limits": 14}
+        self.assertTrue(temperature_warning(hot, settings["warn_mc"]))
+        for row, expected in (
+            (hot, None),
+            ({**hot, "current_limits": 15}, "current_undervoltage"),
+            ({**hot, "history_limits": 15}, "new_undervoltage_history"),
+            ({**hot, "cpu0_freq_khz": None}, "telemetry_unavailable"),
+        ):
+            with self.subTest(row=row):
+                self.assertEqual(
+                    rejection(row, max_temperature_mc=None, allow_thermal_limits=True), expected
+                )
+        self.assertIsNone(
+            rejection(
+                {**hot, "history_limits": 15},
+                initial_history=1,
+                max_temperature_mc=None,
+                allow_thermal_limits=True,
+            )
+        )
+
+    def test_operational_unverified_limits_do_not_pass_even_when_child_exits_zero(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            out = root / "run"
+            child = Mock()
+            child.poll.return_value = 0
+            child.wait.return_value = 0
+            with (
+                patch.object(guard, "admit", return_value=COOL),
+                patch.object(guard, "sample", return_value=COOL),
+                patch.object(guard.subprocess, "Popen", return_value=child),
+                patch.object(guard, "terminate"),
+            ):
+                self.assertEqual(
+                    guard.run(root, out, ["mock"], temperature_policy="operational"), 1
+                )
+            receipt = json.loads((out / "execution.json").read_text())
+            self.assertEqual(receipt["status"], "failed_or_unverified")
+            self.assertFalse(receipt["control_valid"])
+            self.assertFalse(receipt["operational_valid"])
+
     def test_warning_allows_completion_only_with_verified_process_limits(self):
+        for policy in ("warn75-stop80", "operational"):
+            with self.subTest(policy=policy):
+                self.check_warning_completion(policy)
+
+    def check_warning_completion(self, policy):
+        operational = policy == "operational"
+        observed = (
+            {**COOL, "temperature_mc": 86000, "current_limits": 14, "history_limits": 14}
+            if operational
+            else {**COOL, "temperature_mc": 76550}
+        )
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             out = root / "run"
@@ -65,28 +142,29 @@ class ThermalPolicyTests(unittest.TestCase):
 
             with (
                 patch.object(guard, "admit", return_value=COOL),
-                patch.object(
-                    guard, "sample", side_effect=[{**COOL, "temperature_mc": 76550}, COOL]
-                ),
+                patch.object(guard, "sample", side_effect=[observed, COOL]),
                 patch.object(guard.subprocess, "Popen", side_effect=launch),
                 patch.object(guard, "terminate"),
                 patch.object(guard, "thread_snapshot", return_value={"threads": {}}),
                 patch.object(guard.time, "sleep") as sleep,
                 patch.object(Path, "read_text", read),
             ):
-                self.assertEqual(
-                    guard.run(root, out, ["mock"], temperature_policy="warn75-stop80"), 0
-                )
+                self.assertEqual(guard.run(root, out, ["mock"], temperature_policy=policy), 0)
             receipt = json.loads((out / "execution.json").read_text())
             warnings = [json.loads(x) for x in (out / "warnings.jsonl").read_text().splitlines()]
-            self.assertTrue(receipt["control_valid"])
+            self.assertEqual(receipt["control_valid"], not operational)
+            if operational:
+                self.assertTrue(receipt["operational_valid"])
+                self.assertEqual(receipt["evaluation_scope"], "operational_sustained_load")
+                self.assertTrue(receipt["policy"]["allow_thermal_limits"])
+                self.assertEqual(receipt["policy"]["firmware_thermal_protection"], "unchanged")
             self.assertTrue(receipt["limit_verified"])
             self.assertEqual(receipt["warnings"]["sample_count"], 1)
-            self.assertEqual(receipt["warnings"]["first_sample"]["temperature_mc"], 76550)
+            self.assertEqual(receipt["warnings"]["first_sample"], observed)
             self.assertEqual(warnings[0]["phase"], "monitor")
-            self.assertEqual(receipt["policy"]["name"], "warn75-stop80")
-            self.assertEqual(receipt["policy"]["stop_mc"], 80000)
-            sleep.assert_called_once_with(0.25)
+            self.assertEqual(receipt["policy"]["name"], policy)
+            self.assertEqual(receipt["policy"]["stop_mc"], None if operational else 80000)
+            sleep.assert_called_once_with(1 if operational else 0.25)
 
     def test_80_degrees_current_history_and_missing_telemetry_always_stop(self):
         samples = [

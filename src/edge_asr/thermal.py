@@ -12,6 +12,8 @@ def policy_settings(name="legacy75"):
         return {"warn_mc": None, "stop_mc": 75000, "interval_s": 1}
     if name == "warn75-stop80":
         return {"warn_mc": 75000, "stop_mc": 80000, "interval_s": 0.25}
+    if name == "operational":
+        return {"warn_mc": 80000, "stop_mc": None, "interval_s": 1}
     raise ValueError("지원하지 않는 열 정책입니다.")
 
 
@@ -20,7 +22,7 @@ def temperature_warning(row, threshold_mc):
     return threshold_mc is not None and value is not None and value >= threshold_mc
 
 
-def sample():
+def sample(*, measure_arm_clock=False):
     row = {"at_utc": datetime.now(timezone.utc).isoformat(), "monotonic_s": time.monotonic()}
     for key, path in (
         ("temperature_mc", "/sys/class/thermal/thermal_zone0/temp"),
@@ -44,6 +46,15 @@ def sample():
         current_limits=flags & 15 if flags is not None else None,
         history_limits=(flags >> 16) & 15 if flags is not None else None,
     )
+    if measure_arm_clock:
+        try:
+            result = subprocess.run(
+                ["vcgencmd", "measure_clock", "arm"], capture_output=True, text=True, timeout=1
+            )
+            hz = int(result.stdout.strip().split("=")[1]) if result.returncode == 0 else None
+            row["arm_clock_hz"] = hz if hz is not None and hz > 0 else None
+        except (OSError, ValueError, IndexError, subprocess.SubprocessError):
+            row["arm_clock_hz"] = None
     try:
         fans = list(Path("/sys/class/hwmon").glob("hwmon*/fan1_input"))
         row["fan_rpm"] = int(fans[0].read_text()) if len(fans) == 1 else None
@@ -52,16 +63,25 @@ def sample():
     return row
 
 
-def rejection(row, initial_history=0, *, max_temperature_mc=75000):
+def rejection(row, initial_history=0, *, max_temperature_mc=75000, allow_thermal_limits=False):
     if any(
         row.get(key) is None
         for key in ("temperature_mc", "cpu0_freq_khz", "current_limits", "history_limits")
     ):
         return "telemetry_unavailable"
-    if row["current_limits"]:
-        return "current_throttling_or_voltage_limit"
-    if row["history_limits"] & ~initial_history:
-        return "new_limit_history_since_admission"
-    if row["temperature_mc"] >= max_temperature_mc:
+    mask = 1 if allow_thermal_limits else 15
+    if row["current_limits"] & mask:
+        return (
+            "current_undervoltage"
+            if allow_thermal_limits
+            else "current_throttling_or_voltage_limit"
+        )
+    if row["history_limits"] & ~initial_history & mask:
+        return (
+            "new_undervoltage_history"
+            if allow_thermal_limits
+            else "new_limit_history_since_admission"
+        )
+    if max_temperature_mc is not None and row["temperature_mc"] >= max_temperature_mc:
         return "temperature_limit"
     return None

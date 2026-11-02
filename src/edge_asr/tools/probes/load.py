@@ -1,4 +1,4 @@
-"""기존 ASR의 180초 이상 연속 부하 검사. 반드시 m30_thermal_run.py 안에서 실행한다."""
+"""기존 ASR의 180초 이상 연속 부하 검사. thermal-run 안에서 실행한다."""
 
 import argparse
 import hashlib
@@ -63,12 +63,15 @@ def probe(root, config_path, manifest_path, output, duration_s=180):
         for _ in range(3):
             adapter.transcribe(audios[0])
         info["status"] = "running"
+        info["inference_started_at_utc"] = datetime.now(timezone.utc).isoformat()
+        info["inference_started_monotonic_s"] = time.monotonic()
         save(output / "worker.json", info)
         start = time.perf_counter()
         count = 0
         with RssSampler() as usage, (output / "calls.jsonl").open("x") as log:
             while time.perf_counter() - start < duration_s:
                 index = count % len(samples)
+                call_start = time.monotonic()
                 began, cpu = time.perf_counter(), time.process_time()
                 hypothesis = adapter.transcribe(audios[index])
                 wall, cpu = time.perf_counter() - began, time.process_time() - cpu
@@ -76,6 +79,8 @@ def probe(root, config_path, manifest_path, output, duration_s=180):
                     "id": samples[index].id,
                     "cycle": count // len(samples),
                     "offset_s": began - start,
+                    "started_monotonic_s": call_start,
+                    "ended_monotonic_s": time.monotonic(),
                     "inference_s": wall,
                     "cpu_s": cpu,
                     "audio_s": audios[index].duration_s,

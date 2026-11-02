@@ -122,6 +122,25 @@ class CoolingTests(unittest.TestCase):
             self.assertEqual(result["machine"], "mock-host")
             self.assertIsNone(result["telemetry"]["current_limits"])
 
+    def test_no_temperature_stop_requires_explicit_operational_policy(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.history(root, [row(101, 86000, current=4, history=14)])
+            path = root / "execution.json"
+            receipt = json.loads(path.read_text())
+            receipt["policy"]["stop_mc"] = None
+            path.write_text(json.dumps(receipt))
+            with self.assertRaises(ValueError):
+                summarize_history(root)
+            receipt["policy"]["name"] = "operational"
+            receipt.update(status="completed", control_valid=False, operational_valid=True)
+            path.write_text(json.dumps(receipt))
+            result = summarize_history(root)
+            self.assertIsNone(result["software_stop_mc"])
+            self.assertIsNone(result["first_observed_software_temperature_limit"])
+            self.assertTrue(result["current_limit_observed"])
+            self.assertFalse(result["control_valid"])
+
 
 if __name__ == "__main__":
     unittest.main()
