@@ -4,6 +4,8 @@
 
 `test_vad_duration.py`는 파생 입력 진단기의 3/5/8초 소유 PCM/상한·세션 reset·native 예산 실패 보존·지원 백엔드 거부를 지속 확률 mock으로 검사한다. 실제 신경망의 지속 활성 성공 여부는 RP5 기록으로만 판정한다.
 
+`test_vad_overlap.py`는 PCM16 순환 위상·산술 평균·경계값·재현 가능한 파생 WAV·원본/기존 출력 보존·보류 자료/해시 손상 거부를 합성 음원으로 검사한다. 실제 VAD 출력과 인식 정확도는 검사하지 않는다.
+
 `test_vad_annotations.py`, `test_vad_annotation_summary.py`는 구간 합집합·불명확 구간 제외·검수자/해시 검증·음수 endpoint·EOF/강제 분할 제외, 보류 표본 배제, 실패 원시 보존과 양쪽 성공 표본 재채점을 검사합니다. 배포 라벨 비교를 사람이 검수한 정답 결과로 바꾸지 않으며, 실제 RP5 VAD 검증과 구분합니다.
 
 `test_public_vad_review.py`, `test_public_vad_audio.py`는 합성 TextGrid의 인코딩·중복 tier·손상·경계, 모델 출력과 무관한 후보 선정, 원본 해시·경로·출력 보존과 null 정답의 평가 거부를 검사합니다. Host ffmpeg가 있으면 합성 44.1kHz 음원의 실제 변환·절취도 확인합니다. 공개 음원 다운로드·사람 청취·RP5 모델 추론을 대신하는 검사가 아닙니다.

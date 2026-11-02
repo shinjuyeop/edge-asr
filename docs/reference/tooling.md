@@ -47,3 +47,5 @@ edge-asr tools list
 추가 진단 명령 `edge-asr tools inspect-cooling`은 `reports.cooling`에서 기존 `--run` 기록 재분석 또는 `--live` 순간 센서 조회만 수행한다. `--output`에는 새 JSON 파일을 지정한다. 부하 실행과 OS 설정 변경은 없다. `probe-annotated-vad --backend bounded`는 별도 Python ORT를 사용하는 실험 경로이며 기본값은 기존 `native`다. [구현 범위와 실제 검증 절차](../research/m3_bounded_vad.md)를 따른다.
 
 `edge-asr tools probe-vad-duration`은 파생 WAV의 30초 초과 활성·3/5/8초 소유 PCM·RSS·reset 계측을 위한 별도 공학 검사다. 실제 정확도나 마이크 지연 평가를 대신하지 않는다. `probes.vad_duration`에 구현하며 동일한 외부 열/실행 제한 안에서 사용한다.
+
+`edge-asr tools prepare-vad-overlap --output <새 data 경로>`는 기존 개발 WAV 목록에서 1/2/3트랙의 고정 위상 평균 입력과 `vad-duration-input-v1`을 만든다. 원본 해시와 개발 split을 확인하고 기존 출력은 거부한다. 중첩 입력에는 확정 전사를 붙이지 않는다.

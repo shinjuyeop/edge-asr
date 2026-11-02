@@ -11,6 +11,7 @@ COMMANDS = {
     "prepare-external": "data.external",
     "prepare-volume": "data.volume",
     "prepare-vad": "data.vad_cases",
+    "prepare-vad-overlap": "data.vad_overlap",
     "prepare-segments": "data.segmentation_cases",
     "prepare-public-review": "data.public_review",
     "materialize-review": "data.review_audio",
