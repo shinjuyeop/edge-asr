@@ -6,6 +6,20 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
+def policy_settings(name="legacy75"):
+    """과거 재현용 기본값과 사용자가 승인한 새 실험만 허용한다."""
+    if name == "legacy75":
+        return {"warn_mc": None, "stop_mc": 75000, "interval_s": 1}
+    if name == "warn75-stop80":
+        return {"warn_mc": 75000, "stop_mc": 80000, "interval_s": 0.25}
+    raise ValueError("지원하지 않는 열 정책입니다.")
+
+
+def temperature_warning(row, threshold_mc):
+    value = row.get("temperature_mc")
+    return threshold_mc is not None and value is not None and value >= threshold_mc
+
+
 def sample():
     row = {"at_utc": datetime.now(timezone.utc).isoformat(), "monotonic_s": time.monotonic()}
     for key, path in (

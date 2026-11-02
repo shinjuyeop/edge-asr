@@ -99,6 +99,19 @@ class CoolingTests(unittest.TestCase):
                     with self.assertRaises(ValueError):
                         summarize_history(root)
 
+    def test_history_uses_recorded_80_limit_instead_of_legacy_default(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.history(root, [row(101, 76550, fan=9000)])
+            receipt = json.loads((root / "execution.json").read_text())
+            receipt.update(status="completed", control_valid=True, rejection=None)
+            receipt["policy"].update(name="warn75-stop80", warn_mc=75000, stop_mc=80000)
+            (root / "execution.json").write_text(json.dumps(receipt))
+            result = summarize_history(root)
+            self.assertEqual(result["software_stop_mc"], 80000)
+            self.assertIsNone(result["first_observed_software_temperature_limit"])
+            self.assertFalse(result["current_limit_observed"])
+
     def test_live_snapshot_identifies_machine_without_starting_load(self):
         with (
             patch("edge_asr.cooling.sample", return_value={"current_limits": None}),

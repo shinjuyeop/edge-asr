@@ -7,12 +7,13 @@ import re
 import signal
 import subprocess
 import time
+from contextlib import nullcontext
 from datetime import datetime, timezone
 from pathlib import Path
 
 from edge_asr.artifacts import write_json as save
 from edge_asr.diagnostics import thread_snapshot
-from edge_asr.thermal import rejection, sample
+from edge_asr.thermal import policy_settings, rejection, sample, temperature_warning
 
 
 def admit(output, *, budget_s=300):
@@ -47,7 +48,8 @@ def terminate(process):
             process.wait()
 
 
-def run(root, output, command):
+def run(root, output, command, *, temperature_policy="legacy75"):
+    settings = policy_settings(temperature_policy)
     output.mkdir(parents=True, exist_ok=False)
     record = {
         "schema_version": 1,
@@ -70,6 +72,19 @@ def run(root, output, command):
         "command": command,
     }
     receipt = output / "execution.json"
+    if temperature_policy != "legacy75":
+        record["policy"].update(
+            name=temperature_policy,
+            warn_mc=settings["warn_mc"],
+            stop_mc=settings["stop_mc"],
+            interval_s=settings["interval_s"],
+            scope="폴링 대기 0.25초+조회 비용. 75°C 경고, 80°C/현재 제한/새 이력/결측 중단. 고정 클럭/열평형 보장 아님.",
+        )
+        record["warnings"] = {
+            "sample_count": 0,
+            "first_sample": None,
+            "scope": "monitor/after 관측의 온도 경고; 현재 제한 등 중단 판정과 별도",
+        }
     save(receipt, record)
     try:
         record["before"] = admit(output)
@@ -90,7 +105,20 @@ def run(root, output, command):
             (output / "console.log").open("x") as console,
             (output / "thermal.jsonl").open("x") as monitor,
             (output / "threads.jsonl").open("x") as tids,
+            (output / "warnings.jsonl").open("x")
+            if settings["warn_mc"] is not None
+            else nullcontext(None) as warnings,
         ):
+
+            def warn(row, phase):
+                if warnings is not None and temperature_warning(row, settings["warn_mc"]):
+                    warnings.write(json.dumps({"phase": phase, "sample": row}) + "\n")
+                    warnings.flush()
+                    record["warnings"]["sample_count"] += 1
+                    if record["warnings"]["first_sample"] is None:
+                        record["warnings"]["first_sample"] = row
+                        save(receipt, record)
+
             process = subprocess.Popen(
                 wrapped,
                 cwd=root,
@@ -105,7 +133,12 @@ def run(root, output, command):
                     row = sample()
                     monitor.write(json.dumps(row) + "\n")
                     monitor.flush()
-                    reason = rejection(row, record["before"]["history_limits"])
+                    warn(row, "monitor")
+                    reason = rejection(
+                        row,
+                        record["before"]["history_limits"],
+                        max_temperature_mc=settings["stop_mc"],
+                    )
                     if reason:
                         record.update(rejection=reason, rejected_sample=row)
                         terminate(process)
@@ -138,12 +171,17 @@ def run(root, output, command):
                         except (OSError, ValueError, IndexError) as error:
                             tids.write(json.dumps({"error": repr(error)}) + "\n")
                             tids.flush()
-                    time.sleep(1)
+                    time.sleep(settings["interval_s"])
                 record["exit_code"] = process.wait()
             finally:
                 terminate(process)
-        after = sample()
-        reason = reason or rejection(after, record["before"]["history_limits"])
+            after = sample()
+            warn(after, "after")
+        reason = reason or rejection(
+            after,
+            record["before"]["history_limits"],
+            max_temperature_mc=settings["stop_mc"],
+        )
         record["after"] = after
         record["status"] = (
             "control_rejected"
@@ -178,6 +216,12 @@ def run(root, output, command):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--temperature-policy",
+        choices=("legacy75", "warn75-stop80"),
+        default="legacy75",
+        help="기본은 과거 75°C 중단. 새 승인 조건은 75°C 경고/80°C 중단, 폴링 대기 0.25초",
+    )
     parser.add_argument("command", nargs=argparse.REMAINDER)
     args = parser.parse_args()
     command = args.command[1:] if args.command[:1] == ["--"] else args.command
@@ -185,7 +229,9 @@ def main():
         parser.error("실행 명령이 필요합니다.")
     if subprocess.check_output(["git", "status", "--porcelain"]).strip():
         parser.error("소스 변경을 먼저 commit/push/pull 하세요.")
-    raise SystemExit(run(Path.cwd(), args.output.resolve(), command))
+    raise SystemExit(
+        run(Path.cwd(), args.output.resolve(), command, temperature_policy=args.temperature_policy)
+    )
 
 
 if __name__ == "__main__":

@@ -1,0 +1,142 @@
+"""과거 75°C 정책과 새 경고/중단 경계·실제 제한 우선·외부 제한 확인을 모의 검사한다."""
+
+import json
+import tempfile
+import unittest
+from pathlib import Path
+from unittest.mock import Mock, patch
+
+from edge_asr.thermal import policy_settings, rejection, temperature_warning
+from edge_asr.tools.probes import thermal as guard
+
+COOL = {"temperature_mc": 52000, "cpu0_freq_khz": 2400000, "current_limits": 0, "history_limits": 0}
+LIMITS = "Max address space         4294967296           4294967296           bytes\n"
+
+
+class ThermalPolicyTests(unittest.TestCase):
+    def setUp(self):
+        self.git = patch.object(guard.subprocess, "check_output", return_value="fixture\n")
+        self.git.start()
+        self.addCleanup(self.git.stop)
+
+    def test_legacy_default_and_new_boundaries_are_distinct(self):
+        self.assertEqual(policy_settings(), {"warn_mc": None, "stop_mc": 75000, "interval_s": 1})
+        new = policy_settings("warn75-stop80")
+        self.assertFalse(temperature_warning({**COOL, "temperature_mc": 74999}, new["warn_mc"]))
+        self.assertTrue(temperature_warning({**COOL, "temperature_mc": 75000}, new["warn_mc"]))
+        self.assertFalse(temperature_warning({}, new["warn_mc"]))
+        self.assertEqual(rejection({**COOL, "temperature_mc": 75000}), "temperature_limit")
+        self.assertIsNone(
+            rejection({**COOL, "temperature_mc": 79999}, max_temperature_mc=new["stop_mc"])
+        )
+        self.assertEqual(
+            rejection({**COOL, "temperature_mc": 80000}, max_temperature_mc=new["stop_mc"]),
+            "temperature_limit",
+        )
+        new["stop_mc"] = 99000
+        self.assertEqual(policy_settings("warn75-stop80")["stop_mc"], 80000)
+
+    def test_unknown_policy_does_not_create_output(self):
+        with tempfile.TemporaryDirectory() as directory:
+            out = Path(directory) / "run"
+            with self.assertRaises(ValueError):
+                guard.run(Path(directory), out, ["false"], temperature_policy="stop100")
+            self.assertFalse(out.exists())
+
+    def test_warning_allows_completion_only_with_verified_process_limits(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            out = root / "run"
+            child = Mock()
+            child.poll.side_effect = [None, 0]
+            child.wait.return_value = 0
+            original_read = Path.read_text
+
+            def read(path, *args, **kwargs):
+                return (
+                    LIMITS
+                    if str(path) == "/proc/98765/limits"
+                    else original_read(path, *args, **kwargs)
+                )
+
+            def launch(*args, **kwargs):
+                (out / "worker.json").write_text(json.dumps({"process_id": 98765}))
+                return child
+
+            with (
+                patch.object(guard, "admit", return_value=COOL),
+                patch.object(
+                    guard, "sample", side_effect=[{**COOL, "temperature_mc": 76550}, COOL]
+                ),
+                patch.object(guard.subprocess, "Popen", side_effect=launch),
+                patch.object(guard, "terminate"),
+                patch.object(guard, "thread_snapshot", return_value={"threads": {}}),
+                patch.object(guard.time, "sleep") as sleep,
+                patch.object(Path, "read_text", read),
+            ):
+                self.assertEqual(
+                    guard.run(root, out, ["mock"], temperature_policy="warn75-stop80"), 0
+                )
+            receipt = json.loads((out / "execution.json").read_text())
+            warnings = [json.loads(x) for x in (out / "warnings.jsonl").read_text().splitlines()]
+            self.assertTrue(receipt["control_valid"])
+            self.assertTrue(receipt["limit_verified"])
+            self.assertEqual(receipt["warnings"]["sample_count"], 1)
+            self.assertEqual(receipt["warnings"]["first_sample"]["temperature_mc"], 76550)
+            self.assertEqual(warnings[0]["phase"], "monitor")
+            self.assertEqual(receipt["policy"]["name"], "warn75-stop80")
+            self.assertEqual(receipt["policy"]["stop_mc"], 80000)
+            sleep.assert_called_once_with(0.25)
+
+    def test_80_degrees_current_history_and_missing_telemetry_always_stop(self):
+        samples = [
+            ({**COOL, "temperature_mc": 80000}, "temperature_limit"),
+            ({**COOL, "current_limits": 4}, "current_throttling_or_voltage_limit"),
+            ({**COOL, "history_limits": 1}, "new_limit_history_since_admission"),
+            ({**COOL, "cpu0_freq_khz": None}, "telemetry_unavailable"),
+        ]
+        for row, reason in samples:
+            with self.subTest(reason=reason), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                out = root / "run"
+                child = Mock()
+                child.poll.return_value = None
+                child.wait.return_value = -15
+                with (
+                    patch.object(guard, "admit", return_value=COOL),
+                    patch.object(guard, "sample", return_value=row),
+                    patch.object(guard.subprocess, "Popen", return_value=child),
+                    patch.object(guard, "terminate") as terminate,
+                ):
+                    self.assertEqual(
+                        guard.run(root, out, ["mock"], temperature_policy="warn75-stop80"), 1
+                    )
+                receipt = json.loads((out / "execution.json").read_text())
+                self.assertEqual(receipt["status"], "control_rejected")
+                self.assertEqual(receipt["rejection"], reason)
+                self.assertFalse(receipt["control_valid"])
+                self.assertTrue(terminate.called)
+
+    def test_final_after_sample_can_reject_completed_child(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            out = root / "run"
+            child = Mock()
+            child.poll.return_value = 0
+            child.wait.return_value = 0
+            with (
+                patch.object(guard, "admit", return_value=COOL),
+                patch.object(guard, "sample", return_value={**COOL, "temperature_mc": 80000}),
+                patch.object(guard.subprocess, "Popen", return_value=child),
+                patch.object(guard, "terminate"),
+            ):
+                self.assertEqual(
+                    guard.run(root, out, ["mock"], temperature_policy="warn75-stop80"), 1
+                )
+            receipt = json.loads((out / "execution.json").read_text())
+            self.assertEqual(receipt["rejection"], "temperature_limit")
+            self.assertEqual(json.loads((out / "warnings.jsonl").read_text())["phase"], "after")
+
+
+if __name__ == "__main__":
+    unittest.main()
