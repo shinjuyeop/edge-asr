@@ -2,11 +2,13 @@
 
 ## 운영 검사: 기본 열 보호 아래 계속 실행
 
+실측은 [8분 운영 부하 기록](../../results/summaries/m3-operational-20261102.md)에 정리했다. 감속/스로틀링을 포함해 1,203회 추론을 완료했으며 통제 비교 및 실시간 지연 검증과 구분한다.
+
 2026-11-02 사용자가 온도만으로 진행을 막지 않는 운영 검사를 승인했다. `--temperature-policy operational`을 추가한다. **소프트웨어의 독립 온도 중단선은 없으며 RP5의 기본 펌웨어 열 보호·팬·클럭·전압 설정을 그대로 유지한다.** 80°C 이상과 감속은 관찰값이며 통제 비교 합격 여부와 별개다. 제조사의 온도 제한을 해제하거나 올리는 명령은 실행하지 않는다. [공식 열 제어 설명](https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#frequency-management-and-thermal-control).
 
 - 시작은 기존과 같이 53°C 이하·현재 제한 없음 3회 연속이다. 과거 제한 이력은 기준선으로 보존한다.
 - 80°C 이상을 `warnings.jsonl`에 기록한다. 현재 주파수 제한·throttling·soft temperature limit(비트 1~3)과 그 새 이력은 중단 사유가 아니다. 원시 `thermal.jsonl`의 모든 표본에서 관찰한다.
-- 현재 저전압(비트 0), 새 저전압 이력(비트 16), 필수 계측 누락은 중단한다. 기존 timeout 600초·주소 공간 4GiB·core 0·실제 PID 제한 검증도 유지한다.
+- 현재 저전압(비트 0), 새 저전압 이력(비트 16), 필수 계측 누락은 중단한다. 기존 timeout 600초·주소 공간 4GiB·코어 덤프 생성 제한·실제 PID 제한 검증도 유지한다.
 - 폴링 대기 1초와 조회 비용을 기록한다. sysfs `scaling_cur_freq`와 `vcgencmd measure_clock arm`의 실제 클럭을 구분하고, 실제 클럭 조회 실패는 null로 남긴다. 각 조회는 순차 실행이며 완전히 같은 순간의 표본이 아니다.
 - 영수증에 `evaluation_scope=operational_sustained_load`, `policy.stop_mc=null`, `allow_thermal_limits=true`를 저장한다. 정상 종료·PID 제한 확인·중단 조건 부재 때만 `operational_valid=true`다. **`control_valid`는 항상 false**로 남겨 기존 통제 비교 집계에서 제외한다. 저전압 등 실패는 `operational_rejected`, 실행 실패·시간 초과·제한 미확인은 `failed_or_unverified`다.
 
@@ -31,7 +33,7 @@
 
 ### 선택과 기록
 
-`thermal-run`의 기본값 `--temperature-policy legacy75`는 과거 재현용으로 유지한다. 이 경우 75°C 중단·폴링 대기 1초와 기존 영수증 형식을 유지한다. 새 실험에만 `--temperature-policy warn75-stop80`을 명시한다.
+`thermal-run`의 기본값 `--temperature-policy legacy75`는 과거 재현용으로 유지한다. 이 경우 75°C 중단·폴링 대기 1초와 기존 영수증 형식을 유지한다. 당시 별도 실험에는 `--temperature-policy warn75-stop80`을 명시했다. 이후 운영 부하는 위 `operational` 정책을 선택한다.
 
 | 항목 | legacy75 | warn75-stop80 |
 | --- | --- | --- |
@@ -40,7 +42,7 @@
 | 온도 중단 | 75°C 이상 관측 | 80°C 이상 관측 |
 | 현재 제한·새 이력·필수 계측 누락 | 중단 | 동일하게 중단 |
 | 폴링 사이 대기 | 1초 | 0.25초 |
-| 외부 제한 | 600초 timeout·4GiB 주소 공간·core 0 | 동일, 실제 PID 확인 필요 |
+| 외부 제한 | 600초 timeout·4GiB 주소 공간·코어 덤프 0 | 동일, 실제 PID 확인 필요 |
 
 0.25초는 조회 이후의 대기이며 정확한 표본 간격 보증이 아니다. sysfs/`vcgencmd`/TID 조회 시간이 추가되고 원시 단조 시각으로 실제 간격을 확인한다. 80°C에 절대 도달하지 않는다는 보장도 아니다. 관측 시점의 초과·제한은 그대로 실패로 남긴다. 새 이력이 켜진 실험은 다음 실행 전에 기준선을 재검토하며 무조건 반복하지 않는다.
 

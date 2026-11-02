@@ -1,0 +1,816 @@
+{
+  "schema": "operational-load-v1",
+  "date": "2026-11-02",
+  "source_commit": "564c0e8b4ff6bacff52f3ce84a4245b6c23901a1",
+  "status": "completed",
+  "operational_valid": true,
+  "control_valid": false,
+  "temperature_policy": {
+    "admission_mc": 53000,
+    "admission_consecutive": 3,
+    "stop_mc": null,
+    "interval_s": 1,
+    "timeout_s": 600,
+    "address_space_bytes": 4294967296,
+    "scope": "운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
+    "name": "operational",
+    "warn_mc": 80000,
+    "allow_thermal_limits": true,
+    "firmware_thermal_protection": "unchanged"
+  },
+  "requested_duration_s": 480,
+  "observed_duration_s": 480.0417349090003,
+  "completed_calls": 1203,
+  "full_50_sample_cycles": 24,
+  "partial_cycle_calls": 3,
+  "worker_status": "completed",
+  "model_config_sha256": "00beb9bb099a137eb05a731a25ff7f5d9158a8324e3a2d6834b16f5816f91511",
+  "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+  "weights_and_workload_match_prior_80": true,
+  "model_files": {
+    "tokens": {
+      "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/tokens.txt",
+      "sha256": "016bdf0965029263b7ad01b742366ee542ef0bef38261510e8176ff6f2e9e668"
+    },
+    "encoder": {
+      "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/encoder-epoch-99-avg-1.int8.onnx",
+      "sha256": "8d0b1aa24fbedd4e3948564ab7facd151b8ce9b0c48fc987c541de2de3af5697"
+    },
+    "decoder": {
+      "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/decoder-epoch-99-avg-1.onnx",
+      "sha256": "b29cfb4575141e50a30a22b2c4579934f3d4f45b83c9c8c08c3aef5a3fa7abfc"
+    },
+    "joiner": {
+      "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/joiner-epoch-99-avg-1.int8.onnx",
+      "sha256": "128b80a66a1f718488af8560f9d15895109b99ff3e573f0a0130e03774ef1ced"
+    }
+  },
+  "environment": {
+    "edge_asr": "0.1.0",
+    "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+    "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+    "machine": "aarch64",
+    "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+    "runtime": {
+      "sherpa_package_version": "2.0.1",
+      "sherpa_core_package_version": "2.0.1",
+      "python_onnxruntime_package_version": "1.31.1",
+      "sherpa_native_onnxruntime_version": "1.28.2",
+      "native_version_source": "sherpa_onnx.onnxruntime_version",
+      "status": "available",
+      "reason": null
+    },
+    "packages": [
+      {
+        "name": "cffi",
+        "version": "2.1.1"
+      },
+      {
+        "name": "flatbuffers",
+        "version": "25.12.19"
+      },
+      {
+        "name": "numpy",
+        "version": "2.4.6"
+      },
+      {
+        "name": "onnxruntime",
+        "version": "1.31.1"
+      },
+      {
+        "name": "packaging",
+        "version": "26.3"
+      },
+      {
+        "name": "protobuf",
+        "version": "7.36.2"
+      },
+      {
+        "name": "pycparser",
+        "version": "3.12"
+      },
+      {
+        "name": "sherpa-onnx-core",
+        "version": "2.0.1"
+      },
+      {
+        "name": "sherpa_onnx",
+        "version": "2.0.1"
+      },
+      {
+        "name": "sounddevice",
+        "version": "0.5.6"
+      },
+      {
+        "name": "soundfile",
+        "version": "0.14.0"
+      },
+      {
+        "name": "typing_extensions",
+        "version": "4.16.0"
+      }
+    ]
+  },
+  "comparison_to_prior_80": {
+    "source_revision_changed": true,
+    "poll_sleep_s": [
+      0.25,
+      1
+    ],
+    "temperature_stop_removed": true,
+    "thermal_limits_observed_not_rejected": true,
+    "actual_arm_clock_query_added": true,
+    "call_monotonic_fields_added": true,
+    "controlled_speed_comparison_valid": false
+  },
+  "model_load": {
+    "seconds": 2.4461153109996303,
+    "cpu_s": 2.734721936,
+    "rss_observed_max_mib": 280.125
+  },
+  "completed_call_summary": {
+    "calls": 1203,
+    "audio_s": 3969.831312500005,
+    "inference_s": 479.80245718801234,
+    "cpu_s": 1592.138353401001,
+    "diagnostic_batch_rtf": 0.12086217761375263,
+    "call_cpu_percent": 331.83205495279816,
+    "call_inference_s": {
+      "n": 1203,
+      "mean": 0.39883828527681825,
+      "p50": 0.39860675599993556,
+      "p95": 0.6085431259998586,
+      "max": 0.7182646800001748
+    }
+  },
+  "full_cycles": [
+    {
+      "cycle": 0,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 17.871209733005344,
+      "cpu_s": 58.56590372199999,
+      "diagnostic_batch_rtf": 0.10836355867429066,
+      "call_cpu_percent": 327.7109081979933,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.3574241946601069,
+        "p50": 0.33968812999955844,
+        "p95": 0.5508892580000975,
+        "max": 0.6128492280004139
+      }
+    },
+    {
+      "cycle": 1,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 17.87336796100044,
+      "cpu_s": 58.696043185999955,
+      "diagnostic_batch_rtf": 0.10837664526828587,
+      "call_cpu_percent": 328.39945618573006,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.35746735922000883,
+        "p50": 0.343556422999427,
+        "p95": 0.553026841999781,
+        "max": 0.6127981730005558
+      }
+    },
+    {
+      "cycle": 2,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 18.697739997002827,
+      "cpu_s": 61.52364779699994,
+      "diagnostic_batch_rtf": 0.11337529330764087,
+      "call_cpu_percent": 329.04323092984464,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.37395479994005654,
+        "p50": 0.36260116000084963,
+        "p95": 0.591150154999923,
+        "max": 0.6426123430001098
+      }
+    },
+    {
+      "cycle": 3,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 19.445649320002303,
+      "cpu_s": 64.0114604629999,
+      "diagnostic_batch_rtf": 0.11791030336105786,
+      "call_cpu_percent": 329.18139893202766,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.38891298640004607,
+        "p50": 0.3836832560000403,
+        "p95": 0.5936066429994753,
+        "max": 0.6766964120006378
+      }
+    },
+    {
+      "cycle": 4,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 19.658557666004526,
+      "cpu_s": 64.88847306000017,
+      "diagnostic_batch_rtf": 0.11920129073062852,
+      "call_cpu_percent": 330.0774866724407,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.3931711533200905,
+        "p50": 0.38562456399995426,
+        "p95": 0.6149289240001963,
+        "max": 0.6779957560002003
+      }
+    },
+    {
+      "cycle": 5,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 19.76037501299743,
+      "cpu_s": 65.20060503100007,
+      "diagnostic_batch_rtf": 0.11981866863731545,
+      "call_cpu_percent": 329.9563140280194,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.39520750025994855,
+        "p50": 0.39677818400014075,
+        "p95": 0.5925754270001562,
+        "max": 0.6805058639993149
+      }
+    },
+    {
+      "cycle": 6,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 19.70920188100081,
+      "cpu_s": 64.9812394120001,
+      "diagnostic_batch_rtf": 0.11950837611797796,
+      "call_cpu_percent": 329.7000041114827,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.3941840376200162,
+        "p50": 0.39350413200008916,
+        "p95": 0.5964042389996393,
+        "max": 0.6720931350000683
+      }
+    },
+    {
+      "cycle": 7,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 19.82110634599576,
+      "cpu_s": 65.5808678190001,
+      "diagnostic_batch_rtf": 0.12018691809916236,
+      "call_cpu_percent": 330.8638109004884,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.3964221269199152,
+        "p50": 0.3831100859997605,
+        "p95": 0.6029101029998856,
+        "max": 0.6662327260000893
+      }
+    },
+    {
+      "cycle": 8,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 20.145455679001316,
+      "cpu_s": 66.36697444100042,
+      "diagnostic_batch_rtf": 0.12215363711277241,
+      "call_cpu_percent": 329.4389340131842,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.4029091135800263,
+        "p50": 0.4070650559997375,
+        "p95": 0.6111010189997614,
+        "max": 0.6765320439999414
+      }
+    },
+    {
+      "cycle": 9,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 20.013487706999513,
+      "cpu_s": 66.51793248399986,
+      "diagnostic_batch_rtf": 0.12135343839702831,
+      "call_cpu_percent": 332.36551998248603,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.4002697541399903,
+        "p50": 0.392432319999898,
+        "p95": 0.6182536569995136,
+        "max": 0.6558356069999718
+      }
+    },
+    {
+      "cycle": 10,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 20.06097799100189,
+      "cpu_s": 66.71396024000023,
+      "diagnostic_batch_rtf": 0.12164139966287627,
+      "call_cpu_percent": 332.55587175223445,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.4012195598200378,
+        "p50": 0.3840818059998128,
+        "p95": 0.6085431259998586,
+        "max": 0.6744322650001777
+      }
+    },
+    {
+      "cycle": 11,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 20.149257061000753,
+      "cpu_s": 67.03736623100053,
+      "diagnostic_batch_rtf": 0.1221766871070086,
+      "call_cpu_percent": 332.7039107598292,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.40298514122001505,
+        "p50": 0.3898600960001204,
+        "p95": 0.6158625530006248,
+        "max": 0.6878183899998476
+      }
+    },
+    {
+      "cycle": 12,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 20.237429748000977,
+      "cpu_s": 67.33750247000023,
+      "diagnostic_batch_rtf": 0.1227113294890278,
+      "call_cpu_percent": 332.7374242109561,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.4047485949600195,
+        "p50": 0.39188481500059424,
+        "p95": 0.6192795540000589,
+        "max": 0.6751047600000675
+      }
+    },
+    {
+      "cycle": 13,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 20.278055184998266,
+      "cpu_s": 67.60302541400029,
+      "diagnostic_batch_rtf": 0.12295766518714196,
+      "call_cpu_percent": 333.380222103415,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.40556110369996534,
+        "p50": 0.39721110000027693,
+        "p95": 0.6137305529991863,
+        "max": 0.6775976509998145
+      }
+    },
+    {
+      "cycle": 14,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 20.240675691999968,
+      "cpu_s": 67.52972573299985,
+      "diagnostic_batch_rtf": 0.12273101153899774,
+      "call_cpu_percent": 333.63375195863966,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.40481351383999936,
+        "p50": 0.38813569200010534,
+        "p95": 0.6210682020000604,
+        "max": 0.6935790170000473
+      }
+    },
+    {
+      "cycle": 15,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 20.304390310999224,
+      "cpu_s": 67.78247973600037,
+      "diagnostic_batch_rtf": 0.123117350402314,
+      "call_cpu_percent": 333.8316428013181,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.40608780621998447,
+        "p50": 0.4052219210007024,
+        "p95": 0.6303282339995349,
+        "max": 0.6906120280000323
+      }
+    },
+    {
+      "cycle": 16,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 20.390939918000186,
+      "cpu_s": 68.12480090800022,
+      "diagnostic_batch_rtf": 0.1236421511044827,
+      "call_cpu_percent": 334.0934806436401,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.40781879836000373,
+        "p50": 0.4060184919999301,
+        "p95": 0.6200861069992243,
+        "max": 0.7018501290003769
+      }
+    },
+    {
+      "cycle": 17,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 20.354050248998647,
+      "cpu_s": 67.96071627899914,
+      "diagnostic_batch_rtf": 0.12341846754466523,
+      "call_cpu_percent": 333.89283925120793,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.4070810049799729,
+        "p50": 0.399916036999457,
+        "p95": 0.6061954779997905,
+        "max": 0.6951361909996194
+      }
+    },
+    {
+      "cycle": 18,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 20.43299177100107,
+      "cpu_s": 68.02910162199964,
+      "diagnostic_batch_rtf": 0.12389713599403991,
+      "call_cpu_percent": 332.9375472002488,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.40865983542002143,
+        "p50": 0.4012379890000375,
+        "p95": 0.6184656060004272,
+        "max": 0.7042906770002446
+      }
+    },
+    {
+      "cycle": 19,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 20.4816519110027,
+      "cpu_s": 68.42654521900067,
+      "diagnostic_batch_rtf": 0.12419219077851976,
+      "call_cpu_percent": 334.0870429608369,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.409633038220054,
+        "p50": 0.39654259700000694,
+        "p95": 0.6168684670001312,
+        "max": 0.713316811000368
+      }
+    },
+    {
+      "cycle": 20,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 20.537465683997652,
+      "cpu_s": 68.32353362899971,
+      "diagnostic_batch_rtf": 0.12453062220846386,
+      "call_cpu_percent": 332.6775303256425,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.41074931367995304,
+        "p50": 0.4052392180001334,
+        "p95": 0.6133744409999053,
+        "max": 0.6969175399999585
+      }
+    },
+    {
+      "cycle": 21,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 20.60372555000049,
+      "cpu_s": 68.63215937099903,
+      "diagnostic_batch_rtf": 0.12493239438755079,
+      "call_cpu_percent": 333.1055793984666,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.4120745110000098,
+        "p50": 0.40912076299991895,
+        "p95": 0.6338807629999792,
+        "max": 0.7182646800001748
+      }
+    },
+    {
+      "cycle": 22,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 20.65431128,
+      "cpu_s": 68.7452606989998,
+      "diagnostic_batch_rtf": 0.12523912514628394,
+      "call_cpu_percent": 332.8373421270515,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.4130862256,
+        "p50": 0.4114595989994996,
+        "p95": 0.6443066870006078,
+        "max": 0.7031230610000421
+      }
+    },
+    {
+      "cycle": 23,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 20.63537722700039,
+      "cpu_s": 68.66555325500053,
+      "diagnostic_batch_rtf": 0.12512431694953516,
+      "call_cpu_percent": 332.75647205108993,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.4127075445400078,
+        "p50": 0.40574700599972857,
+        "p95": 0.6320086690002427,
+        "max": 0.7155103730001429
+      }
+    }
+  ],
+  "first_last_full_cycle": {
+    "first": {
+      "cycle": 0,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 17.871209733005344,
+      "cpu_s": 58.56590372199999,
+      "diagnostic_batch_rtf": 0.10836355867429066,
+      "call_cpu_percent": 327.7109081979933,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.3574241946601069,
+        "p50": 0.33968812999955844,
+        "p95": 0.5508892580000975,
+        "max": 0.6128492280004139
+      }
+    },
+    "last": {
+      "cycle": 23,
+      "calls": 50,
+      "audio_s": 164.919,
+      "inference_s": 20.63537722700039,
+      "cpu_s": 68.66555325500053,
+      "diagnostic_batch_rtf": 0.12512431694953516,
+      "call_cpu_percent": 332.75647205108993,
+      "call_inference_s": {
+        "n": 50,
+        "mean": 0.4127075445400078,
+        "p50": 0.40574700599972857,
+        "p95": 0.6320086690002427,
+        "max": 0.7155103730001429
+      }
+    },
+    "inference_time_change_percent": 15.467153792560895,
+    "scope_ko": "같은 ID 50개 순서의 첫/마지막 완료 순환 비교. 단회 관찰로 열 단독 인과관계나 장기 성능을 확정하지 않음."
+  },
+  "inference_memory": {
+    "observed_max_mib": 257.640625,
+    "first_30s_mean_mib": 257.140625,
+    "last_30s_mean_mib": 257.640625,
+    "scope_ko": "표본 기반 RSS이며 순간 최대값이나 메모리 누수 부재를 보증하지 않음."
+  },
+  "thermal": {
+    "run": "/d/shin/edge-asr/results/preflight/m3-operational-20261102-01/zipformer-t2",
+    "source_sha256": {
+      "execution.json": "84822f62ef405d5fcc0d6a4bdad6d89e91a649a0a435626c82859ad05b98d1e6",
+      "thermal.jsonl": "361b91f83b1a5c5c1139da1a12a39fb42d054ef009a8a11fdaea9e12b54dcfd7"
+    },
+    "status": "completed",
+    "control_valid": false,
+    "rejection": null,
+    "thermal_sample_count": 472,
+    "before": {
+      "at_utc": "2026-11-02T09:36:05.344542+00:00",
+      "elapsed_from_before_s": 0.0,
+      "temperature_c": 51.8,
+      "fan_rpm": 2994,
+      "cpu0_freq_khz": 1500000,
+      "current_limits": 0,
+      "history_limits": 0
+    },
+    "after": {
+      "at_utc": "2026-11-02T09:44:10.256485+00:00",
+      "elapsed_from_before_s": 484.91194543799975,
+      "temperature_c": 77.65,
+      "fan_rpm": 9775,
+      "cpu0_freq_khz": 2400000,
+      "current_limits": 0,
+      "history_limits": 14
+    },
+    "software_stop_mc": null,
+    "first_observed_software_temperature_limit": null,
+    "first_observed_current_limit": {
+      "at_utc": "2026-11-02T09:36:45.581402+00:00",
+      "elapsed_from_before_s": 40.2368687219996,
+      "temperature_c": 80.4,
+      "fan_rpm": 9282,
+      "cpu0_freq_khz": 2400000,
+      "current_limits": 8,
+      "history_limits": 8
+    },
+    "current_limit_observed": true,
+    "new_history_bits": 14,
+    "telemetry_missing_samples": 0,
+    "fan_missing_samples": 0,
+    "fan_positive_samples": 474,
+    "fan_rpm_max": 9787,
+    "temperature_mc_max_monitor": 85900,
+    "temperature_mc_max_with_before_after": 85900,
+    "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+  },
+  "limits": {
+    "samples": 474,
+    "current_samples_by_bit": {
+      "0": 0,
+      "1": 95,
+      "2": 95,
+      "3": 295
+    },
+    "new_history_bits": 14
+  },
+  "first_observed_limit_sample": {
+    "at_utc": "2026-11-02T09:36:45.581402+00:00",
+    "monotonic_s": 5164.336086748,
+    "temperature_mc": 80400,
+    "cpu0_freq_khz": 2400000,
+    "governor": "ondemand",
+    "throttled_flags": 524296,
+    "current_limits": 8,
+    "history_limits": 8,
+    "arm_clock_hz": 2366030080,
+    "fan_rpm": 9282
+  },
+  "clocks_all_monitor": {
+    "actual_arm_clock_hz": {
+      "n": 472,
+      "mean": 2129766359.5932202,
+      "p50": 2201030656,
+      "p95": 2400027136,
+      "max": 2400037120
+    },
+    "actual_clock_missing": 0,
+    "sysfs_cpu0_khz": {
+      "n": 472,
+      "mean": 2398093.220338983,
+      "p50": 2400000,
+      "p95": 2400000,
+      "max": 2400000
+    }
+  },
+  "clocks_matched_call_samples": {
+    "actual_arm_clock_hz": {
+      "n": 468,
+      "mean": 2129379538.871795,
+      "p50": 2201030656,
+      "p95": 2400027136,
+      "max": 2400037120
+    },
+    "actual_clock_missing": 0,
+    "sysfs_cpu0_khz": {
+      "n": 468,
+      "mean": 2400000.0,
+      "p50": 2400000,
+      "p95": 2400000,
+      "max": 2400000
+    }
+  },
+  "clock_scope_ko": "vcgencmd 실제 클럭과 sysfs 주파수를 분리. 조회는 순차적이며 호출 연결은 표본 시각 기준 근사임.",
+  "warning_samples": 440,
+  "actual_poll_intervals_s": {
+    "n": 471,
+    "mean": 1.0273592472335458,
+    "p50": 1.0229538390003654,
+    "p95": 1.0620282519994362,
+    "max": 1.133159455999703
+  },
+  "threads": {
+    "snapshot_count": 471,
+    "observed_max": 8,
+    "active_at_least_1_percent": 4,
+    "rows": [
+      {
+        "tid": "4228",
+        "cpu_s": 482.5099999999965,
+        "paired_s": 482.83766139,
+        "mean_cpu_percent": 99.93213839428759
+      },
+      {
+        "tid": "4237",
+        "cpu_s": 480.46999999999656,
+        "paired_s": 481.8207781170004,
+        "mean_cpu_percent": 99.71965133544411
+      },
+      {
+        "tid": "4241",
+        "cpu_s": 368.0600000000009,
+        "paired_s": 480.80311817599977,
+        "mean_cpu_percent": 76.55108423512162
+      },
+      {
+        "tid": "4240",
+        "cpu_s": 264.71000000000015,
+        "paired_s": 480.80311817599977,
+        "mean_cpu_percent": 55.05579934760366
+      },
+      {
+        "tid": "4245",
+        "cpu_s": 1.370000000000001,
+        "paired_s": 479.7798277900001,
+        "mean_cpu_percent": 0.28554764511684533
+      },
+      {
+        "tid": "4231",
+        "cpu_s": 0.0,
+        "paired_s": 1.0168832729996211,
+        "mean_cpu_percent": 0.0
+      },
+      {
+        "tid": "4232",
+        "cpu_s": 0.0,
+        "paired_s": 482.83766139,
+        "mean_cpu_percent": 0.0
+      },
+      {
+        "tid": "4233",
+        "cpu_s": 0.0,
+        "paired_s": 482.83766139,
+        "mean_cpu_percent": 0.0
+      },
+      {
+        "tid": "4234",
+        "cpu_s": 0.0,
+        "paired_s": 482.83766139,
+        "mean_cpu_percent": 0.0
+      }
+    ],
+    "runtime_roles_confirmed": false
+  },
+  "ids_with_changing_hypothesis_hash": 0,
+  "controlled_rtf": null,
+  "cer": null,
+  "streaming_first_text_s": null,
+  "refine_delay_s": null,
+  "input_drops": null,
+  "backlog": null,
+  "raw_files_verified": 8,
+  "preservation": {
+    "protected_files": 4106,
+    "changed": [],
+    "missing": [],
+    "environment": {
+      "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+      "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+      "resolved_python": "/home/deepet/.local/share/uv/python/cpython-3.11.18-linux-aarch64-gnu/bin/python3.11",
+      "packages": {
+        "numpy": "2.4.6",
+        "sherpa-onnx": "2.0.1",
+        "sherpa-onnx-core": "2.0.1",
+        "onnxruntime": "1.31.1"
+      }
+    },
+    "environment_unchanged": true,
+    "system_settings_unchanged": true,
+    "guard_process_active": false,
+    "worker_process_present": false,
+    "same_boot": true,
+    "source_commit": "564c0e8b4ff6bacff52f3ce84a4245b6c23901a1",
+    "working_tree_clean": true
+  },
+  "tests": {
+    "host": {
+      "count": 201,
+      "seconds": 12.829,
+      "passed": true
+    },
+    "rp5": {
+      "count": 201,
+      "seconds": 26.284,
+      "passed": true
+    }
+  },
+  "evidence_sha256": {
+    "results/maintenance/m3-operational-20261102-01/transfer-manifest.json": "f7a7432bf8eb9dd655799c912b3c2bc5ede08c062d4e362a960a0d90c5312768",
+    "results/maintenance/m3-operational-20261102-01/plan.json": "1a8524e363e334b19b2998c64b51270671341e44d712d34e0f318053a06d6783",
+    "results/preflight/m3-operational-20261102-01/zipformer-t2/execution.json": "84822f62ef405d5fcc0d6a4bdad6d89e91a649a0a435626c82859ad05b98d1e6",
+    "results/preflight/m3-operational-20261102-01/zipformer-t2/worker.json": "996f55a519d46b60022bd87c7d70c16702b0536659982cbde4e46239ae6f3cf6",
+    "results/preflight/m3-operational-20261102-01/zipformer-t2/thermal.jsonl": "361b91f83b1a5c5c1139da1a12a39fb42d054ef009a8a11fdaea9e12b54dcfd7",
+    "results/preflight/m3-operational-20261102-01/zipformer-t2/warnings.jsonl": "ccf94423628dd6c3b6c88a448cd41dfa7ff63ecb8590a5112e16f11e97f6eb77",
+    "results/preflight/m3-operational-20261102-01/zipformer-t2/calls.jsonl": "90b9ebbfe075cec7be6bbc79c9bab8db637ad693f3c04027f1c1a7fb121b266f",
+    "results/preflight/m3-operational-20261102-01/zipformer-t2/threads.jsonl": "f6bde689d86eb437848b7c332bcf4d58d69376a3ba2010abab4d3f9eb864e266",
+    "results/preflight/m3-thermal80-20261102-01/zipformer-t2/worker.json": "ef81499f6d8e3760ac5416b2827f73b8c570c7d6f8d4c86603ebc1e4072bdd83",
+    "results/maintenance/m3-operational-20261102-01/preservation-after.json": "314b578a8288878f98195a77d41c0e5c58618bb259faccdb97e639a5660f2ac3",
+    "results/maintenance/m3-operational-20261102-01/host-tests.log": "ef8155131c064ba71e497e247e35a98d1512e8ee7ee647c91f5015bf3351cb36",
+    "results/maintenance/m3-operational-20261102-01/rp5-tests.log": "c1b0b14272d80cf0367b9b2f60aba226d0407b3c08fd5021beae5781d0dadbc8",
+    "results/maintenance/m3-operational-20261102-01/preservation-before.json": "9f79c05fce5a07b32d030ba03cea22968ae6f4c3e8dad65604656235429e01f7",
+    "results/maintenance/m3-operational-20261102-01/cooling-before.json": "3fc48887b2ac16b013ccfa41226d30614f9fea9b20a596f814abf2d359f71b10",
+    "results/maintenance/m3-operational-20261102-01/cooling-after.json": "9599d236e927a281a256b72fe777f17458ad15b8b39f67d9bb88682918bbe4ab",
+    "results/maintenance/m3-operational-20261102-01/launcher.json": "104001a6f6b448d82639a9fce453f7231615e3ebbc743428cb0fab3a60bf5246",
+    "results/maintenance/m3-operational-20261102-01/controller.log": "7ccb72ce6ce9df3b5f7acfc5726edaacc79b16370af2bac436ce5ff32381b064",
+    "results/maintenance/m3-operational-20261102-01/launch.py": "cf33fc39f7d7a36347f810b0f0206ac66325306a136b1e180e1e5098b7656f55",
+    "results/maintenance/m3-operational-20261102-01/audit.py": "bac1dcf9fcd12f0b0f4f16ff2a799b851f0dd11e9527f7d9a29ba10dc5b97ccd",
+    "results/maintenance/m3-operational-20261102-01/analyze.py": "095129fd6c7e5da089598fb17a6578ce7e93aba866aed10d6b22da898f78a29b"
+  },
+  "scope_ko": "사용자 승인 운영 부하 1회. 기본 열 보호 유지. 무대기 batch 반복으로 실제 1배속 streaming/Hybrid를 검증하지 않음. 과거 75/80 결과 유지."
+}
