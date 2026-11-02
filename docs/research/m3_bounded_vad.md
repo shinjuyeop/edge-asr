@@ -57,3 +57,11 @@ PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/edge_asr.py tools thermal-run
 [Raspberry Pi 공식 `get_throttled` 정의](https://www.raspberrypi.com/documentation/computers/os.html#get_throttled)에 따라 하위 비트 0~3은 현재 저전압·클럭 제한·throttle·soft 온도 제한, 상위 16~19는 발생 이력이다. 프로젝트의 75°C 정지 기준은 이 비트와 별개다. 과거 `0xe0000` 이력만으로 해당 부하 중 실제 제한을 단정하지 않는다. 1Hz 표본 사이의 순간 제한도 부재를 보장하지 못한다.
 
 [과거 냉각 재분석](../../results/summaries/m3-cooling-audit-20261029.json)에서 팬이 회전하고 RPM이 증가한 사실은 확인했다. Zipformer 2T는 약 14.09초 후 76°C 표본에서 중단했으며 직후 표본은 77.1°C였다. 현재 제한 비트는 관측 표본에서 0이고 새 이력은 없었다. SenseVoice 1T의 기존 480표본은 최대 73.8°C였다. 팬 회전만으로 방열판 접촉·통풍·동시 부하 냉각 합격을 판단하지 않는다. 현재 장치 상태는 SSH 연결 실패로 미확인이다.
+
+## 2026-11-02 연결 복구 후 추가하는 지속 상태 검사
+
+`probe-vad-duration`은 별도 파생 WAV에 identity/rms26 × 3/5/8초 상한을 적용한다. `--manifest`의 `vad-duration-input-v1`은 data 아래 WAV·해시·프레임 수·Host 공통 PCM 해시를 고정한다. 30초 초과 90초 이하 입력만 허용하고 원본은 수정하지 않는다. `--backend native/bounded`와 새 `--output`을 지정해 기존 `thermal-run` 안에서 실행한다.
+
+첫 입력은 개발 목록의 첫 long 표본 `seoul-s06f18m2-u0085`에서 배포 예비 주석의 가장 긴 speech 구간 `[43256,59016)`을 추출해 45초 반복한 비정상 음성이다. 모델 출력으로 구간을 고르지 않는다. 자연 장문·단어 정확도·최종 독립 평가로 사용하지 않는다. 실제 활성 길이가 30초를 넘지 않으면 완료됐어도 지속 상태 조건을 입증한 것으로 보지 않는다. 두 정책의 PCM이 같을 경우 별개의 음량 조건으로 해석하지 않는다.
+
+각 소유/문맥 PCM을 전체 참조 PCM 슬라이스와 대조하고, 구간 겹침·길이 상한·프레임/공통 해시를 검사한다. RSS는 벽시계 표본 및 약 1초 오디오 위치별 관측을 함께 남긴다. 실제 신경망의 `reset_count`와 `windows_since_reset`을 기록해 강제 구간마다 재설정하지 않았는지 확인한다. 최초 준비 reset과 새 세션 reset을 구분하며, 세션 중 reset 차이는 1이어야 한다. native의 30초 안전 중단은 실패로 보존하고 성공으로 바꾸지 않는다. 워밍업 0회·조건별 1회인 기계적 검사이므로 처리 시간/RSS를 반복 성능 개선 수치로 쓰지 않는다.

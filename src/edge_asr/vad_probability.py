@@ -43,6 +43,8 @@ class K2SileroProbability:
         self.reset()
 
     def reset(self):
+        self.reset_count = getattr(self, "reset_count", 0) + 1
+        self.windows_since_reset = 0
         self.h = self.np.zeros((2, 1, 64), dtype=self.np.float32)
         self.c = self.np.zeros((2, 1, 64), dtype=self.np.float32)
 
@@ -61,6 +63,7 @@ class K2SileroProbability:
         if not math.isfinite(value) or not 0 <= value <= 1:
             raise ValueError("잘못된 Silero 음성 확률")
         self.h, self.c = h, c
+        self.windows_since_reset += 1
         return value
 
     def metadata(self):
@@ -71,6 +74,8 @@ class K2SileroProbability:
             "num_threads": 1,
             "providers": self.session.get_providers(),
             "recurrent_state_bytes": self.h.nbytes + self.c.nbytes,
+            "reset_count": self.reset_count,
+            "windows_since_reset": self.windows_since_reset,
             "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요.",
         }
 

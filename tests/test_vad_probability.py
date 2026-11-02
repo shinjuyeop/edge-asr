@@ -110,7 +110,11 @@ class ProbabilityTests(unittest.TestCase):
             self.assertEqual(calls[0][0].intra_op_num_threads, 1)
             self.assertEqual(calls[0][1], ["CPUExecutionProvider"])
             self.assertEqual(model.metadata()["recurrent_state_bytes"], 1024)
+            self.assertEqual(model.metadata()["reset_count"], 1)
+            self.assertEqual(model.metadata()["windows_since_reset"], 2)
             model.reset()
+            self.assertEqual(model.metadata()["reset_count"], 2)
+            self.assertEqual(model.metadata()["windows_since_reset"], 0)
             self.assertTrue(all(x == 0 for x in model.h.values))
             with self.assertRaises(ValueError):
                 model([0] * 511)

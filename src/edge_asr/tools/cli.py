@@ -23,6 +23,7 @@ COMMANDS = {
     "probe-vad": "probes.vad",
     "probe-segments": "probes.segments",
     "probe-annotated-vad": "probes.annotated_vad",
+    "probe-vad-duration": "probes.vad_duration",
     "summarize-comparison": "reports.comparison",
     "summarize-preflight": "reports.preflight",
     "summarize-vad": "reports.vad",

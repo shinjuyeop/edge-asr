@@ -45,3 +45,5 @@ edge-asr tools list
 과거 JSON 영수증의 실행 명령·소스 해시와 측정값은 당시 상태를 나타내므로 소급 변경하지 않는다. 이전 소스 자체가 필요한 경우 해당 기록의 Git 커밋을 별도 읽기 전용 체크아웃에서 확인한다. 현재 RP5 자산/환경을 과거 버전으로 되돌리지 않는다.
 
 추가 진단 명령 `edge-asr tools inspect-cooling`은 `reports.cooling`에서 기존 `--run` 기록 재분석 또는 `--live` 순간 센서 조회만 수행한다. `--output`에는 새 JSON 파일을 지정한다. 부하 실행과 OS 설정 변경은 없다. `probe-annotated-vad --backend bounded`는 별도 Python ORT를 사용하는 실험 경로이며 기본값은 기존 `native`다. [구현 범위와 실제 검증 절차](../research/m3_bounded_vad.md)를 따른다.
+
+`edge-asr tools probe-vad-duration`은 파생 WAV의 30초 초과 활성·3/5/8초 소유 PCM·RSS·reset 계측을 위한 별도 공학 검사다. 실제 정확도나 마이크 지연 평가를 대신하지 않는다. `probes.vad_duration`에 구현하며 동일한 외부 열/실행 제한 안에서 사용한다.
