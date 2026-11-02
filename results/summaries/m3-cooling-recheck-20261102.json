@@ -1,0 +1,254 @@
+{
+  "schema": "cooling-recheck-v1",
+  "date": "2026-11-02",
+  "status": "control_rejected_additional_asr_load_stopped",
+  "source_commit": "441dd5a6ccf919ecac86a24a2e53fb2e028bac95",
+  "config_sha256": "00beb9bb099a137eb05a731a25ff7f5d9158a8324e3a2d6834b16f5816f91511",
+  "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+  "model_files": {
+    "tokens": {
+      "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/tokens.txt",
+      "sha256": "016bdf0965029263b7ad01b742366ee542ef0bef38261510e8176ff6f2e9e668"
+    },
+    "encoder": {
+      "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/encoder-epoch-99-avg-1.int8.onnx",
+      "sha256": "8d0b1aa24fbedd4e3948564ab7facd151b8ce9b0c48fc987c541de2de3af5697"
+    },
+    "decoder": {
+      "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/decoder-epoch-99-avg-1.onnx",
+      "sha256": "b29cfb4575141e50a30a22b2c4579934f3d4f45b83c9c8c08c3aef5a3fa7abfc"
+    },
+    "joiner": {
+      "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/joiner-epoch-99-avg-1.int8.onnx",
+      "sha256": "128b80a66a1f718488af8560f9d15895109b99ff3e573f0a0130e03774ef1ced"
+    }
+  },
+  "conditions_equal_to_prior_rejected_run": {
+    "config_values": true,
+    "config_sha256": true,
+    "manifest_sha256": true,
+    "weights_sha256": true
+  },
+  "requested_duration_s": 480,
+  "thermal": {
+    "run": "/d/shin/edge-asr/results/preflight/m3-cooling-recheck-20261102-01/zipformer-t2",
+    "source_sha256": {
+      "execution.json": "0760dbcda7ffe36890cf0aa7f6f9900a1e0790c7c29d680af54d8ea98a7e93a1",
+      "thermal.jsonl": "9c73f0312a4372176ccb3eee4299d7e0e34e297599b980821e99121c81fe1d91"
+    },
+    "status": "control_rejected",
+    "control_valid": false,
+    "rejection": "temperature_limit",
+    "thermal_sample_count": 16,
+    "before": {
+      "at_utc": "2026-11-02T08:29:40.339806+00:00",
+      "elapsed_from_before_s": 0.0,
+      "temperature_c": 52.35,
+      "fan_rpm": 2976,
+      "cpu0_freq_khz": 1500000,
+      "current_limits": 0,
+      "history_limits": 0
+    },
+    "after": {
+      "at_utc": "2026-11-02T08:29:55.493671+00:00",
+      "elapsed_from_before_s": 15.153865301999986,
+      "temperature_c": 76.55,
+      "fan_rpm": 8992,
+      "cpu0_freq_khz": 2400000,
+      "current_limits": 0,
+      "history_limits": 0
+    },
+    "software_stop_mc": 75000,
+    "first_observed_software_temperature_limit": {
+      "at_utc": "2026-11-02T08:29:55.480141+00:00",
+      "elapsed_from_before_s": 15.140340107999918,
+      "temperature_c": 76.55,
+      "fan_rpm": 8992,
+      "cpu0_freq_khz": 2400000,
+      "current_limits": 0,
+      "history_limits": 0
+    },
+    "first_observed_current_limit": null,
+    "current_limit_observed": false,
+    "new_history_bits": 0,
+    "telemetry_missing_samples": 0,
+    "fan_missing_samples": 0,
+    "fan_positive_samples": 18,
+    "fan_rpm_max": 8992,
+    "temperature_mc_max_monitor": 76550,
+    "temperature_mc_max_with_before_after": 76550,
+    "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+  },
+  "worker_status_preserved": "running",
+  "completed_calls": 33,
+  "complete_50_sample_cycles": 0,
+  "partial_call_observations": {
+    "wall_s": 10.840250687000434,
+    "process_cpu_s": 35.840652817000006,
+    "cpu_percent": 330.62568248518375,
+    "scope_ko": "중단 전 완료한 호출만. 전체 프로세스·균형 표본·장시간 처리량 비교 아님."
+  },
+  "threads": {
+    "snapshot_count": 14,
+    "observed_max": 8,
+    "active_at_least_1_percent": 4,
+    "rows": [
+      {
+        "tid": "2149",
+        "cpu_s": 13.079999999999998,
+        "paired_s": 13.085986913999932,
+        "cpu_percent": 99.95424942696887
+      },
+      {
+        "tid": "2157",
+        "cpu_s": 10.829999999999998,
+        "paired_s": 11.080312971000012,
+        "cpu_percent": 97.74092147347149
+      },
+      {
+        "tid": "2160",
+        "cpu_s": 7.529999999999999,
+        "paired_s": 10.076830488000041,
+        "cpu_percent": 74.72587743702817
+      },
+      {
+        "tid": "2159",
+        "cpu_s": 5.6000000000000005,
+        "paired_s": 10.076830488000041,
+        "cpu_percent": 55.57302970084433
+      },
+      {
+        "tid": "2163",
+        "cpu_s": 0.02,
+        "paired_s": 9.055560409999998,
+        "cpu_percent": 0.22085877730895734
+      },
+      {
+        "tid": "2151",
+        "cpu_s": 0.0,
+        "paired_s": 2.0056739429999197,
+        "cpu_percent": 0.0
+      },
+      {
+        "tid": "2152",
+        "cpu_s": 0.0,
+        "paired_s": 13.085986913999932,
+        "cpu_percent": 0.0
+      },
+      {
+        "tid": "2153",
+        "cpu_s": 0.0,
+        "paired_s": 13.085986913999932,
+        "cpu_percent": 0.0
+      },
+      {
+        "tid": "2154",
+        "cpu_s": 0.0,
+        "paired_s": 13.085986913999932,
+        "cpu_percent": 0.0
+      }
+    ],
+    "scope_ko": "연속 표본에 같은 시작 tick으로 존재한 TID의 CPU 차분. 모델 로딩·워밍업 포함; 역할/원인 미확정."
+  },
+  "prior_run": {
+    "source_commit": "a1feed162793d01b92da8211530803b308238789",
+    "before_temperature_c": 52.9,
+    "rejected_temperature_c": 76.0,
+    "elapsed_to_rejected_sample_s": 14.08987494900066,
+    "scope_ko": "서로 다른 날짜/부팅/실내 조건의 단회 관측. 성능 개선 비율로 해석하지 않음."
+  },
+  "physical_observation": {
+    "source": "user statement",
+    "statement_ko": "안에 팬 있어 케이스 안에",
+    "fan_inside_case": true,
+    "cooler_product": null,
+    "case_lid_state": null,
+    "heatsink_contact_verified": false,
+    "airflow_verified": false
+  },
+  "hardware_fault_confirmed": false,
+  "fan_curve_changed": false,
+  "stop_threshold_changed": false,
+  "further_asr_load_executed": false,
+  "raw_files_verified": 7,
+  "preservation": {
+    "protected_files": 4069,
+    "changed": [],
+    "missing": [],
+    "packages": {
+      "numpy": "2.4.6",
+      "sherpa-onnx": "2.0.1",
+      "sherpa-onnx-core": "2.0.1",
+      "onnxruntime": "1.31.1"
+    },
+    "packages_unchanged": true,
+    "python_unchanged": true,
+    "source_commit": "441dd5a6ccf919ecac86a24a2e53fb2e028bac95",
+    "working_tree_clean": true,
+    "recorded_process_present": false
+  },
+  "next_input_preparation": {
+    "schema": "segment-accuracy-preparation-v1",
+    "status": "design_and_input_audit_only",
+    "manifest_path": "data/evaluation/kss-dev50/manifest.jsonl",
+    "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+    "sample_count": 50,
+    "reference_characters": 756,
+    "total_audio_s": 164.919,
+    "longer_than_s": {
+      "3": 34,
+      "5": 4,
+      "8": 0
+    },
+    "reference_kind": "dataset_published_expanded_script",
+    "human_reviewed_acoustic_endpoints_available": false,
+    "model": "sensevoice",
+    "num_threads": 1,
+    "language": "ko",
+    "use_itn": false,
+    "audio_policy": "identity",
+    "normalization": "ko_cer_v1",
+    "conditions": [
+      {
+        "kind": "full_batch"
+      },
+      {
+        "kind": "fixed_windows",
+        "seconds": 5,
+        "context_frames": 0
+      },
+      {
+        "kind": "bounded_vad_segments",
+        "seconds": 5,
+        "context_frames": 0
+      }
+    ],
+    "raw_text_join": "source segment order; no de-duplication or keyword filtering",
+    "new_inference_executed": false,
+    "gate": "cooling condition must pass before further ASR load; no execution while control_rejected",
+    "scope_ko": "같은 출처 전사로 완전 발화/고정 창/VAD 구간 결과의 CER 차이를 평가할 준비. 정확한 음소 끝·마이크 지연·Hybrid 정확도는 별도. KSS는 개발 자료이며 최종 독립 평가가 아님."
+  },
+  "asr_cer": null,
+  "controlled_rtf": null,
+  "sustained_degradation_fraction": null,
+  "streaming_first_text_s": null,
+  "refine_delay_s": null,
+  "evidence_sha256": {
+    "results/maintenance/m3-cooling-recheck-20261102-01/plan.json": "9144ed57df11aea30d8024644f92e98b6b77e4dc35d47fed71142db8ec3f1529",
+    "results/maintenance/m3-cooling-recheck-20261102-01/transfer-manifest.json": "8eec434dc092d83c1542215a76d32bf10a61f0811c5149aced390c8c9e8f79ff",
+    "results/preflight/m3-cooling-recheck-20261102-01/zipformer-t2/execution.json": "0760dbcda7ffe36890cf0aa7f6f9900a1e0790c7c29d680af54d8ea98a7e93a1",
+    "results/preflight/m3-cooling-recheck-20261102-01/zipformer-t2/worker.json": "8e22d55bda030efc72121ee5258f43702850abf758d87a44b07066e926f141d8",
+    "results/preflight/m3-cooling-recheck-20261102-01/zipformer-t2/calls.jsonl": "5e6c122855e7a6b495e4992c061eae473d25202ce3908a19a8b8e043c1d93707",
+    "results/preflight/m3-cooling-recheck-20261102-01/zipformer-t2/threads.jsonl": "bfcfab937f4d776e2c0eec7caadd10dc257bc4e0b2e76c85af7c2e4e6a0aa1b2",
+    "results/preflight/m3-0-20261029-01/long-load-zipformer-t2/worker.json": "4df5db2760fa2638dc217a4343d130e679e018f399456ecdb3059977b65dc5e5",
+    "results/preflight/m3-0-20261029-01/long-load-zipformer-t2/execution.json": "cab733dcd9b328cbcf84ad999da2697b03f0a05bcb75dcb5013f70e3229bdcd6",
+    "results/maintenance/m3-cooling-recheck-20261102-01/preservation-after.json": "aad61833399a898b31d0ff1a666a5caf5c27710e3708a0b7f16d759dbef86f35",
+    "results/maintenance/m3-cooling-recheck-20261102-01/segment-accuracy-plan.json": "8560c62fd8fd166e1657082d4037b05db8031899d7d661947befd243d74c5287",
+    "results/maintenance/m3-cooling-recheck-20261102-01/preservation-before.json": "b0a05c7e4bb198dfb197e4c4535b6e6d0dd499a46d3eef18474d1b3ca6e96e44",
+    "results/maintenance/m3-cooling-recheck-20261102-01/cooling-before.json": "6ac14f2de9ed741549d04121704e1d967c789395c386c64191bd9e6aa4078328",
+    "results/maintenance/m3-cooling-recheck-20261102-01/cooling-after.json": "bf979c07d045f85d18fbe5af6fe55b64a1a09ac5cc76ce88adaa7cc7da717b61",
+    "results/maintenance/m3-cooling-recheck-20261102-01/cooling-analysis.json": "a765115138b2733803ad3e935e00c45f4cec35a917a2d667193c8fe3fd71f9f5",
+    "results/maintenance/m3-cooling-recheck-20261102-01/analyze.py": "64629195532ab84baa368d361772c96653c15dae3ca4384ca7f355e4839c34b7"
+  },
+  "scope_ko": "기존 75°C 소프트웨어 중단 기준을 미통과. 하드웨어 throttle/고장이나 Hybrid 실패로 바꾸어 해석하지 않음. 자연 발화 구간 CER 평가는 설계/입력 점검만 수행."
+}
