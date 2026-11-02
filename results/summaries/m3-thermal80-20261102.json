@@ -1,0 +1,256 @@
+{
+  "schema": "thermal80-validation-v1",
+  "date": "2026-11-02",
+  "status": "control_rejected",
+  "control_valid": false,
+  "source_commit": "dfbd306e303e1fc068d0ad1d1b9cdd386eda41f1",
+  "temperature_policy": {
+    "admission_mc": 53000,
+    "admission_consecutive": 3,
+    "stop_mc": 80000,
+    "interval_s": 0.25,
+    "timeout_s": 600,
+    "address_space_bytes": 4294967296,
+    "scope": "폴링 대기 0.25초+조회 비용. 75°C 경고, 80°C/현재 제한/새 이력/결측 중단. 고정 클럭/열평형 보장 아님.",
+    "name": "warn75-stop80",
+    "warn_mc": 75000
+  },
+  "requested_duration_s": 480,
+  "worker_status_preserved": "running",
+  "model_files": {
+    "tokens": {
+      "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/tokens.txt",
+      "sha256": "016bdf0965029263b7ad01b742366ee542ef0bef38261510e8176ff6f2e9e668"
+    },
+    "encoder": {
+      "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/encoder-epoch-99-avg-1.int8.onnx",
+      "sha256": "8d0b1aa24fbedd4e3948564ab7facd151b8ce9b0c48fc987c541de2de3af5697"
+    },
+    "decoder": {
+      "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/decoder-epoch-99-avg-1.onnx",
+      "sha256": "b29cfb4575141e50a30a22b2c4579934f3d4f45b83c9c8c08c3aef5a3fa7abfc"
+    },
+    "joiner": {
+      "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/joiner-epoch-99-avg-1.int8.onnx",
+      "sha256": "128b80a66a1f718488af8560f9d15895109b99ff3e573f0a0130e03774ef1ced"
+    }
+  },
+  "model_config_sha256": "00beb9bb099a137eb05a731a25ff7f5d9158a8324e3a2d6834b16f5816f91511",
+  "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+  "condition_changes_from_75": {
+    "workload_config_and_weights_equal": true,
+    "sampling_sleep_s": [
+      1,
+      0.25
+    ],
+    "stop_mc": [
+      75000,
+      80000
+    ],
+    "warnings_enabled": true,
+    "fan_or_os_settings_changed": false
+  },
+  "thermal": {
+    "run": "/d/shin/edge-asr/results/preflight/m3-thermal80-20261102-01/zipformer-t2",
+    "source_sha256": {
+      "execution.json": "1ebf2c7bdc6ea1215d2ebeb3344bcbcb7d7ddbe4e35bb9997e842d18ab0f88de",
+      "thermal.jsonl": "9e407c223c17b08772a14df26b302efa77ca3d031e7d38a92a161e7c545994e3"
+    },
+    "status": "control_rejected",
+    "control_valid": false,
+    "rejection": "temperature_limit",
+    "thermal_sample_count": 131,
+    "before": {
+      "at_utc": "2026-11-02T08:57:51.291126+00:00",
+      "elapsed_from_before_s": 0.0,
+      "temperature_c": 52.35,
+      "fan_rpm": 2953,
+      "cpu0_freq_khz": 2400000,
+      "current_limits": 0,
+      "history_limits": 0
+    },
+    "after": {
+      "at_utc": "2026-11-02T08:58:24.641299+00:00",
+      "elapsed_from_before_s": 33.35017423599993,
+      "temperature_c": 78.2,
+      "fan_rpm": 9171,
+      "cpu0_freq_khz": 2400000,
+      "current_limits": 0,
+      "history_limits": 0
+    },
+    "software_stop_mc": 80000,
+    "first_observed_software_temperature_limit": {
+      "at_utc": "2026-11-02T08:58:24.628248+00:00",
+      "elapsed_from_before_s": 33.3371262669998,
+      "temperature_c": 80.95,
+      "fan_rpm": 9171,
+      "cpu0_freq_khz": 2400000,
+      "current_limits": 0,
+      "history_limits": 0
+    },
+    "first_observed_current_limit": null,
+    "current_limit_observed": false,
+    "new_history_bits": 0,
+    "telemetry_missing_samples": 0,
+    "fan_missing_samples": 0,
+    "fan_positive_samples": 133,
+    "fan_rpm_max": 9171,
+    "temperature_mc_max_monitor": 80950,
+    "temperature_mc_max_with_before_after": 80950,
+    "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+  },
+  "warning_samples": 63,
+  "first_warning": {
+    "at_utc": "2026-11-02T08:58:08.220704+00:00",
+    "monotonic_s": 2846.97538217,
+    "temperature_mc": 75450,
+    "cpu0_freq_khz": 2400000,
+    "governor": "ondemand",
+    "throttled_flags": 0,
+    "current_limits": 0,
+    "history_limits": 0,
+    "fan_rpm": 6741
+  },
+  "warning_semantics_ko": "75°C 이상인 monitor/after 표본 수. 오류 수나 독립 실험 횟수가 아님.",
+  "first_warning_elapsed_s": 16.929582653000125,
+  "elapsed_to_stop_s": 33.3371262669998,
+  "warning_to_stop_s": 16.407543613999678,
+  "actual_poll_intervals_s": {
+    "n": 130,
+    "mean": 0.2564179489846153,
+    "p50": 0.25568217799991544,
+    "p95": 0.2602847309999561,
+    "max": 0.29741107600011674
+  },
+  "completed_calls": 85,
+  "full_50_sample_cycles": 1,
+  "partial_call_cpu_percent": 330.360385093522,
+  "threads": {
+    "snapshot_count": 129,
+    "observed_max": 8,
+    "active_at_least_1_percent": 4,
+    "rows": [
+      {
+        "tid": "3077",
+        "cpu_s": 32.790000000000056,
+        "paired_s": 32.82836360400006,
+        "mean_cpu_percent": 99.88313884766607
+      },
+      {
+        "tid": "3090",
+        "cpu_s": 30.010000000000044,
+        "paired_s": 31.055930786000317,
+        "mean_cpu_percent": 96.63210614034546
+      },
+      {
+        "tid": "3096",
+        "cpu_s": 22.580000000000005,
+        "paired_s": 30.04457938900032,
+        "mean_cpu_percent": 75.15498788532487
+      },
+      {
+        "tid": "3095",
+        "cpu_s": 16.470000000000006,
+        "paired_s": 30.04457938900032,
+        "mean_cpu_percent": 54.818540764893754
+      },
+      {
+        "tid": "3102",
+        "cpu_s": 0.07,
+        "paired_s": 29.01662740000029,
+        "mean_cpu_percent": 0.2412409927419729
+      },
+      {
+        "tid": "3081",
+        "cpu_s": 0.0,
+        "paired_s": 2.0250333570002113,
+        "mean_cpu_percent": 0.0
+      },
+      {
+        "tid": "3082",
+        "cpu_s": 0.0,
+        "paired_s": 32.32214193200025,
+        "mean_cpu_percent": 0.0
+      },
+      {
+        "tid": "3083",
+        "cpu_s": 0.0,
+        "paired_s": 32.32214193200025,
+        "mean_cpu_percent": 0.0
+      },
+      {
+        "tid": "3084",
+        "cpu_s": 0.0,
+        "paired_s": 32.32214193200025,
+        "mean_cpu_percent": 0.0
+      }
+    ],
+    "runtime_roles_confirmed": false
+  },
+  "prior_75_result": {
+    "status": "control_rejected",
+    "control_valid": false,
+    "source_commit": "441dd5a6ccf919ecac86a24a2e53fb2e028bac95",
+    "stop_mc": 75000,
+    "rejected_temperature_c": 76.55,
+    "completed_calls": 33
+  },
+  "asr_cer": null,
+  "controlled_rtf": null,
+  "sustained_degradation_fraction": null,
+  "streaming_first_text_s": null,
+  "refine_delay_s": null,
+  "raw_files_verified": 8,
+  "preservation": {
+    "protected_files": 4086,
+    "changed": [],
+    "missing": [],
+    "packages": {
+      "numpy": "2.4.6",
+      "sherpa-onnx": "2.0.1",
+      "sherpa-onnx-core": "2.0.1",
+      "onnxruntime": "1.31.1"
+    },
+    "packages_unchanged": true,
+    "python_unchanged": true,
+    "source_commit": "dfbd306e303e1fc068d0ad1d1b9cdd386eda41f1",
+    "working_tree_clean": true,
+    "guard_process_active": false,
+    "worker_process_present": false,
+    "same_boot_as_launch": true
+  },
+  "tests": {
+    "host": {
+      "count": 196,
+      "seconds": 13.05,
+      "passed": true
+    },
+    "rp5": {
+      "count": 196,
+      "seconds": 28.53,
+      "passed": true
+    }
+  },
+  "evidence_sha256": {
+    "results/maintenance/m3-thermal80-20261102-01/transfer-manifest.json": "478085283d1720ec037d3562e1ca32093c003cba51d7e46b8955cbf48f0d6925",
+    "results/maintenance/m3-thermal80-20261102-01/plan.json": "94c36c353d5f434755685509e0dd6b808432e3832fb589fe2adb2593dab4446a",
+    "results/preflight/m3-thermal80-20261102-01/zipformer-t2/execution.json": "1ebf2c7bdc6ea1215d2ebeb3344bcbcb7d7ddbe4e35bb9997e842d18ab0f88de",
+    "results/preflight/m3-thermal80-20261102-01/zipformer-t2/worker.json": "ef81499f6d8e3760ac5416b2827f73b8c570c7d6f8d4c86603ebc1e4072bdd83",
+    "results/preflight/m3-thermal80-20261102-01/zipformer-t2/thermal.jsonl": "9e407c223c17b08772a14df26b302efa77ca3d031e7d38a92a161e7c545994e3",
+    "results/preflight/m3-thermal80-20261102-01/zipformer-t2/warnings.jsonl": "5c6479254fa12a8a608dda377a2f54cb8f5bd564fa91171e1bf188b4e21ba113",
+    "results/preflight/m3-thermal80-20261102-01/zipformer-t2/calls.jsonl": "37f5b634f1db2000501e7f114664871d22ba87355a044f25e98133953da49665",
+    "results/preflight/m3-thermal80-20261102-01/zipformer-t2/threads.jsonl": "19feb6dd9b23802f5c6cf4c56a7956a98f7c42954e78f12edb747ebea8660ce3",
+    "results/preflight/m3-cooling-recheck-20261102-01/zipformer-t2/execution.json": "0760dbcda7ffe36890cf0aa7f6f9900a1e0790c7c29d680af54d8ea98a7e93a1",
+    "results/preflight/m3-cooling-recheck-20261102-01/zipformer-t2/worker.json": "8e22d55bda030efc72121ee5258f43702850abf758d87a44b07066e926f141d8",
+    "results/maintenance/m3-thermal80-20261102-01/preservation-after.json": "90ea4bd8208259cde8ef610a6d85e80665e5d21b14ae40e2211e7c439dd7bb26",
+    "results/maintenance/m3-thermal80-20261102-01/host-tests.log": "f42bfbaa93d587dd5d85214b425c9381c563c6cb9d658dbc9f13104523717cfb",
+    "results/maintenance/m3-thermal80-20261102-01/rp5-tests.log": "84d29011b40ddfc46f3b4d351eabd766c3a9bec7fd3bb690d953ba900b4f7060",
+    "results/maintenance/m3-thermal80-20261102-01/preservation-before.json": "9b18a54f5c89dbc20d939c2adf53a954356ccf49640ea0129f17093eddbb1d5c",
+    "results/maintenance/m3-thermal80-20261102-01/cooling-before.json": "b51a713a079473db7b1d152e647b954e04a2d9225817ca8d4ff94451567266ba",
+    "results/maintenance/m3-thermal80-20261102-01/cooling-after.json": "cf5f595c43e84fd3c689cf8df3f53a04f0f4e12b207b8ce7c22d1c41c324e20a",
+    "results/maintenance/m3-thermal80-20261102-01/launcher.json": "7da06d70833afb20f966cd29e7c75e7571fa2622da86d2a9dc6be62bd0827c5b",
+    "results/maintenance/m3-thermal80-20261102-01/controller.log": "dfa094969db342c4f275497f473fe6c0a4ed99cad8b1fc0da783f665d31d90b9",
+    "results/maintenance/m3-thermal80-20261102-01/analyze.py": "7a1b75b4a7bee38b57726779b4fe7fdc75e16dfa74315eeeb8139dc50f920729"
+  },
+  "scope_ko": "사용자 승인 신규 75경고/80중단 조건. 과거75결과는 그대로 보존. 단회 부하 결과이며 중단한 자료로 장기 안정성/속도 개선/Hybrid 지연을 추정하지 않음."
+}
