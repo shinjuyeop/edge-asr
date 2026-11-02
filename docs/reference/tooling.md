@@ -53,3 +53,5 @@ edge-asr tools list
 `thermal-run --temperature-policy warn75-stop80`은 승인된 별도 75°C 경고/80°C 중단 정책이다. 기본 `legacy75`는 과거와 같은 75°C 중단이다. [정책·실행 범위](../research/m3_thermal_policy.md)와 새 영수증의 정책 ID를 확인한다.
 
 `thermal-run --temperature-policy operational`은 기본 열 보호를 유지한 운영 부하 검사다. 온도/감속을 기록하며 계속 실행하고 저전압/계측 누락/외부 제한 실패를 구분한다. `operational_valid`와 `control_valid=false`를 함께 기록하므로 기존 통제 비교 집계에 합치지 않는다. `probe-load`의 호출별 monotonic 시각으로 열·TID 표본을 연결할 수 있다.
+
+`probe-segmented-accuracy`와 `summarize-segmented-accuracy`는 [고정한 세 구간 정책의 파일 CER 비교](../research/m3_segmentation_accuracy.md)와 모델 없는 재채점이다. 일반 batch 평가의 순수 ASR RTF와 구간 도구의 파이프라인 RTF를 구분한다.
