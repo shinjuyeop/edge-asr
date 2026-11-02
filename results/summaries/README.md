@@ -4,6 +4,7 @@
 
 | 기록 | 내용 |
 | --- | --- |
+| [자연 발화 구간 정책 CER 비교](m3-segmented-accuracy-20261102.md) | SenseVoice 1T, KSS 150/150 성공; 전체/고정5초 5.16%, VAD 5.56%, 시작/문맥 회귀 확인 |
 | [기본 열 보호 아래 8분 운영 부하](m3-operational-20261102.md) | Zipformer 2T 1,203회 완료, 최고 85.9°C·실제 스로틀링 관측; 진단 batch RTF 0.1209, 통제/실시간 평가와 구분 |
 | [75°C 경고/80°C 중단 구현·실측](m3-thermal80-20261102.md) | 새 정책 작동·196개 Host/RP5 테스트 확인; Zipformer 2T는 80.95°C에서 중단해 장시간 미통과 |
 | [냉각 재검증·자연 발화 평가 준비](m3-cooling-recheck-20261102.md) | 기존 Zipformer 2T가 75°C 기준을 재차 미통과; 추가 ASR 중단, KSS 구간 CER 평가 입력·설계 준비 |
