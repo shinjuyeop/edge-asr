@@ -2,6 +2,8 @@
 
 공통 평가는 `edge-asr evaluate/score`를 사용하고, 자료 준비·진단·재채점은 `edge-asr tools <명령>`으로 실행한다. 기존 RP5 환경에는 패키지를 재설치하지 않는다.
 
+`edge-asr live --wav <WAV>`는 [WAV 자막 MVP](../guides/live_captions.md)의 사용자 진입점이다. 기존 온라인 VAD 동시 경로의 `--caption-display`와 열/실행 제한을 연결한다. 자동 교체·토큰 진단과 별도이며 stdout flush와 실제 화면 렌더링을 구분한다.
+
 ```bash
 .venv/bin/python scripts/edge_asr.py tools list
 .venv/bin/python scripts/edge_asr.py tools probe-annotated-vad --help

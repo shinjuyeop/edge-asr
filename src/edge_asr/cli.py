@@ -34,6 +34,10 @@ def environment_info(*, probe_runtime=False) -> dict:
 
 def main(argv: list[str] | None = None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
+    if argv[:1] == ["live"]:
+        from edge_asr.tools.live import main as live_main
+
+        return live_main(argv[1:])
     if argv[:1] == ["tools"]:
         from edge_asr.tools.cli import main as tools_main
 
@@ -42,6 +46,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--version", action="version", version=__version__)
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("tools", help="데이터 준비·RP5 측정·집계·유지보수; tools list로 목록 확인")
+    commands.add_parser("live", help="WAV 1배속 터미널 자막: Zip/보정 후보 분리 표시")
     env = commands.add_parser("env", help="현재 컴퓨터의 환경을 JSON으로 출력")
     env.add_argument(
         "--probe-runtime",

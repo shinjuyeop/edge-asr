@@ -4,6 +4,7 @@
 
 | 구분 | 문서 |
 | --- | --- |
+| WAV 자막 MVP | [한 명령 실행·Zip/보정 후보 분리 표시](guides/live_captions.md) |
 | 설치·일상 작업 | [환경 설치](guides/setup.md), [데이터 준비](guides/datasets.md), [공통 평가·재채점](guides/evaluation.md), [1배속 모사](guides/streaming_evaluation.md), [Host/RP5 배포](guides/deployment.md) |
 | 코드·계약 | [아키텍처](reference/architecture.md), [실행 도구·명령 이행표](reference/tooling.md), [지표 정의](reference/benchmark_design.md), [M1 반복 측정](reference/rp5_repeat_benchmark.md) |
 | M2 재현 절차 | [SenseVoice](research/m2_sensevoice.md), [통제 비교](research/m2_comparison.md), [외부 자료](research/m2_external_data.md) |

@@ -43,7 +43,12 @@ def probe(
     vad_model=None,
     segment_merge=False,
     token_diagnostics=False,
+    caption_display=False,
 ):
+    if caption_display and (
+        segment_merge or token_diagnostics or refine_policy != "vad0" or not refine_threads
+    ):
+        raise ValueError("자막 표시는 연속 Zip+Refine vad0 별도 모드입니다.")
     if token_diagnostics and (segment_merge or refine_policy != "vad0" or not refine_threads):
         raise ValueError("연속 토큰 진단은 구간 reset 없이 Refine을 쓰는 vad0 별도 모드입니다.")
     if segment_merge and (refine_policy != "vad0" or not refine_threads):
@@ -128,6 +133,14 @@ def probe(
             token_time_semantics="decoder_emission_point_not_acoustic_interval",
         )
         info["main_pid_components"].append("token_alignment_audit_and_result_reader")
+    if caption_display:
+        info["kind"] = "separate_caption_wav_mvp"
+        info["settings"].update(
+            caption_display=True,
+            replacements_enabled=False,
+            zip_state_policy="continuous_per_source",
+        )
+        info["main_pid_components"].append("caption_events_and_result_reader")
     write_json(output / "worker.json", info)
     adapter = channel = replay = resources = None
     telemetry = {}
@@ -168,7 +181,7 @@ def probe(
             info["sensevoice_model_files"] = {
                 k: {"path": str(p), "sha256": digest(p)} for k, p in sense.model_files.items()
             }
-            if segment_merge or token_diagnostics:
+            if segment_merge or token_diagnostics or caption_display:
                 from edge_asr.segment_merge import ReturningRefineChannel
 
                 channel = ReturningRefineChannel(root, sconfig["model"], warm, output)
@@ -279,7 +292,18 @@ def probe(
                 zlog,
                 jlog,
             )
-            if token_diagnostics:
+            if caption_display:
+                from edge_asr.captions import CaptionReplay
+
+                replay = CaptionReplay(
+                    *arguments,
+                    vad=vad,
+                    policy=refine_policy,
+                    convert=convert,
+                    caption_log=stack.enter_context((output / "caption-events.jsonl").open("x")),
+                )
+                channel.listen(replay.receive)
+            elif token_diagnostics:
                 from edge_asr.token_alignment import TokenTraceReplay
 
                 replay = TokenTraceReplay(
@@ -332,6 +356,8 @@ def probe(
                 info["zip_finished_ns"] = time.perf_counter_ns()
                 if channel:
                     info["refine_completion"] = channel.finish()
+                if caption_display and not replay.display_complete():
+                    raise RuntimeError("표시하지 못한 Refine 반환이 있습니다.")
                 if segment_merge:
                     replay.drain_finished()
                 info["measurement_finished_ns"] = time.perf_counter_ns()
@@ -410,6 +436,11 @@ def main():
     parser.add_argument("--refine-policy", choices=POLICIES, default="fixed5")
     parser.add_argument("--vad-model", type=Path)
     parser.add_argument(
+        "--caption-display",
+        action="store_true",
+        help="연속 Zip과 구간별 보정 후보를 분리 표시; 자동 교체 없음",
+    )
+    parser.add_argument(
         "--token-diagnostics",
         action="store_true",
         help="연속 Zip의 토큰/시각/VAD 구조만 진단; 텍스트 교체 없음",
@@ -430,6 +461,7 @@ def main():
         vad_model=args.vad_model,
         segment_merge=args.segment_merge,
         token_diagnostics=args.token_diagnostics,
+        caption_display=args.caption_display,
     )
 
 

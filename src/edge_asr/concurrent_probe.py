@@ -289,11 +289,10 @@ class ConcurrentReplay:
             **(extra or {}),
         }
         kind, at = self.submit(job) if self.submit else ("control_only", time.perf_counter_ns())
-        write_event(
-            self.job_log,
-            {k: v for k, v in job.items() if k != "samples"} | {"type": kind, "at_ns": at},
-        )
+        row = {k: v for k, v in job.items() if k != "samples"} | {"type": kind, "at_ns": at}
+        write_event(self.job_log, row)
         self.job_index += 1
+        return row
 
     def feed_refine(self, block, stop, source):
         self.buffer.extend(block)

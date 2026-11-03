@@ -10,6 +10,7 @@ import time
 from contextlib import nullcontext
 from datetime import datetime, timezone
 from pathlib import Path
+from threading import Event, Thread
 
 from edge_asr.artifacts import write_json as save
 from edge_asr.diagnostics import thread_snapshot
@@ -48,7 +49,7 @@ def terminate(process):
             process.wait()
 
 
-def run(root, output, command, *, temperature_policy="legacy75"):
+def run(root, output, command, *, temperature_policy="legacy75", console_callback=None):
     settings = policy_settings(temperature_policy)
     operational = temperature_policy == "operational"
     output.mkdir(parents=True, exist_ok=False)
@@ -140,13 +141,35 @@ def run(root, output, command, *, temperature_policy="legacy75"):
                 wrapped,
                 cwd=root,
                 env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
-                stdout=console,
+                stdout=subprocess.PIPE if console_callback else console,
                 stderr=subprocess.STDOUT,
                 start_new_session=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
             )
+            forward_failed = Event()
+            forward_error = []
+            reader = None
+            if console_callback:
+
+                def forward():
+                    try:
+                        for line in process.stdout:
+                            console.write(line)
+                            console.flush()
+                            console_callback(line)
+                    except BaseException as error:
+                        forward_error.append(repr(error))
+                        forward_failed.set()
+
+                reader = Thread(target=forward, daemon=True)
+                reader.start()
             reason = None
             try:
                 while process.poll() is None:
+                    if forward_failed.is_set():
+                        raise RuntimeError("console_forward_failed: " + forward_error[0])
                     row = sample(measure_arm_clock=True) if operational else sample()
                     monitor.write(json.dumps(row) + "\n")
                     monitor.flush()
@@ -188,6 +211,13 @@ def run(root, output, command, *, temperature_policy="legacy75"):
                 record["exit_code"] = process.wait()
             finally:
                 terminate(process)
+                if reader:
+                    reader.join(5)
+                    if reader.is_alive():
+                        raise RuntimeError("console_reader_cleanup_failed")
+                    process.stdout.close()
+                    if forward_failed.is_set():
+                        raise RuntimeError("console_forward_failed: " + forward_error[0])
             after = sample(measure_arm_clock=True) if operational else sample()
             warn(after, "after")
         reason = reason or reject(after)

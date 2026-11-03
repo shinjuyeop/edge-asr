@@ -6,6 +6,13 @@ Zipformer INT8의 batch/1배속 모사와 SenseVoiceSmall INT8의 batch 평가�
 
 ## 빠른 시작
 
+WAV 실시간 자막은 RP5에서 다음 명령으로 실행합니다. Zip 자막과 구간별 SenseVoice 보정 후보를 구분해 표시합니다. [사용법·제한·기록](docs/guides/live_captions.md).
+
+```bash
+.venv/bin/python scripts/edge_asr.py live \
+  --wav models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/test_wavs/0.wav
+```
+
 이미 준비된 Host/RP5 `.venv`를 사용합니다. 새 환경 설치는 [설치 안내](docs/guides/setup.md)를 따릅니다. Debian 13의 시스템 Python을 프로젝트의 3.11로 가정하지 않습니다.
 
 ```bash
