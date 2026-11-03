@@ -1,0 +1,3773 @@
+{
+  "schema": "vad-context-comparison-v1",
+  "client_work_date": "2026-11-03",
+  "source_commit": "3e39cfd4a829431fc41966288b0fc35d0436fd72",
+  "status": "completed",
+  "order": [
+    {
+      "dataset": "kss-dev50",
+      "condition": "full_batch"
+    },
+    {
+      "dataset": "kss-dev50",
+      "condition": "bounded_vad_5s"
+    },
+    {
+      "dataset": "kss-dev50",
+      "condition": "bounded_vad_5s_context200ms"
+    },
+    {
+      "dataset": "synthetic-long",
+      "condition": "full_batch"
+    },
+    {
+      "dataset": "synthetic-long",
+      "condition": "bounded_vad_5s"
+    },
+    {
+      "dataset": "synthetic-long",
+      "condition": "bounded_vad_5s_context200ms"
+    }
+  ],
+  "config_sha256": "a2bc9a87ef8d2d60e4afe354bb7e3c3961bc948b72d5d33da749f42ab8ce8d77",
+  "model_files": {
+    "model": {
+      "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/model.int8.onnx",
+      "sha256": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51"
+    },
+    "tokens": {
+      "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/tokens.txt",
+      "sha256": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc"
+    }
+  },
+  "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+  "datasets": {
+    "kss-dev50": {
+      "sample_count": 50,
+      "reference_characters": 756,
+      "total_audio_s": 164.919,
+      "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+      "conditions": {
+        "full_batch": {
+          "overall": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.051587301587301584,
+              "reference_characters": 756,
+              "errors": 39,
+              "substitutions": 25,
+              "deletions": 9,
+              "insertions": 5,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.12649657982416782,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 20.861689448021934,
+            "mean_process_cpu_percent": 100.10634276305063,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.41723378896043867,
+              "p50": 0.4076996080111712,
+              "p95": 0.6526994720043149,
+              "max": 0.740210408999701
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.1277834629598628,
+              "p50": 0.12590279275197439,
+              "p95": 0.1385756839484203,
+              "max": 0.15450731349954736
+            },
+            "rss_observed_max_mib": 448.578125
+          },
+          "by_length": {
+            "at_most_5s": {
+              "planned": 46,
+              "successful": 46,
+              "failed": 0,
+              "not_attempted": 0,
+              "interrupted": 0,
+              "complete": true,
+              "reference_character_coverage": 1.0,
+              "cer": {
+                "value": 0.05429864253393665,
+                "reference_characters": 663,
+                "errors": 36,
+                "substitutions": 23,
+                "deletions": 9,
+                "insertions": 4,
+                "scope": "successful_nonempty_references",
+                "empty_reference_samples": 0,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "rtf": 0.12671734615697752,
+              "total_audio_s": 143.42143750000002,
+              "total_inference_wall_s": 18.173983942018822,
+              "mean_process_cpu_percent": 100.10546211574925,
+              "file_processing_s": {
+                "n": 46,
+                "mean": 0.3950866074351918,
+                "p50": 0.40158134000375867,
+                "p95": 0.5623572550102836,
+                "max": 0.6132630639913259
+              },
+              "file_rtf": {
+                "n": 46,
+                "mean": 0.12802678330604583,
+                "p50": 0.12625888623896947,
+                "p95": 0.1385756839484203,
+                "max": 0.15450731349954736
+              },
+              "rss_observed_max_mib": 448.578125
+            },
+            "over_5s": {
+              "planned": 4,
+              "successful": 4,
+              "failed": 0,
+              "not_attempted": 0,
+              "interrupted": 0,
+              "complete": true,
+              "reference_character_coverage": 1.0,
+              "cer": {
+                "value": 0.03225806451612903,
+                "reference_characters": 93,
+                "errors": 3,
+                "substitutions": 2,
+                "deletions": 0,
+                "insertions": 1,
+                "scope": "successful_nonempty_references",
+                "empty_reference_samples": 0,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "rtf": 0.12502373262099425,
+              "total_audio_s": 21.497562499999997,
+              "total_inference_wall_s": 2.6877055060031125,
+              "mean_process_cpu_percent": 100.11229760813241,
+              "file_processing_s": {
+                "n": 4,
+                "mean": 0.6719263765007781,
+                "p50": 0.6526994720043149,
+                "p95": 0.740210408999701,
+                "max": 0.740210408999701
+              },
+              "file_rtf": {
+                "n": 4,
+                "mean": 0.1249852789787575,
+                "p50": 0.1249242748589518,
+                "p95": 0.12646683905684283,
+                "max": 0.12646683905684283
+              },
+              "rss_observed_max_mib": 448.578125
+            }
+          },
+          "segmentation": {
+            "condition": "full_batch",
+            "predictions_sha256": "8e74f66f377321929010b1b18e3c08f2f563a70295536d4c63355725c4ad98f1",
+            "asr_calls": 50,
+            "empty_segment_files": 0,
+            "selected_frames": 2638704,
+            "asr_wall_s": 16.278000493024592,
+            "asr_rtf_against_original_audio": 0.09870300264387118,
+            "vad_neural_wall_s": null,
+            "timing_scope": "overall.rtf는 원본 오디오 길이 대비 전처리/구간화/ASR/결과 연결/검증/계측을 포함한 파일 파이프라인 비용. asr_rtf는 ASR 호출만. WAV I/O/검증용 참조 PCM/모델 로딩/워밍업/파일 기록 제외.",
+            "rss_scope": "ASR 프로세스"
+          },
+          "owned_frames": 2638704,
+          "source_frames": 2638704,
+          "payload_total_frames": 2638704,
+          "unique_payload_frames": 2638704,
+          "overlapped_payload_frames": 0,
+          "unique_payload_fraction": 1.0,
+          "segment_reasons": {
+            "full_batch": 50
+          },
+          "hard_limit_emissions": 0,
+          "loading": {
+            "asr_loading": {
+              "wall_s": 1.86133592799888,
+              "cpu_s": 2.093272362,
+              "rss_max_mib": 427.578125
+            }
+          },
+          "warmup": {
+            "asr_successful": 3,
+            "vad_successful": 0,
+            "asr_wall_s": 0.847548680001637,
+            "asr_cpu_s": 0.8474238870000002
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m3-vad-context-20261103-01/kss-dev50/full_batch",
+            "source_sha256": {
+              "execution.json": "7960e9e98f6f719c78768d2f7f162cf7257507efac21209ebac5ebb75576dad9",
+              "thermal.jsonl": "04eb6ab7f9a2e795cf2a9acd85a631dab3ab9e461fe06b98adc063cfe4361e0c"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 29,
+            "before": {
+              "at_utc": "2026-11-03T02:46:41.273707+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 51.8,
+              "fan_rpm": 2914,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T02:47:10.733977+00:00",
+              "elapsed_from_before_s": 29.460273314994993,
+              "temperature_c": 60.6,
+              "fan_rpm": 4964,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 31,
+            "fan_rpm_max": 4964,
+            "temperature_mc_max_monitor": 64450,
+            "temperature_mc_max_with_before_after": 64450,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "operational_valid": true,
+          "control_valid": false,
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "probability_runtime": null,
+          "model_metadata": {
+            "backend": "sherpa_onnx",
+            "factory": "OfflineRecognizer.from_sense_voice",
+            "supported_modes": [
+              "batch"
+            ],
+            "provider": "cpu",
+            "feature_dim": 80,
+            "language": "ko",
+            "use_itn": false,
+            "quantization": "int8",
+            "quantization_evidence": "declared_configuration_not_graph_dtype_inspection",
+            "quantization_method": null,
+            "quantization_method_reason": "배포된 INT8 ONNX를 사용. 변환·양자화 알고리즘은 검증하지 않았습니다.",
+            "tail_padding_s": null,
+            "tail_padding_reason": "not_used_by_offline_sensevoice",
+            "output_policy": "sensevoice_control_tokens_v1",
+            "control_token_pattern": "<\\|[A-Za-z][A-Za-z0-9_]*\\|>"
+          },
+          "rescore_matches": true,
+          "unmeasured": {
+            "streaming_first_text_s": null,
+            "acoustic_endpoint_latency_s": null,
+            "refine_delay_s": null,
+            "drops": null,
+            "backlog": null
+          }
+        },
+        "bounded_vad_5s": {
+          "overall": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.05555555555555555,
+              "reference_characters": 756,
+              "errors": 42,
+              "substitutions": 26,
+              "deletions": 9,
+              "insertions": 7,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.12595724186420057,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 20.772742371002096,
+            "mean_process_cpu_percent": 100.16702448515589,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.4154548474200419,
+              "p50": 0.40897284100356046,
+              "p95": 0.6101507080020383,
+              "max": 0.7493196459981846
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.12771723696804702,
+              "p50": 0.12950151141308314,
+              "p95": 0.13826531058493205,
+              "max": 0.1558413670899312
+            },
+            "rss_observed_max_mib": 453.984375
+          },
+          "by_length": {
+            "at_most_5s": {
+              "planned": 46,
+              "successful": 46,
+              "failed": 0,
+              "not_attempted": 0,
+              "interrupted": 0,
+              "complete": true,
+              "reference_character_coverage": 1.0,
+              "cer": {
+                "value": 0.05731523378582202,
+                "reference_characters": 663,
+                "errors": 38,
+                "substitutions": 23,
+                "deletions": 9,
+                "insertions": 6,
+                "scope": "successful_nonempty_references",
+                "empty_reference_samples": 0,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "rtf": 0.12689916326491116,
+              "total_audio_s": 143.42143750000002,
+              "total_inference_wall_s": 18.200060413000756,
+              "mean_process_cpu_percent": 100.17785898104019,
+              "file_processing_s": {
+                "n": 46,
+                "mean": 0.3956534872391469,
+                "p50": 0.4024092730105622,
+                "p95": 0.5492051559995161,
+                "max": 0.6101507080020383
+              },
+              "file_rtf": {
+                "n": 46,
+                "mean": 0.12843270042287558,
+                "p50": 0.1297192884876814,
+                "p95": 0.13826531058493205,
+                "max": 0.1558413670899312
+              },
+              "rss_observed_max_mib": 453.984375
+            },
+            "over_5s": {
+              "planned": 4,
+              "successful": 4,
+              "failed": 0,
+              "not_attempted": 0,
+              "interrupted": 0,
+              "complete": true,
+              "reference_character_coverage": 1.0,
+              "cer": {
+                "value": 0.043010752688172046,
+                "reference_characters": 93,
+                "errors": 4,
+                "substitutions": 3,
+                "deletions": 0,
+                "insertions": 1,
+                "scope": "successful_nonempty_references",
+                "empty_reference_samples": 0,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "rtf": 0.11967319355398269,
+              "total_audio_s": 21.497562499999997,
+              "total_inference_wall_s": 2.57268195800134,
+              "mean_process_cpu_percent": 100.09037743633368,
+              "file_processing_s": {
+                "n": 4,
+                "mean": 0.643170489500335,
+                "p50": 0.5923059070046293,
+                "p95": 0.7493196459981846,
+                "max": 0.7493196459981846
+              },
+              "file_rtf": {
+                "n": 4,
+                "mean": 0.11948940723751868,
+                "p50": 0.11263593921102351,
+                "p95": 0.12802317546526304,
+                "max": 0.12802317546526304
+              },
+              "rss_observed_max_mib": 453.984375
+            }
+          },
+          "segmentation": {
+            "condition": "bounded_vad_5s",
+            "predictions_sha256": "55c3cda8ba31972ecb4140c770ea05d912cf5a3a4b2e3904b9973a479cf74324",
+            "asr_calls": 57,
+            "empty_segment_files": 0,
+            "selected_frames": 2366401,
+            "asr_wall_s": 14.873454029104323,
+            "asr_rtf_against_original_audio": 0.09018641896388119,
+            "vad_neural_wall_s": 2.3485801228234777,
+            "timing_scope": "overall.rtf는 원본 오디오 길이 대비 전처리/구간화/ASR/결과 연결/검증/계측을 포함한 파일 파이프라인 비용. asr_rtf는 ASR 호출만. WAV I/O/검증용 참조 PCM/모델 로딩/워밍업/파일 기록 제외.",
+            "rss_scope": "ASR+VAD 공존 프로세스"
+          },
+          "owned_frames": 2366401,
+          "source_frames": 2638704,
+          "payload_total_frames": 2366401,
+          "unique_payload_frames": 2366401,
+          "overlapped_payload_frames": 0,
+          "unique_payload_fraction": 0.896804264517733,
+          "segment_reasons": {
+            "eof": 44,
+            "vad_end": 13
+          },
+          "hard_limit_emissions": 0,
+          "loading": {
+            "asr_loading": {
+              "wall_s": 1.8452378470101394,
+              "cpu_s": 2.08134129,
+              "rss_max_mib": 422.28125
+            },
+            "vad_loading": {
+              "wall_s": 0.08562973799416795,
+              "cpu_s": 0.04626192600000012,
+              "rss_max_mib": 440.484375
+            }
+          },
+          "warmup": {
+            "asr_successful": 3,
+            "vad_successful": 3,
+            "asr_wall_s": 0.8432751689979341,
+            "asr_cpu_s": 0.8431658480000004,
+            "vad_wall_s": 0.284996073009097,
+            "vad_cpu_s": 0.2849803510000002
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m3-vad-context-20261103-01/kss-dev50/bounded_vad_5s",
+            "source_sha256": {
+              "execution.json": "c361a0c8843e0a59c836b1f4716919ecb26145d875f36ae914bd33b94214fea0",
+              "thermal.jsonl": "235bd57b99f4df364271d55ae092aab7bd09801c18c07de9d6ae1dd3f2bd944e"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 29,
+            "before": {
+              "at_utc": "2026-11-03T02:47:29.904512+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 52.9,
+              "fan_rpm": 2986,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T02:47:59.502704+00:00",
+              "elapsed_from_before_s": 29.598193176992936,
+              "temperature_c": 60.05,
+              "fan_rpm": 5025,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 31,
+            "fan_rpm_max": 5025,
+            "temperature_mc_max_monitor": 64450,
+            "temperature_mc_max_with_before_after": 64450,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "operational_valid": true,
+          "control_valid": false,
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "probability_runtime": {
+            "backend": "python_onnxruntime_k2_v4_experimental",
+            "python_onnxruntime_version": "1.31.1",
+            "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+            "num_threads": 1,
+            "providers": [
+              "CPUExecutionProvider"
+            ],
+            "recurrent_state_bytes": 1024,
+            "reset_count": 55,
+            "windows_since_reset": 164,
+            "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+          },
+          "model_metadata": {
+            "backend": "sherpa_onnx",
+            "factory": "OfflineRecognizer.from_sense_voice",
+            "supported_modes": [
+              "batch"
+            ],
+            "provider": "cpu",
+            "feature_dim": 80,
+            "language": "ko",
+            "use_itn": false,
+            "quantization": "int8",
+            "quantization_evidence": "declared_configuration_not_graph_dtype_inspection",
+            "quantization_method": null,
+            "quantization_method_reason": "배포된 INT8 ONNX를 사용. 변환·양자화 알고리즘은 검증하지 않았습니다.",
+            "tail_padding_s": null,
+            "tail_padding_reason": "not_used_by_offline_sensevoice",
+            "output_policy": "sensevoice_control_tokens_v1",
+            "control_token_pattern": "<\\|[A-Za-z][A-Za-z0-9_]*\\|>"
+          },
+          "rescore_matches": true,
+          "unmeasured": {
+            "streaming_first_text_s": null,
+            "acoustic_endpoint_latency_s": null,
+            "refine_delay_s": null,
+            "drops": null,
+            "backlog": null
+          }
+        },
+        "bounded_vad_5s_context200ms": {
+          "overall": {
+            "planned": 50,
+            "successful": 50,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.05423280423280423,
+              "reference_characters": 756,
+              "errors": 41,
+              "substitutions": 24,
+              "deletions": 8,
+              "insertions": 9,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.13061809300290475,
+            "total_audio_s": 164.919,
+            "total_inference_wall_s": 21.541405279946048,
+            "mean_process_cpu_percent": 100.17072808656637,
+            "file_processing_s": {
+              "n": 50,
+              "mean": 0.43082810559892093,
+              "p50": 0.4290748450002866,
+              "p95": 0.6337539050000487,
+              "max": 0.7841157789953286
+            },
+            "file_rtf": {
+              "n": 50,
+              "mean": 0.1325931300262837,
+              "p50": 0.1329442638712621,
+              "p95": 0.14778338090255638,
+              "max": 0.16163079813965006
+            },
+            "rss_observed_max_mib": 453.421875
+          },
+          "by_length": {
+            "at_most_5s": {
+              "planned": 46,
+              "successful": 46,
+              "failed": 0,
+              "not_attempted": 0,
+              "interrupted": 0,
+              "complete": true,
+              "reference_character_coverage": 1.0,
+              "cer": {
+                "value": 0.05731523378582202,
+                "reference_characters": 663,
+                "errors": 38,
+                "substitutions": 22,
+                "deletions": 8,
+                "insertions": 8,
+                "scope": "successful_nonempty_references",
+                "empty_reference_samples": 0,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "rtf": 0.13148721515889478,
+              "total_audio_s": 143.42143750000002,
+              "total_inference_wall_s": 18.858085410960484,
+              "mean_process_cpu_percent": 100.17943564419245,
+              "file_processing_s": {
+                "n": 46,
+                "mean": 0.40995837849914096,
+                "p50": 0.4133550219994504,
+                "p95": 0.5744109960069181,
+                "max": 0.6337539050000487
+              },
+              "file_rtf": {
+                "n": 46,
+                "mean": 0.13328485042306254,
+                "p50": 0.1329442638712621,
+                "p95": 0.14778338090255638,
+                "max": 0.16163079813965006
+              },
+              "rss_observed_max_mib": 453.421875
+            },
+            "over_5s": {
+              "planned": 4,
+              "successful": 4,
+              "failed": 0,
+              "not_attempted": 0,
+              "interrupted": 0,
+              "complete": true,
+              "reference_character_coverage": 1.0,
+              "cer": {
+                "value": 0.03225806451612903,
+                "reference_characters": 93,
+                "errors": 3,
+                "substitutions": 2,
+                "deletions": 0,
+                "insertions": 1,
+                "scope": "successful_nonempty_references",
+                "empty_reference_samples": 0,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "rtf": 0.1248197263752839,
+              "total_audio_s": 21.497562499999997,
+              "total_inference_wall_s": 2.6833198689855635,
+              "mean_process_cpu_percent": 100.10953230169872,
+              "file_processing_s": {
+                "n": 4,
+                "mean": 0.6708299672463909,
+                "p50": 0.6105397299979813,
+                "p95": 0.7841157789953286,
+                "max": 0.7841157789953286
+              },
+              "file_rtf": {
+                "n": 4,
+                "mean": 0.12463834546332689,
+                "p50": 0.11634314325148518,
+                "p95": 0.1339681836656977,
+                "max": 0.1339681836656977
+              },
+              "rss_observed_max_mib": 453.421875
+            }
+          },
+          "segmentation": {
+            "condition": "bounded_vad_5s_context200ms",
+            "predictions_sha256": "0efb1c0d0533fe5505463f46337a5978bcb9b90014f118f518b58cc4b41ff3bc",
+            "asr_calls": 57,
+            "empty_segment_files": 0,
+            "selected_frames": 2366401,
+            "asr_wall_s": 15.670146240008762,
+            "asr_rtf_against_original_audio": 0.09501722809384462,
+            "vad_neural_wall_s": 2.3409536242252216,
+            "timing_scope": "overall.rtf는 원본 오디오 길이 대비 전처리/구간화/ASR/결과 연결/검증/계측을 포함한 파일 파이프라인 비용. asr_rtf는 ASR 호출만. WAV I/O/검증용 참조 PCM/모델 로딩/워밍업/파일 기록 제외.",
+            "rss_scope": "ASR+VAD 공존 프로세스",
+            "context_frames": 3200,
+            "payload_frames_total": 2521729
+          },
+          "owned_frames": 2366401,
+          "source_frames": 2638704,
+          "payload_total_frames": 2521729,
+          "unique_payload_frames": 2521729,
+          "overlapped_payload_frames": 0,
+          "unique_payload_fraction": 0.9556695256459231,
+          "segment_reasons": {
+            "eof": 44,
+            "vad_end": 13
+          },
+          "hard_limit_emissions": 0,
+          "loading": {
+            "asr_loading": {
+              "wall_s": 1.8466798229928827,
+              "cpu_s": 2.0825410150000003,
+              "rss_max_mib": 421.21875
+            },
+            "vad_loading": {
+              "wall_s": 0.08572351699694991,
+              "cpu_s": 0.04635607099999994,
+              "rss_max_mib": 439.421875
+            }
+          },
+          "warmup": {
+            "asr_successful": 3,
+            "vad_successful": 3,
+            "asr_wall_s": 0.839313657997991,
+            "asr_cpu_s": 0.8392289960000001,
+            "vad_wall_s": 0.28247207299864385,
+            "vad_cpu_s": 0.2824334989999997
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m3-vad-context-20261103-01/kss-dev50/bounded_vad_5s_context200ms",
+            "source_sha256": {
+              "execution.json": "8fbcc970245a6cbc1e9de980731ee5b638ca87a0a6d99d8c38eb29be6bfc12ff",
+              "thermal.jsonl": "55335a0dfbb22e2a32734d817c690bda487fbf6d7daa3c4c7ddabb2b2b0c7b9d"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 30,
+            "before": {
+              "at_utc": "2026-11-03T02:48:22.681386+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 52.9,
+              "fan_rpm": 3020,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T02:48:53.209091+00:00",
+              "elapsed_from_before_s": 30.527705373009667,
+              "temperature_c": 60.6,
+              "fan_rpm": 5051,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 32,
+            "fan_rpm_max": 5051,
+            "temperature_mc_max_monitor": 63900,
+            "temperature_mc_max_with_before_after": 63900,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "operational_valid": true,
+          "control_valid": false,
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "probability_runtime": {
+            "backend": "python_onnxruntime_k2_v4_experimental",
+            "python_onnxruntime_version": "1.31.1",
+            "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+            "num_threads": 1,
+            "providers": [
+              "CPUExecutionProvider"
+            ],
+            "recurrent_state_bytes": 1024,
+            "reset_count": 55,
+            "windows_since_reset": 164,
+            "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+          },
+          "model_metadata": {
+            "backend": "sherpa_onnx",
+            "factory": "OfflineRecognizer.from_sense_voice",
+            "supported_modes": [
+              "batch"
+            ],
+            "provider": "cpu",
+            "feature_dim": 80,
+            "language": "ko",
+            "use_itn": false,
+            "quantization": "int8",
+            "quantization_evidence": "declared_configuration_not_graph_dtype_inspection",
+            "quantization_method": null,
+            "quantization_method_reason": "배포된 INT8 ONNX를 사용. 변환·양자화 알고리즘은 검증하지 않았습니다.",
+            "tail_padding_s": null,
+            "tail_padding_reason": "not_used_by_offline_sensevoice",
+            "output_policy": "sensevoice_control_tokens_v1",
+            "control_token_pattern": "<\\|[A-Za-z][A-Za-z0-9_]*\\|>"
+          },
+          "rescore_matches": true,
+          "unmeasured": {
+            "streaming_first_text_s": null,
+            "acoustic_endpoint_latency_s": null,
+            "refine_delay_s": null,
+            "drops": null,
+            "backlog": null
+          }
+        }
+      },
+      "comparison": {
+        "owned_boundaries_equal": true,
+        "improved_files": 5,
+        "tied_files": 39,
+        "worsened_files": 6,
+        "error_delta": -1,
+        "rows": [
+          {
+            "id": "kss-train-01000",
+            "duration_s": 2.816625,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 12,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 12,
+              "segments": 1,
+              "first_owned_start": 4032,
+              "first_payload_start": 4032
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 12,
+              "segments": 1,
+              "first_owned_start": 4032,
+              "first_payload_start": 832
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01001",
+            "duration_s": 4.9284375,
+            "full_batch": {
+              "errors": 4,
+              "substitutions": 4,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 20,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 4,
+              "substitutions": 4,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 20,
+              "segments": 1,
+              "first_owned_start": 6080,
+              "first_payload_start": 6080
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 6,
+              "substitutions": 4,
+              "deletions": 0,
+              "insertions": 2,
+              "reference_characters": 20,
+              "segments": 1,
+              "first_owned_start": 6080,
+              "first_payload_start": 2880
+            },
+            "error_delta_context_vs_zero": 2
+          },
+          {
+            "id": "kss-train-01002",
+            "duration_s": 4.03025,
+            "full_batch": {
+              "errors": 1,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 1,
+              "reference_characters": 20,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 20,
+              "segments": 1,
+              "first_owned_start": 3520,
+              "first_payload_start": 3520
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 20,
+              "segments": 1,
+              "first_owned_start": 3520,
+              "first_payload_start": 320
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01003",
+            "duration_s": 3.6156875,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 16,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 16,
+              "segments": 2,
+              "first_owned_start": 6080,
+              "first_payload_start": 6080
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 16,
+              "segments": 2,
+              "first_owned_start": 6080,
+              "first_payload_start": 2880
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01004",
+            "duration_s": 2.2486875,
+            "full_batch": {
+              "errors": 2,
+              "substitutions": 2,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 12,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 2,
+              "substitutions": 2,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 12,
+              "segments": 1,
+              "first_owned_start": 3008,
+              "first_payload_start": 3008
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 2,
+              "substitutions": 2,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 12,
+              "segments": 1,
+              "first_owned_start": 3008,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01005",
+            "duration_s": 2.1695,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 11,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 11,
+              "segments": 1,
+              "first_owned_start": 1984,
+              "first_payload_start": 1984
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 11,
+              "segments": 1,
+              "first_owned_start": 1984,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01006",
+            "duration_s": 3.4705625,
+            "full_batch": {
+              "errors": 1,
+              "substitutions": 1,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 18,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 1,
+              "substitutions": 1,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 18,
+              "segments": 1,
+              "first_owned_start": 1984,
+              "first_payload_start": 1984
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 1,
+              "substitutions": 1,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 18,
+              "segments": 1,
+              "first_owned_start": 1984,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01007",
+            "duration_s": 2.1706875,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 9,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 9,
+              "segments": 1,
+              "first_owned_start": 2496,
+              "first_payload_start": 2496
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 9,
+              "segments": 1,
+              "first_owned_start": 2496,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01008",
+            "duration_s": 4.2170625,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 17,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 17,
+              "segments": 2,
+              "first_owned_start": 1984,
+              "first_payload_start": 1984
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 17,
+              "segments": 2,
+              "first_owned_start": 1984,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01009",
+            "duration_s": 2.968625,
+            "full_batch": {
+              "errors": 3,
+              "substitutions": 3,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 11,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 3,
+              "substitutions": 2,
+              "deletions": 0,
+              "insertions": 1,
+              "reference_characters": 11,
+              "segments": 1,
+              "first_owned_start": 6080,
+              "first_payload_start": 6080
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 3,
+              "substitutions": 3,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 11,
+              "segments": 1,
+              "first_owned_start": 6080,
+              "first_payload_start": 2880
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01010",
+            "duration_s": 1.326125,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 7,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 7,
+              "segments": 1,
+              "first_owned_start": 1984,
+              "first_payload_start": 1984
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 7,
+              "segments": 1,
+              "first_owned_start": 1984,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01011",
+            "duration_s": 1.31625,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 6,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 1,
+              "substitutions": 1,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 6,
+              "segments": 1,
+              "first_owned_start": 1984,
+              "first_payload_start": 1984
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 6,
+              "segments": 1,
+              "first_owned_start": 1984,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": -1
+          },
+          {
+            "id": "kss-train-01012",
+            "duration_s": 3.13725,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 16,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 16,
+              "segments": 1,
+              "first_owned_start": 1984,
+              "first_payload_start": 1984
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 16,
+              "segments": 1,
+              "first_owned_start": 1984,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01013",
+            "duration_s": 3.2834375,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 16,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 16,
+              "segments": 1,
+              "first_owned_start": 1984,
+              "first_payload_start": 1984
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 16,
+              "segments": 1,
+              "first_owned_start": 1984,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01014",
+            "duration_s": 1.962375,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 11,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 11,
+              "segments": 1,
+              "first_owned_start": 3008,
+              "first_payload_start": 3008
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 11,
+              "segments": 1,
+              "first_owned_start": 3008,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01015",
+            "duration_s": 3.4638125,
+            "full_batch": {
+              "errors": 1,
+              "substitutions": 0,
+              "deletions": 1,
+              "insertions": 0,
+              "reference_characters": 16,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 16,
+              "segments": 1,
+              "first_owned_start": 3008,
+              "first_payload_start": 3008
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 1,
+              "substitutions": 0,
+              "deletions": 1,
+              "insertions": 0,
+              "reference_characters": 16,
+              "segments": 1,
+              "first_owned_start": 3008,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 1
+          },
+          {
+            "id": "kss-train-01016",
+            "duration_s": 3.8378125,
+            "full_batch": {
+              "errors": 2,
+              "substitutions": 1,
+              "deletions": 1,
+              "insertions": 0,
+              "reference_characters": 18,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 3,
+              "substitutions": 2,
+              "deletions": 1,
+              "insertions": 0,
+              "reference_characters": 18,
+              "segments": 1,
+              "first_owned_start": 3520,
+              "first_payload_start": 3520
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 4,
+              "substitutions": 1,
+              "deletions": 1,
+              "insertions": 2,
+              "reference_characters": 18,
+              "segments": 1,
+              "first_owned_start": 3520,
+              "first_payload_start": 320
+            },
+            "error_delta_context_vs_zero": 1
+          },
+          {
+            "id": "kss-train-01017",
+            "duration_s": 1.62675,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 7,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 7,
+              "segments": 1,
+              "first_owned_start": 3008,
+              "first_payload_start": 3008
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 7,
+              "segments": 1,
+              "first_owned_start": 3008,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01018",
+            "duration_s": 2.623375,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 13,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 13,
+              "segments": 1,
+              "first_owned_start": 1472,
+              "first_payload_start": 1472
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 13,
+              "segments": 1,
+              "first_owned_start": 1472,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01019",
+            "duration_s": 1.92875,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 10,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 10,
+              "segments": 1,
+              "first_owned_start": 3008,
+              "first_payload_start": 3008
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 10,
+              "segments": 1,
+              "first_owned_start": 3008,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01020",
+            "duration_s": 3.8749375,
+            "full_batch": {
+              "errors": 1,
+              "substitutions": 0,
+              "deletions": 1,
+              "insertions": 0,
+              "reference_characters": 21,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 21,
+              "segments": 1,
+              "first_owned_start": 1984,
+              "first_payload_start": 1984
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 1,
+              "substitutions": 0,
+              "deletions": 1,
+              "insertions": 0,
+              "reference_characters": 21,
+              "segments": 1,
+              "first_owned_start": 1984,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 1
+          },
+          {
+            "id": "kss-train-01021",
+            "duration_s": 3.0703125,
+            "full_batch": {
+              "errors": 2,
+              "substitutions": 1,
+              "deletions": 0,
+              "insertions": 1,
+              "reference_characters": 15,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 2,
+              "substitutions": 1,
+              "deletions": 0,
+              "insertions": 1,
+              "reference_characters": 15,
+              "segments": 1,
+              "first_owned_start": 1984,
+              "first_payload_start": 1984
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 2,
+              "substitutions": 1,
+              "deletions": 0,
+              "insertions": 1,
+              "reference_characters": 15,
+              "segments": 1,
+              "first_owned_start": 1984,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01022",
+            "duration_s": 2.2434375,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 10,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 10,
+              "segments": 1,
+              "first_owned_start": 1472,
+              "first_payload_start": 1472
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 10,
+              "segments": 1,
+              "first_owned_start": 1472,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01023",
+            "duration_s": 0.9260625,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 3,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 3,
+              "segments": 1,
+              "first_owned_start": 1472,
+              "first_payload_start": 1472
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 3,
+              "segments": 1,
+              "first_owned_start": 1472,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01024",
+            "duration_s": 5.102625,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 22,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 22,
+              "segments": 2,
+              "first_owned_start": 3520,
+              "first_payload_start": 3520
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 22,
+              "segments": 2,
+              "first_owned_start": 3520,
+              "first_payload_start": 320
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01025",
+            "duration_s": 5.853,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 29,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 1,
+              "substitutions": 1,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 29,
+              "segments": 2,
+              "first_owned_start": 3008,
+              "first_payload_start": 3008
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 29,
+              "segments": 2,
+              "first_owned_start": 3008,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": -1
+          },
+          {
+            "id": "kss-train-01026",
+            "duration_s": 3.110625,
+            "full_batch": {
+              "errors": 1,
+              "substitutions": 1,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 13,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 1,
+              "substitutions": 1,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 13,
+              "segments": 1,
+              "first_owned_start": 3008,
+              "first_payload_start": 3008
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 1,
+              "substitutions": 1,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 13,
+              "segments": 1,
+              "first_owned_start": 3008,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01027",
+            "duration_s": 3.2038125,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 15,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 15,
+              "segments": 1,
+              "first_owned_start": 2496,
+              "first_payload_start": 2496
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 15,
+              "segments": 1,
+              "first_owned_start": 2496,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01028",
+            "duration_s": 1.5429375,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 8,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 8,
+              "segments": 1,
+              "first_owned_start": 2496,
+              "first_payload_start": 2496
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 8,
+              "segments": 1,
+              "first_owned_start": 2496,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01029",
+            "duration_s": 2.3005625,
+            "full_batch": {
+              "errors": 2,
+              "substitutions": 1,
+              "deletions": 1,
+              "insertions": 0,
+              "reference_characters": 12,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 2,
+              "substitutions": 1,
+              "deletions": 1,
+              "insertions": 0,
+              "reference_characters": 12,
+              "segments": 1,
+              "first_owned_start": 1472,
+              "first_payload_start": 1472
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 2,
+              "substitutions": 1,
+              "deletions": 1,
+              "insertions": 0,
+              "reference_characters": 12,
+              "segments": 1,
+              "first_owned_start": 1472,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01030",
+            "duration_s": 3.030625,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 12,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 12,
+              "segments": 2,
+              "first_owned_start": 3520,
+              "first_payload_start": 3520
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 12,
+              "segments": 2,
+              "first_owned_start": 3520,
+              "first_payload_start": 320
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01031",
+            "duration_s": 3.922,
+            "full_batch": {
+              "errors": 4,
+              "substitutions": 3,
+              "deletions": 0,
+              "insertions": 1,
+              "reference_characters": 18,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 5,
+              "substitutions": 3,
+              "deletions": 1,
+              "insertions": 1,
+              "reference_characters": 18,
+              "segments": 1,
+              "first_owned_start": 1472,
+              "first_payload_start": 1472
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 4,
+              "substitutions": 3,
+              "deletions": 0,
+              "insertions": 1,
+              "reference_characters": 18,
+              "segments": 1,
+              "first_owned_start": 1472,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": -1
+          },
+          {
+            "id": "kss-train-01032",
+            "duration_s": 4.255375,
+            "full_batch": {
+              "errors": 1,
+              "substitutions": 0,
+              "deletions": 1,
+              "insertions": 0,
+              "reference_characters": 20,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 1,
+              "substitutions": 0,
+              "deletions": 1,
+              "insertions": 0,
+              "reference_characters": 20,
+              "segments": 1,
+              "first_owned_start": 3008,
+              "first_payload_start": 3008
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 1,
+              "substitutions": 0,
+              "deletions": 1,
+              "insertions": 0,
+              "reference_characters": 20,
+              "segments": 1,
+              "first_owned_start": 3008,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01033",
+            "duration_s": 3.6159375,
+            "full_batch": {
+              "errors": 1,
+              "substitutions": 0,
+              "deletions": 1,
+              "insertions": 0,
+              "reference_characters": 17,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 17,
+              "segments": 2,
+              "first_owned_start": 2496,
+              "first_payload_start": 2496
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 17,
+              "segments": 2,
+              "first_owned_start": 2496,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01034",
+            "duration_s": 3.0915,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 16,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 16,
+              "segments": 1,
+              "first_owned_start": 3520,
+              "first_payload_start": 3520
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 16,
+              "segments": 1,
+              "first_owned_start": 3520,
+              "first_payload_start": 320
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01035",
+            "duration_s": 3.8010625,
+            "full_batch": {
+              "errors": 1,
+              "substitutions": 0,
+              "deletions": 1,
+              "insertions": 0,
+              "reference_characters": 22,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 3,
+              "substitutions": 0,
+              "deletions": 1,
+              "insertions": 2,
+              "reference_characters": 22,
+              "segments": 1,
+              "first_owned_start": 1984,
+              "first_payload_start": 1984
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 1,
+              "substitutions": 0,
+              "deletions": 1,
+              "insertions": 0,
+              "reference_characters": 22,
+              "segments": 1,
+              "first_owned_start": 1984,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": -2
+          },
+          {
+            "id": "kss-train-01036",
+            "duration_s": 4.273125,
+            "full_batch": {
+              "errors": 1,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 1,
+              "reference_characters": 20,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 1,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 1,
+              "reference_characters": 20,
+              "segments": 1,
+              "first_owned_start": 6080,
+              "first_payload_start": 6080
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 2,
+              "substitutions": 0,
+              "deletions": 1,
+              "insertions": 1,
+              "reference_characters": 20,
+              "segments": 1,
+              "first_owned_start": 6080,
+              "first_payload_start": 2880
+            },
+            "error_delta_context_vs_zero": 1
+          },
+          {
+            "id": "kss-train-01037",
+            "duration_s": 4.4709375,
+            "full_batch": {
+              "errors": 1,
+              "substitutions": 1,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 23,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 23,
+              "segments": 2,
+              "first_owned_start": 4544,
+              "first_payload_start": 4544
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 23,
+              "segments": 2,
+              "first_owned_start": 4544,
+              "first_payload_start": 1344
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01038",
+            "duration_s": 3.2180625,
+            "full_batch": {
+              "errors": 2,
+              "substitutions": 2,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 15,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 2,
+              "substitutions": 2,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 15,
+              "segments": 1,
+              "first_owned_start": 2496,
+              "first_payload_start": 2496
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 2,
+              "substitutions": 2,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 15,
+              "segments": 1,
+              "first_owned_start": 2496,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01039",
+            "duration_s": 2.769,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 13,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 13,
+              "segments": 1,
+              "first_owned_start": 1984,
+              "first_payload_start": 1984
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 13,
+              "segments": 1,
+              "first_owned_start": 1984,
+              "first_payload_start": 0
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01040",
+            "duration_s": 3.1346875,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 15,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 15,
+              "segments": 1,
+              "first_owned_start": 4544,
+              "first_payload_start": 4544
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 15,
+              "segments": 1,
+              "first_owned_start": 4544,
+              "first_payload_start": 1344
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01041",
+            "duration_s": 3.9009375,
+            "full_batch": {
+              "errors": 2,
+              "substitutions": 2,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 19,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 6,
+              "substitutions": 2,
+              "deletions": 4,
+              "insertions": 0,
+              "reference_characters": 19,
+              "segments": 1,
+              "first_owned_start": 8640,
+              "first_payload_start": 8640
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 3,
+              "substitutions": 3,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 19,
+              "segments": 1,
+              "first_owned_start": 8640,
+              "first_payload_start": 5440
+            },
+            "error_delta_context_vs_zero": -3
+          },
+          {
+            "id": "kss-train-01042",
+            "duration_s": 3.7384375,
+            "full_batch": {
+              "errors": 1,
+              "substitutions": 1,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 15,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 1,
+              "substitutions": 1,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 15,
+              "segments": 1,
+              "first_owned_start": 5568,
+              "first_payload_start": 5568
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 1,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 1,
+              "reference_characters": 15,
+              "segments": 1,
+              "first_owned_start": 5568,
+              "first_payload_start": 2368
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01043",
+            "duration_s": 3.204375,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 13,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 13,
+              "segments": 1,
+              "first_owned_start": 7104,
+              "first_payload_start": 7104
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 13,
+              "segments": 1,
+              "first_owned_start": 7104,
+              "first_payload_start": 3904
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01044",
+            "duration_s": 3.390125,
+            "full_batch": {
+              "errors": 1,
+              "substitutions": 0,
+              "deletions": 1,
+              "insertions": 0,
+              "reference_characters": 13,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 13,
+              "segments": 1,
+              "first_owned_start": 8640,
+              "first_payload_start": 8640
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 13,
+              "segments": 1,
+              "first_owned_start": 8640,
+              "first_payload_start": 5440
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01045",
+            "duration_s": 3.692,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 13,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 13,
+              "segments": 1,
+              "first_owned_start": 13760,
+              "first_payload_start": 13760
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 13,
+              "segments": 1,
+              "first_owned_start": 13760,
+              "first_payload_start": 10560
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01046",
+            "duration_s": 3.8080625,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 17,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 17,
+              "segments": 1,
+              "first_owned_start": 8128,
+              "first_payload_start": 8128
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 17,
+              "segments": 1,
+              "first_owned_start": 8128,
+              "first_payload_start": 4928
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01047",
+            "duration_s": 4.6904375,
+            "full_batch": {
+              "errors": 1,
+              "substitutions": 0,
+              "deletions": 1,
+              "insertions": 0,
+              "reference_characters": 19,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 19,
+              "segments": 1,
+              "first_owned_start": 9664,
+              "first_payload_start": 9664
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 1,
+              "substitutions": 0,
+              "deletions": 1,
+              "insertions": 0,
+              "reference_characters": 19,
+              "segments": 1,
+              "first_owned_start": 9664,
+              "first_payload_start": 6464
+            },
+            "error_delta_context_vs_zero": 1
+          },
+          {
+            "id": "kss-train-01048",
+            "duration_s": 5.2941875,
+            "full_batch": {
+              "errors": 3,
+              "substitutions": 2,
+              "deletions": 0,
+              "insertions": 1,
+              "reference_characters": 20,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 3,
+              "substitutions": 2,
+              "deletions": 0,
+              "insertions": 1,
+              "reference_characters": 20,
+              "segments": 1,
+              "first_owned_start": 10176,
+              "first_payload_start": 10176
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 3,
+              "substitutions": 2,
+              "deletions": 0,
+              "insertions": 1,
+              "reference_characters": 20,
+              "segments": 1,
+              "first_owned_start": 10176,
+              "first_payload_start": 6976
+            },
+            "error_delta_context_vs_zero": 0
+          },
+          {
+            "id": "kss-train-01049",
+            "duration_s": 5.24775,
+            "full_batch": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 22,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 22,
+              "segments": 1,
+              "first_owned_start": 10688,
+              "first_payload_start": 10688
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 22,
+              "segments": 1,
+              "first_owned_start": 10688,
+              "first_payload_start": 7488
+            },
+            "error_delta_context_vs_zero": 0
+          }
+        ]
+      }
+    },
+    "synthetic-long": {
+      "sample_count": 3,
+      "reference_characters": 910,
+      "total_audio_s": 213.26768750000002,
+      "manifest_sha256": "4e81a67c453b874e3525a8833cc901543faae0ffe482bba180e30acf9c63bc92",
+      "conditions": {
+        "full_batch": {
+          "overall": {
+            "planned": 3,
+            "successful": 3,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.08021978021978023,
+              "reference_characters": 910,
+              "errors": 73,
+              "substitutions": 44,
+              "deletions": 28,
+              "insertions": 1,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.29399191073891107,
+            "total_audio_s": 213.26768750000002,
+            "total_inference_wall_s": 62.698974946993985,
+            "mean_process_cpu_percent": 100.18848945155152,
+            "file_processing_s": {
+              "n": 3,
+              "mean": 20.899658315664663,
+              "p50": 14.498543844994856,
+              "p95": 42.36788563799928,
+              "max": 42.36788563799928
+            },
+            "file_rtf": {
+              "n": 3,
+              "mean": 0.25747604757140635,
+              "p50": 0.23919735198426675,
+              "p95": 0.3513474052462117,
+              "max": 0.3513474052462117
+            },
+            "rss_observed_max_mib": 1131.5625
+          },
+          "by_length": {
+            "at_most_5s": null,
+            "over_5s": {
+              "planned": 3,
+              "successful": 3,
+              "failed": 0,
+              "not_attempted": 0,
+              "interrupted": 0,
+              "complete": true,
+              "reference_character_coverage": 1.0,
+              "cer": {
+                "value": 0.08021978021978023,
+                "reference_characters": 910,
+                "errors": 73,
+                "substitutions": 44,
+                "deletions": 28,
+                "insertions": 1,
+                "scope": "successful_nonempty_references",
+                "empty_reference_samples": 0,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "rtf": 0.29399191073891107,
+              "total_audio_s": 213.26768750000002,
+              "total_inference_wall_s": 62.698974946993985,
+              "mean_process_cpu_percent": 100.18848945155152,
+              "file_processing_s": {
+                "n": 3,
+                "mean": 20.899658315664663,
+                "p50": 14.498543844994856,
+                "p95": 42.36788563799928,
+                "max": 42.36788563799928
+              },
+              "file_rtf": {
+                "n": 3,
+                "mean": 0.25747604757140635,
+                "p50": 0.23919735198426675,
+                "p95": 0.3513474052462117,
+                "max": 0.3513474052462117
+              },
+              "rss_observed_max_mib": 1131.5625
+            }
+          },
+          "segmentation": {
+            "condition": "full_batch",
+            "predictions_sha256": "b4bce013cf21903fc86c276f5f8be00d0e8829c27218bf1bbc49bb47699e2a09",
+            "asr_calls": 3,
+            "empty_segment_files": 0,
+            "selected_frames": 3412283,
+            "asr_wall_s": 56.95924484600255,
+            "asr_rtf_against_original_audio": 0.2670786442789302,
+            "vad_neural_wall_s": null,
+            "timing_scope": "overall.rtf는 원본 오디오 길이 대비 전처리/구간화/ASR/결과 연결/검증/계측을 포함한 파일 파이프라인 비용. asr_rtf는 ASR 호출만. WAV I/O/검증용 참조 PCM/모델 로딩/워밍업/파일 기록 제외.",
+            "rss_scope": "ASR 프로세스"
+          },
+          "owned_frames": 3412283,
+          "source_frames": 3412283,
+          "payload_total_frames": 3412283,
+          "unique_payload_frames": 3412283,
+          "overlapped_payload_frames": 0,
+          "unique_payload_fraction": 1.0,
+          "segment_reasons": {
+            "full_batch": 3
+          },
+          "hard_limit_emissions": 0,
+          "loading": {
+            "asr_loading": {
+              "wall_s": 1.8299398850067519,
+              "cpu_s": 2.0661552710000004,
+              "rss_max_mib": 547.5625
+            }
+          },
+          "warmup": {
+            "asr_successful": 3,
+            "vad_successful": 0,
+            "asr_wall_s": 14.91122911500861,
+            "asr_cpu_s": 14.908439812000001
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m3-vad-context-20261103-01/synthetic-long/full_batch",
+            "source_sha256": {
+              "execution.json": "08dfa815c5c749579ec6588d0674d5497b62400b14e9b5d4cea1a536c9376dba",
+              "thermal.jsonl": "bfcad968cd06eabe071c82739c3ff1bb142609a752ab01eadb53f0ca21dd9318"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 85,
+            "before": {
+              "at_utc": "2026-11-03T02:49:21.508246+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 51.8,
+              "fan_rpm": 3037,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T02:50:48.115068+00:00",
+              "elapsed_from_before_s": 86.60682643200562,
+              "temperature_c": 65.55,
+              "fan_rpm": 6922,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 87,
+            "fan_rpm_max": 6922,
+            "temperature_mc_max_monitor": 72150,
+            "temperature_mc_max_with_before_after": 72150,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "operational_valid": true,
+          "control_valid": false,
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "probability_runtime": null,
+          "model_metadata": {
+            "backend": "sherpa_onnx",
+            "factory": "OfflineRecognizer.from_sense_voice",
+            "supported_modes": [
+              "batch"
+            ],
+            "provider": "cpu",
+            "feature_dim": 80,
+            "language": "ko",
+            "use_itn": false,
+            "quantization": "int8",
+            "quantization_evidence": "declared_configuration_not_graph_dtype_inspection",
+            "quantization_method": null,
+            "quantization_method_reason": "배포된 INT8 ONNX를 사용. 변환·양자화 알고리즘은 검증하지 않았습니다.",
+            "tail_padding_s": null,
+            "tail_padding_reason": "not_used_by_offline_sensevoice",
+            "output_policy": "sensevoice_control_tokens_v1",
+            "control_token_pattern": "<\\|[A-Za-z][A-Za-z0-9_]*\\|>"
+          },
+          "rescore_matches": true,
+          "unmeasured": {
+            "streaming_first_text_s": null,
+            "acoustic_endpoint_latency_s": null,
+            "refine_delay_s": null,
+            "drops": null,
+            "backlog": null
+          }
+        },
+        "bounded_vad_5s": {
+          "overall": {
+            "planned": 3,
+            "successful": 3,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.06373626373626373,
+              "reference_characters": 910,
+              "errors": 58,
+              "substitutions": 47,
+              "deletions": 4,
+              "insertions": 7,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.11897311372124751,
+            "total_audio_s": 213.26768750000002,
+            "total_inference_wall_s": 25.37312083800498,
+            "mean_process_cpu_percent": 100.10686037861927,
+            "file_processing_s": {
+              "n": 3,
+              "mean": 8.45770694600166,
+              "p50": 7.167517698006122,
+              "p95": 14.379948774003424,
+              "max": 14.379948774003424
+            },
+            "file_rtf": {
+              "n": 3,
+              "mean": 0.11893321465119759,
+              "p50": 0.11924970088165418,
+              "p95": 0.11930005039355837,
+              "max": 0.11930005039355837
+            },
+            "rss_observed_max_mib": 660.65625
+          },
+          "by_length": {
+            "at_most_5s": null,
+            "over_5s": {
+              "planned": 3,
+              "successful": 3,
+              "failed": 0,
+              "not_attempted": 0,
+              "interrupted": 0,
+              "complete": true,
+              "reference_character_coverage": 1.0,
+              "cer": {
+                "value": 0.06373626373626373,
+                "reference_characters": 910,
+                "errors": 58,
+                "substitutions": 47,
+                "deletions": 4,
+                "insertions": 7,
+                "scope": "successful_nonempty_references",
+                "empty_reference_samples": 0,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "rtf": 0.11897311372124751,
+              "total_audio_s": 213.26768750000002,
+              "total_inference_wall_s": 25.37312083800498,
+              "mean_process_cpu_percent": 100.10686037861927,
+              "file_processing_s": {
+                "n": 3,
+                "mean": 8.45770694600166,
+                "p50": 7.167517698006122,
+                "p95": 14.379948774003424,
+                "max": 14.379948774003424
+              },
+              "file_rtf": {
+                "n": 3,
+                "mean": 0.11893321465119759,
+                "p50": 0.11924970088165418,
+                "p95": 0.11930005039355837,
+                "max": 0.11930005039355837
+              },
+              "rss_observed_max_mib": 660.65625
+            }
+          },
+          "segmentation": {
+            "condition": "bounded_vad_5s",
+            "predictions_sha256": "f60f61c1ffceda203310fa18243f08ef4b3c42892b93276c8db6e0394b2d4d0a",
+            "asr_calls": 77,
+            "empty_segment_files": 0,
+            "selected_frames": 2792443,
+            "asr_wall_s": 17.87719090397877,
+            "asr_rtf_against_original_audio": 0.08382512659813394,
+            "vad_neural_wall_s": 3.0045741363428533,
+            "timing_scope": "overall.rtf는 원본 오디오 길이 대비 전처리/구간화/ASR/결과 연결/검증/계측을 포함한 파일 파이프라인 비용. asr_rtf는 ASR 호출만. WAV I/O/검증용 참조 PCM/모델 로딩/워밍업/파일 기록 제외.",
+            "rss_scope": "ASR+VAD 공존 프로세스"
+          },
+          "owned_frames": 2792443,
+          "source_frames": 3412283,
+          "payload_total_frames": 2792443,
+          "unique_payload_frames": 2792443,
+          "overlapped_payload_frames": 0,
+          "unique_payload_fraction": 0.8183503537074739,
+          "segment_reasons": {
+            "vad_end": 73,
+            "eof": 3,
+            "hard_limit": 1
+          },
+          "hard_limit_emissions": 1,
+          "loading": {
+            "asr_loading": {
+              "wall_s": 1.8508661600062624,
+              "cpu_s": 2.087057764,
+              "rss_max_mib": 544.953125
+            },
+            "vad_loading": {
+              "wall_s": 0.08555951500602532,
+              "cpu_s": 0.04610659100000003,
+              "rss_max_mib": 563.15625
+            }
+          },
+          "warmup": {
+            "asr_successful": 3,
+            "vad_successful": 3,
+            "asr_wall_s": 14.851953731005779,
+            "asr_cpu_s": 14.86440379,
+            "vad_wall_s": 3.1599716620112304,
+            "vad_cpu_s": 3.155860154999999
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m3-vad-context-20261103-01/synthetic-long/bounded_vad_5s",
+            "source_sha256": {
+              "execution.json": "7aedd9d9ed60be41e58f6b65b20625ed9aebf69b8f8056ad0f3ea542076319ff",
+              "thermal.jsonl": "352b7b2bacf529a791ce07064cc6669cc4149c287a8f3930bffa39f20d70a648"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 52,
+            "before": {
+              "at_utc": "2026-11-03T02:51:49.576077+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 52.9,
+              "fan_rpm": 3076,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T02:52:42.800483+00:00",
+              "elapsed_from_before_s": 53.22440474299947,
+              "temperature_c": 61.7,
+              "fan_rpm": 6960,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 54,
+            "fan_rpm_max": 6960,
+            "temperature_mc_max_monitor": 68300,
+            "temperature_mc_max_with_before_after": 68300,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "operational_valid": true,
+          "control_valid": false,
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "probability_runtime": {
+            "backend": "python_onnxruntime_k2_v4_experimental",
+            "python_onnxruntime_version": "1.31.1",
+            "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+            "num_threads": 1,
+            "providers": [
+              "CPUExecutionProvider"
+            ],
+            "recurrent_state_bytes": 1024,
+            "reset_count": 8,
+            "windows_since_reset": 3769,
+            "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+          },
+          "model_metadata": {
+            "backend": "sherpa_onnx",
+            "factory": "OfflineRecognizer.from_sense_voice",
+            "supported_modes": [
+              "batch"
+            ],
+            "provider": "cpu",
+            "feature_dim": 80,
+            "language": "ko",
+            "use_itn": false,
+            "quantization": "int8",
+            "quantization_evidence": "declared_configuration_not_graph_dtype_inspection",
+            "quantization_method": null,
+            "quantization_method_reason": "배포된 INT8 ONNX를 사용. 변환·양자화 알고리즘은 검증하지 않았습니다.",
+            "tail_padding_s": null,
+            "tail_padding_reason": "not_used_by_offline_sensevoice",
+            "output_policy": "sensevoice_control_tokens_v1",
+            "control_token_pattern": "<\\|[A-Za-z][A-Za-z0-9_]*\\|>"
+          },
+          "rescore_matches": true,
+          "unmeasured": {
+            "streaming_first_text_s": null,
+            "acoustic_endpoint_latency_s": null,
+            "refine_delay_s": null,
+            "drops": null,
+            "backlog": null
+          }
+        },
+        "bounded_vad_5s_context200ms": {
+          "overall": {
+            "planned": 3,
+            "successful": 3,
+            "failed": 0,
+            "not_attempted": 0,
+            "interrupted": 0,
+            "complete": true,
+            "reference_character_coverage": 1.0,
+            "cer": {
+              "value": 0.07582417582417582,
+              "reference_characters": 910,
+              "errors": 69,
+              "substitutions": 39,
+              "deletions": 17,
+              "insertions": 13,
+              "scope": "successful_nonempty_references",
+              "empty_reference_samples": 0,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "rtf": 0.1258196019872145,
+            "total_audio_s": 213.26768750000002,
+            "total_inference_wall_s": 26.833255557983648,
+            "mean_process_cpu_percent": 100.11281042641636,
+            "file_processing_s": {
+              "n": 3,
+              "mean": 8.944418519327883,
+              "p50": 7.565175023002666,
+              "p95": 15.218308489987976,
+              "max": 15.218308489987976
+            },
+            "file_rtf": {
+              "n": 3,
+              "mean": 0.12576715657213508,
+              "p50": 0.12620203061061144,
+              "p95": 0.12628898557707977,
+              "max": 0.12628898557707977
+            },
+            "rss_observed_max_mib": 662.203125
+          },
+          "by_length": {
+            "at_most_5s": null,
+            "over_5s": {
+              "planned": 3,
+              "successful": 3,
+              "failed": 0,
+              "not_attempted": 0,
+              "interrupted": 0,
+              "complete": true,
+              "reference_character_coverage": 1.0,
+              "cer": {
+                "value": 0.07582417582417582,
+                "reference_characters": 910,
+                "errors": 69,
+                "substitutions": 39,
+                "deletions": 17,
+                "insertions": 13,
+                "scope": "successful_nonempty_references",
+                "empty_reference_samples": 0,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "rtf": 0.1258196019872145,
+              "total_audio_s": 213.26768750000002,
+              "total_inference_wall_s": 26.833255557983648,
+              "mean_process_cpu_percent": 100.11281042641636,
+              "file_processing_s": {
+                "n": 3,
+                "mean": 8.944418519327883,
+                "p50": 7.565175023002666,
+                "p95": 15.218308489987976,
+                "max": 15.218308489987976
+              },
+              "file_rtf": {
+                "n": 3,
+                "mean": 0.12576715657213508,
+                "p50": 0.12620203061061144,
+                "p95": 0.12628898557707977,
+                "max": 0.12628898557707977
+              },
+              "rss_observed_max_mib": 662.203125
+            }
+          },
+          "segmentation": {
+            "condition": "bounded_vad_5s_context200ms",
+            "predictions_sha256": "103a706d9c123eaa6e05a239d6c9eb864378f466135175ea3332d57d14bcc822",
+            "asr_calls": 77,
+            "empty_segment_files": 0,
+            "selected_frames": 2792443,
+            "asr_wall_s": 19.123989983010688,
+            "asr_rtf_against_original_audio": 0.08967129623427218,
+            "vad_neural_wall_s": 3.1100188430864364,
+            "timing_scope": "overall.rtf는 원본 오디오 길이 대비 전처리/구간화/ASR/결과 연결/검증/계측을 포함한 파일 파이프라인 비용. asr_rtf는 ASR 호출만. WAV I/O/검증용 참조 PCM/모델 로딩/워밍업/파일 기록 제외.",
+            "rss_scope": "ASR+VAD 공존 프로세스",
+            "context_frames": 3200,
+            "payload_frames_total": 3038843
+          },
+          "owned_frames": 2792443,
+          "source_frames": 3412283,
+          "payload_total_frames": 3038843,
+          "unique_payload_frames": 3035643,
+          "overlapped_payload_frames": 3200,
+          "unique_payload_fraction": 0.889622285138718,
+          "segment_reasons": {
+            "vad_end": 73,
+            "eof": 3,
+            "hard_limit": 1
+          },
+          "hard_limit_emissions": 1,
+          "loading": {
+            "asr_loading": {
+              "wall_s": 1.833281197003089,
+              "cpu_s": 2.0693015270000004,
+              "rss_max_mib": 547.5
+            },
+            "vad_loading": {
+              "wall_s": 0.08475002901104745,
+              "cpu_s": 0.04556066600000008,
+              "rss_max_mib": 565.703125
+            }
+          },
+          "warmup": {
+            "asr_successful": 3,
+            "vad_successful": 3,
+            "asr_wall_s": 14.901292776994524,
+            "asr_cpu_s": 14.917164446000001,
+            "vad_wall_s": 3.2169121150072897,
+            "vad_cpu_s": 3.216452601999997
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m3-vad-context-20261103-01/synthetic-long/bounded_vad_5s_context200ms",
+            "source_sha256": {
+              "execution.json": "ec883c1fdf163b728c6b8df0f8bc619930b351fda42287f1816e1f3c06bbdf3b",
+              "thermal.jsonl": "54ef9f70ea5d08af8d2235724934509512a7e85cb81e68e54ebcc8a912e03875"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 53,
+            "before": {
+              "at_utc": "2026-11-03T02:53:32.155396+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 52.9,
+              "fan_rpm": 3101,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T02:54:26.118757+00:00",
+              "elapsed_from_before_s": 53.96336206801061,
+              "temperature_c": 64.45,
+              "fan_rpm": 6909,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 55,
+            "fan_rpm_max": 6909,
+            "temperature_mc_max_monitor": 66650,
+            "temperature_mc_max_with_before_after": 66650,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "operational_valid": true,
+          "control_valid": false,
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "probability_runtime": {
+            "backend": "python_onnxruntime_k2_v4_experimental",
+            "python_onnxruntime_version": "1.31.1",
+            "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+            "num_threads": 1,
+            "providers": [
+              "CPUExecutionProvider"
+            ],
+            "recurrent_state_bytes": 1024,
+            "reset_count": 8,
+            "windows_since_reset": 3769,
+            "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+          },
+          "model_metadata": {
+            "backend": "sherpa_onnx",
+            "factory": "OfflineRecognizer.from_sense_voice",
+            "supported_modes": [
+              "batch"
+            ],
+            "provider": "cpu",
+            "feature_dim": 80,
+            "language": "ko",
+            "use_itn": false,
+            "quantization": "int8",
+            "quantization_evidence": "declared_configuration_not_graph_dtype_inspection",
+            "quantization_method": null,
+            "quantization_method_reason": "배포된 INT8 ONNX를 사용. 변환·양자화 알고리즘은 검증하지 않았습니다.",
+            "tail_padding_s": null,
+            "tail_padding_reason": "not_used_by_offline_sensevoice",
+            "output_policy": "sensevoice_control_tokens_v1",
+            "control_token_pattern": "<\\|[A-Za-z][A-Za-z0-9_]*\\|>"
+          },
+          "rescore_matches": true,
+          "unmeasured": {
+            "streaming_first_text_s": null,
+            "acoustic_endpoint_latency_s": null,
+            "refine_delay_s": null,
+            "drops": null,
+            "backlog": null
+          }
+        }
+      },
+      "comparison": {
+        "owned_boundaries_equal": true,
+        "improved_files": 0,
+        "tied_files": 0,
+        "worsened_files": 3,
+        "error_delta": 11,
+        "rows": [
+          {
+            "id": "synthetic-long-30",
+            "duration_s": 32.0675,
+            "full_batch": {
+              "errors": 11,
+              "substitutions": 9,
+              "deletions": 2,
+              "insertions": 0,
+              "reference_characters": 135,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 8,
+              "substitutions": 8,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 135,
+              "segments": 12,
+              "first_owned_start": 4032,
+              "first_payload_start": 4032
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 13,
+              "substitutions": 8,
+              "deletions": 3,
+              "insertions": 2,
+              "reference_characters": 135,
+              "segments": 12,
+              "first_owned_start": 4032,
+              "first_payload_start": 832
+            },
+            "error_delta_context_vs_zero": 5
+          },
+          {
+            "id": "synthetic-long-60",
+            "duration_s": 60.6133125,
+            "full_batch": {
+              "errors": 18,
+              "substitutions": 15,
+              "deletions": 3,
+              "insertions": 0,
+              "reference_characters": 256,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 18,
+              "substitutions": 15,
+              "deletions": 0,
+              "insertions": 3,
+              "reference_characters": 256,
+              "segments": 22,
+              "first_owned_start": 4032,
+              "first_payload_start": 4032
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 19,
+              "substitutions": 12,
+              "deletions": 4,
+              "insertions": 3,
+              "reference_characters": 256,
+              "segments": 22,
+              "first_owned_start": 4032,
+              "first_payload_start": 832
+            },
+            "error_delta_context_vs_zero": 1
+          },
+          {
+            "id": "synthetic-long-120",
+            "duration_s": 120.586875,
+            "full_batch": {
+              "errors": 44,
+              "substitutions": 20,
+              "deletions": 23,
+              "insertions": 1,
+              "reference_characters": 519,
+              "segments": 1,
+              "first_owned_start": 0,
+              "first_payload_start": 0
+            },
+            "bounded_vad_5s": {
+              "errors": 32,
+              "substitutions": 24,
+              "deletions": 4,
+              "insertions": 4,
+              "reference_characters": 519,
+              "segments": 43,
+              "first_owned_start": 4032,
+              "first_payload_start": 4032
+            },
+            "bounded_vad_5s_context200ms": {
+              "errors": 37,
+              "substitutions": 19,
+              "deletions": 10,
+              "insertions": 8,
+              "reference_characters": 519,
+              "segments": 43,
+              "first_owned_start": 4032,
+              "first_payload_start": 832
+            },
+            "error_delta_context_vs_zero": 5
+          }
+        ]
+      }
+    }
+  },
+  "raw_files_verified": 66,
+  "tests": {
+    "host": {
+      "count": 212,
+      "seconds": 14.421,
+      "passed": true
+    },
+    "rp5": {
+      "count": 212,
+      "seconds": 30.512,
+      "passed": true
+    }
+  },
+  "legacy_rescore_unchanged": {
+    "full_batch": true,
+    "fixed_windows_5s": true,
+    "bounded_vad_5s": true
+  },
+  "preservation": {
+    "protected_files": 4184,
+    "changed": [],
+    "missing": [],
+    "environment": {
+      "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+      "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+      "resolved_python": "/home/deepet/.local/share/uv/python/cpython-3.11.18-linux-aarch64-gnu/bin/python3.11",
+      "packages": {
+        "numpy": "2.4.6",
+        "sherpa-onnx": "2.0.1",
+        "sherpa-onnx-core": "2.0.1",
+        "onnxruntime": "1.31.1"
+      }
+    },
+    "environment_unchanged": true,
+    "system_settings_unchanged": true,
+    "active_guards": [],
+    "active_workers": [],
+    "coordinator_active": false,
+    "same_boot": true,
+    "source_commit": "3e39cfd4a829431fc41966288b0fc35d0436fd72",
+    "working_tree_clean": true
+  },
+  "evidence_sha256": {
+    "results/maintenance/m3-vad-context-20261103-01/transfer-manifest.json": "cddda47b7534c906812b6667961997ca5928f1c6c30156acdea97b5156abf868",
+    "results/maintenance/m3-vad-context-20261103-01/plan.json": "1f13806b8deb05c50072d13e670048a05731b50385e20bf09cf8e8aee2483d26",
+    "results/maintenance/m3-vad-context-20261103-01/suite.json": "15dfa7c4474f8f9b7cea3a397d3888575fa1b758cfb4aa80ea98341686c41e9c",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/full_batch/execution.json": "7960e9e98f6f719c78768d2f7f162cf7257507efac21209ebac5ebb75576dad9",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/full_batch/worker.json": "d47386726b218dce5128d3da1deb911673c630eb172d57726e9ef23293731753",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/full_batch/predictions.jsonl": "8e74f66f377321929010b1b18e3c08f2f563a70295536d4c63355725c4ad98f1",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/full_batch/summary.json": "1857200744a1adcd5aab21c1517cd6a0d681963792a3932fc5ab7676b557a4ed",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/full_batch/scores.jsonl": "5dab238548ba98e69703edafab1b44bb7cf78ccd2000f0880140cccff34e035d",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/full_batch/thermal.jsonl": "04eb6ab7f9a2e795cf2a9acd85a631dab3ab9e461fe06b98adc063cfe4361e0c",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/full_batch/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/bounded_vad_5s/execution.json": "c361a0c8843e0a59c836b1f4716919ecb26145d875f36ae914bd33b94214fea0",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/bounded_vad_5s/worker.json": "b2485dd783e27ab5d391cbd0b49147b8255c7df6e6e14dfd4b85afae8d679241",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/bounded_vad_5s/predictions.jsonl": "55c3cda8ba31972ecb4140c770ea05d912cf5a3a4b2e3904b9973a479cf74324",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/bounded_vad_5s/summary.json": "edf8db9a647841975bfe1e5a792d91803b2336e0f7ab5b8a4d22731b5ee98742",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/bounded_vad_5s/scores.jsonl": "ec70c0c2e8d4c918043c9ef0868ba46259e8f9bff3d6df021947aab42a73174b",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/bounded_vad_5s/thermal.jsonl": "235bd57b99f4df364271d55ae092aab7bd09801c18c07de9d6ae1dd3f2bd944e",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/bounded_vad_5s/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/bounded_vad_5s_context200ms/execution.json": "8fbcc970245a6cbc1e9de980731ee5b638ca87a0a6d99d8c38eb29be6bfc12ff",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/bounded_vad_5s_context200ms/worker.json": "65a76278deca87937ba23b95ce484505188c041ea978e0bd52551852c40ab1b2",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/bounded_vad_5s_context200ms/predictions.jsonl": "0efb1c0d0533fe5505463f46337a5978bcb9b90014f118f518b58cc4b41ff3bc",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/bounded_vad_5s_context200ms/summary.json": "590a5e287d50f0a268924f00c6230fa8c4992d33a4d4a7619d17ccefba5da937",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/bounded_vad_5s_context200ms/scores.jsonl": "0d722fa14b8e65869119e6823cee0da6dc1938ee279ae81adcbc9119bfd12774",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/bounded_vad_5s_context200ms/thermal.jsonl": "55335a0dfbb22e2a32734d817c690bda487fbf6d7daa3c4c7ddabb2b2b0c7b9d",
+    "results/preflight/m3-vad-context-20261103-01/kss-dev50/bounded_vad_5s_context200ms/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/full_batch/execution.json": "08dfa815c5c749579ec6588d0674d5497b62400b14e9b5d4cea1a536c9376dba",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/full_batch/worker.json": "b828575c8e71d7860c716dc22588297b58239c15e54bb0a2d86fed11a5787e84",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/full_batch/predictions.jsonl": "b4bce013cf21903fc86c276f5f8be00d0e8829c27218bf1bbc49bb47699e2a09",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/full_batch/summary.json": "14f8bf7cf16122f4345b598ca1cde585c02b27edba925501e787d681a11857c3",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/full_batch/scores.jsonl": "5ff5650e9fa558be1846d579cbb55c3d8f925fbb9162605e62f583da9aa62197",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/full_batch/thermal.jsonl": "bfcad968cd06eabe071c82739c3ff1bb142609a752ab01eadb53f0ca21dd9318",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/full_batch/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/bounded_vad_5s/execution.json": "7aedd9d9ed60be41e58f6b65b20625ed9aebf69b8f8056ad0f3ea542076319ff",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/bounded_vad_5s/worker.json": "96b8b8d445adc91512d9bfe05225f08ce8e36e7596d511e0871123d22f9c581c",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/bounded_vad_5s/predictions.jsonl": "f60f61c1ffceda203310fa18243f08ef4b3c42892b93276c8db6e0394b2d4d0a",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/bounded_vad_5s/summary.json": "ec20d4ad09cdd0e90a476fd36b18f50df5836013081f74f07426a73c78daaedd",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/bounded_vad_5s/scores.jsonl": "276167de87a561579bccc12a0d10dc07d54fcd055718b382b7941022a78882e3",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/bounded_vad_5s/thermal.jsonl": "352b7b2bacf529a791ce07064cc6669cc4149c287a8f3930bffa39f20d70a648",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/bounded_vad_5s/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/bounded_vad_5s_context200ms/execution.json": "ec883c1fdf163b728c6b8df0f8bc619930b351fda42287f1816e1f3c06bbdf3b",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/bounded_vad_5s_context200ms/worker.json": "7db9bf61678ff1e98da12af791346207abafb456a79b14424bc62b51b26445a6",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/bounded_vad_5s_context200ms/predictions.jsonl": "103a706d9c123eaa6e05a239d6c9eb864378f466135175ea3332d57d14bcc822",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/bounded_vad_5s_context200ms/summary.json": "855e391aa508c05c0b7272879048e60ce2ca0da11fef3cf738f7b02af0f6d585",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/bounded_vad_5s_context200ms/scores.jsonl": "cbb53b31894d9474290cf07373ad14d1120c8712f9d9b40c9449ee76bc053ebc",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/bounded_vad_5s_context200ms/thermal.jsonl": "54ef9f70ea5d08af8d2235724934509512a7e85cb81e68e54ebcc8a912e03875",
+    "results/preflight/m3-vad-context-20261103-01/synthetic-long/bounded_vad_5s_context200ms/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/maintenance/m3-vad-context-20261103-01/preservation-after.json": "8a7266f69649b2123e14a0a001f467db5c2b54496842e76ffc0324e014884d05",
+    "results/maintenance/m3-vad-context-20261103-01/host-tests.log": "6ebb83b87fe0fc74c651d2b5ec5813bf58389b529265810bd6afacd3a5f62207",
+    "results/maintenance/m3-vad-context-20261103-01/rp5-tests.log": "ab2c54d83a8c9d2802c669d4f67acc11af7a6e60dce7e5f1cea534103b0aef5a",
+    "results/maintenance/m3-vad-context-20261103-01/preservation-before.json": "3bc0b71881d1d95b4ea2bed50422ba54d97796aef7c6dca0d0404f5d3427cc9c",
+    "results/maintenance/m3-vad-context-20261103-01/cooling-before.json": "bd3b7e94438f88af5dd06f68f81dd8edb89c44209a07507a324999abcb3102a8",
+    "results/maintenance/m3-vad-context-20261103-01/cooling-after.json": "12c9d052980bde4665a2cae5c3f947a977b75a140e87c3717bfb10ffb9d2bb5a",
+    "results/maintenance/m3-vad-context-20261103-01/launcher.json": "5fd8bd3d04a64f91b01ea04264f6dfe541d7c2d870605ffbb276f256c3ea54cb",
+    "results/maintenance/m3-vad-context-20261103-01/controller.log": "5c6894303ce58f2e7e74dd75989e52c35196cfb711f1cfeef728fdf909164601",
+    "results/maintenance/m3-vad-context-20261103-01/suite.py": "1732462e7abe77679366290438231057a7108ca6e85af7a6aa910deac913b8d2",
+    "results/maintenance/m3-vad-context-20261103-01/audit.py": "060add9b20e4a0ed477c6eae4956ed38c403e741403b6377e091a14d8e0093df",
+    "results/maintenance/m3-vad-context-20261103-01/analyze.py": "63e204c9cf456a81f35ad0c7030073707f8c609df44e4c3f064ae987574cca17",
+    "results/maintenance/m3-vad-context-20261103-01/synthetic-long.jsonl": "4e81a67c453b874e3525a8833cc901543faae0ffe482bba180e30acf9c63bc92",
+    "results/preflight/m3-segmented-accuracy-20261102-01/full_batch/summary.json": "c895abfc1b08ff99fc7642984069a5631185c735279423d5b01f22b3a3502fef",
+    "results/maintenance/m3-vad-context-20261103-01/legacy-rescore/full_batch/summary.json": "c895abfc1b08ff99fc7642984069a5631185c735279423d5b01f22b3a3502fef",
+    "results/preflight/m3-segmented-accuracy-20261102-01/fixed_windows_5s/summary.json": "b439609456b300c57b2d15e55de6cc604b6fcc3016ae98149e9b4f12b4c5d121",
+    "results/maintenance/m3-vad-context-20261103-01/legacy-rescore/fixed_windows_5s/summary.json": "b439609456b300c57b2d15e55de6cc604b6fcc3016ae98149e9b4f12b4c5d121",
+    "results/preflight/m3-segmented-accuracy-20261102-01/bounded_vad_5s/summary.json": "2019419dc53b473b827e6a195375939c5ff4c43365a7c17d4f28e494ebba4c00",
+    "results/maintenance/m3-vad-context-20261103-01/legacy-rescore/bounded_vad_5s/summary.json": "2019419dc53b473b827e6a195375939c5ff4c43365a7c17d4f28e494ebba4c00"
+  },
+  "scope_ko": "사전에 고정한 200ms 실제 왼쪽 문맥 1개 후보. KSS개발50과 기존합성장문3은 별도집계. 독립평가/자연긴대화/실시간Hybrid 검증 아님. 원시 UTC는 기기 기록 그대로 보존."
+}
