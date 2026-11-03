@@ -33,6 +33,7 @@ COMMANDS = {
     "summarize-segments": "reports.segments",
     "summarize-segmented-accuracy": "reports.segmented_accuracy",
     "summarize-concurrent": "reports.concurrent",
+    "replay-merge": "reports.merge_replay",
     "summarize-annotated-vad": "reports.annotated_vad",
     "inspect-cooling": "reports.cooling",
     "consolidate": "maintenance.consolidate",
