@@ -1,0 +1,2439 @@
+{
+  "schema": "wav-caption-mvp-validation-report-v1",
+  "date": "2026-11-03",
+  "source_commit": "17e0a5e5974873afe8349af221185da6b8988031",
+  "status": "completed",
+  "actual_native_inference": true,
+  "automatic_replacements": 0,
+  "cases": {
+    "smoke-wav": {
+      "schema": "separate-caption-mvp-v1",
+      "status": "completed",
+      "source_commit": "17e0a5e5974873afe8349af221185da6b8988031",
+      "reference_available": false,
+      "reference_policy": "empty_placeholder_not_silence_ground_truth",
+      "sources": 1,
+      "audio_s": 3.5265,
+      "display_events": 9,
+      "zip_final_displays": 1,
+      "refine_candidate_displays": 1,
+      "automatic_replacements": 0,
+      "first_zip_stdout_from_audio_start_s": {
+        "n": 1,
+        "mean": 0.843011201,
+        "p50": null,
+        "p95": null,
+        "max": 0.843011201
+      },
+      "available_to_stdout_flush_s": {
+        "n": 9,
+        "mean": 0.0010097937777777777,
+        "p50": 0.000196853,
+        "p95": 0.004007124,
+        "max": 0.004007124
+      },
+      "refine_owned_end_to_stdout_s": {
+        "n": 1,
+        "mean": 0.23354761899999987,
+        "p50": null,
+        "p95": null,
+        "max": 0.23354761899999987
+      },
+      "zip_cer": null,
+      "unmeasured": {
+        "screen_paint_s": null,
+        "acoustic_recognition_delay_s": null,
+        "merged_cer": null,
+        "microphone_overruns": null
+      },
+      "scope_ko": "실제 1배속 입력/NN/부모 stdout flush. 화면 렌더링·SSH 도착은 미계측. 모델 PID CPU/RSS는 터미널 부모/guard를 제외.",
+      "native_metrics": {
+        "first_partial_from_source_start_s": {
+          "n": 1,
+          "mean": 0.842773255,
+          "p50": null,
+          "p95": null,
+          "max": 0.842773255
+        },
+        "input_complete": true,
+        "input_dropped_chunks": 0,
+        "input_dropped_audio_s": 0.0,
+        "input_backlog_event_max_audio_s": 0.1,
+        "input_queue_wait_s": {
+          "n": 36,
+          "mean": 0.0005981260000000222,
+          "p50": 0.0004879300000000253,
+          "p95": 0.001136749000000048,
+          "max": 0.0013396960000000013
+        },
+        "zip_call_rtf": 0.13813927945555082,
+        "coordinator_active_rtf": 0.1790749193460999,
+        "refine": {
+          "complete": true,
+          "planned_windows": 1,
+          "enqueued": 1,
+          "successful": 1,
+          "failed_windows": 0,
+          "missing_results": 0,
+          "dropped_windows": 0,
+          "cer": {
+            "planned": 1,
+            "successful": 1,
+            "complete": true,
+            "cer": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 0,
+              "value": null,
+              "empty_reference_samples": 1,
+              "empty_reference_nonempty_hypotheses": 1
+            },
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+          },
+          "queue_wait_s": {
+            "n": 1,
+            "mean": 0.000590968,
+            "p50": null,
+            "p95": null,
+            "max": 0.000590968
+          },
+          "decode_s": {
+            "n": 1,
+            "mean": 0.221263737,
+            "p50": null,
+            "p95": null,
+            "max": 0.221263737
+          },
+          "dispatch_from_window_end_s": {
+            "n": 1,
+            "mean": 0.01076596200000024,
+            "p50": null,
+            "p95": null,
+            "max": 0.01076596200000024
+          },
+          "window_end_to_return_s": {
+            "n": 1,
+            "mean": 0.23288298400000018,
+            "p50": null,
+            "p95": null,
+            "max": 0.23288298400000018
+          },
+          "final_from_source_file_end_s": {
+            "n": 1,
+            "mean": 0.23288298400000018,
+            "p50": null,
+            "p95": null,
+            "max": 0.23288298400000018
+          },
+          "backlog_event_max_audio_s": 3.3705,
+          "backlog_event_max_windows": 1,
+          "backlog_audio_s": {
+            "n": 40,
+            "mean": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0
+          },
+          "backlog_end_audio_s": 0.0,
+          "zip_refine_call_overlap_s": 0.095757884,
+          "refine_calls_with_zip_overlap": 1,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "vad_emission_from_owned_end_s": {
+            "n": 1,
+            "mean": 0.0029645870000001295,
+            "p50": null,
+            "p95": null,
+            "max": 0.0029645870000001295
+          },
+          "dispatch_after_vad_emission_s": {
+            "n": 1,
+            "mean": 0.007801375,
+            "p50": null,
+            "p95": null,
+            "max": 0.007801375
+          },
+          "vad_emission_to_return_s": {
+            "n": 1,
+            "mean": 0.229918397,
+            "p50": null,
+            "p95": null,
+            "max": 0.229918397
+          },
+          "decision_audio_after_owned_end_s": {
+            "n": 1,
+            "mean": 0.0,
+            "p50": null,
+            "p95": null,
+            "max": 0.0
+          },
+          "no_vad_segment_sources": 0,
+          "backlog_event_max_payload_audio_s": 3.3705,
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님."
+        },
+        "resources": {
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "sample_count": 37,
+          "paired_intervals": 36,
+          "paired_wall_s": 3.6199435789999996,
+          "observed_model_cpu_percent": 29.83471914494167,
+          "model_group_rss_observed_max_mib": 639.71875,
+          "complete_model_rss_samples": 37,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능.",
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling",
+            "caption_events_and_result_reader"
+          ]
+        }
+      },
+      "runtime_environment": {
+        "edge_asr": "0.1.0",
+        "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+        "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+        "machine": "aarch64",
+        "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+        "runtime": {
+          "sherpa_package_version": "2.0.1",
+          "sherpa_core_package_version": "2.0.1",
+          "python_onnxruntime_package_version": "1.31.1",
+          "sherpa_native_onnxruntime_version": "1.28.2",
+          "native_version_source": "sherpa_onnx.onnxruntime_version",
+          "status": "available",
+          "reason": null
+        },
+        "packages": [
+          {
+            "name": "cffi",
+            "version": "2.1.1"
+          },
+          {
+            "name": "flatbuffers",
+            "version": "25.12.19"
+          },
+          {
+            "name": "numpy",
+            "version": "2.4.6"
+          },
+          {
+            "name": "onnxruntime",
+            "version": "1.31.1"
+          },
+          {
+            "name": "packaging",
+            "version": "26.3"
+          },
+          {
+            "name": "protobuf",
+            "version": "7.36.2"
+          },
+          {
+            "name": "pycparser",
+            "version": "3.12"
+          },
+          {
+            "name": "sherpa-onnx-core",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sherpa_onnx",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sounddevice",
+            "version": "0.5.6"
+          },
+          {
+            "name": "soundfile",
+            "version": "0.14.0"
+          },
+          {
+            "name": "typing_extensions",
+            "version": "4.16.0"
+          }
+        ]
+      },
+      "weights": {
+        "zipformer_model_files": {
+          "tokens": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/tokens.txt",
+            "sha256": "016bdf0965029263b7ad01b742366ee542ef0bef38261510e8176ff6f2e9e668"
+          },
+          "encoder": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/encoder-epoch-99-avg-1.int8.onnx",
+            "sha256": "8d0b1aa24fbedd4e3948564ab7facd151b8ce9b0c48fc987c541de2de3af5697"
+          },
+          "decoder": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/decoder-epoch-99-avg-1.onnx",
+            "sha256": "b29cfb4575141e50a30a22b2c4579934f3d4f45b83c9c8c08c3aef5a3fa7abfc"
+          },
+          "joiner": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/joiner-epoch-99-avg-1.int8.onnx",
+            "sha256": "128b80a66a1f718488af8560f9d15895109b99ff3e573f0a0130e03774ef1ced"
+          }
+        },
+        "sensevoice_model_files": {
+          "model": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/model.int8.onnx",
+            "sha256": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51"
+          },
+          "tokens": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/tokens.txt",
+            "sha256": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc"
+          }
+        },
+        "vad_model": {
+          "path": "/home/deepet/projects/edge-asr/models/silero-vad-k2-20261029/silero_vad.onnx",
+          "sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6"
+        }
+      },
+      "loading": {
+        "zip_loading": {
+          "wall_s": 2.451370449998649,
+          "cpu_s": 2.685536928,
+          "resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 269.921875,
+            "rss_sample_count": 26,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 90043.410371946,
+                "rss_mib": 26.203125
+              },
+              {
+                "monotonic_s": 90043.511162888,
+                "rss_mib": 87.90625
+              },
+              {
+                "monotonic_s": 90043.611542696,
+                "rss_mib": 210.5
+              },
+              {
+                "monotonic_s": 90043.711775522,
+                "rss_mib": 269.421875
+              },
+              {
+                "monotonic_s": 90043.811952625,
+                "rss_mib": 269.421875
+              },
+              {
+                "monotonic_s": 90043.912154414,
+                "rss_mib": 269.921875
+              },
+              {
+                "monotonic_s": 90044.012362239,
+                "rss_mib": 269.921875
+              },
+              {
+                "monotonic_s": 90044.112570843,
+                "rss_mib": 269.921875
+              },
+              {
+                "monotonic_s": 90044.212742613,
+                "rss_mib": 269.921875
+              },
+              {
+                "monotonic_s": 90044.312902771,
+                "rss_mib": 269.921875
+              },
+              {
+                "monotonic_s": 90044.413138875,
+                "rss_mib": 269.921875
+              },
+              {
+                "monotonic_s": 90044.513378275,
+                "rss_mib": 269.921875
+              },
+              {
+                "monotonic_s": 90044.613568119,
+                "rss_mib": 269.921875
+              },
+              {
+                "monotonic_s": 90044.714103836,
+                "rss_mib": 199.359375
+              },
+              {
+                "monotonic_s": 90044.814328791,
+                "rss_mib": 218.859375
+              },
+              {
+                "monotonic_s": 90044.914534006,
+                "rss_mib": 237.859375
+              },
+              {
+                "monotonic_s": 90045.014760943,
+                "rss_mib": 237.859375
+              },
+              {
+                "monotonic_s": 90045.114938787,
+                "rss_mib": 237.859375
+              },
+              {
+                "monotonic_s": 90045.215131316,
+                "rss_mib": 237.859375
+              },
+              {
+                "monotonic_s": 90045.315298882,
+                "rss_mib": 237.859375
+              },
+              {
+                "monotonic_s": 90045.41547393,
+                "rss_mib": 237.859375
+              },
+              {
+                "monotonic_s": 90045.515720219,
+                "rss_mib": 237.859375
+              },
+              {
+                "monotonic_s": 90045.6159061,
+                "rss_mib": 237.859375
+              },
+              {
+                "monotonic_s": 90045.716083444,
+                "rss_mib": 237.859375
+              },
+              {
+                "monotonic_s": 90045.816291399,
+                "rss_mib": 237.859375
+              },
+              {
+                "monotonic_s": 90045.861559858,
+                "rss_mib": 248.09375
+              }
+            ]
+          }
+        },
+        "vad_loading": {
+          "wall_s": 0.08004663299652748,
+          "cpu_s": 0.04096463000000039,
+          "resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 268.296875,
+            "rss_sample_count": 2,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 90047.275884968,
+                "rss_mib": 249.59375
+              },
+              {
+                "monotonic_s": 90047.355767526,
+                "rss_mib": 268.296875
+              }
+            ]
+          }
+        }
+      },
+      "sensevoice_loading": {
+        "loading_s": 1.849040672997944,
+        "loading_cpu_s": 2.106185232,
+        "loading_resources": {
+          "sample_interval_s": 0.1,
+          "rss_observed_max_mib": 361.421875,
+          "rss_sample_count": 20,
+          "rss_missing_count": 0,
+          "rss_samples": [
+            {
+              "monotonic_s": 90040.809513088,
+              "rss_mib": 26.21875
+            },
+            {
+              "monotonic_s": 90040.90996386,
+              "rss_mib": 62.453125
+            },
+            {
+              "monotonic_s": 90041.010420169,
+              "rss_mib": 265.453125
+            },
+            {
+              "monotonic_s": 90041.110651976,
+              "rss_mib": 321.078125
+            },
+            {
+              "monotonic_s": 90041.211038896,
+              "rss_mib": 328.984375
+            },
+            {
+              "monotonic_s": 90041.311268388,
+              "rss_mib": 326.125
+            },
+            {
+              "monotonic_s": 90041.411535992,
+              "rss_mib": 326.125
+            },
+            {
+              "monotonic_s": 90041.511777559,
+              "rss_mib": 326.125
+            },
+            {
+              "monotonic_s": 90041.611949051,
+              "rss_mib": 326.625
+            },
+            {
+              "monotonic_s": 90041.712152377,
+              "rss_mib": 326.625
+            },
+            {
+              "monotonic_s": 90041.812313424,
+              "rss_mib": 326.625
+            },
+            {
+              "monotonic_s": 90041.912499416,
+              "rss_mib": 326.625
+            },
+            {
+              "monotonic_s": 90042.012687131,
+              "rss_mib": 326.625
+            },
+            {
+              "monotonic_s": 90042.112871679,
+              "rss_mib": 326.625
+            },
+            {
+              "monotonic_s": 90042.213032374,
+              "rss_mib": 326.625
+            },
+            {
+              "monotonic_s": 90042.31317044,
+              "rss_mib": 327.625
+            },
+            {
+              "monotonic_s": 90042.413414988,
+              "rss_mib": 327.625
+            },
+            {
+              "monotonic_s": 90042.513667555,
+              "rss_mib": 342.125
+            },
+            {
+              "monotonic_s": 90042.613876529,
+              "rss_mib": 359.125
+            },
+            {
+              "monotonic_s": 90042.658116369,
+              "rss_mib": 361.421875
+            }
+          ]
+        },
+        "warmup_runs": 3,
+        "warmup_s": 0.6201344139990397
+      },
+      "thermal": {
+        "policy": {
+          "admission_mc": 53000,
+          "admission_consecutive": 3,
+          "stop_mc": null,
+          "interval_s": 1,
+          "timeout_s": 600,
+          "address_space_bytes": 4294967296,
+          "scope": "운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
+          "name": "operational",
+          "warn_mc": 80000,
+          "allow_thermal_limits": true,
+          "firmware_thermal_protection": "unchanged"
+        },
+        "before": {
+          "at_utc": "2026-11-03T09:11:21.600312+00:00",
+          "monotonic_s": 90040.354984762,
+          "temperature_mc": 52900,
+          "cpu0_freq_khz": 2400000,
+          "governor": "ondemand",
+          "throttled_flags": 917504,
+          "current_limits": 0,
+          "history_limits": 14,
+          "fan_rpm": 2982
+        },
+        "after": {
+          "at_utc": "2026-11-03T09:11:33.786755+00:00",
+          "monotonic_s": 90052.541428916,
+          "temperature_mc": 56750,
+          "cpu0_freq_khz": 2400000,
+          "governor": "ondemand",
+          "throttled_flags": 917504,
+          "current_limits": 0,
+          "history_limits": 14,
+          "arm_clock_hz": 2400030464,
+          "fan_rpm": 2981
+        },
+        "sampled_max_temperature_mc": 61700,
+        "current_limit_samples": 0,
+        "new_history_samples": 0,
+        "control_valid": false,
+        "operational_valid": true
+      }
+    },
+    "kss-dev50": {
+      "schema": "separate-caption-mvp-v1",
+      "status": "completed",
+      "source_commit": "17e0a5e5974873afe8349af221185da6b8988031",
+      "reference_available": true,
+      "reference_policy": "manifest_reference",
+      "sources": 50,
+      "audio_s": 164.919,
+      "display_events": 503,
+      "zip_final_displays": 50,
+      "refine_candidate_displays": 57,
+      "automatic_replacements": 0,
+      "first_zip_stdout_from_audio_start_s": {
+        "n": 50,
+        "mean": 0.9745765685400007,
+        "p50": 0.8529526000000001,
+        "p95": 1.459181989000001,
+        "max": 1.471210622000001
+      },
+      "available_to_stdout_flush_s": {
+        "n": 503,
+        "mean": 0.0006038925328031809,
+        "p50": 0.000191724,
+        "p95": 0.002072943,
+        "max": 0.038724815
+      },
+      "refine_owned_end_to_stdout_s": {
+        "n": 57,
+        "mean": 0.31529777364912315,
+        "p50": 0.276982979,
+        "p95": 0.6388094589999866,
+        "max": 0.6880205600000124
+      },
+      "zip_cer": {
+        "planned": 50,
+        "successful": 50,
+        "complete": true,
+        "cer": {
+          "errors": 88,
+          "substitutions": 71,
+          "deletions": 11,
+          "insertions": 6,
+          "reference_characters": 756,
+          "value": 0.1164021164021164
+        },
+        "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+      },
+      "unmeasured": {
+        "screen_paint_s": null,
+        "acoustic_recognition_delay_s": null,
+        "merged_cer": null,
+        "microphone_overruns": null
+      },
+      "scope_ko": "실제 1배속 입력/NN/부모 stdout flush. 화면 렌더링·SSH 도착은 미계측. 모델 PID CPU/RSS는 터미널 부모/guard를 제외.",
+      "native_metrics": {
+        "first_partial_from_source_start_s": {
+          "n": 50,
+          "mean": 0.9736068384800012,
+          "p50": 0.8527836359999998,
+          "p95": 1.4589215799999806,
+          "max": 1.4710243240000125
+        },
+        "input_complete": true,
+        "input_dropped_chunks": 0,
+        "input_dropped_audio_s": 0.0,
+        "input_backlog_event_max_audio_s": 0.1,
+        "input_queue_wait_s": {
+          "n": 1650,
+          "mean": 0.0014746285424244202,
+          "p50": 0.0006605429999986256,
+          "p95": 0.001166027000000014,
+          "max": 0.0857118959999923
+        },
+        "zip_call_rtf": 0.1505668437354094,
+        "coordinator_active_rtf": 0.19518270769311624,
+        "refine": {
+          "complete": true,
+          "planned_windows": 57,
+          "enqueued": 57,
+          "successful": 57,
+          "failed_windows": 0,
+          "missing_results": 0,
+          "dropped_windows": 0,
+          "cer": {
+            "planned": 50,
+            "successful": 50,
+            "complete": true,
+            "cer": {
+              "errors": 42,
+              "substitutions": 26,
+              "deletions": 9,
+              "insertions": 7,
+              "reference_characters": 756,
+              "value": 0.05555555555555555
+            },
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+          },
+          "queue_wait_s": {
+            "n": 57,
+            "mean": 0.0010278558245614036,
+            "p50": 0.000859063,
+            "p95": 0.001830699,
+            "max": 0.00515056
+          },
+          "decode_s": {
+            "n": 57,
+            "mean": 0.18044598657894736,
+            "p50": 0.186536114,
+            "p95": 0.267602542,
+            "max": 0.299408635
+          },
+          "dispatch_from_window_end_s": {
+            "n": 57,
+            "mean": 0.13296820305263177,
+            "p50": 0.07381466599999698,
+            "p95": 0.4284690079999933,
+            "max": 0.451295886999997
+          },
+          "window_end_to_return_s": {
+            "n": 57,
+            "mean": 0.31464443992982494,
+            "p50": 0.2763429369999999,
+            "p95": 0.6380469339999877,
+            "max": 0.6874756660000116
+          },
+          "final_from_source_file_end_s": {
+            "n": 50,
+            "mean": 0.24073026012000112,
+            "p50": 0.2423886959999919,
+            "p95": 0.3354052879999969,
+            "max": 0.37946714400000037
+          },
+          "backlog_event_max_audio_s": 4.5484375,
+          "backlog_event_max_windows": 1,
+          "backlog_audio_s": {
+            "n": 1654,
+            "mean": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0
+          },
+          "backlog_end_audio_s": 0.0,
+          "zip_refine_call_overlap_s": 5.8269762200000015,
+          "refine_calls_with_zip_overlap": 57,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "vad_emission_from_owned_end_s": {
+            "n": 57,
+            "mean": 0.12667632443859775,
+            "p50": 0.06415389400000038,
+            "p95": 0.4201336439999892,
+            "max": 0.44532776499999827
+          },
+          "dispatch_after_vad_emission_s": {
+            "n": 57,
+            "mean": 0.006291878614035088,
+            "p50": 0.006074753,
+            "p95": 0.011728146,
+            "max": 0.014555668
+          },
+          "vad_emission_to_return_s": {
+            "n": 57,
+            "mean": 0.1879681154912281,
+            "p50": 0.194203657,
+            "p95": 0.281448116,
+            "max": 0.316305302
+          },
+          "decision_audio_after_owned_end_s": {
+            "n": 57,
+            "mean": 0.06737609649122805,
+            "p50": 0.0,
+            "p95": 0.3,
+            "max": 0.3
+          },
+          "no_vad_segment_sources": 0,
+          "backlog_event_max_payload_audio_s": 4.5484375,
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님."
+        },
+        "resources": {
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "sample_count": 1642,
+          "paired_intervals": 1641,
+          "paired_wall_s": 165.04504560999965,
+          "observed_model_cpu_percent": 35.25704136403014,
+          "model_group_rss_observed_max_mib": 674.78125,
+          "complete_model_rss_samples": 1642,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능.",
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling",
+            "caption_events_and_result_reader"
+          ]
+        }
+      },
+      "runtime_environment": {
+        "edge_asr": "0.1.0",
+        "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+        "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+        "machine": "aarch64",
+        "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+        "runtime": {
+          "sherpa_package_version": "2.0.1",
+          "sherpa_core_package_version": "2.0.1",
+          "python_onnxruntime_package_version": "1.31.1",
+          "sherpa_native_onnxruntime_version": "1.28.2",
+          "native_version_source": "sherpa_onnx.onnxruntime_version",
+          "status": "available",
+          "reason": null
+        },
+        "packages": [
+          {
+            "name": "cffi",
+            "version": "2.1.1"
+          },
+          {
+            "name": "flatbuffers",
+            "version": "25.12.19"
+          },
+          {
+            "name": "numpy",
+            "version": "2.4.6"
+          },
+          {
+            "name": "onnxruntime",
+            "version": "1.31.1"
+          },
+          {
+            "name": "packaging",
+            "version": "26.3"
+          },
+          {
+            "name": "protobuf",
+            "version": "7.36.2"
+          },
+          {
+            "name": "pycparser",
+            "version": "3.12"
+          },
+          {
+            "name": "sherpa-onnx-core",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sherpa_onnx",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sounddevice",
+            "version": "0.5.6"
+          },
+          {
+            "name": "soundfile",
+            "version": "0.14.0"
+          },
+          {
+            "name": "typing_extensions",
+            "version": "4.16.0"
+          }
+        ]
+      },
+      "weights": {
+        "zipformer_model_files": {
+          "tokens": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/tokens.txt",
+            "sha256": "016bdf0965029263b7ad01b742366ee542ef0bef38261510e8176ff6f2e9e668"
+          },
+          "encoder": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/encoder-epoch-99-avg-1.int8.onnx",
+            "sha256": "8d0b1aa24fbedd4e3948564ab7facd151b8ce9b0c48fc987c541de2de3af5697"
+          },
+          "decoder": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/decoder-epoch-99-avg-1.onnx",
+            "sha256": "b29cfb4575141e50a30a22b2c4579934f3d4f45b83c9c8c08c3aef5a3fa7abfc"
+          },
+          "joiner": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/joiner-epoch-99-avg-1.int8.onnx",
+            "sha256": "128b80a66a1f718488af8560f9d15895109b99ff3e573f0a0130e03774ef1ced"
+          }
+        },
+        "sensevoice_model_files": {
+          "model": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/model.int8.onnx",
+            "sha256": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51"
+          },
+          "tokens": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/tokens.txt",
+            "sha256": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc"
+          }
+        },
+        "vad_model": {
+          "path": "/home/deepet/projects/edge-asr/models/silero-vad-k2-20261029/silero_vad.onnx",
+          "sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6"
+        }
+      },
+      "loading": {
+        "zip_loading": {
+          "wall_s": 2.448577150993515,
+          "cpu_s": 2.684994583,
+          "resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 278.859375,
+            "rss_sample_count": 26,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 90065.503925147,
+                "rss_mib": 36.453125
+              },
+              {
+                "monotonic_s": 90065.604758533,
+                "rss_mib": 105.6875
+              },
+              {
+                "monotonic_s": 90065.705063249,
+                "rss_mib": 221.21875
+              },
+              {
+                "monotonic_s": 90065.805312704,
+                "rss_mib": 277.859375
+              },
+              {
+                "monotonic_s": 90065.905548401,
+                "rss_mib": 277.859375
+              },
+              {
+                "monotonic_s": 90066.005796727,
+                "rss_mib": 277.859375
+              },
+              {
+                "monotonic_s": 90066.106032793,
+                "rss_mib": 277.859375
+              },
+              {
+                "monotonic_s": 90066.206261193,
+                "rss_mib": 277.859375
+              },
+              {
+                "monotonic_s": 90066.306499982,
+                "rss_mib": 277.859375
+              },
+              {
+                "monotonic_s": 90066.406726104,
+                "rss_mib": 277.859375
+              },
+              {
+                "monotonic_s": 90066.506938263,
+                "rss_mib": 277.859375
+              },
+              {
+                "monotonic_s": 90066.607134607,
+                "rss_mib": 277.859375
+              },
+              {
+                "monotonic_s": 90066.707381396,
+                "rss_mib": 278.859375
+              },
+              {
+                "monotonic_s": 90066.807871909,
+                "rss_mib": 217.5625
+              },
+              {
+                "monotonic_s": 90066.90814618,
+                "rss_mib": 232.0625
+              },
+              {
+                "monotonic_s": 90067.008378524,
+                "rss_mib": 250.0625
+              },
+              {
+                "monotonic_s": 90067.108597498,
+                "rss_mib": 250.0625
+              },
+              {
+                "monotonic_s": 90067.208798805,
+                "rss_mib": 250.0625
+              },
+              {
+                "monotonic_s": 90067.309058076,
+                "rss_mib": 250.0625
+              },
+              {
+                "monotonic_s": 90067.409278087,
+                "rss_mib": 250.0625
+              },
+              {
+                "monotonic_s": 90067.50949969,
+                "rss_mib": 250.0625
+              },
+              {
+                "monotonic_s": 90067.609722664,
+                "rss_mib": 250.0625
+              },
+              {
+                "monotonic_s": 90067.709937972,
+                "rss_mib": 250.0625
+              },
+              {
+                "monotonic_s": 90067.810143556,
+                "rss_mib": 250.0625
+              },
+              {
+                "monotonic_s": 90067.910457087,
+                "rss_mib": 250.0625
+              },
+              {
+                "monotonic_s": 90067.952320057,
+                "rss_mib": 274.0625
+              }
+            ]
+          }
+        },
+        "vad_loading": {
+          "wall_s": 0.08972743099729996,
+          "cpu_s": 0.04190222099999996,
+          "resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 294.765625,
+            "rss_sample_count": 2,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 90069.137465609,
+                "rss_mib": 275.5625
+              },
+              {
+                "monotonic_s": 90069.227025131,
+                "rss_mib": 294.765625
+              }
+            ]
+          }
+        }
+      },
+      "sensevoice_loading": {
+        "loading_s": 1.8444841199961957,
+        "loading_cpu_s": 2.101729157,
+        "loading_resources": {
+          "sample_interval_s": 0.1,
+          "rss_observed_max_mib": 361.015625,
+          "rss_sample_count": 20,
+          "rss_missing_count": 0,
+          "rss_samples": [
+            {
+              "monotonic_s": 90063.028084842,
+              "rss_mib": 25.703125
+            },
+            {
+              "monotonic_s": 90063.128531744,
+              "rss_mib": 62.4375
+            },
+            {
+              "monotonic_s": 90063.228999756,
+              "rss_mib": 256.4375
+            },
+            {
+              "monotonic_s": 90063.329243953,
+              "rss_mib": 320.515625
+            },
+            {
+              "monotonic_s": 90063.42970891,
+              "rss_mib": 329.78125
+            },
+            {
+              "monotonic_s": 90063.529949643,
+              "rss_mib": 326.046875
+            },
+            {
+              "monotonic_s": 90063.630123987,
+              "rss_mib": 326.046875
+            },
+            {
+              "monotonic_s": 90063.730291016,
+              "rss_mib": 326.046875
+            },
+            {
+              "monotonic_s": 90063.830428897,
+              "rss_mib": 326.546875
+            },
+            {
+              "monotonic_s": 90063.930635038,
+              "rss_mib": 326.546875
+            },
+            {
+              "monotonic_s": 90064.030892438,
+              "rss_mib": 326.546875
+            },
+            {
+              "monotonic_s": 90064.131121449,
+              "rss_mib": 326.546875
+            },
+            {
+              "monotonic_s": 90064.23138746,
+              "rss_mib": 326.546875
+            },
+            {
+              "monotonic_s": 90064.331613934,
+              "rss_mib": 326.546875
+            },
+            {
+              "monotonic_s": 90064.43186113,
+              "rss_mib": 326.546875
+            },
+            {
+              "monotonic_s": 90064.532047308,
+              "rss_mib": 327.546875
+            },
+            {
+              "monotonic_s": 90064.632204596,
+              "rss_mib": 328.046875
+            },
+            {
+              "monotonic_s": 90064.732477589,
+              "rss_mib": 340.546875
+            },
+            {
+              "monotonic_s": 90064.83272047,
+              "rss_mib": 357.546875
+            },
+            {
+              "monotonic_s": 90064.872109329,
+              "rss_mib": 361.015625
+            }
+          ]
+        },
+        "warmup_runs": 3,
+        "warmup_s": 0.5043724139977712
+      },
+      "thermal": {
+        "policy": {
+          "admission_mc": 53000,
+          "admission_consecutive": 3,
+          "stop_mc": null,
+          "interval_s": 1,
+          "timeout_s": 600,
+          "address_space_bytes": 4294967296,
+          "scope": "운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
+          "name": "operational",
+          "warn_mc": 80000,
+          "allow_thermal_limits": true,
+          "firmware_thermal_protection": "unchanged"
+        },
+        "before": {
+          "at_utc": "2026-11-03T09:11:43.393482+00:00",
+          "monotonic_s": 90062.148156024,
+          "temperature_mc": 52900,
+          "cpu0_freq_khz": 1500000,
+          "governor": "ondemand",
+          "throttled_flags": 917504,
+          "current_limits": 0,
+          "history_limits": 14,
+          "fan_rpm": 2975
+        },
+        "after": {
+          "at_utc": "2026-11-03T09:14:37.402104+00:00",
+          "monotonic_s": 90236.156778911,
+          "temperature_mc": 57850,
+          "cpu0_freq_khz": 2400000,
+          "governor": "ondemand",
+          "throttled_flags": 917504,
+          "current_limits": 0,
+          "history_limits": 14,
+          "arm_clock_hz": 2400033792,
+          "fan_rpm": 5146
+        },
+        "sampled_max_temperature_mc": 61700,
+        "current_limit_samples": 0,
+        "new_history_samples": 0,
+        "control_valid": false,
+        "operational_valid": true
+      },
+      "same_zip_and_refine_hypotheses_as_m34": true,
+      "baseline_summary_sha256": "7606bc8ff99b5840e26c018fcabe0518fcb7be19fbb8ad98467ebc84969724a6"
+    },
+    "synthetic-120": {
+      "schema": "separate-caption-mvp-v1",
+      "status": "completed",
+      "source_commit": "17e0a5e5974873afe8349af221185da6b8988031",
+      "reference_available": true,
+      "reference_policy": "manifest_reference",
+      "sources": 1,
+      "audio_s": 120.586875,
+      "display_events": 369,
+      "zip_final_displays": 1,
+      "refine_candidate_displays": 43,
+      "automatic_replacements": 0,
+      "first_zip_stdout_from_audio_start_s": {
+        "n": 1,
+        "mean": 0.843610511,
+        "p50": null,
+        "p95": null,
+        "max": 0.843610511
+      },
+      "available_to_stdout_flush_s": {
+        "n": 369,
+        "mean": 0.0003247681951219513,
+        "p50": 0.000209946,
+        "p95": 0.000847415,
+        "max": 0.004756131
+      },
+      "refine_owned_end_to_stdout_s": {
+        "n": 43,
+        "mean": 0.4955325280232565,
+        "p50": 0.5079378890000044,
+        "p95": 0.6273574650000011,
+        "max": 0.6435916190000057
+      },
+      "zip_cer": {
+        "planned": 1,
+        "successful": 1,
+        "complete": true,
+        "cer": {
+          "errors": 58,
+          "substitutions": 44,
+          "deletions": 12,
+          "insertions": 2,
+          "reference_characters": 519,
+          "value": 0.11175337186897881
+        },
+        "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+      },
+      "unmeasured": {
+        "screen_paint_s": null,
+        "acoustic_recognition_delay_s": null,
+        "merged_cer": null,
+        "microphone_overruns": null
+      },
+      "scope_ko": "실제 1배속 입력/NN/부모 stdout flush. 화면 렌더링·SSH 도착은 미계측. 모델 PID CPU/RSS는 터미널 부모/guard를 제외.",
+      "native_metrics": {
+        "first_partial_from_source_start_s": {
+          "n": 1,
+          "mean": 0.843384232,
+          "p50": null,
+          "p95": null,
+          "max": 0.843384232
+        },
+        "input_complete": true,
+        "input_dropped_chunks": 0,
+        "input_dropped_audio_s": 0.0,
+        "input_backlog_event_max_audio_s": 0.1,
+        "input_queue_wait_s": {
+          "n": 1206,
+          "mean": 0.0006579817164178462,
+          "p50": 0.0006548200000011661,
+          "p95": 0.001127175999997121,
+          "max": 0.002846504000000305
+        },
+        "zip_call_rtf": 0.1301395562991413,
+        "coordinator_active_rtf": 0.1725441422874932,
+        "refine": {
+          "complete": true,
+          "planned_windows": 43,
+          "enqueued": 43,
+          "successful": 43,
+          "failed_windows": 0,
+          "missing_results": 0,
+          "dropped_windows": 0,
+          "cer": {
+            "planned": 1,
+            "successful": 1,
+            "complete": true,
+            "cer": {
+              "errors": 32,
+              "substitutions": 24,
+              "deletions": 4,
+              "insertions": 4,
+              "reference_characters": 519,
+              "value": 0.06165703275529865
+            },
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+          },
+          "queue_wait_s": {
+            "n": 43,
+            "mean": 0.0009131236511627907,
+            "p50": 0.000942804,
+            "p95": 0.001352548,
+            "max": 0.001395437
+          },
+          "decode_s": {
+            "n": 43,
+            "mean": 0.15443751909302325,
+            "p50": 0.150014847,
+            "p95": 0.250537232,
+            "max": 0.301959337
+          },
+          "dispatch_from_window_end_s": {
+            "n": 43,
+            "mean": 0.3392382889534891,
+            "p50": 0.3462497550000023,
+            "p95": 0.40351677799999663,
+            "max": 0.40580850700000326
+          },
+          "window_end_to_return_s": {
+            "n": 43,
+            "mean": 0.4947682224651163,
+            "p50": 0.5073556250000024,
+            "p95": 0.6267980719999997,
+            "max": 0.6428863910000047
+          },
+          "final_from_source_file_end_s": {
+            "n": 1,
+            "mean": 0.2582652709999991,
+            "p50": null,
+            "p95": null,
+            "max": 0.2582652709999991
+          },
+          "backlog_event_max_audio_s": 5.0,
+          "backlog_event_max_windows": 1,
+          "backlog_audio_s": {
+            "n": 1211,
+            "mean": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0
+          },
+          "backlog_end_audio_s": 0.0,
+          "zip_refine_call_overlap_s": 1.4608268689999997,
+          "refine_calls_with_zip_overlap": 42,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "vad_emission_from_owned_end_s": {
+            "n": 43,
+            "mean": 0.3336654365813957,
+            "p50": 0.3435397890000047,
+            "p95": 0.39698439200000735,
+            "max": 0.3996734210000028
+          },
+          "dispatch_after_vad_emission_s": {
+            "n": 43,
+            "mean": 0.005572852372093023,
+            "p50": 0.005052855,
+            "p95": 0.01108983,
+            "max": 0.012787491
+          },
+          "vad_emission_to_return_s": {
+            "n": 43,
+            "mean": 0.16110278588372093,
+            "p50": 0.155947246,
+            "p95": 0.263696967,
+            "max": 0.315016922
+          },
+          "decision_audio_after_owned_end_s": {
+            "n": 43,
+            "mean": 0.28204651162790717,
+            "p50": 0.3,
+            "p95": 0.3,
+            "max": 0.3
+          },
+          "no_vad_segment_sources": 0,
+          "backlog_event_max_payload_audio_s": 5.0,
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님."
+        },
+        "resources": {
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "sample_count": 1201,
+          "paired_intervals": 1200,
+          "paired_wall_s": 120.66902908400006,
+          "observed_model_cpu_percent": 31.67341304569075,
+          "model_group_rss_observed_max_mib": 707.890625,
+          "complete_model_rss_samples": 1201,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능.",
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling",
+            "caption_events_and_result_reader"
+          ]
+        }
+      },
+      "runtime_environment": {
+        "edge_asr": "0.1.0",
+        "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+        "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+        "machine": "aarch64",
+        "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+        "runtime": {
+          "sherpa_package_version": "2.0.1",
+          "sherpa_core_package_version": "2.0.1",
+          "python_onnxruntime_package_version": "1.31.1",
+          "sherpa_native_onnxruntime_version": "1.28.2",
+          "native_version_source": "sherpa_onnx.onnxruntime_version",
+          "status": "available",
+          "reason": null
+        },
+        "packages": [
+          {
+            "name": "cffi",
+            "version": "2.1.1"
+          },
+          {
+            "name": "flatbuffers",
+            "version": "25.12.19"
+          },
+          {
+            "name": "numpy",
+            "version": "2.4.6"
+          },
+          {
+            "name": "onnxruntime",
+            "version": "1.31.1"
+          },
+          {
+            "name": "packaging",
+            "version": "26.3"
+          },
+          {
+            "name": "protobuf",
+            "version": "7.36.2"
+          },
+          {
+            "name": "pycparser",
+            "version": "3.12"
+          },
+          {
+            "name": "sherpa-onnx-core",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sherpa_onnx",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sounddevice",
+            "version": "0.5.6"
+          },
+          {
+            "name": "soundfile",
+            "version": "0.14.0"
+          },
+          {
+            "name": "typing_extensions",
+            "version": "4.16.0"
+          }
+        ]
+      },
+      "weights": {
+        "zipformer_model_files": {
+          "tokens": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/tokens.txt",
+            "sha256": "016bdf0965029263b7ad01b742366ee542ef0bef38261510e8176ff6f2e9e668"
+          },
+          "encoder": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/encoder-epoch-99-avg-1.int8.onnx",
+            "sha256": "8d0b1aa24fbedd4e3948564ab7facd151b8ce9b0c48fc987c541de2de3af5697"
+          },
+          "decoder": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/decoder-epoch-99-avg-1.onnx",
+            "sha256": "b29cfb4575141e50a30a22b2c4579934f3d4f45b83c9c8c08c3aef5a3fa7abfc"
+          },
+          "joiner": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/joiner-epoch-99-avg-1.int8.onnx",
+            "sha256": "128b80a66a1f718488af8560f9d15895109b99ff3e573f0a0130e03774ef1ced"
+          }
+        },
+        "sensevoice_model_files": {
+          "model": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/model.int8.onnx",
+            "sha256": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51"
+          },
+          "tokens": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/tokens.txt",
+            "sha256": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc"
+          }
+        },
+        "vad_model": {
+          "path": "/home/deepet/projects/edge-asr/models/silero-vad-k2-20261029/silero_vad.onnx",
+          "sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6"
+        }
+      },
+      "loading": {
+        "zip_loading": {
+          "wall_s": 2.4871908370114397,
+          "cpu_s": 2.722234763,
+          "resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 277.46875,
+            "rss_sample_count": 26,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 90263.510072462,
+                "rss_mib": 34.09375
+              },
+              {
+                "monotonic_s": 90263.610829437,
+                "rss_mib": 93.609375
+              },
+              {
+                "monotonic_s": 90263.711121502,
+                "rss_mib": 218.546875
+              },
+              {
+                "monotonic_s": 90263.811348362,
+                "rss_mib": 277.46875
+              },
+              {
+                "monotonic_s": 90263.911533111,
+                "rss_mib": 277.46875
+              },
+              {
+                "monotonic_s": 90264.011778767,
+                "rss_mib": 277.46875
+              },
+              {
+                "monotonic_s": 90264.112014183,
+                "rss_mib": 277.46875
+              },
+              {
+                "monotonic_s": 90264.212228136,
+                "rss_mib": 277.46875
+              },
+              {
+                "monotonic_s": 90264.312408366,
+                "rss_mib": 277.46875
+              },
+              {
+                "monotonic_s": 90264.412580781,
+                "rss_mib": 277.46875
+              },
+              {
+                "monotonic_s": 90264.512772697,
+                "rss_mib": 277.46875
+              },
+              {
+                "monotonic_s": 90264.612950557,
+                "rss_mib": 277.46875
+              },
+              {
+                "monotonic_s": 90264.713123824,
+                "rss_mib": 277.46875
+              },
+              {
+                "monotonic_s": 90264.813317906,
+                "rss_mib": 260.4375
+              },
+              {
+                "monotonic_s": 90264.913568192,
+                "rss_mib": 226.40625
+              },
+              {
+                "monotonic_s": 90265.013825423,
+                "rss_mib": 247.90625
+              },
+              {
+                "monotonic_s": 90265.114074691,
+                "rss_mib": 247.90625
+              },
+              {
+                "monotonic_s": 90265.214291699,
+                "rss_mib": 247.90625
+              },
+              {
+                "monotonic_s": 90265.314478188,
+                "rss_mib": 247.90625
+              },
+              {
+                "monotonic_s": 90265.414669734,
+                "rss_mib": 247.90625
+              },
+              {
+                "monotonic_s": 90265.51486476,
+                "rss_mib": 247.90625
+              },
+              {
+                "monotonic_s": 90265.615053953,
+                "rss_mib": 247.90625
+              },
+              {
+                "monotonic_s": 90265.715248091,
+                "rss_mib": 247.90625
+              },
+              {
+                "monotonic_s": 90265.815405673,
+                "rss_mib": 247.90625
+              },
+              {
+                "monotonic_s": 90265.915576255,
+                "rss_mib": 247.90625
+              },
+              {
+                "monotonic_s": 90265.997077483,
+                "rss_mib": 258.390625
+              }
+            ]
+          }
+        },
+        "vad_loading": {
+          "wall_s": 0.08163667400367558,
+          "cpu_s": 0.0425668150000007,
+          "resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 279.09375,
+            "rss_sample_count": 2,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 90268.018941619,
+                "rss_mib": 259.890625
+              },
+              {
+                "monotonic_s": 90268.100420199,
+                "rss_mib": 279.09375
+              }
+            ]
+          }
+        }
+      },
+      "sensevoice_loading": {
+        "loading_s": 1.8445290889940225,
+        "loading_cpu_s": 2.102651451,
+        "loading_resources": {
+          "sample_interval_s": 0.1,
+          "rss_observed_max_mib": 409.796875,
+          "rss_sample_count": 20,
+          "rss_missing_count": 0,
+          "rss_samples": [
+            {
+              "monotonic_s": 90260.695068933,
+              "rss_mib": 26.203125
+            },
+            {
+              "monotonic_s": 90260.795665,
+              "rss_mib": 57.9375
+            },
+            {
+              "monotonic_s": 90260.8962274,
+              "rss_mib": 264.9375
+            },
+            {
+              "monotonic_s": 90260.996501113,
+              "rss_mib": 320.0625
+            },
+            {
+              "monotonic_s": 90261.096948697,
+              "rss_mib": 333.90625
+            },
+            {
+              "monotonic_s": 90261.197217539,
+              "rss_mib": 343.453125
+            },
+            {
+              "monotonic_s": 90261.297433844,
+              "rss_mib": 343.453125
+            },
+            {
+              "monotonic_s": 90261.397678631,
+              "rss_mib": 343.453125
+            },
+            {
+              "monotonic_s": 90261.497876898,
+              "rss_mib": 343.953125
+            },
+            {
+              "monotonic_s": 90261.598098295,
+              "rss_mib": 343.953125
+            },
+            {
+              "monotonic_s": 90261.698298933,
+              "rss_mib": 343.953125
+            },
+            {
+              "monotonic_s": 90261.798495312,
+              "rss_mib": 343.953125
+            },
+            {
+              "monotonic_s": 90261.898692931,
+              "rss_mib": 343.953125
+            },
+            {
+              "monotonic_s": 90261.998945218,
+              "rss_mib": 343.953125
+            },
+            {
+              "monotonic_s": 90262.099165856,
+              "rss_mib": 343.953125
+            },
+            {
+              "monotonic_s": 90262.199353827,
+              "rss_mib": 344.953125
+            },
+            {
+              "monotonic_s": 90262.299552372,
+              "rss_mib": 344.953125
+            },
+            {
+              "monotonic_s": 90262.39978477,
+              "rss_mib": 373.453125
+            },
+            {
+              "monotonic_s": 90262.500070612,
+              "rss_mib": 403.453125
+            },
+            {
+              "monotonic_s": 90262.539163055,
+              "rss_mib": 409.796875
+            }
+          ]
+        },
+        "warmup_runs": 3,
+        "warmup_s": 0.851073500001803
+      },
+      "thermal": {
+        "policy": {
+          "admission_mc": 53000,
+          "admission_consecutive": 3,
+          "stop_mc": null,
+          "interval_s": 1,
+          "timeout_s": 600,
+          "address_space_bytes": 4294967296,
+          "scope": "운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
+          "name": "operational",
+          "warn_mc": 80000,
+          "allow_thermal_limits": true,
+          "firmware_thermal_protection": "unchanged"
+        },
+        "before": {
+          "at_utc": "2026-11-03T09:15:01.167235+00:00",
+          "monotonic_s": 90259.921912039,
+          "temperature_mc": 52900,
+          "cpu0_freq_khz": 1500000,
+          "governor": "ondemand",
+          "throttled_flags": 917504,
+          "current_limits": 0,
+          "history_limits": 14,
+          "fan_rpm": 3084
+        },
+        "after": {
+          "at_utc": "2026-11-03T09:17:12.320482+00:00",
+          "monotonic_s": 90391.075156513,
+          "temperature_mc": 60600,
+          "cpu0_freq_khz": 2400000,
+          "governor": "ondemand",
+          "throttled_flags": 917504,
+          "current_limits": 0,
+          "history_limits": 14,
+          "arm_clock_hz": 2400033792,
+          "fan_rpm": 5172
+        },
+        "sampled_max_temperature_mc": 62250,
+        "current_limit_samples": 0,
+        "new_history_samples": 0,
+        "control_valid": false,
+        "operational_valid": true
+      },
+      "same_zip_and_refine_hypotheses_as_m34": true,
+      "baseline_summary_sha256": "214287757ce8f01fa4a7cb3187dc597ed4411ff40202f3eff2ca4d36ac97095b"
+    },
+    "digital-silence": {
+      "schema": "separate-caption-mvp-v1",
+      "status": "completed",
+      "source_commit": "17e0a5e5974873afe8349af221185da6b8988031",
+      "reference_available": true,
+      "reference_policy": "manifest_reference",
+      "sources": 6,
+      "audio_s": 14.61,
+      "display_events": 6,
+      "zip_final_displays": 6,
+      "refine_candidate_displays": 0,
+      "automatic_replacements": 0,
+      "first_zip_stdout_from_audio_start_s": {
+        "n": 0,
+        "mean": null,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "available_to_stdout_flush_s": {
+        "n": 6,
+        "mean": 0.00016986266666666668,
+        "p50": 0.000163131,
+        "p95": 0.000205909,
+        "max": 0.000205909
+      },
+      "refine_owned_end_to_stdout_s": {
+        "n": 0,
+        "mean": null,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "zip_cer": {
+        "planned": 6,
+        "successful": 6,
+        "complete": true,
+        "cer": {
+          "errors": 0,
+          "substitutions": 0,
+          "deletions": 0,
+          "insertions": 0,
+          "reference_characters": 0,
+          "value": null,
+          "empty_reference_samples": 6,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+      },
+      "unmeasured": {
+        "screen_paint_s": null,
+        "acoustic_recognition_delay_s": null,
+        "merged_cer": null,
+        "microphone_overruns": null
+      },
+      "scope_ko": "실제 1배속 입력/NN/부모 stdout flush. 화면 렌더링·SSH 도착은 미계측. 모델 PID CPU/RSS는 터미널 부모/guard를 제외.",
+      "native_metrics": {
+        "first_partial_from_source_start_s": {
+          "n": 0,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        },
+        "input_complete": true,
+        "input_dropped_chunks": 0,
+        "input_dropped_audio_s": 0.0,
+        "input_backlog_event_max_audio_s": 0.1,
+        "input_queue_wait_s": {
+          "n": 147,
+          "mean": 0.0007039414149659568,
+          "p50": 0.0006227459999994522,
+          "p95": 0.0011454159999999547,
+          "max": 0.010807548999999916
+        },
+        "zip_call_rtf": 0.14897696632443524,
+        "coordinator_active_rtf": 0.18633703976519142,
+        "refine": {
+          "complete": true,
+          "planned_windows": 0,
+          "enqueued": 0,
+          "successful": 0,
+          "failed_windows": 0,
+          "missing_results": 0,
+          "dropped_windows": 0,
+          "cer": {
+            "planned": 6,
+            "successful": 6,
+            "complete": true,
+            "cer": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 0,
+              "value": null,
+              "empty_reference_samples": 6,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+          },
+          "queue_wait_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "decode_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "dispatch_from_window_end_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "window_end_to_return_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "final_from_source_file_end_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "backlog_event_max_audio_s": 0.0,
+          "backlog_event_max_windows": 0,
+          "backlog_audio_s": {
+            "n": 150,
+            "mean": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0
+          },
+          "backlog_end_audio_s": 0.0,
+          "zip_refine_call_overlap_s": 0.0,
+          "refine_calls_with_zip_overlap": 0,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "vad_emission_from_owned_end_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "dispatch_after_vad_emission_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "vad_emission_to_return_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "decision_audio_after_owned_end_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "no_vad_segment_sources": 6,
+          "backlog_event_max_payload_audio_s": 0.0,
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님."
+        },
+        "resources": {
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "sample_count": 146,
+          "paired_intervals": 145,
+          "paired_wall_s": 14.576984702,
+          "observed_model_cpu_percent": 21.67800861838347,
+          "model_group_rss_observed_max_mib": 629.15625,
+          "complete_model_rss_samples": 146,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능.",
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling",
+            "caption_events_and_result_reader"
+          ]
+        }
+      },
+      "runtime_environment": {
+        "edge_asr": "0.1.0",
+        "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+        "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+        "machine": "aarch64",
+        "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+        "runtime": {
+          "sherpa_package_version": "2.0.1",
+          "sherpa_core_package_version": "2.0.1",
+          "python_onnxruntime_package_version": "1.31.1",
+          "sherpa_native_onnxruntime_version": "1.28.2",
+          "native_version_source": "sherpa_onnx.onnxruntime_version",
+          "status": "available",
+          "reason": null
+        },
+        "packages": [
+          {
+            "name": "cffi",
+            "version": "2.1.1"
+          },
+          {
+            "name": "flatbuffers",
+            "version": "25.12.19"
+          },
+          {
+            "name": "numpy",
+            "version": "2.4.6"
+          },
+          {
+            "name": "onnxruntime",
+            "version": "1.31.1"
+          },
+          {
+            "name": "packaging",
+            "version": "26.3"
+          },
+          {
+            "name": "protobuf",
+            "version": "7.36.2"
+          },
+          {
+            "name": "pycparser",
+            "version": "3.12"
+          },
+          {
+            "name": "sherpa-onnx-core",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sherpa_onnx",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sounddevice",
+            "version": "0.5.6"
+          },
+          {
+            "name": "soundfile",
+            "version": "0.14.0"
+          },
+          {
+            "name": "typing_extensions",
+            "version": "4.16.0"
+          }
+        ]
+      },
+      "weights": {
+        "zipformer_model_files": {
+          "tokens": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/tokens.txt",
+            "sha256": "016bdf0965029263b7ad01b742366ee542ef0bef38261510e8176ff6f2e9e668"
+          },
+          "encoder": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/encoder-epoch-99-avg-1.int8.onnx",
+            "sha256": "8d0b1aa24fbedd4e3948564ab7facd151b8ce9b0c48fc987c541de2de3af5697"
+          },
+          "decoder": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/decoder-epoch-99-avg-1.onnx",
+            "sha256": "b29cfb4575141e50a30a22b2c4579934f3d4f45b83c9c8c08c3aef5a3fa7abfc"
+          },
+          "joiner": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/joiner-epoch-99-avg-1.int8.onnx",
+            "sha256": "128b80a66a1f718488af8560f9d15895109b99ff3e573f0a0130e03774ef1ced"
+          }
+        },
+        "sensevoice_model_files": {
+          "model": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/model.int8.onnx",
+            "sha256": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51"
+          },
+          "tokens": {
+            "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/tokens.txt",
+            "sha256": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc"
+          }
+        },
+        "vad_model": {
+          "path": "/home/deepet/projects/edge-asr/models/silero-vad-k2-20261029/silero_vad.onnx",
+          "sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6"
+        }
+      },
+      "loading": {
+        "zip_loading": {
+          "wall_s": 2.4590353359963046,
+          "cpu_s": 2.694310862,
+          "resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 271.75,
+            "rss_sample_count": 26,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 90409.610626951,
+                "rss_mib": 26.96875
+              },
+              {
+                "monotonic_s": 90409.711324068,
+                "rss_mib": 89.75
+              },
+              {
+                "monotonic_s": 90409.811640181,
+                "rss_mib": 211.859375
+              },
+              {
+                "monotonic_s": 90409.911888387,
+                "rss_mib": 270.75
+              },
+              {
+                "monotonic_s": 90410.0121465,
+                "rss_mib": 270.75
+              },
+              {
+                "monotonic_s": 90410.112411724,
+                "rss_mib": 270.75
+              },
+              {
+                "monotonic_s": 90410.212642577,
+                "rss_mib": 270.75
+              },
+              {
+                "monotonic_s": 90410.312879375,
+                "rss_mib": 270.75
+              },
+              {
+                "monotonic_s": 90410.413090451,
+                "rss_mib": 270.75
+              },
+              {
+                "monotonic_s": 90410.513313156,
+                "rss_mib": 270.75
+              },
+              {
+                "monotonic_s": 90410.613545325,
+                "rss_mib": 270.75
+              },
+              {
+                "monotonic_s": 90410.713756548,
+                "rss_mib": 270.75
+              },
+              {
+                "monotonic_s": 90410.813993884,
+                "rss_mib": 271.75
+              },
+              {
+                "monotonic_s": 90410.914549962,
+                "rss_mib": 200.1875
+              },
+              {
+                "monotonic_s": 90411.014816371,
+                "rss_mib": 219.6875
+              },
+              {
+                "monotonic_s": 90411.115054651,
+                "rss_mib": 239.1875
+              },
+              {
+                "monotonic_s": 90411.215298004,
+                "rss_mib": 239.1875
+              },
+              {
+                "monotonic_s": 90411.315501635,
+                "rss_mib": 239.1875
+              },
+              {
+                "monotonic_s": 90411.41572597,
+                "rss_mib": 239.1875
+              },
+              {
+                "monotonic_s": 90411.515945601,
+                "rss_mib": 239.1875
+              },
+              {
+                "monotonic_s": 90411.616188251,
+                "rss_mib": 239.1875
+              },
+              {
+                "monotonic_s": 90411.716414345,
+                "rss_mib": 239.1875
+              },
+              {
+                "monotonic_s": 90411.816622495,
+                "rss_mib": 239.1875
+              },
+              {
+                "monotonic_s": 90411.916824237,
+                "rss_mib": 239.1875
+              },
+              {
+                "monotonic_s": 90412.017100609,
+                "rss_mib": 239.1875
+              },
+              {
+                "monotonic_s": 90412.069480249,
+                "rss_mib": 249.453125
+              }
+            ]
+          }
+        },
+        "vad_loading": {
+          "wall_s": 0.08058273399365135,
+          "cpu_s": 0.04148105499999977,
+          "resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 269.65625,
+            "rss_sample_count": 2,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 90412.208040055,
+                "rss_mib": 250.953125
+              },
+              {
+                "monotonic_s": 90412.288444584,
+                "rss_mib": 269.65625
+              }
+            ]
+          }
+        }
+      },
+      "sensevoice_loading": {
+        "loading_s": 1.8478337309934432,
+        "loading_cpu_s": 2.106111548,
+        "loading_resources": {
+          "sample_interval_s": 0.1,
+          "rss_observed_max_mib": 357.0,
+          "rss_sample_count": 20,
+          "rss_missing_count": 0,
+          "rss_samples": [
+            {
+              "monotonic_s": 90407.539579221,
+              "rss_mib": 25.71875
+            },
+            {
+              "monotonic_s": 90407.640166059,
+              "rss_mib": 57.453125
+            },
+            {
+              "monotonic_s": 90407.740675618,
+              "rss_mib": 265.453125
+            },
+            {
+              "monotonic_s": 90407.84094338,
+              "rss_mib": 320.375
+            },
+            {
+              "monotonic_s": 90407.941486365,
+              "rss_mib": 328.8125
+            },
+            {
+              "monotonic_s": 90408.041759941,
+              "rss_mib": 325.890625
+            },
+            {
+              "monotonic_s": 90408.142027388,
+              "rss_mib": 325.890625
+            },
+            {
+              "monotonic_s": 90408.242252908,
+              "rss_mib": 325.890625
+            },
+            {
+              "monotonic_s": 90408.342451484,
+              "rss_mib": 326.390625
+            },
+            {
+              "monotonic_s": 90408.442645485,
+              "rss_mib": 326.390625
+            },
+            {
+              "monotonic_s": 90408.542848783,
+              "rss_mib": 326.390625
+            },
+            {
+              "monotonic_s": 90408.643051562,
+              "rss_mib": 326.390625
+            },
+            {
+              "monotonic_s": 90408.743247119,
+              "rss_mib": 326.390625
+            },
+            {
+              "monotonic_s": 90408.843444602,
+              "rss_mib": 326.390625
+            },
+            {
+              "monotonic_s": 90408.943663271,
+              "rss_mib": 326.390625
+            },
+            {
+              "monotonic_s": 90409.043882717,
+              "rss_mib": 327.890625
+            },
+            {
+              "monotonic_s": 90409.144138348,
+              "rss_mib": 327.890625
+            },
+            {
+              "monotonic_s": 90409.24442698,
+              "rss_mib": 340.390625
+            },
+            {
+              "monotonic_s": 90409.344774057,
+              "rss_mib": 354.890625
+            },
+            {
+              "monotonic_s": 90409.386984115,
+              "rss_mib": 357.0
+            }
+          ]
+        },
+        "warmup_runs": 3,
+        "warmup_s": 0.10422438599925954
+      },
+      "thermal": {
+        "policy": {
+          "admission_mc": 53000,
+          "admission_consecutive": 3,
+          "stop_mc": null,
+          "interval_s": 1,
+          "timeout_s": 600,
+          "address_space_bytes": 4294967296,
+          "scope": "운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
+          "name": "operational",
+          "warn_mc": 80000,
+          "allow_thermal_limits": true,
+          "firmware_thermal_protection": "unchanged"
+        },
+        "before": {
+          "at_utc": "2026-11-03T09:17:28.249031+00:00",
+          "monotonic_s": 90407.003708954,
+          "temperature_mc": 52350,
+          "cpu0_freq_khz": 1500000,
+          "governor": "ondemand",
+          "throttled_flags": 917504,
+          "current_limits": 0,
+          "history_limits": 14,
+          "fan_rpm": 3112
+        },
+        "after": {
+          "at_utc": "2026-11-03T09:17:49.610277+00:00",
+          "monotonic_s": 90428.364954327,
+          "temperature_mc": 55100,
+          "cpu0_freq_khz": 1500000,
+          "governor": "ondemand",
+          "throttled_flags": 917504,
+          "current_limits": 0,
+          "history_limits": 14,
+          "arm_clock_hz": 1500016128,
+          "fan_rpm": 5151
+        },
+        "sampled_max_temperature_mc": 61150,
+        "current_limit_samples": 0,
+        "new_history_samples": 0,
+        "control_valid": false,
+        "operational_valid": true
+      },
+      "same_zip_and_refine_hypotheses_as_m34": true,
+      "baseline_summary_sha256": "0994004b0b6a5ab114cf28a279ac3cd46391ef77d34f967f0dfabfdd55c4b896"
+    }
+  },
+  "tests": {
+    "host": {
+      "count": 286,
+      "wall_s": 40.354,
+      "scope_ko": "모의 단위 테스트. 실제 모델 검증은 cases에 별도 기록."
+    },
+    "rp5": {
+      "count": 286,
+      "wall_s": 67.845,
+      "scope_ko": "모의 단위 테스트. 실제 모델 검증은 cases에 별도 기록."
+    }
+  },
+  "preservation": {
+    "protected_files": 5503,
+    "changed": [],
+    "missing": [],
+    "environment_unchanged": true,
+    "system_settings_unchanged": true,
+    "working_tree_clean": true,
+    "source_commit": "17e0a5e5974873afe8349af221185da6b8988031",
+    "native_asr_inference": true
+  },
+  "raw_files_sha256": {
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/input.jsonl": "3fae6ea7151b905d3c3ba877bf26d62d956b006ca253faee23658559608aa768",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/runtime/admission.jsonl": "492c18c375b3109c4228da33a2bc7c66c35a86994302e97535582307f8b5c22d",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/runtime/caption-events.jsonl": "f840e9dec230b1b13cb002a53b6089cfc37348fea09e238a4e394f1ec287ba4c",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/runtime/capture/backlog.jsonl": "9134d312c8c856415c3ffee11b57563bca23037f5c2036e39f9d5fada344485a",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/runtime/capture/decoder.jsonl": "54e460882f216cb951815dff2895c23cad267a6bced8817122240aa5021cc7b2",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/runtime/capture/producer.jsonl": "a5e94a3c6429410c4687d4551febda56108d512bd30282e16fb9b5e67585d852",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/runtime/console.log": "511fd2b9bfdc5ce21166c8f2e66bd3b665744f0de87aa2242eba3d740ed7d570",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/runtime/execution.json": "3fc34ac754c33bc542f53f626f7fb810112fff1f5686a3bb5c2043ab4e325ffe",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/runtime/process-resources.jsonl": "74f9158c8d04868297dd30c6b6255cfaea38d9b03d9a4c560df5d4ab003b41f1",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/runtime/refine-jobs.jsonl": "4d01486e0cf16a3f4343d7a19cea63bb0a257db74d490bdb0dd7e71e90586c9f",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/runtime/refine-results.jsonl": "60532d93a3bfa5f4ef89f11752ac0777ccc2b0f949bab38d3970719b5d571377",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/runtime/summary.json": "96b8e0fe1edf3066b8390bcf2a53ea9f770b71581b89ce2619031228ecb39c06",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/runtime/thermal.jsonl": "e6b9e357cac8ed91655eb2d02ed2456b04498ebbc960c4ff51585795264295e8",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/runtime/thread-resources.jsonl": "9cd2c91ff5fb0842719641a500686f50249e8f234d7012cc0f12651ec8a99063",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/runtime/threads.jsonl": "fec3a735f0441c33d4fb7a15cc3726e818507da7bb82db1becfcf09ed70a96f9",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/runtime/track.json": "9b1fb1020f648d00ee3777b66bb22e798e6c9a15cef8b9e963b5d901702ec417",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/runtime/vad-sources.jsonl": "aa65b8c16f1da581d48b9d1486d2a7b3563e5edc518f375236afc6daec6cd886",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/runtime/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/runtime/worker.json": "950d1146af9d2c033c60ca70999c0eda6d2e6dee57a7522ccccbd7b8b6aaee67",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/runtime/zip-events.jsonl": "1235ca13bd5db69e6448ace2dcc5bdbc1976b224ba8e7c51e95fca46c6c480df",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/runtime/zip-sources.jsonl": "a41a72675a510e18f6d22367f54358b572e8ca880c000aa3b37614070b7b5f3f",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/summary.json": "8c724c0af4d70fd41309110802b2ca64a9323ab0ae270d83e43a475c55a7ecfe",
+    "results/live/m36-wav-mvp-20261103-01/smoke-wav/terminal-events.jsonl": "284065e17ab98bfee51efd8a19c7762aba5a0e96c4b799866918e9b2c5de6c48",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/runtime/admission.jsonl": "aef051ebbca43cf0906235504a6c4dbd56adbeb8cf39815bb3bc7936b585127e",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/runtime/caption-events.jsonl": "5e8c979f1ef60e7a9521a1590f693dcac3dc71ed397681bee45bbf8a95727357",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/runtime/capture/backlog.jsonl": "afab5b59d0457fb09a9fcdb61a5f114c5d8303c86688abfd92cc223254175efd",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/runtime/capture/decoder.jsonl": "24673a42c784b4d1e74c4eced21bc9771f5f56a283a1b67d8f65a675a4457214",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/runtime/capture/producer.jsonl": "72debc87d45862a730b4ddfea16d09f5bbe913539b7ce3e0360dd848583a1a99",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/runtime/console.log": "46ca7d4a3fb640e630e586c5f5c4764731a9d674855d020a37e8398f7fa3843b",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/runtime/execution.json": "da7d794e77679bcb140d34d9a24e39446ae53aac355f94e8dc77e03065291e99",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/runtime/process-resources.jsonl": "080f465e28f52444854325bac93ae7a4cf0d4bc25b952d5903733c0cd77aaa6a",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/runtime/refine-jobs.jsonl": "2d97778413feb6289788be57ed5ccd574bae5c4621f020fd98d8d67638673202",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/runtime/refine-results.jsonl": "eba4a5b92fdd88cd0ca9fe7b12b463c022d8a8edc377fea942f79f7f6430503f",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/runtime/summary.json": "0cc5be8eeaca4ba318ac1e33253c7b5fa83dead3eb5e75f3aa0d554b7e71843a",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/runtime/thermal.jsonl": "4f1a607da3d61dfe89970cb24eb0fcc05b45954852e9b87ce5da2ef258ccc00c",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/runtime/thread-resources.jsonl": "e9079cea938a4220900ca6f7047a6c74759fc53bff5d624b8cc7687d63a045a9",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/runtime/threads.jsonl": "480563ce499f60764874d3f714a99ccf6a325b194a36fb86518a7eada171f126",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/runtime/track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/runtime/vad-sources.jsonl": "8f85009a24808645ba85579e5a8a81647a3f16e6866a02d4d0bdf0c246450094",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/runtime/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/runtime/worker.json": "546e4f7bdfbed7668ee85e7bbe147c093712b443db1436d09d2e8cd439d400e6",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/runtime/zip-events.jsonl": "a2e2896483a009aff52b0f77a8593583172e3601bd6493c4f3e5fdd9df3463c6",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/runtime/zip-sources.jsonl": "11d72b1918e9d780bf01fbc3065ac1b66c62b12327bff3e99700a152c8434a94",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/summary.json": "199c44beceeb2aac6639b5c4bbac2f76ddba325ade5e5c855e2b04a3c7e45aae",
+    "results/live/m36-wav-mvp-20261103-01/kss-dev50/terminal-events.jsonl": "69b6f8c37ecef6a477f34da8911fffa7cee346c6db6b77b886ea3be0d53f5486",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/runtime/admission.jsonl": "68b3487e0c691f8f99b8982d576030d0b69cc6a6f4a37d81686ae7d3f11f4151",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/runtime/caption-events.jsonl": "cd993cced474a112e6ab0ea6d1aacde5ca98699654c586e1f1f991bfa79122ae",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/runtime/capture/backlog.jsonl": "58231c7c4cb09859e83bf27e7c1f514ce561b950dbb9259235d5bd5d406c740a",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/runtime/capture/decoder.jsonl": "f059ae601e4075b3ef280b32eaaf24b80d36690652ad59bd328dd55175d924bc",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/runtime/capture/producer.jsonl": "f2f2e65d948bf17306b97f50af81680423d4e1aa767a2aa8871c5072600b2216",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/runtime/console.log": "a1c8e94f236edd7d137014f6b73de049774af95000d9655897d39d33077bc700",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/runtime/execution.json": "1a5134a98e32bd6f8ed51f505f13d1234179f83fb45a805843a2f77ddbc72e81",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/runtime/process-resources.jsonl": "62bd82f01930945f24f04adc702e10aeaff4d72e4594672239dbbac852dcc41f",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/runtime/refine-jobs.jsonl": "ccb1e6012e8a626ba5a4749aa38125d37015d8136d3e61df00a47322579bdaad",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/runtime/refine-results.jsonl": "4eb850aac61818e6db9b1cc4814bec2c553c3773806e698d67299f29e9aef5bc",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/runtime/summary.json": "3578b8a7adf4bded7ff8959a8d20aa456ff5e53e7ee16652ec258997e51131b6",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/runtime/thermal.jsonl": "441c08dd52c26ea67ccc97973410e483678e18f713a541645750393b88eaccbc",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/runtime/thread-resources.jsonl": "67eee910f545ebf24c760bf581b29e6d0eae4190cb7402cacdf5860b3dc775ec",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/runtime/threads.jsonl": "5eab756fc86bb4ca49d98195d4e30a8f71f0edb96391b2ee977260803def608a",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/runtime/track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/runtime/vad-sources.jsonl": "3cc0b2f8a5dd8ba725fc78bc9266a5a437b83658dab4e5f2eb7059058f294259",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/runtime/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/runtime/worker.json": "f3f21f76bf928febe01330b7d6ea065fd543672b218783a706d0900b37246f8e",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/runtime/zip-events.jsonl": "f2dec73a50c3adf2c3f82a2b4502c69fa5ff4889d4044f41685c96cb4f3b850d",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/runtime/zip-sources.jsonl": "ea77bd31dbbe5548564d969be5b00c20493930ac49ff50f7c80fae125d6e37f6",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/summary.json": "56ed2f2a3deb813164c050b094a0d6d4a63c8640ad6b4ee8b573af07821aa186",
+    "results/live/m36-wav-mvp-20261103-01/synthetic-120/terminal-events.jsonl": "601e4e78b4bfcffa4cb93ddb06cb2ac24db6e6ee7d1fbd456bc26a84591e565d",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/runtime/admission.jsonl": "52147d27748e4dd0ac1e4560f193792a4d9f7a850a6048621a7d02b8ea428c48",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/runtime/caption-events.jsonl": "fccb5223648e9ccb74e7ef5cccb2cfb2da92d4c8b0451e16533e01483fc0c472",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/runtime/capture/backlog.jsonl": "c85728a98613cab1db8a49311c9e3841f24ac693e64cc957355d232159270f48",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/runtime/capture/decoder.jsonl": "d8aacfaa3f60435b69fe28587ac62ba116f8284642d48abe33f536234949c92f",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/runtime/capture/producer.jsonl": "eb119fb93c58cf5220d25122fe407fcca1db3c4fa4d908b994eae49a71559040",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/runtime/console.log": "18c758dc5bee204132fda1f54f21eca371ecc0c629abebc9471c0226003eaa6e",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/runtime/execution.json": "91545d94d20072c68fecc3a3d2910ed94fda766d96e32660bb31117cd1e407bc",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/runtime/process-resources.jsonl": "d3212e4ba7a73554db9aa6595f0cdbc5506540c4d89025f9e1e4db216c44cecf",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/runtime/refine-jobs.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/runtime/refine-results.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/runtime/summary.json": "4a82fd46d05394df5fe7e3fbe887aef06ca4335f03a9fd1b357ceacb2c874953",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/runtime/thermal.jsonl": "0c512158996b5a16b7e44412c0fb6ef103583ef6ca4b18201efa36ea8b93039e",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/runtime/thread-resources.jsonl": "c76565fe74a334a7b26a0f9e88b1d980c1a0091cacc23863ea4fa1ec614be953",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/runtime/threads.jsonl": "247d6a0760f2a59cfbb3067e3ae2bfe0ad9589f653090c78ba4b50fdc52c8634",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/runtime/track.json": "c96be17e61d2adea333bb1970ec63f3bb29eff162ea98891913001abca579f95",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/runtime/vad-sources.jsonl": "f5b94a6da720e7c495e134f511b31b8a0fb8914a7f7234abae734d8d41b6cc43",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/runtime/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/runtime/worker.json": "dd90a2f2054def6efd722824ad01f19d275e6dd7ef87d5fbf5301b3e67eabab8",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/runtime/zip-events.jsonl": "13f0d01d0b0bc6f6109ad43485c74a0ed45fc2d7ccc88cc9851bf9206e591b6d",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/runtime/zip-sources.jsonl": "05dd52fa6a34f89c89b63bf3a1ff048a800e5d44c56c4027830109d61e673c25",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/summary.json": "b4fe362a7e0b532ba70409aae80174250bfef4f92ea3120d6d609d2c15416d22",
+    "results/live/m36-wav-mvp-20261103-01/digital-silence/terminal-events.jsonl": "b37de7afcb6409fe7c5b76847a4741d329001e882ea7d00e5951a115fd8463f2"
+  },
+  "evidence_files_sha256": {
+    "analyze.py": "9ed15859232236d66affa27b6f0b6acd8250f4229078d0b256905e7cd991563a",
+    "audit.py": "77f91b7525c27a7ea87eb191c971ba04eb628bdbbc4064c87a3b8adedf225faf",
+    "digital-silence-console.log": "50dc505f4a4343d445a5d2875776fcf7e1b65c86978c1bb4d002c4b456d689e4",
+    "host-tests-initial.log": "59aec1fcbb7155f23a4526d053f7ef0555caa62cf5583a7052a0af27b4e03c2d",
+    "host-tests.log": "27389888d17c2bd5487f56a970e983bf3d4eb75203e316b9a0f9a991e20b11f8",
+    "kss-dev50-console.log": "f229fb16a706949eafb6c72a3fbb998a2cc4c2300a2c73d753c61772d30d61b7",
+    "launch.json": "df71a4e91afd845fc4fa111dc018fcac311782590c6bd18293beb354f17ee2e1",
+    "plan.json": "59902bab1cdd04bd7dda710186cbc673cf0c5a815d6e28a5c4c37b4a224cb29e",
+    "preservation-after.json": "49f712adc9a8480efbd79f9b97a951e089aa687eb230d6aa4459f495b2203668",
+    "preservation-before.json": "ab83b7e2c09f144353a4acfd2e8779690e68da0f192792cbbb7c95b4bec51446",
+    "rp5-tests.log": "db8d769a1eda38a32557fc3570edf983eacad1eb18239250f6033c7a64ae7c16",
+    "smoke-wav-console.log": "6661265e842b66b3dec5fb045e1047c891c0bc0d7fef04b5b8ce073d2ae3131a",
+    "suite.json": "35a251b4e5a89b0b06022dff1cd59708b8f75f2843c1746cdc22ec8228ed9279",
+    "suite.log": "c0dc393887933f27ee0a168ec5327d7c4c9df0b29d11cd96f067256ba733e2be",
+    "suite.py": "4944ff3aa0c861ab66d8801ca92601cbab8f1852458e4130461803349888e397",
+    "synthetic-120-console.log": "d6959269860ff38c70d565f5274ec80d4d61d83c0f16289beb392536d956f0b5"
+  },
+  "scope_ko": "실제 RP5 독립 1배속 WAV/NN/터미널 stdout 기록. 과거 개발 자료의 MVP 검증. 실제 화면·SSH 도착·마이크·8분 운영·자동 병합은 미검증.",
+  "raw_file_count": 89,
+  "decisions_ko": [
+    "Zip 원문과 보정 후보의 분리 표시를 WAV MVP 기본으로 사용",
+    "자동 교체는 계속 보류",
+    "실제 화면 렌더링·SSH 도착·마이크·8분 새MVP 운영은 별도 검증"
+  ]
+}

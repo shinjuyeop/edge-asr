@@ -2,7 +2,7 @@
 
 Raspberry Pi 5(ARM64, Debian 13, RAM 8GB)에서 한국어 ASR 모델을 비교하고 실시간 배포하기 위한 연구 저장소입니다. **Host에서 개발하고 RP5에서 실제 추론·성능을 검증합니다.** 기준 Python은 3.11이며 모델·오디오·가상환경·원시 결과는 각 장비에 보존합니다.
 
-Zipformer INT8의 batch/1배속 모사와 SenseVoiceSmall INT8의 batch 평가를 구현했습니다. 공통 입력·CER·RTF·CPU/RSS·실패 기록·재채점을 사용합니다. 현재는 VAD·발화 구간 정책과 Streaming/Refine 동시 부하를 검증하는 M3 단계입니다. [현재 상태·다음 작업](docs/status.md), [전체 문서](docs/README.md), [실측 기록](results/summaries/README.md)을 참고하세요.
+Zipformer INT8의 batch/1배속 모사와 SenseVoiceSmall INT8의 batch 평가를 구현했습니다. 공통 입력·CER·RTF·CPU/RSS·실패 기록·재채점을 사용합니다. WAV 자막 MVP의 Zip/보정 후보 분리 표시를 RP5에서 실제 검증했습니다. [현재 상태·다음 작업](docs/status.md), [전체 문서](docs/README.md), [실측 기록](results/summaries/README.md)을 참고하세요.
 
 ## 빠른 시작
 
