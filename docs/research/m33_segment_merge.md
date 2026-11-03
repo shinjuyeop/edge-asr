@@ -52,3 +52,7 @@ Host 모의 PCM·종료 경계/강제 분할·늦은/역순 반환·무음·실�
 .venv/bin/python scripts/edge_asr.py tools summarize-segment-merge \
   --run <완료된_원시_폴더> --output <별도_재집계.json>
 ```
+
+## 실행 기록
+
+소스 `05c3e7b`로 [RP53회 실제 결과](../../results/summaries/m33-segment-merge-20261103.md)를 확인했다. 100구간의 동일 PCM·실제 parent 수신/상태 적용·손실0과 Host/RP5 각255개 회귀·기존5,210개 파일 보존을 검증했다. 합성42/43구간은 파일 종료 전 확정됐지만 구간 Zip의 CER/첫 부분이 회귀했다. 기본값으로 채택하지 않으며 다음 진단은 연속 Zip 상태를 유지하는 token 시각/경계 대응이다. UI·마이크·Hybrid 배포 완료를 의미하지 않는다.

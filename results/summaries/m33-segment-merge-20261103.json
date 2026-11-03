@@ -1,0 +1,4007 @@
+{
+  "schema": "vad-segment-live-merge-report-v1",
+  "work_date": "2026-11-03",
+  "source_commit": "05c3e7bde783471ea0772dce888fe06c8153a616",
+  "status": "completed_with_scope_limits",
+  "native_runs": 3,
+  "source_evaluations": 57,
+  "audio_supply_s": 300.115875,
+  "plan": {
+    "schema": "vad-segment-merge-live-plan-v1",
+    "client_work_date": "2026-11-03",
+    "source_commit": "05c3e7bde783471ea0772dce888fe06c8153a616",
+    "datasets": {
+      "kss-dev50": {
+        "manifest_path": "data/evaluation/kss-dev50/manifest.jsonl",
+        "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+        "track_float32_sha256": "8caf6f852b7eced49b0f35674f05c8e889d31bece921510b3cebb7d59ae9142e",
+        "frames": 2638704,
+        "audio_s": 164.919,
+        "sources": [
+          {
+            "id": "kss-train-01000",
+            "reference": "그의 맥박은 여전히 뛰고 있다.",
+            "audio_sha256": "5abdc99775bcfc36efe925eb00fc79f2bd4359f0ad1075dd2bdac4ba03e5cc21",
+            "start": 0,
+            "end": 45066
+          },
+          {
+            "id": "kss-train-01001",
+            "reference": "한글은 십오 세기에 세종대왕에 의해 만들어졌어.",
+            "audio_sha256": "d9e4044d88db22d53a99f2d01586623581db3e0e80aa46411fa5505542683a32",
+            "start": 45066,
+            "end": 123921
+          },
+          {
+            "id": "kss-train-01002",
+            "reference": "그가 회복된 건 순전히 그 여자의 간호에 의한 거야.",
+            "audio_sha256": "88de0aeb1ff678b869a7723ea9e1d9231f10290a52545da20a97630eb9274a8f",
+            "start": 123921,
+            "end": 188405
+          },
+          {
+            "id": "kss-train-01003",
+            "reference": "일기예보에 의하면 날씨가 좋을 거래요.",
+            "audio_sha256": "f66a393bd23c546a313b6dfc27ebcb1c236abd21a1e4d614e8fc8741622d155d",
+            "start": 188405,
+            "end": 246256
+          },
+          {
+            "id": "kss-train-01004",
+            "reference": "아이엠에프는 뭘 의미합니까?",
+            "audio_sha256": "d3b6553ae2cf27409f2b41a36798c9325f3f736e22e273d55a08836b68b8324f",
+            "start": 246256,
+            "end": 282235
+          },
+          {
+            "id": "kss-train-01005",
+            "reference": "빨간 불은 위험을 의미해요.",
+            "audio_sha256": "ee1d768026ac1ee3c47d1490987c0a199849627b9a72b1c34a7e210e4efd2077",
+            "start": 282235,
+            "end": 316947
+          },
+          {
+            "id": "kss-train-01006",
+            "reference": "여름철에는 매미가 우는 걸 쉽게 볼 수 있어요.",
+            "audio_sha256": "129d5db0d7ce955628bc615de43ca8b6f352d4f2454f42e540141f382a55e33e",
+            "start": 316947,
+            "end": 372476
+          },
+          {
+            "id": "kss-train-01007",
+            "reference": "그는 기뻐서 울고 있다.",
+            "audio_sha256": "5e72acdbe8c3b80543ce7c0bd75c2fd8d9ec9e9e631cca44fc105efe1ccef101",
+            "start": 372476,
+            "end": 407207
+          },
+          {
+            "id": "kss-train-01008",
+            "reference": "우리 형은 어릴 때 걸핏하면 저를 울렸어요.",
+            "audio_sha256": "92683b52fd3501f07acd644ec167f9cc7128ed8167eeaf0f039a254d037f74b0",
+            "start": 407207,
+            "end": 474680
+          },
+          {
+            "id": "kss-train-01009",
+            "reference": "전화 받아! 전화벨 울리잖아!",
+            "audio_sha256": "b41264540b7de1f553b2338f1a0754aef3542f7a4758ce7f0d96cc8c4ff433c4",
+            "start": 474680,
+            "end": 522178
+          },
+          {
+            "id": "kss-train-01010",
+            "reference": "고개를 움직여 봐.",
+            "audio_sha256": "9fd7903fba72e5855fe5d7a776dd2041b94b155ec1f4101a3bddbcbbe4d07353",
+            "start": 522178,
+            "end": 543396
+          },
+          {
+            "id": "kss-train-01011",
+            "reference": "팔이 안 움직여.",
+            "audio_sha256": "04f6f5a50f838971520e94b6178a5f88994232853e6671f66be693a1e4b8ecd4",
+            "start": 543396,
+            "end": 564456
+          },
+          {
+            "id": "kss-train-01012",
+            "reference": "오늘은 운동하기에 아주 좋은 날씨였다.",
+            "audio_sha256": "f28a44c9688dd01fb965ed1e6a81651bea839bc8ced9fa937c3bcdc56679974a",
+            "start": 564456,
+            "end": 614652
+          },
+          {
+            "id": "kss-train-01013",
+            "reference": "저는 매일 운동하러 헬스 클럽에 다녀요.",
+            "audio_sha256": "842031b6b5a5ee2131aa13804c23f819d68853d563a8a777e7a74532ea04ccb1",
+            "start": 614652,
+            "end": 667187
+          },
+          {
+            "id": "kss-train-01014",
+            "reference": "버스를 운전할 수 있으세요?",
+            "audio_sha256": "737eadadc493ef8ee96539ce994ed918f2b0eeb1a19cf464366f123cfe236cb7",
+            "start": 667187,
+            "end": 698585
+          },
+          {
+            "id": "kss-train-01015",
+            "reference": "비 오는 날 빨리 운전하면 매우 위험하다.",
+            "audio_sha256": "12171e6aa027aeae9cc2e87daa6f3fa64e51bc90829f0c17a8c94fab4e6b76a4",
+            "start": 698585,
+            "end": 754006
+          },
+          {
+            "id": "kss-train-01016",
+            "reference": "그는 엉뚱한 질문으로 사람들을 곧잘 웃겼다.",
+            "audio_sha256": "4c06b4b1c8086a77d061db2e0869e486a69f9b9e7b90ea62cb2b328277053305",
+            "start": 754006,
+            "end": 815411
+          },
+          {
+            "id": "kss-train-01017",
+            "reference": "그 사람 정말 웃겨.",
+            "audio_sha256": "379e02d7839f5c4a9bea9bed44009bc3de34cfbdb1f59386108b41ca40c2a243",
+            "start": 815411,
+            "end": 841439
+          },
+          {
+            "id": "kss-train-01018",
+            "reference": "그는 머리를 뒤로 젖히고 웃었다.",
+            "audio_sha256": "339ec189b15c2375e2c547f37c300acffb03f708b9927ab2df016a0865a795d9",
+            "start": 841439,
+            "end": 883413
+          },
+          {
+            "id": "kss-train-01019",
+            "reference": "아기가 나를 보고 웃었어.",
+            "audio_sha256": "1e4d719c78efff864242d61e7b5389f12f245d00869f7909acb49ceb809b05d6",
+            "start": 883413,
+            "end": 914273
+          },
+          {
+            "id": "kss-train-01020",
+            "reference": "그들은 도시 전체를 보기 위해 산꼭대기로 올라갔다.",
+            "audio_sha256": "4712998af8925e33fb91cc591f50e20c67d157fec8fdc396e8e669977a1b9b32",
+            "start": 914273,
+            "end": 976272
+          },
+          {
+            "id": "kss-train-01021",
+            "reference": "그 사람은 자기 부모를 끔찍이 위해요.",
+            "audio_sha256": "aa478a4fe630ff4ec3d622050af4a3b9c0ef361886f581b0aeaa806f63a59eec",
+            "start": 976272,
+            "end": 1025397
+          },
+          {
+            "id": "kss-train-01022",
+            "reference": "누구나 오래 살길 원한다.",
+            "audio_sha256": "4930a1c68a2e5cf7b941a5a5aac745d15811a7d1110658daa25628c1ce8c1a59",
+            "start": 1025397,
+            "end": 1061292
+          },
+          {
+            "id": "kss-train-01023",
+            "reference": "뭘 원해?",
+            "audio_sha256": "9277b141702721429c3046e13dc3ef0ef9a585e79398f00c0449d4611168b09c",
+            "start": 1061292,
+            "end": 1076109
+          },
+          {
+            "id": "kss-train-01024",
+            "reference": "나는 새해에는 담배를 끊겠다고 아들 녀석과 약속했다.",
+            "audio_sha256": "623504f89a0782750557b0592e986a412337307e0b0fd2eb7801215e28ed9d36",
+            "start": 1076109,
+            "end": 1157751
+          },
+          {
+            "id": "kss-train-01025",
+            "reference": "시험을 잘 보면 아빠가 새 컴퓨터를 사 주시겠다고 나한테 약속하셨어요.",
+            "audio_sha256": "f4d9d004fbb6dac2ef436ff5a6e630df857ff92a302392c819cc9b3fb00a99a3",
+            "start": 1157751,
+            "end": 1251399
+          },
+          {
+            "id": "kss-train-01026",
+            "reference": "그는 전국 방방곡곡을 여행했다.",
+            "audio_sha256": "a5be57a60967fd94e922536fca5230a1bc517af3a9cc24bb239e76e58ea0c197",
+            "start": 1251399,
+            "end": 1301169
+          },
+          {
+            "id": "kss-train-01027",
+            "reference": "기차를 타고 유럽 전역을 여행했어요.",
+            "audio_sha256": "7e517450ce7525168bf6c0cb6cfb43984079cccbc157cf1567f6e4cab402847a",
+            "start": 1301169,
+            "end": 1352430
+          },
+          {
+            "id": "kss-train-01028",
+            "reference": "창문 열어도 될까요?",
+            "audio_sha256": "822e04439d26b58eb517d802651fb0f659b8eb27513f76b32d081d8aa85ef7d4",
+            "start": 1352430,
+            "end": 1377117
+          },
+          {
+            "id": "kss-train-01029",
+            "reference": "첨부하신 파일을 못 열겠어요.",
+            "audio_sha256": "8c79dfcc1627e0ceb1fdd34731e13669ad7ac5dd086079656a4e53daf64a213c",
+            "start": 1377117,
+            "end": 1413926
+          },
+          {
+            "id": "kss-train-01030",
+            "reference": "두드려라, 그러면 열릴 것이다.",
+            "audio_sha256": "08137bdd0f8ee3aac21e6f1bb8d95a92e63b92e301adf4d2dbb98069ee268bae",
+            "start": 1413926,
+            "end": 1462416
+          },
+          {
+            "id": "kss-train-01031",
+            "reference": "이천이 년 월드컵이 한국과 일본에서 열렸다.",
+            "audio_sha256": "362e7cb3d3abcfc38f2b8292596e3524597cf74aa277039f73002deba309f86f",
+            "start": 1462416,
+            "end": 1525168
+          },
+          {
+            "id": "kss-train-01032",
+            "reference": "아버지는 한국어를 연구하는 데 평생을 바치셨다.",
+            "audio_sha256": "1a9bb77b90ee3245c6598f7f980ff1ff770b393e244f079f65ee47bebfa68597",
+            "start": 1525168,
+            "end": 1593254
+          },
+          {
+            "id": "kss-train-01033",
+            "reference": "제 일은 고대 문자에 대해 연구하는 거예요.",
+            "audio_sha256": "b09ebe48da4e784fbc4d24dea393565b0c50f1a760c1b20cd1ad8aabc53b9ceb",
+            "start": 1593254,
+            "end": 1651109
+          },
+          {
+            "id": "kss-train-01034",
+            "reference": "내일은 제일 중요한 장면을 연습할 거야.",
+            "audio_sha256": "8cf99fba0f731f19785d2e0a3b4d6ffbf5c53cf8ea65f3361bf094ab544a7e40",
+            "start": 1651109,
+            "end": 1700573
+          },
+          {
+            "id": "kss-train-01035",
+            "reference": "그 선수가 연습하는 걸 보려고 사람들이 모여 들었어요.",
+            "audio_sha256": "ade4b191beca167c4d8584991ada3523820907d8f39fbc4a166feb400234e85d",
+            "start": 1700573,
+            "end": 1761390
+          },
+          {
+            "id": "kss-train-01036",
+            "reference": "우리 부모님은 저한테 너무 많은 것을 요구하세요.",
+            "audio_sha256": "87b7f5005edcf0d9b5a8dce067cfb70e1fd5e0c1f539c77d077bfbf17a547c0a",
+            "start": 1761390,
+            "end": 1829760
+          },
+          {
+            "id": "kss-train-01037",
+            "reference": "내가 환불을 요구하자 그들은 영수증을 보여 달라고 했다.",
+            "audio_sha256": "bc7caa53111673da10d00c85ab5d7e13b4e86bd45aec3a4fd26d6ff6031733a9",
+            "start": 1829760,
+            "end": 1901295
+          },
+          {
+            "id": "kss-train-01038",
+            "reference": "김치찌개 요리하다 손가락을 베었어.",
+            "audio_sha256": "5160b4ed484cc8de8855eea09a5911f58b8d8fdbdb79a63287b456a97f4859d5",
+            "start": 1901295,
+            "end": 1952784
+          },
+          {
+            "id": "kss-train-01039",
+            "reference": "제 아내는 요리하는 걸 좋아해요.",
+            "audio_sha256": "b835ab9edc6415825913ad23bcf1248003d9936b4a4f644cd8109439d341a647",
+            "start": 1952784,
+            "end": 1997088
+          },
+          {
+            "id": "kss-train-01040",
+            "reference": "여기에서 가까운 곳에 서점이 있나요?",
+            "audio_sha256": "8594a68fa88ac6e5f39ad4aa44a5dc78a27c675b93e1ff2b60d46222036a902d",
+            "start": 1997088,
+            "end": 2047243
+          },
+          {
+            "id": "kss-train-01041",
+            "reference": "가까운 시일 내에 한번 댁으로 찾아가겠습니다.",
+            "audio_sha256": "cd3f1bb1e0dcf08e767e231ac23e33bba950d8f7e151c21ade0de81f13527c14",
+            "start": 2047243,
+            "end": 2109658
+          },
+          {
+            "id": "kss-train-01042",
+            "reference": "저는 사촌들하고 아주 가깝게 지내요.",
+            "audio_sha256": "e0cc393f42d2828fd9d4f777506717795ad3c04411951064b14a7f376cab0190",
+            "start": 2109658,
+            "end": 2169473
+          },
+          {
+            "id": "kss-train-01043",
+            "reference": "가까운 친구 중에 의사가 있어요.",
+            "audio_sha256": "593c2a5a70e785ab58859c28119db68b7febcb288347d50d5c88e087941c8d90",
+            "start": 2169473,
+            "end": 2220743
+          },
+          {
+            "id": "kss-train-01044",
+            "reference": "우리의 승리는 기적에 가까웠다.",
+            "audio_sha256": "d8110af5a0f81b524d251dece471b4e728811a375791814c610c9269c716e8d7",
+            "start": 2220743,
+            "end": 2274985
+          },
+          {
+            "id": "kss-train-01045",
+            "reference": "그녀의 음정은 완벽에 가까웠다.",
+            "audio_sha256": "b7a1b7b90bb6bd08df1c2eaa3379d7b120cf70bbe53fb3f886c1b2d7c708b6e3",
+            "start": 2274985,
+            "end": 2334057
+          },
+          {
+            "id": "kss-train-01046",
+            "reference": "저는 찢어지게 가난한 집에서 태어났어요.",
+            "audio_sha256": "94786977b7d18c83de21b70d0aeccd22517a891057b4619d70d6e4cc80542587",
+            "start": 2334057,
+            "end": 2394986
+          },
+          {
+            "id": "kss-train-01047",
+            "reference": "그는 너무 가난해서 초등학교도 마치지 못했다.",
+            "audio_sha256": "bd76c8a8fa4869d5bd4a971ecc82becbb30a8e6ff38f56e9641f16d9949ca4e0",
+            "start": 2394986,
+            "end": 2470033
+          },
+          {
+            "id": "kss-train-01048",
+            "reference": "그녀는 지난 십 년 동안 가난한 사람들을 도아왔다.",
+            "audio_sha256": "ea504db28e0947bfbaf534f412c1633e34512cc1c4538727e65b63962f9fa05a",
+            "start": 2470033,
+            "end": 2554740
+          },
+          {
+            "id": "kss-train-01049",
+            "reference": "대부분의 패션 모델들은 놀라울 정도로 허리가 가늘다.",
+            "audio_sha256": "3bfbd7e9c086f67dd8bebeab5d0218993d058784d5f7a513699c3f48db66369e",
+            "start": 2554740,
+            "end": 2638704
+          }
+        ],
+        "reference_characters": 756
+      },
+      "synthetic-120": {
+        "manifest_path": "data/evaluation/m23-stress/long-120.jsonl",
+        "manifest_sha256": "5effb0c014a49d53dc1be638c667d166b1f8b7b45e619c507c5a2992074f4f66",
+        "track_float32_sha256": "54e8a4acad68dbc93c34966af4b9d3fe6b56e2b796010baaf1121cbbf0a5cfb9",
+        "frames": 1929390,
+        "audio_s": 120.586875,
+        "sources": [
+          {
+            "id": "synthetic-long-120",
+            "reference": "그의 맥박은 여전히 뛰고 있다. 한글은 십오 세기에 세종대왕에 의해 만들어졌어. 그가 회복된 건 순전히 그 여자의 간호에 의한 거야. 일기예보에 의하면 날씨가 좋을 거래요. 아이엠에프는 뭘 의미합니까? 빨간 불은 위험을 의미해요. 여름철에는 매미가 우는 걸 쉽게 볼 수 있어요. 그는 기뻐서 울고 있다. 우리 형은 어릴 때 걸핏하면 저를 울렸어요. 전화 받아! 전화벨 울리잖아! 고개를 움직여 봐. 팔이 안 움직여. 오늘은 운동하기에 아주 좋은 날씨였다. 저는 매일 운동하러 헬스 클럽에 다녀요. 버스를 운전할 수 있으세요? 비 오는 날 빨리 운전하면 매우 위험하다. 그는 엉뚱한 질문으로 사람들을 곧잘 웃겼다. 그 사람 정말 웃겨. 그는 머리를 뒤로 젖히고 웃었다. 아기가 나를 보고 웃었어. 그들은 도시 전체를 보기 위해 산꼭대기로 올라갔다. 그 사람은 자기 부모를 끔찍이 위해요. 누구나 오래 살길 원한다. 뭘 원해? 나는 새해에는 담배를 끊겠다고 아들 녀석과 약속했다. 시험을 잘 보면 아빠가 새 컴퓨터를 사 주시겠다고 나한테 약속하셨어요. 그는 전국 방방곡곡을 여행했다. 기차를 타고 유럽 전역을 여행했어요. 창문 열어도 될까요? 첨부하신 파일을 못 열겠어요. 두드려라, 그러면 열릴 것이다. 이천이 년 월드컵이 한국과 일본에서 열렸다. 아버지는 한국어를 연구하는 데 평생을 바치셨다. 제 일은 고대 문자에 대해 연구하는 거예요. 내일은 제일 중요한 장면을 연습할 거야. 그 선수가 연습하는 걸 보려고 사람들이 모여 들었어요.",
+            "audio_sha256": "9a4c0a7c2955b0541843c098eed3a983674b7931f0e23d0bf3c7c81d213867f4",
+            "start": 0,
+            "end": 1929390
+          }
+        ],
+        "reference_characters": 519
+      },
+      "digital-silence": {
+        "manifest_path": "data/evaluation/m23-stress/silence.jsonl",
+        "manifest_sha256": "bace0b26e24d60b8ef207b191c3a646edd0ceaae4ba8e130ecac5c948810b084",
+        "track_float32_sha256": "19b3fbba8dfcdfa51ba4c7b5f01ea6f63039ca24f77484945058b8095edb4147",
+        "frames": 233760,
+        "audio_s": 14.61,
+        "sources": [
+          {
+            "id": "silence-0.01s",
+            "reference": "",
+            "audio_sha256": "e7531525a8818a3b06dc5c4e09269c351688352352117dc6caa3bba02d876112",
+            "start": 0,
+            "end": 160
+          },
+          {
+            "id": "silence-0.1s",
+            "reference": "",
+            "audio_sha256": "2976da01e205a110c9fa41d47659e238a5c6d3c3f3137582f2949853faa201dd",
+            "start": 160,
+            "end": 1760
+          },
+          {
+            "id": "silence-0.5s",
+            "reference": "",
+            "audio_sha256": "358c6dcef4442790decb0a5c03fb320154f9d1dd5b4618e301f9e6661a413cb5",
+            "start": 1760,
+            "end": 9760
+          },
+          {
+            "id": "silence-1s",
+            "reference": "",
+            "audio_sha256": "643f8a8dc8bd9c19225afffad2becfec5426180b3749cb208abdf1a6c8354efc",
+            "start": 9760,
+            "end": 25760
+          },
+          {
+            "id": "silence-3s",
+            "reference": "",
+            "audio_sha256": "d303811b8c84619667cd0501342f84ec6cbe69f7aa3856dcf52fabda374c92b8",
+            "start": 25760,
+            "end": 73760
+          },
+          {
+            "id": "silence-10s",
+            "reference": "",
+            "audio_sha256": "ee7bea4232762775f8fce9b3e27e4d3948c8ac6a45a87ca769f703d6eed0b448",
+            "start": 73760,
+            "end": 233760
+          }
+        ],
+        "reference_characters": 0
+      }
+    },
+    "order": [
+      {
+        "dataset": "kss-dev50",
+        "policy": "vad0"
+      },
+      {
+        "dataset": "synthetic-120",
+        "policy": "vad0"
+      },
+      {
+        "dataset": "digital-silence",
+        "policy": "vad0"
+      }
+    ],
+    "model_files": {
+      "zipformer": {
+        "tokens": {
+          "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/tokens.txt",
+          "sha256": "016bdf0965029263b7ad01b742366ee542ef0bef38261510e8176ff6f2e9e668"
+        },
+        "encoder": {
+          "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/encoder-epoch-99-avg-1.int8.onnx",
+          "sha256": "8d0b1aa24fbedd4e3948564ab7facd151b8ce9b0c48fc987c541de2de3af5697"
+        },
+        "decoder": {
+          "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/decoder-epoch-99-avg-1.onnx",
+          "sha256": "b29cfb4575141e50a30a22b2c4579934f3d4f45b83c9c8c08c3aef5a3fa7abfc"
+        },
+        "joiner": {
+          "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/joiner-epoch-99-avg-1.int8.onnx",
+          "sha256": "128b80a66a1f718488af8560f9d15895109b99ff3e573f0a0130e03774ef1ced"
+        }
+      },
+      "sensevoice": {
+        "model": {
+          "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/model.int8.onnx",
+          "sha256": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51"
+        },
+        "tokens": {
+          "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/tokens.txt",
+          "sha256": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc"
+        }
+      }
+    },
+    "config_files_sha256": {
+      "zipformer": "de61d3627f72f1ff5abcd9fe4931feb8a48ff072cf8d1ab7d15d5dea6fbebab3",
+      "sensevoice": "a2bc9a87ef8d2d60e4afe354bb7e3c3961bc948b72d5d33da749f42ab8ce8d77"
+    },
+    "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+    "settings": {
+      "zip_threads": 1,
+      "refine_threads": 2,
+      "vad_threads": 1,
+      "capture": {
+        "chunk_ms": 100,
+        "queue_capacity_chunks": 5,
+        "drop_policy": "drop_newest",
+        "drain_timeout_s": 10.0
+      },
+      "refine_queue_capacity": 2,
+      "owned_max_frames": 80000,
+      "payload_max_frames": 80000,
+      "zip_holdback_frames": 4800,
+      "zip_chunk_frames": 1600,
+      "zip_state_policy": "reset_per_vad_owned_segment",
+      "merge_policies": [
+        "zip_only",
+        "refine_complete",
+        "agreement_only"
+      ],
+      "repetitions": 1,
+      "warmup_runs_per_model": 3,
+      "warmup_prefix_max_frames": 80000
+    },
+    "temperature_policy": "operational",
+    "scope_ko": "KSS50/합성120초1/디지털무음6을 각1회 같은1배속 Zip1T+Sense2T+VAD1T로 측정. vad0 구간별 Zip 상태 reset/300ms 보류/100ms 처리, 두 모델 실제 PCM 일치, parent 수신/메모리 병합 적용3정책을 기록. 기존 연속 Zip과 다른 조건. UI/마이크/음향 정답 지연/독립 평가 미측정. 텍스트 필터/사후 선택/후속 문맥 없음."
+  },
+  "datasets": {
+    "kss-dev50": {
+      "summary": {
+        "schema": "segment-merge-wav-summary-v1",
+        "status": "completed",
+        "input_complete": true,
+        "zip_threads": 1,
+        "refine_threads": 2,
+        "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+        "track_float32_sha256": "8caf6f852b7eced49b0f35674f05c8e889d31bece921510b3cebb7d59ae9142e",
+        "audio_s": 164.919,
+        "planned_sources": 50,
+        "zip_cer": {
+          "planned": 50,
+          "successful": 50,
+          "complete": true,
+          "cer": {
+            "errors": 149,
+            "substitutions": 97,
+            "deletions": 43,
+            "insertions": 9,
+            "reference_characters": 756,
+            "value": 0.1970899470899471
+          },
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+        },
+        "first_partial_from_source_start_s": {
+          "n": 50,
+          "mean": 1.6024321732000002,
+          "p50": 1.4820787190000004,
+          "p95": 2.367677555,
+          "max": 3.072447217000004
+        },
+        "zip_finalize_from_source_end_s": {
+          "n": 50,
+          "mean": 0.23082764936000089,
+          "p50": 0.229223073,
+          "p95": 0.2938390240000004,
+          "max": 0.3426337399999966
+        },
+        "no_partial_sources": 0,
+        "input_dropped_chunks": 0,
+        "input_dropped_audio_s": 0.0,
+        "input_backlog_event_max_audio_s": 0.2,
+        "input_backlog_audio_s": {
+          "n": 1653,
+          "mean": 0.0014029038112522692,
+          "p50": 0.0,
+          "p95": 0.0,
+          "max": 0.1
+        },
+        "input_queue_wait_s": {
+          "n": 1650,
+          "mean": 0.0037730887345454496,
+          "p50": 0.0006841900000011947,
+          "p95": 0.0013342140000000002,
+          "max": 0.17176021199998104
+        },
+        "chunk_processing_s": {
+          "n": 1650,
+          "mean": 0.018938515307878715,
+          "p50": 0.004491794999992749,
+          "p95": 0.055385728999993944,
+          "max": 0.23639455100000006
+        },
+        "coordinator_active_rtf": 0.1894391685012669,
+        "refine": {
+          "complete": true,
+          "planned_windows": 57,
+          "enqueued": 57,
+          "successful": 57,
+          "failed_windows": 0,
+          "missing_results": 0,
+          "dropped_windows": 0,
+          "cer": {
+            "planned": 50,
+            "successful": 50,
+            "complete": true,
+            "cer": {
+              "errors": 42,
+              "substitutions": 26,
+              "deletions": 9,
+              "insertions": 7,
+              "reference_characters": 756,
+              "value": 0.05555555555555555
+            },
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+          },
+          "queue_wait_s": {
+            "n": 57,
+            "mean": 0.0012374154385964907,
+            "p50": 0.000988508,
+            "p95": 0.003140229,
+            "max": 0.005113096
+          },
+          "decode_s": {
+            "n": 57,
+            "mean": 0.18725882050877196,
+            "p50": 0.190075133,
+            "p95": 0.277826854,
+            "max": 0.306273468
+          },
+          "dispatch_from_window_end_s": {
+            "n": 57,
+            "mean": 0.15529601028070197,
+            "p50": 0.0967854309999936,
+            "p95": 0.4442830140000069,
+            "max": 0.4609630160000222
+          },
+          "window_end_to_return_s": {
+            "n": 57,
+            "mean": 0.3439929187192981,
+            "p50": 0.29579746199999946,
+            "p95": 0.6628312329999915,
+            "max": 0.7405142730000023
+          },
+          "final_from_source_file_end_s": {
+            "n": 50,
+            "mean": 0.27149998154000055,
+            "p50": 0.2676949869999987,
+            "p95": 0.3797826390000125,
+            "max": 0.40714744799998925
+          },
+          "backlog_event_max_audio_s": 4.5484375,
+          "backlog_event_max_windows": 1,
+          "backlog_audio_s": {
+            "n": 1655,
+            "mean": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0
+          },
+          "backlog_end_audio_s": 0.0,
+          "zip_refine_call_overlap_s": 7.828629288000002,
+          "refine_calls_with_zip_overlap": 57,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "vad_emission_from_owned_end_s": {
+            "n": 57,
+            "mean": 0.148802052508773,
+            "p50": 0.08828240199999726,
+            "p95": 0.43148219200000426,
+            "max": 0.4460648260000255
+          },
+          "dispatch_after_vad_emission_s": {
+            "n": 57,
+            "mean": 0.006493957771929825,
+            "p50": 0.005997102,
+            "p95": 0.014106869,
+            "max": 0.01489819
+          },
+          "vad_emission_to_return_s": {
+            "n": 57,
+            "mean": 0.19519086621052628,
+            "p50": 0.20047077,
+            "p95": 0.294449447,
+            "max": 0.322034276
+          },
+          "decision_audio_after_owned_end_s": {
+            "n": 57,
+            "mean": 0.06737609649122805,
+            "p50": 0.0,
+            "p95": 0.3,
+            "max": 0.3
+          },
+          "no_vad_segment_sources": 0,
+          "backlog_event_max_payload_audio_s": 4.5484375,
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님."
+        },
+        "refine_reason": null,
+        "producer_cpu_s": 0.255580085,
+        "producer_lifetime_peak_rss_mib": 292.34375,
+        "unmeasured": {
+          "acoustic_endpoint_latency_s": null,
+          "aligned_recognition_latency_s": null,
+          "ui_display_latency_s": null,
+          "microphone_overruns": null,
+          "deployed_hybrid_service_cer": null
+        },
+        "zip_call_rtf": 0.14233471119155475,
+        "resources": {
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "sample_count": 1641,
+          "paired_intervals": 1640,
+          "paired_wall_s": 165.05005624599988,
+          "observed_model_cpu_percent": 35.237794716843396,
+          "model_group_rss_observed_max_mib": 664.078125,
+          "complete_model_rss_samples": 1641,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능.",
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling",
+            "segment_merger_and_result_reader"
+          ]
+        },
+        "threads": {
+          "zip": {
+            "snapshots": 165,
+            "observed_tid_max": 9,
+            "active_at_least_1_percent": 1,
+            "rows": [
+              {
+                "tid": "25689",
+                "cpu_s": 33.090000000000025,
+                "paired_s": 165.04579484400165,
+                "mean_cpu_percent": 20.048980969964187
+              },
+              {
+                "tid": "25722",
+                "cpu_s": 0.5300000000000002,
+                "paired_s": 165.04579484400165,
+                "mean_cpu_percent": 0.3211229952880332
+              },
+              {
+                "tid": "25721",
+                "cpu_s": 0.07999999999999999,
+                "paired_s": 165.04579484400165,
+                "mean_cpu_percent": 0.048471395515174785
+              },
+              {
+                "tid": "25707",
+                "cpu_s": 0.0,
+                "paired_s": 165.04579484400165,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "25708",
+                "cpu_s": 0.0,
+                "paired_s": 165.04579484400165,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "25709",
+                "cpu_s": 0.0,
+                "paired_s": 165.04579484400165,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "25718",
+                "cpu_s": 0.0,
+                "paired_s": 165.04579484400165,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "25731",
+                "cpu_s": 0.0,
+                "paired_s": 162.02991710499919,
+                "mean_cpu_percent": 0.0
+              }
+            ],
+            "runtime_roles_confirmed": false
+          },
+          "refine": {
+            "snapshots": 165,
+            "observed_tid_max": 5,
+            "active_at_least_1_percent": 2,
+            "rows": [
+              {
+                "tid": "25693",
+                "cpu_s": 12.959999999999976,
+                "paired_s": 165.04590266000014,
+                "mean_cpu_percent": 7.852360943911459
+              },
+              {
+                "tid": "25698",
+                "cpu_s": 10.870000000000006,
+                "paired_s": 165.04590266000014,
+                "mean_cpu_percent": 6.586046563296125
+              },
+              {
+                "tid": "25695",
+                "cpu_s": 0.0,
+                "paired_s": 165.04590266000014,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "25696",
+                "cpu_s": 0.0,
+                "paired_s": 165.04590266000014,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "25697",
+                "cpu_s": 0.0,
+                "paired_s": 165.04590266000014,
+                "mean_cpu_percent": 0.0
+              }
+            ],
+            "runtime_roles_confirmed": false
+          }
+        },
+        "refine_policy": "vad0",
+        "source_sha256": {
+          "vad-sources.jsonl": "454ab790cf3655a5421b02330f9fa6802120d0f2352e6eebf8a5da89fbd5268f",
+          "refine-results.jsonl": "e7b4b4bda78dd62fc800b5b1a615f9d04cdba9c8d38b8982bf086e8706353e32",
+          "zip-sources.jsonl": "a007838aaf856e9a547f2cc97a391b9d5cd53ac734e42d6885fe5093542c160d",
+          "track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+          "refine-jobs.jsonl": "90ce35cbf12dbf264ce4abcd0600c64cb5775e4e8521815de4fc994d99214ba5",
+          "process-resources.jsonl": "98c5a6edc5a3e5eeee926d2a0731f167e0a373dae020763ade98bd16dabacda2",
+          "thread-resources.jsonl": "ef9dc5f92f11395f8e4aee5bed67a137509a784bbce8bcd56cb3a4e16e45d1ec",
+          "worker.json": "21c67e81ba59a8cb13ce0ddae9c9dc73578950318a5389f5e241e430751cdf69",
+          "zip-events.jsonl": "674d2537bbdf2f8cf83ba9f3b9e65a111bf33c4e4a96de191d8c6ef7b93d3306",
+          "capture/backlog.jsonl": "0942d112145c9be6b3caf862584cbc906d2008c5c45c05752d61398d283dfeb0",
+          "capture/decoder.jsonl": "f95ccb1b8cf72d487cb91213041a2a83324a9caab10d41b1bd5babc9f144031d",
+          "capture/producer.jsonl": "5a1ed9ef6abbd70d9a34e56780a8c968710e55b8ebced460149bf25f8dea0a4b",
+          "zip-segments.jsonl": "f23bbe809b577f5e4e3d75741b107933db70299fd93e0fb7f71aebbb8ebf5920",
+          "merge-events.jsonl": "8121c6c866c8423ecfef963aa4fa3fe309401ad8b7eec7a20761f43ee932a4fa",
+          "merge-decisions.json": "e4c52fba0e4a125fdf98d48f3bb57d4385922ebae992b0f7ebb929c99a2d537f",
+          "refine-receipts.jsonl": "bf882f7f687806309565651b46a839dd795be5adcdf1f8fcf2ab86b8d7b38023"
+        },
+        "segment_merge": {
+          "complete": true,
+          "zip_state_policy": "reset_per_vad_owned_segment",
+          "zip_holdback_frames": 4800,
+          "zip_chunk_frames": 1600,
+          "same_actual_pcm_segments": 57,
+          "received_results": 57,
+          "first_partial_before_vad_emission": 54,
+          "no_partial_segments": 2,
+          "first_partial_from_owned_start_s": {
+            "n": 55,
+            "mean": 1.3043007772363642,
+            "p50": 1.2658394040000047,
+            "p95": 1.8466024189999999,
+            "max": 2.1695998309999993
+          },
+          "child_end_to_parent_receive_s": {
+            "n": 57,
+            "mean": 0.00043232771929824557,
+            "p50": 0.000395429,
+            "p95": 0.000855729,
+            "max": 0.000958508
+          },
+          "policies": {
+            "zip_only": {
+              "cer": {
+                "planned": 50,
+                "successful": 50,
+                "complete": true,
+                "cer": {
+                  "errors": 149,
+                  "substitutions": 97,
+                  "deletions": 43,
+                  "insertions": 9,
+                  "reference_characters": 756,
+                  "value": 0.1970899470899471
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "selection_counts": {
+                "zip": 57
+              },
+              "decision_reasons": {
+                "streaming_only": 57
+              },
+              "ignored_events": {
+                "source_sealed": 41
+              },
+              "versus_segmented_zip": {
+                "improved_sources": 0,
+                "tied_sources": 50,
+                "worsened_sources": 0
+              },
+              "visible_text_changes": 350,
+              "normalized_suffix_rewrite_events": 0,
+              "normalized_removed_suffix_characters": 0,
+              "owned_end_to_final_apply_s": {
+                "n": 57,
+                "mean": 0.30531828985965026,
+                "p50": 0.25819056200001,
+                "p95": 0.5572541730000005,
+                "max": 0.5790129940000099
+              },
+              "vad_emit_to_final_apply_s": {
+                "n": 57,
+                "mean": 0.15651623735087714,
+                "p50": 0.158364607,
+                "p95": 0.205863071,
+                "max": 0.227006718
+              },
+              "zip_final_to_final_apply_s": {
+                "n": 57,
+                "mean": 0.00033682268421052637,
+                "p50": 0.000356114,
+                "p95": 0.000507319,
+                "max": 0.000619246
+              },
+              "received_to_event_apply_s": {
+                "n": 57,
+                "mean": 4.0961912280701756e-05,
+                "p50": 3.2463e-05,
+                "p95": 7.3038e-05,
+                "max": 0.000114112
+              },
+              "first_refine_ready_to_segment_final_s": {
+                "n": 0,
+                "mean": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "finals_before_original_file_end": 7
+            },
+            "refine_complete": {
+              "cer": {
+                "planned": 50,
+                "successful": 50,
+                "complete": true,
+                "cer": {
+                  "errors": 42,
+                  "substitutions": 26,
+                  "deletions": 9,
+                  "insertions": 7,
+                  "reference_characters": 756,
+                  "value": 0.05555555555555555
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "selection_counts": {
+                "refine": 57
+              },
+              "decision_reasons": {
+                "complete_refine": 57
+              },
+              "ignored_events": {},
+              "versus_segmented_zip": {
+                "improved_sources": 37,
+                "tied_sources": 11,
+                "worsened_sources": 2
+              },
+              "visible_text_changes": 407,
+              "normalized_suffix_rewrite_events": 46,
+              "normalized_removed_suffix_characters": 520,
+              "owned_end_to_final_apply_s": {
+                "n": 57,
+                "mean": 0.3518041237719299,
+                "p50": 0.29719117999999867,
+                "p95": 0.6633265709999989,
+                "max": 0.7409741100000247
+              },
+              "vad_emit_to_final_apply_s": {
+                "n": 57,
+                "mean": 0.20300207126315786,
+                "p50": 0.201587816,
+                "p95": 0.294909284,
+                "max": 0.322513965
+              },
+              "zip_final_to_final_apply_s": {
+                "n": 57,
+                "mean": 0.04682265659649122,
+                "p50": 0.045558374,
+                "p95": 0.13143423,
+                "max": 0.162512917
+              },
+              "received_to_event_apply_s": {
+                "n": 57,
+                "mean": 0.00014744196491228066,
+                "p50": 0.000147686,
+                "p95": 0.000183391,
+                "max": 0.000241539
+              },
+              "first_refine_ready_to_segment_final_s": {
+                "n": 57,
+                "mean": 0.007811205052631578,
+                "p50": 0.000554745,
+                "p95": 0.049875038,
+                "max": 0.06489373
+              },
+              "finals_before_original_file_end": 7
+            },
+            "agreement_only": {
+              "cer": {
+                "planned": 50,
+                "successful": 50,
+                "complete": true,
+                "cer": {
+                  "errors": 149,
+                  "substitutions": 97,
+                  "deletions": 43,
+                  "insertions": 9,
+                  "reference_characters": 756,
+                  "value": 0.1970899470899471
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "selection_counts": {
+                "zip": 46,
+                "refine": 11
+              },
+              "decision_reasons": {
+                "normalized_disagreement": 46,
+                "normalized_agreement": 11
+              },
+              "ignored_events": {},
+              "versus_segmented_zip": {
+                "improved_sources": 0,
+                "tied_sources": 50,
+                "worsened_sources": 0
+              },
+              "visible_text_changes": 361,
+              "normalized_suffix_rewrite_events": 0,
+              "normalized_removed_suffix_characters": 0,
+              "owned_end_to_final_apply_s": {
+                "n": 57,
+                "mean": 0.3518682399122817,
+                "p50": 0.29724231000000145,
+                "p95": 0.6634044970000019,
+                "max": 0.7410427400000117
+              },
+              "vad_emit_to_final_apply_s": {
+                "n": 57,
+                "mean": 0.2030661874035088,
+                "p50": 0.201652428,
+                "p95": 0.294977914,
+                "max": 0.32259991
+              },
+              "zip_final_to_final_apply_s": {
+                "n": 57,
+                "mean": 0.04688677273684209,
+                "p50": 0.04564869,
+                "p95": 0.131500379,
+                "max": 0.162581547
+              },
+              "received_to_event_apply_s": {
+                "n": 57,
+                "mean": 0.00020646875438596485,
+                "p50": 0.000211131,
+                "p95": 0.000254576,
+                "max": 0.000275632
+              },
+              "first_refine_ready_to_segment_final_s": {
+                "n": 11,
+                "mean": 0.009839864818181818,
+                "p50": 0.000615913,
+                "p95": 0.038423522,
+                "max": 0.038423522
+              },
+              "finals_before_original_file_end": 7
+            }
+          },
+          "scope_ko": "실제1배속 WAV/VAD 구간별 Zip 상태 초기화·동일 PCM의 Refine·parent 수신·메모리 상태 적용. UI/마이크/음향 정답 경계·단어 정렬 미측정. 보류와 reset으로 이전 연속 Zip과 다른 실험 조건이다."
+        }
+      },
+      "thermal": {
+        "run": "results/preflight/m33-segment-merge-20261103-01/kss-dev50/vad0",
+        "source_sha256": {
+          "execution.json": "693d4da7aef5a54df661420ea6b1ab1c791c259be5b0232aaaa140daabeedf6a",
+          "thermal.jsonl": "730c62fe5b74c63bc5df4de623ecb650273afc6361882a64a9f6ca753fac1857"
+        },
+        "status": "completed",
+        "control_valid": false,
+        "rejection": null,
+        "thermal_sample_count": 171,
+        "before": {
+          "at_utc": "2026-11-03T07:09:18.384543+00:00",
+          "elapsed_from_before_s": 0.0,
+          "temperature_c": 51.25,
+          "fan_rpm": 2964,
+          "cpu0_freq_khz": 1500000,
+          "current_limits": 0,
+          "history_limits": 14
+        },
+        "after": {
+          "at_utc": "2026-11-03T07:12:12.215837+00:00",
+          "elapsed_from_before_s": 173.83129633800127,
+          "temperature_c": 56.75,
+          "fan_rpm": 5119,
+          "cpu0_freq_khz": 2400000,
+          "current_limits": 0,
+          "history_limits": 14
+        },
+        "software_stop_mc": null,
+        "first_observed_software_temperature_limit": null,
+        "first_observed_current_limit": null,
+        "current_limit_observed": false,
+        "new_history_bits": 0,
+        "telemetry_missing_samples": 0,
+        "fan_missing_samples": 0,
+        "fan_positive_samples": 173,
+        "fan_rpm_max": 5124,
+        "temperature_mc_max_monitor": 62250,
+        "temperature_mc_max_with_before_after": 62250,
+        "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+      },
+      "source_count": 50,
+      "audio_s": 164.919,
+      "zip_chunks_verified": 1506,
+      "same_pcm_segments_verified": 57,
+      "results_received_after_original_source_audio_end": 50,
+      "historical_continuous_zip_comparison": {
+        "scope_ko": "같은 입력/모델/개발 자료의 과거 연속 상태와 새 구간 reset/보류 조건 비교. 동시 통제/고정 클럭 비교가 아니며 차이를 reset 하나의 원인으로 단정하지 않는다.",
+        "source_commit": "79d447ab1ac264534416ed7adc05fad6b5d6e79a",
+        "zip_cer": {
+          "planned": 50,
+          "successful": 50,
+          "complete": true,
+          "cer": {
+            "errors": 88,
+            "substitutions": 71,
+            "deletions": 11,
+            "insertions": 6,
+            "reference_characters": 756,
+            "value": 0.1164021164021164
+          },
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+        },
+        "first_partial_from_source_start_s": {
+          "n": 50,
+          "mean": 0.9739967404800005,
+          "p50": 0.8526553480000008,
+          "p95": 1.4565747960000124,
+          "max": 1.471706905000019
+        },
+        "changed_source_hypotheses": 42,
+        "improved_sources": 3,
+        "tied_sources": 19,
+        "worsened_sources": 28
+      },
+      "policies_versus_historical_continuous_zip": {
+        "zip_only": {
+          "improved_sources": 3,
+          "tied_sources": 19,
+          "worsened_sources": 28
+        },
+        "refine_complete": {
+          "improved_sources": 25,
+          "tied_sources": 17,
+          "worsened_sources": 8
+        },
+        "agreement_only": {
+          "improved_sources": 3,
+          "tied_sources": 19,
+          "worsened_sources": 28
+        }
+      },
+      "historical_refine_comparison": {
+        "same_owned_geometry_and_payload": true,
+        "changed_hypothesis_jobs": [],
+        "old_refine_cer": {
+          "planned": 50,
+          "successful": 50,
+          "complete": true,
+          "cer": {
+            "errors": 42,
+            "substitutions": 26,
+            "deletions": 9,
+            "insertions": 7,
+            "reference_characters": 756,
+            "value": 0.05555555555555555
+          },
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+        }
+      },
+      "resource_sample_interval_s": {
+        "n": 1642,
+        "mean": 0.10064092302375159,
+        "p50": 0.100304839,
+        "p95": 0.101042937,
+        "max": 0.140533209
+      },
+      "loading": {
+        "zip": {
+          "wall_s": 2.4467607730039163,
+          "cpu_s": 2.682282046,
+          "resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 278.84375,
+            "rss_sample_count": 26,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 82720.502164594,
+                "rss_mib": 36.546875
+              },
+              {
+                "monotonic_s": 82720.602994253,
+                "rss_mib": 105.78125
+              },
+              {
+                "monotonic_s": 82720.703290592,
+                "rss_mib": 221.203125
+              },
+              {
+                "monotonic_s": 82720.803549691,
+                "rss_mib": 277.84375
+              },
+              {
+                "monotonic_s": 82720.903749696,
+                "rss_mib": 277.84375
+              },
+              {
+                "monotonic_s": 82721.004106425,
+                "rss_mib": 277.84375
+              },
+              {
+                "monotonic_s": 82721.104315968,
+                "rss_mib": 277.84375
+              },
+              {
+                "monotonic_s": 82721.204502769,
+                "rss_mib": 277.84375
+              },
+              {
+                "monotonic_s": 82721.304743368,
+                "rss_mib": 277.84375
+              },
+              {
+                "monotonic_s": 82721.404950392,
+                "rss_mib": 277.84375
+              },
+              {
+                "monotonic_s": 82721.505133379,
+                "rss_mib": 277.84375
+              },
+              {
+                "monotonic_s": 82721.605283698,
+                "rss_mib": 277.84375
+              },
+              {
+                "monotonic_s": 82721.705486796,
+                "rss_mib": 278.84375
+              },
+              {
+                "monotonic_s": 82721.806016008,
+                "rss_mib": 209.875
+              },
+              {
+                "monotonic_s": 82721.906248051,
+                "rss_mib": 229.375
+              },
+              {
+                "monotonic_s": 82722.006495223,
+                "rss_mib": 247.375
+              },
+              {
+                "monotonic_s": 82722.106731303,
+                "rss_mib": 247.375
+              },
+              {
+                "monotonic_s": 82722.20692292,
+                "rss_mib": 247.375
+              },
+              {
+                "monotonic_s": 82722.307177981,
+                "rss_mib": 247.375
+              },
+              {
+                "monotonic_s": 82722.407375301,
+                "rss_mib": 247.375
+              },
+              {
+                "monotonic_s": 82722.507559936,
+                "rss_mib": 247.375
+              },
+              {
+                "monotonic_s": 82722.607717793,
+                "rss_mib": 247.375
+              },
+              {
+                "monotonic_s": 82722.707868595,
+                "rss_mib": 247.375
+              },
+              {
+                "monotonic_s": 82722.808077915,
+                "rss_mib": 247.375
+              },
+              {
+                "monotonic_s": 82722.908354106,
+                "rss_mib": 247.375
+              },
+              {
+                "monotonic_s": 82722.948741922,
+                "rss_mib": 267.375
+              }
+            ]
+          }
+        },
+        "refine": {
+          "loading_s": 1.842959369008895,
+          "loading_cpu_s": 2.100461585,
+          "loading_resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 357.0,
+            "rss_sample_count": 20,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 82718.037687256,
+                "rss_mib": 25.703125
+              },
+              {
+                "monotonic_s": 82718.138142153,
+                "rss_mib": 61.9375
+              },
+              {
+                "monotonic_s": 82718.238747846,
+                "rss_mib": 261.4375
+              },
+              {
+                "monotonic_s": 82718.339048501,
+                "rss_mib": 320.53125
+              },
+              {
+                "monotonic_s": 82718.439478638,
+                "rss_mib": 329.078125
+              },
+              {
+                "monotonic_s": 82718.539721255,
+                "rss_mib": 326.46875
+              },
+              {
+                "monotonic_s": 82718.639881815,
+                "rss_mib": 326.46875
+              },
+              {
+                "monotonic_s": 82718.740085154,
+                "rss_mib": 326.46875
+              },
+              {
+                "monotonic_s": 82718.84030653,
+                "rss_mib": 326.96875
+              },
+              {
+                "monotonic_s": 82718.940489128,
+                "rss_mib": 326.96875
+              },
+              {
+                "monotonic_s": 82719.040768912,
+                "rss_mib": 326.96875
+              },
+              {
+                "monotonic_s": 82719.140959806,
+                "rss_mib": 326.96875
+              },
+              {
+                "monotonic_s": 82719.241206534,
+                "rss_mib": 326.96875
+              },
+              {
+                "monotonic_s": 82719.34147804,
+                "rss_mib": 326.96875
+              },
+              {
+                "monotonic_s": 82719.441670027,
+                "rss_mib": 326.96875
+              },
+              {
+                "monotonic_s": 82719.541821903,
+                "rss_mib": 327.46875
+              },
+              {
+                "monotonic_s": 82719.6419625,
+                "rss_mib": 327.96875
+              },
+              {
+                "monotonic_s": 82719.742234414,
+                "rss_mib": 341.46875
+              },
+              {
+                "monotonic_s": 82719.842491882,
+                "rss_mib": 354.46875
+              },
+              {
+                "monotonic_s": 82719.880202251,
+                "rss_mib": 357.0
+              }
+            ]
+          }
+        },
+        "vad": {
+          "wall_s": 0.0802669800032163,
+          "cpu_s": 0.04119342300000017,
+          "resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 288.078125,
+            "rss_sample_count": 2,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 82724.134305392,
+                "rss_mib": 268.875
+              },
+              {
+                "monotonic_s": 82724.214407018,
+                "rss_mib": 288.078125
+              }
+            ]
+          }
+        }
+      },
+      "warmup": {
+        "zip_s": 1.1718039919942385,
+        "refine_s": 0.5018883110024035,
+        "vad_s": 0.27917375600372907
+      },
+      "environment": {
+        "edge_asr": "0.1.0",
+        "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+        "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+        "machine": "aarch64",
+        "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+        "runtime": {
+          "sherpa_package_version": "2.0.1",
+          "sherpa_core_package_version": "2.0.1",
+          "python_onnxruntime_package_version": "1.31.1",
+          "sherpa_native_onnxruntime_version": "1.28.2",
+          "native_version_source": "sherpa_onnx.onnxruntime_version",
+          "status": "available",
+          "reason": null
+        },
+        "packages": [
+          {
+            "name": "cffi",
+            "version": "2.1.1"
+          },
+          {
+            "name": "flatbuffers",
+            "version": "25.12.19"
+          },
+          {
+            "name": "numpy",
+            "version": "2.4.6"
+          },
+          {
+            "name": "onnxruntime",
+            "version": "1.31.1"
+          },
+          {
+            "name": "packaging",
+            "version": "26.3"
+          },
+          {
+            "name": "protobuf",
+            "version": "7.36.2"
+          },
+          {
+            "name": "pycparser",
+            "version": "3.12"
+          },
+          {
+            "name": "sherpa-onnx-core",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sherpa_onnx",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sounddevice",
+            "version": "0.5.6"
+          },
+          {
+            "name": "soundfile",
+            "version": "0.14.0"
+          },
+          {
+            "name": "typing_extensions",
+            "version": "4.16.0"
+          }
+        ]
+      },
+      "refine_environment": {
+        "edge_asr": "0.1.0",
+        "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+        "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+        "machine": "aarch64",
+        "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+        "runtime": {
+          "sherpa_package_version": "2.0.1",
+          "sherpa_core_package_version": "2.0.1",
+          "python_onnxruntime_package_version": "1.31.1",
+          "sherpa_native_onnxruntime_version": "1.28.2",
+          "native_version_source": "sherpa_onnx.onnxruntime_version",
+          "status": "available",
+          "reason": null
+        },
+        "packages": [
+          {
+            "name": "cffi",
+            "version": "2.1.1"
+          },
+          {
+            "name": "flatbuffers",
+            "version": "25.12.19"
+          },
+          {
+            "name": "numpy",
+            "version": "2.4.6"
+          },
+          {
+            "name": "onnxruntime",
+            "version": "1.31.1"
+          },
+          {
+            "name": "packaging",
+            "version": "26.3"
+          },
+          {
+            "name": "protobuf",
+            "version": "7.36.2"
+          },
+          {
+            "name": "pycparser",
+            "version": "3.12"
+          },
+          {
+            "name": "sherpa-onnx-core",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sherpa_onnx",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sounddevice",
+            "version": "0.5.6"
+          },
+          {
+            "name": "soundfile",
+            "version": "0.14.0"
+          },
+          {
+            "name": "typing_extensions",
+            "version": "4.16.0"
+          }
+        ]
+      },
+      "vad_environment": {
+        "backend": "python_onnxruntime_k2_v4_experimental",
+        "python_onnxruntime_version": "1.31.1",
+        "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+        "num_threads": 1,
+        "providers": [
+          "CPUExecutionProvider"
+        ],
+        "recurrent_state_bytes": 1024,
+        "reset_count": 55,
+        "windows_since_reset": 164,
+        "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+      },
+      "vad_settings": {
+        "window_frames": 512,
+        "num_threads": 1,
+        "threshold": 0.5,
+        "min_speech_frames": 1600,
+        "min_silence_frames": 4800,
+        "long_threshold": 0.9,
+        "long_silence_frames": 1600,
+        "soft_limit_s": 5,
+        "retained_audio_frames": 0,
+        "queue_capacity": 1
+      },
+      "model_limits_verified": true,
+      "rescore_matches": true
+    },
+    "synthetic-120": {
+      "summary": {
+        "schema": "segment-merge-wav-summary-v1",
+        "status": "completed",
+        "input_complete": true,
+        "zip_threads": 1,
+        "refine_threads": 2,
+        "manifest_sha256": "5effb0c014a49d53dc1be638c667d166b1f8b7b45e619c507c5a2992074f4f66",
+        "track_float32_sha256": "54e8a4acad68dbc93c34966af4b9d3fe6b56e2b796010baaf1121cbbf0a5cfb9",
+        "audio_s": 120.586875,
+        "planned_sources": 1,
+        "zip_cer": {
+          "planned": 1,
+          "successful": 1,
+          "complete": true,
+          "cer": {
+            "errors": 102,
+            "substitutions": 74,
+            "deletions": 23,
+            "insertions": 5,
+            "reference_characters": 519,
+            "value": 0.19653179190751446
+          },
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+        },
+        "first_partial_from_source_start_s": {
+          "n": 1,
+          "mean": 1.451286608,
+          "p50": null,
+          "p95": null,
+          "max": 1.451286608
+        },
+        "zip_finalize_from_source_end_s": {
+          "n": 1,
+          "mean": 0.21071410399999024,
+          "p50": null,
+          "p95": null,
+          "max": 0.21071410399999024
+        },
+        "no_partial_sources": 0,
+        "input_dropped_chunks": 0,
+        "input_dropped_audio_s": 0.0,
+        "input_backlog_event_max_audio_s": 0.2,
+        "input_backlog_audio_s": {
+          "n": 1210,
+          "mean": 8.264462809917356e-05,
+          "p50": 0.0,
+          "p95": 0.0,
+          "max": 0.1
+        },
+        "input_queue_wait_s": {
+          "n": 1206,
+          "mean": 0.002178131474295139,
+          "p50": 0.0006610049999999923,
+          "p95": 0.0011691939999991519,
+          "max": 0.10335926999999856
+        },
+        "chunk_processing_s": {
+          "n": 1206,
+          "mean": 0.01794721889054729,
+          "p50": 0.004553387000001408,
+          "p95": 0.05706963000000087,
+          "max": 0.20938946699999406
+        },
+        "coordinator_active_rtf": 0.17945446746081323,
+        "refine": {
+          "complete": true,
+          "planned_windows": 43,
+          "enqueued": 43,
+          "successful": 43,
+          "failed_windows": 0,
+          "missing_results": 0,
+          "dropped_windows": 0,
+          "cer": {
+            "planned": 1,
+            "successful": 1,
+            "complete": true,
+            "cer": {
+              "errors": 32,
+              "substitutions": 24,
+              "deletions": 4,
+              "insertions": 4,
+              "reference_characters": 519,
+              "value": 0.06165703275529865
+            },
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+          },
+          "queue_wait_s": {
+            "n": 43,
+            "mean": 0.0009038399302325582,
+            "p50": 0.000814655,
+            "p95": 0.001621161,
+            "max": 0.002021552
+          },
+          "decode_s": {
+            "n": 43,
+            "mean": 0.16711394681395353,
+            "p50": 0.154941321,
+            "p95": 0.253453978,
+            "max": 0.320856245
+          },
+          "dispatch_from_window_end_s": {
+            "n": 43,
+            "mean": 0.3478097363953496,
+            "p50": 0.368139867,
+            "p95": 0.40451809500000024,
+            "max": 0.407109344000002
+          },
+          "window_end_to_return_s": {
+            "n": 43,
+            "mean": 0.5159954749534882,
+            "p50": 0.535335350000004,
+            "p95": 0.6181497110000009,
+            "max": 0.662057615000009
+          },
+          "final_from_source_file_end_s": {
+            "n": 1,
+            "mean": 0.30303093499999534,
+            "p50": null,
+            "p95": null,
+            "max": 0.30303093499999534
+          },
+          "backlog_event_max_audio_s": 5.0,
+          "backlog_event_max_windows": 1,
+          "backlog_audio_s": {
+            "n": 1211,
+            "mean": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0
+          },
+          "backlog_end_audio_s": 0.0,
+          "zip_refine_call_overlap_s": 4.909036686,
+          "refine_calls_with_zip_overlap": 43,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "vad_emission_from_owned_end_s": {
+            "n": 43,
+            "mean": 0.3423300868604642,
+            "p50": 0.359535300000001,
+            "p95": 0.3980043319999993,
+            "max": 0.4002071049999998
+          },
+          "dispatch_after_vad_emission_s": {
+            "n": 43,
+            "mean": 0.005479649534883722,
+            "p50": 0.004903742,
+            "p95": 0.009816669,
+            "max": 0.012150335
+          },
+          "vad_emission_to_return_s": {
+            "n": 43,
+            "mean": 0.17366538809302326,
+            "p50": 0.160255566,
+            "p95": 0.264053283,
+            "max": 0.333990069
+          },
+          "decision_audio_after_owned_end_s": {
+            "n": 43,
+            "mean": 0.28204651162790717,
+            "p50": 0.3,
+            "p95": 0.3,
+            "max": 0.3
+          },
+          "no_vad_segment_sources": 0,
+          "backlog_event_max_payload_audio_s": 5.0,
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님."
+        },
+        "refine_reason": null,
+        "producer_cpu_s": 0.18134291800000002,
+        "producer_lifetime_peak_rss_mib": 292.140625,
+        "unmeasured": {
+          "acoustic_endpoint_latency_s": null,
+          "aligned_recognition_latency_s": null,
+          "ui_display_latency_s": null,
+          "microphone_overruns": null,
+          "deployed_hybrid_service_cer": null
+        },
+        "zip_call_rtf": 0.13296919320614292,
+        "resources": {
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "sample_count": 1202,
+          "paired_intervals": 1201,
+          "paired_wall_s": 120.87219027799986,
+          "observed_model_cpu_percent": 33.17553848223653,
+          "model_group_rss_observed_max_mib": 705.53125,
+          "complete_model_rss_samples": 1202,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능.",
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling",
+            "segment_merger_and_result_reader"
+          ]
+        },
+        "threads": {
+          "zip": {
+            "snapshots": 121,
+            "observed_tid_max": 9,
+            "active_at_least_1_percent": 1,
+            "rows": [
+              {
+                "tid": "26118",
+                "cpu_s": 23.030000000000012,
+                "paired_s": 120.77091421099612,
+                "mean_cpu_percent": 19.069160940327755
+              },
+              {
+                "tid": "26164",
+                "cpu_s": 0.3900000000000002,
+                "paired_s": 120.77091421099612,
+                "mean_cpu_percent": 0.32292543494258896
+              },
+              {
+                "tid": "26163",
+                "cpu_s": 0.07,
+                "paired_s": 120.77091421099612,
+                "mean_cpu_percent": 0.05796097550251594
+              },
+              {
+                "tid": "26136",
+                "cpu_s": 0.0,
+                "paired_s": 120.77091421099612,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "26137",
+                "cpu_s": 0.0,
+                "paired_s": 120.77091421099612,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "26138",
+                "cpu_s": 0.0,
+                "paired_s": 120.77091421099612,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "26160",
+                "cpu_s": 0.0,
+                "paired_s": 120.77091421099612,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "26173",
+                "cpu_s": 0.0,
+                "paired_s": 116.75015758100199,
+                "mean_cpu_percent": 0.0
+              }
+            ],
+            "runtime_roles_confirmed": false
+          },
+          "refine": {
+            "snapshots": 121,
+            "observed_tid_max": 5,
+            "active_at_least_1_percent": 2,
+            "rows": [
+              {
+                "tid": "26122",
+                "cpu_s": 8.649999999999991,
+                "paired_s": 120.7712113430025,
+                "mean_cpu_percent": 7.1623029228655435
+              },
+              {
+                "tid": "26127",
+                "cpu_s": 7.36,
+                "paired_s": 120.7712113430025,
+                "mean_cpu_percent": 6.094167573675197
+              },
+              {
+                "tid": "26124",
+                "cpu_s": 0.0,
+                "paired_s": 120.7712113430025,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "26125",
+                "cpu_s": 0.0,
+                "paired_s": 120.7712113430025,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "26126",
+                "cpu_s": 0.0,
+                "paired_s": 120.7712113430025,
+                "mean_cpu_percent": 0.0
+              }
+            ],
+            "runtime_roles_confirmed": false
+          }
+        },
+        "refine_policy": "vad0",
+        "source_sha256": {
+          "vad-sources.jsonl": "32d99233d067f67481be30a67aa7e7ba5016934bc06beffcd606cb18bfa02711",
+          "refine-results.jsonl": "f6069e6b173457c08b6b374c7f55a1d795d1da3c659f47a16279c1bbc55963c5",
+          "zip-sources.jsonl": "20ec0b1738564f605fede8293e5833cbbcacb7c354f6fc424e955232f8753b87",
+          "track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+          "refine-jobs.jsonl": "df95ae17f1a8e5315ed98132efd9edfd9ecb64b7335123e7b84a08d8fd8bcdf0",
+          "process-resources.jsonl": "b8e23944e692f46762d42e8e63866c466d6cf31577c15c526318cf059dc9ddb5",
+          "thread-resources.jsonl": "bfc507591948d37d65b67c30f360d9bf0dc7adcaa4b992e60d36962dedbc53d2",
+          "worker.json": "f9c3305739d73bf9ac20c5a84b64733889b2d9b8a12373a8f3e0e2ac59a0db63",
+          "zip-events.jsonl": "6cbfaad76d978f6eca4424b08eaaa5bc89f7fb3c5a21f0f8e358d534ff8aca86",
+          "capture/backlog.jsonl": "338753a9e85e9e7dbbb8ff0688dc0331b369f32e6a1e116a0b8d67c940335420",
+          "capture/decoder.jsonl": "4342572f4ca92f2bb6c31b2bd77a3c03b526fcd670c08ad53eb95e056daebe81",
+          "capture/producer.jsonl": "1e085d3468390af4df286bebefa4c363bb956f1c34dfc03575a3313d11366d13",
+          "zip-segments.jsonl": "ab541e0b5e6a61214ff5fedadd872e8c1a5d9015e0a8c8d001580dfe355270f8",
+          "merge-events.jsonl": "3fda2566b131cc7ff722dc177e458b33520819cf9836435d5cce656677c5b78d",
+          "merge-decisions.json": "6163deb9b337eb6e93c65715b7b8345f939d027f522c4d6fbbc85980257b41b0",
+          "refine-receipts.jsonl": "4f25f6cf6935304a2535cc42da8a12164319e3460c4fe8dcc990433ef9042a84"
+        },
+        "segment_merge": {
+          "complete": true,
+          "zip_state_policy": "reset_per_vad_owned_segment",
+          "zip_holdback_frames": 4800,
+          "zip_chunk_frames": 1600,
+          "same_actual_pcm_segments": 43,
+          "received_results": 43,
+          "first_partial_before_vad_emission": 39,
+          "no_partial_segments": 3,
+          "first_partial_from_owned_start_s": {
+            "n": 40,
+            "mean": 1.2140707725249995,
+            "p50": 1.2026189019999975,
+            "p95": 1.4598970640000033,
+            "max": 1.821747676000001
+          },
+          "child_end_to_parent_receive_s": {
+            "n": 43,
+            "mean": 0.00039206632558139534,
+            "p50": 0.000374503,
+            "p95": 0.000522059,
+            "max": 0.000598561
+          },
+          "policies": {
+            "zip_only": {
+              "cer": {
+                "planned": 1,
+                "successful": 1,
+                "complete": true,
+                "cer": {
+                  "errors": 102,
+                  "substitutions": 74,
+                  "deletions": 23,
+                  "insertions": 5,
+                  "reference_characters": 519,
+                  "value": 0.19653179190751446
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "selection_counts": {
+                "zip": 43
+              },
+              "decision_reasons": {
+                "streaming_only": 43
+              },
+              "ignored_events": {
+                "source_sealed": 34
+              },
+              "versus_segmented_zip": {
+                "improved_sources": 0,
+                "tied_sources": 1,
+                "worsened_sources": 0
+              },
+              "visible_text_changes": 244,
+              "normalized_suffix_rewrite_events": 0,
+              "normalized_removed_suffix_characters": 0,
+              "owned_end_to_final_apply_s": {
+                "n": 43,
+                "mean": 0.4715731032790702,
+                "p50": 0.4831629390000103,
+                "p95": 0.549623577999995,
+                "max": 0.5635773060000027
+              },
+              "vad_emit_to_final_apply_s": {
+                "n": 43,
+                "mean": 0.12924301641860464,
+                "p50": 0.116126666,
+                "p95": 0.170963871,
+                "max": 0.177976778
+              },
+              "zip_final_to_final_apply_s": {
+                "n": 43,
+                "mean": 0.00030688699999999994,
+                "p50": 0.000313299,
+                "p95": 0.0005063,
+                "max": 0.00058619
+              },
+              "received_to_event_apply_s": {
+                "n": 43,
+                "mean": 4.0477418604651165e-05,
+                "p50": 3.3574e-05,
+                "p95": 6.4279e-05,
+                "max": 0.000110241
+              },
+              "first_refine_ready_to_segment_final_s": {
+                "n": 0,
+                "mean": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "finals_before_original_file_end": 42
+            },
+            "refine_complete": {
+              "cer": {
+                "planned": 1,
+                "successful": 1,
+                "complete": true,
+                "cer": {
+                  "errors": 32,
+                  "substitutions": 24,
+                  "deletions": 4,
+                  "insertions": 4,
+                  "reference_characters": 519,
+                  "value": 0.06165703275529865
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "selection_counts": {
+                "refine": 43
+              },
+              "decision_reasons": {
+                "complete_refine": 43
+              },
+              "ignored_events": {},
+              "versus_segmented_zip": {
+                "improved_sources": 1,
+                "tied_sources": 0,
+                "worsened_sources": 0
+              },
+              "visible_text_changes": 287,
+              "normalized_suffix_rewrite_events": 37,
+              "normalized_removed_suffix_characters": 378,
+              "owned_end_to_final_apply_s": {
+                "n": 43,
+                "mean": 0.5230690779534881,
+                "p50": 0.5395629920000005,
+                "p95": 0.6186478810000011,
+                "max": 0.6625331740000036
+              },
+              "vad_emit_to_final_apply_s": {
+                "n": 43,
+                "mean": 0.1807389910930233,
+                "p50": 0.16069818,
+                "p95": 0.264528842,
+                "max": 0.334612926
+              },
+              "zip_final_to_final_apply_s": {
+                "n": 43,
+                "mean": 0.05180286167441862,
+                "p50": 0.050850323,
+                "p95": 0.113691924,
+                "max": 0.168608724
+              },
+              "received_to_event_apply_s": {
+                "n": 43,
+                "mean": 0.00015186083720930235,
+                "p50": 0.000150427,
+                "p95": 0.000182391,
+                "max": 0.000234316
+              },
+              "first_refine_ready_to_segment_final_s": {
+                "n": 43,
+                "mean": 0.007073603,
+                "p50": 0.000521059,
+                "p95": 0.053564103,
+                "max": 0.059375389
+              },
+              "finals_before_original_file_end": 42
+            },
+            "agreement_only": {
+              "cer": {
+                "planned": 1,
+                "successful": 1,
+                "complete": true,
+                "cer": {
+                  "errors": 102,
+                  "substitutions": 74,
+                  "deletions": 23,
+                  "insertions": 5,
+                  "reference_characters": 519,
+                  "value": 0.19653179190751446
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "selection_counts": {
+                "zip": 37,
+                "refine": 6
+              },
+              "decision_reasons": {
+                "normalized_disagreement": 37,
+                "normalized_agreement": 6
+              },
+              "ignored_events": {},
+              "versus_segmented_zip": {
+                "improved_sources": 0,
+                "tied_sources": 1,
+                "worsened_sources": 0
+              },
+              "visible_text_changes": 250,
+              "normalized_suffix_rewrite_events": 0,
+              "normalized_removed_suffix_characters": 0,
+              "owned_end_to_final_apply_s": {
+                "n": 43,
+                "mean": 0.5231342885813948,
+                "p50": 0.5396583079999999,
+                "p95": 0.6187159189999996,
+                "max": 0.6626008230000053
+              },
+              "vad_emit_to_final_apply_s": {
+                "n": 43,
+                "mean": 0.1808042017209302,
+                "p50": 0.160755144,
+                "p95": 0.264596491,
+                "max": 0.334693537
+              },
+              "zip_final_to_final_apply_s": {
+                "n": 43,
+                "mean": 0.05186807230232558,
+                "p50": 0.050920453,
+                "p95": 0.113768147,
+                "max": 0.168699854
+              },
+              "received_to_event_apply_s": {
+                "n": 43,
+                "mean": 0.00021388369767441853,
+                "p50": 0.000215835,
+                "p95": 0.000266595,
+                "max": 0.000293336
+              },
+              "first_refine_ready_to_segment_final_s": {
+                "n": 6,
+                "mean": 0.008623984166666666,
+                "p50": 0.000580227,
+                "p95": 0.04889316,
+                "max": 0.04889316
+              },
+              "finals_before_original_file_end": 42
+            }
+          },
+          "scope_ko": "실제1배속 WAV/VAD 구간별 Zip 상태 초기화·동일 PCM의 Refine·parent 수신·메모리 상태 적용. UI/마이크/음향 정답 경계·단어 정렬 미측정. 보류와 reset으로 이전 연속 Zip과 다른 실험 조건이다."
+        }
+      },
+      "thermal": {
+        "run": "results/preflight/m33-segment-merge-20261103-01/synthetic-120/vad0",
+        "source_sha256": {
+          "execution.json": "2944fd099a56622945aeaa5c1c5ff9228ace2a79029200588dfc6c7993c0feaf",
+          "thermal.jsonl": "ae1f98e13a985d0ca44d66671ad465ffb8657304feea9aaa3f58e3aab61bd837"
+        },
+        "status": "completed",
+        "control_valid": false,
+        "rejection": null,
+        "thermal_sample_count": 131,
+        "before": {
+          "at_utc": "2026-11-03T07:12:25.445309+00:00",
+          "elapsed_from_before_s": 0.0,
+          "temperature_c": 51.8,
+          "fan_rpm": 3076,
+          "cpu0_freq_khz": 1500000,
+          "current_limits": 0,
+          "history_limits": 14
+        },
+        "after": {
+          "at_utc": "2026-11-03T07:14:38.598311+00:00",
+          "elapsed_from_before_s": 133.15299654701084,
+          "temperature_c": 60.6,
+          "fan_rpm": 5147,
+          "cpu0_freq_khz": 2400000,
+          "current_limits": 0,
+          "history_limits": 14
+        },
+        "software_stop_mc": null,
+        "first_observed_software_temperature_limit": null,
+        "first_observed_current_limit": null,
+        "current_limit_observed": false,
+        "new_history_bits": 0,
+        "telemetry_missing_samples": 0,
+        "fan_missing_samples": 0,
+        "fan_positive_samples": 133,
+        "fan_rpm_max": 5154,
+        "temperature_mc_max_monitor": 62800,
+        "temperature_mc_max_with_before_after": 62800,
+        "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+      },
+      "source_count": 1,
+      "audio_s": 120.586875,
+      "zip_chunks_verified": 1008,
+      "same_pcm_segments_verified": 43,
+      "results_received_after_original_source_audio_end": 1,
+      "historical_continuous_zip_comparison": {
+        "scope_ko": "같은 입력/모델/개발 자료의 과거 연속 상태와 새 구간 reset/보류 조건 비교. 동시 통제/고정 클럭 비교가 아니며 차이를 reset 하나의 원인으로 단정하지 않는다.",
+        "source_commit": "79d447ab1ac264534416ed7adc05fad6b5d6e79a",
+        "zip_cer": {
+          "planned": 1,
+          "successful": 1,
+          "complete": true,
+          "cer": {
+            "errors": 58,
+            "substitutions": 44,
+            "deletions": 12,
+            "insertions": 2,
+            "reference_characters": 519,
+            "value": 0.11175337186897881
+          },
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+        },
+        "first_partial_from_source_start_s": {
+          "n": 1,
+          "mean": 0.843699091,
+          "p50": null,
+          "p95": null,
+          "max": 0.843699091
+        },
+        "changed_source_hypotheses": 1,
+        "improved_sources": 0,
+        "tied_sources": 0,
+        "worsened_sources": 1
+      },
+      "policies_versus_historical_continuous_zip": {
+        "zip_only": {
+          "improved_sources": 0,
+          "tied_sources": 0,
+          "worsened_sources": 1
+        },
+        "refine_complete": {
+          "improved_sources": 1,
+          "tied_sources": 0,
+          "worsened_sources": 0
+        },
+        "agreement_only": {
+          "improved_sources": 0,
+          "tied_sources": 0,
+          "worsened_sources": 1
+        }
+      },
+      "historical_refine_comparison": {
+        "same_owned_geometry_and_payload": true,
+        "changed_hypothesis_jobs": [],
+        "old_refine_cer": {
+          "planned": 1,
+          "successful": 1,
+          "complete": true,
+          "cer": {
+            "errors": 32,
+            "substitutions": 24,
+            "deletions": 4,
+            "insertions": 4,
+            "reference_characters": 519,
+            "value": 0.06165703275529865
+          },
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+        }
+      },
+      "resource_sample_interval_s": {
+        "n": 1202,
+        "mean": 0.10064411175873544,
+        "p50": 0.100309579,
+        "p95": 0.10100827,
+        "max": 0.137180385
+      },
+      "loading": {
+        "zip": {
+          "wall_s": 2.489137026001117,
+          "cpu_s": 2.724254895,
+          "resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 277.5625,
+            "rss_sample_count": 26,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 82907.766294353,
+                "rss_mib": 33.75
+              },
+              {
+                "monotonic_s": 82907.867039677,
+                "rss_mib": 94.203125
+              },
+              {
+                "monotonic_s": 82907.967343515,
+                "rss_mib": 218.640625
+              },
+              {
+                "monotonic_s": 82908.06761365,
+                "rss_mib": 277.5625
+              },
+              {
+                "monotonic_s": 82908.167818877,
+                "rss_mib": 277.5625
+              },
+              {
+                "monotonic_s": 82908.268026418,
+                "rss_mib": 277.5625
+              },
+              {
+                "monotonic_s": 82908.368286479,
+                "rss_mib": 277.5625
+              },
+              {
+                "monotonic_s": 82908.468529502,
+                "rss_mib": 277.5625
+              },
+              {
+                "monotonic_s": 82908.568733359,
+                "rss_mib": 277.5625
+              },
+              {
+                "monotonic_s": 82908.668901252,
+                "rss_mib": 277.5625
+              },
+              {
+                "monotonic_s": 82908.769067275,
+                "rss_mib": 277.5625
+              },
+              {
+                "monotonic_s": 82908.869278798,
+                "rss_mib": 277.5625
+              },
+              {
+                "monotonic_s": 82908.969525228,
+                "rss_mib": 277.5625
+              },
+              {
+                "monotonic_s": 82909.069770715,
+                "rss_mib": 207.0
+              },
+              {
+                "monotonic_s": 82909.169994757,
+                "rss_mib": 226.5
+              },
+              {
+                "monotonic_s": 82909.270229502,
+                "rss_mib": 244.5
+              },
+              {
+                "monotonic_s": 82909.370493063,
+                "rss_mib": 244.5
+              },
+              {
+                "monotonic_s": 82909.470717678,
+                "rss_mib": 244.5
+              },
+              {
+                "monotonic_s": 82909.570908275,
+                "rss_mib": 244.5
+              },
+              {
+                "monotonic_s": 82909.671086613,
+                "rss_mib": 244.5
+              },
+              {
+                "monotonic_s": 82909.771257451,
+                "rss_mib": 244.5
+              },
+              {
+                "monotonic_s": 82909.871444122,
+                "rss_mib": 244.5
+              },
+              {
+                "monotonic_s": 82909.971704386,
+                "rss_mib": 244.5
+              },
+              {
+                "monotonic_s": 82910.071874594,
+                "rss_mib": 244.5
+              },
+              {
+                "monotonic_s": 82910.172056395,
+                "rss_mib": 244.5
+              },
+              {
+                "monotonic_s": 82910.255247433,
+                "rss_mib": 255.125
+              }
+            ]
+          }
+        },
+        "refine": {
+          "loading_s": 1.8331043859943748,
+          "loading_cpu_s": 2.0908391710000003,
+          "loading_resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 411.703125,
+            "rss_sample_count": 20,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 82904.965282207,
+                "rss_mib": 25.46875
+              },
+              {
+                "monotonic_s": 82905.065928067,
+                "rss_mib": 58.203125
+              },
+              {
+                "monotonic_s": 82905.166379222,
+                "rss_mib": 265.703125
+              },
+              {
+                "monotonic_s": 82905.266668245,
+                "rss_mib": 319.546875
+              },
+              {
+                "monotonic_s": 82905.367168067,
+                "rss_mib": 334.8125
+              },
+              {
+                "monotonic_s": 82905.46744748,
+                "rss_mib": 343.40625
+              },
+              {
+                "monotonic_s": 82905.567639225,
+                "rss_mib": 343.40625
+              },
+              {
+                "monotonic_s": 82905.667836951,
+                "rss_mib": 343.40625
+              },
+              {
+                "monotonic_s": 82905.767987641,
+                "rss_mib": 343.90625
+              },
+              {
+                "monotonic_s": 82905.868159552,
+                "rss_mib": 343.90625
+              },
+              {
+                "monotonic_s": 82905.968421261,
+                "rss_mib": 343.90625
+              },
+              {
+                "monotonic_s": 82906.068595784,
+                "rss_mib": 343.90625
+              },
+              {
+                "monotonic_s": 82906.168768677,
+                "rss_mib": 343.90625
+              },
+              {
+                "monotonic_s": 82906.269025571,
+                "rss_mib": 343.90625
+              },
+              {
+                "monotonic_s": 82906.369290169,
+                "rss_mib": 343.90625
+              },
+              {
+                "monotonic_s": 82906.469498562,
+                "rss_mib": 344.90625
+              },
+              {
+                "monotonic_s": 82906.569679066,
+                "rss_mib": 344.90625
+              },
+              {
+                "monotonic_s": 82906.669901349,
+                "rss_mib": 373.40625
+              },
+              {
+                "monotonic_s": 82906.770142224,
+                "rss_mib": 408.40625
+              },
+              {
+                "monotonic_s": 82906.797957923,
+                "rss_mib": 411.703125
+              }
+            ]
+          }
+        },
+        "vad": {
+          "wall_s": 0.08148502500262111,
+          "cpu_s": 0.0423839819999996,
+          "resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 274.828125,
+            "rss_sample_count": 2,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 82912.276185285,
+                "rss_mib": 256.625
+              },
+              {
+                "monotonic_s": 82912.357470715,
+                "rss_mib": 274.828125
+              }
+            ]
+          }
+        }
+      },
+      "warmup": {
+        "zip_s": 2.0070405209989985,
+        "refine_s": 0.8486518299905583,
+        "vad_s": 0.5008160209981725
+      },
+      "environment": {
+        "edge_asr": "0.1.0",
+        "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+        "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+        "machine": "aarch64",
+        "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+        "runtime": {
+          "sherpa_package_version": "2.0.1",
+          "sherpa_core_package_version": "2.0.1",
+          "python_onnxruntime_package_version": "1.31.1",
+          "sherpa_native_onnxruntime_version": "1.28.2",
+          "native_version_source": "sherpa_onnx.onnxruntime_version",
+          "status": "available",
+          "reason": null
+        },
+        "packages": [
+          {
+            "name": "cffi",
+            "version": "2.1.1"
+          },
+          {
+            "name": "flatbuffers",
+            "version": "25.12.19"
+          },
+          {
+            "name": "numpy",
+            "version": "2.4.6"
+          },
+          {
+            "name": "onnxruntime",
+            "version": "1.31.1"
+          },
+          {
+            "name": "packaging",
+            "version": "26.3"
+          },
+          {
+            "name": "protobuf",
+            "version": "7.36.2"
+          },
+          {
+            "name": "pycparser",
+            "version": "3.12"
+          },
+          {
+            "name": "sherpa-onnx-core",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sherpa_onnx",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sounddevice",
+            "version": "0.5.6"
+          },
+          {
+            "name": "soundfile",
+            "version": "0.14.0"
+          },
+          {
+            "name": "typing_extensions",
+            "version": "4.16.0"
+          }
+        ]
+      },
+      "refine_environment": {
+        "edge_asr": "0.1.0",
+        "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+        "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+        "machine": "aarch64",
+        "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+        "runtime": {
+          "sherpa_package_version": "2.0.1",
+          "sherpa_core_package_version": "2.0.1",
+          "python_onnxruntime_package_version": "1.31.1",
+          "sherpa_native_onnxruntime_version": "1.28.2",
+          "native_version_source": "sherpa_onnx.onnxruntime_version",
+          "status": "available",
+          "reason": null
+        },
+        "packages": [
+          {
+            "name": "cffi",
+            "version": "2.1.1"
+          },
+          {
+            "name": "flatbuffers",
+            "version": "25.12.19"
+          },
+          {
+            "name": "numpy",
+            "version": "2.4.6"
+          },
+          {
+            "name": "onnxruntime",
+            "version": "1.31.1"
+          },
+          {
+            "name": "packaging",
+            "version": "26.3"
+          },
+          {
+            "name": "protobuf",
+            "version": "7.36.2"
+          },
+          {
+            "name": "pycparser",
+            "version": "3.12"
+          },
+          {
+            "name": "sherpa-onnx-core",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sherpa_onnx",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sounddevice",
+            "version": "0.5.6"
+          },
+          {
+            "name": "soundfile",
+            "version": "0.14.0"
+          },
+          {
+            "name": "typing_extensions",
+            "version": "4.16.0"
+          }
+        ]
+      },
+      "vad_environment": {
+        "backend": "python_onnxruntime_k2_v4_experimental",
+        "python_onnxruntime_version": "1.31.1",
+        "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+        "num_threads": 1,
+        "providers": [
+          "CPUExecutionProvider"
+        ],
+        "recurrent_state_bytes": 1024,
+        "reset_count": 6,
+        "windows_since_reset": 3769,
+        "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+      },
+      "vad_settings": {
+        "window_frames": 512,
+        "num_threads": 1,
+        "threshold": 0.5,
+        "min_speech_frames": 1600,
+        "min_silence_frames": 4800,
+        "long_threshold": 0.9,
+        "long_silence_frames": 1600,
+        "soft_limit_s": 5,
+        "retained_audio_frames": 0,
+        "queue_capacity": 1
+      },
+      "model_limits_verified": true,
+      "rescore_matches": true
+    },
+    "digital-silence": {
+      "summary": {
+        "schema": "segment-merge-wav-summary-v1",
+        "status": "completed",
+        "input_complete": true,
+        "zip_threads": 1,
+        "refine_threads": 2,
+        "manifest_sha256": "bace0b26e24d60b8ef207b191c3a646edd0ceaae4ba8e130ecac5c948810b084",
+        "track_float32_sha256": "19b3fbba8dfcdfa51ba4c7b5f01ea6f63039ca24f77484945058b8095edb4147",
+        "audio_s": 14.61,
+        "planned_sources": 6,
+        "zip_cer": {
+          "planned": 6,
+          "successful": 6,
+          "complete": true,
+          "cer": {
+            "errors": 0,
+            "substitutions": 0,
+            "deletions": 0,
+            "insertions": 0,
+            "reference_characters": 0,
+            "value": null,
+            "empty_reference_samples": 6,
+            "empty_reference_nonempty_hypotheses": 0
+          },
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+        },
+        "first_partial_from_source_start_s": {
+          "n": 0,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        },
+        "zip_finalize_from_source_end_s": {
+          "n": 6,
+          "mean": 0.07958061099999991,
+          "p50": 0.09458855499999963,
+          "p95": 0.09484007799999983,
+          "max": 0.09484007799999983
+        },
+        "no_partial_sources": 6,
+        "input_dropped_chunks": 0,
+        "input_dropped_audio_s": 0.0,
+        "input_backlog_event_max_audio_s": 0.1,
+        "input_backlog_audio_s": {
+          "n": 149,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        },
+        "input_queue_wait_s": {
+          "n": 147,
+          "mean": 0.0006056693129251285,
+          "p50": 0.0006122269999999652,
+          "p95": 0.001104415999999997,
+          "max": 0.0013471399999999967
+        },
+        "chunk_processing_s": {
+          "n": 147,
+          "mean": 0.004536008108843545,
+          "p50": 0.004869223000000034,
+          "p95": 0.00569626600000106,
+          "max": 0.006921071999999917
+        },
+        "coordinator_active_rtf": 0.04560136461092929,
+        "refine": {
+          "complete": true,
+          "planned_windows": 0,
+          "enqueued": 0,
+          "successful": 0,
+          "failed_windows": 0,
+          "missing_results": 0,
+          "dropped_windows": 0,
+          "cer": {
+            "planned": 6,
+            "successful": 6,
+            "complete": true,
+            "cer": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 0,
+              "value": null,
+              "empty_reference_samples": 6,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+          },
+          "queue_wait_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "decode_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "dispatch_from_window_end_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "window_end_to_return_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "final_from_source_file_end_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "backlog_event_max_audio_s": 0.0,
+          "backlog_event_max_windows": 0,
+          "backlog_audio_s": {
+            "n": 149,
+            "mean": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0
+          },
+          "backlog_end_audio_s": 0.0,
+          "zip_refine_call_overlap_s": 0.0,
+          "refine_calls_with_zip_overlap": 0,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "vad_emission_from_owned_end_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "dispatch_after_vad_emission_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "vad_emission_to_return_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "decision_audio_after_owned_end_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "no_vad_segment_sources": 6,
+          "backlog_event_max_payload_audio_s": 0.0,
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님."
+        },
+        "refine_reason": null,
+        "producer_cpu_s": 0.021990550999999997,
+        "producer_lifetime_peak_rss_mib": 286.75,
+        "unmeasured": {
+          "acoustic_endpoint_latency_s": null,
+          "aligned_recognition_latency_s": null,
+          "ui_display_latency_s": null,
+          "microphone_overruns": null,
+          "deployed_hybrid_service_cer": null
+        },
+        "zip_call_rtf": 0.0,
+        "resources": {
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "sample_count": 145,
+          "paired_intervals": 144,
+          "paired_wall_s": 14.484271737000002,
+          "observed_model_cpu_percent": 8.906212362094127,
+          "model_group_rss_observed_max_mib": 629.21875,
+          "complete_model_rss_samples": 145,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능.",
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling",
+            "segment_merger_and_result_reader"
+          ]
+        },
+        "threads": {
+          "zip": {
+            "snapshots": 15,
+            "observed_tid_max": 8,
+            "active_at_least_1_percent": 1,
+            "rows": [
+              {
+                "tid": "26461",
+                "cpu_s": 0.8800000000000001,
+                "paired_s": 14.082734384006471,
+                "mean_cpu_percent": 6.248786464363069
+              },
+              {
+                "tid": "26501",
+                "cpu_s": 0.04,
+                "paired_s": 14.082734384006471,
+                "mean_cpu_percent": 0.28403574838013945
+              },
+              {
+                "tid": "26488",
+                "cpu_s": 0.0,
+                "paired_s": 14.082734384006471,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "26489",
+                "cpu_s": 0.0,
+                "paired_s": 14.082734384006471,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "26490",
+                "cpu_s": 0.0,
+                "paired_s": 14.082734384006471,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "26499",
+                "cpu_s": 0.0,
+                "paired_s": 14.082734384006471,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "26500",
+                "cpu_s": 0.0,
+                "paired_s": 14.082734384006471,
+                "mean_cpu_percent": 0.0
+              }
+            ],
+            "runtime_roles_confirmed": false
+          },
+          "refine": {
+            "snapshots": 15,
+            "observed_tid_max": 5,
+            "active_at_least_1_percent": 1,
+            "rows": [
+              {
+                "tid": "26465",
+                "cpu_s": 0.26,
+                "paired_s": 14.082759586992324,
+                "mean_cpu_percent": 1.8462290603906317
+              },
+              {
+                "tid": "26467",
+                "cpu_s": 0.0,
+                "paired_s": 14.082759586992324,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "26468",
+                "cpu_s": 0.0,
+                "paired_s": 14.082759586992324,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "26469",
+                "cpu_s": 0.0,
+                "paired_s": 14.082759586992324,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "26470",
+                "cpu_s": 0.0,
+                "paired_s": 14.082759586992324,
+                "mean_cpu_percent": 0.0
+              }
+            ],
+            "runtime_roles_confirmed": false
+          }
+        },
+        "refine_policy": "vad0",
+        "source_sha256": {
+          "vad-sources.jsonl": "8d321b6b7a0dde3ccd9c4f3e0cb4824951e9503037648b667159d8a00382b505",
+          "refine-results.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "zip-sources.jsonl": "d17a393376a0ef532a011e8f1d76a7d65f2baa698d49868c9e54216af9ccce48",
+          "track.json": "c96be17e61d2adea333bb1970ec63f3bb29eff162ea98891913001abca579f95",
+          "refine-jobs.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "process-resources.jsonl": "912dfff1cefccd3e4362a04d4d8d8b352909d2389a26d95d44f7c639bf06d934",
+          "thread-resources.jsonl": "78abc817af82d52b2801ae918b07a3647d35f489de5635a03f6ed5f75a08e1ed",
+          "worker.json": "4ec0d563adb0377a9b867b4e2d97147bcecc638e000d17cae03dd69aa51badcc",
+          "zip-events.jsonl": "a71b390e7f13c758ea7162e0eb753af33ad3a6f113d3efd9414903085ad231e2",
+          "capture/backlog.jsonl": "17ae8cf55b9d3424576eb0e3bcdf0dac741e9fad2c043910b3adddc9c03ac302",
+          "capture/decoder.jsonl": "1d4829c00cf1b9bd7d7e37937cec57e6901f52dcf24741df23f6a2ff3d8fd369",
+          "capture/producer.jsonl": "f4ff2e3679e42439171864db1e005d7e4265110a82bdeefbcb567a07fa97e54e",
+          "zip-segments.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "merge-events.jsonl": "fd81867c10181c19dffa3faf30ac1a05264cf3d6b7a711e6f1ef0a240210c76b",
+          "merge-decisions.json": "85901217bf50149ec7cc095f080d3efb9665d0b6f390c96cd9e133cb70b9f93b",
+          "refine-receipts.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "segment_merge": {
+          "complete": true,
+          "zip_state_policy": "reset_per_vad_owned_segment",
+          "zip_holdback_frames": 4800,
+          "zip_chunk_frames": 1600,
+          "same_actual_pcm_segments": 0,
+          "received_results": 0,
+          "first_partial_before_vad_emission": 0,
+          "no_partial_segments": 0,
+          "first_partial_from_owned_start_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "child_end_to_parent_receive_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "policies": {
+            "zip_only": {
+              "cer": {
+                "planned": 6,
+                "successful": 6,
+                "complete": true,
+                "cer": {
+                  "errors": 0,
+                  "substitutions": 0,
+                  "deletions": 0,
+                  "insertions": 0,
+                  "reference_characters": 0,
+                  "value": null,
+                  "empty_reference_samples": 6,
+                  "empty_reference_nonempty_hypotheses": 0
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "selection_counts": {},
+              "decision_reasons": {},
+              "ignored_events": {},
+              "versus_segmented_zip": {
+                "improved_sources": 0,
+                "tied_sources": 0,
+                "worsened_sources": 0
+              },
+              "visible_text_changes": 0,
+              "normalized_suffix_rewrite_events": 0,
+              "normalized_removed_suffix_characters": 0,
+              "owned_end_to_final_apply_s": {
+                "n": 0,
+                "mean": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "vad_emit_to_final_apply_s": {
+                "n": 0,
+                "mean": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "zip_final_to_final_apply_s": {
+                "n": 0,
+                "mean": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "received_to_event_apply_s": {
+                "n": 0,
+                "mean": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "first_refine_ready_to_segment_final_s": {
+                "n": 0,
+                "mean": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "finals_before_original_file_end": 0
+            },
+            "refine_complete": {
+              "cer": {
+                "planned": 6,
+                "successful": 6,
+                "complete": true,
+                "cer": {
+                  "errors": 0,
+                  "substitutions": 0,
+                  "deletions": 0,
+                  "insertions": 0,
+                  "reference_characters": 0,
+                  "value": null,
+                  "empty_reference_samples": 6,
+                  "empty_reference_nonempty_hypotheses": 0
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "selection_counts": {},
+              "decision_reasons": {},
+              "ignored_events": {},
+              "versus_segmented_zip": {
+                "improved_sources": 0,
+                "tied_sources": 0,
+                "worsened_sources": 0
+              },
+              "visible_text_changes": 0,
+              "normalized_suffix_rewrite_events": 0,
+              "normalized_removed_suffix_characters": 0,
+              "owned_end_to_final_apply_s": {
+                "n": 0,
+                "mean": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "vad_emit_to_final_apply_s": {
+                "n": 0,
+                "mean": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "zip_final_to_final_apply_s": {
+                "n": 0,
+                "mean": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "received_to_event_apply_s": {
+                "n": 0,
+                "mean": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "first_refine_ready_to_segment_final_s": {
+                "n": 0,
+                "mean": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "finals_before_original_file_end": 0
+            },
+            "agreement_only": {
+              "cer": {
+                "planned": 6,
+                "successful": 6,
+                "complete": true,
+                "cer": {
+                  "errors": 0,
+                  "substitutions": 0,
+                  "deletions": 0,
+                  "insertions": 0,
+                  "reference_characters": 0,
+                  "value": null,
+                  "empty_reference_samples": 6,
+                  "empty_reference_nonempty_hypotheses": 0
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "selection_counts": {},
+              "decision_reasons": {},
+              "ignored_events": {},
+              "versus_segmented_zip": {
+                "improved_sources": 0,
+                "tied_sources": 0,
+                "worsened_sources": 0
+              },
+              "visible_text_changes": 0,
+              "normalized_suffix_rewrite_events": 0,
+              "normalized_removed_suffix_characters": 0,
+              "owned_end_to_final_apply_s": {
+                "n": 0,
+                "mean": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "vad_emit_to_final_apply_s": {
+                "n": 0,
+                "mean": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "zip_final_to_final_apply_s": {
+                "n": 0,
+                "mean": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "received_to_event_apply_s": {
+                "n": 0,
+                "mean": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "first_refine_ready_to_segment_final_s": {
+                "n": 0,
+                "mean": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "finals_before_original_file_end": 0
+            }
+          },
+          "scope_ko": "실제1배속 WAV/VAD 구간별 Zip 상태 초기화·동일 PCM의 Refine·parent 수신·메모리 상태 적용. UI/마이크/음향 정답 경계·단어 정렬 미측정. 보류와 reset으로 이전 연속 Zip과 다른 실험 조건이다."
+        }
+      },
+      "thermal": {
+        "run": "results/preflight/m33-segment-merge-20261103-01/digital-silence/vad0",
+        "source_sha256": {
+          "execution.json": "6605458208b81969d1d2e57bb511465e5e9fb73c5154c5d7a3a58d4294204aae",
+          "thermal.jsonl": "33178f80439181db493fbca573f197d54a50651f40d9372fa05b003476f73061"
+        },
+        "status": "completed",
+        "control_valid": false,
+        "rejection": null,
+        "thermal_sample_count": 20,
+        "before": {
+          "at_utc": "2026-11-03T07:15:01.779556+00:00",
+          "elapsed_from_before_s": 0.0,
+          "temperature_c": 52.9,
+          "fan_rpm": 3097,
+          "cpu0_freq_khz": 1500000,
+          "current_limits": 0,
+          "history_limits": 14
+        },
+        "after": {
+          "at_utc": "2026-11-03T07:15:22.306974+00:00",
+          "elapsed_from_before_s": 20.52741740300553,
+          "temperature_c": 54.55,
+          "fan_rpm": 3062,
+          "cpu0_freq_khz": 2400000,
+          "current_limits": 0,
+          "history_limits": 14
+        },
+        "software_stop_mc": null,
+        "first_observed_software_temperature_limit": null,
+        "first_observed_current_limit": null,
+        "current_limit_observed": false,
+        "new_history_bits": 0,
+        "telemetry_missing_samples": 0,
+        "fan_missing_samples": 0,
+        "fan_positive_samples": 22,
+        "fan_rpm_max": 3097,
+        "temperature_mc_max_monitor": 57850,
+        "temperature_mc_max_with_before_after": 57850,
+        "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+      },
+      "source_count": 6,
+      "audio_s": 14.61,
+      "zip_chunks_verified": 0,
+      "same_pcm_segments_verified": 0,
+      "results_received_after_original_source_audio_end": 0,
+      "historical_continuous_zip_comparison": {
+        "scope_ko": "같은 입력/모델/개발 자료의 과거 연속 상태와 새 구간 reset/보류 조건 비교. 동시 통제/고정 클럭 비교가 아니며 차이를 reset 하나의 원인으로 단정하지 않는다.",
+        "source_commit": "79d447ab1ac264534416ed7adc05fad6b5d6e79a",
+        "zip_cer": {
+          "planned": 6,
+          "successful": 6,
+          "complete": true,
+          "cer": {
+            "errors": 0,
+            "substitutions": 0,
+            "deletions": 0,
+            "insertions": 0,
+            "reference_characters": 0,
+            "value": null,
+            "empty_reference_samples": 6,
+            "empty_reference_nonempty_hypotheses": 0
+          },
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+        },
+        "first_partial_from_source_start_s": {
+          "n": 0,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        },
+        "changed_source_hypotheses": 0,
+        "improved_sources": 0,
+        "tied_sources": 0,
+        "worsened_sources": 0
+      },
+      "policies_versus_historical_continuous_zip": {
+        "zip_only": {
+          "improved_sources": 0,
+          "tied_sources": 0,
+          "worsened_sources": 0
+        },
+        "refine_complete": {
+          "improved_sources": 0,
+          "tied_sources": 0,
+          "worsened_sources": 0
+        },
+        "agreement_only": {
+          "improved_sources": 0,
+          "tied_sources": 0,
+          "worsened_sources": 0
+        }
+      },
+      "historical_refine_comparison": {
+        "same_owned_geometry_and_payload": true,
+        "changed_hypothesis_jobs": [],
+        "old_refine_cer": {
+          "planned": 6,
+          "successful": 6,
+          "complete": true,
+          "cer": {
+            "errors": 0,
+            "substitutions": 0,
+            "deletions": 0,
+            "insertions": 0,
+            "reference_characters": 0,
+            "value": null,
+            "empty_reference_samples": 6,
+            "empty_reference_nonempty_hypotheses": 0
+          },
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+        }
+      },
+      "resource_sample_interval_s": {
+        "n": 146,
+        "mean": 0.10059356647260276,
+        "p50": 0.100359616,
+        "p95": 0.101167141,
+        "max": 0.120901277
+      },
+      "loading": {
+        "zip": {
+          "wall_s": 2.4355522240075516,
+          "cpu_s": 2.6710865480000003,
+          "resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 271.75,
+            "rss_sample_count": 26,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 83063.154783421,
+                "rss_mib": 26.96875
+              },
+              {
+                "monotonic_s": 83063.25550667,
+                "rss_mib": 89.25
+              },
+              {
+                "monotonic_s": 83063.355985898,
+                "rss_mib": 211.734375
+              },
+              {
+                "monotonic_s": 83063.456233106,
+                "rss_mib": 270.75
+              },
+              {
+                "monotonic_s": 83063.556421202,
+                "rss_mib": 270.75
+              },
+              {
+                "monotonic_s": 83063.656681577,
+                "rss_mib": 270.75
+              },
+              {
+                "monotonic_s": 83063.756887544,
+                "rss_mib": 270.75
+              },
+              {
+                "monotonic_s": 83063.857111141,
+                "rss_mib": 270.75
+              },
+              {
+                "monotonic_s": 83063.957317423,
+                "rss_mib": 270.75
+              },
+              {
+                "monotonic_s": 83064.057545538,
+                "rss_mib": 270.75
+              },
+              {
+                "monotonic_s": 83064.157737394,
+                "rss_mib": 270.75
+              },
+              {
+                "monotonic_s": 83064.257888879,
+                "rss_mib": 270.75
+              },
+              {
+                "monotonic_s": 83064.358055068,
+                "rss_mib": 271.75
+              },
+              {
+                "monotonic_s": 83064.458464314,
+                "rss_mib": 214.6875
+              },
+              {
+                "monotonic_s": 83064.558663355,
+                "rss_mib": 229.1875
+              },
+              {
+                "monotonic_s": 83064.658892952,
+                "rss_mib": 243.6875
+              },
+              {
+                "monotonic_s": 83064.75911853,
+                "rss_mib": 243.6875
+              },
+              {
+                "monotonic_s": 83064.859293663,
+                "rss_mib": 243.6875
+              },
+              {
+                "monotonic_s": 83064.959554445,
+                "rss_mib": 243.6875
+              },
+              {
+                "monotonic_s": 83065.059747153,
+                "rss_mib": 243.6875
+              },
+              {
+                "monotonic_s": 83065.159921323,
+                "rss_mib": 243.6875
+              },
+              {
+                "monotonic_s": 83065.260098698,
+                "rss_mib": 243.6875
+              },
+              {
+                "monotonic_s": 83065.360252664,
+                "rss_mib": 243.6875
+              },
+              {
+                "monotonic_s": 83065.460403371,
+                "rss_mib": 243.6875
+              },
+              {
+                "monotonic_s": 83065.560621746,
+                "rss_mib": 243.6875
+              },
+              {
+                "monotonic_s": 83065.590151847,
+                "rss_mib": 245.53125
+              }
+            ]
+          }
+        },
+        "refine": {
+          "loading_s": 1.8755344840028556,
+          "loading_cpu_s": 2.1331925839999997,
+          "loading_resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 360.984375,
+            "rss_sample_count": 20,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 83061.045737781,
+                "rss_mib": 25.71875
+              },
+              {
+                "monotonic_s": 83061.148277544,
+                "rss_mib": 63.453125
+              },
+              {
+                "monotonic_s": 83061.248712032,
+                "rss_mib": 266.453125
+              },
+              {
+                "monotonic_s": 83061.348929054,
+                "rss_mib": 320.328125
+              },
+              {
+                "monotonic_s": 83061.449298485,
+                "rss_mib": 328.828125
+              },
+              {
+                "monotonic_s": 83061.549543249,
+                "rss_mib": 325.84375
+              },
+              {
+                "monotonic_s": 83061.649807772,
+                "rss_mib": 325.84375
+              },
+              {
+                "monotonic_s": 83061.750032739,
+                "rss_mib": 325.84375
+              },
+              {
+                "monotonic_s": 83061.850212761,
+                "rss_mib": 326.34375
+              },
+              {
+                "monotonic_s": 83061.950477488,
+                "rss_mib": 326.34375
+              },
+              {
+                "monotonic_s": 83062.050694011,
+                "rss_mib": 326.34375
+              },
+              {
+                "monotonic_s": 83062.150871218,
+                "rss_mib": 326.34375
+              },
+              {
+                "monotonic_s": 83062.251017092,
+                "rss_mib": 326.34375
+              },
+              {
+                "monotonic_s": 83062.351178559,
+                "rss_mib": 326.34375
+              },
+              {
+                "monotonic_s": 83062.451334173,
+                "rss_mib": 326.34375
+              },
+              {
+                "monotonic_s": 83062.551524955,
+                "rss_mib": 327.84375
+              },
+              {
+                "monotonic_s": 83062.651762626,
+                "rss_mib": 327.84375
+              },
+              {
+                "monotonic_s": 83062.75214002,
+                "rss_mib": 339.34375
+              },
+              {
+                "monotonic_s": 83062.852443247,
+                "rss_mib": 352.34375
+              },
+              {
+                "monotonic_s": 83062.92082067,
+                "rss_mib": 360.984375
+              }
+            ]
+          }
+        },
+        "vad": {
+          "wall_s": 0.041546954002114944,
+          "cpu_s": 0.041212129000000264,
+          "resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 265.734375,
+            "rss_sample_count": 2,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 83065.727891051,
+                "rss_mib": 247.03125
+              },
+              {
+                "monotonic_s": 83065.769275707,
+                "rss_mib": 265.734375
+              }
+            ]
+          }
+        }
+      },
+      "warmup": {
+        "zip_s": 0.12401711501297541,
+        "refine_s": 0.11491993299569003,
+        "vad_s": 0.003750047995708883
+      },
+      "environment": {
+        "edge_asr": "0.1.0",
+        "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+        "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+        "machine": "aarch64",
+        "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+        "runtime": {
+          "sherpa_package_version": "2.0.1",
+          "sherpa_core_package_version": "2.0.1",
+          "python_onnxruntime_package_version": "1.31.1",
+          "sherpa_native_onnxruntime_version": "1.28.2",
+          "native_version_source": "sherpa_onnx.onnxruntime_version",
+          "status": "available",
+          "reason": null
+        },
+        "packages": [
+          {
+            "name": "cffi",
+            "version": "2.1.1"
+          },
+          {
+            "name": "flatbuffers",
+            "version": "25.12.19"
+          },
+          {
+            "name": "numpy",
+            "version": "2.4.6"
+          },
+          {
+            "name": "onnxruntime",
+            "version": "1.31.1"
+          },
+          {
+            "name": "packaging",
+            "version": "26.3"
+          },
+          {
+            "name": "protobuf",
+            "version": "7.36.2"
+          },
+          {
+            "name": "pycparser",
+            "version": "3.12"
+          },
+          {
+            "name": "sherpa-onnx-core",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sherpa_onnx",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sounddevice",
+            "version": "0.5.6"
+          },
+          {
+            "name": "soundfile",
+            "version": "0.14.0"
+          },
+          {
+            "name": "typing_extensions",
+            "version": "4.16.0"
+          }
+        ]
+      },
+      "refine_environment": {
+        "edge_asr": "0.1.0",
+        "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+        "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+        "machine": "aarch64",
+        "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+        "runtime": {
+          "sherpa_package_version": "2.0.1",
+          "sherpa_core_package_version": "2.0.1",
+          "python_onnxruntime_package_version": "1.31.1",
+          "sherpa_native_onnxruntime_version": "1.28.2",
+          "native_version_source": "sherpa_onnx.onnxruntime_version",
+          "status": "available",
+          "reason": null
+        },
+        "packages": [
+          {
+            "name": "cffi",
+            "version": "2.1.1"
+          },
+          {
+            "name": "flatbuffers",
+            "version": "25.12.19"
+          },
+          {
+            "name": "numpy",
+            "version": "2.4.6"
+          },
+          {
+            "name": "onnxruntime",
+            "version": "1.31.1"
+          },
+          {
+            "name": "packaging",
+            "version": "26.3"
+          },
+          {
+            "name": "protobuf",
+            "version": "7.36.2"
+          },
+          {
+            "name": "pycparser",
+            "version": "3.12"
+          },
+          {
+            "name": "sherpa-onnx-core",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sherpa_onnx",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sounddevice",
+            "version": "0.5.6"
+          },
+          {
+            "name": "soundfile",
+            "version": "0.14.0"
+          },
+          {
+            "name": "typing_extensions",
+            "version": "4.16.0"
+          }
+        ]
+      },
+      "vad_environment": {
+        "backend": "python_onnxruntime_k2_v4_experimental",
+        "python_onnxruntime_version": "1.31.1",
+        "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+        "num_threads": 1,
+        "providers": [
+          "CPUExecutionProvider"
+        ],
+        "recurrent_state_bytes": 1024,
+        "reset_count": 11,
+        "windows_since_reset": 313,
+        "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+      },
+      "vad_settings": {
+        "window_frames": 512,
+        "num_threads": 1,
+        "threshold": 0.5,
+        "min_speech_frames": 1600,
+        "min_silence_frames": 4800,
+        "long_threshold": 0.9,
+        "long_silence_frames": 1600,
+        "soft_limit_s": 5,
+        "retained_audio_frames": 0,
+        "queue_capacity": 1
+      },
+      "model_limits_verified": true,
+      "rescore_matches": true
+    }
+  },
+  "tests": {
+    "host": {
+      "count": 255,
+      "wall_s": 33.154,
+      "passed": true
+    },
+    "rp5": {
+      "count": 255,
+      "wall_s": 56.953,
+      "passed": true
+    }
+  },
+  "legacy_checks": {
+    "native_traces_reaggregated": 9,
+    "old_policy_results_equal": 27,
+    "per_policy_artifacts_equal": 108,
+    "native_asr_inference": false,
+    "checks": [
+      {
+        "native_trace": "speech/kss-dev50/fixed5",
+        "policy": "zip_only",
+        "equal": true
+      },
+      {
+        "native_trace": "speech/kss-dev50/fixed5",
+        "policy": "refine_complete",
+        "equal": true
+      },
+      {
+        "native_trace": "speech/kss-dev50/fixed5",
+        "policy": "agreement_only",
+        "equal": true
+      },
+      {
+        "native_trace": "speech/kss-dev50/vad0",
+        "policy": "zip_only",
+        "equal": true
+      },
+      {
+        "native_trace": "speech/kss-dev50/vad0",
+        "policy": "refine_complete",
+        "equal": true
+      },
+      {
+        "native_trace": "speech/kss-dev50/vad0",
+        "policy": "agreement_only",
+        "equal": true
+      },
+      {
+        "native_trace": "speech/kss-dev50/vad-continuation200",
+        "policy": "zip_only",
+        "equal": true
+      },
+      {
+        "native_trace": "speech/kss-dev50/vad-continuation200",
+        "policy": "refine_complete",
+        "equal": true
+      },
+      {
+        "native_trace": "speech/kss-dev50/vad-continuation200",
+        "policy": "agreement_only",
+        "equal": true
+      },
+      {
+        "native_trace": "speech/synthetic-120/fixed5",
+        "policy": "zip_only",
+        "equal": true
+      },
+      {
+        "native_trace": "speech/synthetic-120/fixed5",
+        "policy": "refine_complete",
+        "equal": true
+      },
+      {
+        "native_trace": "speech/synthetic-120/fixed5",
+        "policy": "agreement_only",
+        "equal": true
+      },
+      {
+        "native_trace": "speech/synthetic-120/vad0",
+        "policy": "zip_only",
+        "equal": true
+      },
+      {
+        "native_trace": "speech/synthetic-120/vad0",
+        "policy": "refine_complete",
+        "equal": true
+      },
+      {
+        "native_trace": "speech/synthetic-120/vad0",
+        "policy": "agreement_only",
+        "equal": true
+      },
+      {
+        "native_trace": "speech/synthetic-120/vad-continuation200",
+        "policy": "zip_only",
+        "equal": true
+      },
+      {
+        "native_trace": "speech/synthetic-120/vad-continuation200",
+        "policy": "refine_complete",
+        "equal": true
+      },
+      {
+        "native_trace": "speech/synthetic-120/vad-continuation200",
+        "policy": "agreement_only",
+        "equal": true
+      },
+      {
+        "native_trace": "silence/digital-silence/fixed5",
+        "policy": "zip_only",
+        "equal": true
+      },
+      {
+        "native_trace": "silence/digital-silence/fixed5",
+        "policy": "refine_complete",
+        "equal": true
+      },
+      {
+        "native_trace": "silence/digital-silence/fixed5",
+        "policy": "agreement_only",
+        "equal": true
+      },
+      {
+        "native_trace": "silence/digital-silence/vad0",
+        "policy": "zip_only",
+        "equal": true
+      },
+      {
+        "native_trace": "silence/digital-silence/vad0",
+        "policy": "refine_complete",
+        "equal": true
+      },
+      {
+        "native_trace": "silence/digital-silence/vad0",
+        "policy": "agreement_only",
+        "equal": true
+      },
+      {
+        "native_trace": "silence/digital-silence/vad-continuation200",
+        "policy": "zip_only",
+        "equal": true
+      },
+      {
+        "native_trace": "silence/digital-silence/vad-continuation200",
+        "policy": "refine_complete",
+        "equal": true
+      },
+      {
+        "native_trace": "silence/digital-silence/vad-continuation200",
+        "policy": "agreement_only",
+        "equal": true
+      }
+    ]
+  },
+  "preservation": {
+    "protected_files": 5210,
+    "changed": [],
+    "missing": [],
+    "environment_unchanged": true,
+    "system_settings_unchanged": true,
+    "active_guards": [],
+    "active_workers": [],
+    "active_refine_children": [],
+    "active_input_children": [],
+    "active_group_members": [],
+    "coordinator_active": false,
+    "same_boot": true,
+    "source_commit": "05c3e7bde783471ea0772dce888fe06c8153a616",
+    "working_tree_clean": true,
+    "active_experiment_commands": []
+  },
+  "raw_files": 69,
+  "raw_bytes": 11833087,
+  "transfer_sha256": {
+    "base": "results/preflight/m33-segment-merge-20261103-01",
+    "files": {
+      "digital-silence/vad0/admission.jsonl": "0912175344b94643b98ea4c4ee11c50ce5390d266fe4386929354ec2bd016f85",
+      "digital-silence/vad0/capture/backlog.jsonl": "17ae8cf55b9d3424576eb0e3bcdf0dac741e9fad2c043910b3adddc9c03ac302",
+      "digital-silence/vad0/capture/decoder.jsonl": "1d4829c00cf1b9bd7d7e37937cec57e6901f52dcf24741df23f6a2ff3d8fd369",
+      "digital-silence/vad0/capture/producer.jsonl": "f4ff2e3679e42439171864db1e005d7e4265110a82bdeefbcb567a07fa97e54e",
+      "digital-silence/vad0/console.log": "6e4d00b6f19892839b7289f7f317bd878bb81852da8f17fa51b452badf58af3f",
+      "digital-silence/vad0/execution.json": "6605458208b81969d1d2e57bb511465e5e9fb73c5154c5d7a3a58d4294204aae",
+      "digital-silence/vad0/merge-decisions.json": "85901217bf50149ec7cc095f080d3efb9665d0b6f390c96cd9e133cb70b9f93b",
+      "digital-silence/vad0/merge-events.jsonl": "fd81867c10181c19dffa3faf30ac1a05264cf3d6b7a711e6f1ef0a240210c76b",
+      "digital-silence/vad0/process-resources.jsonl": "912dfff1cefccd3e4362a04d4d8d8b352909d2389a26d95d44f7c639bf06d934",
+      "digital-silence/vad0/refine-jobs.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "digital-silence/vad0/refine-receipts.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "digital-silence/vad0/refine-results.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "digital-silence/vad0/summary.json": "8d422622510df9757e07fa23c9ce4059c78fc0d406770c02084b1b933a1ac9af",
+      "digital-silence/vad0/thermal.jsonl": "33178f80439181db493fbca573f197d54a50651f40d9372fa05b003476f73061",
+      "digital-silence/vad0/thread-resources.jsonl": "78abc817af82d52b2801ae918b07a3647d35f489de5635a03f6ed5f75a08e1ed",
+      "digital-silence/vad0/threads.jsonl": "1dbb660bd6f4bf1fcf18300f97ff27e8eff04a7a4bf4a4d87e38bf7965a69966",
+      "digital-silence/vad0/track.json": "c96be17e61d2adea333bb1970ec63f3bb29eff162ea98891913001abca579f95",
+      "digital-silence/vad0/vad-sources.jsonl": "8d321b6b7a0dde3ccd9c4f3e0cb4824951e9503037648b667159d8a00382b505",
+      "digital-silence/vad0/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "digital-silence/vad0/worker.json": "4ec0d563adb0377a9b867b4e2d97147bcecc638e000d17cae03dd69aa51badcc",
+      "digital-silence/vad0/zip-events.jsonl": "a71b390e7f13c758ea7162e0eb753af33ad3a6f113d3efd9414903085ad231e2",
+      "digital-silence/vad0/zip-segments.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "digital-silence/vad0/zip-sources.jsonl": "d17a393376a0ef532a011e8f1d76a7d65f2baa698d49868c9e54216af9ccce48",
+      "kss-dev50/vad0/admission.jsonl": "75a8a54ae2db65854be462126f3987efd28e98a6cce81e1fec664c803415cd98",
+      "kss-dev50/vad0/capture/backlog.jsonl": "0942d112145c9be6b3caf862584cbc906d2008c5c45c05752d61398d283dfeb0",
+      "kss-dev50/vad0/capture/decoder.jsonl": "f95ccb1b8cf72d487cb91213041a2a83324a9caab10d41b1bd5babc9f144031d",
+      "kss-dev50/vad0/capture/producer.jsonl": "5a1ed9ef6abbd70d9a34e56780a8c968710e55b8ebced460149bf25f8dea0a4b",
+      "kss-dev50/vad0/console.log": "c05d65f0902e1d6cdd793f15ff378eaa11ca437d76dcbd95f69fe41ddbd289cb",
+      "kss-dev50/vad0/execution.json": "693d4da7aef5a54df661420ea6b1ab1c791c259be5b0232aaaa140daabeedf6a",
+      "kss-dev50/vad0/merge-decisions.json": "e4c52fba0e4a125fdf98d48f3bb57d4385922ebae992b0f7ebb929c99a2d537f",
+      "kss-dev50/vad0/merge-events.jsonl": "8121c6c866c8423ecfef963aa4fa3fe309401ad8b7eec7a20761f43ee932a4fa",
+      "kss-dev50/vad0/process-resources.jsonl": "98c5a6edc5a3e5eeee926d2a0731f167e0a373dae020763ade98bd16dabacda2",
+      "kss-dev50/vad0/refine-jobs.jsonl": "90ce35cbf12dbf264ce4abcd0600c64cb5775e4e8521815de4fc994d99214ba5",
+      "kss-dev50/vad0/refine-receipts.jsonl": "bf882f7f687806309565651b46a839dd795be5adcdf1f8fcf2ab86b8d7b38023",
+      "kss-dev50/vad0/refine-results.jsonl": "e7b4b4bda78dd62fc800b5b1a615f9d04cdba9c8d38b8982bf086e8706353e32",
+      "kss-dev50/vad0/summary.json": "49e83a5e063526a3afea3e5510bdec4ee879f59477b83a40762b61c66d476d39",
+      "kss-dev50/vad0/thermal.jsonl": "730c62fe5b74c63bc5df4de623ecb650273afc6361882a64a9f6ca753fac1857",
+      "kss-dev50/vad0/thread-resources.jsonl": "ef9dc5f92f11395f8e4aee5bed67a137509a784bbce8bcd56cb3a4e16e45d1ec",
+      "kss-dev50/vad0/threads.jsonl": "5a33c59b7b255a35f1ffd33fd5ffcb5128c0965d53adbc1a8ce6a09a84ba22bb",
+      "kss-dev50/vad0/track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+      "kss-dev50/vad0/vad-sources.jsonl": "454ab790cf3655a5421b02330f9fa6802120d0f2352e6eebf8a5da89fbd5268f",
+      "kss-dev50/vad0/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kss-dev50/vad0/worker.json": "21c67e81ba59a8cb13ce0ddae9c9dc73578950318a5389f5e241e430751cdf69",
+      "kss-dev50/vad0/zip-events.jsonl": "674d2537bbdf2f8cf83ba9f3b9e65a111bf33c4e4a96de191d8c6ef7b93d3306",
+      "kss-dev50/vad0/zip-segments.jsonl": "f23bbe809b577f5e4e3d75741b107933db70299fd93e0fb7f71aebbb8ebf5920",
+      "kss-dev50/vad0/zip-sources.jsonl": "a007838aaf856e9a547f2cc97a391b9d5cd53ac734e42d6885fe5093542c160d",
+      "synthetic-120/vad0/admission.jsonl": "c6cb7e74d45660e0384186b26b310f470b563a61286c45bfef14fd926611d704",
+      "synthetic-120/vad0/capture/backlog.jsonl": "338753a9e85e9e7dbbb8ff0688dc0331b369f32e6a1e116a0b8d67c940335420",
+      "synthetic-120/vad0/capture/decoder.jsonl": "4342572f4ca92f2bb6c31b2bd77a3c03b526fcd670c08ad53eb95e056daebe81",
+      "synthetic-120/vad0/capture/producer.jsonl": "1e085d3468390af4df286bebefa4c363bb956f1c34dfc03575a3313d11366d13",
+      "synthetic-120/vad0/console.log": "576c15a604338b0ecd336757f4d05c266de361d406db01f5176f0f11694d4ddd",
+      "synthetic-120/vad0/execution.json": "2944fd099a56622945aeaa5c1c5ff9228ace2a79029200588dfc6c7993c0feaf",
+      "synthetic-120/vad0/merge-decisions.json": "6163deb9b337eb6e93c65715b7b8345f939d027f522c4d6fbbc85980257b41b0",
+      "synthetic-120/vad0/merge-events.jsonl": "3fda2566b131cc7ff722dc177e458b33520819cf9836435d5cce656677c5b78d",
+      "synthetic-120/vad0/process-resources.jsonl": "b8e23944e692f46762d42e8e63866c466d6cf31577c15c526318cf059dc9ddb5",
+      "synthetic-120/vad0/refine-jobs.jsonl": "df95ae17f1a8e5315ed98132efd9edfd9ecb64b7335123e7b84a08d8fd8bcdf0",
+      "synthetic-120/vad0/refine-receipts.jsonl": "4f25f6cf6935304a2535cc42da8a12164319e3460c4fe8dcc990433ef9042a84",
+      "synthetic-120/vad0/refine-results.jsonl": "f6069e6b173457c08b6b374c7f55a1d795d1da3c659f47a16279c1bbc55963c5",
+      "synthetic-120/vad0/summary.json": "42f445ef11a585dc016a961af616025c8caa3e3b0aea24799bbd47d66d805b79",
+      "synthetic-120/vad0/thermal.jsonl": "ae1f98e13a985d0ca44d66671ad465ffb8657304feea9aaa3f58e3aab61bd837",
+      "synthetic-120/vad0/thread-resources.jsonl": "bfc507591948d37d65b67c30f360d9bf0dc7adcaa4b992e60d36962dedbc53d2",
+      "synthetic-120/vad0/threads.jsonl": "ed48ec690309b165e6e6954a75777420a840db11be9aaefbf287d10c5cc7294a",
+      "synthetic-120/vad0/track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+      "synthetic-120/vad0/vad-sources.jsonl": "32d99233d067f67481be30a67aa7e7ba5016934bc06beffcd606cb18bfa02711",
+      "synthetic-120/vad0/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "synthetic-120/vad0/worker.json": "f9c3305739d73bf9ac20c5a84b64733889b2d9b8a12373a8f3e0e2ac59a0db63",
+      "synthetic-120/vad0/zip-events.jsonl": "6cbfaad76d978f6eca4424b08eaaa5bc89f7fb3c5a21f0f8e358d534ff8aca86",
+      "synthetic-120/vad0/zip-segments.jsonl": "ab541e0b5e6a61214ff5fedadd872e8c1a5d9015e0a8c8d001580dfe355270f8",
+      "synthetic-120/vad0/zip-sources.jsonl": "20ec0b1738564f605fede8293e5833cbbcacb7c354f6fc424e955232f8753b87"
+    }
+  },
+  "evidence_sha256": {
+    "results/maintenance/m33-segment-merge-20261103-01/plan.json": "85eefbdfb8091de63d18d9f203a28fcb64cd115b5b2f53da4108d40d5a84adcf",
+    "results/maintenance/m33-segment-merge-20261103-01/suite.json": "3543bc7fe7b421b454ad16ab1cbca9646dc607640a55a4cfd49c5f18abeb64b0",
+    "results/maintenance/m33-segment-merge-20261103-01/transfer-manifest.json": "ad3c5ae4274e0294be5b2c532b24174ec8f4ef9c5ecb6d48ab53021c9705bf13",
+    "results/preflight/m33-segment-merge-20261103-01/kss-dev50/vad0/worker.json": "21c67e81ba59a8cb13ce0ddae9c9dc73578950318a5389f5e241e430751cdf69",
+    "results/preflight/m33-segment-merge-20261103-01/kss-dev50/vad0/execution.json": "693d4da7aef5a54df661420ea6b1ab1c791c259be5b0232aaaa140daabeedf6a",
+    "results/preflight/m33-segment-merge-20261103-01/kss-dev50/vad0/summary.json": "49e83a5e063526a3afea3e5510bdec4ee879f59477b83a40762b61c66d476d39",
+    "results/preflight/m33-segment-merge-20261103-01/kss-dev50/vad0/track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+    "results/preflight/m33-segment-merge-20261103-01/kss-dev50/vad0/refine-jobs.jsonl": "90ce35cbf12dbf264ce4abcd0600c64cb5775e4e8521815de4fc994d99214ba5",
+    "results/preflight/m33-segment-merge-20261103-01/kss-dev50/vad0/refine-results.jsonl": "e7b4b4bda78dd62fc800b5b1a615f9d04cdba9c8d38b8982bf086e8706353e32",
+    "results/preflight/m33-segment-merge-20261103-01/kss-dev50/vad0/zip-segments.jsonl": "f23bbe809b577f5e4e3d75741b107933db70299fd93e0fb7f71aebbb8ebf5920",
+    "results/preflight/m33-segment-merge-20261103-01/kss-dev50/vad0/refine-receipts.jsonl": "bf882f7f687806309565651b46a839dd795be5adcdf1f8fcf2ab86b8d7b38023",
+    "results/preflight/m33-segment-merge-20261103-01/kss-dev50/vad0/zip-events.jsonl": "674d2537bbdf2f8cf83ba9f3b9e65a111bf33c4e4a96de191d8c6ef7b93d3306",
+    "results/preflight/m33-segment-merge-20261103-01/kss-dev50/vad0/vad-sources.jsonl": "454ab790cf3655a5421b02330f9fa6802120d0f2352e6eebf8a5da89fbd5268f",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/summary.json": "fb7f3734a56282a7b0130e2dc88a1ddb7b4d2c6e13c57660725f46f8877502e3",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/refine-jobs.jsonl": "c82e99265e95a893fcc84bfcc1b091afb32d92fa38766bf87f83b9450086c00a",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/refine-results.jsonl": "2aef530221e556b2781aa03868f198ddb55d512cf0aa756070f8f514208380ac",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/zip-sources.jsonl": "2bd2ccbf996b11c55e651b0a3fa96915d51e99a8998b8d4f2681502697cf121c",
+    "results/preflight/m33-segment-merge-20261103-01/kss-dev50/vad0/zip-sources.jsonl": "a007838aaf856e9a547f2cc97a391b9d5cd53ac734e42d6885fe5093542c160d",
+    "results/preflight/m33-segment-merge-20261103-01/kss-dev50/vad0/merge-decisions.json": "e4c52fba0e4a125fdf98d48f3bb57d4385922ebae992b0f7ebb929c99a2d537f",
+    "results/preflight/m33-segment-merge-20261103-01/kss-dev50/vad0/merge-events.jsonl": "8121c6c866c8423ecfef963aa4fa3fe309401ad8b7eec7a20761f43ee932a4fa",
+    "results/preflight/m33-segment-merge-20261103-01/kss-dev50/vad0/process-resources.jsonl": "98c5a6edc5a3e5eeee926d2a0731f167e0a373dae020763ade98bd16dabacda2",
+    "results/preflight/m33-segment-merge-20261103-01/synthetic-120/vad0/worker.json": "f9c3305739d73bf9ac20c5a84b64733889b2d9b8a12373a8f3e0e2ac59a0db63",
+    "results/preflight/m33-segment-merge-20261103-01/synthetic-120/vad0/execution.json": "2944fd099a56622945aeaa5c1c5ff9228ace2a79029200588dfc6c7993c0feaf",
+    "results/preflight/m33-segment-merge-20261103-01/synthetic-120/vad0/summary.json": "42f445ef11a585dc016a961af616025c8caa3e3b0aea24799bbd47d66d805b79",
+    "results/preflight/m33-segment-merge-20261103-01/synthetic-120/vad0/track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+    "results/preflight/m33-segment-merge-20261103-01/synthetic-120/vad0/refine-jobs.jsonl": "df95ae17f1a8e5315ed98132efd9edfd9ecb64b7335123e7b84a08d8fd8bcdf0",
+    "results/preflight/m33-segment-merge-20261103-01/synthetic-120/vad0/refine-results.jsonl": "f6069e6b173457c08b6b374c7f55a1d795d1da3c659f47a16279c1bbc55963c5",
+    "results/preflight/m33-segment-merge-20261103-01/synthetic-120/vad0/zip-segments.jsonl": "ab541e0b5e6a61214ff5fedadd872e8c1a5d9015e0a8c8d001580dfe355270f8",
+    "results/preflight/m33-segment-merge-20261103-01/synthetic-120/vad0/refine-receipts.jsonl": "4f25f6cf6935304a2535cc42da8a12164319e3460c4fe8dcc990433ef9042a84",
+    "results/preflight/m33-segment-merge-20261103-01/synthetic-120/vad0/zip-events.jsonl": "6cbfaad76d978f6eca4424b08eaaa5bc89f7fb3c5a21f0f8e358d534ff8aca86",
+    "results/preflight/m33-segment-merge-20261103-01/synthetic-120/vad0/vad-sources.jsonl": "32d99233d067f67481be30a67aa7e7ba5016934bc06beffcd606cb18bfa02711",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/summary.json": "e4afcdb84e411e72511b825f122383cbfa1f5e7b386f28687fde9bfce8ca1385",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/refine-jobs.jsonl": "a336a946ca6a01bfe982aa2fc25b674e5548c155eb9a13e083abeb26d04d9f77",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/refine-results.jsonl": "f2c53009f9905aeda609ab789efc3fb4a07e3cb0beb07e0a2d9d89f6ced7fff7",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/zip-sources.jsonl": "35d7d72fdce024316edffaa2d567db597f80a6d4fc144ba3576a35ca72202721",
+    "results/preflight/m33-segment-merge-20261103-01/synthetic-120/vad0/zip-sources.jsonl": "20ec0b1738564f605fede8293e5833cbbcacb7c354f6fc424e955232f8753b87",
+    "results/preflight/m33-segment-merge-20261103-01/synthetic-120/vad0/merge-decisions.json": "6163deb9b337eb6e93c65715b7b8345f939d027f522c4d6fbbc85980257b41b0",
+    "results/preflight/m33-segment-merge-20261103-01/synthetic-120/vad0/merge-events.jsonl": "3fda2566b131cc7ff722dc177e458b33520819cf9836435d5cce656677c5b78d",
+    "results/preflight/m33-segment-merge-20261103-01/synthetic-120/vad0/process-resources.jsonl": "b8e23944e692f46762d42e8e63866c466d6cf31577c15c526318cf059dc9ddb5",
+    "results/preflight/m33-segment-merge-20261103-01/digital-silence/vad0/worker.json": "4ec0d563adb0377a9b867b4e2d97147bcecc638e000d17cae03dd69aa51badcc",
+    "results/preflight/m33-segment-merge-20261103-01/digital-silence/vad0/execution.json": "6605458208b81969d1d2e57bb511465e5e9fb73c5154c5d7a3a58d4294204aae",
+    "results/preflight/m33-segment-merge-20261103-01/digital-silence/vad0/summary.json": "8d422622510df9757e07fa23c9ce4059c78fc0d406770c02084b1b933a1ac9af",
+    "results/preflight/m33-segment-merge-20261103-01/digital-silence/vad0/track.json": "c96be17e61d2adea333bb1970ec63f3bb29eff162ea98891913001abca579f95",
+    "results/preflight/m33-segment-merge-20261103-01/digital-silence/vad0/refine-jobs.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m33-segment-merge-20261103-01/digital-silence/vad0/refine-results.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m33-segment-merge-20261103-01/digital-silence/vad0/zip-segments.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m33-segment-merge-20261103-01/digital-silence/vad0/refine-receipts.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m33-segment-merge-20261103-01/digital-silence/vad0/zip-events.jsonl": "a71b390e7f13c758ea7162e0eb753af33ad3a6f113d3efd9414903085ad231e2",
+    "results/preflight/m33-segment-merge-20261103-01/digital-silence/vad0/vad-sources.jsonl": "8d321b6b7a0dde3ccd9c4f3e0cb4824951e9503037648b667159d8a00382b505",
+    "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/summary.json": "0c47fb421e7885e22a144a385347f0fb56b936af836cdf2f978d3594dfb30fdb",
+    "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/refine-jobs.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/refine-results.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/zip-sources.jsonl": "17163d6e4606866e392086e66ff141bf216520e08f41064236272d57b0bc598e",
+    "results/preflight/m33-segment-merge-20261103-01/digital-silence/vad0/zip-sources.jsonl": "d17a393376a0ef532a011e8f1d76a7d65f2baa698d49868c9e54216af9ccce48",
+    "results/preflight/m33-segment-merge-20261103-01/digital-silence/vad0/merge-decisions.json": "85901217bf50149ec7cc095f080d3efb9665d0b6f390c96cd9e133cb70b9f93b",
+    "results/preflight/m33-segment-merge-20261103-01/digital-silence/vad0/merge-events.jsonl": "fd81867c10181c19dffa3faf30ac1a05264cf3d6b7a711e6f1ef0a240210c76b",
+    "results/preflight/m33-segment-merge-20261103-01/digital-silence/vad0/process-resources.jsonl": "912dfff1cefccd3e4362a04d4d8d8b352909d2389a26d95d44f7c639bf06d934",
+    "results/maintenance/m33-segment-merge-20261103-01/preservation-after.json": "b16d4af587aafa53965785ca2004c4a15007d74885be55de09ad5401172cc664",
+    "results/maintenance/m33-segment-merge-20261103-01/host-tests.log": "62954335b59497d1da91cc46bca116278e780b8e8eeaa9a2f32db2522a5110a9",
+    "results/maintenance/m33-segment-merge-20261103-01/rp5-tests.log": "999e023c65f3cacb4afc9b571fd3866bee24e7e6803bef4c631521dc583d6136",
+    "results/maintenance/m33-segment-merge-20261103-01/legacy-checks.json": "beceb71f7adef644116974606245ebd680e299faed1ba5ef35d83bff380dbdf2",
+    "results/maintenance/m33-segment-merge-20261103-01/suite.py": "0a975ad450c9089fd640097299b178f33087367b269c7f5722c735b4370fbd00",
+    "results/maintenance/m33-segment-merge-20261103-01/audit.py": "ac6c3aa4607b82eac8d6e5800460e0dbb53634b5f4cbfded30987deb7e1ff650",
+    "results/maintenance/m33-segment-merge-20261103-01/analyze.py": "a89504213d58404d28b118ca5dc491762f73dc5149c8928ff6d49b2e5063b315",
+    "results/maintenance/m33-segment-merge-20261103-01/finalize.py": "46c52932cb9f998f0166889afbc95e20308ec259107d74cd9f3a5198c2513c96",
+    "results/maintenance/m33-segment-merge-20261103-01/cooling-before.json": "da29ddfe0944ab684f1051dc16fbdfb0c4265ba2db1988b5d725dd41b6682619",
+    "results/maintenance/m33-segment-merge-20261103-01/cooling-after.json": "277375dd650c8d953185489ebc44f76eab86c130e8ec4ff5fbe6499764ccfb17",
+    "results/maintenance/m33-segment-merge-20261103-01/launcher.json": "0e0c9049820df9ad28143ff48eb5e4b94ccddb942dba55aad1632483190a3171",
+    "results/maintenance/m33-segment-merge-20261103-01/preservation-before.json": "256661728650039e627918b4226de56a88915a1435db2137fddac5fbf5c62986",
+    "results/maintenance/m33-segment-merge-20261103-01/controller.log": "f45c0a62d6a03f41fd4a96f39be25ccdf80d05e60a9dc8f4996a6d0db7487352"
+  },
+  "scope_ko": "실제 RP5 1배속 WAV·같은 VAD PCM·구간별 Zip 상태 reset/300ms 보류·실제 parent 수신/메모리 상태 적용의3후보. UI/마이크/강제 정렬/독립 자연 발화/장시간 운영은 미검증. 과거 연속 Zip 결과와 혼합하지 않으며 자동 교체 기본값은 유지한다."
+}
