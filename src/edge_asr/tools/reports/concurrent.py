@@ -15,11 +15,13 @@ RATE, WINDOW = 16000, 80000
 def corpus(sources, hypotheses, complete):
     valid = [s for s in sources if isinstance(hypotheses.get(s["id"]), str)]
     scores = [character_errors(s["reference"], hypotheses[s["id"]], "ko_cer_v1") for s in valid]
-    chars = sum(s["reference_characters"] for s in scores)
+    nonempty = [s for s in scores if s["reference_characters"] > 0]
+    chars = sum(s["reference_characters"] for s in nonempty)
     edits = {
-        k: sum(s[k] for s in scores) for k in ("errors", "substitutions", "deletions", "insertions")
+        k: sum(s[k] for s in nonempty)
+        for k in ("errors", "substitutions", "deletions", "insertions")
     }
-    return {
+    result = {
         "planned": len(sources),
         "successful": len(valid),
         "complete": complete and len(valid) == len(sources),
@@ -32,6 +34,16 @@ def corpus(sources, hypotheses, complete):
         },
         "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
     }
+    # 현재 KSS/합성 입력에는 빈 정답이 없다. 재사용 시 공통 scorer의 무음 정책을 유지한다.
+    empty = [s for s in scores if s["reference_characters"] == 0]
+    if empty:
+        result["cer"].update(
+            empty_reference_samples=len(empty),
+            empty_reference_nonempty_hypotheses=sum(
+                bool(s["normalized_hypothesis"]) for s in empty
+            ),
+        )
+    return result
 
 
 def resource_summary(rows, t0, end, model_roles):

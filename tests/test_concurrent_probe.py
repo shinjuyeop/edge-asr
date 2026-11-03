@@ -16,7 +16,7 @@ from edge_asr.artifacts import digest
 from edge_asr.concurrent_probe import ConcurrentReplay, RefineChannel, float_digest
 from edge_asr.dataset import Audio, write_wav
 from edge_asr.streaming import read_events, run_paced
-from edge_asr.tools.reports.concurrent import resource_summary, summarize
+from edge_asr.tools.reports.concurrent import corpus, resource_summary, summarize
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -60,6 +60,14 @@ class StreamingFixture:
 
 
 class ConcurrentCoreTests(unittest.TestCase):
+    def test_empty_reference_outputs_are_reported_separately_from_corpus_cer(self):
+        sources = [{"id": "speech", "reference": "가"}, {"id": "silence", "reference": ""}]
+        result = corpus(sources, {"speech": "가", "silence": "응"}, True)
+        self.assertEqual(result["cer"]["value"], 0)
+        self.assertEqual(result["cer"]["errors"], 0)
+        self.assertEqual(result["cer"]["empty_reference_nonempty_hypotheses"], 1)
+        self.assertIsNone(corpus(sources[1:], {"silence": "응"}, True)["cer"]["value"])
+
     def test_window_boundaries_cross_chunks_and_sources_without_loss_or_overlap(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
