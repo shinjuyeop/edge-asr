@@ -69,7 +69,7 @@ class SegmentedAccuracyTests(unittest.TestCase):
     def test_same_pcm_boundaries_no_context_padding_or_mid_utterance_reset(self):
         audio = self.audio()
         hashes = []
-        for condition in probe.CONDITIONS:
+        for condition in ("full_batch", "fixed_windows_5s", "bounded_vad_5s"):
             with self.subTest(condition=condition):
                 model, vad = adapter(), self.vad(1)
                 result = probe.measure(audio, condition, model, vad)
@@ -90,6 +90,66 @@ class SegmentedAccuracyTests(unittest.TestCase):
                     self.assertEqual(result["pipeline"]["context_frames"], 0)
                     self.assertGreater(result["vad_inference_s"], 0)
         self.assertEqual(len(set(hashes)), 1)
+
+    def test_context_uses_real_past_pcm_without_changing_owned_spans_or_resetting(self):
+        audio = self.audio(13 * 16000 + 137)
+        zero = probe.measure(audio, "bounded_vad_5s", adapter(), self.vad(1))
+        model = adapter()
+        context = probe.measure(audio, "bounded_vad_5s_context200ms", model, self.vad(1))
+        self.assertEqual(context["status"], "success")
+        self.assertEqual(context["vad_resets_during_utterance"], 1)
+        self.assertGreater(context["pipeline"]["hard_limit_emissions"], 0)
+        self.assertEqual(
+            [(s["owned_start_frame"], s["owned_end_frame"]) for s in zero["segments"]],
+            [(s["owned_start_frame"], s["owned_end_frame"]) for s in context["segments"]],
+        )
+        self.assertEqual(context["selected_frames"], len(audio.samples))
+        self.assertEqual(context["payload_frames_total"], len(audio.samples) + 6400)
+        for segment, call in zip(context["segments"], model.transcribe.call_args_list):
+            a, b = segment["context_start_frame"], segment["context_end_frame"]
+            self.assertEqual(call.args[0].samples, audio.samples[a:b])
+            self.assertLessEqual(len(call.args[0].samples), 83200)
+        self.assertEqual(context["hypothesis"], "가 가 가")
+        verify(prediction(audio, context))
+        bad = copy.deepcopy(prediction(audio, context))
+        bad["segmented"]["segments"][1]["context_start_frame"] += 1
+        with self.assertRaises(ValueError):
+            verify(bad)
+
+    def test_context_empty_detection_and_model_free_rescore_preserve_full_reference(self):
+        audio = self.audio(10000)
+        result = probe.measure(audio, "bounded_vad_5s_context200ms", adapter(), self.vad(0))
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            raw = root / "predictions.jsonl"
+            write_jsonl(raw, [prediction(audio, result)])
+            summary = summarize(raw, root)
+            self.assertEqual(summary["overall"]["cer"]["deletions"], 2)
+            self.assertEqual(summary["segmented_accuracy"]["payload_frames_total"], 0)
+            self.assertEqual(summary["segmented_accuracy"]["context_frames"], 3200)
+
+    def test_context_restores_only_available_past_pcm_at_delayed_speech_start(self):
+        class Delayed(Probability):
+            def reset(self):
+                super().reset()
+                self.windows = 0
+
+            def __call__(self, block):
+                self.windows += 1
+                return float(self.windows > 30)
+
+        vad = BoundedProbabilityVad(probe.MeasuredProbability(Delayed(0)))
+        audio, model = self.audio(), adapter()
+        result = probe.measure(audio, "bounded_vad_5s_context200ms", model, vad)
+        self.assertEqual(result["status"], "success")
+        first = result["segments"][0]
+        self.assertGreater(first["owned_start_frame"], 3200)
+        self.assertEqual(first["context_start_frame"], first["owned_start_frame"] - 3200)
+        self.assertEqual(
+            model.transcribe.call_args_list[0].args[0].samples,
+            audio.samples[first["context_start_frame"] : first["owned_end_frame"]],
+        )
+        verify(prediction(audio, result))
 
     def test_no_dedup_or_text_filter_and_segment_failure_never_falls_back(self):
         audio, model = self.audio(), adapter()

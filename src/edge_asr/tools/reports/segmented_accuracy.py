@@ -9,7 +9,7 @@ from edge_asr.artifacts import digest, write_json, write_jsonl
 from edge_asr.scoring import read_predictions, score_records
 
 # 실행기 import 없이 고정 실험 계약을 독립 검증한다.
-CONDITIONS = ("full_batch", "fixed_windows_5s", "bounded_vad_5s")
+CONDITIONS = ("full_batch", "fixed_windows_5s", "bounded_vad_5s", "bounded_vad_5s_context200ms")
 RATE, MAXIMUM = 16000, 80000
 
 
@@ -20,15 +20,17 @@ def verify(row):
         return
     meta = row["segmented"]
     frames = row["audio"]["frames"]
+    context = 3200 if row["segmentation_condition"] == "bounded_vad_5s_context200ms" else 0
+    is_vad = row["segmentation_condition"].startswith("bounded_vad_")
     if (
         row["audio"]["sample_rate_hz"] != RATE
         or meta["condition"] != row["segmentation_condition"]
         or meta["input_frames"] != frames
-        or meta["context_frames"] != 0
+        or meta["context_frames"] != context
         or not re.fullmatch("[a-f0-9]{64}", meta["input_pcm_sha256"])
     ):
         raise ValueError("입력/조건/PCM 메타데이터 불일치")
-    last, selected = 0, 0
+    last, selected, payloads = 0, 0, 0
     for i, segment in enumerate(meta["segments"]):
         a, b = segment["owned_start_frame"], segment["owned_end_frame"]
         if (
@@ -36,33 +38,34 @@ def verify(row):
             or type(b) is not int
             or not last <= a < b <= frames
             or segment["segment_id"] != i
-            or segment["context_start_frame"] != a
+            or segment["context_start_frame"] != max(0, a - context)
             or segment["context_end_frame"] != b
-            or segment["payload_frames"] != b - a
+            or segment["payload_frames"] != b - max(0, a - context)
             or not re.fullmatch("[a-f0-9]{64}", segment["payload_sha256"])
             or segment["status"] != "success"
             or not isinstance(segment["hypothesis"], str)
             or (meta["condition"] != "full_batch" and b - a > MAXIMUM)
         ):
             raise ValueError("구간 경계/순서/상한/출력 메타데이터 오류")
-        if meta["condition"] != "bounded_vad_5s" and a != last:
+        if not is_vad and a != last:
             raise ValueError("전체/고정 창 조건의 프레임 누락")
         last, selected = b, selected + b - a
-    if selected != meta["selected_frames"] or (
-        meta["condition"] != "bounded_vad_5s" and selected != frames
-    ):
+        payloads += segment["payload_frames"]
+    if selected != meta["selected_frames"] or (not is_vad and selected != frames):
         raise ValueError("선택 프레임 수 불일치")
+    if meta.get("payload_frames_total", payloads) != payloads:
+        raise ValueError("문맥을 포함한 payload 프레임 합 불일치")
     if meta["condition"] == "full_batch" and len(meta["segments"]) != 1:
         raise ValueError("전체 발화는 ASR 한 번이어야 합니다.")
     if row["hypothesis"] != " ".join(s["hypothesis"] for s in meta["segments"]):
         raise ValueError("구간 전사 연결 정책 불일치")
-    if meta["condition"] == "bounded_vad_5s":
+    if is_vad:
         pipeline = meta["pipeline"]
         if (
             not pipeline["complete"]
             or pipeline["frames"] != frames
             or pipeline["processed_pcm_sha256"] != meta["input_pcm_sha256"]
-            or pipeline["context_frames"] != 0
+            or pipeline["context_frames"] != context
             or pipeline["native_budget_frames"] is not None
             or pipeline["ring_peak_frames"] > pipeline["ring_capacity_frames"]
         ):
@@ -107,9 +110,15 @@ def summarize(predictions, output):
         else None,
         "timing_scope": "overall.rtf는 원본 오디오 길이 대비 전처리/구간화/ASR/결과 연결/검증/계측을 포함한 파일 파이프라인 비용. asr_rtf는 ASR 호출만. WAV I/O/검증용 참조 PCM/모델 로딩/워밍업/파일 기록 제외.",
         "rss_scope": "ASR+VAD 공존 프로세스"
-        if rows[0]["segmentation_condition"] == "bounded_vad_5s"
+        if rows[0]["segmentation_condition"].startswith("bounded_vad_")
         else "ASR 프로세스",
     }
+    # 과거 문맥 0의 저장된 요약 형식은 그대로 유지한다.
+    if rows[0]["segmentation_condition"] == "bounded_vad_5s_context200ms":
+        summary["segmented_accuracy"].update(
+            context_frames=3200,
+            payload_frames_total=sum(r["segmented"]["payload_frames_total"] for r in successful),
+        )
     summary["by_length"] = {}
     for name, predicate in (("at_most_5s", lambda n: n <= 5), ("over_5s", lambda n: n > 5)):
         subset = [r for r in rows if r.get("audio") and predicate(r["audio"]["duration_s"])]

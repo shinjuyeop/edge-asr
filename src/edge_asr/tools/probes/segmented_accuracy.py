@@ -1,4 +1,4 @@
-"""고정한 세 구간 정책의 SenseVoice 파일 평가. 동일 원음 전체 정답으로 채점한다."""
+"""고정 구간 정책의 SenseVoice 파일 평가. 동일 원음 전체 정답으로 채점한다."""
 
 import argparse
 import hashlib
@@ -20,7 +20,8 @@ from edge_asr.runtime import environment
 from edge_asr.segmentation import SegmentPipeline
 from edge_asr.vad import MODEL_SHA
 
-CONDITIONS = ("full_batch", "fixed_windows_5s", "bounded_vad_5s")
+CONDITIONS = ("full_batch", "fixed_windows_5s", "bounded_vad_5s", "bounded_vad_5s_context200ms")
+VAD_CONDITIONS = ("bounded_vad_5s", "bounded_vad_5s_context200ms")
 RATE, MAXIMUM = 16000, 80000
 
 
@@ -44,19 +45,20 @@ class MeasuredProbability:
 
 
 def measure(audio, condition, adapter, vad=None, *, convert=list):
-    if condition not in CONDITIONS or (condition == "bounded_vad_5s" and vad is None):
-        raise ValueError("고정한 세 조건과 해당 VAD가 필요합니다.")
+    if condition not in CONDITIONS or (condition in VAD_CONDITIONS and vad is None):
+        raise ValueError("고정한 조건과 해당 VAD가 필요합니다.")
     if not isinstance(audio, Audio) or audio.sample_rate_hz != RATE or not audio.samples:
         raise ValueError("비어 있지 않은 16kHz Audio가 필요합니다.")
     # 전체 원음의 검증용 PCM/해시는 계측 밖에서 준비한다. 실제 입력 처리는 아래에서 한다.
     expected, _ = preprocess(audio.samples, "identity")
     expected_sha = hashlib.sha256(pcm_bytes(expected)).hexdigest()
+    context_frames = 3200 if condition == "bounded_vad_5s_context200ms" else 0
     segments = []
     result = {
         "condition": condition,
         "input_pcm_sha256": expected_sha,
         "input_frames": len(expected),
-        "context_frames": 0,
+        "context_frames": context_frames,
         "maximum_owned_frames": None if condition == "full_batch" else MAXIMUM,
         "asr_wall_s": 0.0,
         "asr_cpu_s": 0.0,
@@ -74,10 +76,10 @@ def measure(audio, condition, adapter, vad=None, *, convert=list):
         if (
             not 0 <= start < end <= len(expected)
             or (segments and start < segments[-1]["owned_end_frame"])
-            or event["context_start_frame"] != start
+            or event["context_start_frame"] != max(0, start - context_frames)
             or event["context_end_frame"] != end
             or (condition != "full_batch" and end - start > MAXIMUM)
-            or pcm != expected[start:end]
+            or pcm != expected[event["context_start_frame"] : end]
         ):
             raise ValueError("구간 경계/중복/문맥/PCM 검증 실패")
         sha = hashlib.sha256(pcm_bytes(pcm)).hexdigest()
@@ -117,14 +119,14 @@ def measure(audio, condition, adapter, vad=None, *, convert=list):
     result["started_monotonic_s"] = time.monotonic()
     result.update(status="failed", hypothesis=None, error=None)
     try:
-        if condition == "bounded_vad_5s":
+        if condition in VAD_CONDITIONS:
             pipeline = SegmentPipeline(
                 vad,
                 "identity",
                 5,
                 emit,
                 convert=convert,
-                context_frames=0,
+                context_frames=context_frames,
                 native_budget_frames=None,
             )
             for offset in range(0, len(audio.samples), 1600):
@@ -158,7 +160,8 @@ def measure(audio, condition, adapter, vad=None, *, convert=list):
             pipeline_wall_s=time.perf_counter() - began,
             pipeline_cpu_s=time.process_time() - cpu,
             ended_monotonic_s=time.monotonic(),
-            selected_frames=sum(r["payload_frames"] for r in segments),
+            selected_frames=sum(r["owned_end_frame"] - r["owned_start_frame"] for r in segments),
+            payload_frames_total=sum(r["payload_frames"] for r in segments),
             pipeline=pipeline.metadata() if pipeline else None,
         )
         if vad_before:
@@ -187,7 +190,7 @@ def probe(root, config_path, manifest, output, condition, vad_model):
         raise ValueError(
             "SenseVoice 1T/ko/ITN false/16k/batch/워밍업 3회/ko_cer_v1 고정 조건입니다."
         )
-    if condition == "bounded_vad_5s" and digest(vad_model) != MODEL_SHA:
+    if condition in VAD_CONDITIONS and digest(vad_model) != MODEL_SHA:
         raise ValueError("기존 검증한 Silero 가중치가 필요합니다.")
     samples, manifest_sha = load_manifest(manifest, root)
     if any(s.audio_sha256 is None for s in samples):
@@ -234,7 +237,7 @@ def probe(root, config_path, manifest, output, condition, vad_model):
         "warmup": {"asr_successful": 0, "vad_successful": 0},
         "settings": {
             "preprocessing": "identity",
-            "context_frames": 0,
+            "context_frames": 3200 if condition == "bounded_vad_5s_context200ms" else 0,
             "maximum_s": 5,
             "prefix_frames": 0,
             "suffix_frames": 0,
@@ -279,7 +282,7 @@ def probe(root, config_path, manifest, output, condition, vad_model):
             "resources": loading.metadata(),
         }
         vad, probability, convert = None, None, list
-        if condition == "bounded_vad_5s":
+        if condition in VAD_CONDITIONS:
             from edge_asr.vad_probability import BoundedProbabilityVad, K2SileroProbability
 
             began, cpu = time.perf_counter(), time.process_time()
@@ -325,7 +328,7 @@ def probe(root, config_path, manifest, output, condition, vad_model):
                     5,
                     lambda *a: None,
                     convert=convert,
-                    context_frames=0,
+                    context_frames=info["settings"]["context_frames"],
                     native_budget_frames=None,
                 )
                 for offset in range(0, len(audios[0].samples), 1600):
