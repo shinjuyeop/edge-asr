@@ -136,6 +136,9 @@ def summarize(folder, output):
     zrows = read_events(folder / "zip-sources.jsonl")
     zlog = read_events(folder / "zip-events.jsonl")
     refine = worker["refine_threads"] != 0
+    policy = worker.get("settings", {}).get("refine_policy", "fixed5")
+    is_vad = policy != "fixed5"
+    vad_ready = True
     expected = []
     position = 0
     for i, s in enumerate(sources):
@@ -146,6 +149,10 @@ def summarize(folder, output):
         position = s["end"]
     if position != track["frames"]:
         raise ValueError("트랙 길이 오류")
+    if is_vad:
+        from edge_asr.tools.reports.online_vad import validate_sources
+
+        expected, vad_ready = validate_sources(folder, track, jobs, policy)
     for i, job in enumerate(jobs):
         if job["type"] not in (("enqueue", "drop") if refine else ("control_only",)):
             raise ValueError("실행 조건과 큐 이벤트 종류 불일치")
@@ -156,7 +163,8 @@ def summarize(folder, output):
             raise ValueError("Refine 구간 좌표 오류")
         if (
             job["index"] != i
-            or job["payload_frames"] != job["end"] - job["start"]
+            or job["payload_frames"]
+            != job["end"] - (job["context_start"] if is_vad else job["start"])
             or not re.fullmatch("[a-f0-9]{64}", job["payload_float32_sha256"])
         ):
             raise ValueError("Refine payload 메타데이터 오류")
@@ -185,6 +193,17 @@ def summarize(folder, output):
             )
         ):
             raise ValueError("Refine IPC 결과 불일치")
+        if is_vad and any(
+            row[k] != job[k]
+            for k in (
+                "context_start",
+                "context_end",
+                "emitted_ns",
+                "delivered_through_frame",
+                "segment",
+            )
+        ):
+            raise ValueError("Refine VAD 결과 메타데이터 불일치")
         if not job["at_ns"] <= row["dequeued_ns"] <= row["started_ns"] <= row["ended_ns"]:
             raise ValueError("Refine 시간축 오류")
     input_complete = bool(
@@ -263,11 +282,14 @@ def summarize(folder, output):
             ["zip", "refine"] if refine else ["zip"],
         )
         summary["threads"] = thread_summary(read_events(folder / "thread-resources.jsonl"))
+        if is_vad:
+            summary["resources"]["main_pid_components"] = worker["main_pid_components"]
     else:
         summary.update(resources=None, threads=None)
     if refine and t0:
         complete = (
             input_complete
+            and vad_ready
             and len(jobs) == len(expected)
             and len(results) == len(expected)
             and len(enqueued) == len(expected)
@@ -293,6 +315,7 @@ def summarize(folder, output):
                 (max(r["ended_ns"] for r in valid if r["source_id"] == s["id"]) - t0) / 1e9
                 - s["end"] / RATE
                 for s in sources
+                if any(r["source_id"] == s["id"] for r in valid)
             ]
             if complete
             else []
@@ -346,9 +369,49 @@ def summarize(folder, output):
             "refine_calls_with_zip_overlap": overlapping_jobs,
             "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
         }
+        if is_vad:
+            emitted = [(r["emitted_ns"] - t0) / 1e9 - r["end"] / RATE for r in valid]
+            dispatch_after = [
+                (enqueued[r["index"]]["at_ns"] - r["emitted_ns"]) / 1e9 for r in valid
+            ]
+            emission_to_return = [(r["ended_ns"] - r["emitted_ns"]) / 1e9 for r in valid]
+            decision_audio = [
+                (r["segment"]["emitted_at_audio_frame"] - r["segment"]["owned_end_frame"]) / RATE
+                for r in valid
+            ]
+            payload_produced = [
+                {**event, "start": jobs[event["index"]]["context_start"]} for event in produced
+            ]
+            _, payload_backlog = backlog_series(
+                payload_produced, consumed, RATE, elapsed, summary["audio_s"]
+            )
+            summary["refine_policy"] = policy
+            summary["refine"].update(
+                vad_emission_from_owned_end_s=distribution(emitted),
+                dispatch_after_vad_emission_s=distribution(dispatch_after),
+                vad_emission_to_return_s=distribution(emission_to_return),
+                decision_audio_after_owned_end_s=distribution(decision_audio),
+                no_vad_segment_sources=sum(
+                    not any(j["source_id"] == s["id"] for j in jobs) for s in sources
+                )
+                if vad_ready
+                else None,
+                backlog_event_max_payload_audio_s=payload_backlog["event_max_audio_s"],
+                final_from_source_file_end_scope="구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님.",
+            )
+            if any(
+                not math.isfinite(v) or v < 0
+                for values in (emitted, dispatch_after, emission_to_return, decision_audio)
+                for v in values
+            ):
+                raise ValueError("VAD 비유한/음수 지연")
     observations = [first, final]
     if refine and t0:
-        observations += [queue_wait, decode, returned, dispatch, file_final]
+        observations += [queue_wait, decode, returned, dispatch]
+        if not is_vad:
+            observations.append(file_final)
+        elif any(not math.isfinite(v) for v in file_final):
+            raise ValueError("비유한 파일 끝 상대 시각")
     if any(not math.isfinite(value) or value < 0 for values in observations for value in values):
         raise ValueError("비유한/음수 지연")
     owned_names = {
@@ -360,6 +423,7 @@ def summarize(folder, output):
         "zip-events.jsonl",
         "process-resources.jsonl",
         "thread-resources.jsonl",
+        "vad-sources.jsonl",
     }
     summary["source_sha256"] = {
         str(p.relative_to(folder)): digest(p)

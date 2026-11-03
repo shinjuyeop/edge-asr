@@ -23,6 +23,7 @@ from edge_asr.concurrent_probe import (
 )
 from edge_asr.config import load_evaluation_config
 from edge_asr.dataset import Audio
+from edge_asr.online_vad import POLICIES, OnlineVadReplay, TimedProbability
 from edge_asr.resources import RssSampler
 from edge_asr.runtime import environment
 from edge_asr.streaming import read_events, run_paced, warmup_stream
@@ -30,9 +31,19 @@ from edge_asr.streaming import read_events, run_paced, warmup_stream
 COMBINATIONS = ((1, 0), (2, 0), (1, 1), (1, 2), (2, 1))
 
 
-def probe(root, manifest, output, zip_threads, refine_threads):
+def probe(
+    root, manifest, output, zip_threads, refine_threads, *, refine_policy="fixed5", vad_model=None
+):
     if (zip_threads, refine_threads) not in COMBINATIONS:
         raise ValueError("단독 1T/2T 또는 동시 1+1/1+2/2+1 조건이 필요합니다.")
+    if refine_policy not in POLICIES or (refine_policy != "fixed5" and not refine_threads):
+        raise ValueError("지원하는 Refine 정책과 VAD의 Refine 모델이 필요합니다.")
+    if refine_policy != "fixed5":
+        from edge_asr.vad import MODEL_SHA
+
+        vad_model = vad_model or root / "models/silero-vad-k2-20261029/silero_vad.onnx"
+        if digest(vad_model) != MODEL_SHA:
+            raise ValueError("기존 검증한 VAD 가중치가 필요합니다.")
     if (output / "worker.json").exists():
         raise FileExistsError("기존 실행을 덮어쓰지 않습니다.")
     zpath, spath = root / "configs/zipformer_paced.toml", root / "configs/sensevoice_eval.toml"
@@ -74,9 +85,18 @@ def probe(root, manifest, output, zip_threads, refine_threads):
             )
         },
     }
+    if refine_policy != "fixed5":
+        info["settings"].update(
+            refine_policy=refine_policy,
+            vad=True,
+            context_frames=3200 if refine_policy == "vad-continuation200" else 0,
+            context_selection="continuation" if refine_policy == "vad-continuation200" else "all",
+        )
+        info["main_pid_components"] = ["zipformer", "online_vad", "coordinator_and_sampling"]
     write_json(output / "worker.json", info)
     adapter = channel = replay = resources = None
     telemetry = {}
+    probability = timed_probability = vad = None
     code = 1
     try:
         limits = Path(f"/proc/{os.getpid()}/limits").read_text()
@@ -102,6 +122,9 @@ def probe(root, manifest, output, zip_threads, refine_threads):
                 (s["end"] - s["start"] + WINDOW - 1) // WINDOW for s in sources
             ),
         )
+        if refine_policy != "fixed5":
+            info["planned_refine_windows"] = None
+            info["planned_refine_reason"] = "online_vad_not_precomputed"
         warm_frames = min(WINDOW, sources[0]["end"])
         warm = Audio(audio.samples[:warm_frames], RATE, float_digest(audio.samples[:warm_frames]))
         info["warmup_input"] = {"frames": warm_frames, "float32_sha256": warm.sha256}
@@ -138,6 +161,62 @@ def probe(root, manifest, output, zip_threads, refine_threads):
             environment=environment(),
             status="running",
         )
+        if refine_policy != "fixed5":
+            from edge_asr.segmentation import SegmentPipeline
+            from edge_asr.vad_probability import BoundedProbabilityVad, K2SileroProbability
+
+            began, cpu = time.perf_counter(), time.process_time()
+            with RssSampler() as loading:
+                probability = K2SileroProbability(vad_model)
+                timed_probability = TimedProbability(probability)
+                vad = BoundedProbabilityVad(timed_probability)
+            convert = lambda x: probability.np.asarray(x, dtype=probability.np.float32)
+            info["vad_loading"] = {
+                "wall_s": time.perf_counter() - began,
+                "cpu_s": time.process_time() - cpu,
+                "resources": loading.metadata(),
+            }
+            began = time.perf_counter()
+            for _ in range(3):
+                pipeline = SegmentPipeline(
+                    vad,
+                    "identity",
+                    5,
+                    lambda *a: None,
+                    convert=convert,
+                    context_frames=info["settings"]["context_frames"],
+                    context_selection=info["settings"]["context_selection"],
+                    native_budget_frames=None,
+                )
+                for offset in range(0, len(warm.samples), 1600):
+                    pipeline.accept(
+                        warm.samples[offset : offset + 1600],
+                        final=offset + 1600 >= len(warm.samples),
+                    )
+                pipeline.finish()
+            info.update(
+                vad_model={"path": str(vad_model), "sha256": digest(vad_model)},
+                vad_warmup_runs=3,
+                vad_warmup_s=time.perf_counter() - began,
+                vad_measurement_before=probability.metadata(),
+                vad_cost_before={
+                    "wall_s": timed_probability.wall_s,
+                    "cpu_s": timed_probability.cpu_s,
+                    "calls": timed_probability.calls,
+                },
+            )
+            info["vad_settings"] = {
+                "window_frames": 512,
+                "num_threads": 1,
+                "threshold": 0.5,
+                "min_speech_frames": 1600,
+                "min_silence_frames": 4800,
+                "long_threshold": 0.9,
+                "long_silence_frames": 1600,
+                "soft_limit_s": 5,
+                "retained_audio_frames": 0,
+                "queue_capacity": 1,
+            }
         write_json(output / "worker.json", info)
 
         def roles():
@@ -151,8 +230,18 @@ def probe(root, manifest, output, zip_threads, refine_threads):
             (output / "zip-events.jsonl").open("x") as zlog,
             (output / "refine-jobs.jsonl").open("x") as jlog,
         ):
-            replay = ConcurrentReplay(
-                adapter, sources, telemetry, channel.submit if channel else None, zlog, jlog
+            arguments = (
+                adapter,
+                sources,
+                telemetry,
+                channel.submit if channel else None,
+                zlog,
+                jlog,
+            )
+            replay = (
+                ConcurrentReplay(*arguments)
+                if vad is None
+                else OnlineVadReplay(*arguments, vad=vad, policy=refine_policy, convert=convert)
             )
             with ProcessSampler(roles, output) as resources:
                 run_paced(
@@ -179,6 +268,19 @@ def probe(root, manifest, output, zip_threads, refine_threads):
         info["replay"] = telemetry
         if replay:
             write_jsonl(output / "zip-sources.jsonl", replay.source_rows)
+            if vad is not None:
+                write_jsonl(output / "vad-sources.jsonl", replay.vad_sources)
+        if probability is not None:
+            info["vad_measurement_after"] = probability.metadata()
+            info["vad_runtime_after"] = vad.metadata() if vad is not None else None
+            info["vad_inference"] = (
+                {
+                    key: getattr(timed_probability, key) - info["vad_cost_before"][key]
+                    for key in ("wall_s", "cpu_s", "calls")
+                }
+                if "vad_cost_before" in info
+                else None
+            )
         if channel:
             channel.close()
             info.update(
@@ -219,8 +321,18 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--zip-threads", type=int, choices=(1, 2), required=True)
     parser.add_argument("--refine-threads", type=int, choices=(0, 1, 2), required=True)
+    parser.add_argument("--refine-policy", choices=POLICIES, default="fixed5")
+    parser.add_argument("--vad-model", type=Path)
     args = parser.parse_args()
-    return probe(Path.cwd(), args.manifest, args.output, args.zip_threads, args.refine_threads)
+    return probe(
+        Path.cwd(),
+        args.manifest,
+        args.output,
+        args.zip_threads,
+        args.refine_threads,
+        refine_policy=args.refine_policy,
+        vad_model=args.vad_model,
+    )
 
 
 if __name__ == "__main__":

@@ -1,5 +1,7 @@
 # 호스트 검사
 
+`test_online_vad.py`는 실제 모델 없는 온라인 VAD/Refine spawn에서 파일 경계100ms 재조립·기존 Zip 청크 불변·실제 과거 문맥·무검출의 빈 전사/전체 정답·큐 손실과 null CER·입력 중/워밍업 실패·자식 회수·파일 끝보다 이른 반환과 실제 지연의 구분·메타데이터 손상 거부·모델 없는 재집계를 확인한다. mock 확률/ASR의 결과는 RP5 실제 신경망 실행과 구분한다.
+
 `test_concurrent_probe.py`는 실제 ASR 없는 spawn/CLI에서 별도 Refine/입력 프로세스·유한 큐 드롭·PCM/파일/5초 경계·손실 시 좌표 압축 거부·오류/회수·동시 모델 PID 표본 합·모델 없는 재집계/손상 거부를 검사한다. 합성 런타임의 겹친 호출이 실제 ARM64 ASR 성능 검증을 뜻하지 않는다. `test_streaming.py`는 기존 기본 경로와 선택적 절대 좌표 callback을 함께 검사한다.
 
 `test_segmented_accuracy.py`는 같은 PCM·5초 상한·문맥 0·원본 발화당 VAD reset·모델 1회 로딩/워밍업/종료·실패 보존·중복 전사 연결·빈 검출의 삭제 오류·모델/음원 없는 공통 scorer 재채점·경계 손상 거부를 검사한다. 실제 VAD 음성 판별이나 ARM64 ASR 정확도 검증은 아니다.

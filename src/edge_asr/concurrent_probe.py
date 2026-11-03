@@ -250,6 +250,34 @@ class ConcurrentReplay:
         self.stream = self._call(self.adapter.start_stream)
         return self
 
+    def offer_payload(self, payload, start, end, source, extra=None):
+        job = {
+            "index": self.job_index,
+            "source_index": self.source_index,
+            "source_id": source["id"],
+            "start": start,
+            "end": end,
+            "payload_frames": len(payload),
+            "payload_float32_sha256": float_digest(payload),
+            "submitted_ns": time.perf_counter_ns(),
+            "samples": payload,
+            **(extra or {}),
+        }
+        kind, at = self.submit(job) if self.submit else ("control_only", time.perf_counter_ns())
+        write_event(
+            self.job_log,
+            {k: v for k, v in job.items() if k != "samples"} | {"type": kind, "at_ns": at},
+        )
+        self.job_index += 1
+
+    def feed_refine(self, block, stop, source):
+        self.buffer.extend(block)
+        if stop == self.next_job_end:
+            payload = self.buffer
+            self.buffer = array("f")
+            self.offer_payload(payload, self.job_start, stop, source)
+            self.job_start = stop
+
     def accept_at(self, stream, samples, start, end):
         if stream is not self or start != self.position or end - start != len(samples):
             raise RuntimeError("capture_gap: 손실 입력을 압축해 원본 좌표로 사용하지 않습니다.")
@@ -263,30 +291,8 @@ class ConcurrentReplay:
             row = self.source_rows[self.source_index]
             stop = min(end, source["end"], self.next_job_end)
             block = samples[self.position - start : stop - start]
-            self.buffer.extend(block)
+            self.feed_refine(block, stop, source)
             if stop == self.next_job_end:
-                payload = self.buffer
-                self.buffer = array("f")
-                job = {
-                    "index": self.job_index,
-                    "source_index": self.source_index,
-                    "source_id": source["id"],
-                    "start": self.job_start,
-                    "end": stop,
-                    "payload_frames": len(payload),
-                    "payload_float32_sha256": float_digest(payload),
-                    "submitted_ns": time.perf_counter_ns(),
-                    "samples": payload,
-                }
-                kind, at = (
-                    self.submit(job) if self.submit else ("control_only", time.perf_counter_ns())
-                )
-                write_event(
-                    self.job_log,
-                    {k: v for k, v in job.items() if k != "samples"} | {"type": kind, "at_ns": at},
-                )
-                self.job_index += 1
-                self.job_start = stop
                 self.next_job_end = min(stop + WINDOW, source["end"])
             text = self._call(lambda: self.adapter.accept_chunk(self.stream, block))
             if not isinstance(text, str):

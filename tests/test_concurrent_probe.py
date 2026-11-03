@@ -348,7 +348,7 @@ class OfflineRecognizer:
             summarize(output, self.root / "invalid.json")
         jobs.write_bytes(original)
 
-    def run_fixture(self, refine):
+    def run_fixture(self, refine, extra=()):
         output = self.root / "run"
         result = subprocess.run(
             [
@@ -368,6 +368,7 @@ class OfflineRecognizer:
                 "1",
                 "--refine-threads",
                 str(refine),
+                *extra,
             ],
             cwd=self.root,
             env=self.env,
