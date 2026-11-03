@@ -1,0 +1,3531 @@
+{
+  "schema": "file-selection-trace-replay-report-v1",
+  "work_date": "2026-11-03",
+  "status": "completed_with_scope_limits",
+  "source_commit": "f5fad19154a937ff9bd21eeae381f98e1f55c964",
+  "purpose_ko": "기존 완전한 온라인 음성6/디지털무음3기록에서 사전 고정한3정책을 비교한다. 정답은 선택 후 채점하며 기존 결과/전처리/기본 설정을 바꾸지 않는다.",
+  "scope_ko": "파일 ID 단위 선택 상태기계의 저장 실측 로그 재생. 새로운 ASR 추론·1배속 입력 공급·마이크/UI 실행 없음. VAD 구간별 부분 교체 구현 완료가 아님.",
+  "counts": {
+    "native_traces": 9,
+    "policies": 3,
+    "policy_replays_per_machine": 27,
+    "source_evaluations_per_machine": 513,
+    "distinct_original_sources": 57,
+    "native_files": 168,
+    "semantic_files_equal": 117
+  },
+  "normalization": "ko_cer_v1",
+  "plan_sha256": "6cd36a33181bc63aee13a413e6dc7431a07f86cc0586bc6e7429fd1b3edb2094",
+  "runs": [
+    {
+      "id": "speech/kss-dev50/fixed5",
+      "input": "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5",
+      "summary_sha256": "3a82f7167cd0f82fe4b820e30a2932da74b446ec9d64a27de9f26d5ca78dc084",
+      "source_count": 50,
+      "replay_summary": {
+        "schema": "merge-trace-replay-v1",
+        "session_id": "208a683e13e317650c2edd69713d3aebe24309bf66bc6de110e70f1ed0bbc8f3",
+        "native_source_commit": "79d447ab1ac264534416ed7adc05fad6b5d6e79a",
+        "native_refine_policy": "fixed5",
+        "source_count": 50,
+        "events": 1861,
+        "input_files_sha256": {
+          "summary.json": "3a82f7167cd0f82fe4b820e30a2932da74b446ec9d64a27de9f26d5ca78dc084",
+          "worker.json": "208a683e13e317650c2edd69713d3aebe24309bf66bc6de110e70f1ed0bbc8f3",
+          "track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+          "zip-events.jsonl": "cb5dff1d3ee7b6c778607485edda7afdc7074a53de45c47c81a9625789af41f4",
+          "refine-jobs.jsonl": "105df9ca811a341f814843c95a4d1f5f370f1cfdb96dd7c724a0d245a209d7f7",
+          "refine-results.jsonl": "6c3f87d6ec570010515674eb9ab7bf03fb8cc9e0d6959a1029ab4d920bb797ed"
+        },
+        "code_sha256": {
+          "merging.py": "25d02bc69c9018d3c4c2e0fa3e6f1d3d26fa9f12c0a411ee236bd35d10b612f4",
+          "merge_replay.py": "1672ab96278e164ac285ffd52bbd06b6ff8c199875b2537a98417149e39d2f48"
+        },
+        "policies": {
+          "zip_only": {
+            "policy": "zip_only",
+            "selected_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 39,
+                "substitutions": 25,
+                "deletions": 9,
+                "insertions": 5,
+                "reference_characters": 756,
+                "value": 0.051587301587301584
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 50
+            },
+            "decision_reasons": {
+              "streaming_only": 50
+            },
+            "ignored_events": {
+              "source_sealed": 48
+            },
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 50,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 379,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 0,
+            "trace_first_visible_from_source_start_s": {
+              "n": 50,
+              "mean": 0.9698206447200027,
+              "p50": 0.8485935740000006,
+              "p95": 1.4529907529999946,
+              "max": 1.468168760000026
+            },
+            "no_visible_sources": 0,
+            "trace_selection_from_file_end_s": {
+              "n": 50,
+              "mean": 0.15983019218000094,
+              "p50": 0.15339652599999454,
+              "p95": 0.2253883560000105,
+              "max": 0.23829864300000025
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 50,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          },
+          "refine_complete": {
+            "policy": "refine_complete",
+            "selected_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 39,
+                "substitutions": 25,
+                "deletions": 9,
+                "insertions": 5,
+                "reference_characters": 756,
+                "value": 0.051587301587301584
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 39,
+                "substitutions": 25,
+                "deletions": 9,
+                "insertions": 5,
+                "reference_characters": 756,
+                "value": 0.051587301587301584
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "refine": 50
+            },
+            "decision_reasons": {
+              "complete_refine": 50
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 25,
+              "tied_sources": 18,
+              "worsened_sources": 7,
+              "error_delta": -49,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 429,
+            "normalized_suffix_rewrite_events": 38,
+            "normalized_removed_suffix_characters": 412,
+            "normalized_final_corrections": 38,
+            "trace_first_visible_from_source_start_s": {
+              "n": 50,
+              "mean": 0.9698206447200027,
+              "p50": 0.8485935740000006,
+              "p95": 1.4529907529999946,
+              "max": 1.468168760000026
+            },
+            "no_visible_sources": 0,
+            "trace_selection_from_file_end_s": {
+              "n": 50,
+              "mean": 0.25258027278000134,
+              "p50": 0.25612930800002687,
+              "p95": 0.34316035800000577,
+              "max": 0.3946102419999997
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 50,
+              "mean": 0.09275008059999999,
+              "p50": 0.102308834,
+              "p95": 0.176014855,
+              "max": 0.217425845
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 50,
+              "mean": 0.01880366298,
+              "p50": 0.0,
+              "p95": 0.054504611,
+              "max": 0.736918709
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          },
+          "agreement_only": {
+            "policy": "agreement_only",
+            "selected_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 39,
+                "substitutions": 25,
+                "deletions": 9,
+                "insertions": 5,
+                "reference_characters": 756,
+                "value": 0.051587301587301584
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 38,
+              "refine": 12
+            },
+            "decision_reasons": {
+              "normalized_disagreement": 38,
+              "normalized_agreement": 12
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 50,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 391,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 0,
+            "trace_first_visible_from_source_start_s": {
+              "n": 50,
+              "mean": 0.9698206447200027,
+              "p50": 0.8485935740000006,
+              "p95": 1.4529907529999946,
+              "max": 1.468168760000026
+            },
+            "no_visible_sources": 0,
+            "trace_selection_from_file_end_s": {
+              "n": 50,
+              "mean": 0.25258027278000134,
+              "p50": 0.25612930800002687,
+              "p95": 0.34316035800000577,
+              "max": 0.3946102419999997
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 50,
+              "mean": 0.09275008059999999,
+              "p50": 0.102308834,
+              "p95": 0.176014855,
+              "max": 0.217425845
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 12,
+              "mean": 0.004844929833333333,
+              "p50": 0.0,
+              "p95": 0.054504611,
+              "max": 0.054504611
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          }
+        },
+        "scope_ko": "실제 추론 로그를 이용한 정답 비의존 파일 ID 단위 선택 정책의 모델 없는 재생. 새 native ASR/1배속 입력/실제 UI 지연 측정이 아님."
+      }
+    },
+    {
+      "id": "speech/kss-dev50/vad0",
+      "input": "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0",
+      "summary_sha256": "fb7f3734a56282a7b0130e2dc88a1ddb7b4d2c6e13c57660725f46f8877502e3",
+      "source_count": 50,
+      "replay_summary": {
+        "schema": "merge-trace-replay-v1",
+        "session_id": "45382b598070f131f692906124f2f6221c59cb889931fd976154ba5488fb81fc",
+        "native_source_commit": "79d447ab1ac264534416ed7adc05fad6b5d6e79a",
+        "native_refine_policy": "vad0",
+        "source_count": 50,
+        "events": 1867,
+        "input_files_sha256": {
+          "summary.json": "fb7f3734a56282a7b0130e2dc88a1ddb7b4d2c6e13c57660725f46f8877502e3",
+          "worker.json": "45382b598070f131f692906124f2f6221c59cb889931fd976154ba5488fb81fc",
+          "track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+          "zip-events.jsonl": "e071d019b758c9b66422af0381050e012e6f20e672ab03faeb7aff67c4f6e2bd",
+          "refine-jobs.jsonl": "c82e99265e95a893fcc84bfcc1b091afb32d92fa38766bf87f83b9450086c00a",
+          "refine-results.jsonl": "2aef530221e556b2781aa03868f198ddb55d512cf0aa756070f8f514208380ac"
+        },
+        "code_sha256": {
+          "merging.py": "25d02bc69c9018d3c4c2e0fa3e6f1d3d26fa9f12c0a411ee236bd35d10b612f4",
+          "merge_replay.py": "1672ab96278e164ac285ffd52bbd06b6ff8c199875b2537a98417149e39d2f48"
+        },
+        "policies": {
+          "zip_only": {
+            "policy": "zip_only",
+            "selected_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 42,
+                "substitutions": 26,
+                "deletions": 9,
+                "insertions": 7,
+                "reference_characters": 756,
+                "value": 0.05555555555555555
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 50
+            },
+            "decision_reasons": {
+              "streaming_only": 50
+            },
+            "ignored_events": {
+              "source_sealed": 45
+            },
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 50,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 379,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 0,
+            "trace_first_visible_from_source_start_s": {
+              "n": 50,
+              "mean": 0.9739967404800005,
+              "p50": 0.8526553480000008,
+              "p95": 1.4565747960000124,
+              "max": 1.471706905000019
+            },
+            "no_visible_sources": 0,
+            "trace_selection_from_file_end_s": {
+              "n": 50,
+              "mean": 0.16888115070000043,
+              "p50": 0.16293525199999692,
+              "p95": 0.24063996199999593,
+              "max": 0.24125374099999952
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 50,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          },
+          "refine_complete": {
+            "policy": "refine_complete",
+            "selected_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 42,
+                "substitutions": 26,
+                "deletions": 9,
+                "insertions": 7,
+                "reference_characters": 756,
+                "value": 0.05555555555555555
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 42,
+                "substitutions": 26,
+                "deletions": 9,
+                "insertions": 7,
+                "reference_characters": 756,
+                "value": 0.05555555555555555
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "refine": 50
+            },
+            "decision_reasons": {
+              "complete_refine": 50
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 25,
+              "tied_sources": 17,
+              "worsened_sources": 8,
+              "error_delta": -46,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 429,
+            "normalized_suffix_rewrite_events": 37,
+            "normalized_removed_suffix_characters": 419,
+            "normalized_final_corrections": 37,
+            "trace_first_visible_from_source_start_s": {
+              "n": 50,
+              "mean": 0.9739967404800005,
+              "p50": 0.8526553480000008,
+              "p95": 1.4565747960000124,
+              "max": 1.471706905000019
+            },
+            "no_visible_sources": 0,
+            "trace_selection_from_file_end_s": {
+              "n": 50,
+              "mean": 0.24408615386000215,
+              "p50": 0.24385138399999562,
+              "p95": 0.33557051699999363,
+              "max": 0.38138755799999924
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 50,
+              "mean": 0.07520500316000002,
+              "p50": 0.084905016,
+              "p95": 0.140554173,
+              "max": 0.159771992
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 50,
+              "mean": 0.2883831154,
+              "p50": 0.0,
+              "p95": 2.359951877,
+              "max": 3.522064844
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          },
+          "agreement_only": {
+            "policy": "agreement_only",
+            "selected_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 42,
+                "substitutions": 26,
+                "deletions": 9,
+                "insertions": 7,
+                "reference_characters": 756,
+                "value": 0.05555555555555555
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 37,
+              "refine": 13
+            },
+            "decision_reasons": {
+              "normalized_disagreement": 37,
+              "normalized_agreement": 13
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 50,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 392,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 0,
+            "trace_first_visible_from_source_start_s": {
+              "n": 50,
+              "mean": 0.9739967404800005,
+              "p50": 0.8526553480000008,
+              "p95": 1.4565747960000124,
+              "max": 1.471706905000019
+            },
+            "no_visible_sources": 0,
+            "trace_selection_from_file_end_s": {
+              "n": 50,
+              "mean": 0.24408615386000215,
+              "p50": 0.24385138399999562,
+              "p95": 0.33557051699999363,
+              "max": 0.38138755799999924
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 50,
+              "mean": 0.07520500316000002,
+              "p50": 0.084905016,
+              "p95": 0.140554173,
+              "max": 0.159771992
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 13,
+              "mean": 0.00043474415384615384,
+              "p50": 0.0,
+              "p95": 0.005651674,
+              "max": 0.005651674
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          }
+        },
+        "scope_ko": "실제 추론 로그를 이용한 정답 비의존 파일 ID 단위 선택 정책의 모델 없는 재생. 새 native ASR/1배속 입력/실제 UI 지연 측정이 아님."
+      }
+    },
+    {
+      "id": "speech/kss-dev50/vad-continuation200",
+      "input": "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200",
+      "summary_sha256": "9c1044321035ffef3cdffac238106e78ae451808c6847bb56bb83785c6df8f0c",
+      "source_count": 50,
+      "replay_summary": {
+        "schema": "merge-trace-replay-v1",
+        "session_id": "81ac55bfc6d89ef9cba344eb2554835a1620ec4ff7bf5e28e113e9754210e5b6",
+        "native_source_commit": "79d447ab1ac264534416ed7adc05fad6b5d6e79a",
+        "native_refine_policy": "vad-continuation200",
+        "source_count": 50,
+        "events": 1867,
+        "input_files_sha256": {
+          "summary.json": "9c1044321035ffef3cdffac238106e78ae451808c6847bb56bb83785c6df8f0c",
+          "worker.json": "81ac55bfc6d89ef9cba344eb2554835a1620ec4ff7bf5e28e113e9754210e5b6",
+          "track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+          "zip-events.jsonl": "62be104f7421aca8718b7622860637a895779c866f5479f28df698123895fda4",
+          "refine-jobs.jsonl": "7b87e83066cbc2affb5ee32ef79f763c9d08dae3631f80fb752b49cac32ce6e7",
+          "refine-results.jsonl": "4dfc5bcda7484c37c23dcd900622578ecbcf3b038b05f1d935071757028bcbc9"
+        },
+        "code_sha256": {
+          "merging.py": "25d02bc69c9018d3c4c2e0fa3e6f1d3d26fa9f12c0a411ee236bd35d10b612f4",
+          "merge_replay.py": "1672ab96278e164ac285ffd52bbd06b6ff8c199875b2537a98417149e39d2f48"
+        },
+        "policies": {
+          "zip_only": {
+            "policy": "zip_only",
+            "selected_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 42,
+                "substitutions": 26,
+                "deletions": 9,
+                "insertions": 7,
+                "reference_characters": 756,
+                "value": 0.05555555555555555
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 50
+            },
+            "decision_reasons": {
+              "streaming_only": 50
+            },
+            "ignored_events": {
+              "source_sealed": 45
+            },
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 50,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 379,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 0,
+            "trace_first_visible_from_source_start_s": {
+              "n": 50,
+              "mean": 0.974069030760002,
+              "p50": 0.8519651650000011,
+              "p95": 1.456021934000006,
+              "max": 1.4736941000000172
+            },
+            "no_visible_sources": 0,
+            "trace_selection_from_file_end_s": {
+              "n": 50,
+              "mean": 0.16883275498000105,
+              "p50": 0.16410759699999744,
+              "p95": 0.2373273030000007,
+              "max": 0.24587431700000195
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 50,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          },
+          "refine_complete": {
+            "policy": "refine_complete",
+            "selected_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 42,
+                "substitutions": 26,
+                "deletions": 9,
+                "insertions": 7,
+                "reference_characters": 756,
+                "value": 0.05555555555555555
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 42,
+                "substitutions": 26,
+                "deletions": 9,
+                "insertions": 7,
+                "reference_characters": 756,
+                "value": 0.05555555555555555
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "refine": 50
+            },
+            "decision_reasons": {
+              "complete_refine": 50
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 25,
+              "tied_sources": 17,
+              "worsened_sources": 8,
+              "error_delta": -46,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 429,
+            "normalized_suffix_rewrite_events": 37,
+            "normalized_removed_suffix_characters": 419,
+            "normalized_final_corrections": 37,
+            "trace_first_visible_from_source_start_s": {
+              "n": 50,
+              "mean": 0.974069030760002,
+              "p50": 0.8519651650000011,
+              "p95": 1.456021934000006,
+              "max": 1.4736941000000172
+            },
+            "no_visible_sources": 0,
+            "trace_selection_from_file_end_s": {
+              "n": 50,
+              "mean": 0.24484416542000162,
+              "p50": 0.24319839399998955,
+              "p95": 0.3315979290000115,
+              "max": 0.38161307399999966
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 50,
+              "mean": 0.07601141044,
+              "p50": 0.085003186,
+              "p95": 0.138748384,
+              "max": 0.145140248
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 50,
+              "mean": 0.28843648604,
+              "p50": 0.0,
+              "p95": 2.357162078,
+              "max": 3.506530229
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          },
+          "agreement_only": {
+            "policy": "agreement_only",
+            "selected_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 42,
+                "substitutions": 26,
+                "deletions": 9,
+                "insertions": 7,
+                "reference_characters": 756,
+                "value": 0.05555555555555555
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 37,
+              "refine": 13
+            },
+            "decision_reasons": {
+              "normalized_disagreement": 37,
+              "normalized_agreement": 13
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 50,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 392,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 0,
+            "trace_first_visible_from_source_start_s": {
+              "n": 50,
+              "mean": 0.974069030760002,
+              "p50": 0.8519651650000011,
+              "p95": 1.456021934000006,
+              "max": 1.4736941000000172
+            },
+            "no_visible_sources": 0,
+            "trace_selection_from_file_end_s": {
+              "n": 50,
+              "mean": 0.24484416542000162,
+              "p50": 0.24319839399998955,
+              "p95": 0.3315979290000115,
+              "max": 0.38161307399999966
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 50,
+              "mean": 0.07601141044,
+              "p50": 0.085003186,
+              "p95": 0.138748384,
+              "max": 0.145140248
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 13,
+              "mean": 0.0005758307692307692,
+              "p50": 0.0,
+              "p95": 0.0074858,
+              "max": 0.0074858
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          }
+        },
+        "scope_ko": "실제 추론 로그를 이용한 정답 비의존 파일 ID 단위 선택 정책의 모델 없는 재생. 새 native ASR/1배속 입력/실제 UI 지연 측정이 아님."
+      }
+    },
+    {
+      "id": "speech/synthetic-120/fixed5",
+      "input": "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5",
+      "summary_sha256": "ebe08a16c9aba8a927009b263f3de20cd4260b6e29789eeb0c738ad6136929a1",
+      "source_count": 1,
+      "replay_summary": {
+        "schema": "merge-trace-replay-v1",
+        "session_id": "eb8a09a20a7b70b7f13a9bdcf4163ee135d6f1171316cdab0f4a6855b16fdbfd",
+        "native_source_commit": "79d447ab1ac264534416ed7adc05fad6b5d6e79a",
+        "native_refine_policy": "fixed5",
+        "source_count": 1,
+        "events": 1257,
+        "input_files_sha256": {
+          "summary.json": "ebe08a16c9aba8a927009b263f3de20cd4260b6e29789eeb0c738ad6136929a1",
+          "worker.json": "eb8a09a20a7b70b7f13a9bdcf4163ee135d6f1171316cdab0f4a6855b16fdbfd",
+          "track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+          "zip-events.jsonl": "124a21058527cf9480332bb3536f55e734e9d9919b14a08b489d8833d0c92747",
+          "refine-jobs.jsonl": "ec8c8dc1e61aaebc85f374cef9ea64a31f6f086592dae80ddf55c1ad9b315065",
+          "refine-results.jsonl": "1809da507fad19e7a3ee6be2388f3a082c199a4660779c3320f9ef6b535080ea"
+        },
+        "code_sha256": {
+          "merging.py": "25d02bc69c9018d3c4c2e0fa3e6f1d3d26fa9f12c0a411ee236bd35d10b612f4",
+          "merge_replay.py": "1672ab96278e164ac285ffd52bbd06b6ff8c199875b2537a98417149e39d2f48"
+        },
+        "policies": {
+          "zip_only": {
+            "policy": "zip_only",
+            "selected_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 95,
+                "substitutions": 20,
+                "deletions": 74,
+                "insertions": 1,
+                "reference_characters": 519,
+                "value": 0.18304431599229287
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 1
+            },
+            "decision_reasons": {
+              "streaming_only": 1
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 1,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 283,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 0,
+            "trace_first_visible_from_source_start_s": {
+              "n": 1,
+              "mean": 0.838808187,
+              "p50": null,
+              "p95": null,
+              "max": 0.838808187
+            },
+            "no_visible_sources": 0,
+            "trace_selection_from_file_end_s": {
+              "n": 1,
+              "mean": 0.10004381699999954,
+              "p50": null,
+              "p95": null,
+              "max": 0.10004381699999954
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 1,
+              "mean": 0.0,
+              "p50": null,
+              "p95": null,
+              "max": 0.0
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          },
+          "refine_complete": {
+            "policy": "refine_complete",
+            "selected_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 95,
+                "substitutions": 20,
+                "deletions": 74,
+                "insertions": 1,
+                "reference_characters": 519,
+                "value": 0.18304431599229287
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 95,
+                "substitutions": 20,
+                "deletions": 74,
+                "insertions": 1,
+                "reference_characters": 519,
+                "value": 0.18304431599229287
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "refine": 1
+            },
+            "decision_reasons": {
+              "complete_refine": 1
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 0,
+              "worsened_sources": 1,
+              "error_delta": 37,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 284,
+            "normalized_suffix_rewrite_events": 1,
+            "normalized_removed_suffix_characters": 508,
+            "normalized_final_corrections": 1,
+            "trace_first_visible_from_source_start_s": {
+              "n": 1,
+              "mean": 0.838808187,
+              "p50": null,
+              "p95": null,
+              "max": 0.838808187
+            },
+            "no_visible_sources": 0,
+            "trace_selection_from_file_end_s": {
+              "n": 1,
+              "mean": 0.10004381699999954,
+              "p50": null,
+              "p95": null,
+              "max": 0.10004381699999954
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 1,
+              "mean": 0.0,
+              "p50": null,
+              "p95": null,
+              "max": 0.0
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 1,
+              "mean": 115.394922103,
+              "p50": null,
+              "p95": null,
+              "max": 115.394922103
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          },
+          "agreement_only": {
+            "policy": "agreement_only",
+            "selected_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 95,
+                "substitutions": 20,
+                "deletions": 74,
+                "insertions": 1,
+                "reference_characters": 519,
+                "value": 0.18304431599229287
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 1
+            },
+            "decision_reasons": {
+              "normalized_disagreement": 1
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 1,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 283,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 0,
+            "trace_first_visible_from_source_start_s": {
+              "n": 1,
+              "mean": 0.838808187,
+              "p50": null,
+              "p95": null,
+              "max": 0.838808187
+            },
+            "no_visible_sources": 0,
+            "trace_selection_from_file_end_s": {
+              "n": 1,
+              "mean": 0.10004381699999954,
+              "p50": null,
+              "p95": null,
+              "max": 0.10004381699999954
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 1,
+              "mean": 0.0,
+              "p50": null,
+              "p95": null,
+              "max": 0.0
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          }
+        },
+        "scope_ko": "실제 추론 로그를 이용한 정답 비의존 파일 ID 단위 선택 정책의 모델 없는 재생. 새 native ASR/1배속 입력/실제 UI 지연 측정이 아님."
+      }
+    },
+    {
+      "id": "speech/synthetic-120/vad0",
+      "input": "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0",
+      "summary_sha256": "e4afcdb84e411e72511b825f122383cbfa1f5e7b386f28687fde9bfce8ca1385",
+      "source_count": 1,
+      "replay_summary": {
+        "schema": "merge-trace-replay-v1",
+        "session_id": "54dcea5b87754078fcbcbd7f0c915955df7e710951dc38f383c86fc661d96bd6",
+        "native_source_commit": "79d447ab1ac264534416ed7adc05fad6b5d6e79a",
+        "native_refine_policy": "vad0",
+        "source_count": 1,
+        "events": 1293,
+        "input_files_sha256": {
+          "summary.json": "e4afcdb84e411e72511b825f122383cbfa1f5e7b386f28687fde9bfce8ca1385",
+          "worker.json": "54dcea5b87754078fcbcbd7f0c915955df7e710951dc38f383c86fc661d96bd6",
+          "track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+          "zip-events.jsonl": "40ea7aa32718c24ba24ae6ab00e550089e61591f87fcf243acae6cf4d4a27a23",
+          "refine-jobs.jsonl": "a336a946ca6a01bfe982aa2fc25b674e5548c155eb9a13e083abeb26d04d9f77",
+          "refine-results.jsonl": "f2c53009f9905aeda609ab789efc3fb4a07e3cb0beb07e0a2d9d89f6ced7fff7"
+        },
+        "code_sha256": {
+          "merging.py": "25d02bc69c9018d3c4c2e0fa3e6f1d3d26fa9f12c0a411ee236bd35d10b612f4",
+          "merge_replay.py": "1672ab96278e164ac285ffd52bbd06b6ff8c199875b2537a98417149e39d2f48"
+        },
+        "policies": {
+          "zip_only": {
+            "policy": "zip_only",
+            "selected_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 32,
+                "substitutions": 24,
+                "deletions": 4,
+                "insertions": 4,
+                "reference_characters": 519,
+                "value": 0.06165703275529865
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 1
+            },
+            "decision_reasons": {
+              "streaming_only": 1
+            },
+            "ignored_events": {
+              "source_sealed": 1
+            },
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 1,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 283,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 0,
+            "trace_first_visible_from_source_start_s": {
+              "n": 1,
+              "mean": 0.843699091,
+              "p50": null,
+              "p95": null,
+              "max": 0.843699091
+            },
+            "no_visible_sources": 0,
+            "trace_selection_from_file_end_s": {
+              "n": 1,
+              "mean": 0.11855050399999811,
+              "p50": null,
+              "p95": null,
+              "max": 0.11855050399999811
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 1,
+              "mean": 0.0,
+              "p50": null,
+              "p95": null,
+              "max": 0.0
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          },
+          "refine_complete": {
+            "policy": "refine_complete",
+            "selected_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 32,
+                "substitutions": 24,
+                "deletions": 4,
+                "insertions": 4,
+                "reference_characters": 519,
+                "value": 0.06165703275529865
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 32,
+                "substitutions": 24,
+                "deletions": 4,
+                "insertions": 4,
+                "reference_characters": 519,
+                "value": 0.06165703275529865
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "refine": 1
+            },
+            "decision_reasons": {
+              "complete_refine": 1
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 1,
+              "tied_sources": 0,
+              "worsened_sources": 0,
+              "error_delta": -26,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 284,
+            "normalized_suffix_rewrite_events": 1,
+            "normalized_removed_suffix_characters": 508,
+            "normalized_final_corrections": 1,
+            "trace_first_visible_from_source_start_s": {
+              "n": 1,
+              "mean": 0.843699091,
+              "p50": null,
+              "p95": null,
+              "max": 0.843699091
+            },
+            "no_visible_sources": 0,
+            "trace_selection_from_file_end_s": {
+              "n": 1,
+              "mean": 0.2816490639999927,
+              "p50": null,
+              "p95": null,
+              "max": 0.2816490639999927
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 1,
+              "mean": 0.16309856,
+              "p50": null,
+              "p95": null,
+              "max": 0.16309856
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 1,
+              "mean": 117.604105102,
+              "p50": null,
+              "p95": null,
+              "max": 117.604105102
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          },
+          "agreement_only": {
+            "policy": "agreement_only",
+            "selected_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 32,
+                "substitutions": 24,
+                "deletions": 4,
+                "insertions": 4,
+                "reference_characters": 519,
+                "value": 0.06165703275529865
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 1
+            },
+            "decision_reasons": {
+              "normalized_disagreement": 1
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 1,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 283,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 0,
+            "trace_first_visible_from_source_start_s": {
+              "n": 1,
+              "mean": 0.843699091,
+              "p50": null,
+              "p95": null,
+              "max": 0.843699091
+            },
+            "no_visible_sources": 0,
+            "trace_selection_from_file_end_s": {
+              "n": 1,
+              "mean": 0.2816490639999927,
+              "p50": null,
+              "p95": null,
+              "max": 0.2816490639999927
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 1,
+              "mean": 0.16309856,
+              "p50": null,
+              "p95": null,
+              "max": 0.16309856
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          }
+        },
+        "scope_ko": "실제 추론 로그를 이용한 정답 비의존 파일 ID 단위 선택 정책의 모델 없는 재생. 새 native ASR/1배속 입력/실제 UI 지연 측정이 아님."
+      }
+    },
+    {
+      "id": "speech/synthetic-120/vad-continuation200",
+      "input": "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200",
+      "summary_sha256": "79983bd7ce5f285163f70a83540e3e619307dafc13021ecae94fcaa2bacb0dc8",
+      "source_count": 1,
+      "replay_summary": {
+        "schema": "merge-trace-replay-v1",
+        "session_id": "1938e5b7f60d45c462150ddf20e4a0b056abd9ed31d5915133194dde43d6eded",
+        "native_source_commit": "79d447ab1ac264534416ed7adc05fad6b5d6e79a",
+        "native_refine_policy": "vad-continuation200",
+        "source_count": 1,
+        "events": 1293,
+        "input_files_sha256": {
+          "summary.json": "79983bd7ce5f285163f70a83540e3e619307dafc13021ecae94fcaa2bacb0dc8",
+          "worker.json": "1938e5b7f60d45c462150ddf20e4a0b056abd9ed31d5915133194dde43d6eded",
+          "track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+          "zip-events.jsonl": "2147a6b10b4b25860e718371f2af205cc936d701681ce19b71048197cb663e00",
+          "refine-jobs.jsonl": "81a3e82e3f2588ecfc9e7a156ee160a27629b5f1c59f47e12dc1e3caeb0e69c8",
+          "refine-results.jsonl": "270291c7a45b0408fc8b4702a8305f584e11e5f7388596a2557f80e4567f3e5c"
+        },
+        "code_sha256": {
+          "merging.py": "25d02bc69c9018d3c4c2e0fa3e6f1d3d26fa9f12c0a411ee236bd35d10b612f4",
+          "merge_replay.py": "1672ab96278e164ac285ffd52bbd06b6ff8c199875b2537a98417149e39d2f48"
+        },
+        "policies": {
+          "zip_only": {
+            "policy": "zip_only",
+            "selected_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 31,
+                "substitutions": 22,
+                "deletions": 3,
+                "insertions": 6,
+                "reference_characters": 519,
+                "value": 0.05973025048169557
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 1
+            },
+            "decision_reasons": {
+              "streaming_only": 1
+            },
+            "ignored_events": {
+              "source_sealed": 1
+            },
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 1,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 283,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 0,
+            "trace_first_visible_from_source_start_s": {
+              "n": 1,
+              "mean": 0.842830134,
+              "p50": null,
+              "p95": null,
+              "max": 0.842830134
+            },
+            "no_visible_sources": 0,
+            "trace_selection_from_file_end_s": {
+              "n": 1,
+              "mean": 0.11471146399999554,
+              "p50": null,
+              "p95": null,
+              "max": 0.11471146399999554
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 1,
+              "mean": 0.0,
+              "p50": null,
+              "p95": null,
+              "max": 0.0
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          },
+          "refine_complete": {
+            "policy": "refine_complete",
+            "selected_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 31,
+                "substitutions": 22,
+                "deletions": 3,
+                "insertions": 6,
+                "reference_characters": 519,
+                "value": 0.05973025048169557
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 31,
+                "substitutions": 22,
+                "deletions": 3,
+                "insertions": 6,
+                "reference_characters": 519,
+                "value": 0.05973025048169557
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "refine": 1
+            },
+            "decision_reasons": {
+              "complete_refine": 1
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 1,
+              "tied_sources": 0,
+              "worsened_sources": 0,
+              "error_delta": -27,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 284,
+            "normalized_suffix_rewrite_events": 1,
+            "normalized_removed_suffix_characters": 508,
+            "normalized_final_corrections": 1,
+            "trace_first_visible_from_source_start_s": {
+              "n": 1,
+              "mean": 0.842830134,
+              "p50": null,
+              "p95": null,
+              "max": 0.842830134
+            },
+            "no_visible_sources": 0,
+            "trace_selection_from_file_end_s": {
+              "n": 1,
+              "mean": 0.25344227599998703,
+              "p50": null,
+              "p95": null,
+              "max": 0.25344227599998703
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 1,
+              "mean": 0.138730812,
+              "p50": null,
+              "p95": null,
+              "max": 0.138730812
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 1,
+              "mean": 117.564839216,
+              "p50": null,
+              "p95": null,
+              "max": 117.564839216
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          },
+          "agreement_only": {
+            "policy": "agreement_only",
+            "selected_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 31,
+                "substitutions": 22,
+                "deletions": 3,
+                "insertions": 6,
+                "reference_characters": 519,
+                "value": 0.05973025048169557
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 1
+            },
+            "decision_reasons": {
+              "normalized_disagreement": 1
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 1,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 283,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 0,
+            "trace_first_visible_from_source_start_s": {
+              "n": 1,
+              "mean": 0.842830134,
+              "p50": null,
+              "p95": null,
+              "max": 0.842830134
+            },
+            "no_visible_sources": 0,
+            "trace_selection_from_file_end_s": {
+              "n": 1,
+              "mean": 0.25344227599998703,
+              "p50": null,
+              "p95": null,
+              "max": 0.25344227599998703
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 1,
+              "mean": 0.138730812,
+              "p50": null,
+              "p95": null,
+              "max": 0.138730812
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          }
+        },
+        "scope_ko": "실제 추론 로그를 이용한 정답 비의존 파일 ID 단위 선택 정책의 모델 없는 재생. 새 native ASR/1배속 입력/실제 UI 지연 측정이 아님."
+      }
+    },
+    {
+      "id": "silence/digital-silence/fixed5",
+      "input": "results/preflight/m31-online-silence-20261103-01/digital-silence/fixed5",
+      "summary_sha256": "f8bd82ae7cadc5f93d0e87866ab5b6bd9d01d3fac04cacd8b0fc448ee8d255ae",
+      "source_count": 6,
+      "replay_summary": {
+        "schema": "merge-trace-replay-v1",
+        "session_id": "1ce546612dc2b4d8cb2980e124f45ccbacedad60351675c6b9366f32a7d57c28",
+        "native_source_commit": "79d447ab1ac264534416ed7adc05fad6b5d6e79a",
+        "native_refine_policy": "fixed5",
+        "source_count": 6,
+        "events": 173,
+        "input_files_sha256": {
+          "summary.json": "f8bd82ae7cadc5f93d0e87866ab5b6bd9d01d3fac04cacd8b0fc448ee8d255ae",
+          "worker.json": "1ce546612dc2b4d8cb2980e124f45ccbacedad60351675c6b9366f32a7d57c28",
+          "track.json": "c96be17e61d2adea333bb1970ec63f3bb29eff162ea98891913001abca579f95",
+          "zip-events.jsonl": "bc8d043893e8a9e55c3c1a7a19928f18ac24756bd61d9216663a83634e636f06",
+          "refine-jobs.jsonl": "aa5a58f3e33797ea1a30ef25f387cc1a0589e0297a774dbf1bf83d036536f984",
+          "refine-results.jsonl": "63d1132e78dd7175419138d9c51b8f83ddf8bb15e1ac16b435ed48becf665d6e"
+        },
+        "code_sha256": {
+          "merging.py": "25d02bc69c9018d3c4c2e0fa3e6f1d3d26fa9f12c0a411ee236bd35d10b612f4",
+          "merge_replay.py": "1672ab96278e164ac285ffd52bbd06b6ff8c199875b2537a98417149e39d2f48"
+        },
+        "policies": {
+          "zip_only": {
+            "policy": "zip_only",
+            "selected_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 4
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 6
+            },
+            "decision_reasons": {
+              "streaming_only": 6
+            },
+            "ignored_events": {
+              "source_sealed": 3
+            },
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 0,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 0,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 0,
+            "trace_first_visible_from_source_start_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "no_visible_sources": 6,
+            "trace_selection_from_file_end_s": {
+              "n": 6,
+              "mean": 0.1752047478333335,
+              "p50": 0.18304057900000004,
+              "p95": 0.18793423799999998,
+              "max": 0.18793423799999998
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 6,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          },
+          "refine_complete": {
+            "policy": "refine_complete",
+            "selected_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 4
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 4
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 2,
+              "refine": 4
+            },
+            "decision_reasons": {
+              "empty_refine": 2,
+              "complete_refine": 4
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 0,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 4,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 4,
+            "trace_first_visible_from_source_start_s": {
+              "n": 4,
+              "mean": 3.87396632775,
+              "p50": 1.192624478,
+              "p95": 10.319369308999999,
+              "max": 10.319369308999999
+            },
+            "no_visible_sources": 2,
+            "trace_selection_from_file_end_s": {
+              "n": 6,
+              "mean": 0.22386270166666675,
+              "p50": 0.185108367,
+              "p95": 0.3193693090000007,
+              "max": 0.3193693090000007
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 6,
+              "mean": 0.04865795383333333,
+              "p50": 0.0,
+              "p95": 0.171534905,
+              "max": 0.171534905
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 4,
+              "mean": 1.239818185,
+              "p50": 0.0,
+              "p95": 4.934713639,
+              "max": 4.934713639
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          },
+          "agreement_only": {
+            "policy": "agreement_only",
+            "selected_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 4
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 6
+            },
+            "decision_reasons": {
+              "empty_refine": 2,
+              "normalized_disagreement": 4
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 0,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 0,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 0,
+            "trace_first_visible_from_source_start_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "no_visible_sources": 6,
+            "trace_selection_from_file_end_s": {
+              "n": 6,
+              "mean": 0.22386270166666675,
+              "p50": 0.185108367,
+              "p95": 0.3193693090000007,
+              "max": 0.3193693090000007
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 6,
+              "mean": 0.04865795383333333,
+              "p50": 0.0,
+              "p95": 0.171534905,
+              "max": 0.171534905
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          }
+        },
+        "scope_ko": "실제 추론 로그를 이용한 정답 비의존 파일 ID 단위 선택 정책의 모델 없는 재생. 새 native ASR/1배속 입력/실제 UI 지연 측정이 아님."
+      }
+    },
+    {
+      "id": "silence/digital-silence/vad0",
+      "input": "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0",
+      "summary_sha256": "0c47fb421e7885e22a144a385347f0fb56b936af836cdf2f978d3594dfb30fdb",
+      "source_count": 6,
+      "replay_summary": {
+        "schema": "merge-trace-replay-v1",
+        "session_id": "de310dc6cd4f319c6998032623383b1a40a2ea9937feebcde5d451e72bc4fa3e",
+        "native_source_commit": "79d447ab1ac264534416ed7adc05fad6b5d6e79a",
+        "native_refine_policy": "vad0",
+        "source_count": 6,
+        "events": 159,
+        "input_files_sha256": {
+          "summary.json": "0c47fb421e7885e22a144a385347f0fb56b936af836cdf2f978d3594dfb30fdb",
+          "worker.json": "de310dc6cd4f319c6998032623383b1a40a2ea9937feebcde5d451e72bc4fa3e",
+          "track.json": "c96be17e61d2adea333bb1970ec63f3bb29eff162ea98891913001abca579f95",
+          "zip-events.jsonl": "0138c29723581c798fa41a01b6b985f6370e7e5bfee8fa5543c7b3d5300531e6",
+          "refine-jobs.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "refine-results.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "code_sha256": {
+          "merging.py": "25d02bc69c9018d3c4c2e0fa3e6f1d3d26fa9f12c0a411ee236bd35d10b612f4",
+          "merge_replay.py": "1672ab96278e164ac285ffd52bbd06b6ff8c199875b2537a98417149e39d2f48"
+        },
+        "policies": {
+          "zip_only": {
+            "policy": "zip_only",
+            "selected_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 6
+            },
+            "decision_reasons": {
+              "streaming_only": 6
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 0,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 0,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 0,
+            "trace_first_visible_from_source_start_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "no_visible_sources": 6,
+            "trace_selection_from_file_end_s": {
+              "n": 6,
+              "mean": 0.1609774248333335,
+              "p50": 0.171590833,
+              "p95": 0.17247414699999997,
+              "max": 0.17247414699999997
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 6,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          },
+          "refine_complete": {
+            "policy": "refine_complete",
+            "selected_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 6
+            },
+            "decision_reasons": {
+              "no_refine_jobs": 6
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 0,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 0,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 0,
+            "trace_first_visible_from_source_start_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "no_visible_sources": 6,
+            "trace_selection_from_file_end_s": {
+              "n": 6,
+              "mean": 0.1609774248333335,
+              "p50": 0.171590833,
+              "p95": 0.17247414699999997,
+              "max": 0.17247414699999997
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 6,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          },
+          "agreement_only": {
+            "policy": "agreement_only",
+            "selected_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 6
+            },
+            "decision_reasons": {
+              "no_refine_jobs": 6
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 0,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 0,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 0,
+            "trace_first_visible_from_source_start_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "no_visible_sources": 6,
+            "trace_selection_from_file_end_s": {
+              "n": 6,
+              "mean": 0.1609774248333335,
+              "p50": 0.171590833,
+              "p95": 0.17247414699999997,
+              "max": 0.17247414699999997
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 6,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          }
+        },
+        "scope_ko": "실제 추론 로그를 이용한 정답 비의존 파일 ID 단위 선택 정책의 모델 없는 재생. 새 native ASR/1배속 입력/실제 UI 지연 측정이 아님."
+      }
+    },
+    {
+      "id": "silence/digital-silence/vad-continuation200",
+      "input": "results/preflight/m31-online-silence-20261103-01/digital-silence/vad-continuation200",
+      "summary_sha256": "a04c2d8877e4e5ab1b7365fe801dd6ce4a5b2ed06b032de8cdfeaa394d3b22e1",
+      "source_count": 6,
+      "replay_summary": {
+        "schema": "merge-trace-replay-v1",
+        "session_id": "d870f0b1e93e807c2a1a28e1b4baaddd4dc731d47f791176a0dfc0523e278949",
+        "native_source_commit": "79d447ab1ac264534416ed7adc05fad6b5d6e79a",
+        "native_refine_policy": "vad-continuation200",
+        "source_count": 6,
+        "events": 159,
+        "input_files_sha256": {
+          "summary.json": "a04c2d8877e4e5ab1b7365fe801dd6ce4a5b2ed06b032de8cdfeaa394d3b22e1",
+          "worker.json": "d870f0b1e93e807c2a1a28e1b4baaddd4dc731d47f791176a0dfc0523e278949",
+          "track.json": "c96be17e61d2adea333bb1970ec63f3bb29eff162ea98891913001abca579f95",
+          "zip-events.jsonl": "a1c0dee55103c3f1205a747831f4a22814350e78d526a105b2c0c0b1b37b0d09",
+          "refine-jobs.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "refine-results.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "code_sha256": {
+          "merging.py": "25d02bc69c9018d3c4c2e0fa3e6f1d3d26fa9f12c0a411ee236bd35d10b612f4",
+          "merge_replay.py": "1672ab96278e164ac285ffd52bbd06b6ff8c199875b2537a98417149e39d2f48"
+        },
+        "policies": {
+          "zip_only": {
+            "policy": "zip_only",
+            "selected_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 6
+            },
+            "decision_reasons": {
+              "streaming_only": 6
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 0,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 0,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 0,
+            "trace_first_visible_from_source_start_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "no_visible_sources": 6,
+            "trace_selection_from_file_end_s": {
+              "n": 6,
+              "mean": 0.1623683073333335,
+              "p50": 0.17254376800000004,
+              "p95": 0.20313859399999945,
+              "max": 0.20313859399999945
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 6,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          },
+          "refine_complete": {
+            "policy": "refine_complete",
+            "selected_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 6
+            },
+            "decision_reasons": {
+              "no_refine_jobs": 6
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 0,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 0,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 0,
+            "trace_first_visible_from_source_start_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "no_visible_sources": 6,
+            "trace_selection_from_file_end_s": {
+              "n": 6,
+              "mean": 0.1623683073333335,
+              "p50": 0.17254376800000004,
+              "p95": 0.20313859399999945,
+              "max": 0.20313859399999945
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 6,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          },
+          "agreement_only": {
+            "policy": "agreement_only",
+            "selected_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "refine_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "selection_counts": {
+              "zip": 6
+            },
+            "decision_reasons": {
+              "no_refine_jobs": 6
+            },
+            "ignored_events": {},
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 0,
+              "worsened_sources": 0,
+              "error_delta": 0,
+              "scope": "nonempty_references_only"
+            },
+            "visible_updates": 0,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "normalized_final_corrections": 0,
+            "trace_first_visible_from_source_start_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "no_visible_sources": 6,
+            "trace_selection_from_file_end_s": {
+              "n": 6,
+              "mean": 0.1623683073333335,
+              "p50": 0.17254376800000004,
+              "p95": 0.20313859399999945,
+              "max": 0.20313859399999945
+            },
+            "trace_wait_after_zip_final_s": {
+              "n": 6,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "trace_oldest_refine_ready_to_selection_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "timing_scope_ko": "저장된 부분 반환/Zip 최종/child ended_ns를 가용성 대리 시각으로 재생. 실제 parent 수신·병합 실행·UI/마이크·단어 정렬 지연은 미측정. 파일 종료를 기다리는 선택이며 VAD 부분 문자열 교체가 아님.",
+            "stability_scope_ko": "원문 변경과 정규화 공통 접두사 뒤 지운 접미부를 별도 집계. 제거 문자수는 Levenshtein 오류수나 실제 렌더링 비용이 아님.",
+            "unmeasured": {
+              "live_merge_dispatch_s": null,
+              "ui_display_s": null,
+              "aligned_recognition_latency_s": null,
+              "per_vad_partial_replacement_cer": null
+            }
+          }
+        },
+        "scope_ko": "실제 추론 로그를 이용한 정답 비의존 파일 ID 단위 선택 정책의 모델 없는 재생. 새 native ASR/1배속 입력/실제 UI 지연 측정이 아님."
+      }
+    }
+  ],
+  "validation": {
+    "tests": {
+      "host": {
+        "passed": 246,
+        "wall_s": 29.324,
+        "sha256": "99aad8d5451dd575911163b198c6a8decced1b376efd8c6c2347d86a34cd5a85",
+        "scope_ko": "모의/원시 재집계 단위 테스트. 새 실제 ASR 추론 성공 증거가 아님."
+      },
+      "rp5": {
+        "passed": 246,
+        "wall_s": 51.044,
+        "sha256": "874edea78ef8af58a52cc936cc271df51cfc5c179f14903cd8d0f5fd3b761944",
+        "scope_ko": "모의/원시 재집계 단위 테스트. 새 실제 ASR 추론 성공 증거가 아님."
+      }
+    },
+    "semantic_files_sha256": {
+      "speech/kss-dev50/fixed5/summary.json": "7f693951e1dca3ef67f88659cff1f871d9cc32e39dd9bb83e71a0e84cc3bad03",
+      "speech/kss-dev50/fixed5/refine_complete/scores.jsonl": "a415b702ce8e759e615297be110ec3cbdfb74f12cbe0a439f5349e928a90d63a",
+      "speech/kss-dev50/fixed5/refine_complete/decisions.jsonl": "8b676cb38a2417627442dc933aec1c2e5638d499a790611a98e79b8e53dec288",
+      "speech/kss-dev50/fixed5/refine_complete/timeline.jsonl": "fca9c399302634070609b4792433c555bd1f22510ae9e343e1b2ed90caf66f50",
+      "speech/kss-dev50/fixed5/refine_complete/summary.json": "7aa7a31f845c3f5c63cf31e8813139ea5d38eabe6a0f3a29d6b9cf34b72d9cc1",
+      "speech/kss-dev50/fixed5/zip_only/scores.jsonl": "5c9954894702b2011d7e932c7b2e6f4966f43c18a7d9c72311b2c9d982c50dd6",
+      "speech/kss-dev50/fixed5/zip_only/decisions.jsonl": "19db63c1b7bc364377c62831114b62aa537ce60ae7510cb01bba970e7cfb9f2f",
+      "speech/kss-dev50/fixed5/zip_only/timeline.jsonl": "2f6c3c8d517df1284201d78451c88afe291aa041d0ead32ef2cf072bc73f3517",
+      "speech/kss-dev50/fixed5/zip_only/summary.json": "a6eaf1c8198fca05d59a7e58bc200a48b55b79240e1143d7b50613654515746d",
+      "speech/kss-dev50/fixed5/agreement_only/scores.jsonl": "5c9954894702b2011d7e932c7b2e6f4966f43c18a7d9c72311b2c9d982c50dd6",
+      "speech/kss-dev50/fixed5/agreement_only/decisions.jsonl": "b47c83a2555f570c979ff4ae232c36640c1b895723d9d83c1c506088880cb04a",
+      "speech/kss-dev50/fixed5/agreement_only/timeline.jsonl": "f0f273ff8c3479f4bd1ea05b523f8aae5f90c024d3cf76681f9a03a95a4ab2cd",
+      "speech/kss-dev50/fixed5/agreement_only/summary.json": "01d99bbf485506090e09f89921c244ee62dbb0e3248e6705cea9d343403595ec",
+      "speech/kss-dev50/vad0/summary.json": "9a7536e9a51497a40f82c9034b6b76eb59143894b9a28fb4bd1b3656f15e13b6",
+      "speech/kss-dev50/vad0/refine_complete/scores.jsonl": "fe0e356f7cd9477b80a4a6bd8c0d20dcfc65af5ca97c812334df8ea78cf10b1e",
+      "speech/kss-dev50/vad0/refine_complete/decisions.jsonl": "b15018c03292d140541ecd1848e79c35c9894a60e4e2d28e12f8eba60941c504",
+      "speech/kss-dev50/vad0/refine_complete/timeline.jsonl": "56bfbfb5e2be12f4ccb1b760b890d4f9d94253ddec01e7ffe7ec57b2a2921ded",
+      "speech/kss-dev50/vad0/refine_complete/summary.json": "362a11888542159c9eec5f015a7b0e93d50f1f5c2fdab7bc92fac4ca4017c762",
+      "speech/kss-dev50/vad0/zip_only/scores.jsonl": "5c9954894702b2011d7e932c7b2e6f4966f43c18a7d9c72311b2c9d982c50dd6",
+      "speech/kss-dev50/vad0/zip_only/decisions.jsonl": "16adb467032c7297a04eb50c37c5d85d679c71cf6c0ffb396a3ef89322b5001f",
+      "speech/kss-dev50/vad0/zip_only/timeline.jsonl": "88f1bda5113acb84d62a0aa2f2309129d868f53902242a82832862fecca65a77",
+      "speech/kss-dev50/vad0/zip_only/summary.json": "aaebb764b1ede26688d24f2565ef659ab27e6b09eee99aedb40e169f0cefb02d",
+      "speech/kss-dev50/vad0/agreement_only/scores.jsonl": "5c9954894702b2011d7e932c7b2e6f4966f43c18a7d9c72311b2c9d982c50dd6",
+      "speech/kss-dev50/vad0/agreement_only/decisions.jsonl": "d649c3cc60f3ded4555e07a0cc90aa252c6eb6ad6fb21fba8f52079a98333ac0",
+      "speech/kss-dev50/vad0/agreement_only/timeline.jsonl": "060a378c4b74f683b23752238cbff9aea9b454baeb624272c774e923bc4f616c",
+      "speech/kss-dev50/vad0/agreement_only/summary.json": "c89142d90db85374a808dd5374c8d26bdcac3c66054089b15bf4ec7b376a2922",
+      "speech/kss-dev50/vad-continuation200/summary.json": "ac2b0af9413a83f4bca23d780b921040be3a950899a6c2f1d735d2da1ed330b2",
+      "speech/kss-dev50/vad-continuation200/refine_complete/scores.jsonl": "fe0e356f7cd9477b80a4a6bd8c0d20dcfc65af5ca97c812334df8ea78cf10b1e",
+      "speech/kss-dev50/vad-continuation200/refine_complete/decisions.jsonl": "8190b442a78a12d0f56527321fc880b9c8bd95215ba67e61b96474fb1d51de90",
+      "speech/kss-dev50/vad-continuation200/refine_complete/timeline.jsonl": "060dc18dc05a5d1f93615c52086b05d3a6f0a396c39d33fe4a55ff467661f899",
+      "speech/kss-dev50/vad-continuation200/refine_complete/summary.json": "01421599e0f01c5bb1602333f12bdd5d798235ca71264972c2082008b599faaf",
+      "speech/kss-dev50/vad-continuation200/zip_only/scores.jsonl": "5c9954894702b2011d7e932c7b2e6f4966f43c18a7d9c72311b2c9d982c50dd6",
+      "speech/kss-dev50/vad-continuation200/zip_only/decisions.jsonl": "2714aa57ea17b7cf9ec96c85f238ea943839258ae976eae51b7123104a5fda11",
+      "speech/kss-dev50/vad-continuation200/zip_only/timeline.jsonl": "f4c40248aa65c9d7174cef0afa901ed0db84efa27bca5c73ef8c238f7cd3ae18",
+      "speech/kss-dev50/vad-continuation200/zip_only/summary.json": "b36a756538e778226e3ed689198eeb42d084777a748cace4b0bec31393506195",
+      "speech/kss-dev50/vad-continuation200/agreement_only/scores.jsonl": "5c9954894702b2011d7e932c7b2e6f4966f43c18a7d9c72311b2c9d982c50dd6",
+      "speech/kss-dev50/vad-continuation200/agreement_only/decisions.jsonl": "23238e3704192454d9bf091da426b5b183a4d40d7143d7afaebc368c95849125",
+      "speech/kss-dev50/vad-continuation200/agreement_only/timeline.jsonl": "ac842bb8fd4b75304a0fd949d473557b846789c8137343d60617d9dc379e262a",
+      "speech/kss-dev50/vad-continuation200/agreement_only/summary.json": "4d6a97d5592b5c4ca269f459ff0b035b54daeaab46308cc2a2ab864d5071099f",
+      "speech/synthetic-120/fixed5/summary.json": "f7308330eae4ab525dd2eb58e661f5b2f5d4ad1ecb14273f2d3ad9b75e55dc59",
+      "speech/synthetic-120/fixed5/refine_complete/scores.jsonl": "dc0bf5989976a3dfdbff398ac94b7950b1c8d829bbcbf5ed4fcde3ce692b1b2d",
+      "speech/synthetic-120/fixed5/refine_complete/decisions.jsonl": "d56c7f8eb2fc9420d0bd9210b87f0d6060a9f5bd6e44028508d6ddfcd0612e4b",
+      "speech/synthetic-120/fixed5/refine_complete/timeline.jsonl": "0f0289944daf6fb96b9b7ee383f77b5441464dfc3c0878efd79cefef950ba569",
+      "speech/synthetic-120/fixed5/refine_complete/summary.json": "dd41c5cd5d7dad27df27cc4e138a15eec4da62a00190176ee951d7f70599aa26",
+      "speech/synthetic-120/fixed5/zip_only/scores.jsonl": "c95a80dc4312f1d4e4f6c5dd3d27ef3219f1faf87603e232139f70d58ba7d639",
+      "speech/synthetic-120/fixed5/zip_only/decisions.jsonl": "73b73d593bcdf361d5a41a18d4cddcac86208ecccdd3f80a300a420c3674291b",
+      "speech/synthetic-120/fixed5/zip_only/timeline.jsonl": "033aac4b743964f2041ad04d7c61c05351e5e429583f9f743234703cc9ddbb79",
+      "speech/synthetic-120/fixed5/zip_only/summary.json": "a5fdd0b2d1fd186bd1b1c8c533bfc338670b70a5724149a37efd6be2845aa8ff",
+      "speech/synthetic-120/fixed5/agreement_only/scores.jsonl": "c95a80dc4312f1d4e4f6c5dd3d27ef3219f1faf87603e232139f70d58ba7d639",
+      "speech/synthetic-120/fixed5/agreement_only/decisions.jsonl": "3e5aa0e043c71af4436beb976927fb6effe55eb2c9f763cce26f76bce93c8a45",
+      "speech/synthetic-120/fixed5/agreement_only/timeline.jsonl": "a65c87159b0f9af195f4325086b8df0816de0483de1b058474f9e8457be18557",
+      "speech/synthetic-120/fixed5/agreement_only/summary.json": "21697c25a23d7ce5c0e5540ebf11c3040f45e8e547d050e1da9923c6e9498f92",
+      "speech/synthetic-120/vad0/summary.json": "4df55fd7bcfc5f575a47794ac5df399df9ccfe827bdcdcaf0ce5d7a84cbb59c4",
+      "speech/synthetic-120/vad0/refine_complete/scores.jsonl": "6326497728e86f8fead35ae350fa373901685fb7d15996aa13bcbd237186ee20",
+      "speech/synthetic-120/vad0/refine_complete/decisions.jsonl": "90b45aaccc463f6493108b1a1f864d457ffb423c779680a7eaec67a59dfdc01d",
+      "speech/synthetic-120/vad0/refine_complete/timeline.jsonl": "9b0609f3ae9978c8eedad0738ce30ae62fdbd48d8cf7a10f560e1243cc25d19f",
+      "speech/synthetic-120/vad0/refine_complete/summary.json": "94a3784561d5e68228ac30a741bae37717fdb8b4dab51e6012245ed776754482",
+      "speech/synthetic-120/vad0/zip_only/scores.jsonl": "c95a80dc4312f1d4e4f6c5dd3d27ef3219f1faf87603e232139f70d58ba7d639",
+      "speech/synthetic-120/vad0/zip_only/decisions.jsonl": "c3022ab6f91793c14ff60bb7a96cb5c7a39e53f6707938e5a733871d8211f0a8",
+      "speech/synthetic-120/vad0/zip_only/timeline.jsonl": "a61fa20f2f6f760dd03ed273b1721801551f386cc9705a3a14cdfe0066caa292",
+      "speech/synthetic-120/vad0/zip_only/summary.json": "dd9f440157b7a3e8a348b10b0aff43aef4b7056d35846c6679c8ef11ea17c156",
+      "speech/synthetic-120/vad0/agreement_only/scores.jsonl": "c95a80dc4312f1d4e4f6c5dd3d27ef3219f1faf87603e232139f70d58ba7d639",
+      "speech/synthetic-120/vad0/agreement_only/decisions.jsonl": "24a052247d7bad31d04811dda8758ed33d5c12d003a7e57976632001ee06a5a1",
+      "speech/synthetic-120/vad0/agreement_only/timeline.jsonl": "eaf2e014b178904a2d80cd13581c1ac0ae0016fbf0c24d57942964cbe048c16c",
+      "speech/synthetic-120/vad0/agreement_only/summary.json": "2129799fe7c10e1b01136a432fcef4836b19aa0b1b1af69a2ea0f300d5e85ff9",
+      "speech/synthetic-120/vad-continuation200/summary.json": "e1f43eaf3a8e502b63fbc815103b2247d8bd6d046a10ec4ea422add6ce6af224",
+      "speech/synthetic-120/vad-continuation200/refine_complete/scores.jsonl": "efb79851bb3e7df7113d26834808cdc0da8a9d6811fd3a322f6b14664ae82494",
+      "speech/synthetic-120/vad-continuation200/refine_complete/decisions.jsonl": "df9695872a89c20362cbebaffdd81fc134073f8dcaab3f697b3b02c2d55361fd",
+      "speech/synthetic-120/vad-continuation200/refine_complete/timeline.jsonl": "6ee89a08c8e7795325b4687d697d92298222b3994336fdc5a580d4b4e6a7d1dc",
+      "speech/synthetic-120/vad-continuation200/refine_complete/summary.json": "2d6a34273d34a43c297d91d78b73c71f9a866daa882291136906f907f68da566",
+      "speech/synthetic-120/vad-continuation200/zip_only/scores.jsonl": "c95a80dc4312f1d4e4f6c5dd3d27ef3219f1faf87603e232139f70d58ba7d639",
+      "speech/synthetic-120/vad-continuation200/zip_only/decisions.jsonl": "e12f41487c0848387d718444a4737a191decd50e90dc04d1fb58b06e6b7741c5",
+      "speech/synthetic-120/vad-continuation200/zip_only/timeline.jsonl": "018e0bd170c74c50e55ad79d1264cfe3a01cfd13461a20b79350c12757ae6327",
+      "speech/synthetic-120/vad-continuation200/zip_only/summary.json": "50c5cd7ba7452abae09a31c75b6ab4c9e8ff1ba383da0126e51ee21e4e0ff244",
+      "speech/synthetic-120/vad-continuation200/agreement_only/scores.jsonl": "c95a80dc4312f1d4e4f6c5dd3d27ef3219f1faf87603e232139f70d58ba7d639",
+      "speech/synthetic-120/vad-continuation200/agreement_only/decisions.jsonl": "b75070dd6fc434e356919ecf0f8a2154881eb3df242ad9f3336c6b64f026d1f9",
+      "speech/synthetic-120/vad-continuation200/agreement_only/timeline.jsonl": "2604adc8372f78380fb9efc83e8c116fd2bd0409732b5dec328232232942362f",
+      "speech/synthetic-120/vad-continuation200/agreement_only/summary.json": "67ca02823a16439628863d49a965978d53e0c45ce3ac02b41f9b58001618b701",
+      "silence/digital-silence/fixed5/summary.json": "6617e10674902cd6b525cd808dfdae88c8527b7267015e1864a3974a81b0d8f0",
+      "silence/digital-silence/fixed5/refine_complete/scores.jsonl": "f2fc0a9150a67be82c0a093442ca96fc53bf3a1aeea82fb8226cc26dd5a39c67",
+      "silence/digital-silence/fixed5/refine_complete/decisions.jsonl": "79c52222262cea76d915d1eac5e8cd170979c30a7632bc14b2d946d08edfde12",
+      "silence/digital-silence/fixed5/refine_complete/timeline.jsonl": "79c52222262cea76d915d1eac5e8cd170979c30a7632bc14b2d946d08edfde12",
+      "silence/digital-silence/fixed5/refine_complete/summary.json": "66e6c8e86ce3c21736bae8ab11aa78d9c8fedcfb2b3a1e9aff9fd6bf39b8d7ee",
+      "silence/digital-silence/fixed5/zip_only/scores.jsonl": "15d2e33160d6b50076fe277cb4903ec1d84f016c115a059255ffd6f8f60e654e",
+      "silence/digital-silence/fixed5/zip_only/decisions.jsonl": "7d3b17f48fad7ca9eecc0a0a96e1f3dd39eb1583e67ffe47f9a6cc7679974af7",
+      "silence/digital-silence/fixed5/zip_only/timeline.jsonl": "7d3b17f48fad7ca9eecc0a0a96e1f3dd39eb1583e67ffe47f9a6cc7679974af7",
+      "silence/digital-silence/fixed5/zip_only/summary.json": "b078d1c5aee15963951667aa8171d1a8c885d6bc022a2814c58c62a584fbbac6",
+      "silence/digital-silence/fixed5/agreement_only/scores.jsonl": "15d2e33160d6b50076fe277cb4903ec1d84f016c115a059255ffd6f8f60e654e",
+      "silence/digital-silence/fixed5/agreement_only/decisions.jsonl": "7e4ba11344fe4168d9cbca894dd865a792d5b8c39a1181344270f43060336ef9",
+      "silence/digital-silence/fixed5/agreement_only/timeline.jsonl": "7e4ba11344fe4168d9cbca894dd865a792d5b8c39a1181344270f43060336ef9",
+      "silence/digital-silence/fixed5/agreement_only/summary.json": "eddaa66c08d9a70f45111dbd13dcd89075a12deb4cf88b9c7f5a641430d567c3",
+      "silence/digital-silence/vad0/summary.json": "0f693f1f095aa6e519ca02e6165aff1f46dbae1d0f20fcd561d0231985afac36",
+      "silence/digital-silence/vad0/refine_complete/scores.jsonl": "15d2e33160d6b50076fe277cb4903ec1d84f016c115a059255ffd6f8f60e654e",
+      "silence/digital-silence/vad0/refine_complete/decisions.jsonl": "6a3ba6e8e180625c6bbd49eca685ac195473217580ed7170dfce53cd1ee90f2b",
+      "silence/digital-silence/vad0/refine_complete/timeline.jsonl": "6a3ba6e8e180625c6bbd49eca685ac195473217580ed7170dfce53cd1ee90f2b",
+      "silence/digital-silence/vad0/refine_complete/summary.json": "ab481ca0ee7edb4cf35d39e3cc12e3639b40a142ef5f4a68967ef5d68001e38f",
+      "silence/digital-silence/vad0/zip_only/scores.jsonl": "15d2e33160d6b50076fe277cb4903ec1d84f016c115a059255ffd6f8f60e654e",
+      "silence/digital-silence/vad0/zip_only/decisions.jsonl": "97cf910b79024923bc17e85b173e5a9e3046c22ce654134a3581a7464fc79c1a",
+      "silence/digital-silence/vad0/zip_only/timeline.jsonl": "97cf910b79024923bc17e85b173e5a9e3046c22ce654134a3581a7464fc79c1a",
+      "silence/digital-silence/vad0/zip_only/summary.json": "5016c7a6e6b6792640c7bf40ee6bc83c20906c0dfe08313d9fb9dd9c08e1e1ff",
+      "silence/digital-silence/vad0/agreement_only/scores.jsonl": "15d2e33160d6b50076fe277cb4903ec1d84f016c115a059255ffd6f8f60e654e",
+      "silence/digital-silence/vad0/agreement_only/decisions.jsonl": "6a3ba6e8e180625c6bbd49eca685ac195473217580ed7170dfce53cd1ee90f2b",
+      "silence/digital-silence/vad0/agreement_only/timeline.jsonl": "6a3ba6e8e180625c6bbd49eca685ac195473217580ed7170dfce53cd1ee90f2b",
+      "silence/digital-silence/vad0/agreement_only/summary.json": "a1cf596782cfdf2039464040b41c03e400c97a4b4e0c7f3e96c383962583f4c9",
+      "silence/digital-silence/vad-continuation200/summary.json": "a24f6f6ea413822f7a4f5ee941094730d1683e1e458f3c80e347a6e79aa79186",
+      "silence/digital-silence/vad-continuation200/refine_complete/scores.jsonl": "15d2e33160d6b50076fe277cb4903ec1d84f016c115a059255ffd6f8f60e654e",
+      "silence/digital-silence/vad-continuation200/refine_complete/decisions.jsonl": "9acdda9e84038ba388cee43d2bd3246933d86fdaa301c2811bf3c450d350d350",
+      "silence/digital-silence/vad-continuation200/refine_complete/timeline.jsonl": "9acdda9e84038ba388cee43d2bd3246933d86fdaa301c2811bf3c450d350d350",
+      "silence/digital-silence/vad-continuation200/refine_complete/summary.json": "91588571a5557deb5bbe5d0e0b6ba2ac1fce6d806b1717f53ceaec790432ac3e",
+      "silence/digital-silence/vad-continuation200/zip_only/scores.jsonl": "15d2e33160d6b50076fe277cb4903ec1d84f016c115a059255ffd6f8f60e654e",
+      "silence/digital-silence/vad-continuation200/zip_only/decisions.jsonl": "f7a22fbf31819dfb0b8d510b9844648b843108fce8c92838a729b5f7d235dd8a",
+      "silence/digital-silence/vad-continuation200/zip_only/timeline.jsonl": "f7a22fbf31819dfb0b8d510b9844648b843108fce8c92838a729b5f7d235dd8a",
+      "silence/digital-silence/vad-continuation200/zip_only/summary.json": "d529b80a8b546dda9c8214a2b95486703cfda546bee704b2b3c22585cab19c24",
+      "silence/digital-silence/vad-continuation200/agreement_only/scores.jsonl": "15d2e33160d6b50076fe277cb4903ec1d84f016c115a059255ffd6f8f60e654e",
+      "silence/digital-silence/vad-continuation200/agreement_only/decisions.jsonl": "9acdda9e84038ba388cee43d2bd3246933d86fdaa301c2811bf3c450d350d350",
+      "silence/digital-silence/vad-continuation200/agreement_only/timeline.jsonl": "9acdda9e84038ba388cee43d2bd3246933d86fdaa301c2811bf3c450d350d350",
+      "silence/digital-silence/vad-continuation200/agreement_only/summary.json": "7097ce3451192a4fd5eb764dd646fd35a486ff0ef88730e5dbd71f001599b135"
+    },
+    "mismatches": [],
+    "native_files_sha256": {
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/threads.jsonl": "be8355097e685283d0259d7c949367a1459671e4b4ece47d96b25461079fd0c1",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/execution.json": "65bf404f40bdc639050f42febf993cad4e66ce98cd33b8d3ff99bb0dab2ead6d",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/thermal.jsonl": "ac72b5ee1906aed70a21860481fa0a86db70865985ce896d1e9c2cc91375a0bd",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/refine-jobs.jsonl": "105df9ca811a341f814843c95a4d1f5f370f1cfdb96dd7c724a0d245a209d7f7",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/worker.json": "208a683e13e317650c2edd69713d3aebe24309bf66bc6de110e70f1ed0bbc8f3",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/process-resources.jsonl": "61fa413d83cfa8bc71e92ded26ede611bf6c718d98e1ce980a7bff7cdc0ebd31",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/thread-resources.jsonl": "471b4ab03f835b9b34396aedff7aa6e762351d905da68be374ffbdeb47ed0f73",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/refine-results.jsonl": "6c3f87d6ec570010515674eb9ab7bf03fb8cc9e0d6959a1029ab4d920bb797ed",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/zip-events.jsonl": "cb5dff1d3ee7b6c778607485edda7afdc7074a53de45c47c81a9625789af41f4",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/console.log": "b2641090d559991ec7f5c36a9b84b0d0b9d7c46af90c96e0aa259a1846694aec",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/zip-sources.jsonl": "03aacc90c81485caf26bc852872eb02b69dbd789d44eed9e42556073f9e080f8",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/admission.jsonl": "f196957c4ed347dc527c5ea6a2fcc3135d382e01de2407d1eb60888cd4c9e3a3",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/summary.json": "3a82f7167cd0f82fe4b820e30a2932da74b446ec9d64a27de9f26d5ca78dc084",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/capture/decoder.jsonl": "64d44dd390dc0fa0c73cf423548ab2b56425c10e7b5f04d499f7ee023ca64f2f",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/capture/producer.jsonl": "8d979c12cf0e39e51c0f532f0acd5ccd7a2124c40fd4b636769bcdf740293cf2",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/capture/backlog.jsonl": "60358d65718492643027f87de75107770e733fa535677fde9012a915d0ceadce",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/threads.jsonl": "e75924b97bda27efeb1931006a08cfe684d7e18110545e42000638dc1f22e333",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/execution.json": "f259d9a55188925d6124a01e5d151b1d4130afed6915eb56f8d5cf984b392568",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/thermal.jsonl": "a8bf0e5d25ab3ddc2490a57169ff76942eb08e5fdd77fec19d38c00e860cf9ee",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/refine-jobs.jsonl": "c82e99265e95a893fcc84bfcc1b091afb32d92fa38766bf87f83b9450086c00a",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/worker.json": "45382b598070f131f692906124f2f6221c59cb889931fd976154ba5488fb81fc",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/process-resources.jsonl": "a9ba6ef35714356e0ec63544e8c1a07fa379837ec1a9158095627923db971534",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/thread-resources.jsonl": "aa93446c5c46126525ebfab28071736789a9781e187b082ed63e651e3b92ec2b",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/refine-results.jsonl": "2aef530221e556b2781aa03868f198ddb55d512cf0aa756070f8f514208380ac",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/zip-events.jsonl": "e071d019b758c9b66422af0381050e012e6f20e672ab03faeb7aff67c4f6e2bd",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/console.log": "44554ebb0c4d81d70d54861ae8a71a7b431d3c7082d240c1ab138d6a839d5463",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/zip-sources.jsonl": "2bd2ccbf996b11c55e651b0a3fa96915d51e99a8998b8d4f2681502697cf121c",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/admission.jsonl": "a6043b245c114165c521b476f45d370423c574f84aa958f8d38c59620240ef05",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/summary.json": "fb7f3734a56282a7b0130e2dc88a1ddb7b4d2c6e13c57660725f46f8877502e3",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/vad-sources.jsonl": "225a288bbf8ca01ee53c6a08a16da03e3472e80a435ea16e85c477cd6e748acc",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/capture/decoder.jsonl": "872403899b1b9c0b413487f29fdf93d6cf648aa2e95a3e8a3c15cabccae81549",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/capture/producer.jsonl": "3aa48244ccaaa486c71e1c58845f74847b683555264edf9e23999b984a6ee2c4",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/capture/backlog.jsonl": "d0e5d7d04f8efa3c16d3c5776a4ccfe2e6cf66f0249f334bdd8372733a78b07e",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/threads.jsonl": "b97667605d8a107cedad54a55628cf1c87e9e421b337c4d2cffdee1027cb76ba",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/execution.json": "15976df6b126f36c436b5998ab7955238f65c37d5cd17110b3035a957871ebe3",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/thermal.jsonl": "69991c217eec132b5ab0d9a0696804bb00d655dc7c3a3143100ea168488578ae",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/refine-jobs.jsonl": "7b87e83066cbc2affb5ee32ef79f763c9d08dae3631f80fb752b49cac32ce6e7",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/worker.json": "81ac55bfc6d89ef9cba344eb2554835a1620ec4ff7bf5e28e113e9754210e5b6",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/process-resources.jsonl": "a173ae4f380d3c65a31fc2861de42db5f1b5fd3dda939559ff53d89818da2a0e",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/thread-resources.jsonl": "2577e07ac8a2813619ba1a734c04a23ae936874ae5f50648947187488943f431",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/refine-results.jsonl": "4dfc5bcda7484c37c23dcd900622578ecbcf3b038b05f1d935071757028bcbc9",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/zip-events.jsonl": "62be104f7421aca8718b7622860637a895779c866f5479f28df698123895fda4",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/console.log": "3aa539751b085d2aea765f65176dacb46067ff3920ae6b1175c391884383e90f",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/zip-sources.jsonl": "a99d8807d7a10168ca54d1c424a2700460c0676905ba37b1f6218aac670d83a7",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/admission.jsonl": "9506b50243d59db14636d32a61074a10f9de40fefc406c31c0c56ecc21ffc722",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/summary.json": "9c1044321035ffef3cdffac238106e78ae451808c6847bb56bb83785c6df8f0c",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/vad-sources.jsonl": "6cb3e8f891592f909935ec59aa341a193cbd71966d29f66200f4a412ed85b470",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/capture/decoder.jsonl": "95a49ed88a5e955883235c18ee9f82c7a5081222e86e0252cc7e9588381da501",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/capture/producer.jsonl": "04d542d116f95bc0a8d362118d310ea5c0cc9323d16319366f0210e51ba395a1",
+      "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/capture/backlog.jsonl": "38c3ebee383f6f560b065598db2a57a36a4ad4e2759afaf92e14e551ed9915ac",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/threads.jsonl": "ff743e725a37cc90f06f92a0bdabb84f9af2aa878aa617ca545b37e3f7ded8bb",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/execution.json": "0fe1e52237c5369377b7930f1979acdcc8e83146135da109566049a88e23a468",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/thermal.jsonl": "0f535270c1247e85eaf625476c0c09c8e9ad6369364f39260297fb2b80e67cdc",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/refine-jobs.jsonl": "ec8c8dc1e61aaebc85f374cef9ea64a31f6f086592dae80ddf55c1ad9b315065",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/worker.json": "eb8a09a20a7b70b7f13a9bdcf4163ee135d6f1171316cdab0f4a6855b16fdbfd",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/process-resources.jsonl": "be85a59bfd2139b3b775665b677a1fa89a4649a82287c6548b1018504d862731",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/thread-resources.jsonl": "82a6705169c0e6d37d3a7574442b52fe8e8a16d52359b63e0fe069064f043cac",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/refine-results.jsonl": "1809da507fad19e7a3ee6be2388f3a082c199a4660779c3320f9ef6b535080ea",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/zip-events.jsonl": "124a21058527cf9480332bb3536f55e734e9d9919b14a08b489d8833d0c92747",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/console.log": "c75bd6bb8d4200ec5dc73ebd4f27e9572fbe8c93fadd4c946545ffc973ee7df0",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/zip-sources.jsonl": "a087b788f13e30e22a675293bc87ab0fd964344ae8fad9fcc13c4edb9103c042",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/admission.jsonl": "eaf49bd938d3d2a74527647ea0a5a540f7a799fb2354346e072834a11be4bdf9",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/summary.json": "ebe08a16c9aba8a927009b263f3de20cd4260b6e29789eeb0c738ad6136929a1",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/capture/decoder.jsonl": "18b66a1175e0f6abc832d8f32ad4eb7db82b68dc6c496618cf436de90517a6b7",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/capture/producer.jsonl": "e1709996a7547210f38c9b54929c13535806e52f8ac940baa2b03d8edd198a2c",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/capture/backlog.jsonl": "3b47f00af021ebbf737d39a363196c63845dcc56006f194318103e05e06a53ca",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/threads.jsonl": "a99dfa30319d50944ba880aa41f7f99fa9fad5375819b03bf273e704e805792f",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/execution.json": "8ef3a4e8cec62cd18dd9110236349a8971ac30694104c7a1482a8606e70f0f3c",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/thermal.jsonl": "b43aeb3d199cbc87f5cdf044aae83d89ec954dba19792163dd5821e81800a8f7",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/refine-jobs.jsonl": "a336a946ca6a01bfe982aa2fc25b674e5548c155eb9a13e083abeb26d04d9f77",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/worker.json": "54dcea5b87754078fcbcbd7f0c915955df7e710951dc38f383c86fc661d96bd6",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/process-resources.jsonl": "4a393ffdf7a2f6de63a8a392aa71060c49496e86daed890903cb4f25be65261b",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/thread-resources.jsonl": "515fa46c6795b746ea1f5af3e27888c0a613cb54b51bf137508e84c4c772618e",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/refine-results.jsonl": "f2c53009f9905aeda609ab789efc3fb4a07e3cb0beb07e0a2d9d89f6ced7fff7",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/zip-events.jsonl": "40ea7aa32718c24ba24ae6ab00e550089e61591f87fcf243acae6cf4d4a27a23",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/console.log": "6b89450ecb275e785a606d8bc691cc3edfc3dc00def30af765dc1b3f2645b9a0",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/zip-sources.jsonl": "35d7d72fdce024316edffaa2d567db597f80a6d4fc144ba3576a35ca72202721",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/admission.jsonl": "8dd135f2384638ef214a45a41013dd1f4536d77469b54432caf02f6e62551217",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/summary.json": "e4afcdb84e411e72511b825f122383cbfa1f5e7b386f28687fde9bfce8ca1385",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/vad-sources.jsonl": "bd4f77caf021a28056f32945cd5c7853d9bf2bbe53a86330d6cf3d26ef3ec7ee",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/capture/decoder.jsonl": "c3e1a5d1ac2bf30516cbc5cbea7e8722cddd67094a683e560ac0ceb0d2201b4c",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/capture/producer.jsonl": "cf1ba49e6076a699f0fb40d58a9a6e809a4ca108fc04c464296892a8c72ba975",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/capture/backlog.jsonl": "8b9b066824918fde763acbdedd300615a51a2a304397a5749bf2ff567938a1b3",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/threads.jsonl": "56097204c2a9a64ff3c1e7e2d9f5d9a2ef9afcda9d254c849c8f1c5d68cc4f18",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/execution.json": "5b68e36f4395ed6fa6504563ef07b02f5a27b29cac3ebe131fb23b2b59a11712",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/thermal.jsonl": "da7806deec4db2b2de6b541ba17b1c985a39eed7743ae2316845e821de6bb00e",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/refine-jobs.jsonl": "81a3e82e3f2588ecfc9e7a156ee160a27629b5f1c59f47e12dc1e3caeb0e69c8",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/worker.json": "1938e5b7f60d45c462150ddf20e4a0b056abd9ed31d5915133194dde43d6eded",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/process-resources.jsonl": "93affec2dbbf7cc1c3680d94bbc0e52edbc4d73c464a4f4e5c61ffae3993904e",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/thread-resources.jsonl": "3ca78569740ac94b3d483b4284467c2f18b60949a9c3eb57bb1091477c9034ae",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/refine-results.jsonl": "270291c7a45b0408fc8b4702a8305f584e11e5f7388596a2557f80e4567f3e5c",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/zip-events.jsonl": "2147a6b10b4b25860e718371f2af205cc936d701681ce19b71048197cb663e00",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/console.log": "808d2f24dfef1668f7dcef8c51973cec882607268df4577e9797db2a81b2dcdc",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/zip-sources.jsonl": "02cdc0a7153d01e3512ce97596538bde0ce37dab007cfae7187560c834b8634f",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/admission.jsonl": "0072d1d3c4f1dd1cd156826e56bc9a069d2a5c71288aaa013a9b8f88d185836b",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/summary.json": "79983bd7ce5f285163f70a83540e3e619307dafc13021ecae94fcaa2bacb0dc8",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/vad-sources.jsonl": "f1cf9fe5ce04684aee23cff4d43724b5865cfd2b43a101ec2131764235dfff70",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/capture/decoder.jsonl": "985350c7a1536262cee9d5f9b390ccb1789e01d675793b1b093ccf587ce15284",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/capture/producer.jsonl": "3c48ae87948f3f5ec2326651b15ef9893cc9db5f26e4f7ef56c2ce6501f39bc5",
+      "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/capture/backlog.jsonl": "d24681d8c2e0ba274d4e9843bba8aa2bc64aac4988cdb84cc7096b52a09fc4a2",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/fixed5/threads.jsonl": "694d5a27c8bf5401d48aaba2e9d2ebb40551efbeca1aa83212a6ad56b83365f7",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/fixed5/execution.json": "b364ea2878dfa4fba73b1f05c64f0e3a456c418e3853142376bb3d07c2c07060",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/fixed5/thermal.jsonl": "9b9f5ee7520bd9084f6df9faba1709fa8f92baba2969a72d740bceddb0bc22bb",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/fixed5/refine-jobs.jsonl": "aa5a58f3e33797ea1a30ef25f387cc1a0589e0297a774dbf1bf83d036536f984",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/fixed5/worker.json": "1ce546612dc2b4d8cb2980e124f45ccbacedad60351675c6b9366f32a7d57c28",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/fixed5/process-resources.jsonl": "b7c8e67e161aaa40849b2fbfc06cd3b238bb5ecddf12c5ba9960374bd6e720cf",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/fixed5/thread-resources.jsonl": "51600901573e1e73add11798793f869a7ffc6afa67c144d1a4030f4aa120cad1",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/fixed5/refine-results.jsonl": "63d1132e78dd7175419138d9c51b8f83ddf8bb15e1ac16b435ed48becf665d6e",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/fixed5/zip-events.jsonl": "bc8d043893e8a9e55c3c1a7a19928f18ac24756bd61d9216663a83634e636f06",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/fixed5/console.log": "6ce00d78f03b0d41cbcd2d925c97b0b26c4f7651f76c34626610a2f3a1d5550e",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/fixed5/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/fixed5/zip-sources.jsonl": "15fd94a168ef1f8920414739943c6a21e474d58b59c9978e286baa63c1d25fa9",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/fixed5/admission.jsonl": "387020cb117ddd4daf01eef8591b15ef39fedc7c4b5789c5c3dc6d98e5756e75",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/fixed5/track.json": "c96be17e61d2adea333bb1970ec63f3bb29eff162ea98891913001abca579f95",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/fixed5/summary.json": "f8bd82ae7cadc5f93d0e87866ab5b6bd9d01d3fac04cacd8b0fc448ee8d255ae",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/fixed5/capture/decoder.jsonl": "eca0f7a6f615f7c61941b5aae46b2484c4a3a209cefc086cbdc076f2a4626d83",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/fixed5/capture/producer.jsonl": "823e6b54867c6fb14dcd0a2ae2333dcda1d3a21a570243f4ca59d20dfa1e8722",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/fixed5/capture/backlog.jsonl": "287451953d2c1884cd52d453303c6ae004049e6f7a9eb4a2165d3afe4aa8e550",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/threads.jsonl": "7e8a9ef87b76d613214430b5fa23c8002b7eb16c95f8933de5d257ebdd9a53c3",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/execution.json": "df1a75da87ecf22a877ad01c333b50d901aa61a7a7eff206c8a35371d6d3d685",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/thermal.jsonl": "cb5a2fa08267b96ca320e6af6d7371422677ffabe89434732fbcf53f9df3bbcb",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/refine-jobs.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/worker.json": "de310dc6cd4f319c6998032623383b1a40a2ea9937feebcde5d451e72bc4fa3e",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/process-resources.jsonl": "abf3216091ff83ed4ae2febcff1326af7d47b5a3455de59fd45660d4f6bf63b2",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/thread-resources.jsonl": "6d02b18f6fdc268e5af01e71b0e90f6555b85abc4d795ac76c6a0fbc5803af7a",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/refine-results.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/zip-events.jsonl": "0138c29723581c798fa41a01b6b985f6370e7e5bfee8fa5543c7b3d5300531e6",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/console.log": "a1ee91ff00eab28edd3336ab890a2982dac77eae09810fcb061b52c3136173a6",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/zip-sources.jsonl": "17163d6e4606866e392086e66ff141bf216520e08f41064236272d57b0bc598e",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/admission.jsonl": "d63b6f656fee8e3b1589a0614671c03b03a3a8f95abd77b9ff61a08ae10951e4",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/track.json": "c96be17e61d2adea333bb1970ec63f3bb29eff162ea98891913001abca579f95",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/summary.json": "0c47fb421e7885e22a144a385347f0fb56b936af836cdf2f978d3594dfb30fdb",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/vad-sources.jsonl": "2f4840a57e36f56f4f3371e641f7d68204ba1c98b4f9597e3362ec96acf02a41",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/capture/decoder.jsonl": "468a2bccd142fff96f39464a818de7c46a5292a0ae13ea9c8dc062e8270758a7",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/capture/producer.jsonl": "e262a2206602820e1940f4b37e53eaed5c0d8ac42f1b121bf81a8e72e018e449",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/capture/backlog.jsonl": "f15b9d5316a88148b1c2cedfbff098953a75d1c58aae874c79a3307b516bdcda",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad-continuation200/threads.jsonl": "ceb59c182bbf80ffb021dc8bad672cc7afd9dab760bfcba3cefd61142de15271",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad-continuation200/execution.json": "749504f88bbe49c593374f7895ddab5767f85b44ca0b884a866c77c5f986f553",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad-continuation200/thermal.jsonl": "37dd2e74ef439fab790f84284be6b675b9627f8356ce61a48efd1861e0afb43c",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad-continuation200/refine-jobs.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad-continuation200/worker.json": "d870f0b1e93e807c2a1a28e1b4baaddd4dc731d47f791176a0dfc0523e278949",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad-continuation200/process-resources.jsonl": "08fd9c8eb85b31e609fb347d367e7dbd8cc1fc770a1cf44c40af2d345975ca92",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad-continuation200/thread-resources.jsonl": "a15ef1cc2582a32df821cc828c3e7d3dfe52ce21856187bd486a4f5352009bb8",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad-continuation200/refine-results.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad-continuation200/zip-events.jsonl": "a1c0dee55103c3f1205a747831f4a22814350e78d526a105b2c0c0b1b37b0d09",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad-continuation200/console.log": "3b471ffe5dd9a7a839d631d860ffafab108dbc03135e7f549bb020d9121e1d2b",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad-continuation200/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad-continuation200/zip-sources.jsonl": "5e4dbd586eb1f93c09e5908da68894000ae183f26d08aac0bc78e092cbab56f7",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad-continuation200/admission.jsonl": "914fef279d10c181bbc91e436f20d72566b38d578f97835b88f54c5670f286cc",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad-continuation200/track.json": "c96be17e61d2adea333bb1970ec63f3bb29eff162ea98891913001abca579f95",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad-continuation200/summary.json": "a04c2d8877e4e5ab1b7365fe801dd6ce4a5b2ed06b032de8cdfeaa394d3b22e1",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad-continuation200/vad-sources.jsonl": "70101a93b6792bfc983956180fb74376e99d9be72516dd395cd4ee5239f06691",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad-continuation200/capture/decoder.jsonl": "99a9a53e236b1152400bfcc005809173b66f7e4ebcc0ec2bf470608c14da5b2a",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad-continuation200/capture/producer.jsonl": "75352eac667cfc4bd987f5197f6b61a3034f8f25f68b83b115bc7382c3b6aaed",
+      "results/preflight/m31-online-silence-20261103-01/digital-silence/vad-continuation200/capture/backlog.jsonl": "7d98c11ba0b5dcf0df849ffe2fd277a9084102846b09adc8430b582e14598f57"
+    },
+    "preservation": {
+      "protected_files": 4944,
+      "changed": [],
+      "missing": [],
+      "environment_unchanged": true,
+      "system_settings_unchanged": true,
+      "working_tree_clean": true,
+      "source_commit": "f5fad19154a937ff9bd21eeae381f98e1f55c964",
+      "native_asr_inference": false
+    },
+    "before_source_commit": "c46fba259c2458bbece1edf8dad18243fdea46a4"
+  },
+  "unmeasured": {
+    "new_asr_rtf": null,
+    "new_asr_cpu_percent": null,
+    "new_asr_rss_mib": null,
+    "live_merge_dispatch_s": null,
+    "ui_display_s": null,
+    "aligned_recognition_latency_s": null,
+    "per_vad_partial_replacement_cer": null
+  },
+  "evidence": {
+    "maintenance": "results/maintenance/m32-merge-replay-20261103-01",
+    "replays": "results/merge-replays/m32-merge-replay-20261103-01",
+    "executions": {
+      "host/speech/kss-dev50/fixed5": {
+        "python": "3.11.14",
+        "machine": "x86_64",
+        "wall_s": 0.21395970799494535,
+        "native_asr_inference": false,
+        "realtime_input_supplied": false
+      },
+      "rp5/speech/kss-dev50/fixed5": {
+        "python": "3.11.18",
+        "machine": "aarch64",
+        "wall_s": 0.40659874099947046,
+        "native_asr_inference": false,
+        "realtime_input_supplied": false
+      },
+      "host/speech/kss-dev50/vad0": {
+        "python": "3.11.14",
+        "machine": "x86_64",
+        "wall_s": 0.20036901091225445,
+        "native_asr_inference": false,
+        "realtime_input_supplied": false
+      },
+      "rp5/speech/kss-dev50/vad0": {
+        "python": "3.11.18",
+        "machine": "aarch64",
+        "wall_s": 0.4147291569970548,
+        "native_asr_inference": false,
+        "realtime_input_supplied": false
+      },
+      "host/speech/kss-dev50/vad-continuation200": {
+        "python": "3.11.14",
+        "machine": "x86_64",
+        "wall_s": 0.20465366798453033,
+        "native_asr_inference": false,
+        "realtime_input_supplied": false
+      },
+      "rp5/speech/kss-dev50/vad-continuation200": {
+        "python": "3.11.18",
+        "machine": "aarch64",
+        "wall_s": 0.42133687699970324,
+        "native_asr_inference": false,
+        "realtime_input_supplied": false
+      },
+      "host/speech/synthetic-120/fixed5": {
+        "python": "3.11.14",
+        "machine": "x86_64",
+        "wall_s": 2.3290090860100463,
+        "native_asr_inference": false,
+        "realtime_input_supplied": false
+      },
+      "rp5/speech/synthetic-120/fixed5": {
+        "python": "3.11.18",
+        "machine": "aarch64",
+        "wall_s": 4.563604965995182,
+        "native_asr_inference": false,
+        "realtime_input_supplied": false
+      },
+      "host/speech/synthetic-120/vad0": {
+        "python": "3.11.14",
+        "machine": "x86_64",
+        "wall_s": 2.3807652048999444,
+        "native_asr_inference": false,
+        "realtime_input_supplied": false
+      },
+      "rp5/speech/synthetic-120/vad0": {
+        "python": "3.11.18",
+        "machine": "aarch64",
+        "wall_s": 4.832578664005268,
+        "native_asr_inference": false,
+        "realtime_input_supplied": false
+      },
+      "host/speech/synthetic-120/vad-continuation200": {
+        "python": "3.11.14",
+        "machine": "x86_64",
+        "wall_s": 2.3466727370396256,
+        "native_asr_inference": false,
+        "realtime_input_supplied": false
+      },
+      "rp5/speech/synthetic-120/vad-continuation200": {
+        "python": "3.11.18",
+        "machine": "aarch64",
+        "wall_s": 4.832499588999781,
+        "native_asr_inference": false,
+        "realtime_input_supplied": false
+      },
+      "host/silence/digital-silence/fixed5": {
+        "python": "3.11.14",
+        "machine": "x86_64",
+        "wall_s": 0.006926822010427713,
+        "native_asr_inference": false,
+        "realtime_input_supplied": false
+      },
+      "rp5/silence/digital-silence/fixed5": {
+        "python": "3.11.18",
+        "machine": "aarch64",
+        "wall_s": 0.0149626930069644,
+        "native_asr_inference": false,
+        "realtime_input_supplied": false
+      },
+      "host/silence/digital-silence/vad0": {
+        "python": "3.11.14",
+        "machine": "x86_64",
+        "wall_s": 0.006434803013689816,
+        "native_asr_inference": false,
+        "realtime_input_supplied": false
+      },
+      "rp5/silence/digital-silence/vad0": {
+        "python": "3.11.18",
+        "machine": "aarch64",
+        "wall_s": 0.013911963003920391,
+        "native_asr_inference": false,
+        "realtime_input_supplied": false
+      },
+      "host/silence/digital-silence/vad-continuation200": {
+        "python": "3.11.14",
+        "machine": "x86_64",
+        "wall_s": 0.006444586906582117,
+        "native_asr_inference": false,
+        "realtime_input_supplied": false
+      },
+      "rp5/silence/digital-silence/vad-continuation200": {
+        "python": "3.11.18",
+        "machine": "aarch64",
+        "wall_s": 0.013885389009374194,
+        "native_asr_inference": false,
+        "realtime_input_supplied": false
+      }
+    },
+    "maintenance_files_sha256": {
+      "plan.json": "6cd36a33181bc63aee13a413e6dc7431a07f86cc0586bc6e7429fd1b3edb2094",
+      "suite.py": "76b6a0be36a1257a79daaf011327ba8d9494236c8cd49b55087b47bc61b6b9e1",
+      "audit.py": "d77ef41c38a72ea406cab7409d0f8124d343e06c31b637be5615e2f00172de57",
+      "preservation-before.json": "48c8603a195c13744114245b8c0b1bfb0e77625fe0486cc2b497a36ac1c9f39b",
+      "preservation-after.json": "f7856ea97bd6ca5bb3da24be7639cfbb3b6a99ad8b9fa9350f8195803453978e",
+      "host-tests.log": "99aad8d5451dd575911163b198c6a8decced1b376efd8c6c2347d86a34cd5a85",
+      "rp5-tests.log": "874edea78ef8af58a52cc936cc271df51cfc5c179f14903cd8d0f5fd3b761944",
+      "host-suite.json": "53f73232517be173a60145f08514211d0f5f406c9aae0f6ca19235f1ea48fb38",
+      "rp5-suite.json": "9cf28c6ac8bac11b9aabe79f64aec27865d969a0f7dcd11bbd13d424843ac5e6",
+      "host-suite.log": "c52517b37f165b653f627a67d3a1a86c3af2112867020541fb67177c2cc26c7b",
+      "rp5-suite.log": "dd691f4e68e58561328442bd6b4de717ab680f4e58955f9d039796e234132269",
+      "analyze.py": "4328b461438d7e65724090568ddc78944ff40fb42a807c24a28e168db452ad2f"
+    }
+  },
+  "decision_ko": "VAD 완전 Refine은 KSS 전체 CER를 개선하지만 8/50개는 악화한다. 정규화 일치 선택은 개선도 없고 파일 단위는 합성 장문에서 첫 Refine 준비 뒤 약118초 대기한다. 자동 교체·실시간 구간 병합은 채택하지 않고 구간별 Zip 시간/전사를 확보하는 다음 실측으로 진행한다.",
+  "next_ko": "기존 단일 Streaming 기준선을 보존한 별도 구간 단위 실측에서 Zip 구간 ID/오디오 경계/최종 전사와 Refine 소유 범위를 일치시키고 actual parent 수신·병합 적용 시각을 기록한다. Zip 상태 reset 또는 지속 방식 변화는 새 기준선으로 비교한다."
+}
