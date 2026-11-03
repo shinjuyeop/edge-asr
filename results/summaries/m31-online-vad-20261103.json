@@ -1,0 +1,4846 @@
+{
+  "schema": "online-vad-concurrent-comparison-v1",
+  "client_work_date": "2026-11-03",
+  "source_commit": "79d447ab1ac264534416ed7adc05fad6b5d6e79a",
+  "status": "completed",
+  "order": [
+    {
+      "dataset": "kss-dev50",
+      "policy": "fixed5"
+    },
+    {
+      "dataset": "kss-dev50",
+      "policy": "vad0"
+    },
+    {
+      "dataset": "kss-dev50",
+      "policy": "vad-continuation200"
+    },
+    {
+      "dataset": "synthetic-120",
+      "policy": "vad-continuation200"
+    },
+    {
+      "dataset": "synthetic-120",
+      "policy": "vad0"
+    },
+    {
+      "dataset": "synthetic-120",
+      "policy": "fixed5"
+    }
+  ],
+  "settings": {
+    "zip_threads": 1,
+    "refine_threads": 2,
+    "vad_threads": 1,
+    "capture": {
+      "chunk_ms": 100,
+      "queue_capacity_chunks": 5,
+      "drop_policy": "drop_newest",
+      "drain_timeout_s": 10.0
+    },
+    "refine_queue_capacity": 2,
+    "owned_max_frames": 80000,
+    "payload_max_frames": 83200,
+    "repetitions": 1,
+    "warmup_runs_per_model": 3,
+    "warmup_prefix_max_frames": 80000
+  },
+  "config_files_sha256": {
+    "zipformer": "de61d3627f72f1ff5abcd9fe4931feb8a48ff072cf8d1ab7d15d5dea6fbebab3",
+    "sensevoice": "a2bc9a87ef8d2d60e4afe354bb7e3c3961bc948b72d5d33da749f42ab8ce8d77"
+  },
+  "model_files": {
+    "zipformer": {
+      "tokens": {
+        "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/tokens.txt",
+        "sha256": "016bdf0965029263b7ad01b742366ee542ef0bef38261510e8176ff6f2e9e668"
+      },
+      "encoder": {
+        "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/encoder-epoch-99-avg-1.int8.onnx",
+        "sha256": "8d0b1aa24fbedd4e3948564ab7facd151b8ce9b0c48fc987c541de2de3af5697"
+      },
+      "decoder": {
+        "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/decoder-epoch-99-avg-1.onnx",
+        "sha256": "b29cfb4575141e50a30a22b2c4579934f3d4f45b83c9c8c08c3aef5a3fa7abfc"
+      },
+      "joiner": {
+        "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/joiner-epoch-99-avg-1.int8.onnx",
+        "sha256": "128b80a66a1f718488af8560f9d15895109b99ff3e573f0a0130e03774ef1ced"
+      }
+    },
+    "sensevoice": {
+      "model": {
+        "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/model.int8.onnx",
+        "sha256": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51"
+      },
+      "tokens": {
+        "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/tokens.txt",
+        "sha256": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc"
+      }
+    }
+  },
+  "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+  "datasets": {
+    "kss-dev50": {
+      "audio_s": 164.919,
+      "source_count": 50,
+      "reference_characters": 756,
+      "runs": {
+        "fixed5": {
+          "summary": {
+            "schema": "concurrent-wav-summary-v1",
+            "status": "completed",
+            "input_complete": true,
+            "zip_threads": 1,
+            "refine_threads": 2,
+            "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+            "track_float32_sha256": "8caf6f852b7eced49b0f35674f05c8e889d31bece921510b3cebb7d59ae9142e",
+            "audio_s": 164.919,
+            "planned_sources": 50,
+            "zip_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "first_partial_from_source_start_s": {
+              "n": 50,
+              "mean": 0.9698206447200027,
+              "p50": 0.8485935740000006,
+              "p95": 1.4529907529999946,
+              "max": 1.468168760000026
+            },
+            "zip_finalize_from_source_end_s": {
+              "n": 50,
+              "mean": 0.15983019218000094,
+              "p50": 0.15339652599999454,
+              "p95": 0.2253883560000105,
+              "max": 0.23829864300000025
+            },
+            "no_partial_sources": 0,
+            "input_dropped_chunks": 0,
+            "input_dropped_audio_s": 0.0,
+            "input_backlog_event_max_audio_s": 0.1,
+            "input_backlog_audio_s": {
+              "n": 1653,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "input_queue_wait_s": {
+              "n": 1650,
+              "mean": 0.0011434911018179726,
+              "p50": 0.0006515239999771438,
+              "p95": 0.001148248999999879,
+              "max": 0.06907648199999983
+            },
+            "chunk_processing_s": {
+              "n": 1650,
+              "mean": 0.015211015707272754,
+              "p50": 0.0004350040000105082,
+              "p95": 0.05204246099999921,
+              "max": 0.1712727230000013
+            },
+            "coordinator_active_rtf": 0.15215394671961857,
+            "refine": {
+              "complete": true,
+              "planned_windows": 54,
+              "enqueued": 54,
+              "successful": 54,
+              "failed_windows": 0,
+              "missing_results": 0,
+              "dropped_windows": 0,
+              "cer": {
+                "planned": 50,
+                "successful": 50,
+                "complete": true,
+                "cer": {
+                  "errors": 39,
+                  "substitutions": 25,
+                  "deletions": 9,
+                  "insertions": 5,
+                  "reference_characters": 756,
+                  "value": 0.051587301587301584
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "queue_wait_s": {
+                "n": 54,
+                "mean": 0.007082426722222222,
+                "p50": 0.001223324,
+                "p95": 0.008286268,
+                "max": 0.202936915
+              },
+              "decode_s": {
+                "n": 54,
+                "mean": 0.20623545377777772,
+                "p50": 0.204629594,
+                "p95": 0.316783436,
+                "max": 0.356248689
+              },
+              "dispatch_from_window_end_s": {
+                "n": 54,
+                "mean": 0.044913587962964505,
+                "p50": 0.0409734090000029,
+                "p95": 0.08826804600001026,
+                "max": 0.10023363800000595
+              },
+              "window_end_to_return_s": {
+                "n": 54,
+                "mean": 0.2584532242962976,
+                "p50": 0.26017963699999314,
+                "p95": 0.3470428680000026,
+                "max": 0.3946102419999997
+              },
+              "final_from_source_file_end_s": {
+                "n": 50,
+                "mean": 0.25095695418000113,
+                "p50": 0.25612930800002687,
+                "p95": 0.34316035800000577,
+                "max": 0.3946102419999997
+              },
+              "backlog_event_max_audio_s": 5.0,
+              "backlog_event_max_windows": 1,
+              "backlog_audio_s": {
+                "n": 1654,
+                "mean": 0.00027388149939540504,
+                "p50": 0.0,
+                "p95": 0.0,
+                "max": 0.24775
+              },
+              "backlog_end_audio_s": 0.0,
+              "zip_refine_call_overlap_s": 5.775379295,
+              "refine_calls_with_zip_overlap": 53,
+              "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님."
+            },
+            "refine_reason": null,
+            "producer_cpu_s": 0.220026792,
+            "producer_lifetime_peak_rss_mib": 294.59375,
+            "unmeasured": {
+              "hybrid_merged_cer": null,
+              "acoustic_endpoint_latency_s": null,
+              "aligned_recognition_latency_s": null,
+              "ui_display_latency_s": null,
+              "microphone_overruns": null
+            },
+            "zip_call_rtf": 0.15114503388936396,
+            "resources": {
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "sample_count": 1643,
+              "paired_intervals": 1642,
+              "paired_wall_s": 165.0250947549997,
+              "observed_model_cpu_percent": 31.989074194063225,
+              "model_group_rss_observed_max_mib": 656.828125,
+              "complete_model_rss_samples": 1643,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "threads": {
+              "zip": {
+                "snapshots": 165,
+                "observed_tid_max": 6,
+                "active_at_least_1_percent": 1,
+                "rows": [
+                  {
+                    "tid": "20443",
+                    "cpu_s": 27.01000000000001,
+                    "paired_s": 164.81577609700616,
+                    "mean_cpu_percent": 16.387994304685154
+                  },
+                  {
+                    "tid": "20471",
+                    "cpu_s": 0.48000000000000026,
+                    "paired_s": 164.81577609700616,
+                    "mean_cpu_percent": 0.2912342564327611
+                  },
+                  {
+                    "tid": "20480",
+                    "cpu_s": 0.01,
+                    "paired_s": 161.8057051270007,
+                    "mean_cpu_percent": 0.006180251797766363
+                  },
+                  {
+                    "tid": "20461",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.81577609700616,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "20462",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.81577609700616,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "20463",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.81577609700616,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              },
+              "refine": {
+                "snapshots": 165,
+                "observed_tid_max": 5,
+                "active_at_least_1_percent": 2,
+                "rows": [
+                  {
+                    "tid": "20447",
+                    "cpu_s": 13.159999999999977,
+                    "paired_s": 164.81572663399857,
+                    "mean_cpu_percent": 7.984674926819333
+                  },
+                  {
+                    "tid": "20452",
+                    "cpu_s": 11.12,
+                    "paired_s": 164.81572663399857,
+                    "mean_cpu_percent": 6.746928965519084
+                  },
+                  {
+                    "tid": "20449",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.81572663399857,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "20450",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.81572663399857,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "20451",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.81572663399857,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              }
+            },
+            "source_sha256": {
+              "refine-results.jsonl": "6c3f87d6ec570010515674eb9ab7bf03fb8cc9e0d6959a1029ab4d920bb797ed",
+              "zip-sources.jsonl": "03aacc90c81485caf26bc852872eb02b69dbd789d44eed9e42556073f9e080f8",
+              "track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+              "refine-jobs.jsonl": "105df9ca811a341f814843c95a4d1f5f370f1cfdb96dd7c724a0d245a209d7f7",
+              "process-resources.jsonl": "61fa413d83cfa8bc71e92ded26ede611bf6c718d98e1ce980a7bff7cdc0ebd31",
+              "thread-resources.jsonl": "471b4ab03f835b9b34396aedff7aa6e762351d905da68be374ffbdeb47ed0f73",
+              "worker.json": "208a683e13e317650c2edd69713d3aebe24309bf66bc6de110e70f1ed0bbc8f3",
+              "zip-events.jsonl": "cb5dff1d3ee7b6c778607485edda7afdc7074a53de45c47c81a9625789af41f4",
+              "capture/backlog.jsonl": "60358d65718492643027f87de75107770e733fa535677fde9012a915d0ceadce",
+              "capture/decoder.jsonl": "64d44dd390dc0fa0c73cf423548ab2b56425c10e7b5f04d499f7ee023ca64f2f",
+              "capture/producer.jsonl": "8d979c12cf0e39e51c0f532f0acd5ccd7a2124c40fd4b636769bcdf740293cf2"
+            }
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5",
+            "source_sha256": {
+              "execution.json": "65bf404f40bdc639050f42febf993cad4e66ce98cd33b8d3ff99bb0dab2ead6d",
+              "thermal.jsonl": "ac72b5ee1906aed70a21860481fa0a86db70865985ce896d1e9c2cc91375a0bd"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 170,
+            "before": {
+              "at_utc": "2026-11-03T05:16:18.165266+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 52.35,
+              "fan_rpm": 3008,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T05:19:11.054376+00:00",
+              "elapsed_from_before_s": 172.88911018999352,
+              "temperature_c": 60.6,
+              "fan_rpm": 5175,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 172,
+            "fan_rpm_max": 5179,
+            "temperature_mc_max_monitor": 65000,
+            "temperature_mc_max_with_before_after": 65000,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "resource_sample_intervals_s": {
+            "n": 1644,
+            "mean": 0.1005032074069341,
+            "p50": 0.100288206,
+            "p95": 0.100800785,
+            "max": 0.129683158
+          },
+          "dequeued_to_inference_start_s": {
+            "n": 54,
+            "mean": 0.00022175583333333335,
+            "p50": 0.000216206,
+            "p95": 0.000382114,
+            "max": 0.000404614
+          },
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "refine_environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "vad_environment": null,
+          "vad_settings": null,
+          "vad_inference": null,
+          "loading": {
+            "zip": {
+              "wall_s": 2.502353960997425,
+              "cpu_s": 2.737680493,
+              "resources": {
+                "sample_interval_s": 0.1,
+                "rss_observed_max_mib": 277.59375,
+                "rss_sample_count": 26,
+                "rss_missing_count": 0,
+                "rss_samples": [
+                  {
+                    "monotonic_s": 75940.268240935,
+                    "rss_mib": 35.859375
+                  },
+                  {
+                    "monotonic_s": 75940.369014757,
+                    "rss_mib": 105.59375
+                  },
+                  {
+                    "monotonic_s": 75940.469534299,
+                    "rss_mib": 220.921875
+                  },
+                  {
+                    "monotonic_s": 75940.56976106,
+                    "rss_mib": 277.59375
+                  },
+                  {
+                    "monotonic_s": 75940.669942988,
+                    "rss_mib": 277.59375
+                  },
+                  {
+                    "monotonic_s": 75940.770099249,
+                    "rss_mib": 277.59375
+                  },
+                  {
+                    "monotonic_s": 75940.870253677,
+                    "rss_mib": 277.59375
+                  },
+                  {
+                    "monotonic_s": 75940.970446531,
+                    "rss_mib": 277.59375
+                  },
+                  {
+                    "monotonic_s": 75941.070678719,
+                    "rss_mib": 277.59375
+                  },
+                  {
+                    "monotonic_s": 75941.170873647,
+                    "rss_mib": 277.59375
+                  },
+                  {
+                    "monotonic_s": 75941.271052501,
+                    "rss_mib": 277.59375
+                  },
+                  {
+                    "monotonic_s": 75941.371227429,
+                    "rss_mib": 277.59375
+                  },
+                  {
+                    "monotonic_s": 75941.471405412,
+                    "rss_mib": 277.59375
+                  },
+                  {
+                    "monotonic_s": 75941.571665193,
+                    "rss_mib": 209.296875
+                  },
+                  {
+                    "monotonic_s": 75941.671885843,
+                    "rss_mib": 228.796875
+                  },
+                  {
+                    "monotonic_s": 75941.772110142,
+                    "rss_mib": 246.796875
+                  },
+                  {
+                    "monotonic_s": 75941.872278033,
+                    "rss_mib": 246.796875
+                  },
+                  {
+                    "monotonic_s": 75941.972441701,
+                    "rss_mib": 246.796875
+                  },
+                  {
+                    "monotonic_s": 75942.072682371,
+                    "rss_mib": 246.796875
+                  },
+                  {
+                    "monotonic_s": 75942.172898577,
+                    "rss_mib": 246.796875
+                  },
+                  {
+                    "monotonic_s": 75942.273073005,
+                    "rss_mib": 246.796875
+                  },
+                  {
+                    "monotonic_s": 75942.373260285,
+                    "rss_mib": 246.796875
+                  },
+                  {
+                    "monotonic_s": 75942.47344425,
+                    "rss_mib": 246.796875
+                  },
+                  {
+                    "monotonic_s": 75942.573609826,
+                    "rss_mib": 246.796875
+                  },
+                  {
+                    "monotonic_s": 75942.67377768,
+                    "rss_mib": 246.796875
+                  },
+                  {
+                    "monotonic_s": 75942.770422432,
+                    "rss_mib": 270.796875
+                  }
+                ]
+              }
+            },
+            "refine": {
+              "loading_s": 1.873025986002176,
+              "loading_cpu_s": 2.129692228,
+              "loading_resources": {
+                "sample_interval_s": 0.1,
+                "rss_observed_max_mib": 357.03125,
+                "rss_sample_count": 20,
+                "rss_missing_count": 0,
+                "rss_samples": [
+                  {
+                    "monotonic_s": 75937.77059042,
+                    "rss_mib": 25.703125
+                  },
+                  {
+                    "monotonic_s": 75937.872241618,
+                    "rss_mib": 62.4375
+                  },
+                  {
+                    "monotonic_s": 75937.972740067,
+                    "rss_mib": 262.4375
+                  },
+                  {
+                    "monotonic_s": 75938.073059922,
+                    "rss_mib": 320.515625
+                  },
+                  {
+                    "monotonic_s": 75938.173486574,
+                    "rss_mib": 329.234375
+                  },
+                  {
+                    "monotonic_s": 75938.273762707,
+                    "rss_mib": 326.03125
+                  },
+                  {
+                    "monotonic_s": 75938.373942598,
+                    "rss_mib": 326.03125
+                  },
+                  {
+                    "monotonic_s": 75938.474103562,
+                    "rss_mib": 326.03125
+                  },
+                  {
+                    "monotonic_s": 75938.574270583,
+                    "rss_mib": 326.03125
+                  },
+                  {
+                    "monotonic_s": 75938.674441307,
+                    "rss_mib": 326.53125
+                  },
+                  {
+                    "monotonic_s": 75938.774591013,
+                    "rss_mib": 326.53125
+                  },
+                  {
+                    "monotonic_s": 75938.8747552,
+                    "rss_mib": 326.53125
+                  },
+                  {
+                    "monotonic_s": 75938.974938183,
+                    "rss_mib": 326.53125
+                  },
+                  {
+                    "monotonic_s": 75939.075220038,
+                    "rss_mib": 326.53125
+                  },
+                  {
+                    "monotonic_s": 75939.175420373,
+                    "rss_mib": 326.53125
+                  },
+                  {
+                    "monotonic_s": 75939.275587431,
+                    "rss_mib": 328.03125
+                  },
+                  {
+                    "monotonic_s": 75939.375744488,
+                    "rss_mib": 328.03125
+                  },
+                  {
+                    "monotonic_s": 75939.475970879,
+                    "rss_mib": 338.53125
+                  },
+                  {
+                    "monotonic_s": 75939.576222901,
+                    "rss_mib": 351.53125
+                  },
+                  {
+                    "monotonic_s": 75939.643181366,
+                    "rss_mib": 357.03125
+                  }
+                ]
+              }
+            },
+            "vad": null
+          },
+          "warmup": {
+            "zip_s": 1.183787140995264,
+            "refine_s": 0.5058548450033413,
+            "vad_s": null
+          },
+          "offline_1t_comparison": {
+            "owned_context_geometry_equal": true,
+            "old_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 39,
+                "substitutions": 25,
+                "deletions": 9,
+                "insertions": 5,
+                "reference_characters": 756,
+                "value": 0.051587301587301584
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "changed_hypothesis_sources": [],
+            "current_threads": 2,
+            "prior_threads": 1
+          },
+          "model_limits_verified": true,
+          "rescore_matches": true,
+          "vad_geometry": null
+        },
+        "vad0": {
+          "summary": {
+            "schema": "concurrent-wav-summary-v1",
+            "status": "completed",
+            "input_complete": true,
+            "zip_threads": 1,
+            "refine_threads": 2,
+            "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+            "track_float32_sha256": "8caf6f852b7eced49b0f35674f05c8e889d31bece921510b3cebb7d59ae9142e",
+            "audio_s": 164.919,
+            "planned_sources": 50,
+            "zip_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "first_partial_from_source_start_s": {
+              "n": 50,
+              "mean": 0.9739967404800005,
+              "p50": 0.8526553480000008,
+              "p95": 1.4565747960000124,
+              "max": 1.471706905000019
+            },
+            "zip_finalize_from_source_end_s": {
+              "n": 50,
+              "mean": 0.16888115070000043,
+              "p50": 0.16293525199999692,
+              "p95": 0.24063996199999593,
+              "max": 0.24125374099999952
+            },
+            "no_partial_sources": 0,
+            "input_dropped_chunks": 0,
+            "input_dropped_audio_s": 0.0,
+            "input_backlog_event_max_audio_s": 0.1,
+            "input_backlog_audio_s": {
+              "n": 1654,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "input_queue_wait_s": {
+              "n": 1650,
+              "mean": 0.0014310293103032346,
+              "p50": 0.0006736909999993657,
+              "p95": 0.0011597499999993488,
+              "max": 0.09860725299999729
+            },
+            "chunk_processing_s": {
+              "n": 1650,
+              "mean": 0.019050782901212104,
+              "p50": 0.00424846000000656,
+              "p95": 0.05539319300000045,
+              "max": 0.18637697499999994
+            },
+            "coordinator_active_rtf": 0.19056396613817,
+            "refine": {
+              "complete": true,
+              "planned_windows": 57,
+              "enqueued": 57,
+              "successful": 57,
+              "failed_windows": 0,
+              "missing_results": 0,
+              "dropped_windows": 0,
+              "cer": {
+                "planned": 50,
+                "successful": 50,
+                "complete": true,
+                "cer": {
+                  "errors": 42,
+                  "substitutions": 26,
+                  "deletions": 9,
+                  "insertions": 7,
+                  "reference_characters": 756,
+                  "value": 0.05555555555555555
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "queue_wait_s": {
+                "n": 57,
+                "mean": 0.0009701993157894735,
+                "p50": 0.000988397,
+                "p95": 0.001518142,
+                "max": 0.00158379
+              },
+              "decode_s": {
+                "n": 57,
+                "mean": 0.18030887408771934,
+                "p50": 0.1837254,
+                "p95": 0.295004273,
+                "max": 0.315098726
+              },
+              "dispatch_from_window_end_s": {
+                "n": 57,
+                "mean": 0.13425109936842147,
+                "p50": 0.07556874200000152,
+                "p95": 0.4332646489999945,
+                "max": 0.4511977269999967
+              },
+              "window_end_to_return_s": {
+                "n": 57,
+                "mean": 0.3157385262982473,
+                "p50": 0.26952651700000274,
+                "p95": 0.6653499269999941,
+                "max": 0.7130124000000251
+              },
+              "final_from_source_file_end_s": {
+                "n": 50,
+                "mean": 0.2427170831600025,
+                "p50": 0.24385138399999562,
+                "p95": 0.33557051699999363,
+                "max": 0.38138755799999924
+              },
+              "backlog_event_max_audio_s": 4.5484375,
+              "backlog_event_max_windows": 1,
+              "backlog_audio_s": {
+                "n": 1655,
+                "mean": 0.0,
+                "p50": 0.0,
+                "p95": 0.0,
+                "max": 0.0
+              },
+              "backlog_end_audio_s": 0.0,
+              "zip_refine_call_overlap_s": 5.761285135,
+              "refine_calls_with_zip_overlap": 57,
+              "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+              "vad_emission_from_owned_end_s": {
+                "n": 57,
+                "mean": 0.12793129950877224,
+                "p50": 0.06642504100000224,
+                "p95": 0.42085856999999294,
+                "max": 0.44515975399999874
+              },
+              "dispatch_after_vad_emission_s": {
+                "n": 57,
+                "mean": 0.006319799859649124,
+                "p50": 0.006025251,
+                "p95": 0.012406079,
+                "max": 0.015094266
+              },
+              "vad_emission_to_return_s": {
+                "n": 57,
+                "mean": 0.18780722678947367,
+                "p50": 0.190086913,
+                "p95": 0.306225472,
+                "max": 0.330404494
+              },
+              "decision_audio_after_owned_end_s": {
+                "n": 57,
+                "mean": 0.06737609649122805,
+                "p50": 0.0,
+                "p95": 0.3,
+                "max": 0.3
+              },
+              "no_vad_segment_sources": 0,
+              "backlog_event_max_payload_audio_s": 4.5484375,
+              "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님."
+            },
+            "refine_reason": null,
+            "producer_cpu_s": 0.245712294,
+            "producer_lifetime_peak_rss_mib": 291.90625,
+            "unmeasured": {
+              "hybrid_merged_cer": null,
+              "acoustic_endpoint_latency_s": null,
+              "aligned_recognition_latency_s": null,
+              "ui_display_latency_s": null,
+              "microphone_overruns": null
+            },
+            "zip_call_rtf": 0.14840888603496216,
+            "resources": {
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "sample_count": 1642,
+              "paired_intervals": 1641,
+              "paired_wall_s": 165.05830404600002,
+              "observed_model_cpu_percent": 34.727122837773386,
+              "model_group_rss_observed_max_mib": 662.625,
+              "complete_model_rss_samples": 1642,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능.",
+              "main_pid_components": [
+                "zipformer",
+                "online_vad",
+                "coordinator_and_sampling"
+              ]
+            },
+            "threads": {
+              "zip": {
+                "snapshots": 165,
+                "observed_tid_max": 8,
+                "active_at_least_1_percent": 1,
+                "rows": [
+                  {
+                    "tid": "20868",
+                    "cpu_s": 33.30000000000005,
+                    "paired_s": 164.94753999001114,
+                    "mean_cpu_percent": 20.188236818819256
+                  },
+                  {
+                    "tid": "20900",
+                    "cpu_s": 0.5500000000000003,
+                    "paired_s": 164.94753999001114,
+                    "mean_cpu_percent": 0.3334393468573748
+                  },
+                  {
+                    "tid": "20909",
+                    "cpu_s": 0.01,
+                    "paired_s": 161.92910716400365,
+                    "mean_cpu_percent": 0.006175541985710997
+                  },
+                  {
+                    "tid": "20886",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.94753999001114,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "20887",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.94753999001114,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "20888",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.94753999001114,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "20897",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.94753999001114,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              },
+              "refine": {
+                "snapshots": 165,
+                "observed_tid_max": 5,
+                "active_at_least_1_percent": 2,
+                "rows": [
+                  {
+                    "tid": "20872",
+                    "cpu_s": 12.269999999999978,
+                    "paired_s": 164.9475970469939,
+                    "mean_cpu_percent": 7.438726128580236
+                  },
+                  {
+                    "tid": "20877",
+                    "cpu_s": 10.489999999999998,
+                    "paired_s": 164.9475970469939,
+                    "mean_cpu_percent": 6.359595524760131
+                  },
+                  {
+                    "tid": "20874",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.9475970469939,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "20875",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.9475970469939,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "20876",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.9475970469939,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              }
+            },
+            "refine_policy": "vad0",
+            "source_sha256": {
+              "vad-sources.jsonl": "225a288bbf8ca01ee53c6a08a16da03e3472e80a435ea16e85c477cd6e748acc",
+              "refine-results.jsonl": "2aef530221e556b2781aa03868f198ddb55d512cf0aa756070f8f514208380ac",
+              "zip-sources.jsonl": "2bd2ccbf996b11c55e651b0a3fa96915d51e99a8998b8d4f2681502697cf121c",
+              "track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+              "refine-jobs.jsonl": "c82e99265e95a893fcc84bfcc1b091afb32d92fa38766bf87f83b9450086c00a",
+              "process-resources.jsonl": "a9ba6ef35714356e0ec63544e8c1a07fa379837ec1a9158095627923db971534",
+              "thread-resources.jsonl": "aa93446c5c46126525ebfab28071736789a9781e187b082ed63e651e3b92ec2b",
+              "worker.json": "45382b598070f131f692906124f2f6221c59cb889931fd976154ba5488fb81fc",
+              "zip-events.jsonl": "e071d019b758c9b66422af0381050e012e6f20e672ab03faeb7aff67c4f6e2bd",
+              "capture/backlog.jsonl": "d0e5d7d04f8efa3c16d3c5776a4ccfe2e6cf66f0249f334bdd8372733a78b07e",
+              "capture/decoder.jsonl": "872403899b1b9c0b413487f29fdf93d6cf648aa2e95a3e8a3c15cabccae81549",
+              "capture/producer.jsonl": "3aa48244ccaaa486c71e1c58845f74847b683555264edf9e23999b984a6ee2c4"
+            }
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0",
+            "source_sha256": {
+              "execution.json": "f259d9a55188925d6124a01e5d151b1d4130afed6915eb56f8d5cf984b392568",
+              "thermal.jsonl": "a8bf0e5d25ab3ddc2490a57169ff76942eb08e5fdd77fec19d38c00e860cf9ee"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 170,
+            "before": {
+              "at_utc": "2026-11-03T05:19:39.249675+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 52.35,
+              "fan_rpm": 3109,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T05:22:32.475666+00:00",
+              "elapsed_from_before_s": 173.22599283700401,
+              "temperature_c": 60.6,
+              "fan_rpm": 5211,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 172,
+            "fan_rpm_max": 5214,
+            "temperature_mc_max_monitor": 63900,
+            "temperature_mc_max_with_before_after": 63900,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "resource_sample_intervals_s": {
+            "n": 1643,
+            "mean": 0.10058461520024363,
+            "p50": 0.100316508,
+            "p95": 0.100904401,
+            "max": 0.137504187
+          },
+          "dequeued_to_inference_start_s": {
+            "n": 57,
+            "mean": 0.00020835352631578947,
+            "p50": 0.00020102,
+            "p95": 0.000376596,
+            "max": 0.000613078
+          },
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "refine_environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "vad_environment": {
+            "backend": "python_onnxruntime_k2_v4_experimental",
+            "python_onnxruntime_version": "1.31.1",
+            "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+            "num_threads": 1,
+            "providers": [
+              "CPUExecutionProvider"
+            ],
+            "recurrent_state_bytes": 1024,
+            "reset_count": 55,
+            "windows_since_reset": 164,
+            "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+          },
+          "vad_settings": {
+            "window_frames": 512,
+            "num_threads": 1,
+            "threshold": 0.5,
+            "min_speech_frames": 1600,
+            "min_silence_frames": 4800,
+            "long_threshold": 0.9,
+            "long_silence_frames": 1600,
+            "soft_limit_s": 5,
+            "retained_audio_frames": 0,
+            "queue_capacity": 1
+          },
+          "vad_inference": {
+            "wall_s": 2.910970634795376,
+            "cpu_s": 2.9245797530002013,
+            "calls": 5175
+          },
+          "loading": {
+            "zip": {
+              "wall_s": 2.42940025999269,
+              "cpu_s": 2.664865215,
+              "resources": {
+                "sample_interval_s": 0.1,
+                "rss_observed_max_mib": 278.578125,
+                "rss_sample_count": 26,
+                "rss_missing_count": 0,
+                "rss_samples": [
+                  {
+                    "monotonic_s": 76141.333752315,
+                    "rss_mib": 35.890625
+                  },
+                  {
+                    "monotonic_s": 76141.434603473,
+                    "rss_mib": 105.625
+                  },
+                  {
+                    "monotonic_s": 76141.534905997,
+                    "rss_mib": 220.90625
+                  },
+                  {
+                    "monotonic_s": 76141.635146929,
+                    "rss_mib": 277.578125
+                  },
+                  {
+                    "monotonic_s": 76141.735334786,
+                    "rss_mib": 277.578125
+                  },
+                  {
+                    "monotonic_s": 76141.835501031,
+                    "rss_mib": 277.578125
+                  },
+                  {
+                    "monotonic_s": 76141.935665147,
+                    "rss_mib": 277.578125
+                  },
+                  {
+                    "monotonic_s": 76142.03587443,
+                    "rss_mib": 277.578125
+                  },
+                  {
+                    "monotonic_s": 76142.136125621,
+                    "rss_mib": 277.578125
+                  },
+                  {
+                    "monotonic_s": 76142.236328533,
+                    "rss_mib": 277.578125
+                  },
+                  {
+                    "monotonic_s": 76142.336511557,
+                    "rss_mib": 277.578125
+                  },
+                  {
+                    "monotonic_s": 76142.436662821,
+                    "rss_mib": 277.578125
+                  },
+                  {
+                    "monotonic_s": 76142.536841622,
+                    "rss_mib": 278.578125
+                  },
+                  {
+                    "monotonic_s": 76142.637217018,
+                    "rss_mib": 209.265625
+                  },
+                  {
+                    "monotonic_s": 76142.737427041,
+                    "rss_mib": 228.765625
+                  },
+                  {
+                    "monotonic_s": 76142.837630787,
+                    "rss_mib": 247.765625
+                  },
+                  {
+                    "monotonic_s": 76142.937817274,
+                    "rss_mib": 247.765625
+                  },
+                  {
+                    "monotonic_s": 76143.038017797,
+                    "rss_mib": 247.765625
+                  },
+                  {
+                    "monotonic_s": 76143.138255692,
+                    "rss_mib": 247.765625
+                  },
+                  {
+                    "monotonic_s": 76143.238528346,
+                    "rss_mib": 247.765625
+                  },
+                  {
+                    "monotonic_s": 76143.338752981,
+                    "rss_mib": 247.765625
+                  },
+                  {
+                    "monotonic_s": 76143.438940874,
+                    "rss_mib": 247.765625
+                  },
+                  {
+                    "monotonic_s": 76143.539096361,
+                    "rss_mib": 247.765625
+                  },
+                  {
+                    "monotonic_s": 76143.639247088,
+                    "rss_mib": 247.765625
+                  },
+                  {
+                    "monotonic_s": 76143.739439241,
+                    "rss_mib": 247.765625
+                  },
+                  {
+                    "monotonic_s": 76143.76297624,
+                    "rss_mib": 268.265625
+                  }
+                ]
+              }
+            },
+            "refine": {
+              "loading_s": 1.845526400997187,
+              "loading_cpu_s": 2.10167716,
+              "loading_resources": {
+                "sample_interval_s": 0.1,
+                "rss_observed_max_mib": 355.15625,
+                "rss_sample_count": 20,
+                "rss_missing_count": 0,
+                "rss_samples": [
+                  {
+                    "monotonic_s": 76138.867806844,
+                    "rss_mib": 25.703125
+                  },
+                  {
+                    "monotonic_s": 76138.968469353,
+                    "rss_mib": 58.9375
+                  },
+                  {
+                    "monotonic_s": 76139.068968101,
+                    "rss_mib": 250.4375
+                  },
+                  {
+                    "monotonic_s": 76139.169232347,
+                    "rss_mib": 320.53125
+                  },
+                  {
+                    "monotonic_s": 76139.269627521,
+                    "rss_mib": 329.875
+                  },
+                  {
+                    "monotonic_s": 76139.369865378,
+                    "rss_mib": 326.109375
+                  },
+                  {
+                    "monotonic_s": 76139.470022068,
+                    "rss_mib": 326.109375
+                  },
+                  {
+                    "monotonic_s": 76139.570181424,
+                    "rss_mib": 326.109375
+                  },
+                  {
+                    "monotonic_s": 76139.670322225,
+                    "rss_mib": 326.609375
+                  },
+                  {
+                    "monotonic_s": 76139.7704676,
+                    "rss_mib": 326.609375
+                  },
+                  {
+                    "monotonic_s": 76139.870602494,
+                    "rss_mib": 326.609375
+                  },
+                  {
+                    "monotonic_s": 76139.970775054,
+                    "rss_mib": 326.609375
+                  },
+                  {
+                    "monotonic_s": 76140.071035782,
+                    "rss_mib": 326.609375
+                  },
+                  {
+                    "monotonic_s": 76140.17124112,
+                    "rss_mib": 326.609375
+                  },
+                  {
+                    "monotonic_s": 76140.271408736,
+                    "rss_mib": 326.609375
+                  },
+                  {
+                    "monotonic_s": 76140.371569612,
+                    "rss_mib": 327.609375
+                  },
+                  {
+                    "monotonic_s": 76140.471717839,
+                    "rss_mib": 327.609375
+                  },
+                  {
+                    "monotonic_s": 76140.571952603,
+                    "rss_mib": 340.609375
+                  },
+                  {
+                    "monotonic_s": 76140.672235313,
+                    "rss_mib": 352.609375
+                  },
+                  {
+                    "monotonic_s": 76140.712894056,
+                    "rss_mib": 355.15625
+                  }
+                ]
+              }
+            },
+            "vad": {
+              "wall_s": 0.0813757279975107,
+              "cpu_s": 0.04228272500000063,
+              "resources": {
+                "sample_interval_s": 0.1,
+                "rss_observed_max_mib": 288.96875,
+                "rss_sample_count": 2,
+                "rss_missing_count": 0,
+                "rss_samples": [
+                  {
+                    "monotonic_s": 76144.94508555,
+                    "rss_mib": 269.765625
+                  },
+                  {
+                    "monotonic_s": 76145.026295389,
+                    "rss_mib": 288.96875
+                  }
+                ]
+              }
+            }
+          },
+          "warmup": {
+            "zip_s": 1.168012219000957,
+            "refine_s": 0.5012510649976321,
+            "vad_s": 0.28435983299277723
+          },
+          "offline_1t_comparison": {
+            "owned_context_geometry_equal": true,
+            "old_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 42,
+                "substitutions": 26,
+                "deletions": 9,
+                "insertions": 7,
+                "reference_characters": 756,
+                "value": 0.05555555555555555
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "changed_hypothesis_sources": [],
+            "current_threads": 2,
+            "prior_threads": 1
+          },
+          "model_limits_verified": true,
+          "rescore_matches": true,
+          "vad_geometry": {
+            "sources": 50,
+            "segments": 57,
+            "empty_sources": 0,
+            "hard_limit_emissions": 0,
+            "continuation_segments": 0,
+            "max_owned_frames": 72775,
+            "max_payload_frames": 72775,
+            "max_ring_peak_frames": 93648,
+            "max_reassembly_frames": 3184,
+            "pipeline_wall_s": 6.760373717275797,
+            "pipeline_cpu_s": 6.7660957460001265,
+            "scope_ko": "pipeline 비용은 전처리/VAD/방출/제출을 포함하며 Zip 추론과 별도. 실제 이벤트·원문·해시는 로컬 원시/전체 감사 보고서에 보존."
+          }
+        },
+        "vad-continuation200": {
+          "summary": {
+            "schema": "concurrent-wav-summary-v1",
+            "status": "completed",
+            "input_complete": true,
+            "zip_threads": 1,
+            "refine_threads": 2,
+            "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+            "track_float32_sha256": "8caf6f852b7eced49b0f35674f05c8e889d31bece921510b3cebb7d59ae9142e",
+            "audio_s": 164.919,
+            "planned_sources": 50,
+            "zip_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "first_partial_from_source_start_s": {
+              "n": 50,
+              "mean": 0.974069030760002,
+              "p50": 0.8519651650000011,
+              "p95": 1.456021934000006,
+              "max": 1.4736941000000172
+            },
+            "zip_finalize_from_source_end_s": {
+              "n": 50,
+              "mean": 0.16883275498000105,
+              "p50": 0.16410759699999744,
+              "p95": 0.2373273030000007,
+              "max": 0.24587431700000195
+            },
+            "no_partial_sources": 0,
+            "input_dropped_chunks": 0,
+            "input_dropped_audio_s": 0.0,
+            "input_backlog_event_max_audio_s": 0.1,
+            "input_backlog_audio_s": {
+              "n": 1653,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "input_queue_wait_s": {
+              "n": 1650,
+              "mean": 0.0014050206024243538,
+              "p50": 0.0006687640000002659,
+              "p95": 0.0011741759999921442,
+              "max": 0.0944070919999973
+            },
+            "chunk_processing_s": {
+              "n": 1650,
+              "mean": 0.01918617268848496,
+              "p50": 0.0044989060000091285,
+              "p95": 0.05265098699999271,
+              "max": 0.1822459649999999
+            },
+            "coordinator_active_rtf": 0.19192144890716303,
+            "refine": {
+              "complete": true,
+              "planned_windows": 57,
+              "enqueued": 57,
+              "successful": 57,
+              "failed_windows": 0,
+              "missing_results": 0,
+              "dropped_windows": 0,
+              "cer": {
+                "planned": 50,
+                "successful": 50,
+                "complete": true,
+                "cer": {
+                  "errors": 42,
+                  "substitutions": 26,
+                  "deletions": 9,
+                  "insertions": 7,
+                  "reference_characters": 756,
+                  "value": 0.05555555555555555
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "queue_wait_s": {
+                "n": 57,
+                "mean": 0.0010626886842105266,
+                "p50": 0.001023804,
+                "p95": 0.001729773,
+                "max": 0.00267691
+              },
+              "decode_s": {
+                "n": 57,
+                "mean": 0.18014739245614034,
+                "p50": 0.186693907,
+                "p95": 0.286049818,
+                "max": 0.299896612
+              },
+              "dispatch_from_window_end_s": {
+                "n": 57,
+                "mean": 0.13498002577193088,
+                "p50": 0.07570931200000075,
+                "p95": 0.4353267150000022,
+                "max": 0.4609084910000263
+              },
+              "window_end_to_return_s": {
+                "n": 57,
+                "mean": 0.3163894613157906,
+                "p50": 0.275915382000008,
+                "p95": 0.6520845989999913,
+                "max": 0.7490899180000099
+              },
+              "final_from_source_file_end_s": {
+                "n": 50,
+                "mean": 0.24331278528000183,
+                "p50": 0.24319839399998955,
+                "p95": 0.3315979290000115,
+                "max": 0.38161307399999966
+              },
+              "backlog_event_max_audio_s": 4.5484375,
+              "backlog_event_max_windows": 1,
+              "backlog_audio_s": {
+                "n": 1655,
+                "mean": 0.0,
+                "p50": 0.0,
+                "p95": 0.0,
+                "max": 0.0
+              },
+              "backlog_end_audio_s": 0.0,
+              "zip_refine_call_overlap_s": 5.758654898,
+              "refine_calls_with_zip_overlap": 57,
+              "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+              "vad_emission_from_owned_end_s": {
+                "n": 57,
+                "mean": 0.12869801875438597,
+                "p50": 0.066492628000006,
+                "p95": 0.4318269839999971,
+                "max": 0.4459960410000008
+              },
+              "dispatch_after_vad_emission_s": {
+                "n": 57,
+                "mean": 0.006282007017543859,
+                "p50": 0.006060788,
+                "p95": 0.01491245,
+                "max": 0.015459732
+              },
+              "vad_emission_to_return_s": {
+                "n": 57,
+                "mean": 0.18769144256140347,
+                "p50": 0.193651203,
+                "p95": 0.303093877,
+                "max": 0.318086496
+              },
+              "decision_audio_after_owned_end_s": {
+                "n": 57,
+                "mean": 0.06737609649122805,
+                "p50": 0.0,
+                "p95": 0.3,
+                "max": 0.3
+              },
+              "no_vad_segment_sources": 0,
+              "backlog_event_max_payload_audio_s": 4.5484375,
+              "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님."
+            },
+            "refine_reason": null,
+            "producer_cpu_s": 0.236649027,
+            "producer_lifetime_peak_rss_mib": 293.578125,
+            "unmeasured": {
+              "hybrid_merged_cer": null,
+              "acoustic_endpoint_latency_s": null,
+              "aligned_recognition_latency_s": null,
+              "ui_display_latency_s": null,
+              "microphone_overruns": null
+            },
+            "zip_call_rtf": 0.1488271490307363,
+            "resources": {
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "sample_count": 1641,
+              "paired_intervals": 1640,
+              "paired_wall_s": 165.0489054309998,
+              "observed_model_cpu_percent": 34.96539395356732,
+              "model_group_rss_observed_max_mib": 666.15625,
+              "complete_model_rss_samples": 1641,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능.",
+              "main_pid_components": [
+                "zipformer",
+                "online_vad",
+                "coordinator_and_sampling"
+              ]
+            },
+            "threads": {
+              "zip": {
+                "snapshots": 165,
+                "observed_tid_max": 8,
+                "active_at_least_1_percent": 1,
+                "rows": [
+                  {
+                    "tid": "21314",
+                    "cpu_s": 33.520000000000046,
+                    "paired_s": 165.04145566700026,
+                    "mean_cpu_percent": 20.310048687181027
+                  },
+                  {
+                    "tid": "21346",
+                    "cpu_s": 0.5500000000000003,
+                    "paired_s": 165.04145566700026,
+                    "mean_cpu_percent": 0.3332496055474211
+                  },
+                  {
+                    "tid": "21371",
+                    "cpu_s": 0.01,
+                    "paired_s": 1.0035693809913937,
+                    "mean_cpu_percent": 0.996443314175381
+                  },
+                  {
+                    "tid": "21332",
+                    "cpu_s": 0.0,
+                    "paired_s": 165.04145566700026,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "21333",
+                    "cpu_s": 0.0,
+                    "paired_s": 165.04145566700026,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "21334",
+                    "cpu_s": 0.0,
+                    "paired_s": 165.04145566700026,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "21343",
+                    "cpu_s": 0.0,
+                    "paired_s": 165.04145566700026,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "21355",
+                    "cpu_s": 0.0,
+                    "paired_s": 162.02587413499714,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              },
+              "refine": {
+                "snapshots": 165,
+                "observed_tid_max": 5,
+                "active_at_least_1_percent": 2,
+                "rows": [
+                  {
+                    "tid": "21318",
+                    "cpu_s": 12.549999999999978,
+                    "paired_s": 165.0413945550099,
+                    "mean_cpu_percent": 7.604152905904428
+                  },
+                  {
+                    "tid": "21323",
+                    "cpu_s": 10.450000000000001,
+                    "paired_s": 165.0413945550099,
+                    "mean_cpu_percent": 6.331744849936368
+                  },
+                  {
+                    "tid": "21320",
+                    "cpu_s": 0.0,
+                    "paired_s": 165.0413945550099,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "21321",
+                    "cpu_s": 0.0,
+                    "paired_s": 165.0413945550099,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "21322",
+                    "cpu_s": 0.0,
+                    "paired_s": 165.0413945550099,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              }
+            },
+            "refine_policy": "vad-continuation200",
+            "source_sha256": {
+              "vad-sources.jsonl": "6cb3e8f891592f909935ec59aa341a193cbd71966d29f66200f4a412ed85b470",
+              "refine-results.jsonl": "4dfc5bcda7484c37c23dcd900622578ecbcf3b038b05f1d935071757028bcbc9",
+              "zip-sources.jsonl": "a99d8807d7a10168ca54d1c424a2700460c0676905ba37b1f6218aac670d83a7",
+              "track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+              "refine-jobs.jsonl": "7b87e83066cbc2affb5ee32ef79f763c9d08dae3631f80fb752b49cac32ce6e7",
+              "process-resources.jsonl": "a173ae4f380d3c65a31fc2861de42db5f1b5fd3dda939559ff53d89818da2a0e",
+              "thread-resources.jsonl": "2577e07ac8a2813619ba1a734c04a23ae936874ae5f50648947187488943f431",
+              "worker.json": "81ac55bfc6d89ef9cba344eb2554835a1620ec4ff7bf5e28e113e9754210e5b6",
+              "zip-events.jsonl": "62be104f7421aca8718b7622860637a895779c866f5479f28df698123895fda4",
+              "capture/backlog.jsonl": "38c3ebee383f6f560b065598db2a57a36a4ad4e2759afaf92e14e551ed9915ac",
+              "capture/decoder.jsonl": "95a49ed88a5e955883235c18ee9f82c7a5081222e86e0252cc7e9588381da501",
+              "capture/producer.jsonl": "04d542d116f95bc0a8d362118d310ea5c0cc9323d16319366f0210e51ba395a1"
+            }
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200",
+            "source_sha256": {
+              "execution.json": "15976df6b126f36c436b5998ab7955238f65c37d5cd17110b3035a957871ebe3",
+              "thermal.jsonl": "69991c217eec132b5ab0d9a0696804bb00d655dc7c3a3143100ea168488578ae"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 171,
+            "before": {
+              "at_utc": "2026-11-03T05:23:08.702057+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 52.35,
+              "fan_rpm": 3129,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T05:26:02.680833+00:00",
+              "elapsed_from_before_s": 173.97877597500337,
+              "temperature_c": 60.05,
+              "fan_rpm": 5223,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 173,
+            "fan_rpm_max": 5231,
+            "temperature_mc_max_monitor": 64450,
+            "temperature_mc_max_with_before_after": 64450,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "resource_sample_intervals_s": {
+            "n": 1642,
+            "mean": 0.10064030752801457,
+            "p50": 0.100315991,
+            "p95": 0.100886568,
+            "max": 0.141451647
+          },
+          "dequeued_to_inference_start_s": {
+            "n": 57,
+            "mean": 0.00019935440350877186,
+            "p50": 0.000193649,
+            "p95": 0.00041841,
+            "max": 0.000547245
+          },
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "refine_environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "vad_environment": {
+            "backend": "python_onnxruntime_k2_v4_experimental",
+            "python_onnxruntime_version": "1.31.1",
+            "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+            "num_threads": 1,
+            "providers": [
+              "CPUExecutionProvider"
+            ],
+            "recurrent_state_bytes": 1024,
+            "reset_count": 55,
+            "windows_since_reset": 164,
+            "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+          },
+          "vad_settings": {
+            "window_frames": 512,
+            "num_threads": 1,
+            "threshold": 0.5,
+            "min_speech_frames": 1600,
+            "min_silence_frames": 4800,
+            "long_threshold": 0.9,
+            "long_silence_frames": 1600,
+            "soft_limit_s": 5,
+            "retained_audio_frames": 0,
+            "queue_capacity": 1
+          },
+          "vad_inference": {
+            "wall_s": 2.966868898831308,
+            "cpu_s": 2.9654601169996386,
+            "calls": 5175
+          },
+          "loading": {
+            "zip": {
+              "wall_s": 2.44688613100152,
+              "cpu_s": 2.6801510640000004,
+              "resources": {
+                "sample_interval_s": 0.1,
+                "rss_observed_max_mib": 278.578125,
+                "rss_sample_count": 26,
+                "rss_missing_count": 0,
+                "rss_samples": [
+                  {
+                    "monotonic_s": 76350.847625776,
+                    "rss_mib": 36.21875
+                  },
+                  {
+                    "monotonic_s": 76350.948329898,
+                    "rss_mib": 104.453125
+                  },
+                  {
+                    "monotonic_s": 76351.04861724,
+                    "rss_mib": 220.90625
+                  },
+                  {
+                    "monotonic_s": 76351.148853117,
+                    "rss_mib": 277.578125
+                  },
+                  {
+                    "monotonic_s": 76351.249022736,
+                    "rss_mib": 277.578125
+                  },
+                  {
+                    "monotonic_s": 76351.349175465,
+                    "rss_mib": 277.578125
+                  },
+                  {
+                    "monotonic_s": 76351.449324786,
+                    "rss_mib": 277.578125
+                  },
+                  {
+                    "monotonic_s": 76351.549577553,
+                    "rss_mib": 277.578125
+                  },
+                  {
+                    "monotonic_s": 76351.649802894,
+                    "rss_mib": 277.578125
+                  },
+                  {
+                    "monotonic_s": 76351.750007753,
+                    "rss_mib": 277.578125
+                  },
+                  {
+                    "monotonic_s": 76351.850177556,
+                    "rss_mib": 277.578125
+                  },
+                  {
+                    "monotonic_s": 76351.950323544,
+                    "rss_mib": 277.578125
+                  },
+                  {
+                    "monotonic_s": 76352.050497977,
+                    "rss_mib": 278.578125
+                  },
+                  {
+                    "monotonic_s": 76352.150922338,
+                    "rss_mib": 209.28125
+                  },
+                  {
+                    "monotonic_s": 76352.251134215,
+                    "rss_mib": 228.78125
+                  },
+                  {
+                    "monotonic_s": 76352.351328852,
+                    "rss_mib": 247.78125
+                  },
+                  {
+                    "monotonic_s": 76352.451479229,
+                    "rss_mib": 247.78125
+                  },
+                  {
+                    "monotonic_s": 76352.551645144,
+                    "rss_mib": 247.78125
+                  },
+                  {
+                    "monotonic_s": 76352.651904151,
+                    "rss_mib": 247.78125
+                  },
+                  {
+                    "monotonic_s": 76352.75210701,
+                    "rss_mib": 247.78125
+                  },
+                  {
+                    "monotonic_s": 76352.852282499,
+                    "rss_mib": 247.78125
+                  },
+                  {
+                    "monotonic_s": 76352.952467376,
+                    "rss_mib": 247.78125
+                  },
+                  {
+                    "monotonic_s": 76353.052635365,
+                    "rss_mib": 247.78125
+                  },
+                  {
+                    "monotonic_s": 76353.152790649,
+                    "rss_mib": 247.78125
+                  },
+                  {
+                    "monotonic_s": 76353.253046694,
+                    "rss_mib": 247.78125
+                  },
+                  {
+                    "monotonic_s": 76353.294328277,
+                    "rss_mib": 268.28125
+                  }
+                ]
+              }
+            },
+            "refine": {
+              "loading_s": 1.8978932750032982,
+              "loading_cpu_s": 2.15497881,
+              "loading_resources": {
+                "sample_interval_s": 0.1,
+                "rss_observed_max_mib": 359.171875,
+                "rss_sample_count": 20,
+                "rss_missing_count": 0,
+                "rss_samples": [
+                  {
+                    "monotonic_s": 76348.327986613,
+                    "rss_mib": 25.71875
+                  },
+                  {
+                    "monotonic_s": 76348.428445696,
+                    "rss_mib": 55.953125
+                  },
+                  {
+                    "monotonic_s": 76348.528952002,
+                    "rss_mib": 249.953125
+                  },
+                  {
+                    "monotonic_s": 76348.629199046,
+                    "rss_mib": 320.546875
+                  },
+                  {
+                    "monotonic_s": 76348.729554906,
+                    "rss_mib": 330.359375
+                  },
+                  {
+                    "monotonic_s": 76348.829806155,
+                    "rss_mib": 326.0625
+                  },
+                  {
+                    "monotonic_s": 76348.929991717,
+                    "rss_mib": 326.0625
+                  },
+                  {
+                    "monotonic_s": 76349.030210613,
+                    "rss_mib": 326.0625
+                  },
+                  {
+                    "monotonic_s": 76349.130381787,
+                    "rss_mib": 326.0625
+                  },
+                  {
+                    "monotonic_s": 76349.230586516,
+                    "rss_mib": 326.5625
+                  },
+                  {
+                    "monotonic_s": 76349.330730671,
+                    "rss_mib": 326.5625
+                  },
+                  {
+                    "monotonic_s": 76349.430881678,
+                    "rss_mib": 326.5625
+                  },
+                  {
+                    "monotonic_s": 76349.531152889,
+                    "rss_mib": 326.5625
+                  },
+                  {
+                    "monotonic_s": 76349.631346822,
+                    "rss_mib": 326.5625
+                  },
+                  {
+                    "monotonic_s": 76349.73150757,
+                    "rss_mib": 326.5625
+                  },
+                  {
+                    "monotonic_s": 76349.831653521,
+                    "rss_mib": 326.5625
+                  },
+                  {
+                    "monotonic_s": 76349.931786028,
+                    "rss_mib": 328.0625
+                  },
+                  {
+                    "monotonic_s": 76350.031995035,
+                    "rss_mib": 334.5625
+                  },
+                  {
+                    "monotonic_s": 76350.132261339,
+                    "rss_mib": 347.5625
+                  },
+                  {
+                    "monotonic_s": 76350.225441865,
+                    "rss_mib": 359.171875
+                  }
+                ]
+              }
+            },
+            "vad": {
+              "wall_s": 0.08045755598868709,
+              "cpu_s": 0.04135542800000014,
+              "resources": {
+                "sample_interval_s": 0.1,
+                "rss_observed_max_mib": 288.984375,
+                "rss_sample_count": 2,
+                "rss_missing_count": 0,
+                "rss_samples": [
+                  {
+                    "monotonic_s": 76354.476597001,
+                    "rss_mib": 269.78125
+                  },
+                  {
+                    "monotonic_s": 76354.556889297,
+                    "rss_mib": 288.984375
+                  }
+                ]
+              }
+            }
+          },
+          "warmup": {
+            "zip_s": 1.168295818992192,
+            "refine_s": 0.5020335629960755,
+            "vad_s": 0.29095133500231896
+          },
+          "offline_1t_comparison": {
+            "owned_context_geometry_equal": true,
+            "old_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 42,
+                "substitutions": 26,
+                "deletions": 9,
+                "insertions": 7,
+                "reference_characters": 756,
+                "value": 0.05555555555555555
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "changed_hypothesis_sources": [],
+            "current_threads": 2,
+            "prior_threads": 1
+          },
+          "model_limits_verified": true,
+          "rescore_matches": true,
+          "vad_geometry": {
+            "sources": 50,
+            "segments": 57,
+            "empty_sources": 0,
+            "hard_limit_emissions": 0,
+            "continuation_segments": 0,
+            "max_owned_frames": 72775,
+            "max_payload_frames": 72775,
+            "max_ring_peak_frames": 93648,
+            "max_reassembly_frames": 3184,
+            "pipeline_wall_s": 6.911592704753275,
+            "pipeline_cpu_s": 6.890611066999957,
+            "scope_ko": "pipeline 비용은 전처리/VAD/방출/제출을 포함하며 Zip 추론과 별도. 실제 이벤트·원문·해시는 로컬 원시/전체 감사 보고서에 보존."
+          }
+        }
+      },
+      "paired_controls": {
+        "vad0": {
+          "control": "fixed5",
+          "first_partial_paired_delta_s": {
+            "n": 50,
+            "mean": 0.00417609576,
+            "p50": 0.003417961,
+            "p95": 0.016074496,
+            "max": 0.042747068
+          },
+          "changed_zip_sources": []
+        },
+        "vad-continuation200": {
+          "control": "fixed5",
+          "first_partial_paired_delta_s": {
+            "n": 50,
+            "mean": 0.0042483860400000005,
+            "p50": 0.003371591,
+            "p95": 0.016214182,
+            "max": 0.042056594
+          },
+          "changed_zip_sources": []
+        }
+      }
+    },
+    "synthetic-120": {
+      "audio_s": 120.586875,
+      "source_count": 1,
+      "reference_characters": 519,
+      "runs": {
+        "vad-continuation200": {
+          "summary": {
+            "schema": "concurrent-wav-summary-v1",
+            "status": "completed",
+            "input_complete": true,
+            "zip_threads": 1,
+            "refine_threads": 2,
+            "manifest_sha256": "5effb0c014a49d53dc1be638c667d166b1f8b7b45e619c507c5a2992074f4f66",
+            "track_float32_sha256": "54e8a4acad68dbc93c34966af4b9d3fe6b56e2b796010baaf1121cbbf0a5cfb9",
+            "audio_s": 120.586875,
+            "planned_sources": 1,
+            "zip_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "first_partial_from_source_start_s": {
+              "n": 1,
+              "mean": 0.842830134,
+              "p50": null,
+              "p95": null,
+              "max": 0.842830134
+            },
+            "zip_finalize_from_source_end_s": {
+              "n": 1,
+              "mean": 0.11471146399999554,
+              "p50": null,
+              "p95": null,
+              "max": 0.11471146399999554
+            },
+            "no_partial_sources": 0,
+            "input_dropped_chunks": 0,
+            "input_dropped_audio_s": 0.0,
+            "input_backlog_event_max_audio_s": 0.1,
+            "input_backlog_audio_s": {
+              "n": 1210,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "input_queue_wait_s": {
+              "n": 1206,
+              "mean": 0.0006480391185737719,
+              "p50": 0.0006259870000064893,
+              "p95": 0.001136101999996697,
+              "max": 0.0032782850000003805
+            },
+            "chunk_processing_s": {
+              "n": 1206,
+              "mean": 0.017113060587893737,
+              "p50": 0.004374830999999801,
+              "p95": 0.051568257000003115,
+              "max": 0.11408376699999678
+            },
+            "coordinator_active_rtf": 0.17111279781210792,
+            "refine": {
+              "complete": true,
+              "planned_windows": 43,
+              "enqueued": 43,
+              "successful": 43,
+              "failed_windows": 0,
+              "missing_results": 0,
+              "dropped_windows": 0,
+              "cer": {
+                "planned": 1,
+                "successful": 1,
+                "complete": true,
+                "cer": {
+                  "errors": 31,
+                  "substitutions": 22,
+                  "deletions": 3,
+                  "insertions": 6,
+                  "reference_characters": 519,
+                  "value": 0.05973025048169557
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "queue_wait_s": {
+                "n": 43,
+                "mean": 0.0009710472790697674,
+                "p50": 0.000978545,
+                "p95": 0.001429234,
+                "max": 0.001614661
+              },
+              "decode_s": {
+                "n": 43,
+                "mean": 0.15574050532558142,
+                "p50": 0.147743215,
+                "p95": 0.238571633,
+                "max": 0.327164198
+              },
+              "dispatch_from_window_end_s": {
+                "n": 43,
+                "mean": 0.3390697684418603,
+                "p50": 0.34605978199999754,
+                "p95": 0.4043537649999962,
+                "max": 0.4071019769999964
+              },
+              "window_end_to_return_s": {
+                "n": 43,
+                "mean": 0.49596410713953476,
+                "p50": 0.509010920999998,
+                "p95": 0.5924438439999999,
+                "max": 0.6457486099999983
+              },
+              "final_from_source_file_end_s": {
+                "n": 1,
+                "mean": 0.25344227599998703,
+                "p50": null,
+                "p95": null,
+                "max": 0.25344227599998703
+              },
+              "backlog_event_max_audio_s": 5.0,
+              "backlog_event_max_windows": 1,
+              "backlog_audio_s": {
+                "n": 1211,
+                "mean": 0.0,
+                "p50": 0.0,
+                "p95": 0.0,
+                "max": 0.0
+              },
+              "backlog_end_audio_s": 0.0,
+              "zip_refine_call_overlap_s": 1.486775231,
+              "refine_calls_with_zip_overlap": 41,
+              "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+              "vad_emission_from_owned_end_s": {
+                "n": 43,
+                "mean": 0.3336065887674413,
+                "p50": 0.34340294599999766,
+                "p95": 0.39822979600000963,
+                "max": 0.4006384009999948
+              },
+              "dispatch_after_vad_emission_s": {
+                "n": 43,
+                "mean": 0.005463179674418605,
+                "p50": 0.004897149,
+                "p95": 0.009459018,
+                "max": 0.011209828
+              },
+              "vad_emission_to_return_s": {
+                "n": 43,
+                "mean": 0.16235751837209306,
+                "p50": 0.152946496,
+                "p95": 0.24837971,
+                "max": 0.339510406
+              },
+              "decision_audio_after_owned_end_s": {
+                "n": 43,
+                "mean": 0.28204651162790717,
+                "p50": 0.3,
+                "p95": 0.3,
+                "max": 0.3
+              },
+              "no_vad_segment_sources": 0,
+              "backlog_event_max_payload_audio_s": 5.0,
+              "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님."
+            },
+            "refine_reason": null,
+            "producer_cpu_s": 0.176536062,
+            "producer_lifetime_peak_rss_mib": 294.25,
+            "unmeasured": {
+              "hybrid_merged_cer": null,
+              "acoustic_endpoint_latency_s": null,
+              "aligned_recognition_latency_s": null,
+              "ui_display_latency_s": null,
+              "microphone_overruns": null
+            },
+            "zip_call_rtf": 0.12952697719382786,
+            "resources": {
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "sample_count": 1200,
+              "paired_intervals": 1199,
+              "paired_wall_s": 120.66941082300002,
+              "observed_model_cpu_percent": 31.515857863748924,
+              "model_group_rss_observed_max_mib": 711.40625,
+              "complete_model_rss_samples": 1200,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능.",
+              "main_pid_components": [
+                "zipformer",
+                "online_vad",
+                "coordinator_and_sampling"
+              ]
+            },
+            "threads": {
+              "zip": {
+                "snapshots": 121,
+                "observed_tid_max": 8,
+                "active_at_least_1_percent": 1,
+                "rows": [
+                  {
+                    "tid": "21785",
+                    "cpu_s": 22.16000000000002,
+                    "paired_s": 120.76942266301194,
+                    "mean_cpu_percent": 18.349015430697236
+                  },
+                  {
+                    "tid": "21819",
+                    "cpu_s": 0.3900000000000002,
+                    "paired_s": 120.76942266301194,
+                    "mean_cpu_percent": 0.3229294231936786
+                  },
+                  {
+                    "tid": "21803",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.76942266301194,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "21804",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.76942266301194,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "21805",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.76942266301194,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "21816",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.76942266301194,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "21828",
+                    "cpu_s": 0.0,
+                    "paired_s": 116.74902944201312,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              },
+              "refine": {
+                "snapshots": 121,
+                "observed_tid_max": 5,
+                "active_at_least_1_percent": 2,
+                "rows": [
+                  {
+                    "tid": "21789",
+                    "cpu_s": 8.199999999999989,
+                    "paired_s": 120.76968627600581,
+                    "mean_cpu_percent": 6.789783308089244
+                  },
+                  {
+                    "tid": "21794",
+                    "cpu_s": 6.9799999999999995,
+                    "paired_s": 120.76968627600581,
+                    "mean_cpu_percent": 5.7795960354223155
+                  },
+                  {
+                    "tid": "21791",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.76968627600581,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "21792",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.76968627600581,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "21793",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.76968627600581,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              }
+            },
+            "refine_policy": "vad-continuation200",
+            "source_sha256": {
+              "vad-sources.jsonl": "f1cf9fe5ce04684aee23cff4d43724b5865cfd2b43a101ec2131764235dfff70",
+              "refine-results.jsonl": "270291c7a45b0408fc8b4702a8305f584e11e5f7388596a2557f80e4567f3e5c",
+              "zip-sources.jsonl": "02cdc0a7153d01e3512ce97596538bde0ce37dab007cfae7187560c834b8634f",
+              "track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+              "refine-jobs.jsonl": "81a3e82e3f2588ecfc9e7a156ee160a27629b5f1c59f47e12dc1e3caeb0e69c8",
+              "process-resources.jsonl": "93affec2dbbf7cc1c3680d94bbc0e52edbc4d73c464a4f4e5c61ffae3993904e",
+              "thread-resources.jsonl": "3ca78569740ac94b3d483b4284467c2f18b60949a9c3eb57bb1091477c9034ae",
+              "worker.json": "1938e5b7f60d45c462150ddf20e4a0b056abd9ed31d5915133194dde43d6eded",
+              "zip-events.jsonl": "2147a6b10b4b25860e718371f2af205cc936d701681ce19b71048197cb663e00",
+              "capture/backlog.jsonl": "d24681d8c2e0ba274d4e9843bba8aa2bc64aac4988cdb84cc7096b52a09fc4a2",
+              "capture/decoder.jsonl": "985350c7a1536262cee9d5f9b390ccb1789e01d675793b1b093ccf587ce15284",
+              "capture/producer.jsonl": "3c48ae87948f3f5ec2326651b15ef9893cc9db5f26e4f7ef56c2ce6501f39bc5"
+            }
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200",
+            "source_sha256": {
+              "execution.json": "5b68e36f4395ed6fa6504563ef07b02f5a27b29cac3ebe131fb23b2b59a11712",
+              "thermal.jsonl": "da7806deec4db2b2de6b541ba17b1c985a39eed7743ae2316845e821de6bb00e"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 129,
+            "before": {
+              "at_utc": "2026-11-03T05:27:00.001915+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 51.8,
+              "fan_rpm": 3113,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T05:29:11.203884+00:00",
+              "elapsed_from_before_s": 131.20196938500158,
+              "temperature_c": 60.05,
+              "fan_rpm": 5227,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 131,
+            "fan_rpm_max": 5229,
+            "temperature_mc_max_monitor": 63350,
+            "temperature_mc_max_with_before_after": 63350,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "resource_sample_intervals_s": {
+            "n": 1201,
+            "mean": 0.10064282471856788,
+            "p50": 0.100316621,
+            "p95": 0.100963033,
+            "max": 0.137461913
+          },
+          "dequeued_to_inference_start_s": {
+            "n": 43,
+            "mean": 0.00018278609302325584,
+            "p50": 0.000161316,
+            "p95": 0.000329577,
+            "max": 0.000403429
+          },
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "refine_environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "vad_environment": {
+            "backend": "python_onnxruntime_k2_v4_experimental",
+            "python_onnxruntime_version": "1.31.1",
+            "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+            "num_threads": 1,
+            "providers": [
+              "CPUExecutionProvider"
+            ],
+            "recurrent_state_bytes": 1024,
+            "reset_count": 6,
+            "windows_since_reset": 3769,
+            "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+          },
+          "vad_settings": {
+            "window_frames": 512,
+            "num_threads": 1,
+            "threshold": 0.5,
+            "min_speech_frames": 1600,
+            "min_silence_frames": 4800,
+            "long_threshold": 0.9,
+            "long_silence_frames": 1600,
+            "soft_limit_s": 5,
+            "retained_audio_frames": 0,
+            "queue_capacity": 1
+          },
+          "vad_inference": {
+            "wall_s": 2.1152806449244963,
+            "cpu_s": 2.1277865399999536,
+            "calls": 3769
+          },
+          "loading": {
+            "zip": {
+              "wall_s": 2.4576555289968383,
+              "cpu_s": 2.692809903,
+              "resources": {
+                "sample_interval_s": 0.1,
+                "rss_observed_max_mib": 278.25,
+                "rss_sample_count": 26,
+                "rss_missing_count": 0,
+                "rss_samples": [
+                  {
+                    "monotonic_s": 76582.328518739,
+                    "rss_mib": 33.734375
+                  },
+                  {
+                    "monotonic_s": 76582.429322845,
+                    "rss_mib": 97.421875
+                  },
+                  {
+                    "monotonic_s": 76582.529624595,
+                    "rss_mib": 218.359375
+                  },
+                  {
+                    "monotonic_s": 76582.629847845,
+                    "rss_mib": 277.25
+                  },
+                  {
+                    "monotonic_s": 76582.730023427,
+                    "rss_mib": 277.25
+                  },
+                  {
+                    "monotonic_s": 76582.830176287,
+                    "rss_mib": 277.25
+                  },
+                  {
+                    "monotonic_s": 76582.93042663,
+                    "rss_mib": 277.25
+                  },
+                  {
+                    "monotonic_s": 76583.030676528,
+                    "rss_mib": 277.25
+                  },
+                  {
+                    "monotonic_s": 76583.130861203,
+                    "rss_mib": 277.25
+                  },
+                  {
+                    "monotonic_s": 76583.231028822,
+                    "rss_mib": 277.25
+                  },
+                  {
+                    "monotonic_s": 76583.331189923,
+                    "rss_mib": 277.25
+                  },
+                  {
+                    "monotonic_s": 76583.431336357,
+                    "rss_mib": 277.25
+                  },
+                  {
+                    "monotonic_s": 76583.531576885,
+                    "rss_mib": 278.25
+                  },
+                  {
+                    "monotonic_s": 76583.632111729,
+                    "rss_mib": 209.078125
+                  },
+                  {
+                    "monotonic_s": 76583.732327368,
+                    "rss_mib": 226.078125
+                  },
+                  {
+                    "monotonic_s": 76583.832522043,
+                    "rss_mib": 245.578125
+                  },
+                  {
+                    "monotonic_s": 76583.932766422,
+                    "rss_mib": 245.578125
+                  },
+                  {
+                    "monotonic_s": 76584.033000098,
+                    "rss_mib": 245.578125
+                  },
+                  {
+                    "monotonic_s": 76584.133201477,
+                    "rss_mib": 245.578125
+                  },
+                  {
+                    "monotonic_s": 76584.23337643,
+                    "rss_mib": 245.578125
+                  },
+                  {
+                    "monotonic_s": 76584.333544494,
+                    "rss_mib": 245.578125
+                  },
+                  {
+                    "monotonic_s": 76584.433701854,
+                    "rss_mib": 245.578125
+                  },
+                  {
+                    "monotonic_s": 76584.53385827,
+                    "rss_mib": 245.578125
+                  },
+                  {
+                    "monotonic_s": 76584.634007482,
+                    "rss_mib": 245.578125
+                  },
+                  {
+                    "monotonic_s": 76584.734243935,
+                    "rss_mib": 245.578125
+                  },
+                  {
+                    "monotonic_s": 76584.785993415,
+                    "rss_mib": 255.953125
+                  }
+                ]
+              }
+            },
+            "refine": {
+              "loading_s": 1.85123941799975,
+              "loading_cpu_s": 2.108572847,
+              "loading_resources": {
+                "sample_interval_s": 0.1,
+                "rss_observed_max_mib": 417.75,
+                "rss_sample_count": 20,
+                "rss_missing_count": 0,
+                "rss_samples": [
+                  {
+                    "monotonic_s": 76579.51173254,
+                    "rss_mib": 25.6875
+                  },
+                  {
+                    "monotonic_s": 76579.612234847,
+                    "rss_mib": 57.421875
+                  },
+                  {
+                    "monotonic_s": 76579.712700876,
+                    "rss_mib": 259.421875
+                  },
+                  {
+                    "monotonic_s": 76579.812991552,
+                    "rss_mib": 319.5625
+                  },
+                  {
+                    "monotonic_s": 76579.913521823,
+                    "rss_mib": 334.0
+                  },
+                  {
+                    "monotonic_s": 76580.01381498,
+                    "rss_mib": 343.421875
+                  },
+                  {
+                    "monotonic_s": 76580.114059397,
+                    "rss_mib": 343.421875
+                  },
+                  {
+                    "monotonic_s": 76580.214258979,
+                    "rss_mib": 343.421875
+                  },
+                  {
+                    "monotonic_s": 76580.314411765,
+                    "rss_mib": 343.921875
+                  },
+                  {
+                    "monotonic_s": 76580.414575403,
+                    "rss_mib": 343.921875
+                  },
+                  {
+                    "monotonic_s": 76580.514722782,
+                    "rss_mib": 343.921875
+                  },
+                  {
+                    "monotonic_s": 76580.614881309,
+                    "rss_mib": 343.921875
+                  },
+                  {
+                    "monotonic_s": 76580.715030576,
+                    "rss_mib": 343.921875
+                  },
+                  {
+                    "monotonic_s": 76580.815169306,
+                    "rss_mib": 343.921875
+                  },
+                  {
+                    "monotonic_s": 76580.915421223,
+                    "rss_mib": 343.921875
+                  },
+                  {
+                    "monotonic_s": 76581.015625046,
+                    "rss_mib": 344.921875
+                  },
+                  {
+                    "monotonic_s": 76581.115835314,
+                    "rss_mib": 344.921875
+                  },
+                  {
+                    "monotonic_s": 76581.216099009,
+                    "rss_mib": 372.421875
+                  },
+                  {
+                    "monotonic_s": 76581.316294091,
+                    "rss_mib": 408.421875
+                  },
+                  {
+                    "monotonic_s": 76581.362521954,
+                    "rss_mib": 417.75
+                  }
+                ]
+              }
+            },
+            "vad": {
+              "wall_s": 0.08009055400907528,
+              "cpu_s": 0.040970554999999464,
+              "resources": {
+                "sample_interval_s": 0.1,
+                "rss_observed_max_mib": 276.65625,
+                "rss_sample_count": 2,
+                "rss_missing_count": 0,
+                "rss_samples": [
+                  {
+                    "monotonic_s": 76586.771890279,
+                    "rss_mib": 257.453125
+                  },
+                  {
+                    "monotonic_s": 76586.851815055,
+                    "rss_mib": 276.65625
+                  }
+                ]
+              }
+            }
+          },
+          "warmup": {
+            "zip_s": 1.9720867189898854,
+            "refine_s": 0.8468681840022327,
+            "vad_s": 0.4941104519966757
+          },
+          "offline_1t_comparison": {
+            "owned_context_geometry_equal": true,
+            "old_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 31,
+                "substitutions": 22,
+                "deletions": 3,
+                "insertions": 6,
+                "reference_characters": 519,
+                "value": 0.05973025048169557
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "changed_hypothesis_sources": [],
+            "current_threads": 2,
+            "prior_threads": 1
+          },
+          "model_limits_verified": true,
+          "rescore_matches": true,
+          "vad_geometry": {
+            "sources": 1,
+            "segments": 43,
+            "empty_sources": 0,
+            "hard_limit_emissions": 1,
+            "continuation_segments": 1,
+            "max_owned_frames": 80000,
+            "max_payload_frames": 80000,
+            "max_ring_peak_frames": 99200,
+            "max_reassembly_frames": 1600,
+            "pipeline_wall_s": 4.874240990757244,
+            "pipeline_cpu_s": 4.882006505999975,
+            "scope_ko": "pipeline 비용은 전처리/VAD/방출/제출을 포함하며 Zip 추론과 별도. 실제 이벤트·원문·해시는 로컬 원시/전체 감사 보고서에 보존."
+          }
+        },
+        "vad0": {
+          "summary": {
+            "schema": "concurrent-wav-summary-v1",
+            "status": "completed",
+            "input_complete": true,
+            "zip_threads": 1,
+            "refine_threads": 2,
+            "manifest_sha256": "5effb0c014a49d53dc1be638c667d166b1f8b7b45e619c507c5a2992074f4f66",
+            "track_float32_sha256": "54e8a4acad68dbc93c34966af4b9d3fe6b56e2b796010baaf1121cbbf0a5cfb9",
+            "audio_s": 120.586875,
+            "planned_sources": 1,
+            "zip_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "first_partial_from_source_start_s": {
+              "n": 1,
+              "mean": 0.843699091,
+              "p50": null,
+              "p95": null,
+              "max": 0.843699091
+            },
+            "zip_finalize_from_source_end_s": {
+              "n": 1,
+              "mean": 0.11855050399999811,
+              "p50": null,
+              "p95": null,
+              "max": 0.11855050399999811
+            },
+            "no_partial_sources": 0,
+            "input_dropped_chunks": 0,
+            "input_dropped_audio_s": 0.0,
+            "input_backlog_event_max_audio_s": 0.1,
+            "input_backlog_audio_s": {
+              "n": 1210,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "input_queue_wait_s": {
+              "n": 1206,
+              "mean": 0.0006626086782754816,
+              "p50": 0.0006350790000002604,
+              "p95": 0.0011351019999921164,
+              "max": 0.009051866999996605
+            },
+            "chunk_processing_s": {
+              "n": 1206,
+              "mean": 0.017556416413764382,
+              "p50": 0.004557368999996925,
+              "p95": 0.05234450399998991,
+              "max": 0.1180559840000086
+            },
+            "coordinator_active_rtf": 0.17552734125801925,
+            "refine": {
+              "complete": true,
+              "planned_windows": 43,
+              "enqueued": 43,
+              "successful": 43,
+              "failed_windows": 0,
+              "missing_results": 0,
+              "dropped_windows": 0,
+              "cer": {
+                "planned": 1,
+                "successful": 1,
+                "complete": true,
+                "cer": {
+                  "errors": 32,
+                  "substitutions": 24,
+                  "deletions": 4,
+                  "insertions": 4,
+                  "reference_characters": 519,
+                  "value": 0.06165703275529865
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "queue_wait_s": {
+                "n": 43,
+                "mean": 0.0009027645348837211,
+                "p50": 0.00090123,
+                "p95": 0.00134127,
+                "max": 0.001483548
+              },
+              "decode_s": {
+                "n": 43,
+                "mean": 0.15622830388372097,
+                "p50": 0.146568337,
+                "p95": 0.261179774,
+                "max": 0.307970976
+              },
+              "dispatch_from_window_end_s": {
+                "n": 43,
+                "mean": 0.3392724777674418,
+                "p50": 0.3476524550000022,
+                "p95": 0.40457892400000617,
+                "max": 0.4070393770000038
+              },
+              "window_end_to_return_s": {
+                "n": 43,
+                "mean": 0.49657844953488345,
+                "p50": 0.5067419070000057,
+                "p95": 0.604974587000001,
+                "max": 0.6428059699999977
+              },
+              "final_from_source_file_end_s": {
+                "n": 1,
+                "mean": 0.2816490639999927,
+                "p50": null,
+                "p95": null,
+                "max": 0.2816490639999927
+              },
+              "backlog_event_max_audio_s": 5.0,
+              "backlog_event_max_windows": 1,
+              "backlog_audio_s": {
+                "n": 1211,
+                "mean": 0.0,
+                "p50": 0.0,
+                "p95": 0.0,
+                "max": 0.0
+              },
+              "backlog_end_audio_s": 0.0,
+              "zip_refine_call_overlap_s": 1.4699282159999998,
+              "refine_calls_with_zip_overlap": 41,
+              "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+              "vad_emission_from_owned_end_s": {
+                "n": 43,
+                "mean": 0.33374258595348916,
+                "p50": 0.34505400900000893,
+                "p95": 0.39824047400000495,
+                "max": 0.39963596199999785
+              },
+              "dispatch_after_vad_emission_s": {
+                "n": 43,
+                "mean": 0.005529891813953489,
+                "p50": 0.005539766,
+                "p95": 0.010308211,
+                "max": 0.011588925
+              },
+              "vad_emission_to_return_s": {
+                "n": 43,
+                "mean": 0.16283586358139532,
+                "p50": 0.15341565,
+                "p95": 0.273112165,
+                "max": 0.320790577
+              },
+              "decision_audio_after_owned_end_s": {
+                "n": 43,
+                "mean": 0.28204651162790717,
+                "p50": 0.3,
+                "p95": 0.3,
+                "max": 0.3
+              },
+              "no_vad_segment_sources": 0,
+              "backlog_event_max_payload_audio_s": 5.0,
+              "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님."
+            },
+            "refine_reason": null,
+            "producer_cpu_s": 0.17867689600000003,
+            "producer_lifetime_peak_rss_mib": 293.25,
+            "unmeasured": {
+              "hybrid_merged_cer": null,
+              "acoustic_endpoint_latency_s": null,
+              "aligned_recognition_latency_s": null,
+              "ui_display_latency_s": null,
+              "microphone_overruns": null
+            },
+            "zip_call_rtf": 0.13233643960008085,
+            "resources": {
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "sample_count": 1201,
+              "paired_intervals": 1200,
+              "paired_wall_s": 120.6895068239999,
+              "observed_model_cpu_percent": 32.057467975588914,
+              "model_group_rss_observed_max_mib": 713.796875,
+              "complete_model_rss_samples": 1201,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능.",
+              "main_pid_components": [
+                "zipformer",
+                "online_vad",
+                "coordinator_and_sampling"
+              ]
+            },
+            "threads": {
+              "zip": {
+                "snapshots": 121,
+                "observed_tid_max": 8,
+                "active_at_least_1_percent": 1,
+                "rows": [
+                  {
+                    "tid": "22164",
+                    "cpu_s": 22.59000000000002,
+                    "paired_s": 120.68743251101114,
+                    "mean_cpu_percent": 18.71777328425558
+                  },
+                  {
+                    "tid": "22198",
+                    "cpu_s": 0.3900000000000002,
+                    "paired_s": 120.68743251101114,
+                    "mean_cpu_percent": 0.3231488083603219
+                  },
+                  {
+                    "tid": "22182",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.68743251101114,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "22183",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.68743251101114,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "22184",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.68743251101114,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "22195",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.68743251101114,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "22207",
+                    "cpu_s": 0.0,
+                    "paired_s": 116.66865480701381,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              },
+              "refine": {
+                "snapshots": 121,
+                "observed_tid_max": 5,
+                "active_at_least_1_percent": 2,
+                "rows": [
+                  {
+                    "tid": "22168",
+                    "cpu_s": 8.299999999999992,
+                    "paired_s": 120.68738651101012,
+                    "mean_cpu_percent": 6.877272132529605
+                  },
+                  {
+                    "tid": "22173",
+                    "cpu_s": 6.9,
+                    "paired_s": 120.68738651101012,
+                    "mean_cpu_percent": 5.717250327042689
+                  },
+                  {
+                    "tid": "22170",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.68738651101012,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "22171",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.68738651101012,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "22172",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.68738651101012,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              }
+            },
+            "refine_policy": "vad0",
+            "source_sha256": {
+              "vad-sources.jsonl": "bd4f77caf021a28056f32945cd5c7853d9bf2bbe53a86330d6cf3d26ef3ec7ee",
+              "refine-results.jsonl": "f2c53009f9905aeda609ab789efc3fb4a07e3cb0beb07e0a2d9d89f6ced7fff7",
+              "zip-sources.jsonl": "35d7d72fdce024316edffaa2d567db597f80a6d4fc144ba3576a35ca72202721",
+              "track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+              "refine-jobs.jsonl": "a336a946ca6a01bfe982aa2fc25b674e5548c155eb9a13e083abeb26d04d9f77",
+              "process-resources.jsonl": "4a393ffdf7a2f6de63a8a392aa71060c49496e86daed890903cb4f25be65261b",
+              "thread-resources.jsonl": "515fa46c6795b746ea1f5af3e27888c0a613cb54b51bf137508e84c4c772618e",
+              "worker.json": "54dcea5b87754078fcbcbd7f0c915955df7e710951dc38f383c86fc661d96bd6",
+              "zip-events.jsonl": "40ea7aa32718c24ba24ae6ab00e550089e61591f87fcf243acae6cf4d4a27a23",
+              "capture/backlog.jsonl": "8b9b066824918fde763acbdedd300615a51a2a304397a5749bf2ff567938a1b3",
+              "capture/decoder.jsonl": "c3e1a5d1ac2bf30516cbc5cbea7e8722cddd67094a683e560ac0ceb0d2201b4c",
+              "capture/producer.jsonl": "cf1ba49e6076a699f0fb40d58a9a6e809a4ca108fc04c464296892a8c72ba975"
+            }
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0",
+            "source_sha256": {
+              "execution.json": "8ef3a4e8cec62cd18dd9110236349a8971ac30694104c7a1482a8606e70f0f3c",
+              "thermal.jsonl": "b43aeb3d199cbc87f5cdf044aae83d89ec954dba19792163dd5821e81800a8f7"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 129,
+            "before": {
+              "at_utc": "2026-11-03T05:30:14.542041+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 51.8,
+              "fan_rpm": 3110,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T05:32:25.797510+00:00",
+              "elapsed_from_before_s": 131.2554694529972,
+              "temperature_c": 60.6,
+              "fan_rpm": 5219,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 131,
+            "fan_rpm_max": 5220,
+            "temperature_mc_max_monitor": 63900,
+            "temperature_mc_max_with_before_after": 63900,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "resource_sample_intervals_s": {
+            "n": 1202,
+            "mean": 0.10057571529617304,
+            "p50": 0.100314936,
+            "p95": 0.100864182,
+            "max": 0.139218428
+          },
+          "dequeued_to_inference_start_s": {
+            "n": 43,
+            "mean": 0.00017490334883720927,
+            "p50": 0.000164334,
+            "p95": 0.00028291,
+            "max": 0.000334151
+          },
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "refine_environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "vad_environment": {
+            "backend": "python_onnxruntime_k2_v4_experimental",
+            "python_onnxruntime_version": "1.31.1",
+            "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+            "num_threads": 1,
+            "providers": [
+              "CPUExecutionProvider"
+            ],
+            "recurrent_state_bytes": 1024,
+            "reset_count": 6,
+            "windows_since_reset": 3769,
+            "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+          },
+          "vad_settings": {
+            "window_frames": 512,
+            "num_threads": 1,
+            "threshold": 0.5,
+            "min_speech_frames": 1600,
+            "min_silence_frames": 4800,
+            "long_threshold": 0.9,
+            "long_silence_frames": 1600,
+            "soft_limit_s": 5,
+            "retained_audio_frames": 0,
+            "queue_capacity": 1
+          },
+          "vad_inference": {
+            "wall_s": 2.240437598375138,
+            "cpu_s": 2.21994467799992,
+            "calls": 3769
+          },
+          "loading": {
+            "zip": {
+              "wall_s": 2.4846997239947086,
+              "cpu_s": 2.719098105,
+              "resources": {
+                "sample_interval_s": 0.1,
+                "rss_observed_max_mib": 277.25,
+                "rss_sample_count": 26,
+                "rss_missing_count": 0,
+                "rss_samples": [
+                  {
+                    "monotonic_s": 76776.879119709,
+                    "rss_mib": 33.59375
+                  },
+                  {
+                    "monotonic_s": 76776.979814148,
+                    "rss_mib": 95.90625
+                  },
+                  {
+                    "monotonic_s": 76777.080127122,
+                    "rss_mib": 218.359375
+                  },
+                  {
+                    "monotonic_s": 76777.180355372,
+                    "rss_mib": 277.25
+                  },
+                  {
+                    "monotonic_s": 76777.280548955,
+                    "rss_mib": 277.25
+                  },
+                  {
+                    "monotonic_s": 76777.380718076,
+                    "rss_mib": 277.25
+                  },
+                  {
+                    "monotonic_s": 76777.480971178,
+                    "rss_mib": 277.25
+                  },
+                  {
+                    "monotonic_s": 76777.581186317,
+                    "rss_mib": 277.25
+                  },
+                  {
+                    "monotonic_s": 76777.68135516,
+                    "rss_mib": 277.25
+                  },
+                  {
+                    "monotonic_s": 76777.781541706,
+                    "rss_mib": 277.25
+                  },
+                  {
+                    "monotonic_s": 76777.881727716,
+                    "rss_mib": 277.25
+                  },
+                  {
+                    "monotonic_s": 76777.981918058,
+                    "rss_mib": 277.25
+                  },
+                  {
+                    "monotonic_s": 76778.082107957,
+                    "rss_mib": 277.25
+                  },
+                  {
+                    "monotonic_s": 76778.182535801,
+                    "rss_mib": 206.6875
+                  },
+                  {
+                    "monotonic_s": 76778.282749274,
+                    "rss_mib": 226.1875
+                  },
+                  {
+                    "monotonic_s": 76778.382949783,
+                    "rss_mib": 248.6875
+                  },
+                  {
+                    "monotonic_s": 76778.483186108,
+                    "rss_mib": 248.6875
+                  },
+                  {
+                    "monotonic_s": 76778.583393506,
+                    "rss_mib": 248.6875
+                  },
+                  {
+                    "monotonic_s": 76778.683573182,
+                    "rss_mib": 248.6875
+                  },
+                  {
+                    "monotonic_s": 76778.783779191,
+                    "rss_mib": 248.6875
+                  },
+                  {
+                    "monotonic_s": 76778.883963367,
+                    "rss_mib": 248.6875
+                  },
+                  {
+                    "monotonic_s": 76778.984163932,
+                    "rss_mib": 248.6875
+                  },
+                  {
+                    "monotonic_s": 76779.084392961,
+                    "rss_mib": 248.6875
+                  },
+                  {
+                    "monotonic_s": 76779.184571266,
+                    "rss_mib": 248.6875
+                  },
+                  {
+                    "monotonic_s": 76779.28474322,
+                    "rss_mib": 248.6875
+                  },
+                  {
+                    "monotonic_s": 76779.36363771,
+                    "rss_mib": 259.3125
+                  }
+                ]
+              }
+            },
+            "refine": {
+              "loading_s": 1.8687621260032756,
+              "loading_cpu_s": 2.126571361,
+              "loading_resources": {
+                "sample_interval_s": 0.1,
+                "rss_observed_max_mib": 416.78125,
+                "rss_sample_count": 20,
+                "rss_missing_count": 0,
+                "rss_samples": [
+                  {
+                    "monotonic_s": 76774.042594332,
+                    "rss_mib": 25.671875
+                  },
+                  {
+                    "monotonic_s": 76774.143059547,
+                    "rss_mib": 61.90625
+                  },
+                  {
+                    "monotonic_s": 76774.243587189,
+                    "rss_mib": 264.90625
+                  },
+                  {
+                    "monotonic_s": 76774.343882643,
+                    "rss_mib": 319.578125
+                  },
+                  {
+                    "monotonic_s": 76774.444392562,
+                    "rss_mib": 333.796875
+                  },
+                  {
+                    "monotonic_s": 76774.544658091,
+                    "rss_mib": 343.4375
+                  },
+                  {
+                    "monotonic_s": 76774.644828045,
+                    "rss_mib": 343.4375
+                  },
+                  {
+                    "monotonic_s": 76774.744990461,
+                    "rss_mib": 343.4375
+                  },
+                  {
+                    "monotonic_s": 76774.845175637,
+                    "rss_mib": 343.9375
+                  },
+                  {
+                    "monotonic_s": 76774.945433814,
+                    "rss_mib": 343.9375
+                  },
+                  {
+                    "monotonic_s": 76775.045661527,
+                    "rss_mib": 343.9375
+                  },
+                  {
+                    "monotonic_s": 76775.145854721,
+                    "rss_mib": 343.9375
+                  },
+                  {
+                    "monotonic_s": 76775.246030638,
+                    "rss_mib": 343.9375
+                  },
+                  {
+                    "monotonic_s": 76775.346227592,
+                    "rss_mib": 343.9375
+                  },
+                  {
+                    "monotonic_s": 76775.446479176,
+                    "rss_mib": 343.9375
+                  },
+                  {
+                    "monotonic_s": 76775.54667113,
+                    "rss_mib": 344.9375
+                  },
+                  {
+                    "monotonic_s": 76775.646827028,
+                    "rss_mib": 344.9375
+                  },
+                  {
+                    "monotonic_s": 76775.747030111,
+                    "rss_mib": 367.4375
+                  },
+                  {
+                    "monotonic_s": 76775.847298843,
+                    "rss_mib": 404.4375
+                  },
+                  {
+                    "monotonic_s": 76775.910932084,
+                    "rss_mib": 416.78125
+                  }
+                ]
+              }
+            },
+            "vad": {
+              "wall_s": 0.08147493700380437,
+              "cpu_s": 0.04238331699999964,
+              "resources": {
+                "sample_interval_s": 0.1,
+                "rss_observed_max_mib": 280.015625,
+                "rss_sample_count": 2,
+                "rss_missing_count": 0,
+                "rss_samples": [
+                  {
+                    "monotonic_s": 76781.372527882,
+                    "rss_mib": 260.8125
+                  },
+                  {
+                    "monotonic_s": 76781.45383528,
+                    "rss_mib": 280.015625
+                  }
+                ]
+              }
+            }
+          },
+          "warmup": {
+            "zip_s": 1.9948902100004489,
+            "refine_s": 0.8486938529968029,
+            "vad_s": 0.5046823349985061
+          },
+          "offline_1t_comparison": {
+            "owned_context_geometry_equal": true,
+            "old_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 32,
+                "substitutions": 24,
+                "deletions": 4,
+                "insertions": 4,
+                "reference_characters": 519,
+                "value": 0.06165703275529865
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "changed_hypothesis_sources": [],
+            "current_threads": 2,
+            "prior_threads": 1
+          },
+          "model_limits_verified": true,
+          "rescore_matches": true,
+          "vad_geometry": {
+            "sources": 1,
+            "segments": 43,
+            "empty_sources": 0,
+            "hard_limit_emissions": 1,
+            "continuation_segments": 0,
+            "max_owned_frames": 80000,
+            "max_payload_frames": 80000,
+            "max_ring_peak_frames": 96000,
+            "max_reassembly_frames": 1600,
+            "pipeline_wall_s": 5.063023496186361,
+            "pipeline_cpu_s": 5.017860672000051,
+            "scope_ko": "pipeline 비용은 전처리/VAD/방출/제출을 포함하며 Zip 추론과 별도. 실제 이벤트·원문·해시는 로컬 원시/전체 감사 보고서에 보존."
+          }
+        },
+        "fixed5": {
+          "summary": {
+            "schema": "concurrent-wav-summary-v1",
+            "status": "completed",
+            "input_complete": true,
+            "zip_threads": 1,
+            "refine_threads": 2,
+            "manifest_sha256": "5effb0c014a49d53dc1be638c667d166b1f8b7b45e619c507c5a2992074f4f66",
+            "track_float32_sha256": "54e8a4acad68dbc93c34966af4b9d3fe6b56e2b796010baaf1121cbbf0a5cfb9",
+            "audio_s": 120.586875,
+            "planned_sources": 1,
+            "zip_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "first_partial_from_source_start_s": {
+              "n": 1,
+              "mean": 0.838808187,
+              "p50": null,
+              "p95": null,
+              "max": 0.838808187
+            },
+            "zip_finalize_from_source_end_s": {
+              "n": 1,
+              "mean": 0.10004381699999954,
+              "p50": null,
+              "p95": null,
+              "max": 0.10004381699999954
+            },
+            "no_partial_sources": 0,
+            "input_dropped_chunks": 0,
+            "input_dropped_audio_s": 0.0,
+            "input_backlog_event_max_audio_s": 0.1,
+            "input_backlog_audio_s": {
+              "n": 1209,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "input_queue_wait_s": {
+              "n": 1206,
+              "mean": 0.0006340817462685419,
+              "p50": 0.000637300999997592,
+              "p95": 0.0011085269999995262,
+              "max": 0.001467196999996645
+            },
+            "chunk_processing_s": {
+              "n": 1206,
+              "mean": 0.013274159121890387,
+              "p50": 0.0005789679999992359,
+              "p95": 0.04867267900000005,
+              "max": 0.09892209299999877
+            },
+            "coordinator_active_rtf": 0.13272386008741716,
+            "refine": {
+              "complete": true,
+              "planned_windows": 25,
+              "enqueued": 25,
+              "successful": 25,
+              "failed_windows": 0,
+              "missing_results": 0,
+              "dropped_windows": 0,
+              "cer": {
+                "planned": 1,
+                "successful": 1,
+                "complete": true,
+                "cer": {
+                  "errors": 95,
+                  "substitutions": 20,
+                  "deletions": 74,
+                  "insertions": 1,
+                  "reference_characters": 519,
+                  "value": 0.18304431599229287
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "queue_wait_s": {
+                "n": 25,
+                "mean": 0.0012916804799999997,
+                "p50": 0.00120875,
+                "p95": 0.001915996,
+                "max": 0.002924356
+              },
+              "decode_s": {
+                "n": 25,
+                "mean": 0.2972331386,
+                "p50": 0.29716667,
+                "p95": 0.357960925,
+                "max": 0.371760127
+              },
+              "dispatch_from_window_end_s": {
+                "n": 25,
+                "mean": 0.0012114510399997159,
+                "p50": 0.0011277159999991682,
+                "p95": 0.0017793430000025978,
+                "max": 0.0018051289999991837
+              },
+              "window_end_to_return_s": {
+                "n": 25,
+                "mean": 0.3000873106799996,
+                "p50": 0.29973345300000176,
+                "p95": 0.36063414700000074,
+                "max": 0.37556297499999935
+              },
+              "final_from_source_file_end_s": {
+                "n": 1,
+                "mean": 0.07953798899998787,
+                "p50": null,
+                "p95": null,
+                "max": 0.07953798899998787
+              },
+              "backlog_event_max_audio_s": 5.0,
+              "backlog_event_max_windows": 1,
+              "backlog_audio_s": {
+                "n": 1210,
+                "mean": 0.0,
+                "p50": 0.0,
+                "p95": 0.0,
+                "max": 0.0
+              },
+              "backlog_end_audio_s": 0.0,
+              "zip_refine_call_overlap_s": 1.250872689,
+              "refine_calls_with_zip_overlap": 25,
+              "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님."
+            },
+            "refine_reason": null,
+            "producer_cpu_s": 0.16444037899999997,
+            "producer_lifetime_peak_rss_mib": 292.296875,
+            "unmeasured": {
+              "hybrid_merged_cer": null,
+              "acoustic_endpoint_latency_s": null,
+              "aligned_recognition_latency_s": null,
+              "ui_display_latency_s": null,
+              "microphone_overruns": null
+            },
+            "zip_call_rtf": 0.13167690082357633,
+            "resources": {
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "sample_count": 1201,
+              "paired_intervals": 1200,
+              "paired_wall_s": 120.60769541700016,
+              "observed_model_cpu_percent": 28.804132174059607,
+              "model_group_rss_observed_max_mib": 700.765625,
+              "complete_model_rss_samples": 1201,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "threads": {
+              "zip": {
+                "snapshots": 121,
+                "observed_tid_max": 6,
+                "active_at_least_1_percent": 1,
+                "rows": [
+                  {
+                    "tid": "22503",
+                    "cpu_s": 17.52000000000002,
+                    "paired_s": 120.60744024800078,
+                    "mean_cpu_percent": 14.526466994054653
+                  },
+                  {
+                    "tid": "22533",
+                    "cpu_s": 0.34000000000000014,
+                    "paired_s": 120.60744024800078,
+                    "mean_cpu_percent": 0.28190632294398277
+                  },
+                  {
+                    "tid": "22521",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.60744024800078,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "22522",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.60744024800078,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "22523",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.60744024800078,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "22546",
+                    "cpu_s": 0.0,
+                    "paired_s": 114.55278150099912,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              },
+              "refine": {
+                "snapshots": 121,
+                "observed_tid_max": 5,
+                "active_at_least_1_percent": 2,
+                "rows": [
+                  {
+                    "tid": "22507",
+                    "cpu_s": 9.119999999999985,
+                    "paired_s": 120.60740598800476,
+                    "mean_cpu_percent": 7.56172469284932
+                  },
+                  {
+                    "tid": "22512",
+                    "cpu_s": 7.409999999999998,
+                    "paired_s": 120.60740598800476,
+                    "mean_cpu_percent": 6.1439013129400815
+                  },
+                  {
+                    "tid": "22509",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.60740598800476,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "22510",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.60740598800476,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "22511",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.60740598800476,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              }
+            },
+            "source_sha256": {
+              "refine-results.jsonl": "1809da507fad19e7a3ee6be2388f3a082c199a4660779c3320f9ef6b535080ea",
+              "zip-sources.jsonl": "a087b788f13e30e22a675293bc87ab0fd964344ae8fad9fcc13c4edb9103c042",
+              "track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+              "refine-jobs.jsonl": "ec8c8dc1e61aaebc85f374cef9ea64a31f6f086592dae80ddf55c1ad9b315065",
+              "process-resources.jsonl": "be85a59bfd2139b3b775665b677a1fa89a4649a82287c6548b1018504d862731",
+              "thread-resources.jsonl": "82a6705169c0e6d37d3a7574442b52fe8e8a16d52359b63e0fe069064f043cac",
+              "worker.json": "eb8a09a20a7b70b7f13a9bdcf4163ee135d6f1171316cdab0f4a6855b16fdbfd",
+              "zip-events.jsonl": "124a21058527cf9480332bb3536f55e734e9d9919b14a08b489d8833d0c92747",
+              "capture/backlog.jsonl": "3b47f00af021ebbf737d39a363196c63845dcc56006f194318103e05e06a53ca",
+              "capture/decoder.jsonl": "18b66a1175e0f6abc832d8f32ad4eb7db82b68dc6c496618cf436de90517a6b7",
+              "capture/producer.jsonl": "e1709996a7547210f38c9b54929c13535806e52f8ac940baa2b03d8edd198a2c"
+            }
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5",
+            "source_sha256": {
+              "execution.json": "0fe1e52237c5369377b7930f1979acdcc8e83146135da109566049a88e23a468",
+              "thermal.jsonl": "0f535270c1247e85eaf625476c0c09c8e9ad6369364f39260297fb2b80e67cdc"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 128,
+            "before": {
+              "at_utc": "2026-11-03T05:33:01.022904+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 52.35,
+              "fan_rpm": 3128,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T05:35:11.232994+00:00",
+              "elapsed_from_before_s": 130.21009148099984,
+              "temperature_c": 59.5,
+              "fan_rpm": 5221,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 130,
+            "fan_rpm_max": 5228,
+            "temperature_mc_max_monitor": 63900,
+            "temperature_mc_max_with_before_after": 63900,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "resource_sample_intervals_s": {
+            "n": 1202,
+            "mean": 0.1005073672637272,
+            "p50": 0.100287826,
+            "p95": 0.100787533,
+            "max": 0.135186433
+          },
+          "dequeued_to_inference_start_s": {
+            "n": 25,
+            "mean": 0.00035104056000000004,
+            "p50": 0.000349151,
+            "p95": 0.000457559,
+            "max": 0.000556282
+          },
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "refine_environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "vad_environment": null,
+          "vad_settings": null,
+          "vad_inference": null,
+          "loading": {
+            "zip": {
+              "wall_s": 2.4618522060045507,
+              "cpu_s": 2.6964773190000004,
+              "resources": {
+                "sample_interval_s": 0.1,
+                "rss_observed_max_mib": 276.796875,
+                "rss_sample_count": 26,
+                "rss_missing_count": 0,
+                "rss_samples": [
+                  {
+                    "monotonic_s": 76943.404375962,
+                    "rss_mib": 33.609375
+                  },
+                  {
+                    "monotonic_s": 76943.505069309,
+                    "rss_mib": 93.953125
+                  },
+                  {
+                    "monotonic_s": 76943.605364968,
+                    "rss_mib": 217.40625
+                  },
+                  {
+                    "monotonic_s": 76943.705600311,
+                    "rss_mib": 276.296875
+                  },
+                  {
+                    "monotonic_s": 76943.805770914,
+                    "rss_mib": 276.296875
+                  },
+                  {
+                    "monotonic_s": 76943.906029072,
+                    "rss_mib": 276.796875
+                  },
+                  {
+                    "monotonic_s": 76944.006268231,
+                    "rss_mib": 276.796875
+                  },
+                  {
+                    "monotonic_s": 76944.106486833,
+                    "rss_mib": 276.796875
+                  },
+                  {
+                    "monotonic_s": 76944.206660028,
+                    "rss_mib": 276.796875
+                  },
+                  {
+                    "monotonic_s": 76944.306819315,
+                    "rss_mib": 276.796875
+                  },
+                  {
+                    "monotonic_s": 76944.406978825,
+                    "rss_mib": 276.796875
+                  },
+                  {
+                    "monotonic_s": 76944.507131001,
+                    "rss_mib": 276.796875
+                  },
+                  {
+                    "monotonic_s": 76944.607287733,
+                    "rss_mib": 276.796875
+                  },
+                  {
+                    "monotonic_s": 76944.707508114,
+                    "rss_mib": 206.234375
+                  },
+                  {
+                    "monotonic_s": 76944.807723568,
+                    "rss_mib": 225.734375
+                  },
+                  {
+                    "monotonic_s": 76944.907975875,
+                    "rss_mib": 245.234375
+                  },
+                  {
+                    "monotonic_s": 76945.008205959,
+                    "rss_mib": 245.234375
+                  },
+                  {
+                    "monotonic_s": 76945.108398802,
+                    "rss_mib": 245.234375
+                  },
+                  {
+                    "monotonic_s": 76945.208630146,
+                    "rss_mib": 245.234375
+                  },
+                  {
+                    "monotonic_s": 76945.308818933,
+                    "rss_mib": 245.234375
+                  },
+                  {
+                    "monotonic_s": 76945.408986739,
+                    "rss_mib": 245.234375
+                  },
+                  {
+                    "monotonic_s": 76945.509158193,
+                    "rss_mib": 245.234375
+                  },
+                  {
+                    "monotonic_s": 76945.609313555,
+                    "rss_mib": 245.234375
+                  },
+                  {
+                    "monotonic_s": 76945.709456935,
+                    "rss_mib": 245.234375
+                  },
+                  {
+                    "monotonic_s": 76945.809636852,
+                    "rss_mib": 245.234375
+                  },
+                  {
+                    "monotonic_s": 76945.866046536,
+                    "rss_mib": 258.984375
+                  }
+                ]
+              }
+            },
+            "refine": {
+              "loading_s": 1.8766841050091898,
+              "loading_cpu_s": 2.132788643,
+              "loading_resources": {
+                "sample_interval_s": 0.1,
+                "rss_observed_max_mib": 425.78125,
+                "rss_sample_count": 20,
+                "rss_missing_count": 0,
+                "rss_samples": [
+                  {
+                    "monotonic_s": 76940.55539688,
+                    "rss_mib": 25.671875
+                  },
+                  {
+                    "monotonic_s": 76940.656119135,
+                    "rss_mib": 60.40625
+                  },
+                  {
+                    "monotonic_s": 76940.756667888,
+                    "rss_mib": 264.90625
+                  },
+                  {
+                    "monotonic_s": 76940.85692764,
+                    "rss_mib": 319.578125
+                  },
+                  {
+                    "monotonic_s": 76940.957363244,
+                    "rss_mib": 333.609375
+                  },
+                  {
+                    "monotonic_s": 76941.05762731,
+                    "rss_mib": 343.4375
+                  },
+                  {
+                    "monotonic_s": 76941.157823005,
+                    "rss_mib": 343.4375
+                  },
+                  {
+                    "monotonic_s": 76941.258003107,
+                    "rss_mib": 343.4375
+                  },
+                  {
+                    "monotonic_s": 76941.358165747,
+                    "rss_mib": 343.4375
+                  },
+                  {
+                    "monotonic_s": 76941.458323275,
+                    "rss_mib": 343.9375
+                  },
+                  {
+                    "monotonic_s": 76941.55846558,
+                    "rss_mib": 343.9375
+                  },
+                  {
+                    "monotonic_s": 76941.658614794,
+                    "rss_mib": 343.9375
+                  },
+                  {
+                    "monotonic_s": 76941.75876097,
+                    "rss_mib": 343.9375
+                  },
+                  {
+                    "monotonic_s": 76941.859007406,
+                    "rss_mib": 343.9375
+                  },
+                  {
+                    "monotonic_s": 76941.959265472,
+                    "rss_mib": 343.9375
+                  },
+                  {
+                    "monotonic_s": 76942.059455241,
+                    "rss_mib": 344.9375
+                  },
+                  {
+                    "monotonic_s": 76942.159655881,
+                    "rss_mib": 344.9375
+                  },
+                  {
+                    "monotonic_s": 76942.259874168,
+                    "rss_mib": 367.4375
+                  },
+                  {
+                    "monotonic_s": 76942.360117364,
+                    "rss_mib": 404.4375
+                  },
+                  {
+                    "monotonic_s": 76942.431648537,
+                    "rss_mib": 425.78125
+                  }
+                ]
+              }
+            },
+            "vad": null
+          },
+          "warmup": {
+            "zip_s": 1.9910173190000933,
+            "refine_s": 0.8506416869931854,
+            "vad_s": null
+          },
+          "offline_1t_comparison": {
+            "owned_context_geometry_equal": true,
+            "old_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 95,
+                "substitutions": 20,
+                "deletions": 74,
+                "insertions": 1,
+                "reference_characters": 519,
+                "value": 0.18304431599229287
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "changed_hypothesis_sources": [],
+            "current_threads": 2,
+            "prior_threads": 1
+          },
+          "model_limits_verified": true,
+          "rescore_matches": true,
+          "vad_geometry": null
+        }
+      },
+      "paired_controls": {
+        "vad0": {
+          "control": "fixed5",
+          "first_partial_paired_delta_s": {
+            "n": 1,
+            "mean": 0.004890904,
+            "p50": null,
+            "p95": null,
+            "max": 0.004890904
+          },
+          "changed_zip_sources": []
+        },
+        "vad-continuation200": {
+          "control": "fixed5",
+          "first_partial_paired_delta_s": {
+            "n": 1,
+            "mean": 0.004021947,
+            "p50": null,
+            "p95": null,
+            "max": 0.004021947
+          },
+          "changed_zip_sources": []
+        }
+      }
+    }
+  },
+  "raw_files_verified": 112,
+  "tests": {
+    "host": {
+      "count": 236,
+      "seconds": 26.512,
+      "passed": true
+    },
+    "rp5": {
+      "count": 236,
+      "seconds": 47.401,
+      "passed": true
+    }
+  },
+  "legacy_rescore_unchanged": 10,
+  "preservation": {
+    "protected_files": 4707,
+    "changed": [],
+    "missing": [],
+    "environment": {
+      "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+      "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+      "resolved_python": "/home/deepet/.local/share/uv/python/cpython-3.11.18-linux-aarch64-gnu/bin/python3.11",
+      "packages": {
+        "numpy": "2.4.6",
+        "sherpa-onnx": "2.0.1",
+        "sherpa-onnx-core": "2.0.1",
+        "onnxruntime": "1.31.1"
+      }
+    },
+    "environment_unchanged": true,
+    "system_settings_unchanged": true,
+    "active_guards": [],
+    "active_workers": [],
+    "active_refine_children": [],
+    "active_input_children": [],
+    "active_group_members": [],
+    "coordinator_active": false,
+    "same_boot": true,
+    "source_commit": "79d447ab1ac264534416ed7adc05fad6b5d6e79a",
+    "working_tree_clean": true,
+    "active_experiment_commands": []
+  },
+  "evidence_sha256": {
+    "results/maintenance/m31-online-vad-20261103-01/transfer-manifest.json": "1945be860c201a2d46d58153712ee31cb4a66da7cb3cee78923bf56970ba4c50",
+    "results/maintenance/m31-online-vad-20261103-01/plan.json": "58afb69cdee4e7a3db1f2c130a56f2a975e79986d6d08d38f698b14ef5e3ed5c",
+    "results/maintenance/m31-online-vad-20261103-01/suite.json": "7215a38b6a9ff20730e3b133a2dbc322046f0985c9db753854a9e2f7d57e8a52",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/execution.json": "65bf404f40bdc639050f42febf993cad4e66ce98cd33b8d3ff99bb0dab2ead6d",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/worker.json": "208a683e13e317650c2edd69713d3aebe24309bf66bc6de110e70f1ed0bbc8f3",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/summary.json": "3a82f7167cd0f82fe4b820e30a2932da74b446ec9d64a27de9f26d5ca78dc084",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/refine-jobs.jsonl": "105df9ca811a341f814843c95a4d1f5f370f1cfdb96dd7c724a0d245a209d7f7",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/refine-results.jsonl": "6c3f87d6ec570010515674eb9ab7bf03fb8cc9e0d6959a1029ab4d920bb797ed",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/capture/producer.jsonl": "8d979c12cf0e39e51c0f532f0acd5ccd7a2124c40fd4b636769bcdf740293cf2",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/zip-sources.jsonl": "03aacc90c81485caf26bc852872eb02b69dbd789d44eed9e42556073f9e080f8",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/fixed5/process-resources.jsonl": "61fa413d83cfa8bc71e92ded26ede611bf6c718d98e1ce980a7bff7cdc0ebd31",
+    "results/preflight/m3-context-split-20261103-01/kss-dev50/fixed_windows_5s/predictions.jsonl": "26cf00505d380462633739f03ddef07ba59d9c9f58d9936c5d7c90d5ea18474c",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/execution.json": "f259d9a55188925d6124a01e5d151b1d4130afed6915eb56f8d5cf984b392568",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/worker.json": "45382b598070f131f692906124f2f6221c59cb889931fd976154ba5488fb81fc",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/summary.json": "fb7f3734a56282a7b0130e2dc88a1ddb7b4d2c6e13c57660725f46f8877502e3",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/refine-jobs.jsonl": "c82e99265e95a893fcc84bfcc1b091afb32d92fa38766bf87f83b9450086c00a",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/refine-results.jsonl": "2aef530221e556b2781aa03868f198ddb55d512cf0aa756070f8f514208380ac",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/vad-sources.jsonl": "225a288bbf8ca01ee53c6a08a16da03e3472e80a435ea16e85c477cd6e748acc",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/capture/producer.jsonl": "3aa48244ccaaa486c71e1c58845f74847b683555264edf9e23999b984a6ee2c4",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/zip-sources.jsonl": "2bd2ccbf996b11c55e651b0a3fa96915d51e99a8998b8d4f2681502697cf121c",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/process-resources.jsonl": "a9ba6ef35714356e0ec63544e8c1a07fa379837ec1a9158095627923db971534",
+    "results/preflight/m3-context-split-20261103-01/kss-dev50/bounded_vad_5s/predictions.jsonl": "a9f2038ece2e771075cde693feb734bb15bf9c2017f8b9fb3a63b62db026f7ad",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/execution.json": "15976df6b126f36c436b5998ab7955238f65c37d5cd17110b3035a957871ebe3",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/worker.json": "81ac55bfc6d89ef9cba344eb2554835a1620ec4ff7bf5e28e113e9754210e5b6",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/summary.json": "9c1044321035ffef3cdffac238106e78ae451808c6847bb56bb83785c6df8f0c",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/refine-jobs.jsonl": "7b87e83066cbc2affb5ee32ef79f763c9d08dae3631f80fb752b49cac32ce6e7",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/refine-results.jsonl": "4dfc5bcda7484c37c23dcd900622578ecbcf3b038b05f1d935071757028bcbc9",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/vad-sources.jsonl": "6cb3e8f891592f909935ec59aa341a193cbd71966d29f66200f4a412ed85b470",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/capture/producer.jsonl": "04d542d116f95bc0a8d362118d310ea5c0cc9323d16319366f0210e51ba395a1",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/zip-sources.jsonl": "a99d8807d7a10168ca54d1c424a2700460c0676905ba37b1f6218aac670d83a7",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad-continuation200/process-resources.jsonl": "a173ae4f380d3c65a31fc2861de42db5f1b5fd3dda939559ff53d89818da2a0e",
+    "results/preflight/m3-context-split-20261103-01/kss-dev50/bounded_vad_5s_continuation200ms/predictions.jsonl": "80b3b8034f37ac4f0a05e376284e4195b285df67cac4db0ab79c9286bba1c53c",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/execution.json": "5b68e36f4395ed6fa6504563ef07b02f5a27b29cac3ebe131fb23b2b59a11712",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/worker.json": "1938e5b7f60d45c462150ddf20e4a0b056abd9ed31d5915133194dde43d6eded",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/summary.json": "79983bd7ce5f285163f70a83540e3e619307dafc13021ecae94fcaa2bacb0dc8",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/refine-jobs.jsonl": "81a3e82e3f2588ecfc9e7a156ee160a27629b5f1c59f47e12dc1e3caeb0e69c8",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/refine-results.jsonl": "270291c7a45b0408fc8b4702a8305f584e11e5f7388596a2557f80e4567f3e5c",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/vad-sources.jsonl": "f1cf9fe5ce04684aee23cff4d43724b5865cfd2b43a101ec2131764235dfff70",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/capture/producer.jsonl": "3c48ae87948f3f5ec2326651b15ef9893cc9db5f26e4f7ef56c2ce6501f39bc5",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/zip-sources.jsonl": "02cdc0a7153d01e3512ce97596538bde0ce37dab007cfae7187560c834b8634f",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad-continuation200/process-resources.jsonl": "93affec2dbbf7cc1c3680d94bbc0e52edbc4d73c464a4f4e5c61ffae3993904e",
+    "results/preflight/m3-context-split-20261103-01/synthetic-long/bounded_vad_5s_continuation200ms/predictions.jsonl": "b733bb3f7cbd4bc386461d5b607e73f2bc91c5a69ebb7f814845d5bc26eff0af",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/execution.json": "8ef3a4e8cec62cd18dd9110236349a8971ac30694104c7a1482a8606e70f0f3c",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/worker.json": "54dcea5b87754078fcbcbd7f0c915955df7e710951dc38f383c86fc661d96bd6",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/summary.json": "e4afcdb84e411e72511b825f122383cbfa1f5e7b386f28687fde9bfce8ca1385",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/refine-jobs.jsonl": "a336a946ca6a01bfe982aa2fc25b674e5548c155eb9a13e083abeb26d04d9f77",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/refine-results.jsonl": "f2c53009f9905aeda609ab789efc3fb4a07e3cb0beb07e0a2d9d89f6ced7fff7",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/vad-sources.jsonl": "bd4f77caf021a28056f32945cd5c7853d9bf2bbe53a86330d6cf3d26ef3ec7ee",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/capture/producer.jsonl": "cf1ba49e6076a699f0fb40d58a9a6e809a4ca108fc04c464296892a8c72ba975",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/zip-sources.jsonl": "35d7d72fdce024316edffaa2d567db597f80a6d4fc144ba3576a35ca72202721",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/process-resources.jsonl": "4a393ffdf7a2f6de63a8a392aa71060c49496e86daed890903cb4f25be65261b",
+    "results/preflight/m3-context-split-20261103-01/synthetic-long/bounded_vad_5s/predictions.jsonl": "ea9f2c949c0c660a18bb4db58f0f0e44a28f372aed95f8fddfc8e37192e787dd",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/execution.json": "0fe1e52237c5369377b7930f1979acdcc8e83146135da109566049a88e23a468",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/worker.json": "eb8a09a20a7b70b7f13a9bdcf4163ee135d6f1171316cdab0f4a6855b16fdbfd",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/summary.json": "ebe08a16c9aba8a927009b263f3de20cd4260b6e29789eeb0c738ad6136929a1",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/refine-jobs.jsonl": "ec8c8dc1e61aaebc85f374cef9ea64a31f6f086592dae80ddf55c1ad9b315065",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/refine-results.jsonl": "1809da507fad19e7a3ee6be2388f3a082c199a4660779c3320f9ef6b535080ea",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/capture/producer.jsonl": "e1709996a7547210f38c9b54929c13535806e52f8ac940baa2b03d8edd198a2c",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/zip-sources.jsonl": "a087b788f13e30e22a675293bc87ab0fd964344ae8fad9fcc13c4edb9103c042",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/fixed5/process-resources.jsonl": "be85a59bfd2139b3b775665b677a1fa89a4649a82287c6548b1018504d862731",
+    "results/preflight/m3-context-split-20261103-01/synthetic-long/fixed_windows_5s/predictions.jsonl": "1c7274b2fb2c7140139f1e33dafcdc6e216203f9f7e8d0d450c097d8a415c7be",
+    "results/maintenance/m31-online-vad-20261103-01/preservation-after.json": "5ad80318d321987d0020ca08e404739d70fcc592b811a43de0bf547dc8694110",
+    "results/maintenance/m31-online-vad-20261103-01/host-tests.log": "b5cc9c8435b7de67e82e9ec47de64b343ef532102d18bd9fca443a9f617c25e6",
+    "results/maintenance/m31-online-vad-20261103-01/rp5-tests.log": "8752db07395c55d74a5864f0f40b1453e6ef98f0e75dd65cf2a59c66d37d6942",
+    "results/maintenance/m31-online-vad-20261103-01/legacy-checks.json": "4f701e6e9cb9ff7c845bb2f878c4f22eecb0b532756c30c5b56153b97ad5b103",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-only/summary.json": "dc992cc6432b4b1536eda139cf6f3499153ffddcb75d8aaa9653d62e89ee6b4f",
+    "results/maintenance/m31-online-vad-20261103-01/legacy-rescore/kss-dev50/z1-only.json": "fdc15e46f6011432ef720495ed5a22b1046674cd0cf03264f5cd2270843b4df5",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s1/summary.json": "e4ae9d5ca3c61d5112a6261ecfaeb001d0677879d70fb420b5e957ccf32f6134",
+    "results/maintenance/m31-online-vad-20261103-01/legacy-rescore/kss-dev50/z1-s1.json": "12e640cefd6b60bb49eafc1d99819af1af9b4d802e50e02d8ceea8df6fe8d83a",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s2/summary.json": "ef219fd2f22315201738cdca779f782e651984ccc19dd53b6710919d3d965255",
+    "results/maintenance/m31-online-vad-20261103-01/legacy-rescore/kss-dev50/z1-s2.json": "d63aacc2caf158c1205c9b4f07b6926c4d5eac073e86b812f7fed49256ca9bcd",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-only/summary.json": "a2aea233398d07320436bc3ebc96f984963fde2c4cebcd92f2429e7d7603632f",
+    "results/maintenance/m31-online-vad-20261103-01/legacy-rescore/kss-dev50/z2-only.json": "b2418416beae0a262f14f8c96b7ab67861575057f9980a8da77a4ef315eb1c9c",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-s1/summary.json": "c3b9551ba1a57e4b4e86610bbf7564d7d7014bea137c783982e8c6bbb2e9341e",
+    "results/maintenance/m31-online-vad-20261103-01/legacy-rescore/kss-dev50/z2-s1.json": "b6fa3d91bfc1c8629fe16c5c88e15775ce2bcb227763cc5353efe1bffe9c2642",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-only/summary.json": "75735d3e775e755dcd3e794dc879ec7e1d59d12584854d227c635cdd9c8b74ec",
+    "results/maintenance/m31-online-vad-20261103-01/legacy-rescore/synthetic-120/z1-only.json": "af157a8d46e43017996296f4272a2935b836eebd216c8bc105b4dc22bcfbdc2a",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s1/summary.json": "dcf33c31d7943bd5c7c205075dc3495c2cac82f6fb3afb58fd50c02c3108878e",
+    "results/maintenance/m31-online-vad-20261103-01/legacy-rescore/synthetic-120/z1-s1.json": "5c9e57866e8904dd87b0e9e1299d4ae23b9a9f079ff6f355cf71b1c97b9bf807",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s2/summary.json": "c04b0a9e29f0f5a7ce9672dc86e943ba69f5aaff447b69b3cfefda20ca63f077",
+    "results/maintenance/m31-online-vad-20261103-01/legacy-rescore/synthetic-120/z1-s2.json": "5215149da5de113abaf3b2e0f181be38a82bb59535211545fa0d981c7f91984f",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-only/summary.json": "d96b8b76af06ad66e9e687079df12140f5d433a61487e99348e9b903d6a1f7bb",
+    "results/maintenance/m31-online-vad-20261103-01/legacy-rescore/synthetic-120/z2-only.json": "6addc6e75c2cca6ed48b9883e8c83197d6ebb3cf324326044fc1095748a45eaa",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-s1/summary.json": "9fe1cb4b93dca61762de7be2f9d49738f1993e31150c8394a569bed5249647ff",
+    "results/maintenance/m31-online-vad-20261103-01/legacy-rescore/synthetic-120/z2-s1.json": "1eb5a1dcec7c27a7fbe70d3c2b2a929325fae2bb2cc4bf991a2528fec35610a7",
+    "results/maintenance/m31-online-vad-20261103-01/preservation-before.json": "0e58fbee2f9eba34d2e0fe50f25c353bc2685ffa642ce580251acbc387ad072b",
+    "results/maintenance/m31-online-vad-20261103-01/cooling-before.json": "da6e19b21af653e5bac8247f42d0b2e32549abb38da006b567e692e95d7ceb16",
+    "results/maintenance/m31-online-vad-20261103-01/cooling-after.json": "1770577988ff7446f2494d903057222bcb94ff870557b25b7e365852f9d8b64e",
+    "results/maintenance/m31-online-vad-20261103-01/launcher.json": "7b39c1e10e43299a528aeca83ff7a7581727b531df537fd1f7954aeb030e08fb",
+    "results/maintenance/m31-online-vad-20261103-01/controller.log": "ee3a0bfff97c1bdc999699cf33cf10b41fc6b2c4ddf569ba356b16ef338aa66e",
+    "results/maintenance/m31-online-vad-20261103-01/suite.py": "6accdd42ad83e70407dbbdf7bc3e1ab756d32234fc1019e0a0808e11719a0546",
+    "results/maintenance/m31-online-vad-20261103-01/audit.py": "9ad0a9e2c249defad193a26b3ad85c4e9e60bf1e292fe4fdd0c5ebb0be2382be",
+    "results/maintenance/m31-online-vad-20261103-01/analyze.py": "b77ff8b23a95d95d60df0558dc73bb353de99bf3ddd8fb901b0bc73774c60e02",
+    "results/maintenance/m31-online-vad-20261103-01/verified-full-report.json": "12b9b8931720b5a8f3f498a2bbe4bc3ffd88f3a7d700ebd32a56350d0f27aae2",
+    "results/maintenance/m31-online-vad-20261103-01/compact.py": "f56420b673095389832cc73f0a46dbe7561f706fd1d6ac4ff3c46fdd64074053"
+  },
+  "unmeasured": {
+    "hybrid_merged_cer": null,
+    "acoustic_endpoint_latency_s": null,
+    "microphone_ui_latency_s": null
+  },
+  "scope_ko": "각 조건1회, 같은1배속WAV에서 실제VAD/Zip1T/Sense2T 동시 실행. 개발/합성 입력을 별도 집계하며 실제음향정렬/마이크/UI/최종병합/장시간운영 검증과 구분.",
+  "report_storage_ko": "VAD 원시 이벤트/전체 감사 보고서는 Git 제외 로컬 경로에 보존. 이 파일에는 집계와 증거 해시만 기록."
+}
