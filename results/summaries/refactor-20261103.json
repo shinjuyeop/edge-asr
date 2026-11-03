@@ -1,0 +1,144 @@
+{
+  "schema": "repository-refactor-v1",
+  "created_at_utc": "2026-11-03T09:57:40.506558+00:00",
+  "baseline_commit": "e6f1449527dc019c5a09ea793a44772aee7eda83",
+  "validated_source_commit": "b4432e38f71f2383abb78ffbfc43592944e22956",
+  "scope_ko": "문서 중복 제거·실시간 공통 코드 통합·저장 결과 호환성 및 짧은 실제 추론 검증. 새 성능 비교나 마이크 구현이 아님.",
+  "host_tests": {
+    "count": 287,
+    "seconds": 43.426,
+    "result": "OK",
+    "log": "results/maintenance/refactor-20261103-01/host-tests-committed.log",
+    "sha256": "e98e4bf32b44a64f28fbf9d3fd1a4a41d638e730dba4dbacfd8a638d24034506",
+    "native_asr_inference": false
+  },
+  "rp5_tests": {
+    "count": 287,
+    "seconds": 68.402,
+    "result": "OK",
+    "log": "results/maintenance/refactor-20261103-01/rp5-tests.log",
+    "sha256": "b7c1db58737ab1c7e1f78786188b29666343fe9ec6060599a104e236bfe52d91",
+    "native_asr_inference": false
+  },
+  "static_checks": {
+    "ruff": "0.14.14",
+    "check": "passed",
+    "format_python_files": 120,
+    "git_diff_check": "passed",
+    "shell_syntax": "passed",
+    "m1_checksums": "passed"
+  },
+  "history": {
+    "runs_per_device": 29,
+    "host_rp5_summary_hashes_equal": true,
+    "families": {
+      "m31_concurrent": 10,
+      "m31_online_vad": 6,
+      "m31_online_silence": 3,
+      "m33_segment_merge": 3,
+      "m34_token_alignment": 3,
+      "m36_captions": 4
+    },
+    "exact_json_equal": true,
+    "native_asr_inference": false
+  },
+  "native_smoke": {
+    "run": "results/live/refactor-20261103-01",
+    "baseline": "results/live/m36-wav-mvp-20261103-01/smoke-wav",
+    "audio_s": 3.5265,
+    "sources": 1,
+    "display_events": 9,
+    "zip_final_displays": 1,
+    "refine_candidate_displays": 1,
+    "automatic_replacements": 0,
+    "zip_cer": null,
+    "zip_partial_sequence_equal": true,
+    "input_dropped_chunks": 0,
+    "temperature_max_c": 61.7,
+    "current_limits": [
+      0
+    ],
+    "history_limits_before_after": [
+      14,
+      14
+    ],
+    "operational_valid": true,
+    "child_reaped": true,
+    "summary_sha256": "610fb0c393393762cac43a23f494d9b6a4bea26526f41b24f888ce43f1debdea",
+    "native_asr_inference": true,
+    "raw_hypotheses_and_pcm_equal": true,
+    "refine_dropped_windows": 0,
+    "refine_backlog_end_audio_s": 0.0
+  },
+  "preservation": {
+    "protected_files": 5613,
+    "changed": [],
+    "missing": [],
+    "environment_unchanged": true,
+    "system_settings_unchanged": true,
+    "working_tree_clean": true,
+    "source_commit": "b4432e38f71f2383abb78ffbfc43592944e22956",
+    "native_asr_inference": true
+  },
+  "transfer": {
+    "file_count": 32,
+    "total_bytes": 1041424,
+    "all_sha256_equal": true,
+    "native_reaggregation_on_host_equal": true,
+    "historical_reaggregations_host_rp5_equal": 29
+  },
+  "changes": [
+    "M\tREADME.md",
+    "M\tbenchmarks/README.md",
+    "M\tbenchmarks/manifest.md",
+    "M\tdocs/README.md",
+    "A\tdocs/archive/command_migration.md",
+    "M\tdocs/guides/deployment.md",
+    "M\tdocs/guides/evaluation.md",
+    "M\tdocs/guides/streaming_evaluation.md",
+    "M\tdocs/reference/architecture.md",
+    "M\tdocs/reference/benchmark_design.md",
+    "M\tdocs/reference/tooling.md",
+    "A\tdocs/research/README.md",
+    "M\tdocs/status.md",
+    "M\tresults/README.md",
+    "M\tsrc/edge_asr/artifacts.py",
+    "D\tsrc/edge_asr/concurrent_probe.py",
+    "M\tsrc/edge_asr/dataset.py",
+    "A\tsrc/edge_asr/realtime/__init__.py",
+    "R095\tsrc/edge_asr/captions.py\tsrc/edge_asr/realtime/captions.py",
+    "A\tsrc/edge_asr/realtime/refine.py",
+    "A\tsrc/edge_asr/realtime/replay.py",
+    "R098\tsrc/edge_asr/online_vad.py\tsrc/edge_asr/realtime/vad.py",
+    "M\tsrc/edge_asr/resources.py",
+    "M\tsrc/edge_asr/runtime.py",
+    "M\tsrc/edge_asr/segment_merge.py",
+    "M\tsrc/edge_asr/streaming.py",
+    "M\tsrc/edge_asr/token_alignment.py",
+    "M\tsrc/edge_asr/tools/live.py",
+    "M\tsrc/edge_asr/tools/probes/concurrent.py",
+    "A\tsrc/edge_asr/tools/reports/captions.py",
+    "M\ttests/README.md",
+    "M\ttests/test_captions.py",
+    "M\ttests/test_concurrent_probe.py",
+    "M\ttests/test_online_vad.py",
+    "M\ttests/test_project_structure.py"
+  ],
+  "evidence": {
+    "results/maintenance/refactor-20261103-01/host-history-committed.json": "7abfa23b8baaa889dc189ea7ccf00206b507afacd66ff7a45a08ac97c2014e6d",
+    "results/maintenance/refactor-20261103-01/rp5-history.json": "85ff5bc67201e752dc686df7b98e7c779d1bc4499c587e624d0c09c829ca9fa7",
+    "results/maintenance/refactor-20261103-01/source-review.json": "d9424b9769b11c8dbd533928437eaf40f4cc6765288972aaced320c4566dc5af",
+    "results/maintenance/refactor-20261103-01/native-check.json": "3c42f8d39c57cc44a931971f03a2545fa9a89d652e0701a6afef7af1643bab9c",
+    "results/maintenance/refactor-20261103-01/preservation-before.json": "a400d34bdb9b10d8dc3ece5d5894118b6e132997a67109a71ee601ed4aae7a49",
+    "results/maintenance/refactor-20261103-01/preservation-after.json": "dc326f9c726d73d9082e63500336d137c1c1f3af0509624eac2bfdc92440f537",
+    "results/maintenance/refactor-20261103-01/transfer-check.json": "9f290d72ece373aeaa66d03aa99541eaeb2b3ba8f7cf9c02f0bf10bddfa695e5",
+    "results/maintenance/refactor-20261103-01/static-checks.log": "24a6e85f2541335972196b5e77525a71328d22698fddf6dbf88178c2afbde5c3"
+  },
+  "unmeasured": {
+    "refactor_speedup": null,
+    "memory_reduction_bytes": null,
+    "microphone_capture": null,
+    "screen_paint_s": null,
+    "new_long_running_native_validation": null
+  }
+}
