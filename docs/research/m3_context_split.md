@@ -33,3 +33,20 @@ Host 테스트/과거 원시 재채점 → main push → RP5 소스 동기화/�
 - 원시를 Host로 회수해 모델 없이 재채점하고 입력/가중치/과거 결과·환경 보존을 대조한다. Host mock 테스트와 실제 RP5 모델 실행을 구분한다.
 
 이번 단계는 정확도 정책 검증이다. 실시간 첫 부분·VAD 음향 endpoint·실제 Refine 대기/반환·드롭/백로그·최종 병합 CER는 이번 비실시간 파일 평가에서 **null**이다. 그다음에는 정확도 회귀가 검토된 VAD 후보를 1T+2T 동시 측정 도구에 연결해 온라인 VAD 비용과 유한 큐를 별도로 확인한다. 사전 VAD 결과를 읽어 실제 VAD 비용을 누락한 실행은 하지 않는다.
+
+## 실제 결과와 재현 명령
+
+위 계획을 `70169c1`에서 실행해 **12/12회·318/318개 원본 평가**를 완료했다. [비교 보고서](../../results/summaries/m3-context-split-20261103.md), [수치·증거 JSON](../../results/summaries/m3-context-split-20261103.json). 시작200ms는 KSS1자 개선/합성12자 악화, 후속200ms는 실제 적용1회에서1자 개선이었다. 자동 채택하지 않으며 다음 온라인 계측은 VAD0과 후속 후보를 대조한다.
+
+```bash
+# RP5, 기존 모델/데이터가 있을 때 새 출력 경로로 실행
+.venv/bin/python scripts/edge_asr.py tools thermal-run \
+  --temperature-policy operational --output <새_실행> -- \
+  .venv/bin/python scripts/edge_asr.py tools probe-segmented-accuracy \
+  --manifest data/evaluation/kss-dev50/manifest.jsonl \
+  --condition bounded_vad_5s_continuation200ms --output <새_실행>
+
+# Host, 모델 없이 원시 재채점
+.venv/bin/python scripts/edge_asr.py tools summarize-segmented-accuracy \
+  --predictions <원시_실행>/predictions.jsonl --output <새_재채점_폴더>
+```
