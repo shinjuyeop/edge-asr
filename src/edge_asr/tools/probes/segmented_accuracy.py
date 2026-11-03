@@ -20,9 +20,28 @@ from edge_asr.runtime import environment
 from edge_asr.segmentation import SegmentPipeline
 from edge_asr.vad import MODEL_SHA
 
-CONDITIONS = ("full_batch", "fixed_windows_5s", "bounded_vad_5s", "bounded_vad_5s_context200ms")
-VAD_CONDITIONS = ("bounded_vad_5s", "bounded_vad_5s_context200ms")
+CONDITIONS = (
+    "full_batch",
+    "fixed_windows_5s",
+    "bounded_vad_5s",
+    "bounded_vad_5s_context200ms",
+    "bounded_vad_5s_onset200ms",
+    "bounded_vad_5s_continuation200ms",
+)
+VAD_CONDITIONS = CONDITIONS[2:]
 RATE, MAXIMUM = 16000, 80000
+
+
+def context_settings(condition):
+    if condition not in CONDITIONS:
+        raise ValueError("지원하는 구간 평가 조건이 필요합니다.")
+    frames = 3200 if condition.endswith("200ms") else 0
+    selection = (
+        "onset"
+        if condition.endswith("onset200ms")
+        else ("continuation" if condition.endswith("continuation200ms") else "all")
+    )
+    return frames, selection
 
 
 class MeasuredProbability:
@@ -52,7 +71,7 @@ def measure(audio, condition, adapter, vad=None, *, convert=list):
     # 전체 원음의 검증용 PCM/해시는 계측 밖에서 준비한다. 실제 입력 처리는 아래에서 한다.
     expected, _ = preprocess(audio.samples, "identity")
     expected_sha = hashlib.sha256(pcm_bytes(expected)).hexdigest()
-    context_frames = 3200 if condition == "bounded_vad_5s_context200ms" else 0
+    context_frames, selection = context_settings(condition)
     segments = []
     result = {
         "condition": condition,
@@ -66,6 +85,8 @@ def measure(audio, condition, adapter, vad=None, *, convert=list):
         "vad_inference_s": None,
         "vad_inference_cpu_s": None,
     }
+    if selection != "all":
+        result["context_selection"] = selection
     probability = getattr(vad, "probability", None)
     vad_before = (probability.wall_s, probability.cpu_s) if probability else None
     reset_before = getattr(getattr(probability, "probability", None), "reset_count", None)
@@ -73,10 +94,11 @@ def measure(audio, condition, adapter, vad=None, *, convert=list):
 
     def emit(event, pcm):
         start, end = event["owned_start_frame"], event["owned_end_frame"]
+        applied = context_frames if selection == "all" else event["applied_context_frames"]
         if (
             not 0 <= start < end <= len(expected)
             or (segments and start < segments[-1]["owned_end_frame"])
-            or event["context_start_frame"] != max(0, start - context_frames)
+            or event["context_start_frame"] != max(0, start - applied)
             or event["context_end_frame"] != end
             or (condition != "full_batch" and end - start > MAXIMUM)
             or pcm != expected[event["context_start_frame"] : end]
@@ -127,6 +149,7 @@ def measure(audio, condition, adapter, vad=None, *, convert=list):
                 emit,
                 convert=convert,
                 context_frames=context_frames,
+                context_selection=selection,
                 native_budget_frames=None,
             )
             for offset in range(0, len(audio.samples), 1600):
@@ -237,7 +260,7 @@ def probe(root, config_path, manifest, output, condition, vad_model):
         "warmup": {"asr_successful": 0, "vad_successful": 0},
         "settings": {
             "preprocessing": "identity",
-            "context_frames": 3200 if condition == "bounded_vad_5s_context200ms" else 0,
+            "context_frames": context_settings(condition)[0],
             "maximum_s": 5,
             "prefix_frames": 0,
             "suffix_frames": 0,
@@ -258,6 +281,8 @@ def probe(root, config_path, manifest, output, condition, vad_model):
             )
         },
     }
+    if context_settings(condition)[1] != "all":
+        info["settings"]["context_selection"] = context_settings(condition)[1]
     write_json(output / "worker.json", info)
     write_jsonl(output / "predictions.jsonl", rows)
     adapter = None
@@ -329,6 +354,7 @@ def probe(root, config_path, manifest, output, condition, vad_model):
                     lambda *a: None,
                     convert=convert,
                     context_frames=info["settings"]["context_frames"],
+                    context_selection=info["settings"].get("context_selection", "all"),
                     native_budget_frames=None,
                 )
                 for offset in range(0, len(audios[0].samples), 1600):

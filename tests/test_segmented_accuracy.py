@@ -151,6 +151,96 @@ class SegmentedAccuracyTests(unittest.TestCase):
         )
         verify(prediction(audio, result))
 
+    def test_onset_and_continuation_context_have_same_spans_but_distinct_real_pcm(self):
+        class TwoSpans(Probability):
+            def reset(self):
+                super().reset()
+                self.windows = 0
+
+            def __call__(self, block):
+                self.windows += 1
+                return float(30 < self.windows <= 450 or 480 < self.windows <= 520)
+
+        audio = self.audio(22 * 16000 + 137)
+        all_spans = []
+        for suffix, selection in (("onset200ms", "onset"), ("continuation200ms", "continuation")):
+            model = adapter()
+            vad = BoundedProbabilityVad(probe.MeasuredProbability(TwoSpans(0)))
+            result = probe.measure(audio, "bounded_vad_5s_" + suffix, model, vad)
+            self.assertEqual(result["status"], "success")
+            self.assertEqual(result["context_selection"], selection)
+            self.assertEqual(result["vad_resets_during_utterance"], 1)
+            segments = result["segments"]
+            self.assertEqual(len(segments), 4)
+            self.assertEqual([s["is_continuation"] for s in segments], [False, True, True, False])
+            self.assertEqual([s["vad_span_id"] for s in segments], [0, 0, 0, 1])
+            all_spans.append([(s["owned_start_frame"], s["owned_end_frame"]) for s in segments])
+            self.assertGreater(segments[0]["owned_start_frame"], 3200)
+            for segment, call in zip(segments, model.transcribe.call_args_list):
+                applied = 3200 if segment["is_continuation"] == (selection == "continuation") else 0
+                a, b = segment["owned_start_frame"], segment["owned_end_frame"]
+                self.assertEqual(segment["applied_context_frames"], applied)
+                self.assertEqual(segment["context_start_frame"], a - applied)
+                self.assertEqual(call.args[0].samples, audio.samples[a - applied : b])
+                self.assertLessEqual(len(call.args[0].samples), 83200)
+            row = prediction(audio, result)
+            verify(row)
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                write_jsonl(root / "predictions.jsonl", [row])
+                summary = summarize(root / "predictions.jsonl", root)
+                self.assertEqual(summary["segmented_accuracy"]["onset_segments"], 2)
+                self.assertEqual(summary["segmented_accuracy"]["continuation_segments"], 2)
+                self.assertEqual(summary["segmented_accuracy"]["context_selection"], selection)
+            for key, value in (
+                ("is_continuation", False),
+                ("vad_span_id", 1),
+                ("applied_context_frames", -1),
+            ):
+                bad = copy.deepcopy(row)
+                bad["segmented"]["segments"][1][key] = value
+                with self.subTest(selection=selection, key=key), self.assertRaises(ValueError):
+                    verify(bad)
+        self.assertEqual(all_spans[0], all_spans[1])
+
+    def test_selective_context_handles_empty_detection_and_failed_first_asr(self):
+        for condition in probe.CONDITIONS[4:]:
+            audio = self.audio(10000)
+            result = probe.measure(audio, condition, adapter(), self.vad(0))
+            self.assertEqual(result["status"], "success")
+            self.assertEqual(result["hypothesis"], "")
+            verify(prediction(audio, result))
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                write_jsonl(root / "predictions.jsonl", [prediction(audio, result)])
+                score = summarize(root / "predictions.jsonl", root)
+                self.assertEqual(score["overall"]["cer"]["deletions"], 2)
+            model = adapter()
+            model.transcribe.side_effect = RuntimeError("native failure fixture")
+            failed = probe.measure(audio, condition, model, self.vad(1))
+            self.assertEqual(failed["status"], "failed")
+            self.assertIsNone(failed["hypothesis"])
+            self.assertEqual(model.transcribe.call_count, 1)
+
+    def test_new_onset_is_not_continuation_when_completed_vad_tail_was_already_owned(self):
+        class TailBeforeCommittedEnd(Probability):
+            def reset(self):
+                super().reset()
+                self.windows = 0
+
+            def __call__(self, block):
+                self.windows += 1
+                return float(self.windows <= 153 or 200 < self.windows <= 240)
+
+        vad = BoundedProbabilityVad(probe.MeasuredProbability(TailBeforeCommittedEnd(0)))
+        result = probe.measure(self.audio(9 * 16000), "bounded_vad_5s_onset200ms", adapter(), vad)
+        self.assertEqual(result["status"], "success")
+        self.assertGreater(result["pipeline"]["committed_tail_overhang_frames"], 0)
+        self.assertEqual([s["reason"] for s in result["segments"]], ["hard_limit", "vad_end"])
+        self.assertEqual([s["vad_span_id"] for s in result["segments"]], [0, 1])
+        self.assertEqual([s["is_continuation"] for s in result["segments"]], [False, False])
+        verify(prediction(self.audio(9 * 16000), result))
+
     def test_no_dedup_or_text_filter_and_segment_failure_never_falls_back(self):
         audio, model = self.audio(), adapter()
         model.transcribe.side_effect = ["같은 말", "같은 말"]

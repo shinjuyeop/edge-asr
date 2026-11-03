@@ -9,7 +9,14 @@ from edge_asr.artifacts import digest, write_json, write_jsonl
 from edge_asr.scoring import read_predictions, score_records
 
 # 실행기 import 없이 고정 실험 계약을 독립 검증한다.
-CONDITIONS = ("full_batch", "fixed_windows_5s", "bounded_vad_5s", "bounded_vad_5s_context200ms")
+CONDITIONS = (
+    "full_batch",
+    "fixed_windows_5s",
+    "bounded_vad_5s",
+    "bounded_vad_5s_context200ms",
+    "bounded_vad_5s_onset200ms",
+    "bounded_vad_5s_continuation200ms",
+)
 RATE, MAXIMUM = 16000, 80000
 
 
@@ -20,7 +27,13 @@ def verify(row):
         return
     meta = row["segmented"]
     frames = row["audio"]["frames"]
-    context = 3200 if row["segmentation_condition"] == "bounded_vad_5s_context200ms" else 0
+    condition = row["segmentation_condition"]
+    context = 3200 if condition.endswith("200ms") else 0
+    selection = (
+        "onset"
+        if condition.endswith("onset200ms")
+        else ("continuation" if condition.endswith("continuation200ms") else "all")
+    )
     is_vad = row["segmentation_condition"].startswith("bounded_vad_")
     if (
         row["audio"]["sample_rate_hz"] != RATE
@@ -28,19 +41,39 @@ def verify(row):
         or meta["input_frames"] != frames
         or meta["context_frames"] != context
         or not re.fullmatch("[a-f0-9]{64}", meta["input_pcm_sha256"])
+        or meta.get("context_selection", "all") != selection
     ):
         raise ValueError("입력/조건/PCM 메타데이터 불일치")
     last, selected, payloads = 0, 0, 0
+    previous_span = None
+    previous_reason = None
     for i, segment in enumerate(meta["segments"]):
         a, b = segment["owned_start_frame"], segment["owned_end_frame"]
+        applied = context
+        if selection != "all":
+            span, continuation = segment.get("vad_span_id"), segment.get("is_continuation")
+            if (
+                type(span) is not int
+                or span < 0
+                or type(continuation) is not bool
+                or (previous_span is not None and span < previous_span)
+                or continuation != (previous_span == span)
+                or (continuation and (previous_reason != "hard_limit" or a != last))
+                or segment["reason"] not in ("hard_limit", "vad_end", "eof")
+            ):
+                raise ValueError("음성 시작/강제 분할 후속 구간의 문맥 위치 오류")
+            applied = context if continuation == (selection == "continuation") else 0
+            if segment.get("applied_context_frames") != applied:
+                raise ValueError("선택한 문맥 길이 불일치")
+            previous_span, previous_reason = span, segment["reason"]
         if (
             type(a) is not int
             or type(b) is not int
             or not last <= a < b <= frames
             or segment["segment_id"] != i
-            or segment["context_start_frame"] != max(0, a - context)
+            or segment["context_start_frame"] != max(0, a - applied)
             or segment["context_end_frame"] != b
-            or segment["payload_frames"] != b - max(0, a - context)
+            or segment["payload_frames"] != b - max(0, a - applied)
             or not re.fullmatch("[a-f0-9]{64}", segment["payload_sha256"])
             or segment["status"] != "success"
             or not isinstance(segment["hypothesis"], str)
@@ -66,6 +99,7 @@ def verify(row):
             or pipeline["frames"] != frames
             or pipeline["processed_pcm_sha256"] != meta["input_pcm_sha256"]
             or pipeline["context_frames"] != context
+            or pipeline.get("context_selection", "all") != selection
             or pipeline["native_budget_frames"] is not None
             or pipeline["ring_peak_frames"] > pipeline["ring_capacity_frames"]
         ):
@@ -118,6 +152,21 @@ def summarize(predictions, output):
         summary["segmented_accuracy"].update(
             context_frames=3200,
             payload_frames_total=sum(r["segmented"]["payload_frames_total"] for r in successful),
+        )
+    if rows[0]["segmentation_condition"] in CONDITIONS[4:]:
+        segments = [s for r in successful for s in r["segmented"]["segments"]]
+        summary["segmented_accuracy"].update(
+            context_frames=3200,
+            context_selection=successful[0]["segmented"]["context_selection"]
+            if successful
+            else (
+                "onset"
+                if rows[0]["segmentation_condition"].endswith("onset200ms")
+                else "continuation"
+            ),
+            payload_frames_total=sum(r["segmented"]["payload_frames_total"] for r in successful),
+            onset_segments=sum(not s["is_continuation"] for s in segments),
+            continuation_segments=sum(s["is_continuation"] for s in segments),
         )
     summary["by_length"] = {}
     for name, predicate in (("at_most_5s", lambda n: n <= 5), ("over_5s", lambda n: n > 5)):

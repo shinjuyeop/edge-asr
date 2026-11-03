@@ -81,6 +81,13 @@ def run(samples, maximum=3, policy="identity", vad=None):
 
 
 class SegmentTests(unittest.TestCase):
+    def test_invalid_context_selection_is_rejected_before_vad_reset(self):
+        vad = Vad()
+        resets = vad.resets
+        with self.assertRaises(ValueError):
+            SegmentPipeline(vad, "identity", 5, lambda *a: None, context_selection="unknown")
+        self.assertEqual(vad.resets, resets)
+
     def test_ring_is_bounded_and_rejects_lost_or_discontinuous_ranges(self):
         ring = PcmRing(5)
         ring.append(0, array("h", [1, 2, 3]))

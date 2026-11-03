@@ -41,3 +41,7 @@ bash -n scripts/deploy_rp5.sh
 `test_consolidate.py`는 임시 Git 저장소에서 한 폴더 통합 미리보기·실제 적용, 가상환경/모델·과거 결과 보존, 충돌 파일/Git 메타데이터 백업, 실패·중단 복원, 실행 중 실험·수정 소스·다른 Git 이력·symlink 거부와 hard link 보존을 검사합니다. Linux/Git CLI가 필요하며 실제 RP5 폴더를 사용하지 않습니다.
 
 `test_evaluation_inputs.py`, `test_evaluation.py`는 JSONL·PCM16·정규화/CER·가중 집계·실패 커버리지, 모델 1회 로드·파일별 상태·워밍업 제외·중단 기록·기존 결과 보존, 모델/오디오 없는 재채점과 정답 ID 검사를 다룹니다. 실제 CLI에서도 가짜 NumPy/sherpa 모듈과 임시 합성 WAV로 실행·재채점을 확인합니다. 실제 ONNX 추론·정확도 검증은 아닙니다.
+
+## 문맥 적용 위치 회귀 검사
+
+`test_segmented_accuracy.py`는 VAD 시작/강제 분할 후속의 서로 다른 실제 과거 PCM, 동일 소유 경계, 자연 종료 후 span 분리, 이미 확정한 tail 뒤 새 시작, 빈 검출·실패·모델 없는 CER 재채점을 검증합니다. 실제 Silero/SenseVoice의 정확도와 ARM64 실행 성공은 별도의 RP5 측정으로 확인합니다.

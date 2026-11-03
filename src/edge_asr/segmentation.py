@@ -57,6 +57,7 @@ class SegmentPipeline:
         *,
         convert=list,
         context_frames=3200,
+        context_selection="all",
         native_budget_frames=30 * RATE,
         clock=time.perf_counter,
     ):
@@ -64,6 +65,8 @@ class SegmentPipeline:
             raise ValueError("소유 구간 상한은 3/5/8초여야 합니다.")
         if type(context_frames) is not int or not 0 <= context_frames <= 3200:
             raise ValueError("문맥은 0~3200프레임이어야 합니다.")
+        if context_selection not in ("all", "onset", "continuation"):
+            raise ValueError("문맥 적용 위치는 all/onset/continuation이어야 합니다.")
         if native_budget_frames is None:
             capacity = getattr(vad, "max_audio_buffer_frames", None)
             if type(capacity) is not int or capacity != 0:
@@ -77,6 +80,9 @@ class SegmentPipeline:
         self.processor = AudioPreprocessor(policy)
         self.maximum = max_segment_s * RATE
         self.context = context_frames
+        self.context_selection = context_selection
+        self.span_id = 0
+        self.continuation = False
         self.native_budget = native_budget_frames
         # 활성 구간+왼쪽 문맥+VAD lookback/종료 대기+100ms 입력 여유.
         self.ring = PcmRing(self.maximum + context_frames + RATE)
@@ -115,7 +121,11 @@ class SegmentPipeline:
             return
         if end - begin > self.maximum:
             raise ValueError("강제 구간 상한 위반")
-        context_start = max(0, begin - self.context)
+        use_context = self.context_selection == "all" or (
+            self.continuation == (self.context_selection == "continuation")
+        )
+        applied_context = self.context if use_context else 0
+        context_start = max(0, begin - applied_context)
         pcm = self.ring.read(context_start, end)
         row = {
             "segment_id": self.segment_id,
@@ -137,10 +147,17 @@ class SegmentPipeline:
             "payload_sha256": hashlib.sha256(pcm_bytes(pcm)).hexdigest(),
             "owned_pcm_sha256": hashlib.sha256(pcm_bytes(pcm[begin - context_start :])).hexdigest(),
         }
+        if self.context_selection != "all":
+            row.update(
+                vad_span_id=self.span_id,
+                is_continuation=self.continuation,
+                applied_context_frames=applied_context,
+            )
         self.emit(row, pcm)
         self.payload_peak = max(self.payload_peak, len(pcm))
         self.segment_id += 1
         self.owned_end = end
+        self.continuation = reason == "hard_limit"
 
     def _drain(self, reason):
         while not self.vad.empty():
@@ -156,6 +173,8 @@ class SegmentPipeline:
             self.committed_tail_overhang += max(0, self.owned_end - end)
             self._emit(start, end, reason)
             self.native_start = None
+            self.span_id += 1
+            self.continuation = False
 
     def _window(self, block):
         if (
@@ -201,7 +220,7 @@ class SegmentPipeline:
         return self.metadata()
 
     def metadata(self):
-        return {
+        result = {
             "complete": self.closed,
             "frames": self.ring.end,
             "processed_pcm_sha256": self.pcm_digest.hexdigest(),
@@ -222,6 +241,9 @@ class SegmentPipeline:
             "actual_acoustic_endpoint_s": None,
             "word_preservation": None,
         }
+        if self.context_selection != "all":
+            result["context_selection"] = self.context_selection
+        return result
 
 
 class SegmentReplayAdapter:
