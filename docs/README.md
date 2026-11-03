@@ -10,6 +10,7 @@
 | M3 재현 절차 | [음량·냉각](research/m3_preflight.md), [VAD 후속](research/m3_vad_followup.md), [구간 상한](research/m3_segmentation.md), [공개 자료 준비](research/m3_public_vad_data.md), [구간 주석·예비 비교](research/m3_vad_annotations.md), [지속 음성·냉각 진단](research/m3_bounded_vad.md), [열 정책·운영 부하](research/m3_thermal_policy.md), [자연 발화 구간 CER 계획](research/m3_segmentation_accuracy.md) |
 | M3-1 동시 부하·구간 정책 | [동시 계측](research/m31_concurrent.md), [일괄200ms](research/m3_vad_context.md), [시작/후속 문맥 분리](research/m3_context_split.md), [실제 온라인 VAD](research/m31_online_vad.md) |
 | M3-2 병합 사전 검증 | [저장 실측의 파일 ID 단위 선택 정책](research/m32_merge_replay.md) |
+| M3-3 구간 병합 | [같은 VAD 구간의 Streaming/Refine 실측 계획](research/m33_segment_merge.md) |
 | 과거 기록 | [초기 Host 검증](archive/verification.md), [이전 폴더 통합 절차](archive/consolidation.md) |
 
 연구 절차의 미검증 항목과 당시 결과는 각 문서/보고서에서 명시합니다. 실행 전 현재 CLI의 `--help`를 확인하고, 과거 명령은 이행표에 따라 변환합니다. 원시 영수증의 명령·소스 해시는 당시 상태 그대로 보존합니다.

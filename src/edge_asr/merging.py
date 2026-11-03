@@ -22,6 +22,7 @@ class Source:
     jobs: dict = field(default_factory=dict)
     revision: int = 0
     decision: dict | None = None
+    end_is_bound: bool = False
 
 
 class Merger:
@@ -39,7 +40,7 @@ class Merger:
         self.updates, self.ignored = [], Counter()
         self.last_ns = -1
 
-    def register(self, source_id, start, end):
+    def register(self, source_id, start, end, *, end_is_bound=False):
         if (
             not isinstance(source_id, str)
             or not source_id
@@ -47,10 +48,11 @@ class Merger:
             or type(start) is not int
             or type(end) is not int
             or not 0 <= start < end
+            or type(end_is_bound) is not bool
             or (self.sources and start < next(reversed(self.sources.values())).end)
         ):
             raise ValueError("고유 원본 ID와 순서가 있는 비중첩 프레임 구간이 필요합니다.")
-        self.sources[source_id] = Source(source_id, start, end, start)
+        self.sources[source_id] = Source(source_id, start, end, start, end_is_bound=end_is_bound)
 
     def _ignore(self, reason):
         self.ignored[reason] += 1
@@ -75,6 +77,8 @@ class Merger:
             "text_changed": text != source.text,
         }
         source.text = text
+        if source.end_is_bound:
+            update.update(end=None, end_bound=source.end)
         self.updates.append(update)
         if phase == "final":
             source.sealed = True
@@ -198,8 +202,20 @@ class Merger:
         else:
             if source.closed:
                 return self._ignore("duplicate_close")
-            if event["end"] != source.end or not isinstance(event["text"], str):
+            end = event["end"]
+            valid_end = (
+                (
+                    type(end) is int
+                    and source.partial_end <= end <= source.end
+                    and source.start < end
+                    and all(j["end"] <= end for j in source.jobs.values())
+                )
+                if source.end_is_bound
+                else end == source.end
+            )
+            if not valid_end or not isinstance(event["text"], str):
                 raise ValueError("원본 끝의 Zip 최종 전사가 필요합니다.")
+            source.end, source.end_is_bound = end, False
             source.closed = True
             source.zip_final = event["text"]
             self._show(

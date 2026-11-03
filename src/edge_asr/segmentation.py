@@ -60,6 +60,7 @@ class SegmentPipeline:
         context_selection="all",
         native_budget_frames=30 * RATE,
         clock=time.perf_counter,
+        progress=None,
     ):
         if type(max_segment_s) is not int or max_segment_s not in (3, 5, 8):
             raise ValueError("소유 구간 상한은 3/5/8초여야 합니다.")
@@ -77,6 +78,7 @@ class SegmentPipeline:
         ):
             raise ValueError("native 예산은 소유 구간 상한+한 윈도 이상이어야 합니다.")
         self.vad, self.emit, self.convert = vad, emit, convert
+        self.progress = progress
         self.processor = AudioPreprocessor(policy)
         self.maximum = max_segment_s * RATE
         self.context = context_frames
@@ -205,6 +207,8 @@ class SegmentPipeline:
                 self._emit(begin, begin + self.maximum, "hard_limit")
                 self.hard_emissions += 1
                 begin = self.owned_end
+            if self.progress is not None:
+                self.progress(begin, min(self.fed, self.ring.end), self.ring.read)
 
     def finish(self):
         if self.closed or self.ring.end == 0:

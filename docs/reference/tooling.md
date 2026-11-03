@@ -61,3 +61,5 @@ edge-asr tools list
 `probe-concurrent`와 `summarize-concurrent`는 [M3-1 동시 부하](../research/m31_concurrent.md) 측정/재집계다. 단독 1/2T와 동시 1+1/1+2/2+1을 같은 원음에서 비교한다. Refine 구간 끝 기준 지연과 실제 Hybrid 병합 지연을 구분한다.
 
 `replay-merge --run <완료된 동시 기록> --policy all --output <새 폴더>`는 [저장 실측의 파일 ID 단위 선택 정책](../research/m32_merge_replay.md)을 모델 없이 재생한다. `reports.merge_replay`에 구현하며 원시 체크섬/재집계를 검증한다. 정답은 선택 뒤 채점에만 쓰고, child 준비 시각에서 유도한 선택 대기를 실제 UI 지연으로 표시하지 않는다.
+
+`probe-concurrent --refine-policy vad0 --segment-merge`는 [같은 VAD 구간의 실제 병합 실험](../research/m33_segment_merge.md)이다. 구간별 Zip 상태 reset·300ms 보류가 있는 별도 조건으로, 기존 연속 Zip 모드는 유지한다. 실제 parent 수신/상태 적용과 UI 렌더링을 구분한다. `summarize-segment-merge`는 원시 모델 출력·PCM·이벤트/최종 상태를 모델 없이 교차 검증한다.

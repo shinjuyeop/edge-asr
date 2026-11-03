@@ -33,11 +33,12 @@ class TimedProbability:
 class OnlineVadReplay(ConcurrentReplay):
     """Zip 청크 분할은 고정 대조군과 같다. VAD는 원본별 100ms로 재조립한다."""
 
-    def __init__(self, *args, vad, policy, convert=list):
+    def __init__(self, *args, vad, policy, convert=list, progress=None):
         if policy not in POLICIES[1:]:
             raise ValueError("온라인 VAD 정책이 필요합니다.")
         super().__init__(*args)
         self.vad, self.policy, self.convert = vad, policy, convert
+        self.progress = progress
         self.pending = array("f")
         self.pending_peak = self.fed = 0
         self.pipeline = None
@@ -83,6 +84,7 @@ class OnlineVadReplay(ConcurrentReplay):
                 context_frames=3200 if selection == "continuation" else 0,
                 context_selection=selection,
                 native_budget_frames=None,
+                progress=self.progress,
             )
         self.delivered_through = stop
         self.pending.extend(block)

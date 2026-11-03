@@ -5,6 +5,7 @@ import json
 import os
 import subprocess
 import time
+from contextlib import ExitStack
 from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
@@ -32,8 +33,18 @@ COMBINATIONS = ((1, 0), (2, 0), (1, 1), (1, 2), (2, 1))
 
 
 def probe(
-    root, manifest, output, zip_threads, refine_threads, *, refine_policy="fixed5", vad_model=None
+    root,
+    manifest,
+    output,
+    zip_threads,
+    refine_threads,
+    *,
+    refine_policy="fixed5",
+    vad_model=None,
+    segment_merge=False,
 ):
+    if segment_merge and (refine_policy != "vad0" or not refine_threads):
+        raise ValueError("구간 병합은 Refine을 사용하는 vad0 별도 모드입니다.")
     if (zip_threads, refine_threads) not in COMBINATIONS:
         raise ValueError("단독 1T/2T 또는 동시 1+1/1+2/2+1 조건이 필요합니다.")
     if refine_policy not in POLICIES or (refine_policy != "fixed5" and not refine_threads):
@@ -93,6 +104,18 @@ def probe(
             context_selection="continuation" if refine_policy == "vad-continuation200" else "all",
         )
         info["main_pid_components"] = ["zipformer", "online_vad", "coordinator_and_sampling"]
+    if segment_merge:
+        info["kind"] = "segmented_merge_wav_probe"
+        info["settings"].update(
+            segment_merge=True,
+            zip_state_policy="reset_per_vad_owned_segment",
+            zip_holdback_frames=4800,
+            zip_chunk_frames=1600,
+            merge_policies=["zip_only", "refine_complete", "agreement_only"],
+        )
+        info["main_pid_components"].append("segment_merger_and_result_reader")
+        info["unmeasured"].pop("hybrid_merged_cer")
+        info["unmeasured"]["deployed_hybrid_service_cer"] = None
     write_json(output / "worker.json", info)
     adapter = channel = replay = resources = None
     telemetry = {}
@@ -133,7 +156,12 @@ def probe(
             info["sensevoice_model_files"] = {
                 k: {"path": str(p), "sha256": digest(p)} for k, p in sense.model_files.items()
             }
-            channel = RefineChannel(root, sconfig["model"], warm, output)
+            if segment_merge:
+                from edge_asr.segment_merge import ReturningRefineChannel
+
+                channel = ReturningRefineChannel(root, sconfig["model"], warm, output)
+            else:
+                channel = RefineChannel(root, sconfig["model"], warm, output)
             ready = channel.start()
             actual = Path(f"/proc/{ready['process_id']}/limits").read_text()
             info.update(refine_ready=ready, refine_limits_verified=limits_verified(actual))
@@ -229,6 +257,7 @@ def probe(
         with (
             (output / "zip-events.jsonl").open("x") as zlog,
             (output / "refine-jobs.jsonl").open("x") as jlog,
+            ExitStack() as stack,
         ):
             arguments = (
                 adapter,
@@ -238,11 +267,26 @@ def probe(
                 zlog,
                 jlog,
             )
-            replay = (
-                ConcurrentReplay(*arguments)
-                if vad is None
-                else OnlineVadReplay(*arguments, vad=vad, policy=refine_policy, convert=convert)
-            )
+            if segment_merge:
+                from edge_asr.segment_merge import SegmentMergeReplay
+
+                replay = SegmentMergeReplay(
+                    *arguments,
+                    vad=vad,
+                    policy=refine_policy,
+                    convert=convert,
+                    merge_log=stack.enter_context((output / "merge-events.jsonl").open("x")),
+                    segment_log=stack.enter_context((output / "zip-segments.jsonl").open("x")),
+                    receipt_log=stack.enter_context((output / "refine-receipts.jsonl").open("x")),
+                )
+                channel.listen(replay.receive)
+                info["merge_session_id"] = replay.session_id
+            else:
+                replay = (
+                    ConcurrentReplay(*arguments)
+                    if vad is None
+                    else OnlineVadReplay(*arguments, vad=vad, policy=refine_policy, convert=convert)
+                )
             with ProcessSampler(roles, output) as resources:
                 run_paced(
                     replay,
@@ -255,6 +299,8 @@ def probe(
                 info["zip_finished_ns"] = time.perf_counter_ns()
                 if channel:
                     info["refine_completion"] = channel.finish()
+                if segment_merge:
+                    replay.drain_finished()
                 info["measurement_finished_ns"] = time.perf_counter_ns()
         if resources.error:
             raise RuntimeError("process_resource_sampling_failed: " + resources.error)
@@ -286,13 +332,18 @@ def probe(
             info.update(
                 refine_exit_code=channel.process.exitcode, refine_alive=channel.process.is_alive()
             )
+        if segment_merge and replay:
+            replay.write_decisions(output)
         if adapter:
             adapter.close()
         info["resource_sampling_error"] = resources.error if resources else None
         info["finished_at_utc"] = datetime.now(timezone.utc).isoformat()
         write_json(output / "worker.json", info)
         if (output / "track.json").exists():
-            from edge_asr.tools.reports.concurrent import summarize
+            if segment_merge:
+                from edge_asr.tools.reports.segment_merge import summarize
+            else:
+                from edge_asr.tools.reports.concurrent import summarize
 
             try:
                 summarize(output, output / "summary.json")
@@ -323,6 +374,11 @@ def main():
     parser.add_argument("--refine-threads", type=int, choices=(0, 1, 2), required=True)
     parser.add_argument("--refine-policy", choices=POLICIES, default="fixed5")
     parser.add_argument("--vad-model", type=Path)
+    parser.add_argument(
+        "--segment-merge",
+        action="store_true",
+        help="vad0 구간마다 Zip 상태를 새로 만드는 별도 병합 실험",
+    )
     args = parser.parse_args()
     return probe(
         Path.cwd(),
@@ -332,6 +388,7 @@ def main():
         args.refine_threads,
         refine_policy=args.refine_policy,
         vad_model=args.vad_model,
+        segment_merge=args.segment_merge,
     )
 
 

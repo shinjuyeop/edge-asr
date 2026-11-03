@@ -60,7 +60,16 @@ def limits_verified(text):
 
 
 def refine_worker(
-    root, model, warmup, jobs, gate, stop, connection, output, factory=create_adapter
+    root,
+    model,
+    warmup,
+    jobs,
+    gate,
+    stop,
+    connection,
+    output,
+    factory=create_adapter,
+    return_results=False,
 ):
     """한 번 로딩 후 FIFO 처리. 결과는 즉시 JSONL에 보존하고 병합하지 않는다."""
     adapter = None
@@ -135,6 +144,8 @@ def refine_worker(
                         ended_ns=time.perf_counter_ns(), process_cpu_s=time.process_time() - cpu
                     )
                     write_event(log, row)
+                    if return_results:
+                        connection.send({"status": "result", "result": row})
                 count += 1
     except BaseException as error:
         try:
@@ -152,13 +163,26 @@ def refine_worker(
 class RefineChannel:
     """측정 하나의 Refine 자식/2구간 큐. 블로킹 입력 역압을 만들지 않는다."""
 
-    def __init__(self, root, model, warmup, output, *, factory=create_adapter):
+    def __init__(
+        self, root, model, warmup, output, *, factory=create_adapter, return_results=False
+    ):
         ctx = multiprocessing.get_context("spawn")
         self.jobs, self.gate, self.stop = ctx.Queue(maxsize=2), ctx.Lock(), ctx.Event()
         self.connection, sender = ctx.Pipe(duplex=False)
         self.process = ctx.Process(
             target=refine_worker,
-            args=(root, model, warmup, self.jobs, self.gate, self.stop, sender, output, factory),
+            args=(
+                root,
+                model,
+                warmup,
+                self.jobs,
+                self.gate,
+                self.stop,
+                sender,
+                output,
+                factory,
+                return_results,
+            ),
             daemon=True,
         )
         self.process.start()
