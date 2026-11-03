@@ -1,71 +1,39 @@
-# 실행 도구와 명령 이행표
+# 실행 명령
 
-공통 평가는 `edge-asr evaluate/score`를 사용하고, 자료 준비·진단·재채점은 `edge-asr tools <명령>`으로 실행한다. 기존 RP5 환경에는 패키지를 재설치하지 않는다.
-
-`edge-asr live --wav <WAV>`는 [WAV 자막 MVP](../guides/live_captions.md)의 사용자 진입점이다. 기존 온라인 VAD 동시 경로의 `--caption-display`와 열/실행 제한을 연결한다. 자동 교체·토큰 진단과 별도이며 stdout flush와 실제 화면 렌더링을 구분한다.
+명령은 선택한 도구만 지연 import하며 모델을 자동 다운로드하지 않는다. 설치된 `edge-asr`, `python -m edge_asr`, 체크아웃의 `scripts/edge_asr.py`는 같은 진입점이다. 기존 RP5는 재설치 없이 체크아웃 진입점을 사용한다.
 
 ```bash
+.venv/bin/python scripts/edge_asr.py --help
+.venv/bin/python scripts/edge_asr.py live --help
 .venv/bin/python scripts/edge_asr.py tools list
-.venv/bin/python scripts/edge_asr.py tools probe-annotated-vad --help
-# 설치된 환경에서는 같은 명령
-edge-asr tools list
-# PYTHONPATH=src인 개발 환경에서는 python -m edge_asr.tools도 지원
+.venv/bin/python scripts/edge_asr.py tools probe-concurrent --help
 ```
 
-`tools`는 고정된 명령 목록에서 선택한 모듈만 import한다. 외부 플러그인 검색이나 모델 자동 다운로드는 없다. 모듈은 `src/edge_asr/tools/`에서 데이터 준비·측정·집계·유지보수로 나뉜다. 명령별 옵션은 이전과 동일하며, 과거 보고서의 `scripts/*.py` 직접 호출은 아래 명령으로 옮겨 사용한다. 기존 파일의 확장자를 뺀 이름이 명령 별칭으로도 동작하지만 새 문서에서는 표준 이름만 사용한다.
+## 평소 사용하는 명령
 
-| 이전 파일 | 현재 명령 | 구현 모듈 |
+| 명령 | 목적 | 안내 |
 | --- | --- | --- |
-| `scripts/prepare_korean_test0.py` | `edge-asr tools prepare-official` | `data.official_sample` |
-| `scripts/prepare_kss_subset.py` | `edge-asr tools prepare-kss` | `data.kss` |
-| `scripts/prepare_m23_data.py` | `edge-asr tools prepare-external` | `data.external` |
-| `scripts/prepare_m30_audio.py` | `edge-asr tools prepare-volume` | `data.volume` |
-| `scripts/prepare_vad_cases.py` | `edge-asr tools prepare-vad` | `data.vad_cases` |
-| `scripts/prepare_segmentation_cases.py` | `edge-asr tools prepare-segments` | `data.segmentation_cases` |
-| `scripts/prepare_public_vad_review.py` | `edge-asr tools prepare-public-review` | `data.public_review` |
-| `scripts/materialize_public_vad_review.py` | `edge-asr tools materialize-review` | `data.review_audio` |
-| `scripts/prepare_vad_annotations.py` | `edge-asr tools prepare-annotations` | `data.vad_annotations` |
-| `scripts/review_vad_annotations.py` | `edge-asr tools review-annotations` | `data.review_annotations` |
-| `scripts/compare_models.py` | `edge-asr tools compare` | `probes.comparison` |
-| `scripts/m30_thermal_run.py` | `edge-asr tools thermal-run` | `probes.thermal` |
-| `scripts/m30_load_probe.py` | `edge-asr tools probe-load` | `probes.load` |
-| `scripts/m30_preprocessing_probe.py` | `edge-asr tools probe-preprocessing` | `probes.preprocessing` |
-| `scripts/m30_vad_probe.py` | `edge-asr tools probe-vad` | `probes.vad` |
-| `scripts/m30_segment_probe.py` | `edge-asr tools probe-segments` | `probes.segments` |
-| `scripts/m30_annotated_vad_probe.py` | `edge-asr tools probe-annotated-vad` | `probes.annotated_vad` |
-| `scripts/summarize_comparison.py` | `edge-asr tools summarize-comparison` | `reports.comparison` |
-| `scripts/summarize_m30.py` | `edge-asr tools summarize-preflight` | `reports.preflight` |
-| `scripts/summarize_vad_probe.py` | `edge-asr tools summarize-vad` | `reports.vad` |
-| `scripts/summarize_segment_probe.py` | `edge-asr tools summarize-segments` | `reports.segments` |
-| `scripts/summarize_annotated_vad.py` | `edge-asr tools summarize-annotated-vad` | `reports.annotated_vad` |
-| `scripts/consolidate_rp5.py` | `edge-asr tools consolidate` | `maintenance.consolidate` |
+| `live --wav ...` / `live --manifest ...` | Zip 자막·보정 후보 분리 표시 | [WAV MVP](../guides/live_captions.md) |
+| `evaluate --config ... --manifest ...` | batch/paced_stream 실제 평가 | [평가](../guides/evaluation.md), [1배속](../guides/streaming_evaluation.md) |
+| `score --predictions ...` | 모델 없는 재채점 | [평가·재채점](../guides/evaluation.md#재채점) |
+| `env [--probe-runtime]` | 현재 장비·패키지·선택적 native ORT 조회 | [설치](../guides/setup.md) |
+| `check-config --evaluation ...` | TOML/모드 검증 | [설정](../../configs/README.md) |
+| `threads --pid ...` | 실행 중인 PID의 TID별 CPU 관찰 | [SenseVoice/CPU 진단](../research/m2_sensevoice.md) |
 
-기존 `scripts/edge_asr.py`, `scripts/benchmark_zipformer.py`, `scripts/deploy_rp5.sh`는 각각 공통 CLI·M1 반복 도구 호환 진입점·선택적 새 경로 복사를 위해 유지한다. 평소 소스 동기화는 main push/pull을 사용한다.
+## 연구·자료 도구
 
-중복 `scripts/streaming_probe.py`는 바이트가 같은 `experiments/m1_zipformer/streaming_probe.py`로 합쳤다. 참고용 `online-decode-files.py`는 `experiments/m1_zipformer/reference/`에 원본 그대로 보관한다. `configs/legacy/zipformer_streaming.toml`은 원본 프로브에 자동 적용되지 않는 M1 탐색 설정이며 새 평가에는 `configs/zipformer_eval.toml` 또는 `zipformer_paced.toml`을 사용한다.
+| `tools` 명령 그룹 | 역할 |
+| --- | --- |
+| `prepare-official`, `prepare-kss`, `prepare-external` | 출처/해시를 고정한 평가 데이터 준비 |
+| `prepare-volume`, `prepare-vad`, `prepare-vad-overlap`, `prepare-segments` | 원본 보존 파생 입력·구간 공학 검사 |
+| `prepare-public-review`, `materialize-review`, `prepare-annotations`, `review-annotations` | 공개 음성·검수/불확실 주석 관리 |
+| `compare`, `probe-*` | RP5 모델/전처리/VAD/구간/동시 부하 측정 |
+| `thermal-run` | 외부 시간/메모리/열 감시. [통제/운영 정책](../research/m3_thermal_policy.md) |
+| `summarize-*`, `replay-merge`, `replay-splice` | 저장 원시 대조·모델 없는 집계/정책 재생 |
+| `inspect-cooling` | 센서/기존 열 기록의 읽기 전용 점검 |
+| `repeat-zipformer` | M1 단일 샘플 반복 프로브 |
+| `consolidate` | 과거 다중 RP5 폴더의 일회성 보존 통합 |
 
-과거 JSON 영수증의 실행 명령·소스 해시와 측정값은 당시 상태를 나타내므로 소급 변경하지 않는다. 이전 소스 자체가 필요한 경우 해당 기록의 Git 커밋을 별도 읽기 전용 체크아웃에서 확인한다. 현재 RP5 자산/환경을 과거 버전으로 되돌리지 않는다.
+구체 옵션과 전체 목록은 CLI help를 기준으로 한다. 실험별 입력·조건·제약은 [연구 색인](../research/README.md), 실제 수치는 [결과 색인](../../results/summaries/README.md)에 둔다. `probe-concurrent`의 구간 reset 병합·연속 token 진단·자막 표시는 서로 다른 모드이며 동시에 활성화하지 않는다.
 
-추가 진단 명령 `edge-asr tools inspect-cooling`은 `reports.cooling`에서 기존 `--run` 기록 재분석 또는 `--live` 순간 센서 조회만 수행한다. `--output`에는 새 JSON 파일을 지정한다. 부하 실행과 OS 설정 변경은 없다. `probe-annotated-vad --backend bounded`는 별도 Python ORT를 사용하는 실험 경로이며 기본값은 기존 `native`다. [구현 범위와 실제 검증 절차](../research/m3_bounded_vad.md)를 따른다.
-
-`edge-asr tools probe-vad-duration`은 파생 WAV의 30초 초과 활성·3/5/8초 소유 PCM·RSS·reset 계측을 위한 별도 공학 검사다. 실제 정확도나 마이크 지연 평가를 대신하지 않는다. `probes.vad_duration`에 구현하며 동일한 외부 열/실행 제한 안에서 사용한다.
-
-`edge-asr tools prepare-vad-overlap --output <새 data 경로>`는 기존 개발 WAV 목록에서 1/2/3트랙의 고정 위상 평균 입력과 `vad-duration-input-v1`을 만든다. 원본 해시와 개발 split을 확인하고 기존 출력은 거부한다. 중첩 입력에는 확정 전사를 붙이지 않는다.
-
-`thermal-run --temperature-policy warn75-stop80`은 승인된 별도 75°C 경고/80°C 중단 정책이다. 기본 `legacy75`는 과거와 같은 75°C 중단이다. [정책·실행 범위](../research/m3_thermal_policy.md)와 새 영수증의 정책 ID를 확인한다.
-
-`thermal-run --temperature-policy operational`은 기본 열 보호를 유지한 운영 부하 검사다. 온도/감속을 기록하며 계속 실행하고 저전압/계측 누락/외부 제한 실패를 구분한다. `operational_valid`와 `control_valid=false`를 함께 기록하므로 기존 통제 비교 집계에 합치지 않는다. `probe-load`의 호출별 monotonic 시각으로 열·TID 표본을 연결할 수 있다.
-
-`probe-segmented-accuracy`와 `summarize-segmented-accuracy`는 [고정한 세 구간 정책의 파일 CER 비교](../research/m3_segmentation_accuracy.md)와 모델 없는 재채점이다. 일반 batch 평가의 순수 ASR RTF와 구간 도구의 파이프라인 RTF를 구분한다.
-
-추가 조건 `bounded_vad_5s_context200ms`는 [최대 200ms 실제 왼쪽 문맥](../research/m3_vad_context.md)을 포함한다. 겹치지 않는 소유 프레임 합과 문맥 포함 payload 합을 구분하며, 중복 전사를 제거하지 않는다.
-
-`probe-concurrent`와 `summarize-concurrent`는 [M3-1 동시 부하](../research/m31_concurrent.md) 측정/재집계다. 단독 1/2T와 동시 1+1/1+2/2+1을 같은 원음에서 비교한다. Refine 구간 끝 기준 지연과 실제 Hybrid 병합 지연을 구분한다.
-
-`replay-merge --run <완료된 동시 기록> --policy all --output <새 폴더>`는 [저장 실측의 파일 ID 단위 선택 정책](../research/m32_merge_replay.md)을 모델 없이 재생한다. `reports.merge_replay`에 구현하며 원시 체크섬/재집계를 검증한다. 정답은 선택 뒤 채점에만 쓰고, child 준비 시각에서 유도한 선택 대기를 실제 UI 지연으로 표시하지 않는다.
-
-`probe-concurrent --refine-policy vad0 --segment-merge`는 [같은 VAD 구간의 실제 병합 실험](../research/m33_segment_merge.md)이다. 구간별 Zip 상태 reset·300ms 보류가 있는 별도 조건으로, 기존 연속 Zip 모드는 유지한다. 실제 parent 수신/상태 적용과 UI 렌더링을 구분한다. `summarize-segment-merge`는 원시 모델 출력·PCM·이벤트/최종 상태를 모델 없이 교차 검증한다.
-
-`probe-concurrent --refine-policy vad0 --token-diagnostics`는 [연속 Zip 토큰/시각 진단](../research/m34_continuous_tokens.md)이다. 청크/상태는 유지하고 실제 전사는 교체하지 않는다. `summarize-token-alignment`로 native 결과·VAD/실제 수신·구조 진단을 모델 없이 재검증한다. `--segment-merge`와 함께 사용하지 않는다.
-
-`replay-splice --run <완료된 M3-4 기록> --policy all --output <새 폴더>`는 [기존 구조 후보의 제한 교체 재생](../research/m35_guarded_splice.md)이다. 원본 토큰/문자 범위로 조립하고 비선택 Zip 보존을 검증한다. 모델/음원 없이 실행하며 실제 병합/UI 지연과 구분한다.
+옛 `scripts/*.py` 명령은 [과거 명령 이행표](../archive/command_migration.md)에 모았다. 별칭은 유지하지만 새 문서는 현재 명령을 사용한다. 과거 원시/영수증의 명령이나 소스 해시를 현재 경로로 소급 변경하지 않는다.

@@ -1,18 +1,15 @@
-# 벤치마크
+# 벤치마크 안내
 
-Host에서는 평가 코드와 설정을 개발하고 RP5에서 실제 추론·성능을 측정합니다. 모델 상주 공통 batch 실행기·CER·재채점과 기존 프로브 반복 도구를 제공합니다. 공통 실행기는 실제 RP5에서 단일 공식 샘플 및 KSS 개발용 50개 발화로 확인했고 결과 회수·체크섬·재채점도 대조했습니다.
+평가 코드는 `src/edge_asr/`에서 공유하고 실제 추론은 RP5에서 수행한다. 이 폴더는 입력 명세와 초기 프로브 실행 경로를 위한 진입점이다.
 
-- [공통 파일 평가](../docs/guides/evaluation.md): JSONL 목록, 모델 1회 로드, CER·batch RTF·추론 CPU/RSS, 실패 보존과 재채점.
-- [공통 1배속 모사](../docs/guides/streaming_evaluation.md): 독립 입력·유한 큐, 청크별 가설 반환·파일 끝 확정 지연·드롭·백로그. 실제 인식 정렬 지연·마이크는 미계측.
-- [KSS 50개 paced_stream 기준선](../results/summaries/zipformer-paced-kss-dev50-20261028.md): RP5 직접 실행 50/50 성공, 1,678청크 드롭 0, 실제 큐 이벤트·Host 재채점 대조.
+| 필요한 내용 | 문서 |
+| --- | --- |
+| 오디오·정답 목록 | [manifest 명세](manifest.md), [데이터 준비](../docs/guides/datasets.md) |
+| batch 평가·저장 가설 재채점 | [공통 평가](../docs/guides/evaluation.md) |
+| 1배속 평가·큐·지연 | [paced_stream](../docs/guides/streaming_evaluation.md) |
+| 실제 자막 실행 | [WAV MVP](../docs/guides/live_captions.md) |
+| CER/RTF/CPU/RSS의 범위 | [측정 계약](../docs/reference/benchmark_design.md) |
+| M1 단일 샘플 반복 재현 | [기존 프로브](../experiments/m1_zipformer/README.md), [반복 도구](../docs/reference/rp5_repeat_benchmark.md) |
+| 완료한 측정과 한계 | [검증 기록](../results/summaries/README.md) |
 
-- [KSS 개발용 50개 기준선](../results/summaries/zipformer-kss-dev50-20261028.md): Host SSH로 RP5에서 직접 실행, 발화별 1회, 50/50 성공. 단일 여성 화자의 낭독 개발 자료.
-- [데이터 준비](../docs/guides/datasets.md): 고정한 배포 리비전·행·전사, 원본 보존·16kHz 변환·해시·이용 조건.
-
-- [지표 정의 및 측정 절차](../docs/reference/benchmark_design.md): CER, RTF, 첫 부분 자막 시점, 실제 인식 지연, 최종 확정 지연, 분위수, CPU/RSS, 드롭·백로그.
-- [Manifest 명세](manifest.md): 향후 평가용 정답·오디오 목록. 현재 평가 데이터셋은 포함하지 않습니다.
-- [기존 Zipformer 탐색 결과](../experiments/m1_zipformer/README.md): 단일 WAV, 각 스레드 1회 측정.
-- [RP5 반복 실행](../docs/reference/rp5_repeat_benchmark.md): 기존 프로브의 워밍업·교차 순서 반복, 지연·CPU/RSS, 실패 로그·요약 자동 보관.
-- [사용자 제공 반복 요약](../results/summaries/zipformer-repeat-20261028-reported.md): 단일 WAV 스레드별 30회, 총 90/90 성공 보고. 후속 RP5 Codex 검사 보고에서 통합·횟수·자산·환경 일치를 확인했다고 보고됐으며 잠정 기준값은 2스레드입니다. Host 직접 실행·원본 파일 전송과 구분합니다.
-
-공통 평가는 `results/evaluations/<run-id>/`, 재채점은 `results/scores/<run-id>/`, 프로브 반복은 `benchmarks/runs/<run-id>/`에 보관합니다(모두 Git 제외). 모델·WAV는 로컬 자산을 참조하고 작은 요약만 `results/summaries/`에서 검토해 버전 관리합니다.
+새 공통 평가의 원시는 `results/`에, M1 반복 프로브는 `benchmarks/runs/`에 저장한다. 모두 Git 제외이며 [결과 보관 정책](../results/README.md)을 따른다.

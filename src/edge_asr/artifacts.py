@@ -42,3 +42,9 @@ def write_jsonl(path: Path, rows) -> None:
     with path.open("w", encoding="utf-8") as stream:
         for row in rows:
             stream.write(json.dumps(row, ensure_ascii=False, allow_nan=False) + "\n")
+
+
+def write_event(handle, row):
+    """진행 중 이벤트를 한 줄씩 보존한다. 종료 요약의 원자적 쓰기와 구분한다."""
+    handle.write(json.dumps(row, ensure_ascii=False, allow_nan=False) + "\n")
+    handle.flush()

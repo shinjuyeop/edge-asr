@@ -1,59 +1,24 @@
-# 호스트 검사
+# 테스트
 
-`test_captions.py`는 Zip/보정 원문 분리·늦은 원본 결과·중복/해시 오류·실패/빈 결과/드롭·터미널 escape/전달 실패·기존 경로의 실제 IPC·모델 없는 재집계/변조 거부를 모의 모델로 검증한다. 화면 렌더링과 RP5 실제 모델 추론의 검증은 별도다.
-
-`test_token_splice.py`는 길이가 다른 교체/이후 Zip append·역순 인접 작업·겹침/중복·접두부 수정/앵커 실패/후보 철회·늦은 이전 원본·실패/누락/빈 Refine·literal 문장부호·정답 비의존/모델 없는 재생·원시 보존을 검사한다. 실제 native 추론·UI/음향 경계 검증과 구분한다.
-
-`test_token_alignment.py`는 Unicode BPE 원문/문자 소유, 실제 float 보존/격자 경계 모호성, 시각/원점/접두부 오류, 문맥 대기/단어 이어짐/EOF, 연속 청크·원본별1스트림 유지, 실제 IPC·진단 재생·오류 보류/자식 회수를 모의 모델로 확인한다. 구조 후보는 음향 정렬이나 실제 교체 성공이 아니다.
-
-`test_segment_merge.py`는 VAD 자연 종료/강제 분할/비정렬 파일 경계에서 두 모델의 실제 PCM 일치와 미래 입력 방지, 미확정 끝 상한, 늦은/역순 구간 반환, 무음 비호출, 실제 IPC 수신·상태 적용·원시 재집계 및 실패/자식 회수를 모의 모델로 검사한다. RP5 native 추론·UI 검증과 구분한다.
-
-`test_merging.py`는 세션/원본/작업 ID와 실제 소유·문맥·payload 일치, 지연·역순 결과/이전 partial/중복/확정 뒤 결과 거부, 누락/실패/빈 Refine의 명시적 fallback, 정규화 일치 대조군을 검사한다. 정답 변경이 결정/타임라인을 바꾸지 않는지와 모델·음원 없는 원시 재생/불완전 기록 거부/원시 보존도 확인한다. 실제 live 병합/GUI 또는 새 ASR 성능 측정이 아니다.
-
-`test_online_vad.py`는 실제 모델 없는 온라인 VAD/Refine spawn에서 파일 경계100ms 재조립·기존 Zip 청크 불변·실제 과거 문맥·무검출의 빈 전사/전체 정답·큐 손실과 null CER·입력 중/워밍업 실패·자식 회수·파일 끝보다 이른 반환과 실제 지연의 구분·메타데이터 손상 거부·모델 없는 재집계를 확인한다. mock 확률/ASR의 결과는 RP5 실제 신경망 실행과 구분한다.
-
-`test_concurrent_probe.py`는 실제 ASR 없는 spawn/CLI에서 별도 Refine/입력 프로세스·유한 큐 드롭·PCM/파일/5초 경계·손실 시 좌표 압축 거부·오류/회수·동시 모델 PID 표본 합·모델 없는 재집계/손상 거부를 검사한다. 합성 런타임의 겹친 호출이 실제 ARM64 ASR 성능 검증을 뜻하지 않는다. `test_streaming.py`는 기존 기본 경로와 선택적 절대 좌표 callback을 함께 검사한다.
-
-`test_segmented_accuracy.py`는 같은 PCM·5초 상한·문맥 0·원본 발화당 VAD reset·모델 1회 로딩/워밍업/종료·실패 보존·중복 전사 연결·빈 검출의 삭제 오류·모델/음원 없는 공통 scorer 재채점·경계 손상 거부를 검사한다. 실제 VAD 음성 판별이나 ARM64 ASR 정확도 검증은 아니다.
-
-200ms 후보는 강제 분할 중 소유 범위 불변·최대 5.2초 payload·실제 과거 원음 바이트·지연된 첫 시작의 여유·빈 검출과 모델 없는 재채점을 검사한다. 문맥에 의한 전사 반복을 제거하지 않는다. 과거 실제 문맥 0 원시의 재채점 불변은 별도 감사로 확인한다.
-
-`test_thermal_policies.py`는 과거 기본값·75/80°C 경계·경고 후 계속 실행·실제 PID 제한 확인·현재 제한/새 이력/계측 누락/종료 직후 온도 중단을 mock으로 검사한다. `test_cooling.py`는 과거 기록에 저장된 80°C 한계를 기본 75°C와 혼동하지 않는지도 검사한다. 실제 팬/ARM64 부하 검증은 아니다.
-
-운영 정책은 감속 허용·저전압/계측 누락 거부·제한 미확인 실패와 `operational_valid`/`control_valid` 분리를 검사한다. 실제 클럭과 sysfs 주파수를 구분하고 조회 실패를 null로 남기는지도 검사한다. `test_load_probe.py`는 가짜 모델의 1회 로딩·워밍업 3회 분리·호출별 monotonic 시각을 검증한다. 이 테스트가 RP5 장시간 실행이나 실시간 지연을 검증하지는 않는다.
-
-`test_vad_probability.py`는 실제 가중치 없이 ORT 생성 인자·h/c 상태 전달·오류·히스테리시스·131.072초 지속 확률·35초 PCM의 3/5/8초 소유권/문맥/유한 버퍼를 검사한다. 강제 구간마다 reset하지 않으며 기본 native 안전 제한을 유지한다. `test_cooling.py`는 가상 sysfs와 합성 과거 기록으로 다중 팬·결측·읽기 전용·소프트웨어 정지/현재 제한/과거 이력 구분을 검사한다. ARM64 모델 실행·냉각 재시험 통과를 뜻하지 않는다.
-
-`test_vad_duration.py`는 파생 입력 진단기의 3/5/8초 소유 PCM/상한·세션 reset·native 예산 실패 보존·지원 백엔드 거부를 지속 확률 mock으로 검사한다. 실제 신경망의 지속 활성 성공 여부는 RP5 기록으로만 판정한다.
-
-`test_vad_overlap.py`는 PCM16 순환 위상·산술 평균·경계값·재현 가능한 파생 WAV·원본/기존 출력 보존·보류 자료/해시 손상 거부를 합성 음원으로 검사한다. 실제 VAD 출력과 인식 정확도는 검사하지 않는다.
-
-`test_vad_annotations.py`, `test_vad_annotation_summary.py`는 구간 합집합·불명확 구간 제외·검수자/해시 검증·음수 endpoint·EOF/강제 분할 제외, 보류 표본 배제, 실패 원시 보존과 양쪽 성공 표본 재채점을 검사합니다. 배포 라벨 비교를 사람이 검수한 정답 결과로 바꾸지 않으며, 실제 RP5 VAD 검증과 구분합니다.
-
-`test_public_vad_review.py`, `test_public_vad_audio.py`는 합성 TextGrid의 인코딩·중복 tier·손상·경계, 모델 출력과 무관한 후보 선정, 원본 해시·경로·출력 보존과 null 정답의 평가 거부를 검사합니다. Host ffmpeg가 있으면 합성 44.1kHz 음원의 실제 변환·절취도 확인합니다. 공개 음원 다운로드·사람 청취·RP5 모델 추론을 대신하는 검사가 아닙니다.
-
-`test_sensevoice.py`는 합성 NumPy/sherpa로 Offline factory 인자·언어/ITN·1회 로딩·발화별 새 상태·padding/온라인 호출 부재·본문/제어 태그/raw 분리·자산/입력 오류를 검사합니다. 공통 batch 평가·CER·로딩/추론 자원 분리·모델/음원 제거 후 재채점·CLI와 미지원 paced_stream 사전 거부도 검사합니다. 실제 SenseVoice 가중치나 추론 런타임은 사용하지 않습니다.
-
-`test_runtime_diagnostics.py`는 sherpa 네이티브 ORT와 Python 패키지 버전 구분, 기본 조회의 import 부재, probe 실패/null·모델 미생성, Linux stat 파싱·TID CPU 차분·경계 누락·PID 종료/재사용을 검사합니다. 짧은 CLI 관측은 실행 중인 Host 테스트 PID만 읽으며 RP5에 접속하지 않습니다.
-
-`test_streaming.py`는 독립 입력 프로세스와 실제 유한 큐를 사용해 1배속 입력·짧은 마지막 청크·부분 가설 부재·느린 추론의 실제 드롭·예외/Ctrl-C 자식 회수, 처리 중 청크를 제외한 백로그 재구성·격자 누락 피크, 모드 혼합·NaN 계측 거부를 검사합니다. 모델은 가짜 어댑터이며 독립 CLI의 spawn도 합성 런타임으로 검사합니다. 모델/WAV/events 제거 후 재채점도 확인합니다. 실제 RP5·ASR 검증과 구분합니다.
-
-`test_kss_subset.py`는 다운로드를 모의하고 데이터 리비전·행·음원 URL 검증, 기존 자료 보존, 실패 시 미완성 목록 발행 방지, 손상 감지와 오프라인 재사용을 검사합니다. Host에 ffmpeg가 있으면 임시 합성 44.1kHz WAV의 실제 16kHz 변환도 검사하고, 없으면 변환 검사 2개만 건너뜁니다. 외부 KSS 음원을 테스트에서 다운로드하거나 ASR을 실행하지 않습니다.
-
-Python 3.11 가상환경에서 기본 패키지 설치 후 저장소 루트에서 실행합니다.
+Host에서 코드 계약을 확인하고 RP5에서 같은 테스트와 필요한 실제 추론을 검증한다. 단위 테스트는 가짜 ASR/VAD·임시 WAV·실제 spawn/큐를 사용한다. 외부 데이터를 다운로드하거나 RP5에 접속하지 않는다. 통과가 실제 모델 정확도·냉각·마이크·UI 성능을 뜻하지 않는다.
 
 ```bash
-python -m unittest discover -s tests -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v
+ruff check src tests scripts
+ruff format --check src tests scripts
 sha256sum -c experiments/m1_zipformer/SHA256SUMS
 bash -n scripts/deploy_rp5.sh
 ```
 
-설정 경계값과 CLI의 JSON 출력·실패 종료 코드, 합성 Summary 파싱·시간 반올림, 분위수·교차 순서, 모의 프로브의 성공·실패·시간 초과·자원 수집·워밍업 제외·기존 파일 보존을 검사합니다. 초기 원시 로그는 테스트 의존성이 아닙니다. 실제 모델 런타임·가중치·평가 WAV·RP5 연결은 요구하지 않습니다. WAV 포맷 검사는 임시 합성 WAV를 생성해 사용합니다. Linux 프로세스 검사는 다른 OS에서 건너뜁니다. 이 검사의 통과는 실제 추론·ARM64·실시간 서비스 성능 검증이 아닙니다.
+| 영역 | 주요 테스트 | 확인하는 계약 |
+| --- | --- | --- |
+| 평가·어댑터 | `test_evaluation*.py`, `test_sensevoice.py`, `test_cli.py` | 모델1회 로딩·발화별 상태·미지원 모드·정규화/CER·재채점·실패 보존 |
+| 입력·동시 실행 | `test_streaming.py`, `test_concurrent_probe.py`, `test_online_vad.py` | 독립1배속 입력·유한 큐·실제 드롭·PCM/원본 좌표·결과 수신·자식 회수 |
+| 자막 | `test_captions.py` | 원문 분리·늦은 반환·중복/해시 오류·stdout 실패·저장 원시 재집계 |
+| 병합 연구 | `test_merging.py`, `test_segment_merge.py`, `test_token_alignment.py`, `test_token_splice.py` | 정답 비의존·문자/음성 소유권·후보 보류·앵커/접두부 오류·복사 보존 |
+| VAD·구간 | `test_segmentation.py`, `test_segmented_accuracy.py`, `test_vad*.py` | 문맥/구간 상한·연속 확률·실패·주석/미확정 정답·모델 없는 채점 |
+| 데이터 | `test_kss_subset.py`, `test_public_vad*.py` 등 | 출처/해시·원본 보존·형식·보류 표본·결정적 파생 입력 |
+| 계측·열 | `test_runtime_diagnostics.py`, `test_thermal_policies.py`, `test_cooling.py`, `test_load_probe.py` | native/Python ORT 구분·CPU/RSS/TID·현재 제한/과거 이력·실패 영수증 |
+| 구조·보존 | `test_project_structure.py`, `test_consolidate.py` | 의존 방향·지연 import·문서 링크·원시/환경 보존·통합 충돌/복원 |
 
-`test_consolidate.py`는 임시 Git 저장소에서 한 폴더 통합 미리보기·실제 적용, 가상환경/모델·과거 결과 보존, 충돌 파일/Git 메타데이터 백업, 실패·중단 복원, 실행 중 실험·수정 소스·다른 Git 이력·symlink 거부와 hard link 보존을 검사합니다. Linux/Git CLI가 필요하며 실제 RP5 폴더를 사용하지 않습니다.
-
-`test_evaluation_inputs.py`, `test_evaluation.py`는 JSONL·PCM16·정규화/CER·가중 집계·실패 커버리지, 모델 1회 로드·파일별 상태·워밍업 제외·중단 기록·기존 결과 보존, 모델/오디오 없는 재채점과 정답 ID 검사를 다룹니다. 실제 CLI에서도 가짜 NumPy/sherpa 모듈과 임시 합성 WAV로 실행·재채점을 확인합니다. 실제 ONNX 추론·정확도 검증은 아닙니다.
-
-## 문맥 적용 위치 회귀 검사
-
-`test_segmented_accuracy.py`는 VAD 시작/강제 분할 후속의 서로 다른 실제 과거 PCM, 동일 소유 경계, 자연 종료 후 span 분리, 이미 확정한 tail 뒤 새 시작, 빈 검출·실패·모델 없는 CER 재채점을 검증합니다. 실제 Silero/SenseVoice의 정확도와 ARM64 실행 성공은 별도의 RP5 측정으로 확인합니다.
+Linux 프로세스 검사는 해당 환경에서, 합성 ffmpeg 변환 검사는 도구가 있을 때 실행한다. skip 수와 이유를 함께 읽는다. 실제 RP5 모델 실행과 원시 보존 검사는 [검증 기록](../results/summaries/README.md)에 별도로 남긴다. 리팩터링은 기존 원시의 재집계 일치와 CLI 호환성을 확인하고 새 실행은 별도 ID로 보존한다.

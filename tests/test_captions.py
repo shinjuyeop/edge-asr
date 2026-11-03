@@ -12,10 +12,11 @@ from unittest.mock import Mock, patch
 
 import test_online_vad as vad_fixture
 
-from edge_asr.captions import CaptionReplay, render
+from edge_asr.realtime.captions import CaptionReplay, render
 from edge_asr.streaming import read_events
-from edge_asr.tools.live import start, summarize
+from edge_asr.tools.live import start
 from edge_asr.tools.probes import thermal as guard
+from edge_asr.tools.reports.captions import summarize
 
 
 class CaptionTests(unittest.TestCase):
@@ -47,11 +48,13 @@ class CaptionTests(unittest.TestCase):
             replay.receive(
                 {**job, "status": "success", "hypothesis": "  보정.. 보정  ", "ended_ns": 104}, 105
             )
-            self.assertEqual(replay.events[-1]["source_id"], "a")
-            self.assertEqual(replay.events[-1]["text"], "  보정.. 보정  ")
+            events = read_events(Path(replay.caption_log.name))
+            self.assertEqual(events[-1]["source_id"], "a")
+            self.assertEqual(events[-1]["text"], "  보정.. 보정  ")
+            self.assertEqual([e["event_index"] for e in events], list(range(replay.event_count)))
             self.assertEqual(replay.last_partial["a"], "원래  말..")
             self.assertEqual(replay.last_partial["b"], "다음")
-            self.assertEqual(sum(e["kind"] == "zip_partial" for e in replay.events), 2)
+            self.assertEqual(sum(e["kind"] == "zip_partial" for e in events), 2)
             self.assertTrue(replay.display_complete())
             with self.assertRaises(ValueError):
                 replay.receive({**job, "ended_ns": 104}, 106)
@@ -65,11 +68,15 @@ class CaptionTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 replay.receive({**job, "payload_float32_sha256": "bad"}, 1)
             replay.receive({**job, "status": "failed", "error": "native failure", "ended_ns": 1}, 2)
-            self.assertEqual(replay.events[-1]["kind"], "refine_failed")
+            self.assertEqual(
+                read_events(Path(replay.caption_log.name))[-1]["kind"], "refine_failed"
+            )
             self.assertTrue(replay.display_complete())
             replay.submit = lambda job: ("drop", time.perf_counter_ns())
             replay.offer_payload(array("f", [0] * 1600), 1600, 3200, replay.sources[0])
-            self.assertEqual(replay.events[-1]["kind"], "refine_dropped")
+            self.assertEqual(
+                read_events(Path(replay.caption_log.name))[-1]["kind"], "refine_dropped"
+            )
             with self.assertRaises(ValueError):
                 replay.receive(replay.jobs[1], 3)
             replay.submit = lambda job: ("enqueue", time.perf_counter_ns())
@@ -77,8 +84,9 @@ class CaptionTests(unittest.TestCase):
             replay.receive(
                 {**replay.jobs[2], "status": "success", "hypothesis": "", "ended_ns": 4}, 5
             )
-            self.assertEqual(replay.events[-1]["kind"], "refine_candidate")
-            self.assertEqual(replay.events[-1]["text"], "")
+            last = read_events(Path(replay.caption_log.name))[-1]
+            self.assertEqual(last["kind"], "refine_candidate")
+            self.assertEqual(last["text"], "")
 
     def test_render_escapes_controls_without_modifying_original(self):
         event = {

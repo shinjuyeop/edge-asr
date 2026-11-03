@@ -1,6 +1,7 @@
 """설치 패키지와 sherpa 네이티브 ORT를 구분한다. 기본 조회는 런타임을 import하지 않는다."""
 
 import platform
+import re
 import sys
 from importlib import import_module
 from importlib.metadata import PackageNotFoundError, distributions, version
@@ -65,3 +66,8 @@ def environment() -> dict:
             key=lambda row: row["name"] or "",
         ),
     }
+
+
+def limits_verified(text):
+    """동시 실행 프로브의 프로세스별 4GiB 주소 공간 제한을 확인한다."""
+    return bool(re.search(r"Max address space\s+4294967296\s+4294967296\s+bytes", text))

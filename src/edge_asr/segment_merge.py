@@ -6,77 +6,14 @@
 import time
 import uuid
 from array import array
-from threading import Event, RLock, Thread
+from threading import RLock
 
-from edge_asr.artifacts import write_json
-from edge_asr.concurrent_probe import RefineChannel, float_digest, write_event
+from edge_asr.artifacts import write_event, write_json
+from edge_asr.dataset import float_digest
 from edge_asr.merging import POLICIES, Merger
-from edge_asr.online_vad import OnlineVadReplay
+from edge_asr.realtime.vad import OnlineVadReplay
 
 RATE, CHUNK, HOLDBACK = 16000, 1600, 4800
-
-
-class ReturningRefineChannel(RefineChannel):
-    """기존 2작업 큐를 사용하되 작은 결과 메시지를 전용 reader로 실제 수신한다."""
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs, return_results=True)
-        self.done = Event()
-        self.reader = None
-        self.completion = self.error = None
-
-    def listen(self, callback):
-        if self.reader is not None:
-            raise RuntimeError("이미 결과 reader가 있습니다.")
-
-        def receive():
-            try:
-                while not self.stop.is_set():
-                    if not self.connection.poll(0.1):
-                        if not self.process.is_alive():
-                            raise RuntimeError("Refine 반환 전 프로세스 종료")
-                        continue
-                    message = self.connection.recv()
-                    received = time.perf_counter_ns()
-                    if message["status"] == "result":
-                        callback(message["result"], received)
-                    elif message["status"] == "completed":
-                        self.completion = message
-                        return
-                    else:
-                        raise RuntimeError(str(message))
-            except BaseException as error:
-                self.error = repr(error)
-            finally:
-                self.done.set()
-
-        self.reader = Thread(target=receive, daemon=True)
-        self.reader.start()
-
-    def finish(self, timeout=30):
-        deadline = time.monotonic() + timeout
-        while time.monotonic() < deadline:
-            if self.done.is_set():
-                raise RuntimeError(self.error or "Refine이 EOF 전에 종료됐습니다.")
-            if self.submit(None)[0] == "enqueue":
-                break
-            time.sleep(0.001)
-        else:
-            raise TimeoutError("Refine EOF 제출 제한 초과")
-        if not self.done.wait(max(0, deadline - time.monotonic())):
-            raise TimeoutError("Refine 반환 제한 초과")
-        if self.error or self.completion is None:
-            raise RuntimeError(self.error or "Refine 완료 누락")
-        return self.completion
-
-    def close(self):
-        # poll/recv 중인 thread를 먼저 끝낸 뒤 connection을 닫는다.
-        self.stop.set()
-        if self.reader is not None:
-            self.reader.join(2)
-        super().close()
-        if self.reader is not None and self.reader.is_alive():
-            raise RuntimeError("Refine reader 회수 실패")
 
 
 class SegmentMergeReplay(OnlineVadReplay):

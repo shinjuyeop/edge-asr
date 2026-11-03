@@ -10,12 +10,8 @@ import time
 from collections import deque
 from pathlib import Path
 
+from edge_asr.artifacts import write_event
 from edge_asr.metrics import distribution
-
-
-def _write(handle, event):
-    handle.write(json.dumps(event, ensure_ascii=False, allow_nan=False) + "\n")
-    handle.flush()
 
 
 def _produce(
@@ -53,7 +49,7 @@ def _produce(
                         audio_queue.put_nowait((index, start, end, at, due))
                     except queue.Full:
                         event["type"] = "drop"
-                _write(log, event)
+                write_event(log, event)
             # EOF도 큐 용량을 기다리지만 실제 오디오 입력을 역압으로 늦추지 않는다.
             if complete:
                 while not stop.is_set():
@@ -77,7 +73,7 @@ def _produce(
                 )
             except ImportError:
                 peak = None
-            _write(
+            write_event(
                 log,
                 {
                     "type": "end",
@@ -90,7 +86,9 @@ def _produce(
             # 부모의 정상 반환/취소까지 기다린 뒤 feeder를 정리한다. 부모가 사라져도 유한 대기.
             stop.wait(drain_timeout + 2)
         except BaseException as error:
-            _write(log, {"type": "error", "error": type(error).__name__, "message": str(error)})
+            write_event(
+                log, {"type": "error", "error": type(error).__name__, "message": str(error)}
+            )
             raise
         finally:
             connection.close()
@@ -253,7 +251,7 @@ def run_paced(
                 index, start, end, enqueued, due = item
                 event = {"type": "dequeue", "index": index, "at_s": at}
                 consumed.append(event)
-                _write(log, event)
+                write_event(log, event)
                 begin = time.perf_counter_ns()
                 text = timed(
                     lambda: adapter.accept_chunk(stream, audio.samples[start:end])
@@ -269,7 +267,7 @@ def run_paced(
                 durations.append(duration)
                 waits.append(at - enqueued)
                 capture_returns.append(returned - due)
-                _write(
+                write_event(
                     log,
                     {
                         "type": "partial",
@@ -284,7 +282,7 @@ def run_paced(
             finish_cpu = time.process_time()
             if not isinstance(final_text, str):
                 raise TypeError("어댑터가 문자열을 반환해야 합니다.")
-            _write(log, {"type": "final", "at_s": finish, "text": final_text})
+            write_event(log, {"type": "final", "at_s": finish, "text": final_text})
             returned_final = True
     finally:
         if t0 is not None:
@@ -336,7 +334,7 @@ def run_paced(
                 )
                 with (directory / "backlog.jsonl").open("x", encoding="utf-8") as log:
                     for sample in samples:
-                        _write(log, sample)
+                        write_event(log, sample)
                 telemetry["backlog"] = backlog
             except ValueError as error:
                 telemetry["backlog_error"] = str(error)

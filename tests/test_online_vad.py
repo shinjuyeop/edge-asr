@@ -14,7 +14,7 @@ from pathlib import Path
 import test_concurrent_probe as fixtures
 
 from edge_asr.artifacts import read_jsonl
-from edge_asr.online_vad import OnlineVadReplay, TimedProbability
+from edge_asr.realtime.vad import OnlineVadReplay, TimedProbability
 from edge_asr.tools.probes.concurrent import probe
 from edge_asr.tools.reports.concurrent import summarize
 from edge_asr.vad_probability import BoundedProbabilityVad

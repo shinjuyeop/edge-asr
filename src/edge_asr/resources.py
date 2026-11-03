@@ -5,6 +5,9 @@ import time
 from pathlib import Path
 from threading import Event, Thread
 
+from edge_asr.artifacts import write_event
+from edge_asr.diagnostics import thread_snapshot
+
 
 def process_sample(pid: int) -> dict | None:
     try:
@@ -64,3 +67,63 @@ class RssSampler:
             "rss_missing_count": len(self.samples) - len(observed),
             "rss_samples": self.samples,
         }
+
+
+class ProcessSampler:
+    """모델 PID 합산 표본(100ms)과 실제 TID 표본(1초). 종료/결측을 0으로 채우지 않는다."""
+
+    def __init__(self, roles, output):
+        self.roles, self.output, self.stop = roles, output, Event()
+        self.thread = Thread(target=self._run, daemon=True)
+        self.samples, self.error = [], None
+
+    def _run(self):
+        try:
+            with (
+                (self.output / "process-resources.jsonl").open("x") as log,
+                (self.output / "thread-resources.jsonl").open("x") as tids,
+            ):
+                last_threads = 0
+                while True:
+                    now = time.perf_counter_ns()
+                    roles = self.roles()
+                    row = {
+                        "at_ns": now,
+                        "roles": {
+                            name: {"pid": pid, "sample": process_sample(pid)}
+                            for name, pid in roles.items()
+                            if pid
+                        },
+                    }
+                    self.samples.append(row)
+                    write_event(log, row)
+                    if now - last_threads >= 1e9:
+                        snapshots = {}
+                        for name, pid in roles.items():
+                            if name == "producer" or not pid:
+                                continue
+                            try:
+                                snapshots[name] = {"pid": pid, **thread_snapshot(pid)}
+                            except (OSError, ValueError, IndexError) as error:
+                                snapshots[name] = {"pid": pid, "error": repr(error)}
+                        write_event(
+                            tids,
+                            {
+                                "at_ns": now,
+                                "clock_ticks_per_second": os.sysconf("SC_CLK_TCK"),
+                                "roles": snapshots,
+                            },
+                        )
+                        last_threads = now
+                    if self.stop.wait(0.1):
+                        break
+        except Exception as error:
+            self.error = repr(error)
+
+    def __enter__(self):
+        self.thread.start()
+        return self
+
+    def __exit__(self, *args):
+        self.stop.set()
+        self.thread.join(2)

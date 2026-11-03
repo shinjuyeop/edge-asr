@@ -4,8 +4,8 @@ import json
 import time
 from threading import RLock
 
-from edge_asr.concurrent_probe import write_event
-from edge_asr.online_vad import OnlineVadReplay
+from edge_asr.artifacts import write_event
+from edge_asr.realtime.vad import OnlineVadReplay
 
 PREFIX = "EDGE_ASR_CAPTION "
 
@@ -39,12 +39,12 @@ class CaptionReplay(OnlineVadReplay):
         self.lock = RLock()
         self.jobs = {}
         self.last_partial = {}
-        self.events = []
+        self.event_count = 0
         self.observer = self._observe
 
     def _emit(self, kind, sid, at, **values):
         row = {
-            "event_index": len(self.events),
+            "event_index": self.event_count,
             "kind": kind,
             "source_id": sid,
             "available_ns": at,
@@ -54,7 +54,7 @@ class CaptionReplay(OnlineVadReplay):
         write_event(self.caption_log, row)
         # thermal guard가 원시 console을 보존하며 부모 터미널에 전달한다.
         print(PREFIX + json.dumps(row, ensure_ascii=False, allow_nan=False), flush=True)
-        self.events.append(row)
+        self.event_count += 1
 
     def _observe(self, kind, stream, text, end, returned, source_index):
         source = self.sources[source_index]

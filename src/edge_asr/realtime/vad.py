@@ -3,7 +3,7 @@
 import time
 from array import array
 
-from edge_asr.concurrent_probe import ConcurrentReplay
+from edge_asr.realtime.replay import ConcurrentReplay
 from edge_asr.segmentation import SegmentPipeline
 
 POLICIES = ("fixed5", "vad0", "vad-continuation200")

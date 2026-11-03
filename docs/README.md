@@ -1,19 +1,16 @@
 # 문서 안내
 
-처음 시작할 때는 설치 → 데이터 → 평가 → 배포 순서로 읽으세요. [현재 진행 상태](status.md)와 [실측 결과 목록](../results/summaries/README.md)은 설계·계획 문서와 구분합니다.
+[현재 상태와 다음 작업](status.md)을 먼저 보고 목적에 맞는 문서로 이동한다. 실제 수치의 원본은 [실측·검증 기록](../results/summaries/README.md)이다.
 
-| 구분 | 문서 |
+| 목적 | 문서 |
 | --- | --- |
-| WAV 자막 MVP | [한 명령 실행·Zip/보정 후보 분리 표시](guides/live_captions.md) |
-| 설치·일상 작업 | [환경 설치](guides/setup.md), [데이터 준비](guides/datasets.md), [공통 평가·재채점](guides/evaluation.md), [1배속 모사](guides/streaming_evaluation.md), [Host/RP5 배포](guides/deployment.md) |
-| 코드·계약 | [아키텍처](reference/architecture.md), [실행 도구·명령 이행표](reference/tooling.md), [지표 정의](reference/benchmark_design.md), [M1 반복 측정](reference/rp5_repeat_benchmark.md) |
-| M2 재현 절차 | [SenseVoice](research/m2_sensevoice.md), [통제 비교](research/m2_comparison.md), [외부 자료](research/m2_external_data.md) |
-| M3 재현 절차 | [음량·냉각](research/m3_preflight.md), [VAD 후속](research/m3_vad_followup.md), [구간 상한](research/m3_segmentation.md), [공개 자료 준비](research/m3_public_vad_data.md), [구간 주석·예비 비교](research/m3_vad_annotations.md), [지속 음성·냉각 진단](research/m3_bounded_vad.md), [열 정책·운영 부하](research/m3_thermal_policy.md), [자연 발화 구간 CER 계획](research/m3_segmentation_accuracy.md) |
-| M3-1 동시 부하·구간 정책 | [동시 계측](research/m31_concurrent.md), [일괄200ms](research/m3_vad_context.md), [시작/후속 문맥 분리](research/m3_context_split.md), [실제 온라인 VAD](research/m31_online_vad.md) |
-| M3-2 병합 사전 검증 | [저장 실측의 파일 ID 단위 선택 정책](research/m32_merge_replay.md) |
-| M3-3 구간 병합 | [같은 VAD 구간의 Streaming/Refine 실측 계획](research/m33_segment_merge.md) |
-| M3-4 연속 토큰 진단 | [native 토큰 시각과 VAD 대응](research/m34_continuous_tokens.md) |
-| M3-5 제한 교체 재생 | [구조 후보의 literal 교체/보존 평가](research/m35_guarded_splice.md) |
-| 과거 기록 | [초기 Host 검증](archive/verification.md), [이전 폴더 통합 절차](archive/consolidation.md) |
+| WAV에서 자막 보기 | [WAV 자막 MVP](guides/live_captions.md) |
+| 환경 설치·장비 동기화 | [설치](guides/setup.md), [Host/RP5 배포](guides/deployment.md) |
+| 평가 입력 준비 | [데이터 출처·준비](guides/datasets.md), [manifest 명세](../benchmarks/manifest.md) |
+| 모델 평가·재채점 | [공통 평가](guides/evaluation.md), [1배속 평가](guides/streaming_evaluation.md) |
+| 코드 수정 | [아키텍처](reference/architecture.md), [테스트](../tests/README.md), [명령 목록](reference/tooling.md) |
+| 지표 해석 | [측정 계약](reference/benchmark_design.md) |
+| 실험을 재현하거나 결정 근거 찾기 | [연구 문서 색인](research/README.md), [실측 기록](../results/summaries/README.md) |
+| 과거 환경·명령 이행 | [초기 검사](archive/verification.md), [폴더 통합](archive/consolidation.md), [옛 명령 이행표](archive/command_migration.md) |
 
-연구 절차의 미검증 항목과 당시 결과는 각 문서/보고서에서 명시합니다. 실행 전 현재 CLI의 `--help`를 확인하고, 과거 명령은 이행표에 따라 변환합니다. 원시 영수증의 명령·소스 해시는 당시 상태 그대로 보존합니다.
+문서별 역할은 한곳에 둔다. 사용법은 `guides/`, 코드/지표 계약은 `reference/`, 사전 계획·후보·판단 근거는 `research/`, 완료 수치와 원시 해시는 `results/summaries/`다. 과거 계획의 “다음 작업”보다 현재 [status.md](status.md)를 우선한다.

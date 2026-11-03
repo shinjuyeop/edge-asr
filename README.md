@@ -27,7 +27,7 @@ WAV 실시간 자막은 RP5에서 다음 명령으로 실행합니다. Zip 자�
   --manifest data/evaluation/kss-dev50/manifest.jsonl
 ```
 
-설치된 환경에서는 `edge-asr` 또는 `python -m edge_asr`도 같은 CLI입니다. 평가용 WAV/정답 목록이 없으면 [데이터 준비](docs/guides/datasets.md)부터 진행합니다. 데이터 준비·VAD 진단·결과 집계는 `edge-asr tools <명령>`에 모았으며, [이전 scripts 명령 이행표](docs/reference/tooling.md)를 제공합니다.
+설치된 환경에서는 `edge-asr` 또는 `python -m edge_asr`도 같은 CLI입니다. 평가용 WAV/정답 목록이 없으면 [데이터 준비](docs/guides/datasets.md)부터 진행합니다. 데이터 준비·VAD 진단·결과 집계는 `edge-asr tools <명령>`에 모았으며, [명령 목록](docs/reference/tooling.md)과 [옛 명령 이행표](docs/archive/command_migration.md)를 제공합니다.
 
 ## 폴더와 코드 역할
 
@@ -37,13 +37,14 @@ src/edge_asr/
   tools/
     data/            데이터 준비·검수 결정 반영
     probes/          RP5 측정·외부 온도/시간 제한
-    reports/         원시 검증·추론 없는 집계
+    reports/         원시 검증·추론 없는 집계·자막 결과 검증
     maintenance/     과거 작업 폴더 통합
   artifacts.py       공통 해시·JSON 산출물
   resources.py       프로세스 CPU/RSS 표본
   dataset.py         manifest·PCM16 WAV
   evaluation.py      공통 ASR 실행
   streaming.py       독립 입력·유한 큐·1배속 모사
+  realtime/          연속 Zip/VAD 입력 분배·Refine 프로세스·자막 표시
   segmentation.py    공통 PCM 버퍼·발화 구간 상한
 configs/             현재 모델 설정; legacy/는 M1 탐색 설정
 scripts/             공통 CLI·M1 반복·선택 배포 진입점
@@ -71,13 +72,10 @@ sha256sum -c experiments/m1_zipformer/reference/SHA256SUMS
 
 Host `/d/shin/edge-asr`와 RP5 `/home/deepet/projects/edge-asr`는 **main 하나**로 관리합니다. Host에서 commit/push한 뒤 RP5에서 `git pull --ff-only origin main`으로 소스를 갱신합니다. 모델·자료·원시 결과는 Git에 포함하지 않고 새 경로에 별도로 전달해 해시를 확인합니다. [배포·보존 절차](docs/guides/deployment.md), [테스트 범위](tests/README.md).
 
-## 현재 확인한 범위
+## 현재 검증 범위
 
-- M1/M2: Zipformer batch·paced_stream과 SenseVoice batch를 RP5에서 실행하고 Host 재채점을 대조했습니다. 모델 간 비교에는 같은 자료·정규화·실행 조건과 각 기록의 한계를 확인해야 합니다.
-- M3: 공개 자료 98개 중 18개를 보류하고 개발 80개 × 원음/RMS로 실제 VAD 160회를 확인했습니다. 배포 라벨 예비 비교에서 초단문 전체 누락은 9/64·4/64였으나 RMS의 새 누락과 비음성 검출 증가가 남았습니다. [예비 결과](results/summaries/m3-vad-provisional-20261029.md).
-- 추가 공학 검사: 중첩 입력에서 bounded VAD의 실제 연속 활성 37.572초/34.788초와 3/5/8초 구간·유한 버퍼를 검증했습니다. native는 같은 입력에서 30초 안전 예산으로 중단했습니다. 기본 경로·안전 제한·전처리 미승인 상태는 유지하며 자연 장문/실서비스 검증과 구분합니다. [추가 RP5 결과](results/summaries/m3-vad-overlap-rp5-20261102.md).
-- 실제 동시 계측: 같은 1배속 WAV로 단독 대조군과 1T+1T/1T+2T/2T+1T의 [10회 비교](results/summaries/m31-concurrent-20261103.md)를 완료했습니다. 입력/Refine 드롭은 0이고 1+2의 Refine 반환이 가장 빨랐지만, 고정5초 장문 Refine의 정확도 회귀가 남았습니다. 병합 서비스 채택과 구분합니다.
-- 실제 온라인 VAD: Zip1T+Sense2T의 [본6회 비교](results/summaries/m31-online-vad-20261103.md)와 [별도 무음3회](results/summaries/m31-online-silence-20261103.md)를 완료했습니다. VAD0의 소유 끝→Refine 반환p95는 KSS0.665초/합성0.605초, 방출 후 반환p95는0.306/0.273초였으며 입력/Refine 드롭은0입니다. 실제 마이크·음향 정렬·UI·최종 병합 지연과 구분합니다.
-- 다음 과제: 구간 경계·결과 교체 정확도, 확정 구간 주석, 자연 장문·마이크·장시간 운영과 고부하 냉각 조건입니다. 실제 endpoint·Hybrid 결과 병합·Qwen3-ASR은 후속 범위입니다. 기존 단독 batch 수치로 동시 성능을 추정하지 않습니다.
+RP5에서 두 모델의 batch 평가, WAV 1배속 동시 추론과 VAD, 터미널 자막 분리 표시를 검증했습니다. **Refine은 후보로 표시하며 자동 교체하지 않습니다.** 구간별 정확도 악화가 남아 있기 때문입니다. 실제 마이크·화면 표시 지연·상시 운영은 아직 검증하지 않았습니다.
+
+현재 채택한 설정과 다음 완료 기준은 [현재 상태](docs/status.md)에, 각 실험의 조건·정확도·속도·실패는 [결과 색인](results/summaries/README.md)에 모았습니다. 과거 결과는 해당 데이터와 실행 조건의 기록이며 다른 환경의 성능을 보장하지 않습니다.
 
 초기 Zipformer 3.526초 WAV의 1/2/4스레드 결과는 **동일 단일 샘플의 각 1회 측정**입니다. [보존 기록](experiments/m1_zipformer/README.md)에서 출처와 한계를 확인할 수 있습니다. 과거 보고서의 수치·환경을 현재 조건으로 소급 변경하지 않습니다.

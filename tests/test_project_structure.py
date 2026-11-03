@@ -88,6 +88,17 @@ assert 'edge_asr.evaluation' not in sys.modules
                         self.assertFalse(module.startswith("edge_asr.tools"), str(path))
                     if is_report:
                         self.assertFalse(module.startswith("edge_asr.tools.probes"), str(path))
+                    if "realtime" in path.parts:
+                        self.assertNotIn(
+                            module,
+                            (
+                                "edge_asr.segment_merge",
+                                "edge_asr.token_alignment",
+                                "edge_asr.token_splice",
+                                "edge_asr.merging",
+                            ),
+                            str(path),
+                        )
 
     def test_local_document_links_resolve(self):
         markdown = [ROOT / "README.md"]

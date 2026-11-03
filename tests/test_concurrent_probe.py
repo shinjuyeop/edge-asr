@@ -13,8 +13,9 @@ from array import array
 from pathlib import Path
 
 from edge_asr.artifacts import digest
-from edge_asr.concurrent_probe import ConcurrentReplay, RefineChannel, float_digest
-from edge_asr.dataset import Audio, write_wav
+from edge_asr.dataset import Audio, float_digest, write_wav
+from edge_asr.realtime.refine import RefineChannel
+from edge_asr.realtime.replay import ConcurrentReplay
 from edge_asr.streaming import read_events, run_paced
 from edge_asr.tools.reports.concurrent import corpus, resource_summary, summarize
 
@@ -198,6 +199,43 @@ class ConcurrentCoreTests(unittest.TestCase):
                 channel.close()
             self.assertEqual(read_events(root / "refine-results.jsonl")[0]["status"], "failed")
             self.assertFalse(channel.process.is_alive())
+
+    def test_refine_callback_failure_propagates_and_reaps_reader_and_child(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            audio = Audio(array("f", [0] * 160), 16000, "x")
+            channel = RefineChannel(
+                root, {}, audio, root, factory=offline_factory, return_results=True
+            )
+
+            def fail(result, received_ns):
+                raise ValueError("fixture display failure")
+
+            try:
+                channel.start()
+                with self.assertRaisesRegex(RuntimeError, "listen"):
+                    channel.finish()
+                channel.listen(fail)
+                channel.submit(
+                    {
+                        "index": 0,
+                        "source_index": 0,
+                        "source_id": "a",
+                        "start": 0,
+                        "end": 160,
+                        "samples": audio.samples,
+                        "payload_frames": 160,
+                        "payload_float32_sha256": float_digest(audio.samples),
+                        "submitted_ns": time.perf_counter_ns(),
+                    }
+                )
+                with self.assertRaisesRegex(RuntimeError, "fixture display failure"):
+                    channel.finish()
+            finally:
+                channel.close()
+            self.assertEqual(read_events(root / "refine-results.jsonl")[0]["status"], "success")
+            self.assertFalse(channel.process.is_alive())
+            self.assertFalse(channel.reader.is_alive())
 
     def test_resource_group_uses_same_observations_and_keeps_missing_as_unknown(self):
         def sample(t):

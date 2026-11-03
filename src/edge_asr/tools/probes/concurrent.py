@@ -12,21 +12,13 @@ from pathlib import Path
 
 from edge_asr.adapters import create_adapter
 from edge_asr.artifacts import digest, write_json, write_jsonl
-from edge_asr.concurrent_probe import (
-    RATE,
-    WINDOW,
-    ConcurrentReplay,
-    ProcessSampler,
-    RefineChannel,
-    float_digest,
-    limits_verified,
-    prepare_track,
-)
 from edge_asr.config import load_evaluation_config
-from edge_asr.dataset import Audio
-from edge_asr.online_vad import POLICIES, OnlineVadReplay, TimedProbability
-from edge_asr.resources import RssSampler
-from edge_asr.runtime import environment
+from edge_asr.dataset import Audio, float_digest
+from edge_asr.realtime.refine import RefineChannel
+from edge_asr.realtime.replay import RATE, WINDOW, ConcurrentReplay, prepare_track
+from edge_asr.realtime.vad import POLICIES, OnlineVadReplay, TimedProbability
+from edge_asr.resources import ProcessSampler, RssSampler
+from edge_asr.runtime import environment, limits_verified
 from edge_asr.streaming import read_events, run_paced, warmup_stream
 
 COMBINATIONS = ((1, 0), (2, 0), (1, 1), (1, 2), (2, 1))
@@ -181,12 +173,13 @@ def probe(
             info["sensevoice_model_files"] = {
                 k: {"path": str(p), "sha256": digest(p)} for k, p in sense.model_files.items()
             }
-            if segment_merge or token_diagnostics or caption_display:
-                from edge_asr.segment_merge import ReturningRefineChannel
-
-                channel = ReturningRefineChannel(root, sconfig["model"], warm, output)
-            else:
-                channel = RefineChannel(root, sconfig["model"], warm, output)
+            channel = RefineChannel(
+                root,
+                sconfig["model"],
+                warm,
+                output,
+                return_results=segment_merge or token_diagnostics or caption_display,
+            )
             ready = channel.start()
             actual = Path(f"/proc/{ready['process_id']}/limits").read_text()
             info.update(refine_ready=ready, refine_limits_verified=limits_verified(actual))
@@ -293,7 +286,7 @@ def probe(
                 jlog,
             )
             if caption_display:
-                from edge_asr.captions import CaptionReplay
+                from edge_asr.realtime.captions import CaptionReplay
 
                 replay = CaptionReplay(
                     *arguments,

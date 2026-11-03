@@ -6,8 +6,8 @@ import time
 from bisect import bisect_left
 from threading import RLock
 
-from edge_asr.concurrent_probe import write_event
-from edge_asr.online_vad import OnlineVadReplay
+from edge_asr.artifacts import write_event
+from edge_asr.realtime.vad import OnlineVadReplay
 
 
 def _cjk(c):

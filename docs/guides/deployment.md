@@ -64,6 +64,14 @@ git rev-parse HEAD &&
 sha256sum -c experiments/m1_zipformer/SHA256SUMS
 ```
 
+RP5의 origin이 SSH이고 GitHub 키 인증을 사용할 수 없으면 공개 HTTPS로 소스만 가져올 수 있습니다. origin·SSH 키·환경을 바꾸지 않고 다음을 실행합니다.
+
+```bash
+GIT_TERMINAL_PROMPT=0 git fetch --no-tags \
+  https://github.com/shinjuyeop/edge-asr.git main:refs/remotes/origin/main &&
+git merge --ff-only origin/main
+```
+
 새 벤치마크가 필요한 경우에만 같은 폴더에서 실행합니다.
 
 ```bash

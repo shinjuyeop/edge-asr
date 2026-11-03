@@ -126,3 +126,11 @@ def write_wav(path, pcm):
     with wave.open(str(path), "wb") as out:
         out.setparams((1, 2, 16000, 0, "NONE", "not compressed"))
         out.writeframes(data)
+
+
+def float_digest(samples):
+    """프로세스 간 전달 전후의 float32 PCM을 little-endian 기준으로 확인한다."""
+    pcm = array("f", samples)
+    if sys.byteorder != "little":
+        pcm.byteswap()
+    return hashlib.sha256(pcm.tobytes()).hexdigest()
