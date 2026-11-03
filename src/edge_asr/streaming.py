@@ -172,7 +172,13 @@ def warmup_stream(adapter, audio, settings):
     return adapter.finish_stream(stream)
 
 
-def run_paced(adapter, audio, settings, directory: Path, telemetry: dict) -> str:
+def run_paced(
+    adapter, audio, settings, directory: Path, telemetry: dict, *, chunk_handler=None
+) -> str:
+    """chunk_handler는 선택적으로 (stream, PCM, 절대 시작, 절대 끝)을 받는다.
+
+    프레임 좌표가 필요한 동시 실행 측정용이며 기존 어댑터 호출 경로는 유지한다.
+    """
     directory.mkdir(parents=True)
     telemetry.update(
         complete=False,
@@ -217,6 +223,7 @@ def run_paced(adapter, audio, settings, directory: Path, telemetry: dict) -> str
 
     try:
         process.start()
+        telemetry["producer_pid"] = process.pid
         child_connection.close()
         if not connection.poll(10) or connection.recv() != "ready":
             raise RuntimeError("입력 프로세스 준비 실패")
@@ -248,7 +255,11 @@ def run_paced(adapter, audio, settings, directory: Path, telemetry: dict) -> str
                 consumed.append(event)
                 _write(log, event)
                 begin = time.perf_counter_ns()
-                text = timed(lambda: adapter.accept_chunk(stream, audio.samples[start:end]))
+                text = timed(
+                    lambda: adapter.accept_chunk(stream, audio.samples[start:end])
+                    if chunk_handler is None
+                    else chunk_handler(stream, audio.samples[start:end], start, end)
+                )
                 returned = (time.perf_counter_ns() - t0) / 1e9
                 if not isinstance(text, str):
                     raise TypeError("어댑터가 문자열을 반환해야 합니다.")

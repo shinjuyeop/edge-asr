@@ -57,3 +57,5 @@ edge-asr tools list
 `probe-segmented-accuracy`와 `summarize-segmented-accuracy`는 [고정한 세 구간 정책의 파일 CER 비교](../research/m3_segmentation_accuracy.md)와 모델 없는 재채점이다. 일반 batch 평가의 순수 ASR RTF와 구간 도구의 파이프라인 RTF를 구분한다.
 
 추가 조건 `bounded_vad_5s_context200ms`는 [최대 200ms 실제 왼쪽 문맥](../research/m3_vad_context.md)을 포함한다. 겹치지 않는 소유 프레임 합과 문맥 포함 payload 합을 구분하며, 중복 전사를 제거하지 않는다.
+
+`probe-concurrent`와 `summarize-concurrent`는 [M3-1 동시 부하](../research/m31_concurrent.md) 측정/재집계다. 단독 1/2T와 동시 1+1/1+2/2+1을 같은 원음에서 비교한다. Refine 구간 끝 기준 지연과 실제 Hybrid 병합 지연을 구분한다.

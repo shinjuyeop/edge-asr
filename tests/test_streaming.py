@@ -62,6 +62,28 @@ class FakeStreamingAdapter:
 
 
 class QueueMetricTests(unittest.TestCase):
+    def test_optional_chunk_handler_observes_original_absolute_coordinates(self):
+        with tempfile.TemporaryDirectory() as temp:
+            adapter = FakeStreamingAdapter()
+            ranges = []
+
+            def accept(stream, samples, start, end):
+                ranges.append((start, end, len(samples)))
+                return adapter.accept_chunk(stream, samples)
+
+            stats = {}
+            run_paced(
+                adapter,
+                Audio(array("f", [0] * 25), 1000, "fixture"),
+                SETTINGS,
+                Path(temp) / "events",
+                stats,
+                chunk_handler=accept,
+            )
+            self.assertEqual(ranges, [(0, 10, 10), (10, 20, 10), (20, 25, 5)])
+            self.assertTrue(stats["complete"])
+            self.assertIsNotNone(stats["producer_pid"])
+
     def test_backlog_excludes_inflight_chunk_and_tracks_event_peaks(self):
         produced = [
             {"type": "enqueue", "index": i, "start": i * 100, "end": (i + 1) * 100, "at_s": at}
