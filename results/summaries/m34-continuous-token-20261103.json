@@ -1,0 +1,4252 @@
+{
+  "schema": "continuous-token-vad-diagnostic-report-v1",
+  "work_date": "2026-11-03",
+  "source_commit": "fcc942af41f33b31f3df6e564afd407a593ff759",
+  "status": "completed_with_scope_limits",
+  "native_runs": 3,
+  "source_evaluations": 57,
+  "audio_supply_s": 300.115875,
+  "plan": {
+    "schema": "continuous-token-diagnostic-plan-v1",
+    "client_work_date": "2026-11-03",
+    "source_commit": "fcc942af41f33b31f3df6e564afd407a593ff759",
+    "datasets": {
+      "kss-dev50": {
+        "manifest_path": "data/evaluation/kss-dev50/manifest.jsonl",
+        "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+        "track_float32_sha256": "8caf6f852b7eced49b0f35674f05c8e889d31bece921510b3cebb7d59ae9142e",
+        "frames": 2638704,
+        "audio_s": 164.919,
+        "sources": [
+          {
+            "id": "kss-train-01000",
+            "reference": "그의 맥박은 여전히 뛰고 있다.",
+            "audio_sha256": "5abdc99775bcfc36efe925eb00fc79f2bd4359f0ad1075dd2bdac4ba03e5cc21",
+            "start": 0,
+            "end": 45066
+          },
+          {
+            "id": "kss-train-01001",
+            "reference": "한글은 십오 세기에 세종대왕에 의해 만들어졌어.",
+            "audio_sha256": "d9e4044d88db22d53a99f2d01586623581db3e0e80aa46411fa5505542683a32",
+            "start": 45066,
+            "end": 123921
+          },
+          {
+            "id": "kss-train-01002",
+            "reference": "그가 회복된 건 순전히 그 여자의 간호에 의한 거야.",
+            "audio_sha256": "88de0aeb1ff678b869a7723ea9e1d9231f10290a52545da20a97630eb9274a8f",
+            "start": 123921,
+            "end": 188405
+          },
+          {
+            "id": "kss-train-01003",
+            "reference": "일기예보에 의하면 날씨가 좋을 거래요.",
+            "audio_sha256": "f66a393bd23c546a313b6dfc27ebcb1c236abd21a1e4d614e8fc8741622d155d",
+            "start": 188405,
+            "end": 246256
+          },
+          {
+            "id": "kss-train-01004",
+            "reference": "아이엠에프는 뭘 의미합니까?",
+            "audio_sha256": "d3b6553ae2cf27409f2b41a36798c9325f3f736e22e273d55a08836b68b8324f",
+            "start": 246256,
+            "end": 282235
+          },
+          {
+            "id": "kss-train-01005",
+            "reference": "빨간 불은 위험을 의미해요.",
+            "audio_sha256": "ee1d768026ac1ee3c47d1490987c0a199849627b9a72b1c34a7e210e4efd2077",
+            "start": 282235,
+            "end": 316947
+          },
+          {
+            "id": "kss-train-01006",
+            "reference": "여름철에는 매미가 우는 걸 쉽게 볼 수 있어요.",
+            "audio_sha256": "129d5db0d7ce955628bc615de43ca8b6f352d4f2454f42e540141f382a55e33e",
+            "start": 316947,
+            "end": 372476
+          },
+          {
+            "id": "kss-train-01007",
+            "reference": "그는 기뻐서 울고 있다.",
+            "audio_sha256": "5e72acdbe8c3b80543ce7c0bd75c2fd8d9ec9e9e631cca44fc105efe1ccef101",
+            "start": 372476,
+            "end": 407207
+          },
+          {
+            "id": "kss-train-01008",
+            "reference": "우리 형은 어릴 때 걸핏하면 저를 울렸어요.",
+            "audio_sha256": "92683b52fd3501f07acd644ec167f9cc7128ed8167eeaf0f039a254d037f74b0",
+            "start": 407207,
+            "end": 474680
+          },
+          {
+            "id": "kss-train-01009",
+            "reference": "전화 받아! 전화벨 울리잖아!",
+            "audio_sha256": "b41264540b7de1f553b2338f1a0754aef3542f7a4758ce7f0d96cc8c4ff433c4",
+            "start": 474680,
+            "end": 522178
+          },
+          {
+            "id": "kss-train-01010",
+            "reference": "고개를 움직여 봐.",
+            "audio_sha256": "9fd7903fba72e5855fe5d7a776dd2041b94b155ec1f4101a3bddbcbbe4d07353",
+            "start": 522178,
+            "end": 543396
+          },
+          {
+            "id": "kss-train-01011",
+            "reference": "팔이 안 움직여.",
+            "audio_sha256": "04f6f5a50f838971520e94b6178a5f88994232853e6671f66be693a1e4b8ecd4",
+            "start": 543396,
+            "end": 564456
+          },
+          {
+            "id": "kss-train-01012",
+            "reference": "오늘은 운동하기에 아주 좋은 날씨였다.",
+            "audio_sha256": "f28a44c9688dd01fb965ed1e6a81651bea839bc8ced9fa937c3bcdc56679974a",
+            "start": 564456,
+            "end": 614652
+          },
+          {
+            "id": "kss-train-01013",
+            "reference": "저는 매일 운동하러 헬스 클럽에 다녀요.",
+            "audio_sha256": "842031b6b5a5ee2131aa13804c23f819d68853d563a8a777e7a74532ea04ccb1",
+            "start": 614652,
+            "end": 667187
+          },
+          {
+            "id": "kss-train-01014",
+            "reference": "버스를 운전할 수 있으세요?",
+            "audio_sha256": "737eadadc493ef8ee96539ce994ed918f2b0eeb1a19cf464366f123cfe236cb7",
+            "start": 667187,
+            "end": 698585
+          },
+          {
+            "id": "kss-train-01015",
+            "reference": "비 오는 날 빨리 운전하면 매우 위험하다.",
+            "audio_sha256": "12171e6aa027aeae9cc2e87daa6f3fa64e51bc90829f0c17a8c94fab4e6b76a4",
+            "start": 698585,
+            "end": 754006
+          },
+          {
+            "id": "kss-train-01016",
+            "reference": "그는 엉뚱한 질문으로 사람들을 곧잘 웃겼다.",
+            "audio_sha256": "4c06b4b1c8086a77d061db2e0869e486a69f9b9e7b90ea62cb2b328277053305",
+            "start": 754006,
+            "end": 815411
+          },
+          {
+            "id": "kss-train-01017",
+            "reference": "그 사람 정말 웃겨.",
+            "audio_sha256": "379e02d7839f5c4a9bea9bed44009bc3de34cfbdb1f59386108b41ca40c2a243",
+            "start": 815411,
+            "end": 841439
+          },
+          {
+            "id": "kss-train-01018",
+            "reference": "그는 머리를 뒤로 젖히고 웃었다.",
+            "audio_sha256": "339ec189b15c2375e2c547f37c300acffb03f708b9927ab2df016a0865a795d9",
+            "start": 841439,
+            "end": 883413
+          },
+          {
+            "id": "kss-train-01019",
+            "reference": "아기가 나를 보고 웃었어.",
+            "audio_sha256": "1e4d719c78efff864242d61e7b5389f12f245d00869f7909acb49ceb809b05d6",
+            "start": 883413,
+            "end": 914273
+          },
+          {
+            "id": "kss-train-01020",
+            "reference": "그들은 도시 전체를 보기 위해 산꼭대기로 올라갔다.",
+            "audio_sha256": "4712998af8925e33fb91cc591f50e20c67d157fec8fdc396e8e669977a1b9b32",
+            "start": 914273,
+            "end": 976272
+          },
+          {
+            "id": "kss-train-01021",
+            "reference": "그 사람은 자기 부모를 끔찍이 위해요.",
+            "audio_sha256": "aa478a4fe630ff4ec3d622050af4a3b9c0ef361886f581b0aeaa806f63a59eec",
+            "start": 976272,
+            "end": 1025397
+          },
+          {
+            "id": "kss-train-01022",
+            "reference": "누구나 오래 살길 원한다.",
+            "audio_sha256": "4930a1c68a2e5cf7b941a5a5aac745d15811a7d1110658daa25628c1ce8c1a59",
+            "start": 1025397,
+            "end": 1061292
+          },
+          {
+            "id": "kss-train-01023",
+            "reference": "뭘 원해?",
+            "audio_sha256": "9277b141702721429c3046e13dc3ef0ef9a585e79398f00c0449d4611168b09c",
+            "start": 1061292,
+            "end": 1076109
+          },
+          {
+            "id": "kss-train-01024",
+            "reference": "나는 새해에는 담배를 끊겠다고 아들 녀석과 약속했다.",
+            "audio_sha256": "623504f89a0782750557b0592e986a412337307e0b0fd2eb7801215e28ed9d36",
+            "start": 1076109,
+            "end": 1157751
+          },
+          {
+            "id": "kss-train-01025",
+            "reference": "시험을 잘 보면 아빠가 새 컴퓨터를 사 주시겠다고 나한테 약속하셨어요.",
+            "audio_sha256": "f4d9d004fbb6dac2ef436ff5a6e630df857ff92a302392c819cc9b3fb00a99a3",
+            "start": 1157751,
+            "end": 1251399
+          },
+          {
+            "id": "kss-train-01026",
+            "reference": "그는 전국 방방곡곡을 여행했다.",
+            "audio_sha256": "a5be57a60967fd94e922536fca5230a1bc517af3a9cc24bb239e76e58ea0c197",
+            "start": 1251399,
+            "end": 1301169
+          },
+          {
+            "id": "kss-train-01027",
+            "reference": "기차를 타고 유럽 전역을 여행했어요.",
+            "audio_sha256": "7e517450ce7525168bf6c0cb6cfb43984079cccbc157cf1567f6e4cab402847a",
+            "start": 1301169,
+            "end": 1352430
+          },
+          {
+            "id": "kss-train-01028",
+            "reference": "창문 열어도 될까요?",
+            "audio_sha256": "822e04439d26b58eb517d802651fb0f659b8eb27513f76b32d081d8aa85ef7d4",
+            "start": 1352430,
+            "end": 1377117
+          },
+          {
+            "id": "kss-train-01029",
+            "reference": "첨부하신 파일을 못 열겠어요.",
+            "audio_sha256": "8c79dfcc1627e0ceb1fdd34731e13669ad7ac5dd086079656a4e53daf64a213c",
+            "start": 1377117,
+            "end": 1413926
+          },
+          {
+            "id": "kss-train-01030",
+            "reference": "두드려라, 그러면 열릴 것이다.",
+            "audio_sha256": "08137bdd0f8ee3aac21e6f1bb8d95a92e63b92e301adf4d2dbb98069ee268bae",
+            "start": 1413926,
+            "end": 1462416
+          },
+          {
+            "id": "kss-train-01031",
+            "reference": "이천이 년 월드컵이 한국과 일본에서 열렸다.",
+            "audio_sha256": "362e7cb3d3abcfc38f2b8292596e3524597cf74aa277039f73002deba309f86f",
+            "start": 1462416,
+            "end": 1525168
+          },
+          {
+            "id": "kss-train-01032",
+            "reference": "아버지는 한국어를 연구하는 데 평생을 바치셨다.",
+            "audio_sha256": "1a9bb77b90ee3245c6598f7f980ff1ff770b393e244f079f65ee47bebfa68597",
+            "start": 1525168,
+            "end": 1593254
+          },
+          {
+            "id": "kss-train-01033",
+            "reference": "제 일은 고대 문자에 대해 연구하는 거예요.",
+            "audio_sha256": "b09ebe48da4e784fbc4d24dea393565b0c50f1a760c1b20cd1ad8aabc53b9ceb",
+            "start": 1593254,
+            "end": 1651109
+          },
+          {
+            "id": "kss-train-01034",
+            "reference": "내일은 제일 중요한 장면을 연습할 거야.",
+            "audio_sha256": "8cf99fba0f731f19785d2e0a3b4d6ffbf5c53cf8ea65f3361bf094ab544a7e40",
+            "start": 1651109,
+            "end": 1700573
+          },
+          {
+            "id": "kss-train-01035",
+            "reference": "그 선수가 연습하는 걸 보려고 사람들이 모여 들었어요.",
+            "audio_sha256": "ade4b191beca167c4d8584991ada3523820907d8f39fbc4a166feb400234e85d",
+            "start": 1700573,
+            "end": 1761390
+          },
+          {
+            "id": "kss-train-01036",
+            "reference": "우리 부모님은 저한테 너무 많은 것을 요구하세요.",
+            "audio_sha256": "87b7f5005edcf0d9b5a8dce067cfb70e1fd5e0c1f539c77d077bfbf17a547c0a",
+            "start": 1761390,
+            "end": 1829760
+          },
+          {
+            "id": "kss-train-01037",
+            "reference": "내가 환불을 요구하자 그들은 영수증을 보여 달라고 했다.",
+            "audio_sha256": "bc7caa53111673da10d00c85ab5d7e13b4e86bd45aec3a4fd26d6ff6031733a9",
+            "start": 1829760,
+            "end": 1901295
+          },
+          {
+            "id": "kss-train-01038",
+            "reference": "김치찌개 요리하다 손가락을 베었어.",
+            "audio_sha256": "5160b4ed484cc8de8855eea09a5911f58b8d8fdbdb79a63287b456a97f4859d5",
+            "start": 1901295,
+            "end": 1952784
+          },
+          {
+            "id": "kss-train-01039",
+            "reference": "제 아내는 요리하는 걸 좋아해요.",
+            "audio_sha256": "b835ab9edc6415825913ad23bcf1248003d9936b4a4f644cd8109439d341a647",
+            "start": 1952784,
+            "end": 1997088
+          },
+          {
+            "id": "kss-train-01040",
+            "reference": "여기에서 가까운 곳에 서점이 있나요?",
+            "audio_sha256": "8594a68fa88ac6e5f39ad4aa44a5dc78a27c675b93e1ff2b60d46222036a902d",
+            "start": 1997088,
+            "end": 2047243
+          },
+          {
+            "id": "kss-train-01041",
+            "reference": "가까운 시일 내에 한번 댁으로 찾아가겠습니다.",
+            "audio_sha256": "cd3f1bb1e0dcf08e767e231ac23e33bba950d8f7e151c21ade0de81f13527c14",
+            "start": 2047243,
+            "end": 2109658
+          },
+          {
+            "id": "kss-train-01042",
+            "reference": "저는 사촌들하고 아주 가깝게 지내요.",
+            "audio_sha256": "e0cc393f42d2828fd9d4f777506717795ad3c04411951064b14a7f376cab0190",
+            "start": 2109658,
+            "end": 2169473
+          },
+          {
+            "id": "kss-train-01043",
+            "reference": "가까운 친구 중에 의사가 있어요.",
+            "audio_sha256": "593c2a5a70e785ab58859c28119db68b7febcb288347d50d5c88e087941c8d90",
+            "start": 2169473,
+            "end": 2220743
+          },
+          {
+            "id": "kss-train-01044",
+            "reference": "우리의 승리는 기적에 가까웠다.",
+            "audio_sha256": "d8110af5a0f81b524d251dece471b4e728811a375791814c610c9269c716e8d7",
+            "start": 2220743,
+            "end": 2274985
+          },
+          {
+            "id": "kss-train-01045",
+            "reference": "그녀의 음정은 완벽에 가까웠다.",
+            "audio_sha256": "b7a1b7b90bb6bd08df1c2eaa3379d7b120cf70bbe53fb3f886c1b2d7c708b6e3",
+            "start": 2274985,
+            "end": 2334057
+          },
+          {
+            "id": "kss-train-01046",
+            "reference": "저는 찢어지게 가난한 집에서 태어났어요.",
+            "audio_sha256": "94786977b7d18c83de21b70d0aeccd22517a891057b4619d70d6e4cc80542587",
+            "start": 2334057,
+            "end": 2394986
+          },
+          {
+            "id": "kss-train-01047",
+            "reference": "그는 너무 가난해서 초등학교도 마치지 못했다.",
+            "audio_sha256": "bd76c8a8fa4869d5bd4a971ecc82becbb30a8e6ff38f56e9641f16d9949ca4e0",
+            "start": 2394986,
+            "end": 2470033
+          },
+          {
+            "id": "kss-train-01048",
+            "reference": "그녀는 지난 십 년 동안 가난한 사람들을 도아왔다.",
+            "audio_sha256": "ea504db28e0947bfbaf534f412c1633e34512cc1c4538727e65b63962f9fa05a",
+            "start": 2470033,
+            "end": 2554740
+          },
+          {
+            "id": "kss-train-01049",
+            "reference": "대부분의 패션 모델들은 놀라울 정도로 허리가 가늘다.",
+            "audio_sha256": "3bfbd7e9c086f67dd8bebeab5d0218993d058784d5f7a513699c3f48db66369e",
+            "start": 2554740,
+            "end": 2638704
+          }
+        ],
+        "reference_characters": 756
+      },
+      "synthetic-120": {
+        "manifest_path": "data/evaluation/m23-stress/long-120.jsonl",
+        "manifest_sha256": "5effb0c014a49d53dc1be638c667d166b1f8b7b45e619c507c5a2992074f4f66",
+        "track_float32_sha256": "54e8a4acad68dbc93c34966af4b9d3fe6b56e2b796010baaf1121cbbf0a5cfb9",
+        "frames": 1929390,
+        "audio_s": 120.586875,
+        "sources": [
+          {
+            "id": "synthetic-long-120",
+            "reference": "그의 맥박은 여전히 뛰고 있다. 한글은 십오 세기에 세종대왕에 의해 만들어졌어. 그가 회복된 건 순전히 그 여자의 간호에 의한 거야. 일기예보에 의하면 날씨가 좋을 거래요. 아이엠에프는 뭘 의미합니까? 빨간 불은 위험을 의미해요. 여름철에는 매미가 우는 걸 쉽게 볼 수 있어요. 그는 기뻐서 울고 있다. 우리 형은 어릴 때 걸핏하면 저를 울렸어요. 전화 받아! 전화벨 울리잖아! 고개를 움직여 봐. 팔이 안 움직여. 오늘은 운동하기에 아주 좋은 날씨였다. 저는 매일 운동하러 헬스 클럽에 다녀요. 버스를 운전할 수 있으세요? 비 오는 날 빨리 운전하면 매우 위험하다. 그는 엉뚱한 질문으로 사람들을 곧잘 웃겼다. 그 사람 정말 웃겨. 그는 머리를 뒤로 젖히고 웃었다. 아기가 나를 보고 웃었어. 그들은 도시 전체를 보기 위해 산꼭대기로 올라갔다. 그 사람은 자기 부모를 끔찍이 위해요. 누구나 오래 살길 원한다. 뭘 원해? 나는 새해에는 담배를 끊겠다고 아들 녀석과 약속했다. 시험을 잘 보면 아빠가 새 컴퓨터를 사 주시겠다고 나한테 약속하셨어요. 그는 전국 방방곡곡을 여행했다. 기차를 타고 유럽 전역을 여행했어요. 창문 열어도 될까요? 첨부하신 파일을 못 열겠어요. 두드려라, 그러면 열릴 것이다. 이천이 년 월드컵이 한국과 일본에서 열렸다. 아버지는 한국어를 연구하는 데 평생을 바치셨다. 제 일은 고대 문자에 대해 연구하는 거예요. 내일은 제일 중요한 장면을 연습할 거야. 그 선수가 연습하는 걸 보려고 사람들이 모여 들었어요.",
+            "audio_sha256": "9a4c0a7c2955b0541843c098eed3a983674b7931f0e23d0bf3c7c81d213867f4",
+            "start": 0,
+            "end": 1929390
+          }
+        ],
+        "reference_characters": 519
+      },
+      "digital-silence": {
+        "manifest_path": "data/evaluation/m23-stress/silence.jsonl",
+        "manifest_sha256": "bace0b26e24d60b8ef207b191c3a646edd0ceaae4ba8e130ecac5c948810b084",
+        "track_float32_sha256": "19b3fbba8dfcdfa51ba4c7b5f01ea6f63039ca24f77484945058b8095edb4147",
+        "frames": 233760,
+        "audio_s": 14.61,
+        "sources": [
+          {
+            "id": "silence-0.01s",
+            "reference": "",
+            "audio_sha256": "e7531525a8818a3b06dc5c4e09269c351688352352117dc6caa3bba02d876112",
+            "start": 0,
+            "end": 160
+          },
+          {
+            "id": "silence-0.1s",
+            "reference": "",
+            "audio_sha256": "2976da01e205a110c9fa41d47659e238a5c6d3c3f3137582f2949853faa201dd",
+            "start": 160,
+            "end": 1760
+          },
+          {
+            "id": "silence-0.5s",
+            "reference": "",
+            "audio_sha256": "358c6dcef4442790decb0a5c03fb320154f9d1dd5b4618e301f9e6661a413cb5",
+            "start": 1760,
+            "end": 9760
+          },
+          {
+            "id": "silence-1s",
+            "reference": "",
+            "audio_sha256": "643f8a8dc8bd9c19225afffad2becfec5426180b3749cb208abdf1a6c8354efc",
+            "start": 9760,
+            "end": 25760
+          },
+          {
+            "id": "silence-3s",
+            "reference": "",
+            "audio_sha256": "d303811b8c84619667cd0501342f84ec6cbe69f7aa3856dcf52fabda374c92b8",
+            "start": 25760,
+            "end": 73760
+          },
+          {
+            "id": "silence-10s",
+            "reference": "",
+            "audio_sha256": "ee7bea4232762775f8fce9b3e27e4d3948c8ac6a45a87ca769f703d6eed0b448",
+            "start": 73760,
+            "end": 233760
+          }
+        ],
+        "reference_characters": 0
+      }
+    },
+    "order": [
+      {
+        "dataset": "kss-dev50",
+        "policy": "vad0"
+      },
+      {
+        "dataset": "synthetic-120",
+        "policy": "vad0"
+      },
+      {
+        "dataset": "digital-silence",
+        "policy": "vad0"
+      }
+    ],
+    "model_files": {
+      "zipformer": {
+        "tokens": {
+          "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/tokens.txt",
+          "sha256": "016bdf0965029263b7ad01b742366ee542ef0bef38261510e8176ff6f2e9e668"
+        },
+        "encoder": {
+          "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/encoder-epoch-99-avg-1.int8.onnx",
+          "sha256": "8d0b1aa24fbedd4e3948564ab7facd151b8ce9b0c48fc987c541de2de3af5697"
+        },
+        "decoder": {
+          "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/decoder-epoch-99-avg-1.onnx",
+          "sha256": "b29cfb4575141e50a30a22b2c4579934f3d4f45b83c9c8c08c3aef5a3fa7abfc"
+        },
+        "joiner": {
+          "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/joiner-epoch-99-avg-1.int8.onnx",
+          "sha256": "128b80a66a1f718488af8560f9d15895109b99ff3e573f0a0130e03774ef1ced"
+        }
+      },
+      "sensevoice": {
+        "model": {
+          "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/model.int8.onnx",
+          "sha256": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51"
+        },
+        "tokens": {
+          "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/tokens.txt",
+          "sha256": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc"
+        }
+      }
+    },
+    "config_files_sha256": {
+      "zipformer": "de61d3627f72f1ff5abcd9fe4931feb8a48ff072cf8d1ab7d15d5dea6fbebab3",
+      "sensevoice": "a2bc9a87ef8d2d60e4afe354bb7e3c3961bc948b72d5d33da749f42ab8ce8d77"
+    },
+    "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+    "settings": {
+      "zip_threads": 1,
+      "refine_threads": 2,
+      "vad_threads": 1,
+      "capture": {
+        "chunk_ms": 100,
+        "queue_capacity_chunks": 5,
+        "drop_policy": "drop_newest",
+        "drain_timeout_s": 10.0
+      },
+      "refine_queue_capacity": 2,
+      "owned_max_frames": 80000,
+      "payload_max_frames": 80000,
+      "zip_state_policy": "continuous_per_source",
+      "token_diagnostics": true,
+      "replacements_enabled": false,
+      "native_token_grid_s": 0.04,
+      "repetitions": 1,
+      "warmup_runs_per_model": 3,
+      "warmup_prefix_max_frames": 80000
+    },
+    "temperature_policy": "operational",
+    "scope_ko": "기존 연속 Zip1T+Sense2T+VAD1T/vad0/100ms/1배속 원음의 native 토큰/시각/재구성/접두부·실제 수신·구조 후보를 진단. KSS50/합성120초1/디지털무음6 각1회. native 읽기와 진단/기록 비용이 추가된 조건. 모델/패키지/기본값 유지, 실제 교체0·병합CER/UI/음향 정답 지연 미측정. 정답 비의존·사후 규칙 조정 없음."
+  },
+  "datasets": {
+    "kss-dev50": {
+      "source_count": 50,
+      "audio_s": 164.919,
+      "summary": {
+        "schema": "continuous-token-diagnostic-summary-v1",
+        "status": "completed",
+        "input_complete": true,
+        "zip_threads": 1,
+        "refine_threads": 2,
+        "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+        "track_float32_sha256": "8caf6f852b7eced49b0f35674f05c8e889d31bece921510b3cebb7d59ae9142e",
+        "audio_s": 164.919,
+        "planned_sources": 50,
+        "zip_cer": {
+          "planned": 50,
+          "successful": 50,
+          "complete": true,
+          "cer": {
+            "errors": 88,
+            "substitutions": 71,
+            "deletions": 11,
+            "insertions": 6,
+            "reference_characters": 756,
+            "value": 0.1164021164021164
+          },
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+        },
+        "first_partial_from_source_start_s": {
+          "n": 50,
+          "mean": 0.9731872026400029,
+          "p50": 0.8524984580000012,
+          "p95": 1.4562232030000075,
+          "max": 1.4770743760000187
+        },
+        "zip_finalize_from_source_end_s": {
+          "n": 50,
+          "mean": 0.16976252480000148,
+          "p50": 0.1646783859999985,
+          "p95": 0.23878154900000936,
+          "max": 0.24589791199999667
+        },
+        "no_partial_sources": 0,
+        "input_dropped_chunks": 0,
+        "input_dropped_audio_s": 0.0,
+        "input_backlog_event_max_audio_s": 0.1,
+        "input_backlog_audio_s": {
+          "n": 1653,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        },
+        "input_queue_wait_s": {
+          "n": 1650,
+          "mean": 0.0014858060654545334,
+          "p50": 0.0006761540000184141,
+          "p95": 0.0011760459999976547,
+          "max": 0.08546197799999966
+        },
+        "chunk_processing_s": {
+          "n": 1650,
+          "mean": 0.01952603697272724,
+          "p50": 0.004456978999996863,
+          "p95": 0.05580313699999806,
+          "max": 0.18477306299999974
+        },
+        "coordinator_active_rtf": 0.19531343553242014,
+        "refine": {
+          "complete": true,
+          "planned_windows": 57,
+          "enqueued": 57,
+          "successful": 57,
+          "failed_windows": 0,
+          "missing_results": 0,
+          "dropped_windows": 0,
+          "cer": {
+            "planned": 50,
+            "successful": 50,
+            "complete": true,
+            "cer": {
+              "errors": 42,
+              "substitutions": 26,
+              "deletions": 9,
+              "insertions": 7,
+              "reference_characters": 756,
+              "value": 0.05555555555555555
+            },
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+          },
+          "queue_wait_s": {
+            "n": 57,
+            "mean": 0.001022506052631579,
+            "p50": 0.001030601,
+            "p95": 0.001692587,
+            "max": 0.001702143
+          },
+          "decode_s": {
+            "n": 57,
+            "mean": 0.18137572098245613,
+            "p50": 0.187482103,
+            "p95": 0.267133555,
+            "max": 0.298348111
+          },
+          "dispatch_from_window_end_s": {
+            "n": 57,
+            "mean": 0.13361158212280716,
+            "p50": 0.07367335600000047,
+            "p95": 0.4286310499999928,
+            "max": 0.45121133199999974
+          },
+          "window_end_to_return_s": {
+            "n": 57,
+            "mean": 0.31621032468421173,
+            "p50": 0.2765241830000065,
+            "p95": 0.6415046589999918,
+            "max": 0.6846961560000011
+          },
+          "final_from_source_file_end_s": {
+            "n": 50,
+            "mean": 0.24289278654000163,
+            "p50": 0.2475517069999995,
+            "p95": 0.3352169269999976,
+            "max": 0.37951771299999937
+          },
+          "backlog_event_max_audio_s": 4.5484375,
+          "backlog_event_max_windows": 1,
+          "backlog_audio_s": {
+            "n": 1654,
+            "mean": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0
+          },
+          "backlog_end_audio_s": 0.0,
+          "zip_refine_call_overlap_s": 5.874922820999998,
+          "refine_calls_with_zip_overlap": 57,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "vad_emission_from_owned_end_s": {
+            "n": 57,
+            "mean": 0.12732446131579023,
+            "p50": 0.06400795699999762,
+            "p95": 0.4202154110000009,
+            "max": 0.4453010639999988
+          },
+          "dispatch_after_vad_emission_s": {
+            "n": 57,
+            "mean": 0.006287120807017544,
+            "p50": 0.006018825,
+            "p95": 0.010421155,
+            "max": 0.015097265
+          },
+          "vad_emission_to_return_s": {
+            "n": 57,
+            "mean": 0.18888586336842098,
+            "p50": 0.194330434,
+            "p95": 0.278614885,
+            "max": 0.315631041
+          },
+          "decision_audio_after_owned_end_s": {
+            "n": 57,
+            "mean": 0.06737609649122805,
+            "p50": 0.0,
+            "p95": 0.3,
+            "max": 0.3
+          },
+          "no_vad_segment_sources": 0,
+          "backlog_event_max_payload_audio_s": 4.5484375,
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님."
+        },
+        "refine_reason": null,
+        "producer_cpu_s": 0.253955509,
+        "producer_lifetime_peak_rss_mib": 293.1875,
+        "unmeasured": {
+          "hybrid_merged_cer": null,
+          "acoustic_endpoint_latency_s": null,
+          "aligned_recognition_latency_s": null,
+          "ui_display_latency_s": null,
+          "microphone_overruns": null
+        },
+        "zip_call_rtf": 0.14932805321400183,
+        "resources": {
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "sample_count": 1642,
+          "paired_intervals": 1641,
+          "paired_wall_s": 165.0231742010001,
+          "observed_model_cpu_percent": 35.12233980507734,
+          "model_group_rss_observed_max_mib": 667.46875,
+          "complete_model_rss_samples": 1642,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능.",
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling",
+            "token_alignment_audit_and_result_reader"
+          ]
+        },
+        "threads": {
+          "zip": {
+            "snapshots": 165,
+            "observed_tid_max": 9,
+            "active_at_least_1_percent": 1,
+            "rows": [
+              {
+                "tid": "27831",
+                "cpu_s": 33.73000000000004,
+                "paired_s": 164.9166765960108,
+                "mean_cpu_percent": 20.4527526846948
+              },
+              {
+                "tid": "27877",
+                "cpu_s": 0.5500000000000003,
+                "paired_s": 164.9166765960108,
+                "mean_cpu_percent": 0.3335017484904279
+              },
+              {
+                "tid": "27876",
+                "cpu_s": 0.08,
+                "paired_s": 164.9166765960108,
+                "mean_cpu_percent": 0.0485093452349713
+              },
+              {
+                "tid": "27849",
+                "cpu_s": 0.0,
+                "paired_s": 164.9166765960108,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "27850",
+                "cpu_s": 0.0,
+                "paired_s": 164.9166765960108,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "27851",
+                "cpu_s": 0.0,
+                "paired_s": 164.9166765960108,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "27873",
+                "cpu_s": 0.0,
+                "paired_s": 164.9166765960108,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "27886",
+                "cpu_s": 0.0,
+                "paired_s": 161.902048628006,
+                "mean_cpu_percent": 0.0
+              }
+            ],
+            "runtime_roles_confirmed": false
+          },
+          "refine": {
+            "snapshots": 165,
+            "observed_tid_max": 5,
+            "active_at_least_1_percent": 2,
+            "rows": [
+              {
+                "tid": "27835",
+                "cpu_s": 12.399999999999975,
+                "paired_s": 164.91663368699665,
+                "mean_cpu_percent": 7.518950467746354
+              },
+              {
+                "tid": "27840",
+                "cpu_s": 10.560000000000002,
+                "paired_s": 164.91663368699665,
+                "mean_cpu_percent": 6.403235237048522
+              },
+              {
+                "tid": "27837",
+                "cpu_s": 0.0,
+                "paired_s": 164.91663368699665,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "27838",
+                "cpu_s": 0.0,
+                "paired_s": 164.91663368699665,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "27839",
+                "cpu_s": 0.0,
+                "paired_s": 164.91663368699665,
+                "mean_cpu_percent": 0.0
+              }
+            ],
+            "runtime_roles_confirmed": false
+          }
+        },
+        "refine_policy": "vad0",
+        "source_sha256": {
+          "vad-sources.jsonl": "b648cd13af5e2f53e02e4e8889743c33c62c7bae85a5d3b76612b6ea3429ef91",
+          "refine-results.jsonl": "d95df4efa865c460e12b8772e2a03b33e5642442c26c8a544f8fe78e05a60a0f",
+          "zip-sources.jsonl": "4ba7da68feb84e508c4050209fa820ba57b1fdac055c9ae7d55f7cbd850ddcbd",
+          "track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+          "refine-jobs.jsonl": "c4b622e14d12c960709a986330f2ab81d631635f1dfa76a838260c527dcadb2e",
+          "process-resources.jsonl": "440fcf8eb945ff9bb19330a87d3ea54bd01d9c585d6e68c2b580dc471b6c048a",
+          "thread-resources.jsonl": "7e1694ced18b0b6a84f02ea49b6fbad59f34478a54322981922cad088ac09f73",
+          "worker.json": "8a73dc6205f77bf7106c1ebe820ffb1c18590959c542fa478d448a3db788c901",
+          "zip-events.jsonl": "fa51c2f5abcb5165f440fabec9591516e7bb84890c76d7a8bcc93c055cf3312b",
+          "capture/backlog.jsonl": "abc3f19925c2f51551232d212393f8c30caf53aa828eeb54d420590a34c44c65",
+          "capture/decoder.jsonl": "dcb8b4f30a479b391e2c3f8dde2a6f025a96ecc3cd320af2577b808c42d53eaf",
+          "capture/producer.jsonl": "0fc66c9a3d781e04fee55e25c6dbffc9394f74750b1802b010689542671e07d5",
+          "zip-token-snapshots.jsonl": "4a054f1a8e6ed3e77f6b19c9932fa8bc2d1fffe3cc8fa1b557d7d2ce7208ebea",
+          "token-alignment-events.jsonl": "9f7d4ffda2b91cbb61c154a2651f3a242d16a97911817a827b466da09c08e5db",
+          "refine-receipts.jsonl": "6b28c5fa145662f3d3f5a4e9261cb694ca5bd501c6628536bae3aea5555f7c44"
+        },
+        "token_diagnostics": {
+          "complete": true,
+          "snapshots": 1753,
+          "valid_snapshots": 1753,
+          "snapshot_failure_reasons": {},
+          "prefix_revision_snapshots": 0,
+          "source_final_snapshots": 50,
+          "snapshot_read_wall_s": {
+            "n": 1753,
+            "mean": 2.8838385054192796e-05,
+            "p50": 2.8e-05,
+            "p95": 4.1204e-05,
+            "max": 0.000134816
+          },
+          "audit_processing_wall_s": {
+            "n": 1867,
+            "mean": 8.050503856454215e-05,
+            "p50": 7.6556e-05,
+            "p95": 0.000131278,
+            "max": 0.002730243
+          },
+          "received_results": 57,
+          "child_end_to_parent_receive_s": {
+            "n": 57,
+            "mean": 0.000812763649122807,
+            "p50": 0.000363262,
+            "p95": 0.000772283,
+            "max": 0.024427542
+          },
+          "jobs": 57,
+          "ever_structural_candidate_jobs": 29,
+          "first_candidate_before_source_audio_end": 4,
+          "final_states": {
+            "structural_candidate": 29,
+            "held": 28
+          },
+          "final_hold_reasons": {
+            "right_word_continuation": 27,
+            "right_context_in_padding": 19,
+            "left_word_continuation": 2
+          },
+          "candidate_remains_same_in_final_snapshot": 29,
+          "candidate_changed_or_revoked_later": 0,
+          "child_end_to_first_structural_candidate_s": {
+            "n": 29,
+            "mean": 0.04748158562068966,
+            "p50": 0.000443744,
+            "p95": 0.406541081,
+            "max": 0.539890505
+          },
+          "actual_replacements": 0,
+          "candidate_merged_cer": null,
+          "actual_merge_apply_s": null,
+          "acoustic_alignment_validated": false,
+          "token_durations": null,
+          "scope_ko": "연속 Zip의 native 디코더 시각/원문 재구성/접두부/word marker 기준 구조 후보 진단. 단어/음소 정답 경계·교체 안전성·UI 검증이 아니며 실제 전사는 교체하지 않음."
+        }
+      },
+      "historical_continuous_comparison": {
+        "source_commit": "79d447ab1ac264534416ed7adc05fad6b5d6e79a",
+        "zip_cer": {
+          "planned": 50,
+          "successful": 50,
+          "complete": true,
+          "cer": {
+            "errors": 88,
+            "substitutions": 71,
+            "deletions": 11,
+            "insertions": 6,
+            "reference_characters": 756,
+            "value": 0.1164021164021164
+          },
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+        },
+        "first_partial_from_source_start_s": {
+          "n": 50,
+          "mean": 0.9739967404800005,
+          "p50": 0.8526553480000008,
+          "p95": 1.4565747960000124,
+          "max": 1.471706905000019
+        },
+        "changed_zip_sources": [],
+        "same_vad_geometry_and_payload": true,
+        "changed_refine_jobs": [],
+        "same_refine_job_count": true,
+        "scope_ko": "같은 원음/모델/연속 상태 조건의 과거 실행과 비교. native 읽기/구조 진단/수신/기록 비용이 추가됐으며 고정 클럭 통제 비교가 아님."
+      },
+      "right_marker_absence_types": {
+        "punctuation_only": 21,
+        "other_no_word_start_marker": 6
+      },
+      "right_marker_absence_examples": [
+        {
+          "index": 2,
+          "source_id": "kss-train-01002",
+          "right_token": "?",
+          "kind": "punctuation_only"
+        },
+        {
+          "index": 3,
+          "source_id": "kss-train-01003",
+          "right_token": "이면",
+          "kind": "other_no_word_start_marker"
+        },
+        {
+          "index": 6,
+          "source_id": "kss-train-01005",
+          "right_token": ".",
+          "kind": "punctuation_only"
+        },
+        {
+          "index": 7,
+          "source_id": "kss-train-01006",
+          "right_token": ".",
+          "kind": "punctuation_only"
+        },
+        {
+          "index": 8,
+          "source_id": "kss-train-01007",
+          "right_token": ".",
+          "kind": "punctuation_only"
+        }
+      ],
+      "structural_first_candidates": [
+        {
+          "index": 0,
+          "source_id": "kss-train-01000",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            12
+          ],
+          "grid_comparison_token_range": [
+            0,
+            12
+          ],
+          "character_range": [
+            0,
+            12
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 29,
+          "replacement_performed": false,
+          "assessed_ns": 85032673248946,
+          "zip_span_text_sha256": "1410a8760516d3a05b3d5638fd1576e2f92d006772682053795cac39f7c2db29",
+          "zip_span_characters": 12
+        },
+        {
+          "index": 1,
+          "source_id": "kss-train-01001",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            17
+          ],
+          "grid_comparison_token_range": [
+            0,
+            17
+          ],
+          "character_range": [
+            0,
+            22
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 80,
+          "replacement_performed": false,
+          "assessed_ns": 85037707922015,
+          "zip_span_text_sha256": "2b9ef70f856d8a7117302bd1040c0a26da10a15c56054b742bfc421ae0d4df09",
+          "zip_span_characters": 22
+        },
+        {
+          "index": 4,
+          "source_id": "kss-train-01003",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            8,
+            14
+          ],
+          "grid_comparison_token_range": [
+            8,
+            14
+          ],
+          "character_range": [
+            9,
+            17
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 160,
+          "replacement_performed": false,
+          "assessed_ns": 85045135175560,
+          "zip_span_text_sha256": "06a7533e61009bfb32d4843f1b0a7a3d08ab25a8bf4f21c4554f0a7c0ba1e8e5",
+          "zip_span_characters": 8
+        },
+        {
+          "index": 5,
+          "source_id": "kss-train-01004",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            9
+          ],
+          "grid_comparison_token_range": [
+            0,
+            9
+          ],
+          "character_range": [
+            0,
+            10
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 185,
+          "replacement_performed": false,
+          "assessed_ns": 85047439621795,
+          "zip_span_text_sha256": "da7ea687060c5ce1942b59a93fabbb707e875de48d2910a70242e609a9271153",
+          "zip_span_characters": 10
+        },
+        {
+          "index": 9,
+          "source_id": "kss-train-01008",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            7
+          ],
+          "grid_comparison_token_range": [
+            0,
+            7
+          ],
+          "character_range": [
+            0,
+            11
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 306,
+          "replacement_performed": false,
+          "assessed_ns": 85058726823999,
+          "zip_span_text_sha256": "b79345fb5421d2c72346b0f5ac0d3e72622c1327341ebb7d3837a6911488b07a",
+          "zip_span_characters": 11
+        },
+        {
+          "index": 12,
+          "source_id": "kss-train-01010",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            9
+          ],
+          "grid_comparison_token_range": [
+            0,
+            9
+          ],
+          "character_range": [
+            0,
+            8
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 360,
+          "replacement_performed": false,
+          "assessed_ns": 85063698768103,
+          "zip_span_text_sha256": "7075543433363d7312e618c2d6cb8661c59d5c6950db8f09fe7635a97b342deb",
+          "zip_span_characters": 8
+        },
+        {
+          "index": 13,
+          "source_id": "kss-train-01011",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            8
+          ],
+          "grid_comparison_token_range": [
+            0,
+            8
+          ],
+          "character_range": [
+            0,
+            7
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 375,
+          "replacement_performed": false,
+          "assessed_ns": 85064998989064,
+          "zip_span_text_sha256": "6cc00047c0e9b54eb9e2ddb2536fcab778675995fd72d9a07ef8d7008b126b85",
+          "zip_span_characters": 7
+        },
+        {
+          "index": 15,
+          "source_id": "kss-train-01013",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            11
+          ],
+          "grid_comparison_token_range": [
+            0,
+            11
+          ],
+          "character_range": [
+            0,
+            17
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 443,
+          "replacement_performed": false,
+          "assessed_ns": 85071516503535,
+          "zip_span_text_sha256": "c3c3ae82b593fb88014e2b97f63c404d8b7d636f93c1e1c35074a4e66a258c5f",
+          "zip_span_characters": 17
+        },
+        {
+          "index": 16,
+          "source_id": "kss-train-01014",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            9
+          ],
+          "grid_comparison_token_range": [
+            0,
+            9
+          ],
+          "character_range": [
+            0,
+            12
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 465,
+          "replacement_performed": false,
+          "assessed_ns": 85073431890196,
+          "zip_span_text_sha256": "73db9a9e2c56a0d8cafe9303b318844cd075144d30f1c49a698217e82b0b1d78",
+          "zip_span_characters": 12
+        },
+        {
+          "index": 18,
+          "source_id": "kss-train-01016",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            15
+          ],
+          "grid_comparison_token_range": [
+            0,
+            15
+          ],
+          "character_range": [
+            0,
+            18
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 542,
+          "replacement_performed": false,
+          "assessed_ns": 85080823005410,
+          "zip_span_text_sha256": "ed5dda56d25a10239c63cbcdc13366f3406a9c8588356049502b686c8c0dbd7f",
+          "zip_span_characters": 18
+        },
+        {
+          "index": 20,
+          "source_id": "kss-train-01018",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            8
+          ],
+          "grid_comparison_token_range": [
+            0,
+            8
+          ],
+          "character_range": [
+            0,
+            10
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 589,
+          "replacement_performed": false,
+          "assessed_ns": 85085078059601,
+          "zip_span_text_sha256": "fbc4d6159b78de17e30b94eb9a41dd26e6f38611cda6065fabfada2e31967a6f",
+          "zip_span_characters": 10
+        },
+        {
+          "index": 21,
+          "source_id": "kss-train-01019",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            8
+          ],
+          "grid_comparison_token_range": [
+            0,
+            8
+          ],
+          "character_range": [
+            0,
+            12
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 610,
+          "replacement_performed": false,
+          "assessed_ns": 85086937968518,
+          "zip_span_text_sha256": "88c4f211220dd4c97d24291419cff7681220b8230d972497da9d5d78e778de63",
+          "zip_span_characters": 12
+        },
+        {
+          "index": 25,
+          "source_id": "kss-train-01023",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            4
+          ],
+          "grid_comparison_token_range": [
+            0,
+            4
+          ],
+          "character_range": [
+            0,
+            4
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 719,
+          "replacement_performed": false,
+          "assessed_ns": 85096990656540,
+          "zip_span_text_sha256": "020f28123e725737c49b94744ce97d3006a832380ec3c7de57a9626df255efad",
+          "zip_span_characters": 4
+        },
+        {
+          "index": 26,
+          "source_id": "kss-train-01024",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            4
+          ],
+          "grid_comparison_token_range": [
+            0,
+            4
+          ],
+          "character_range": [
+            0,
+            6
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 743,
+          "replacement_performed": false,
+          "assessed_ns": 85099225688165,
+          "zip_span_text_sha256": "c474567f99f816b479fd13a68b6e0d7e12ec323e2a0375a5cac29b04260ae1bb",
+          "zip_span_characters": 6
+        },
+        {
+          "index": 27,
+          "source_id": "kss-train-01024",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            4,
+            18
+          ],
+          "grid_comparison_token_range": [
+            4,
+            18
+          ],
+          "character_range": [
+            6,
+            24
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 773,
+          "replacement_performed": false,
+          "assessed_ns": 85102219673811,
+          "zip_span_text_sha256": "13f9da8392f46f1ea206d0ebe77b729d60f97db0e52c8575b296248da9a53951",
+          "zip_span_characters": 18
+        },
+        {
+          "index": 28,
+          "source_id": "kss-train-01025",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            11
+          ],
+          "grid_comparison_token_range": [
+            0,
+            11
+          ],
+          "character_range": [
+            0,
+            20
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 823,
+          "replacement_performed": false,
+          "assessed_ns": 85106926110988,
+          "zip_span_text_sha256": "8cbb61e1022db6da692f0dd2afe333c402bec67329dfe97296008566a1232fa4",
+          "zip_span_characters": 20
+        },
+        {
+          "index": 30,
+          "source_id": "kss-train-01026",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            10
+          ],
+          "grid_comparison_token_range": [
+            0,
+            10
+          ],
+          "character_range": [
+            0,
+            11
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 868,
+          "replacement_performed": false,
+          "assessed_ns": 85111194761361,
+          "zip_span_text_sha256": "7d7af4d0284b17c38d436565134f39a6342346946eb29cf5448ea84ee86076fd",
+          "zip_span_characters": 11
+        },
+        {
+          "index": 31,
+          "source_id": "kss-train-01027",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            11
+          ],
+          "grid_comparison_token_range": [
+            0,
+            11
+          ],
+          "character_range": [
+            0,
+            16
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 902,
+          "replacement_performed": false,
+          "assessed_ns": 85114424103797,
+          "zip_span_text_sha256": "9a80155ba97d78e0ea800cb8b11d74af3b9fe25ee1db16fff04af112877d225d",
+          "zip_span_characters": 16
+        },
+        {
+          "index": 33,
+          "source_id": "kss-train-01029",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            11
+          ],
+          "grid_comparison_token_range": [
+            0,
+            11
+          ],
+          "character_range": [
+            0,
+            13
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 944,
+          "replacement_performed": false,
+          "assessed_ns": 85118166163287,
+          "zip_span_text_sha256": "15fcfdca8131243fa9e69f5b4047c9194a091d3e196e35c30799d96a8e7673a8",
+          "zip_span_characters": 13
+        },
+        {
+          "index": 38,
+          "source_id": "kss-train-01033",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            2
+          ],
+          "grid_comparison_token_range": [
+            0,
+            2
+          ],
+          "character_range": [
+            0,
+            2
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 1075,
+          "replacement_performed": false,
+          "assessed_ns": 85130455471195,
+          "zip_span_text_sha256": "542abe61bdc58122d6dcb10d8edd0b88a6e4459034561b2d3879512997d068b3",
+          "zip_span_characters": 2
+        },
+        {
+          "index": 39,
+          "source_id": "kss-train-01033",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            5,
+            16
+          ],
+          "grid_comparison_token_range": [
+            5,
+            16
+          ],
+          "character_range": [
+            4,
+            19
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 1100,
+          "replacement_performed": false,
+          "assessed_ns": 85132977885256,
+          "zip_span_text_sha256": "ce206874a64c36e2192b635f4b6878bbb43c4afd9fe3fa1c78c01e8e5cf7ad0f",
+          "zip_span_characters": 15
+        },
+        {
+          "index": 40,
+          "source_id": "kss-train-01034",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            11
+          ],
+          "grid_comparison_token_range": [
+            0,
+            11
+          ],
+          "character_range": [
+            0,
+            17
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 1133,
+          "replacement_performed": false,
+          "assessed_ns": 85136100542032,
+          "zip_span_text_sha256": "292e19cd7c6864bd9729132aed32231c9e9153a88ec14ee99b4e33f87ffabc32",
+          "zip_span_characters": 17
+        },
+        {
+          "index": 41,
+          "source_id": "kss-train-01035",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            14
+          ],
+          "grid_comparison_token_range": [
+            0,
+            14
+          ],
+          "character_range": [
+            0,
+            23
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 1173,
+          "replacement_performed": false,
+          "assessed_ns": 85139927730758,
+          "zip_span_text_sha256": "90ee9b655dd47b2f8affeb216e05319272b79db3ef13f21c1114d30669e29599",
+          "zip_span_characters": 23
+        },
+        {
+          "index": 42,
+          "source_id": "kss-train-01036",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            13
+          ],
+          "grid_comparison_token_range": [
+            0,
+            13
+          ],
+          "character_range": [
+            0,
+            20
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 1218,
+          "replacement_performed": false,
+          "assessed_ns": 85144253690986,
+          "zip_span_text_sha256": "4d9d4546b5389dd6b89fc16030987edfc6fd83ef22c304ff77ec7c7696759354",
+          "zip_span_characters": 20
+        },
+        {
+          "index": 45,
+          "source_id": "kss-train-01038",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            14
+          ],
+          "grid_comparison_token_range": [
+            0,
+            14
+          ],
+          "character_range": [
+            0,
+            18
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 1299,
+          "replacement_performed": false,
+          "assessed_ns": 85151925452020,
+          "zip_span_text_sha256": "07be59a2d55f7ff34262f4daf9fd86806c60516abc282ac58e054254aea08dcc",
+          "zip_span_characters": 18
+        },
+        {
+          "index": 46,
+          "source_id": "kss-train-01039",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            7
+          ],
+          "grid_comparison_token_range": [
+            0,
+            7
+          ],
+          "character_range": [
+            0,
+            12
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 1329,
+          "replacement_performed": false,
+          "assessed_ns": 85154719725433,
+          "zip_span_text_sha256": "d5322ee8208a615f8fa26a1e7cafec79212cee44a6badf4ffc80dcdbd89b21a9",
+          "zip_span_characters": 12
+        },
+        {
+          "index": 48,
+          "source_id": "kss-train-01041",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            15
+          ],
+          "grid_comparison_token_range": [
+            0,
+            15
+          ],
+          "character_range": [
+            0,
+            20
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 1403,
+          "replacement_performed": false,
+          "assessed_ns": 85161721621046,
+          "zip_span_text_sha256": "68873c4f8b6d7212603896807f6a80a73b69a4716e09a0256a9cabf7d8b4df67",
+          "zip_span_characters": 20
+        },
+        {
+          "index": 49,
+          "source_id": "kss-train-01042",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            11
+          ],
+          "grid_comparison_token_range": [
+            0,
+            11
+          ],
+          "character_range": [
+            0,
+            16
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 1442,
+          "replacement_performed": false,
+          "assessed_ns": 85165428406192,
+          "zip_span_text_sha256": "4fe1f7d8f22a8f732e82908f2682cdf6839af5240a02a486f1de90fc6718006a",
+          "zip_span_characters": 16
+        },
+        {
+          "index": 53,
+          "source_id": "kss-train-01046",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            14
+          ],
+          "grid_comparison_token_range": [
+            0,
+            14
+          ],
+          "character_range": [
+            0,
+            18
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 1591,
+          "replacement_performed": false,
+          "assessed_ns": 85179497266723,
+          "zip_span_text_sha256": "8f6368b0ae4d3fb83040c69850f62b436e9b8c2f4ba9bfebaaef373bf1271b8d",
+          "zip_span_characters": 18
+        }
+      ],
+      "first_candidates_before_source_eof": 4,
+      "final_decoder_token_points": 605,
+      "points_outside_vad_owned_spans": 31,
+      "points_in_model_padding": 20,
+      "decoder_grid_error_max_s": 3.2424926743601645e-07,
+      "thermal": {
+        "run": "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0",
+        "source_sha256": {
+          "execution.json": "7ef0598158eb2bcb02fa077bb6a151e72de5d5b816e1fa0ad7b11440bd4d3338",
+          "thermal.jsonl": "152b65b3cc81213eec5198b209f9cd10419e8040dcc5cbdd6fe1a119957c2b10"
+        },
+        "status": "completed",
+        "control_valid": false,
+        "rejection": null,
+        "thermal_sample_count": 171,
+        "before": {
+          "at_utc": "2026-11-03T07:47:43.354005+00:00",
+          "elapsed_from_before_s": 0.0,
+          "temperature_c": 52.9,
+          "fan_rpm": 2963,
+          "cpu0_freq_khz": 1500000,
+          "current_limits": 0,
+          "history_limits": 14
+        },
+        "after": {
+          "at_utc": "2026-11-03T07:50:37.261240+00:00",
+          "elapsed_from_before_s": 173.90723490298842,
+          "temperature_c": 57.85,
+          "fan_rpm": 5132,
+          "cpu0_freq_khz": 2400000,
+          "current_limits": 0,
+          "history_limits": 14
+        },
+        "software_stop_mc": null,
+        "first_observed_software_temperature_limit": null,
+        "first_observed_current_limit": null,
+        "current_limit_observed": false,
+        "new_history_bits": 0,
+        "telemetry_missing_samples": 0,
+        "fan_missing_samples": 0,
+        "fan_positive_samples": 173,
+        "fan_rpm_max": 5145,
+        "temperature_mc_max_monitor": 63350,
+        "temperature_mc_max_with_before_after": 63350,
+        "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+      },
+      "resource_sample_interval_s": {
+        "n": 1643,
+        "mean": 0.1005632921217287,
+        "p50": 0.100310927,
+        "p95": 0.101009136,
+        "max": 0.136631579
+      },
+      "loading": {
+        "zip": {
+          "wall_s": 2.442185858002631,
+          "cpu_s": 2.6754570490000003,
+          "resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 279.1875,
+            "rss_sample_count": 26,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 85025.479850423,
+                "rss_mib": 36.34375
+              },
+              {
+                "monotonic_s": 85025.580574241,
+                "rss_mib": 107.578125
+              },
+              {
+                "monotonic_s": 85025.680836705,
+                "rss_mib": 221.203125
+              },
+              {
+                "monotonic_s": 85025.781057742,
+                "rss_mib": 278.1875
+              },
+              {
+                "monotonic_s": 85025.881342001,
+                "rss_mib": 278.1875
+              },
+              {
+                "monotonic_s": 85025.982054987,
+                "rss_mib": 278.1875
+              },
+              {
+                "monotonic_s": 85026.082325913,
+                "rss_mib": 278.1875
+              },
+              {
+                "monotonic_s": 85026.182591376,
+                "rss_mib": 278.1875
+              },
+              {
+                "monotonic_s": 85026.282835839,
+                "rss_mib": 278.1875
+              },
+              {
+                "monotonic_s": 85026.383043302,
+                "rss_mib": 278.1875
+              },
+              {
+                "monotonic_s": 85026.48324582,
+                "rss_mib": 278.1875
+              },
+              {
+                "monotonic_s": 85026.583414338,
+                "rss_mib": 278.1875
+              },
+              {
+                "monotonic_s": 85026.683578819,
+                "rss_mib": 279.1875
+              },
+              {
+                "monotonic_s": 85026.783991395,
+                "rss_mib": 209.53125
+              },
+              {
+                "monotonic_s": 85026.88422808,
+                "rss_mib": 229.03125
+              },
+              {
+                "monotonic_s": 85026.984439024,
+                "rss_mib": 246.03125
+              },
+              {
+                "monotonic_s": 85027.084637487,
+                "rss_mib": 246.03125
+              },
+              {
+                "monotonic_s": 85027.18480156,
+                "rss_mib": 246.03125
+              },
+              {
+                "monotonic_s": 85027.285089968,
+                "rss_mib": 246.03125
+              },
+              {
+                "monotonic_s": 85027.385306098,
+                "rss_mib": 246.03125
+              },
+              {
+                "monotonic_s": 85027.485481116,
+                "rss_mib": 246.03125
+              },
+              {
+                "monotonic_s": 85027.5856483,
+                "rss_mib": 246.03125
+              },
+              {
+                "monotonic_s": 85027.685799522,
+                "rss_mib": 246.03125
+              },
+              {
+                "monotonic_s": 85027.78594004,
+                "rss_mib": 246.03125
+              },
+              {
+                "monotonic_s": 85027.886195503,
+                "rss_mib": 248.53125
+              },
+              {
+                "monotonic_s": 85027.921852465,
+                "rss_mib": 269.53125
+              }
+            ]
+          }
+        },
+        "refine": {
+          "loading_s": 1.8355977439932758,
+          "loading_cpu_s": 2.093109548,
+          "loading_resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 358.734375,
+            "rss_sample_count": 20,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 85023.02016504,
+                "rss_mib": 25.71875
+              },
+              {
+                "monotonic_s": 85023.120600838,
+                "rss_mib": 62.453125
+              },
+              {
+                "monotonic_s": 85023.221115248,
+                "rss_mib": 262.453125
+              },
+              {
+                "monotonic_s": 85023.321378081,
+                "rss_mib": 320.5625
+              },
+              {
+                "monotonic_s": 85023.42181775,
+                "rss_mib": 329.5
+              },
+              {
+                "monotonic_s": 85023.522049861,
+                "rss_mib": 326.078125
+              },
+              {
+                "monotonic_s": 85023.622219657,
+                "rss_mib": 326.078125
+              },
+              {
+                "monotonic_s": 85023.722379619,
+                "rss_mib": 326.078125
+              },
+              {
+                "monotonic_s": 85023.822532563,
+                "rss_mib": 326.578125
+              },
+              {
+                "monotonic_s": 85023.922686988,
+                "rss_mib": 326.578125
+              },
+              {
+                "monotonic_s": 85024.022929395,
+                "rss_mib": 326.578125
+              },
+              {
+                "monotonic_s": 85024.12313584,
+                "rss_mib": 326.578125
+              },
+              {
+                "monotonic_s": 85024.223380414,
+                "rss_mib": 326.578125
+              },
+              {
+                "monotonic_s": 85024.323604451,
+                "rss_mib": 326.578125
+              },
+              {
+                "monotonic_s": 85024.423780932,
+                "rss_mib": 326.578125
+              },
+              {
+                "monotonic_s": 85024.523928672,
+                "rss_mib": 328.078125
+              },
+              {
+                "monotonic_s": 85024.624100727,
+                "rss_mib": 328.078125
+              },
+              {
+                "monotonic_s": 85024.724308949,
+                "rss_mib": 344.078125
+              },
+              {
+                "monotonic_s": 85024.824507356,
+                "rss_mib": 357.578125
+              },
+              {
+                "monotonic_s": 85024.85531278,
+                "rss_mib": 358.734375
+              }
+            ]
+          }
+        },
+        "vad": {
+          "wall_s": 0.08115162899775896,
+          "cpu_s": 0.0420810549999997,
+          "resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 290.234375,
+            "rss_sample_count": 2,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 85029.107355238,
+                "rss_mib": 271.03125
+              },
+              {
+                "monotonic_s": 85029.188345922,
+                "rss_mib": 290.234375
+              }
+            ]
+          }
+        }
+      },
+      "warmup": {
+        "zip_s": 1.171545998993679,
+        "refine_s": 0.5018316159985261,
+        "vad_s": 0.2849529329978395
+      },
+      "environment": {
+        "edge_asr": "0.1.0",
+        "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+        "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+        "machine": "aarch64",
+        "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+        "runtime": {
+          "sherpa_package_version": "2.0.1",
+          "sherpa_core_package_version": "2.0.1",
+          "python_onnxruntime_package_version": "1.31.1",
+          "sherpa_native_onnxruntime_version": "1.28.2",
+          "native_version_source": "sherpa_onnx.onnxruntime_version",
+          "status": "available",
+          "reason": null
+        },
+        "packages": [
+          {
+            "name": "cffi",
+            "version": "2.1.1"
+          },
+          {
+            "name": "flatbuffers",
+            "version": "25.12.19"
+          },
+          {
+            "name": "numpy",
+            "version": "2.4.6"
+          },
+          {
+            "name": "onnxruntime",
+            "version": "1.31.1"
+          },
+          {
+            "name": "packaging",
+            "version": "26.3"
+          },
+          {
+            "name": "protobuf",
+            "version": "7.36.2"
+          },
+          {
+            "name": "pycparser",
+            "version": "3.12"
+          },
+          {
+            "name": "sherpa-onnx-core",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sherpa_onnx",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sounddevice",
+            "version": "0.5.6"
+          },
+          {
+            "name": "soundfile",
+            "version": "0.14.0"
+          },
+          {
+            "name": "typing_extensions",
+            "version": "4.16.0"
+          }
+        ]
+      },
+      "refine_environment": {
+        "edge_asr": "0.1.0",
+        "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+        "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+        "machine": "aarch64",
+        "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+        "runtime": {
+          "sherpa_package_version": "2.0.1",
+          "sherpa_core_package_version": "2.0.1",
+          "python_onnxruntime_package_version": "1.31.1",
+          "sherpa_native_onnxruntime_version": "1.28.2",
+          "native_version_source": "sherpa_onnx.onnxruntime_version",
+          "status": "available",
+          "reason": null
+        },
+        "packages": [
+          {
+            "name": "cffi",
+            "version": "2.1.1"
+          },
+          {
+            "name": "flatbuffers",
+            "version": "25.12.19"
+          },
+          {
+            "name": "numpy",
+            "version": "2.4.6"
+          },
+          {
+            "name": "onnxruntime",
+            "version": "1.31.1"
+          },
+          {
+            "name": "packaging",
+            "version": "26.3"
+          },
+          {
+            "name": "protobuf",
+            "version": "7.36.2"
+          },
+          {
+            "name": "pycparser",
+            "version": "3.12"
+          },
+          {
+            "name": "sherpa-onnx-core",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sherpa_onnx",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sounddevice",
+            "version": "0.5.6"
+          },
+          {
+            "name": "soundfile",
+            "version": "0.14.0"
+          },
+          {
+            "name": "typing_extensions",
+            "version": "4.16.0"
+          }
+        ]
+      },
+      "vad_environment": {
+        "backend": "python_onnxruntime_k2_v4_experimental",
+        "python_onnxruntime_version": "1.31.1",
+        "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+        "num_threads": 1,
+        "providers": [
+          "CPUExecutionProvider"
+        ],
+        "recurrent_state_bytes": 1024,
+        "reset_count": 55,
+        "windows_since_reset": 164,
+        "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+      },
+      "token_api": {
+        "api": "OnlineRecognizer.recognizer.get_result",
+        "sherpa_git_sha1": "af2d8d81"
+      },
+      "rescore_matches": true,
+      "model_limits_verified": true,
+      "final_candidate_job_indices": [
+        0,
+        1,
+        4,
+        5,
+        9,
+        12,
+        13,
+        15,
+        16,
+        18,
+        20,
+        21,
+        25,
+        26,
+        27,
+        28,
+        30,
+        31,
+        33,
+        38,
+        39,
+        40,
+        41,
+        42,
+        45,
+        46,
+        48,
+        49,
+        53
+      ],
+      "final_held_job_indices": [
+        2,
+        3,
+        6,
+        7,
+        8,
+        10,
+        11,
+        14,
+        17,
+        19,
+        22,
+        23,
+        24,
+        29,
+        32,
+        34,
+        35,
+        36,
+        37,
+        43,
+        44,
+        47,
+        50,
+        51,
+        52,
+        54,
+        55,
+        56
+      ]
+    },
+    "synthetic-120": {
+      "source_count": 1,
+      "audio_s": 120.586875,
+      "summary": {
+        "schema": "continuous-token-diagnostic-summary-v1",
+        "status": "completed",
+        "input_complete": true,
+        "zip_threads": 1,
+        "refine_threads": 2,
+        "manifest_sha256": "5effb0c014a49d53dc1be638c667d166b1f8b7b45e619c507c5a2992074f4f66",
+        "track_float32_sha256": "54e8a4acad68dbc93c34966af4b9d3fe6b56e2b796010baaf1121cbbf0a5cfb9",
+        "audio_s": 120.586875,
+        "planned_sources": 1,
+        "zip_cer": {
+          "planned": 1,
+          "successful": 1,
+          "complete": true,
+          "cer": {
+            "errors": 58,
+            "substitutions": 44,
+            "deletions": 12,
+            "insertions": 2,
+            "reference_characters": 519,
+            "value": 0.11175337186897881
+          },
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+        },
+        "first_partial_from_source_start_s": {
+          "n": 1,
+          "mean": 0.843082508,
+          "p50": null,
+          "p95": null,
+          "max": 0.843082508
+        },
+        "zip_finalize_from_source_end_s": {
+          "n": 1,
+          "mean": 0.12157266799999888,
+          "p50": null,
+          "p95": null,
+          "max": 0.12157266799999888
+        },
+        "no_partial_sources": 0,
+        "input_dropped_chunks": 0,
+        "input_dropped_audio_s": 0.0,
+        "input_backlog_event_max_audio_s": 0.1,
+        "input_backlog_audio_s": {
+          "n": 1210,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        },
+        "input_queue_wait_s": {
+          "n": 1206,
+          "mean": 0.0006981442404642971,
+          "p50": 0.000652559999998914,
+          "p95": 0.0011272310000052244,
+          "max": 0.02067128999999568
+        },
+        "chunk_processing_s": {
+          "n": 1206,
+          "mean": 0.01915717354063023,
+          "p50": 0.006334307999992461,
+          "p95": 0.04890502800000718,
+          "max": 0.12303280800000493
+        },
+        "coordinator_active_rtf": 0.19151347793645135,
+        "refine": {
+          "complete": true,
+          "planned_windows": 43,
+          "enqueued": 43,
+          "successful": 43,
+          "failed_windows": 0,
+          "missing_results": 0,
+          "dropped_windows": 0,
+          "cer": {
+            "planned": 1,
+            "successful": 1,
+            "complete": true,
+            "cer": {
+              "errors": 32,
+              "substitutions": 24,
+              "deletions": 4,
+              "insertions": 4,
+              "reference_characters": 519,
+              "value": 0.06165703275529865
+            },
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+          },
+          "queue_wait_s": {
+            "n": 43,
+            "mean": 0.0012437327209302324,
+            "p50": 0.001301454,
+            "p95": 0.001741032,
+            "max": 0.002221555
+          },
+          "decode_s": {
+            "n": 43,
+            "mean": 0.15661308169767443,
+            "p50": 0.1426497,
+            "p95": 0.251178062,
+            "max": 0.309623904
+          },
+          "dispatch_from_window_end_s": {
+            "n": 43,
+            "mean": 0.33845376330232585,
+            "p50": 0.35505838599999606,
+            "p95": 0.40197991000000144,
+            "max": 0.4038079440000004
+          },
+          "window_end_to_return_s": {
+            "n": 43,
+            "mean": 0.49647885595348773,
+            "p50": 0.5140323530000046,
+            "p95": 0.6046347260000005,
+            "max": 0.6121018189999958
+          },
+          "final_from_source_file_end_s": {
+            "n": 1,
+            "mean": 0.25865034299999934,
+            "p50": null,
+            "p95": null,
+            "max": 0.25865034299999934
+          },
+          "backlog_event_max_audio_s": 5.0,
+          "backlog_event_max_windows": 1,
+          "backlog_audio_s": {
+            "n": 1211,
+            "mean": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0
+          },
+          "backlog_end_audio_s": 0.0,
+          "zip_refine_call_overlap_s": 1.558602063,
+          "refine_calls_with_zip_overlap": 40,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "vad_emission_from_owned_end_s": {
+            "n": 43,
+            "mean": 0.33296163058139494,
+            "p50": 0.3517860079999977,
+            "p95": 0.3956130779999967,
+            "max": 0.3993021219999946
+          },
+          "dispatch_after_vad_emission_s": {
+            "n": 43,
+            "mean": 0.0054921327209302324,
+            "p50": 0.004887519,
+            "p95": 0.009988911,
+            "max": 0.01221541
+          },
+          "vad_emission_to_return_s": {
+            "n": 43,
+            "mean": 0.163517225372093,
+            "p50": 0.148530783,
+            "p95": 0.265538692,
+            "max": 0.322834896
+          },
+          "decision_audio_after_owned_end_s": {
+            "n": 43,
+            "mean": 0.28204651162790717,
+            "p50": 0.3,
+            "p95": 0.3,
+            "max": 0.3
+          },
+          "no_vad_segment_sources": 0,
+          "backlog_event_max_payload_audio_s": 5.0,
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님."
+        },
+        "refine_reason": null,
+        "producer_cpu_s": 0.182228249,
+        "producer_lifetime_peak_rss_mib": 292.140625,
+        "unmeasured": {
+          "hybrid_merged_cer": null,
+          "acoustic_endpoint_latency_s": null,
+          "aligned_recognition_latency_s": null,
+          "ui_display_latency_s": null,
+          "microphone_overruns": null
+        },
+        "zip_call_rtf": 0.13190901440144287,
+        "resources": {
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "sample_count": 1201,
+          "paired_intervals": 1200,
+          "paired_wall_s": 120.66648960199993,
+          "observed_model_cpu_percent": 33.35640253790308,
+          "model_group_rss_observed_max_mib": 709.28125,
+          "complete_model_rss_samples": 1201,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능.",
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling",
+            "token_alignment_audit_and_result_reader"
+          ]
+        },
+        "threads": {
+          "zip": {
+            "snapshots": 121,
+            "observed_tid_max": 9,
+            "active_at_least_1_percent": 1,
+            "rows": [
+              {
+                "tid": "28247",
+                "cpu_s": 24.00000000000001,
+                "paired_s": 120.66342433600221,
+                "mean_cpu_percent": 19.890037210587565
+              },
+              {
+                "tid": "28282",
+                "cpu_s": 0.38000000000000017,
+                "paired_s": 120.66342433600221,
+                "mean_cpu_percent": 0.3149255891676364
+              },
+              {
+                "tid": "28281",
+                "cpu_s": 0.060000000000000005,
+                "paired_s": 120.66342433600221,
+                "mean_cpu_percent": 0.049725093026468895
+              },
+              {
+                "tid": "28265",
+                "cpu_s": 0.0,
+                "paired_s": 120.66342433600221,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "28266",
+                "cpu_s": 0.0,
+                "paired_s": 120.66342433600221,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "28267",
+                "cpu_s": 0.0,
+                "paired_s": 120.66342433600221,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "28278",
+                "cpu_s": 0.0,
+                "paired_s": 120.66342433600221,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "28291",
+                "cpu_s": 0.0,
+                "paired_s": 116.64355227499618,
+                "mean_cpu_percent": 0.0
+              }
+            ],
+            "runtime_roles_confirmed": false
+          },
+          "refine": {
+            "snapshots": 121,
+            "observed_tid_max": 5,
+            "active_at_least_1_percent": 2,
+            "rows": [
+              {
+                "tid": "28251",
+                "cpu_s": 8.38999999999999,
+                "paired_s": 120.66337524399569,
+                "mean_cpu_percent": 6.953228337127494
+              },
+              {
+                "tid": "28256",
+                "cpu_s": 6.920000000000002,
+                "paired_s": 120.66337524399569,
+                "mean_cpu_percent": 5.734963062326857
+              },
+              {
+                "tid": "28253",
+                "cpu_s": 0.0,
+                "paired_s": 120.66337524399569,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "28254",
+                "cpu_s": 0.0,
+                "paired_s": 120.66337524399569,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "28255",
+                "cpu_s": 0.0,
+                "paired_s": 120.66337524399569,
+                "mean_cpu_percent": 0.0
+              }
+            ],
+            "runtime_roles_confirmed": false
+          }
+        },
+        "refine_policy": "vad0",
+        "source_sha256": {
+          "vad-sources.jsonl": "66522b59786794b25a65cf1b4e2d1d07cc60a6065fdcb75910f473c3fc7ed2b3",
+          "refine-results.jsonl": "b40aff6f5b44a2e26eabc4de71b9deba0c9af7b71fe962a6459cceae85108bbc",
+          "zip-sources.jsonl": "073e729684c3a70c23248a531197cd4dbaad9b9ba07d8bcffe8b2ffe292e1de0",
+          "track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+          "refine-jobs.jsonl": "77b2c0ad41f16ab705a203ac7f7db54b26fe3e586094ee6991569707510681f6",
+          "process-resources.jsonl": "c41ece0e474c1c2c7afd812f3ee932d25e7a24f8a34a6f49aea108c18dcb9924",
+          "thread-resources.jsonl": "b86d471e00cb9aad3af05037abe365d277a1fe4138631f039272f4f473d0af3d",
+          "worker.json": "155a372c60e3fdc3cb2ce2bdf5d9316406c365a354c3e9388ea05458f244b712",
+          "zip-events.jsonl": "45e72e9351235667eb9376ae3e0e70c7921459019d88811035ed86a8f1342c5c",
+          "capture/backlog.jsonl": "f709a8bdf0f467011e251e293370678249cac3788faea6de413957e91478b41a",
+          "capture/decoder.jsonl": "374baf24633b24812bc600ecd7046f69655a4d415cf8b67a4c4484f6ac49b368",
+          "capture/producer.jsonl": "a210bbd1b86ceef8a26d1f9040b5d130bdb7951ef7746b122501e52d8eb48a66",
+          "zip-token-snapshots.jsonl": "01ff87fe184f3c5ed29f33f97a1c841b2d2b2654c9abd1a9f6b2a973c0740674",
+          "token-alignment-events.jsonl": "f4892f67ab6c463c3cf6efef075697f135411ed0f8f405588f53ab20cacba3eb",
+          "refine-receipts.jsonl": "8ab3a8fbcfbfe5bde8fd65d8fe2007e04c0e42d54fec46f29e10f9ea86fe6373"
+        },
+        "token_diagnostics": {
+          "complete": true,
+          "snapshots": 1207,
+          "valid_snapshots": 1207,
+          "snapshot_failure_reasons": {},
+          "prefix_revision_snapshots": 0,
+          "source_final_snapshots": 1,
+          "snapshot_read_wall_s": {
+            "n": 1207,
+            "mean": 0.0001484394457332228,
+            "p50": 0.000145298,
+            "p95": 0.000262613,
+            "max": 0.000361725
+          },
+          "audit_processing_wall_s": {
+            "n": 1293,
+            "mean": 0.0007762694756380508,
+            "p50": 0.000752432,
+            "p95": 0.001493901,
+            "max": 0.004062513
+          },
+          "received_results": 43,
+          "child_end_to_parent_receive_s": {
+            "n": 43,
+            "mean": 0.0004604742325581395,
+            "p50": 0.000384021,
+            "p95": 0.000982452,
+            "max": 0.001728254
+          },
+          "jobs": 43,
+          "ever_structural_candidate_jobs": 5,
+          "first_candidate_before_source_audio_end": 5,
+          "final_states": {
+            "structural_candidate": 5,
+            "held": 38
+          },
+          "final_hold_reasons": {
+            "right_word_continuation": 38,
+            "left_word_continuation": 6,
+            "right_context_in_padding": 1
+          },
+          "candidate_remains_same_in_final_snapshot": 5,
+          "candidate_changed_or_revoked_later": 0,
+          "child_end_to_first_structural_candidate_s": {
+            "n": 5,
+            "mean": 0.803716755,
+            "p50": 0.732177573,
+            "p95": 1.077282882,
+            "max": 1.077282882
+          },
+          "actual_replacements": 0,
+          "candidate_merged_cer": null,
+          "actual_merge_apply_s": null,
+          "acoustic_alignment_validated": false,
+          "token_durations": null,
+          "scope_ko": "연속 Zip의 native 디코더 시각/원문 재구성/접두부/word marker 기준 구조 후보 진단. 단어/음소 정답 경계·교체 안전성·UI 검증이 아니며 실제 전사는 교체하지 않음."
+        }
+      },
+      "historical_continuous_comparison": {
+        "source_commit": "79d447ab1ac264534416ed7adc05fad6b5d6e79a",
+        "zip_cer": {
+          "planned": 1,
+          "successful": 1,
+          "complete": true,
+          "cer": {
+            "errors": 58,
+            "substitutions": 44,
+            "deletions": 12,
+            "insertions": 2,
+            "reference_characters": 519,
+            "value": 0.11175337186897881
+          },
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+        },
+        "first_partial_from_source_start_s": {
+          "n": 1,
+          "mean": 0.843699091,
+          "p50": null,
+          "p95": null,
+          "max": 0.843699091
+        },
+        "changed_zip_sources": [],
+        "same_vad_geometry_and_payload": true,
+        "changed_refine_jobs": [],
+        "same_refine_job_count": true,
+        "scope_ko": "같은 원음/모델/연속 상태 조건의 과거 실행과 비교. native 읽기/구조 진단/수신/기록 비용이 추가됐으며 고정 클럭 통제 비교가 아님."
+      },
+      "right_marker_absence_types": {
+        "punctuation_only": 25,
+        "other_no_word_start_marker": 13
+      },
+      "right_marker_absence_examples": [
+        {
+          "index": 1,
+          "source_id": "synthetic-long-120",
+          "right_token": ".",
+          "kind": "punctuation_only"
+        },
+        {
+          "index": 2,
+          "source_id": "synthetic-long-120",
+          "right_token": ".",
+          "kind": "punctuation_only"
+        },
+        {
+          "index": 4,
+          "source_id": "synthetic-long-120",
+          "right_token": "요",
+          "kind": "other_no_word_start_marker"
+        },
+        {
+          "index": 6,
+          "source_id": "synthetic-long-120",
+          "right_token": "요",
+          "kind": "other_no_word_start_marker"
+        },
+        {
+          "index": 8,
+          "source_id": "synthetic-long-120",
+          "right_token": ".",
+          "kind": "punctuation_only"
+        }
+      ],
+      "structural_first_candidates": [
+        {
+          "index": 0,
+          "source_id": "synthetic-long-120",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            0,
+            12
+          ],
+          "grid_comparison_token_range": [
+            0,
+            12
+          ],
+          "character_range": [
+            0,
+            12
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 42,
+          "replacement_performed": false,
+          "assessed_ns": 85222318906041,
+          "zip_span_text_sha256": "1410a8760516d3a05b3d5638fd1576e2f92d006772682053795cac39f7c2db29",
+          "zip_span_characters": 12
+        },
+        {
+          "index": 3,
+          "source_id": "synthetic-long-120",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            47,
+            54
+          ],
+          "grid_comparison_token_range": [
+            47,
+            54
+          ],
+          "character_range": [
+            57,
+            66
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 154,
+          "replacement_performed": false,
+          "assessed_ns": 85233518951943,
+          "zip_span_text_sha256": "020accf45b80cd7053ca70193fad9bdfa27a1ea1d5d81c2cdf3b1a52ca94130c",
+          "zip_span_characters": 9
+        },
+        {
+          "index": 5,
+          "source_id": "synthetic-long-120",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            61,
+            70
+          ],
+          "grid_comparison_token_range": [
+            61,
+            70
+          ],
+          "character_range": [
+            75,
+            86
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 199,
+          "replacement_performed": false,
+          "assessed_ns": 85238019831259,
+          "zip_span_text_sha256": "6d0108d63076efff137b065c3bc6826267e9e62266bfaea322d0b066ea933a7c",
+          "zip_span_characters": 11
+        },
+        {
+          "index": 7,
+          "source_id": "synthetic-long-120",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            80,
+            93
+          ],
+          "grid_comparison_token_range": [
+            80,
+            93
+          ],
+          "character_range": [
+            98,
+            118
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 263,
+          "replacement_performed": false,
+          "assessed_ns": 85244419438836,
+          "zip_span_text_sha256": "2fb0a57ac915a89579e45b4a5c287eccc7d3b3bf492ae4619d0eda266d8ce733",
+          "zip_span_characters": 20
+        },
+        {
+          "index": 26,
+          "source_id": "synthetic-long-120",
+          "state": "structural_candidate",
+          "reasons": [],
+          "token_range": [
+            246,
+            253
+          ],
+          "grid_comparison_token_range": [
+            246,
+            253
+          ],
+          "character_range": [
+            338,
+            349
+          ],
+          "token_durations": null,
+          "acoustic_alignment_validated": false,
+          "snapshot_index": 740,
+          "replacement_performed": false,
+          "assessed_ns": 85292120580109,
+          "zip_span_text_sha256": "5e176739c8a3b60d6540b903cfac99bfcf44c1f2a40bfbc1927db57b7f42b233",
+          "zip_span_characters": 11
+        }
+      ],
+      "first_candidates_before_source_eof": 5,
+      "final_decoder_token_points": 413,
+      "points_outside_vad_owned_spans": 40,
+      "points_in_model_padding": 1,
+      "decoder_grid_error_max_s": 6.103515630684342e-06,
+      "thermal": {
+        "run": "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0",
+        "source_sha256": {
+          "execution.json": "a784dec52e27d64794ffa8eae5350f13f934bda1885781e2b4b8a87fa1aa2811",
+          "thermal.jsonl": "bef3c6e959dc36f69f0ea49259d6ee3feb4d19d0fc844010c0a838716af5eecd"
+        },
+        "status": "completed",
+        "control_valid": false,
+        "rejection": null,
+        "thermal_sample_count": 131,
+        "before": {
+          "at_utc": "2026-11-03T07:50:50.407428+00:00",
+          "elapsed_from_before_s": 0.0,
+          "temperature_c": 52.35,
+          "fan_rpm": 3091,
+          "cpu0_freq_khz": 1500000,
+          "current_limits": 0,
+          "history_limits": 14
+        },
+        "after": {
+          "at_utc": "2026-11-03T07:53:03.717163+00:00",
+          "elapsed_from_before_s": 133.30973041600373,
+          "temperature_c": 59.5,
+          "fan_rpm": 5172,
+          "cpu0_freq_khz": 2400000,
+          "current_limits": 0,
+          "history_limits": 14
+        },
+        "software_stop_mc": null,
+        "first_observed_software_temperature_limit": null,
+        "first_observed_current_limit": null,
+        "current_limit_observed": false,
+        "new_history_bits": 0,
+        "telemetry_missing_samples": 0,
+        "fan_missing_samples": 0,
+        "fan_positive_samples": 133,
+        "fan_rpm_max": 5176,
+        "temperature_mc_max_monitor": 61700,
+        "temperature_mc_max_with_before_after": 61700,
+        "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+      },
+      "resource_sample_interval_s": {
+        "n": 1202,
+        "mean": 0.10055637422628942,
+        "p50": 0.100307872,
+        "p95": 0.100936025,
+        "max": 0.127716158
+      },
+      "loading": {
+        "zip": {
+          "wall_s": 2.501882738986751,
+          "cpu_s": 2.73673586,
+          "resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 277.5625,
+            "rss_sample_count": 26,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 85212.779073346,
+                "rss_mib": 33.75
+              },
+              {
+                "monotonic_s": 85212.879770035,
+                "rss_mib": 96.203125
+              },
+              {
+                "monotonic_s": 85212.980086221,
+                "rss_mib": 218.640625
+              },
+              {
+                "monotonic_s": 85213.08032274,
+                "rss_mib": 277.5625
+              },
+              {
+                "monotonic_s": 85213.180535648,
+                "rss_mib": 277.5625
+              },
+              {
+                "monotonic_s": 85213.2807735,
+                "rss_mib": 277.5625
+              },
+              {
+                "monotonic_s": 85213.38102276,
+                "rss_mib": 277.5625
+              },
+              {
+                "monotonic_s": 85213.481230705,
+                "rss_mib": 277.5625
+              },
+              {
+                "monotonic_s": 85213.581401316,
+                "rss_mib": 277.5625
+              },
+              {
+                "monotonic_s": 85213.681573482,
+                "rss_mib": 277.5625
+              },
+              {
+                "monotonic_s": 85213.781750445,
+                "rss_mib": 277.5625
+              },
+              {
+                "monotonic_s": 85213.881906778,
+                "rss_mib": 277.5625
+              },
+              {
+                "monotonic_s": 85213.982095019,
+                "rss_mib": 277.5625
+              },
+              {
+                "monotonic_s": 85214.082296168,
+                "rss_mib": 256.734375
+              },
+              {
+                "monotonic_s": 85214.182526075,
+                "rss_mib": 226.5
+              },
+              {
+                "monotonic_s": 85214.282778632,
+                "rss_mib": 247.0
+              },
+              {
+                "monotonic_s": 85214.383050336,
+                "rss_mib": 247.0
+              },
+              {
+                "monotonic_s": 85214.483236743,
+                "rss_mib": 247.0
+              },
+              {
+                "monotonic_s": 85214.583408429,
+                "rss_mib": 247.0
+              },
+              {
+                "monotonic_s": 85214.68358441,
+                "rss_mib": 247.0
+              },
+              {
+                "monotonic_s": 85214.783753558,
+                "rss_mib": 247.0
+              },
+              {
+                "monotonic_s": 85214.883915262,
+                "rss_mib": 247.0
+              },
+              {
+                "monotonic_s": 85214.98412154,
+                "rss_mib": 247.0
+              },
+              {
+                "monotonic_s": 85215.084298502,
+                "rss_mib": 247.0
+              },
+              {
+                "monotonic_s": 85215.184471725,
+                "rss_mib": 247.0
+              },
+              {
+                "monotonic_s": 85215.280773935,
+                "rss_mib": 261.375
+              }
+            ]
+          }
+        },
+        "refine": {
+          "loading_s": 1.869847479989403,
+          "loading_cpu_s": 2.1267766889999997,
+          "loading_resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 409.203125,
+            "rss_sample_count": 20,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 85209.935328749,
+                "rss_mib": 25.6875
+              },
+              {
+                "monotonic_s": 85210.036038087,
+                "rss_mib": 59.421875
+              },
+              {
+                "monotonic_s": 85210.136505885,
+                "rss_mib": 263.421875
+              },
+              {
+                "monotonic_s": 85210.236793442,
+                "rss_mib": 319.578125
+              },
+              {
+                "monotonic_s": 85210.337253296,
+                "rss_mib": 333.109375
+              },
+              {
+                "monotonic_s": 85210.437516908,
+                "rss_mib": 343.4375
+              },
+              {
+                "monotonic_s": 85210.537716574,
+                "rss_mib": 343.4375
+              },
+              {
+                "monotonic_s": 85210.637913852,
+                "rss_mib": 343.4375
+              },
+              {
+                "monotonic_s": 85210.738089889,
+                "rss_mib": 343.4375
+              },
+              {
+                "monotonic_s": 85210.838253,
+                "rss_mib": 343.4375
+              },
+              {
+                "monotonic_s": 85210.938399555,
+                "rss_mib": 343.4375
+              },
+              {
+                "monotonic_s": 85211.038635463,
+                "rss_mib": 343.4375
+              },
+              {
+                "monotonic_s": 85211.138836815,
+                "rss_mib": 343.4375
+              },
+              {
+                "monotonic_s": 85211.239090075,
+                "rss_mib": 343.4375
+              },
+              {
+                "monotonic_s": 85211.339298335,
+                "rss_mib": 343.4375
+              },
+              {
+                "monotonic_s": 85211.439467742,
+                "rss_mib": 344.4375
+              },
+              {
+                "monotonic_s": 85211.539617853,
+                "rss_mib": 344.4375
+              },
+              {
+                "monotonic_s": 85211.639831575,
+                "rss_mib": 363.4375
+              },
+              {
+                "monotonic_s": 85211.740087631,
+                "rss_mib": 397.9375
+              },
+              {
+                "monotonic_s": 85211.804751059,
+                "rss_mib": 409.203125
+              }
+            ]
+          }
+        },
+        "vad": {
+          "wall_s": 0.08020086299802642,
+          "cpu_s": 0.04108349899999997,
+          "resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 281.578125,
+            "rss_sample_count": 2,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 85217.284791216,
+                "rss_mib": 262.875
+              },
+              {
+                "monotonic_s": 85217.364830838,
+                "rss_mib": 281.578125
+              }
+            ]
+          }
+        }
+      },
+      "warmup": {
+        "zip_s": 1.990127155004302,
+        "refine_s": 0.8544629670068389,
+        "vad_s": 0.5012193550064694
+      },
+      "environment": {
+        "edge_asr": "0.1.0",
+        "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+        "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+        "machine": "aarch64",
+        "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+        "runtime": {
+          "sherpa_package_version": "2.0.1",
+          "sherpa_core_package_version": "2.0.1",
+          "python_onnxruntime_package_version": "1.31.1",
+          "sherpa_native_onnxruntime_version": "1.28.2",
+          "native_version_source": "sherpa_onnx.onnxruntime_version",
+          "status": "available",
+          "reason": null
+        },
+        "packages": [
+          {
+            "name": "cffi",
+            "version": "2.1.1"
+          },
+          {
+            "name": "flatbuffers",
+            "version": "25.12.19"
+          },
+          {
+            "name": "numpy",
+            "version": "2.4.6"
+          },
+          {
+            "name": "onnxruntime",
+            "version": "1.31.1"
+          },
+          {
+            "name": "packaging",
+            "version": "26.3"
+          },
+          {
+            "name": "protobuf",
+            "version": "7.36.2"
+          },
+          {
+            "name": "pycparser",
+            "version": "3.12"
+          },
+          {
+            "name": "sherpa-onnx-core",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sherpa_onnx",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sounddevice",
+            "version": "0.5.6"
+          },
+          {
+            "name": "soundfile",
+            "version": "0.14.0"
+          },
+          {
+            "name": "typing_extensions",
+            "version": "4.16.0"
+          }
+        ]
+      },
+      "refine_environment": {
+        "edge_asr": "0.1.0",
+        "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+        "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+        "machine": "aarch64",
+        "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+        "runtime": {
+          "sherpa_package_version": "2.0.1",
+          "sherpa_core_package_version": "2.0.1",
+          "python_onnxruntime_package_version": "1.31.1",
+          "sherpa_native_onnxruntime_version": "1.28.2",
+          "native_version_source": "sherpa_onnx.onnxruntime_version",
+          "status": "available",
+          "reason": null
+        },
+        "packages": [
+          {
+            "name": "cffi",
+            "version": "2.1.1"
+          },
+          {
+            "name": "flatbuffers",
+            "version": "25.12.19"
+          },
+          {
+            "name": "numpy",
+            "version": "2.4.6"
+          },
+          {
+            "name": "onnxruntime",
+            "version": "1.31.1"
+          },
+          {
+            "name": "packaging",
+            "version": "26.3"
+          },
+          {
+            "name": "protobuf",
+            "version": "7.36.2"
+          },
+          {
+            "name": "pycparser",
+            "version": "3.12"
+          },
+          {
+            "name": "sherpa-onnx-core",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sherpa_onnx",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sounddevice",
+            "version": "0.5.6"
+          },
+          {
+            "name": "soundfile",
+            "version": "0.14.0"
+          },
+          {
+            "name": "typing_extensions",
+            "version": "4.16.0"
+          }
+        ]
+      },
+      "vad_environment": {
+        "backend": "python_onnxruntime_k2_v4_experimental",
+        "python_onnxruntime_version": "1.31.1",
+        "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+        "num_threads": 1,
+        "providers": [
+          "CPUExecutionProvider"
+        ],
+        "recurrent_state_bytes": 1024,
+        "reset_count": 6,
+        "windows_since_reset": 3769,
+        "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+      },
+      "token_api": {
+        "api": "OnlineRecognizer.recognizer.get_result",
+        "sherpa_git_sha1": "af2d8d81"
+      },
+      "rescore_matches": true,
+      "model_limits_verified": true,
+      "final_candidate_job_indices": [
+        0,
+        3,
+        5,
+        7,
+        26
+      ],
+      "final_held_job_indices": [
+        1,
+        2,
+        4,
+        6,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42
+      ]
+    },
+    "digital-silence": {
+      "source_count": 6,
+      "audio_s": 14.61,
+      "summary": {
+        "schema": "continuous-token-diagnostic-summary-v1",
+        "status": "completed",
+        "input_complete": true,
+        "zip_threads": 1,
+        "refine_threads": 2,
+        "manifest_sha256": "bace0b26e24d60b8ef207b191c3a646edd0ceaae4ba8e130ecac5c948810b084",
+        "track_float32_sha256": "19b3fbba8dfcdfa51ba4c7b5f01ea6f63039ca24f77484945058b8095edb4147",
+        "audio_s": 14.61,
+        "planned_sources": 6,
+        "zip_cer": {
+          "planned": 6,
+          "successful": 6,
+          "complete": true,
+          "cer": {
+            "errors": 0,
+            "substitutions": 0,
+            "deletions": 0,
+            "insertions": 0,
+            "reference_characters": 0,
+            "value": null,
+            "empty_reference_samples": 6,
+            "empty_reference_nonempty_hypotheses": 0
+          },
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+        },
+        "first_partial_from_source_start_s": {
+          "n": 0,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        },
+        "zip_finalize_from_source_end_s": {
+          "n": 6,
+          "mean": 0.15771408233333323,
+          "p50": 0.17250467899999933,
+          "p95": 0.17454352500000003,
+          "max": 0.17454352500000003
+        },
+        "no_partial_sources": 6,
+        "input_dropped_chunks": 0,
+        "input_dropped_audio_s": 0.0,
+        "input_backlog_event_max_audio_s": 0.1,
+        "input_backlog_audio_s": {
+          "n": 150,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        },
+        "input_queue_wait_s": {
+          "n": 147,
+          "mean": 0.0006304182448979101,
+          "p50": 0.0006186899999995887,
+          "p95": 0.0011150269999999907,
+          "max": 0.0013304739999999982
+        },
+        "chunk_processing_s": {
+          "n": 147,
+          "mean": 0.01837112951700674,
+          "p50": 0.004138086999999402,
+          "p95": 0.0426643130000004,
+          "max": 0.11915088800000007
+        },
+        "coordinator_active_rtf": 0.18484722889040603,
+        "refine": {
+          "complete": true,
+          "planned_windows": 0,
+          "enqueued": 0,
+          "successful": 0,
+          "failed_windows": 0,
+          "missing_results": 0,
+          "dropped_windows": 0,
+          "cer": {
+            "planned": 6,
+            "successful": 6,
+            "complete": true,
+            "cer": {
+              "errors": 0,
+              "substitutions": 0,
+              "deletions": 0,
+              "insertions": 0,
+              "reference_characters": 0,
+              "value": null,
+              "empty_reference_samples": 6,
+              "empty_reference_nonempty_hypotheses": 0
+            },
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+          },
+          "queue_wait_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "decode_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "dispatch_from_window_end_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "window_end_to_return_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "final_from_source_file_end_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "backlog_event_max_audio_s": 0.0,
+          "backlog_event_max_windows": 0,
+          "backlog_audio_s": {
+            "n": 150,
+            "mean": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "max": 0.0
+          },
+          "backlog_end_audio_s": 0.0,
+          "zip_refine_call_overlap_s": 0.0,
+          "refine_calls_with_zip_overlap": 0,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "vad_emission_from_owned_end_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "dispatch_after_vad_emission_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "vad_emission_to_return_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "decision_audio_after_owned_end_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "no_vad_segment_sources": 6,
+          "backlog_event_max_payload_audio_s": 0.0,
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님."
+        },
+        "refine_reason": null,
+        "producer_cpu_s": 0.021334831,
+        "producer_lifetime_peak_rss_mib": 284.546875,
+        "unmeasured": {
+          "hybrid_merged_cer": null,
+          "acoustic_endpoint_latency_s": null,
+          "aligned_recognition_latency_s": null,
+          "ui_display_latency_s": null,
+          "microphone_overruns": null
+        },
+        "zip_call_rtf": 0.1460478288843258,
+        "resources": {
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "sample_count": 146,
+          "paired_intervals": 145,
+          "paired_wall_s": 14.577239210999997,
+          "observed_model_cpu_percent": 21.334629657810595,
+          "model_group_rss_observed_max_mib": 630.8125,
+          "complete_model_rss_samples": 146,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능.",
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling",
+            "token_alignment_audit_and_result_reader"
+          ]
+        },
+        "threads": {
+          "zip": {
+            "snapshots": 15,
+            "observed_tid_max": 8,
+            "active_at_least_1_percent": 1,
+            "rows": [
+              {
+                "tid": "28612",
+                "cpu_s": 2.65,
+                "paired_s": 14.076124671002617,
+                "mean_cpu_percent": 18.82620438464222
+              },
+              {
+                "tid": "28641",
+                "cpu_s": 0.03,
+                "paired_s": 14.076124671002617,
+                "mean_cpu_percent": 0.2131268420902893
+              },
+              {
+                "tid": "28662",
+                "cpu_s": 0.01,
+                "paired_s": 1.0035711640084628,
+                "mean_cpu_percent": 0.9964415438221652
+              },
+              {
+                "tid": "28628",
+                "cpu_s": 0.0,
+                "paired_s": 14.076124671002617,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "28629",
+                "cpu_s": 0.0,
+                "paired_s": 14.076124671002617,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "28630",
+                "cpu_s": 0.0,
+                "paired_s": 14.076124671002617,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "28639",
+                "cpu_s": 0.0,
+                "paired_s": 14.076124671002617,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "28640",
+                "cpu_s": 0.0,
+                "paired_s": 14.076124671002617,
+                "mean_cpu_percent": 0.0
+              }
+            ],
+            "runtime_roles_confirmed": false
+          },
+          "refine": {
+            "snapshots": 15,
+            "observed_tid_max": 5,
+            "active_at_least_1_percent": 1,
+            "rows": [
+              {
+                "tid": "28616",
+                "cpu_s": 0.21000000000000002,
+                "paired_s": 14.076012170000467,
+                "mean_cpu_percent": 1.4918998183843788
+              },
+              {
+                "tid": "28618",
+                "cpu_s": 0.0,
+                "paired_s": 14.076012170000467,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "28619",
+                "cpu_s": 0.0,
+                "paired_s": 14.076012170000467,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "28620",
+                "cpu_s": 0.0,
+                "paired_s": 14.076012170000467,
+                "mean_cpu_percent": 0.0
+              },
+              {
+                "tid": "28621",
+                "cpu_s": 0.0,
+                "paired_s": 14.076012170000467,
+                "mean_cpu_percent": 0.0
+              }
+            ],
+            "runtime_roles_confirmed": false
+          }
+        },
+        "refine_policy": "vad0",
+        "source_sha256": {
+          "vad-sources.jsonl": "33b45e269fbb524a536d38728d407acdfc166e9653c78b5a9e7b5f287411a6d9",
+          "refine-results.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "zip-sources.jsonl": "4221f4e4b9e585667c5951d7650e742401e840d5c4ed760b87e4b3bd10685bbc",
+          "track.json": "c96be17e61d2adea333bb1970ec63f3bb29eff162ea98891913001abca579f95",
+          "refine-jobs.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "process-resources.jsonl": "f319e916a9ea8d46ae2e27a6c548b8f61b0ea5ab371c55d7e9471fb21e029853",
+          "thread-resources.jsonl": "ef6a752298d52c589f3c7f0cb30471c7fed54914e8d1d77ec8dfcb597b47906d",
+          "worker.json": "1f140007fab8d88d9f0360a0b54263fcdfe450e1f44e6de21a922f84886765ef",
+          "zip-events.jsonl": "b6a8cd78a18c3c268f8aa3859fed25673f25c3f85b858b3b2e925f3af8236fee",
+          "capture/backlog.jsonl": "00823ac29ba4d75e04b05a47f5d2a4f66691f551f7ae9f2d6ac232958f74b685",
+          "capture/decoder.jsonl": "4df5b47f0f94c922e51afa1fdc279d3fb4b60cd06cf6d86bce3e97fafd17fda3",
+          "capture/producer.jsonl": "a0b7b3f0f3f537671200f103e5488878e7be1b0c108cd28f8fcac4e21837f53c",
+          "zip-token-snapshots.jsonl": "7ee818038d5df15746bc9ecd453a6b2d807fe174a4218e860b9b183f084cc3b3",
+          "token-alignment-events.jsonl": "dcc0be39aded1ec81c989ece30a9945d5e7968e1323cb24b72cd0593322a14d9",
+          "refine-receipts.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "token_diagnostics": {
+          "complete": true,
+          "snapshots": 159,
+          "valid_snapshots": 159,
+          "snapshot_failure_reasons": {},
+          "prefix_revision_snapshots": 0,
+          "source_final_snapshots": 6,
+          "snapshot_read_wall_s": {
+            "n": 159,
+            "mean": 2.0681603773584908e-05,
+            "p50": 2.0278e-05,
+            "p95": 2.5352e-05,
+            "max": 3.887e-05
+          },
+          "audit_processing_wall_s": {
+            "n": 159,
+            "mean": 3.228749056603775e-05,
+            "p50": 3.1241e-05,
+            "p95": 3.8537e-05,
+            "max": 4.9352e-05
+          },
+          "received_results": 0,
+          "child_end_to_parent_receive_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "jobs": 0,
+          "ever_structural_candidate_jobs": 0,
+          "first_candidate_before_source_audio_end": 0,
+          "final_states": {},
+          "final_hold_reasons": {},
+          "candidate_remains_same_in_final_snapshot": 0,
+          "candidate_changed_or_revoked_later": 0,
+          "child_end_to_first_structural_candidate_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "actual_replacements": 0,
+          "candidate_merged_cer": null,
+          "actual_merge_apply_s": null,
+          "acoustic_alignment_validated": false,
+          "token_durations": null,
+          "scope_ko": "연속 Zip의 native 디코더 시각/원문 재구성/접두부/word marker 기준 구조 후보 진단. 단어/음소 정답 경계·교체 안전성·UI 검증이 아니며 실제 전사는 교체하지 않음."
+        }
+      },
+      "historical_continuous_comparison": {
+        "source_commit": "79d447ab1ac264534416ed7adc05fad6b5d6e79a",
+        "zip_cer": {
+          "planned": 6,
+          "successful": 6,
+          "complete": true,
+          "cer": {
+            "errors": 0,
+            "substitutions": 0,
+            "deletions": 0,
+            "insertions": 0,
+            "reference_characters": 0,
+            "value": null,
+            "empty_reference_samples": 6,
+            "empty_reference_nonempty_hypotheses": 0
+          },
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+        },
+        "first_partial_from_source_start_s": {
+          "n": 0,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "max": null
+        },
+        "changed_zip_sources": [],
+        "same_vad_geometry_and_payload": true,
+        "changed_refine_jobs": [],
+        "same_refine_job_count": true,
+        "scope_ko": "같은 원음/모델/연속 상태 조건의 과거 실행과 비교. native 읽기/구조 진단/수신/기록 비용이 추가됐으며 고정 클럭 통제 비교가 아님."
+      },
+      "right_marker_absence_types": {},
+      "right_marker_absence_examples": [],
+      "structural_first_candidates": [],
+      "first_candidates_before_source_eof": 0,
+      "final_decoder_token_points": 0,
+      "points_outside_vad_owned_spans": 0,
+      "points_in_model_padding": 0,
+      "decoder_grid_error_max_s": null,
+      "thermal": {
+        "run": "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0",
+        "source_sha256": {
+          "execution.json": "d30985bbf9142568254d2ae82d0e77f4b80bfa50fe111e0093c6759909eaf436",
+          "thermal.jsonl": "2ef57450f8990a9df45e16257de216ff3a51118cae3cc834f6c576c3c02c5c31"
+        },
+        "status": "completed",
+        "control_valid": false,
+        "rejection": null,
+        "thermal_sample_count": 21,
+        "before": {
+          "at_utc": "2026-11-03T07:53:28.906506+00:00",
+          "elapsed_from_before_s": 0.0,
+          "temperature_c": 51.8,
+          "fan_rpm": 3098,
+          "cpu0_freq_khz": 1500000,
+          "current_limits": 0,
+          "history_limits": 14
+        },
+        "after": {
+          "at_utc": "2026-11-03T07:53:50.232361+00:00",
+          "elapsed_from_before_s": 21.325857139992877,
+          "temperature_c": 56.75,
+          "fan_rpm": 4938,
+          "cpu0_freq_khz": 1500000,
+          "current_limits": 0,
+          "history_limits": 14
+        },
+        "software_stop_mc": null,
+        "first_observed_software_temperature_limit": null,
+        "first_observed_current_limit": null,
+        "current_limit_observed": false,
+        "new_history_bits": 0,
+        "telemetry_missing_samples": 0,
+        "fan_missing_samples": 0,
+        "fan_positive_samples": 23,
+        "fan_rpm_max": 4938,
+        "temperature_mc_max_monitor": 58950,
+        "temperature_mc_max_with_before_after": 58950,
+        "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+      },
+      "resource_sample_interval_s": {
+        "n": 147,
+        "mean": 0.10054258306122449,
+        "p50": 0.100284983,
+        "p95": 0.100846006,
+        "max": 0.124758006
+      },
+      "loading": {
+        "zip": {
+          "wall_s": 2.4433227529953,
+          "cpu_s": 2.678750795,
+          "resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 270.9375,
+            "rss_sample_count": 26,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 85370.24913001,
+                "rss_mib": 26.78125
+              },
+              {
+                "monotonic_s": 85370.349935792,
+                "rss_mib": 88.4375
+              },
+              {
+                "monotonic_s": 85370.450358183,
+                "rss_mib": 211.046875
+              },
+              {
+                "monotonic_s": 85370.550586443,
+                "rss_mib": 269.9375
+              },
+              {
+                "monotonic_s": 85370.650779221,
+                "rss_mib": 269.9375
+              },
+              {
+                "monotonic_s": 85370.751035926,
+                "rss_mib": 270.4375
+              },
+              {
+                "monotonic_s": 85370.851279408,
+                "rss_mib": 270.4375
+              },
+              {
+                "monotonic_s": 85370.95156828,
+                "rss_mib": 270.4375
+              },
+              {
+                "monotonic_s": 85371.051786225,
+                "rss_mib": 270.4375
+              },
+              {
+                "monotonic_s": 85371.15196404,
+                "rss_mib": 270.4375
+              },
+              {
+                "monotonic_s": 85371.252124688,
+                "rss_mib": 270.4375
+              },
+              {
+                "monotonic_s": 85371.352305207,
+                "rss_mib": 270.4375
+              },
+              {
+                "monotonic_s": 85371.452539781,
+                "rss_mib": 270.9375
+              },
+              {
+                "monotonic_s": 85371.553014043,
+                "rss_mib": 199.875
+              },
+              {
+                "monotonic_s": 85371.653248988,
+                "rss_mib": 219.375
+              },
+              {
+                "monotonic_s": 85371.75347697,
+                "rss_mib": 238.875
+              },
+              {
+                "monotonic_s": 85371.853710767,
+                "rss_mib": 238.875
+              },
+              {
+                "monotonic_s": 85371.95396175,
+                "rss_mib": 238.875
+              },
+              {
+                "monotonic_s": 85372.054183843,
+                "rss_mib": 238.875
+              },
+              {
+                "monotonic_s": 85372.154362676,
+                "rss_mib": 238.875
+              },
+              {
+                "monotonic_s": 85372.254520825,
+                "rss_mib": 238.875
+              },
+              {
+                "monotonic_s": 85372.354729325,
+                "rss_mib": 238.875
+              },
+              {
+                "monotonic_s": 85372.45489977,
+                "rss_mib": 238.875
+              },
+              {
+                "monotonic_s": 85372.555053584,
+                "rss_mib": 238.875
+              },
+              {
+                "monotonic_s": 85372.655273974,
+                "rss_mib": 238.875
+              },
+              {
+                "monotonic_s": 85372.692269095,
+                "rss_mib": 248.640625
+              }
+            ]
+          }
+        },
+        "refine": {
+          "loading_s": 1.8475322739977855,
+          "loading_cpu_s": 2.104932657,
+          "loading_resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 358.96875,
+            "rss_sample_count": 20,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 85368.176289875,
+                "rss_mib": 25.703125
+              },
+              {
+                "monotonic_s": 85368.276734636,
+                "rss_mib": 62.4375
+              },
+              {
+                "monotonic_s": 85368.377224194,
+                "rss_mib": 261.9375
+              },
+              {
+                "monotonic_s": 85368.477466936,
+                "rss_mib": 320.328125
+              },
+              {
+                "monotonic_s": 85368.577805437,
+                "rss_mib": 328.875
+              },
+              {
+                "monotonic_s": 85368.678062623,
+                "rss_mib": 325.84375
+              },
+              {
+                "monotonic_s": 85368.778338513,
+                "rss_mib": 325.84375
+              },
+              {
+                "monotonic_s": 85368.878588884,
+                "rss_mib": 325.84375
+              },
+              {
+                "monotonic_s": 85368.978841385,
+                "rss_mib": 326.34375
+              },
+              {
+                "monotonic_s": 85369.079020478,
+                "rss_mib": 326.34375
+              },
+              {
+                "monotonic_s": 85369.179167719,
+                "rss_mib": 326.34375
+              },
+              {
+                "monotonic_s": 85369.279310274,
+                "rss_mib": 326.34375
+              },
+              {
+                "monotonic_s": 85369.379498126,
+                "rss_mib": 326.34375
+              },
+              {
+                "monotonic_s": 85369.479675145,
+                "rss_mib": 326.34375
+              },
+              {
+                "monotonic_s": 85369.579818645,
+                "rss_mib": 326.34375
+              },
+              {
+                "monotonic_s": 85369.679975386,
+                "rss_mib": 327.84375
+              },
+              {
+                "monotonic_s": 85369.780190071,
+                "rss_mib": 327.84375
+              },
+              {
+                "monotonic_s": 85369.880450609,
+                "rss_mib": 342.34375
+              },
+              {
+                "monotonic_s": 85369.980787481,
+                "rss_mib": 354.34375
+              },
+              {
+                "monotonic_s": 85370.02339596,
+                "rss_mib": 358.96875
+              }
+            ]
+          }
+        },
+        "vad": {
+          "wall_s": 0.08068627498869319,
+          "cpu_s": 0.041406406999999756,
+          "resources": {
+            "sample_interval_s": 0.1,
+            "rss_observed_max_mib": 268.84375,
+            "rss_sample_count": 2,
+            "rss_missing_count": 0,
+            "rss_samples": [
+              {
+                "monotonic_s": 85372.831121562,
+                "rss_mib": 250.140625
+              },
+              {
+                "monotonic_s": 85372.911644169,
+                "rss_mib": 268.84375
+              }
+            ]
+          }
+        }
+      },
+      "warmup": {
+        "zip_s": 0.12492315500276163,
+        "refine_s": 0.10364989799563773,
+        "vad_s": 0.0036929179914295673
+      },
+      "environment": {
+        "edge_asr": "0.1.0",
+        "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+        "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+        "machine": "aarch64",
+        "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+        "runtime": {
+          "sherpa_package_version": "2.0.1",
+          "sherpa_core_package_version": "2.0.1",
+          "python_onnxruntime_package_version": "1.31.1",
+          "sherpa_native_onnxruntime_version": "1.28.2",
+          "native_version_source": "sherpa_onnx.onnxruntime_version",
+          "status": "available",
+          "reason": null
+        },
+        "packages": [
+          {
+            "name": "cffi",
+            "version": "2.1.1"
+          },
+          {
+            "name": "flatbuffers",
+            "version": "25.12.19"
+          },
+          {
+            "name": "numpy",
+            "version": "2.4.6"
+          },
+          {
+            "name": "onnxruntime",
+            "version": "1.31.1"
+          },
+          {
+            "name": "packaging",
+            "version": "26.3"
+          },
+          {
+            "name": "protobuf",
+            "version": "7.36.2"
+          },
+          {
+            "name": "pycparser",
+            "version": "3.12"
+          },
+          {
+            "name": "sherpa-onnx-core",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sherpa_onnx",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sounddevice",
+            "version": "0.5.6"
+          },
+          {
+            "name": "soundfile",
+            "version": "0.14.0"
+          },
+          {
+            "name": "typing_extensions",
+            "version": "4.16.0"
+          }
+        ]
+      },
+      "refine_environment": {
+        "edge_asr": "0.1.0",
+        "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+        "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+        "machine": "aarch64",
+        "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+        "runtime": {
+          "sherpa_package_version": "2.0.1",
+          "sherpa_core_package_version": "2.0.1",
+          "python_onnxruntime_package_version": "1.31.1",
+          "sherpa_native_onnxruntime_version": "1.28.2",
+          "native_version_source": "sherpa_onnx.onnxruntime_version",
+          "status": "available",
+          "reason": null
+        },
+        "packages": [
+          {
+            "name": "cffi",
+            "version": "2.1.1"
+          },
+          {
+            "name": "flatbuffers",
+            "version": "25.12.19"
+          },
+          {
+            "name": "numpy",
+            "version": "2.4.6"
+          },
+          {
+            "name": "onnxruntime",
+            "version": "1.31.1"
+          },
+          {
+            "name": "packaging",
+            "version": "26.3"
+          },
+          {
+            "name": "protobuf",
+            "version": "7.36.2"
+          },
+          {
+            "name": "pycparser",
+            "version": "3.12"
+          },
+          {
+            "name": "sherpa-onnx-core",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sherpa_onnx",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sounddevice",
+            "version": "0.5.6"
+          },
+          {
+            "name": "soundfile",
+            "version": "0.14.0"
+          },
+          {
+            "name": "typing_extensions",
+            "version": "4.16.0"
+          }
+        ]
+      },
+      "vad_environment": {
+        "backend": "python_onnxruntime_k2_v4_experimental",
+        "python_onnxruntime_version": "1.31.1",
+        "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+        "num_threads": 1,
+        "providers": [
+          "CPUExecutionProvider"
+        ],
+        "recurrent_state_bytes": 1024,
+        "reset_count": 11,
+        "windows_since_reset": 313,
+        "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+      },
+      "token_api": {
+        "api": "OnlineRecognizer.recognizer.get_result",
+        "sherpa_git_sha1": "af2d8d81"
+      },
+      "rescore_matches": true,
+      "model_limits_verified": true,
+      "final_candidate_job_indices": [],
+      "final_held_job_indices": []
+    }
+  },
+  "tests": {
+    "host": {
+      "count": 267,
+      "wall_s": 35.871,
+      "passed": true
+    },
+    "rp5": {
+      "count": 267,
+      "wall_s": 61.832,
+      "passed": true
+    }
+  },
+  "legacy_checks": {
+    "native_traces_reaggregated": 12,
+    "old_policy_results_equal": 27,
+    "per_policy_artifacts_equal": 108,
+    "new_native_asr_inference": false
+  },
+  "preservation": {
+    "protected_files": 5308,
+    "changed": [],
+    "missing": [],
+    "environment_unchanged": true,
+    "system_settings_unchanged": true,
+    "active_guards": [],
+    "active_workers": [],
+    "active_refine_children": [],
+    "active_input_children": [],
+    "active_group_members": [],
+    "coordinator_active": false,
+    "same_boot": true,
+    "source_commit": "fcc942af41f33b31f3df6e564afd407a593ff759",
+    "working_tree_clean": true,
+    "active_experiment_commands": []
+  },
+  "raw_files": 66,
+  "raw_bytes": 16682652,
+  "transfer_sha256": {
+    "base": "results/preflight/m34-continuous-token-20261103-01",
+    "files": {
+      "digital-silence/vad0/admission.jsonl": "1ba719e8e12a1a602b4f524899257c447cc652d714fa7c8706f52958f66b9118",
+      "digital-silence/vad0/capture/backlog.jsonl": "00823ac29ba4d75e04b05a47f5d2a4f66691f551f7ae9f2d6ac232958f74b685",
+      "digital-silence/vad0/capture/decoder.jsonl": "4df5b47f0f94c922e51afa1fdc279d3fb4b60cd06cf6d86bce3e97fafd17fda3",
+      "digital-silence/vad0/capture/producer.jsonl": "a0b7b3f0f3f537671200f103e5488878e7be1b0c108cd28f8fcac4e21837f53c",
+      "digital-silence/vad0/console.log": "c129028eaf565726df78bd3060e66d655f1da0c9767c28eef71311f93fef50bc",
+      "digital-silence/vad0/execution.json": "d30985bbf9142568254d2ae82d0e77f4b80bfa50fe111e0093c6759909eaf436",
+      "digital-silence/vad0/process-resources.jsonl": "f319e916a9ea8d46ae2e27a6c548b8f61b0ea5ab371c55d7e9471fb21e029853",
+      "digital-silence/vad0/refine-jobs.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "digital-silence/vad0/refine-receipts.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "digital-silence/vad0/refine-results.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "digital-silence/vad0/summary.json": "0994004b0b6a5ab114cf28a279ac3cd46391ef77d34f967f0dfabfdd55c4b896",
+      "digital-silence/vad0/thermal.jsonl": "2ef57450f8990a9df45e16257de216ff3a51118cae3cc834f6c576c3c02c5c31",
+      "digital-silence/vad0/thread-resources.jsonl": "ef6a752298d52c589f3c7f0cb30471c7fed54914e8d1d77ec8dfcb597b47906d",
+      "digital-silence/vad0/threads.jsonl": "10bd33508145cdf5a324e8e551a4b2ddee276300d6b821fa90607b3f115b7256",
+      "digital-silence/vad0/token-alignment-events.jsonl": "dcc0be39aded1ec81c989ece30a9945d5e7968e1323cb24b72cd0593322a14d9",
+      "digital-silence/vad0/track.json": "c96be17e61d2adea333bb1970ec63f3bb29eff162ea98891913001abca579f95",
+      "digital-silence/vad0/vad-sources.jsonl": "33b45e269fbb524a536d38728d407acdfc166e9653c78b5a9e7b5f287411a6d9",
+      "digital-silence/vad0/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "digital-silence/vad0/worker.json": "1f140007fab8d88d9f0360a0b54263fcdfe450e1f44e6de21a922f84886765ef",
+      "digital-silence/vad0/zip-events.jsonl": "b6a8cd78a18c3c268f8aa3859fed25673f25c3f85b858b3b2e925f3af8236fee",
+      "digital-silence/vad0/zip-sources.jsonl": "4221f4e4b9e585667c5951d7650e742401e840d5c4ed760b87e4b3bd10685bbc",
+      "digital-silence/vad0/zip-token-snapshots.jsonl": "7ee818038d5df15746bc9ecd453a6b2d807fe174a4218e860b9b183f084cc3b3",
+      "kss-dev50/vad0/admission.jsonl": "bf09ce0b797fccbd4fb9c251abec3f07ce34eb194d81068f4bdc1df54bcb8c78",
+      "kss-dev50/vad0/capture/backlog.jsonl": "abc3f19925c2f51551232d212393f8c30caf53aa828eeb54d420590a34c44c65",
+      "kss-dev50/vad0/capture/decoder.jsonl": "dcb8b4f30a479b391e2c3f8dde2a6f025a96ecc3cd320af2577b808c42d53eaf",
+      "kss-dev50/vad0/capture/producer.jsonl": "0fc66c9a3d781e04fee55e25c6dbffc9394f74750b1802b010689542671e07d5",
+      "kss-dev50/vad0/console.log": "ebf47122e3487b2d5468f620e56dbbc5b46d0b078f8dee815073f9abff9b87ad",
+      "kss-dev50/vad0/execution.json": "7ef0598158eb2bcb02fa077bb6a151e72de5d5b816e1fa0ad7b11440bd4d3338",
+      "kss-dev50/vad0/process-resources.jsonl": "440fcf8eb945ff9bb19330a87d3ea54bd01d9c585d6e68c2b580dc471b6c048a",
+      "kss-dev50/vad0/refine-jobs.jsonl": "c4b622e14d12c960709a986330f2ab81d631635f1dfa76a838260c527dcadb2e",
+      "kss-dev50/vad0/refine-receipts.jsonl": "6b28c5fa145662f3d3f5a4e9261cb694ca5bd501c6628536bae3aea5555f7c44",
+      "kss-dev50/vad0/refine-results.jsonl": "d95df4efa865c460e12b8772e2a03b33e5642442c26c8a544f8fe78e05a60a0f",
+      "kss-dev50/vad0/summary.json": "7606bc8ff99b5840e26c018fcabe0518fcb7be19fbb8ad98467ebc84969724a6",
+      "kss-dev50/vad0/thermal.jsonl": "152b65b3cc81213eec5198b209f9cd10419e8040dcc5cbdd6fe1a119957c2b10",
+      "kss-dev50/vad0/thread-resources.jsonl": "7e1694ced18b0b6a84f02ea49b6fbad59f34478a54322981922cad088ac09f73",
+      "kss-dev50/vad0/threads.jsonl": "148ba92ab60391d859a6bacdf31e919b27019a9036e3f8bdd7e49f9687efb82d",
+      "kss-dev50/vad0/token-alignment-events.jsonl": "9f7d4ffda2b91cbb61c154a2651f3a242d16a97911817a827b466da09c08e5db",
+      "kss-dev50/vad0/track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+      "kss-dev50/vad0/vad-sources.jsonl": "b648cd13af5e2f53e02e4e8889743c33c62c7bae85a5d3b76612b6ea3429ef91",
+      "kss-dev50/vad0/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kss-dev50/vad0/worker.json": "8a73dc6205f77bf7106c1ebe820ffb1c18590959c542fa478d448a3db788c901",
+      "kss-dev50/vad0/zip-events.jsonl": "fa51c2f5abcb5165f440fabec9591516e7bb84890c76d7a8bcc93c055cf3312b",
+      "kss-dev50/vad0/zip-sources.jsonl": "4ba7da68feb84e508c4050209fa820ba57b1fdac055c9ae7d55f7cbd850ddcbd",
+      "kss-dev50/vad0/zip-token-snapshots.jsonl": "4a054f1a8e6ed3e77f6b19c9932fa8bc2d1fffe3cc8fa1b557d7d2ce7208ebea",
+      "synthetic-120/vad0/admission.jsonl": "87a89e667047c4d6b0c41dfa682f30c307db5a18597c865ac3cc2541a646df12",
+      "synthetic-120/vad0/capture/backlog.jsonl": "f709a8bdf0f467011e251e293370678249cac3788faea6de413957e91478b41a",
+      "synthetic-120/vad0/capture/decoder.jsonl": "374baf24633b24812bc600ecd7046f69655a4d415cf8b67a4c4484f6ac49b368",
+      "synthetic-120/vad0/capture/producer.jsonl": "a210bbd1b86ceef8a26d1f9040b5d130bdb7951ef7746b122501e52d8eb48a66",
+      "synthetic-120/vad0/console.log": "6371c72a9ee4a894d9cd9425e8080050d5946645daa9352dd7514ae77807236e",
+      "synthetic-120/vad0/execution.json": "a784dec52e27d64794ffa8eae5350f13f934bda1885781e2b4b8a87fa1aa2811",
+      "synthetic-120/vad0/process-resources.jsonl": "c41ece0e474c1c2c7afd812f3ee932d25e7a24f8a34a6f49aea108c18dcb9924",
+      "synthetic-120/vad0/refine-jobs.jsonl": "77b2c0ad41f16ab705a203ac7f7db54b26fe3e586094ee6991569707510681f6",
+      "synthetic-120/vad0/refine-receipts.jsonl": "8ab3a8fbcfbfe5bde8fd65d8fe2007e04c0e42d54fec46f29e10f9ea86fe6373",
+      "synthetic-120/vad0/refine-results.jsonl": "b40aff6f5b44a2e26eabc4de71b9deba0c9af7b71fe962a6459cceae85108bbc",
+      "synthetic-120/vad0/summary.json": "214287757ce8f01fa4a7cb3187dc597ed4411ff40202f3eff2ca4d36ac97095b",
+      "synthetic-120/vad0/thermal.jsonl": "bef3c6e959dc36f69f0ea49259d6ee3feb4d19d0fc844010c0a838716af5eecd",
+      "synthetic-120/vad0/thread-resources.jsonl": "b86d471e00cb9aad3af05037abe365d277a1fe4138631f039272f4f473d0af3d",
+      "synthetic-120/vad0/threads.jsonl": "0b589a8bfcd743d58ef9712974d7b1f8791a60d8252e870df37e9e1dbbe5db8b",
+      "synthetic-120/vad0/token-alignment-events.jsonl": "f4892f67ab6c463c3cf6efef075697f135411ed0f8f405588f53ab20cacba3eb",
+      "synthetic-120/vad0/track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+      "synthetic-120/vad0/vad-sources.jsonl": "66522b59786794b25a65cf1b4e2d1d07cc60a6065fdcb75910f473c3fc7ed2b3",
+      "synthetic-120/vad0/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "synthetic-120/vad0/worker.json": "155a372c60e3fdc3cb2ce2bdf5d9316406c365a354c3e9388ea05458f244b712",
+      "synthetic-120/vad0/zip-events.jsonl": "45e72e9351235667eb9376ae3e0e70c7921459019d88811035ed86a8f1342c5c",
+      "synthetic-120/vad0/zip-sources.jsonl": "073e729684c3a70c23248a531197cd4dbaad9b9ba07d8bcffe8b2ffe292e1de0",
+      "synthetic-120/vad0/zip-token-snapshots.jsonl": "01ff87fe184f3c5ed29f33f97a1c841b2d2b2654c9abd1a9f6b2a973c0740674"
+    }
+  },
+  "evidence_sha256": {
+    "results/maintenance/m34-continuous-token-20261103-01/plan.json": "e5c266005d7b8511e8a826064cf50aee76f59801b8094d1ce35d08b94743c4c3",
+    "results/maintenance/m34-continuous-token-20261103-01/suite.json": "aec7a1829d7d7094faf705218e85330d3f4662f5ebdf84915bf53c8f9f159585",
+    "results/maintenance/m34-continuous-token-20261103-01/transfer-manifest.json": "e3e5838de09a2bdca958a420ae46ef84c643edc934fa6aa7ecab4d50dd4e8fed",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/worker.json": "8a73dc6205f77bf7106c1ebe820ffb1c18590959c542fa478d448a3db788c901",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/execution.json": "7ef0598158eb2bcb02fa077bb6a151e72de5d5b816e1fa0ad7b11440bd4d3338",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/summary.json": "7606bc8ff99b5840e26c018fcabe0518fcb7be19fbb8ad98467ebc84969724a6",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/refine-jobs.jsonl": "c4b622e14d12c960709a986330f2ab81d631635f1dfa76a838260c527dcadb2e",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/refine-results.jsonl": "d95df4efa865c460e12b8772e2a03b33e5642442c26c8a544f8fe78e05a60a0f",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/zip-token-snapshots.jsonl": "4a054f1a8e6ed3e77f6b19c9932fa8bc2d1fffe3cc8fa1b557d7d2ce7208ebea",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/token-alignment-events.jsonl": "9f7d4ffda2b91cbb61c154a2651f3a242d16a97911817a827b466da09c08e5db",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/summary.json": "fb7f3734a56282a7b0130e2dc88a1ddb7b4d2c6e13c57660725f46f8877502e3",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/worker.json": "45382b598070f131f692906124f2f6221c59cb889931fd976154ba5488fb81fc",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/refine-jobs.jsonl": "c82e99265e95a893fcc84bfcc1b091afb32d92fa38766bf87f83b9450086c00a",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/refine-results.jsonl": "2aef530221e556b2781aa03868f198ddb55d512cf0aa756070f8f514208380ac",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/zip-sources.jsonl": "4ba7da68feb84e508c4050209fa820ba57b1fdac055c9ae7d55f7cbd850ddcbd",
+    "results/preflight/m31-online-vad-20261103-01/kss-dev50/vad0/zip-sources.jsonl": "2bd2ccbf996b11c55e651b0a3fa96915d51e99a8998b8d4f2681502697cf121c",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/process-resources.jsonl": "440fcf8eb945ff9bb19330a87d3ea54bd01d9c585d6e68c2b580dc471b6c048a",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/worker.json": "155a372c60e3fdc3cb2ce2bdf5d9316406c365a354c3e9388ea05458f244b712",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/execution.json": "a784dec52e27d64794ffa8eae5350f13f934bda1885781e2b4b8a87fa1aa2811",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/summary.json": "214287757ce8f01fa4a7cb3187dc597ed4411ff40202f3eff2ca4d36ac97095b",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/refine-jobs.jsonl": "77b2c0ad41f16ab705a203ac7f7db54b26fe3e586094ee6991569707510681f6",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/refine-results.jsonl": "b40aff6f5b44a2e26eabc4de71b9deba0c9af7b71fe962a6459cceae85108bbc",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/zip-token-snapshots.jsonl": "01ff87fe184f3c5ed29f33f97a1c841b2d2b2654c9abd1a9f6b2a973c0740674",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/token-alignment-events.jsonl": "f4892f67ab6c463c3cf6efef075697f135411ed0f8f405588f53ab20cacba3eb",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/summary.json": "e4afcdb84e411e72511b825f122383cbfa1f5e7b386f28687fde9bfce8ca1385",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/worker.json": "54dcea5b87754078fcbcbd7f0c915955df7e710951dc38f383c86fc661d96bd6",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/refine-jobs.jsonl": "a336a946ca6a01bfe982aa2fc25b674e5548c155eb9a13e083abeb26d04d9f77",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/refine-results.jsonl": "f2c53009f9905aeda609ab789efc3fb4a07e3cb0beb07e0a2d9d89f6ced7fff7",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/zip-sources.jsonl": "073e729684c3a70c23248a531197cd4dbaad9b9ba07d8bcffe8b2ffe292e1de0",
+    "results/preflight/m31-online-vad-20261103-01/synthetic-120/vad0/zip-sources.jsonl": "35d7d72fdce024316edffaa2d567db597f80a6d4fc144ba3576a35ca72202721",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/process-resources.jsonl": "c41ece0e474c1c2c7afd812f3ee932d25e7a24f8a34a6f49aea108c18dcb9924",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/worker.json": "1f140007fab8d88d9f0360a0b54263fcdfe450e1f44e6de21a922f84886765ef",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/execution.json": "d30985bbf9142568254d2ae82d0e77f4b80bfa50fe111e0093c6759909eaf436",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/summary.json": "0994004b0b6a5ab114cf28a279ac3cd46391ef77d34f967f0dfabfdd55c4b896",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/refine-jobs.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/refine-results.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/zip-token-snapshots.jsonl": "7ee818038d5df15746bc9ecd453a6b2d807fe174a4218e860b9b183f084cc3b3",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/token-alignment-events.jsonl": "dcc0be39aded1ec81c989ece30a9945d5e7968e1323cb24b72cd0593322a14d9",
+    "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/summary.json": "0c47fb421e7885e22a144a385347f0fb56b936af836cdf2f978d3594dfb30fdb",
+    "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/worker.json": "de310dc6cd4f319c6998032623383b1a40a2ea9937feebcde5d451e72bc4fa3e",
+    "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/refine-jobs.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/refine-results.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/zip-sources.jsonl": "4221f4e4b9e585667c5951d7650e742401e840d5c4ed760b87e4b3bd10685bbc",
+    "results/preflight/m31-online-silence-20261103-01/digital-silence/vad0/zip-sources.jsonl": "17163d6e4606866e392086e66ff141bf216520e08f41064236272d57b0bc598e",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/process-resources.jsonl": "f319e916a9ea8d46ae2e27a6c548b8f61b0ea5ab371c55d7e9471fb21e029853",
+    "results/maintenance/m34-continuous-token-20261103-01/preservation-after.json": "233eee387ad76ed714ca07608c6a3cbc5e6cd90d4463639bb129bc8bb5744909",
+    "results/maintenance/m34-continuous-token-20261103-01/host-tests.log": "87053f59e2d164d5c5ab6a30b82c49f621140876c8a805d744b6dbbf2de24699",
+    "results/maintenance/m34-continuous-token-20261103-01/rp5-tests.log": "b4972622719967d54b80c0c7eef76d356d159a2f62079ea697863f3c0baf46cb",
+    "results/maintenance/m34-continuous-token-20261103-01/legacy-checks.json": "f43dc16833300f9a18c093c76e33081f7a579789af17c3aa3b753443479ad875",
+    "results/maintenance/m34-continuous-token-20261103-01/suite.py": "c9b73717ad73e16563141a1255d0862ba0991a09db882857ff1cfc8f6020eb0b",
+    "results/maintenance/m34-continuous-token-20261103-01/audit.py": "d9d576b572d63464d566a74c807b5403e3ba82db3b9737696b61c63bbe9273ee",
+    "results/maintenance/m34-continuous-token-20261103-01/analyze.py": "68238afd483330fe18e1f9fef18e2b81a91e04aa8cb30cb55696c93ecfa6c23b",
+    "results/maintenance/m34-continuous-token-20261103-01/finalize.py": "e8f2bab94443e5aa71e8d299f6b6b974b12bcd1348db1a1460ff4968d8890338",
+    "results/maintenance/m34-continuous-token-20261103-01/cooling-before.json": "2ff174da480ce71b814a654187ed082dee7b00459119cf11cb4b621ed75217ec",
+    "results/maintenance/m34-continuous-token-20261103-01/cooling-after.json": "fdd4fb524a00efb7fc091d58b13512ed43bac5ad6ec29fe73452549732e61d0e",
+    "results/maintenance/m34-continuous-token-20261103-01/launcher.json": "23480ca5eb4f9af94f1fe0cb7f5eb64ad90e717f61e57c1a5fe78ebdae7aac79",
+    "results/maintenance/m34-continuous-token-20261103-01/preservation-before.json": "9a4892d5bf4db42d4b984d95bafc505a7eef85ac6f98c17714ca654e43ef0db9",
+    "results/maintenance/m34-continuous-token-20261103-01/controller.log": "199b0fc66a1fd97fc91d9cf79010d6cfba99728fe2dd63f60d7e31e3bc5a6d23"
+  },
+  "actual_replacements": 0,
+  "candidate_merged_cer": null,
+  "actual_merge_apply_s": null,
+  "acoustic_alignment_validated": false,
+  "scope_ko": "실제RP5 1배속/연속 Zip 유지·native 토큰/원문/시각/접두부·VAD/실제 Refine 수신·구조 후보 진단. 정답 비의존·실제 교체0. 단어/음소 경계/교체 안전성/UI/마이크/장시간 운영/최종 독립 평가는 미검증.",
+  "full_verified_report_sha256": "6763c760d577882be71d5f76330f6c51868de7ab009dc4a54f3b2b3a84e8e292",
+  "full_verified_report_path": "results/maintenance/m34-continuous-token-20261103-01/verified-full-report.json"
+}

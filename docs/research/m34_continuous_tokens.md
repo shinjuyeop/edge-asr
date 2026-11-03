@@ -45,3 +45,7 @@ Zip1T+Sense2T+VAD1T, 원음/vad0/100ms 입력·5청크 큐, 모델별 워밍업3
 .venv/bin/python scripts/edge_asr.py tools summarize-token-alignment \
   --run <완료된_원시_폴더> --output <별도_재집계.json>
 ```
+
+## 실행 기록
+
+소스 `fcc942a`의 [RP53회 결과](../../results/summaries/m34-continuous-token-20261103.md)를 확인했다. 연속 Zip/Refine 전사와 VAD PCM 불변·첫 부분 유지,3,119개 native 스냅샷 유효/접두부 수정0,34구조 후보/66보류였다. 원문 교체는0이며 경계 기준을 사후 완화하지 않았다. Host/RP5 각267개 회귀·원시66개 재집계·기존5,308개 파일/환경 보존을 확인했다. 다음은 후보 밖 전사를 보존한 모델 없는 교체 재생이며, 음향 정렬/실제 교정/UI/마이크 성공으로 표시하지 않는다.
