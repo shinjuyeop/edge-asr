@@ -65,3 +65,5 @@ edge-asr tools list
 `probe-concurrent --refine-policy vad0 --segment-merge`는 [같은 VAD 구간의 실제 병합 실험](../research/m33_segment_merge.md)이다. 구간별 Zip 상태 reset·300ms 보류가 있는 별도 조건으로, 기존 연속 Zip 모드는 유지한다. 실제 parent 수신/상태 적용과 UI 렌더링을 구분한다. `summarize-segment-merge`는 원시 모델 출력·PCM·이벤트/최종 상태를 모델 없이 교차 검증한다.
 
 `probe-concurrent --refine-policy vad0 --token-diagnostics`는 [연속 Zip 토큰/시각 진단](../research/m34_continuous_tokens.md)이다. 청크/상태는 유지하고 실제 전사는 교체하지 않는다. `summarize-token-alignment`로 native 결과·VAD/실제 수신·구조 진단을 모델 없이 재검증한다. `--segment-merge`와 함께 사용하지 않는다.
+
+`replay-splice --run <완료된 M3-4 기록> --policy all --output <새 폴더>`는 [기존 구조 후보의 제한 교체 재생](../research/m35_guarded_splice.md)이다. 원본 토큰/문자 범위로 조립하고 비선택 Zip 보존을 검증한다. 모델/음원 없이 실행하며 실제 병합/UI 지연과 구분한다.

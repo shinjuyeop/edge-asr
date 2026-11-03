@@ -34,6 +34,7 @@ COMMANDS = {
     "summarize-segmented-accuracy": "reports.segmented_accuracy",
     "summarize-concurrent": "reports.concurrent",
     "replay-merge": "reports.merge_replay",
+    "replay-splice": "reports.splice_replay",
     "summarize-segment-merge": "reports.segment_merge",
     "summarize-token-alignment": "reports.token_alignment",
     "summarize-annotated-vad": "reports.annotated_vad",

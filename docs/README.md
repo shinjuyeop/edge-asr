@@ -12,6 +12,7 @@
 | M3-2 병합 사전 검증 | [저장 실측의 파일 ID 단위 선택 정책](research/m32_merge_replay.md) |
 | M3-3 구간 병합 | [같은 VAD 구간의 Streaming/Refine 실측 계획](research/m33_segment_merge.md) |
 | M3-4 연속 토큰 진단 | [native 토큰 시각과 VAD 대응](research/m34_continuous_tokens.md) |
+| M3-5 제한 교체 재생 | [구조 후보의 literal 교체/보존 평가](research/m35_guarded_splice.md) |
 | 과거 기록 | [초기 Host 검증](archive/verification.md), [이전 폴더 통합 절차](archive/consolidation.md) |
 
 연구 절차의 미검증 항목과 당시 결과는 각 문서/보고서에서 명시합니다. 실행 전 현재 CLI의 `--help`를 확인하고, 과거 명령은 이행표에 따라 변환합니다. 원시 영수증의 명령·소스 해시는 당시 상태 그대로 보존합니다.
