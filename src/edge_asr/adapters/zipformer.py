@@ -112,3 +112,20 @@ class ZipformerAdapter:
             stream.accept_waveform(self.sample_rate_hz, self.padding)
         stream.input_finished()
         return self._decode_result(stream)
+
+    def token_snapshot(self, stream) -> dict:
+        """선택적 진단. decode/reset 없이 설치된 native 결과를 정밀도 손실 없이 읽는다."""
+        if self.recognizer is None:
+            raise RuntimeError("모델을 먼저 로드해야 합니다.")
+        native = getattr(self.recognizer, "recognizer", None)
+        if native is None or not hasattr(native, "get_result"):
+            raise TypeError("설치된 런타임의 native 토큰 결과 API를 사용할 수 없습니다.")
+        result = native.get_result(stream)
+        return {
+            "text": result.text,
+            "tokens": list(result.tokens),
+            "timestamps": list(result.timestamps),
+            "start_time": result.start_time,
+            "segment": result.segment,
+            "is_final": result.is_final,
+        }

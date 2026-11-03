@@ -35,6 +35,7 @@ COMMANDS = {
     "summarize-concurrent": "reports.concurrent",
     "replay-merge": "reports.merge_replay",
     "summarize-segment-merge": "reports.segment_merge",
+    "summarize-token-alignment": "reports.token_alignment",
     "summarize-annotated-vad": "reports.annotated_vad",
     "inspect-cooling": "reports.cooling",
     "consolidate": "maintenance.consolidate",

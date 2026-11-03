@@ -42,7 +42,10 @@ def probe(
     refine_policy="fixed5",
     vad_model=None,
     segment_merge=False,
+    token_diagnostics=False,
 ):
+    if token_diagnostics and (segment_merge or refine_policy != "vad0" or not refine_threads):
+        raise ValueError("연속 토큰 진단은 구간 reset 없이 Refine을 쓰는 vad0 별도 모드입니다.")
     if segment_merge and (refine_policy != "vad0" or not refine_threads):
         raise ValueError("구간 병합은 Refine을 사용하는 vad0 별도 모드입니다.")
     if (zip_threads, refine_threads) not in COMBINATIONS:
@@ -116,6 +119,15 @@ def probe(
         info["main_pid_components"].append("segment_merger_and_result_reader")
         info["unmeasured"].pop("hybrid_merged_cer")
         info["unmeasured"]["deployed_hybrid_service_cer"] = None
+    if token_diagnostics:
+        info["kind"] = "continuous_token_diagnostic_probe"
+        info["settings"].update(
+            token_diagnostics=True,
+            zip_state_policy="continuous_per_source",
+            replacements_enabled=False,
+            token_time_semantics="decoder_emission_point_not_acoustic_interval",
+        )
+        info["main_pid_components"].append("token_alignment_audit_and_result_reader")
     write_json(output / "worker.json", info)
     adapter = channel = replay = resources = None
     telemetry = {}
@@ -156,7 +168,7 @@ def probe(
             info["sensevoice_model_files"] = {
                 k: {"path": str(p), "sha256": digest(p)} for k, p in sense.model_files.items()
             }
-            if segment_merge:
+            if segment_merge or token_diagnostics:
                 from edge_asr.segment_merge import ReturningRefineChannel
 
                 channel = ReturningRefineChannel(root, sconfig["model"], warm, output)
@@ -267,7 +279,28 @@ def probe(
                 zlog,
                 jlog,
             )
-            if segment_merge:
+            if token_diagnostics:
+                from edge_asr.token_alignment import TokenTraceReplay
+
+                replay = TokenTraceReplay(
+                    *arguments,
+                    vad=vad,
+                    policy=refine_policy,
+                    convert=convert,
+                    token_log=stack.enter_context((output / "zip-token-snapshots.jsonl").open("x")),
+                    audit_log=stack.enter_context(
+                        (output / "token-alignment-events.jsonl").open("x")
+                    ),
+                    receipt_log=stack.enter_context((output / "refine-receipts.jsonl").open("x")),
+                )
+                channel.listen(replay.receive)
+                import sherpa_onnx
+
+                info["token_api"] = {
+                    "api": "OnlineRecognizer.recognizer.get_result",
+                    "sherpa_git_sha1": getattr(sherpa_onnx, "git_sha1", None),
+                }
+            elif segment_merge:
                 from edge_asr.segment_merge import SegmentMergeReplay
 
                 replay = SegmentMergeReplay(
@@ -340,7 +373,9 @@ def probe(
         info["finished_at_utc"] = datetime.now(timezone.utc).isoformat()
         write_json(output / "worker.json", info)
         if (output / "track.json").exists():
-            if segment_merge:
+            if token_diagnostics:
+                from edge_asr.tools.reports.token_alignment import summarize
+            elif segment_merge:
                 from edge_asr.tools.reports.segment_merge import summarize
             else:
                 from edge_asr.tools.reports.concurrent import summarize
@@ -375,6 +410,11 @@ def main():
     parser.add_argument("--refine-policy", choices=POLICIES, default="fixed5")
     parser.add_argument("--vad-model", type=Path)
     parser.add_argument(
+        "--token-diagnostics",
+        action="store_true",
+        help="연속 Zip의 토큰/시각/VAD 구조만 진단; 텍스트 교체 없음",
+    )
+    parser.add_argument(
         "--segment-merge",
         action="store_true",
         help="vad0 구간마다 Zip 상태를 새로 만드는 별도 병합 실험",
@@ -389,6 +429,7 @@ def main():
         refine_policy=args.refine_policy,
         vad_model=args.vad_model,
         segment_merge=args.segment_merge,
+        token_diagnostics=args.token_diagnostics,
     )
 
 

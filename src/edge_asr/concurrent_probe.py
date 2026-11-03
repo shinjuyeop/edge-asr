@@ -254,6 +254,7 @@ class ConcurrentReplay:
         self.stream = None
         self.job_start = 0
         self.next_job_end = min(sources[0]["end"], WINDOW)
+        self.observer = None
 
     def _call(self, call):
         began, cpu = time.perf_counter_ns(), time.process_time()
@@ -324,6 +325,8 @@ class ConcurrentReplay:
             returned = time.perf_counter_ns()
             if text and row["first_partial_ns"] is None:
                 row["first_partial_ns"] = returned
+            if self.observer is not None:
+                self.observer("partial", self.stream, text, stop, returned, self.source_index)
             write_event(
                 self.zip_log,
                 {
@@ -340,6 +343,10 @@ class ConcurrentReplay:
                 if not isinstance(final, str):
                     raise TypeError("Streaming 최종 전사는 문자열이어야 합니다.")
                 row.update(status="success", hypothesis=final, finalized_ns=time.perf_counter_ns())
+                if self.observer is not None:
+                    self.observer(
+                        "final", self.stream, final, stop, row["finalized_ns"], self.source_index
+                    )
                 write_event(self.zip_log, {"type": "source_final", **row})
                 self.source_index += 1
                 if self.source_index < len(self.sources):
