@@ -1,0 +1,1219 @@
+{
+  "schema": "guarded-splice-replay-report-v1",
+  "work_date": "2026-11-03",
+  "status": "completed_with_scope_limits",
+  "source_commit": "b981084a092103e47cbe59f23648a063bdb38850",
+  "native_input_source_commit": "fcc942af41f33b31f3df6e564afd407a593ff759",
+  "counts": {
+    "native_traces": 3,
+    "policies": 2,
+    "policy_replays_per_machine": 6,
+    "source_evaluations_per_machine": 114,
+    "distinct_original_sources": 57,
+    "original_structural_candidates": 34,
+    "native_files": 66,
+    "semantic_files_equal": 39
+  },
+  "plan_sha256": "fa3d9b2bdf02843a341f16108be43de3e78f4cd6b5fa4a0334f5f74a5aac5eb6",
+  "datasets": {
+    "kss-dev50": {
+      "replay": {
+        "schema": "guarded-token-splice-replay-v1",
+        "native_source_commit": "fcc942af41f33b31f3df6e564afd407a593ff759",
+        "session_id": "8a73dc6205f77bf7106c1ebe820ffb1c18590959c542fa478d448a3db788c901",
+        "sources": 50,
+        "structural_candidate_job_ids": [
+          0,
+          1,
+          4,
+          5,
+          9,
+          12,
+          13,
+          15,
+          16,
+          18,
+          20,
+          21,
+          25,
+          26,
+          27,
+          28,
+          30,
+          31,
+          33,
+          38,
+          39,
+          40,
+          41,
+          42,
+          45,
+          46,
+          48,
+          49,
+          53
+        ],
+        "policies": {
+          "zip_only": {
+            "policy": "zip_only",
+            "selected_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 50,
+              "worsened_sources": 0,
+              "error_delta": 0
+            },
+            "simulated_patch_admissions": 0,
+            "final_active_patches": 0,
+            "final_active_patch_ids": [],
+            "decision_reasons": {
+              "zip_only": 123
+            },
+            "ignored_events": {},
+            "conservation_checks": 1803,
+            "mechanical_missing_or_changed_unselected_zip_characters": 0,
+            "final_retained_zip_characters": 803,
+            "final_replaced_original_characters": 0,
+            "visible_text_changes": 379,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "boundary_diagnostics": {
+              "patches": 0,
+              "left_overlap_at_least_two_characters": 0,
+              "right_overlap_at_least_two_characters": 0,
+              "max_overlap_characters": 0,
+              "adjacent_punctuation_boundaries": 0,
+              "scope_ko": "중복 가능성의 기술적 관측. 2자는 표시용 고정 집계이며 선택/필터에 쓰지 않음. 실제 인식 삽입/삭제는 CER의 I/D로 별도 평가."
+            },
+            "trace_first_visible_from_source_start_s": {
+              "n": 50,
+              "mean": 0.9733463908000013,
+              "p50": 0.8526408850000013,
+              "p95": 1.4563882040000067,
+              "max": 1.4772796180000114
+            },
+            "trace_patch_admission_from_owned_end_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "trace_patch_admissions_before_source_audio_end": 0,
+            "timing_scope_ko": "M3-4 audit assessed_ns의 순서/가용 시점으로 재생한 상태 전환. 새 실시간 입력/ASR/실제 merge dispatch/UI 지연 측정이 아님.",
+            "unmeasured": {
+              "new_native_asr_rtf": null,
+              "new_native_asr_cpu_percent": null,
+              "new_native_asr_rss_mib": null,
+              "actual_merge_apply_s": null,
+              "ui_display_s": null,
+              "acoustic_alignment_s": null
+            }
+          },
+          "guarded_replace_v1": {
+            "policy": "guarded_replace_v1",
+            "selected_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 63,
+                "substitutions": 46,
+                "deletions": 9,
+                "insertions": 8,
+                "reference_characters": 756,
+                "value": 0.08333333333333333
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "versus_zip": {
+              "improved_sources": 13,
+              "tied_sources": 32,
+              "worsened_sources": 5,
+              "error_delta": -25
+            },
+            "simulated_patch_admissions": 29,
+            "final_active_patches": 29,
+            "final_active_patch_ids": [
+              0,
+              1,
+              4,
+              5,
+              9,
+              12,
+              13,
+              15,
+              16,
+              18,
+              20,
+              21,
+              25,
+              26,
+              27,
+              28,
+              30,
+              31,
+              33,
+              38,
+              39,
+              40,
+              41,
+              42,
+              45,
+              46,
+              48,
+              49,
+              53
+            ],
+            "decision_reasons": {
+              "diagnostic_not_candidate": 94,
+              "applied_in_replay": 29
+            },
+            "ignored_events": {},
+            "conservation_checks": 1832,
+            "mechanical_missing_or_changed_unselected_zip_characters": 0,
+            "final_retained_zip_characters": 407,
+            "final_replaced_original_characters": 396,
+            "visible_text_changes": 408,
+            "normalized_suffix_rewrite_events": 22,
+            "normalized_removed_suffix_characters": 249,
+            "boundary_diagnostics": {
+              "patches": 29,
+              "left_overlap_at_least_two_characters": 0,
+              "right_overlap_at_least_two_characters": 0,
+              "max_overlap_characters": 1,
+              "adjacent_punctuation_boundaries": 0,
+              "scope_ko": "중복 가능성의 기술적 관측. 2자는 표시용 고정 집계이며 선택/필터에 쓰지 않음. 실제 인식 삽입/삭제는 CER의 I/D로 별도 평가."
+            },
+            "trace_first_visible_from_source_start_s": {
+              "n": 50,
+              "mean": 0.9733463908000013,
+              "p50": 0.8526408850000013,
+              "p95": 1.4563882040000067,
+              "max": 1.4772796180000114
+            },
+            "trace_patch_admission_from_owned_end_s": {
+              "n": 29,
+              "mean": 0.3420040863448271,
+              "p50": 0.2769042780000035,
+              "p95": 0.9899620329999976,
+              "max": 1.0597598559999994
+            },
+            "trace_patch_admissions_before_source_audio_end": 4,
+            "timing_scope_ko": "M3-4 audit assessed_ns의 순서/가용 시점으로 재생한 상태 전환. 새 실시간 입력/ASR/실제 merge dispatch/UI 지연 측정이 아님.",
+            "unmeasured": {
+              "new_native_asr_rtf": null,
+              "new_native_asr_cpu_percent": null,
+              "new_native_asr_rss_mib": null,
+              "actual_merge_apply_s": null,
+              "ui_display_s": null,
+              "acoustic_alignment_s": null
+            }
+          }
+        },
+        "input_files_sha256": {
+          "admission.jsonl": "bf09ce0b797fccbd4fb9c251abec3f07ce34eb194d81068f4bdc1df54bcb8c78",
+          "capture/backlog.jsonl": "abc3f19925c2f51551232d212393f8c30caf53aa828eeb54d420590a34c44c65",
+          "capture/decoder.jsonl": "dcb8b4f30a479b391e2c3f8dde2a6f025a96ecc3cd320af2577b808c42d53eaf",
+          "capture/producer.jsonl": "0fc66c9a3d781e04fee55e25c6dbffc9394f74750b1802b010689542671e07d5",
+          "console.log": "ebf47122e3487b2d5468f620e56dbbc5b46d0b078f8dee815073f9abff9b87ad",
+          "execution.json": "7ef0598158eb2bcb02fa077bb6a151e72de5d5b816e1fa0ad7b11440bd4d3338",
+          "process-resources.jsonl": "440fcf8eb945ff9bb19330a87d3ea54bd01d9c585d6e68c2b580dc471b6c048a",
+          "refine-jobs.jsonl": "c4b622e14d12c960709a986330f2ab81d631635f1dfa76a838260c527dcadb2e",
+          "refine-receipts.jsonl": "6b28c5fa145662f3d3f5a4e9261cb694ca5bd501c6628536bae3aea5555f7c44",
+          "refine-results.jsonl": "d95df4efa865c460e12b8772e2a03b33e5642442c26c8a544f8fe78e05a60a0f",
+          "summary.json": "7606bc8ff99b5840e26c018fcabe0518fcb7be19fbb8ad98467ebc84969724a6",
+          "thermal.jsonl": "152b65b3cc81213eec5198b209f9cd10419e8040dcc5cbdd6fe1a119957c2b10",
+          "thread-resources.jsonl": "7e1694ced18b0b6a84f02ea49b6fbad59f34478a54322981922cad088ac09f73",
+          "threads.jsonl": "148ba92ab60391d859a6bacdf31e919b27019a9036e3f8bdd7e49f9687efb82d",
+          "token-alignment-events.jsonl": "9f7d4ffda2b91cbb61c154a2651f3a242d16a97911817a827b466da09c08e5db",
+          "track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+          "vad-sources.jsonl": "b648cd13af5e2f53e02e4e8889743c33c62c7bae85a5d3b76612b6ea3429ef91",
+          "warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "worker.json": "8a73dc6205f77bf7106c1ebe820ffb1c18590959c542fa478d448a3db788c901",
+          "zip-events.jsonl": "fa51c2f5abcb5165f440fabec9591516e7bb84890c76d7a8bcc93c055cf3312b",
+          "zip-sources.jsonl": "4ba7da68feb84e508c4050209fa820ba57b1fdac055c9ae7d55f7cbd850ddcbd",
+          "zip-token-snapshots.jsonl": "4a054f1a8e6ed3e77f6b19c9932fa8bc2d1fffe3cc8fa1b557d7d2ce7208ebea"
+        },
+        "code_sha256": {
+          "token_splice.py": "b379f13c17151a059d55f8f30b8edafe3951c4a33939b7116d1159f695461ab3",
+          "splice_replay.py": "34ce448641df042661818709153cf419b2cc970a86799f414f1ef75eba9e1ced"
+        },
+        "scope_ko": "정답 비의존 사전 구조 후보의 literal 교체를 저장 로그에서만 재생. 비선택 원본은 보존하며 문장부호/공백/중복 제거 없음. 신규 ASR/실시간 입력/실제 교체/UI 실행 없음."
+      },
+      "worsened_sources": [
+        {
+          "id": "kss-train-01001",
+          "error_delta": 2,
+          "zip_errors": 2,
+          "selected_errors": 4,
+          "active_patch_ids": [
+            1
+          ],
+          "parts": [
+            {
+              "kind": "refine",
+              "original_range": [
+                0,
+                22
+              ],
+              "job_id": 1
+            }
+          ],
+          "refine_payload_source_ranges_s": [
+            [
+              0.38,
+              4.9284375
+            ]
+          ],
+          "zip_hypothesis_sha256": "2b9ef70f856d8a7117302bd1040c0a26da10a15c56054b742bfc421ae0d4df09",
+          "selected_hypothesis_sha256": "7be9583c005f849aae7db22a5acda019922586ebbbe3842ac230567fa7b7b87d"
+        },
+        {
+          "id": "kss-train-01011",
+          "error_delta": 1,
+          "zip_errors": 0,
+          "selected_errors": 1,
+          "active_patch_ids": [
+            13
+          ],
+          "parts": [
+            {
+              "kind": "refine",
+              "original_range": [
+                0,
+                7
+              ],
+              "job_id": 13
+            }
+          ],
+          "refine_payload_source_ranges_s": [
+            [
+              0.124,
+              1.31625
+            ]
+          ],
+          "zip_hypothesis_sha256": "6cc00047c0e9b54eb9e2ddb2536fcab778675995fd72d9a07ef8d7008b126b85",
+          "selected_hypothesis_sha256": "cdf5178b1cd693a3c79fe3bb1957b04a5df61ea16eb347d0f3f2ab34e106577f"
+        },
+        {
+          "id": "kss-train-01035",
+          "error_delta": 3,
+          "zip_errors": 0,
+          "selected_errors": 3,
+          "active_patch_ids": [
+            41
+          ],
+          "parts": [
+            {
+              "kind": "refine",
+              "original_range": [
+                0,
+                23
+              ],
+              "job_id": 41
+            }
+          ],
+          "refine_payload_source_ranges_s": [
+            [
+              0.124,
+              3.8010625
+            ]
+          ],
+          "zip_hypothesis_sha256": "90ee9b655dd47b2f8affeb216e05319272b79db3ef13f21c1114d30669e29599",
+          "selected_hypothesis_sha256": "ac419972034599a0e3b5e0320b769afb244157d22b1b8c28f4f47c4dc9c3ac28"
+        },
+        {
+          "id": "kss-train-01036",
+          "error_delta": 1,
+          "zip_errors": 0,
+          "selected_errors": 1,
+          "active_patch_ids": [
+            42
+          ],
+          "parts": [
+            {
+              "kind": "refine",
+              "original_range": [
+                0,
+                20
+              ],
+              "job_id": 42
+            }
+          ],
+          "refine_payload_source_ranges_s": [
+            [
+              0.38,
+              4.273125
+            ]
+          ],
+          "zip_hypothesis_sha256": "4d9d4546b5389dd6b89fc16030987edfc6fd83ef22c304ff77ec7c7696759354",
+          "selected_hypothesis_sha256": "2c63ba0bd7eddf84ee7674c4f1f19a4139abe7aeb09237fa187ec91adfd6c5b1"
+        },
+        {
+          "id": "kss-train-01041",
+          "error_delta": 3,
+          "zip_errors": 3,
+          "selected_errors": 6,
+          "active_patch_ids": [
+            48
+          ],
+          "parts": [
+            {
+              "kind": "refine",
+              "original_range": [
+                0,
+                20
+              ],
+              "job_id": 48
+            }
+          ],
+          "refine_payload_source_ranges_s": [
+            [
+              0.54,
+              3.9009375
+            ]
+          ],
+          "zip_hypothesis_sha256": "68873c4f8b6d7212603896807f6a80a73b69a4716e09a0256a9cabf7d8b4df67",
+          "selected_hypothesis_sha256": "da0dd4724654bde1e1f8d27666644ab52ee1b0dad8b96ff39e85cb312dcbdcb3"
+        }
+      ],
+      "sources_with_active_patches": 27,
+      "sources_with_changed_final_raw_text": 27,
+      "input_summary_sha256": "7606bc8ff99b5840e26c018fcabe0518fcb7be19fbb8ad98467ebc84969724a6"
+    },
+    "synthetic-120": {
+      "replay": {
+        "schema": "guarded-token-splice-replay-v1",
+        "native_source_commit": "fcc942af41f33b31f3df6e564afd407a593ff759",
+        "session_id": "155a372c60e3fdc3cb2ce2bdf5d9316406c365a354c3e9388ea05458f244b712",
+        "sources": 1,
+        "structural_candidate_job_ids": [
+          0,
+          3,
+          5,
+          7,
+          26
+        ],
+        "policies": {
+          "zip_only": {
+            "policy": "zip_only",
+            "selected_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 1,
+              "worsened_sources": 0,
+              "error_delta": 0
+            },
+            "simulated_patch_admissions": 0,
+            "final_active_patches": 0,
+            "final_active_patch_ids": [],
+            "decision_reasons": {
+              "zip_only": 105
+            },
+            "ignored_events": {},
+            "conservation_checks": 1208,
+            "mechanical_missing_or_changed_unselected_zip_characters": 0,
+            "final_retained_zip_characters": 584,
+            "final_replaced_original_characters": 0,
+            "visible_text_changes": 283,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "boundary_diagnostics": {
+              "patches": 0,
+              "left_overlap_at_least_two_characters": 0,
+              "right_overlap_at_least_two_characters": 0,
+              "max_overlap_characters": 0,
+              "adjacent_punctuation_boundaries": 0,
+              "scope_ko": "중복 가능성의 기술적 관측. 2자는 표시용 고정 집계이며 선택/필터에 쓰지 않음. 실제 인식 삽입/삭제는 CER의 I/D로 별도 평가."
+            },
+            "trace_first_visible_from_source_start_s": {
+              "n": 1,
+              "mean": 0.84335977,
+              "p50": null,
+              "p95": null,
+              "max": 0.84335977
+            },
+            "trace_patch_admission_from_owned_end_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "trace_patch_admissions_before_source_audio_end": 0,
+            "timing_scope_ko": "M3-4 audit assessed_ns의 순서/가용 시점으로 재생한 상태 전환. 새 실시간 입력/ASR/실제 merge dispatch/UI 지연 측정이 아님.",
+            "unmeasured": {
+              "new_native_asr_rtf": null,
+              "new_native_asr_cpu_percent": null,
+              "new_native_asr_rss_mib": null,
+              "actual_merge_apply_s": null,
+              "ui_display_s": null,
+              "acoustic_alignment_s": null
+            }
+          },
+          "guarded_replace_v1": {
+            "policy": "guarded_replace_v1",
+            "selected_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 55,
+                "substitutions": 43,
+                "deletions": 10,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.10597302504816955
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "versus_zip": {
+              "improved_sources": 1,
+              "tied_sources": 0,
+              "worsened_sources": 0,
+              "error_delta": -3
+            },
+            "simulated_patch_admissions": 5,
+            "final_active_patches": 5,
+            "final_active_patch_ids": [
+              0,
+              3,
+              5,
+              7,
+              26
+            ],
+            "decision_reasons": {
+              "diagnostic_not_candidate": 100,
+              "applied_in_replay": 5
+            },
+            "ignored_events": {},
+            "conservation_checks": 1213,
+            "mechanical_missing_or_changed_unselected_zip_characters": 0,
+            "final_retained_zip_characters": 521,
+            "final_replaced_original_characters": 63,
+            "visible_text_changes": 288,
+            "normalized_suffix_rewrite_events": 2,
+            "normalized_removed_suffix_characters": 25,
+            "boundary_diagnostics": {
+              "patches": 5,
+              "left_overlap_at_least_two_characters": 0,
+              "right_overlap_at_least_two_characters": 0,
+              "max_overlap_characters": 0,
+              "adjacent_punctuation_boundaries": 0,
+              "scope_ko": "중복 가능성의 기술적 관측. 2자는 표시용 고정 집계이며 선택/필터에 쓰지 않음. 실제 인식 삽입/삭제는 CER의 I/D로 별도 평가."
+            },
+            "trace_first_visible_from_source_start_s": {
+              "n": 1,
+              "mean": 0.84335977,
+              "p50": null,
+              "p95": null,
+              "max": 0.84335977
+            },
+            "trace_patch_admission_from_owned_end_s": {
+              "n": 5,
+              "mean": 1.331814593600002,
+              "p50": 1.2401042150000023,
+              "p95": 1.6031789969999997,
+              "max": 1.6031789969999997
+            },
+            "trace_patch_admissions_before_source_audio_end": 5,
+            "timing_scope_ko": "M3-4 audit assessed_ns의 순서/가용 시점으로 재생한 상태 전환. 새 실시간 입력/ASR/실제 merge dispatch/UI 지연 측정이 아님.",
+            "unmeasured": {
+              "new_native_asr_rtf": null,
+              "new_native_asr_cpu_percent": null,
+              "new_native_asr_rss_mib": null,
+              "actual_merge_apply_s": null,
+              "ui_display_s": null,
+              "acoustic_alignment_s": null
+            }
+          }
+        },
+        "input_files_sha256": {
+          "admission.jsonl": "87a89e667047c4d6b0c41dfa682f30c307db5a18597c865ac3cc2541a646df12",
+          "capture/backlog.jsonl": "f709a8bdf0f467011e251e293370678249cac3788faea6de413957e91478b41a",
+          "capture/decoder.jsonl": "374baf24633b24812bc600ecd7046f69655a4d415cf8b67a4c4484f6ac49b368",
+          "capture/producer.jsonl": "a210bbd1b86ceef8a26d1f9040b5d130bdb7951ef7746b122501e52d8eb48a66",
+          "console.log": "6371c72a9ee4a894d9cd9425e8080050d5946645daa9352dd7514ae77807236e",
+          "execution.json": "a784dec52e27d64794ffa8eae5350f13f934bda1885781e2b4b8a87fa1aa2811",
+          "process-resources.jsonl": "c41ece0e474c1c2c7afd812f3ee932d25e7a24f8a34a6f49aea108c18dcb9924",
+          "refine-jobs.jsonl": "77b2c0ad41f16ab705a203ac7f7db54b26fe3e586094ee6991569707510681f6",
+          "refine-receipts.jsonl": "8ab3a8fbcfbfe5bde8fd65d8fe2007e04c0e42d54fec46f29e10f9ea86fe6373",
+          "refine-results.jsonl": "b40aff6f5b44a2e26eabc4de71b9deba0c9af7b71fe962a6459cceae85108bbc",
+          "summary.json": "214287757ce8f01fa4a7cb3187dc597ed4411ff40202f3eff2ca4d36ac97095b",
+          "thermal.jsonl": "bef3c6e959dc36f69f0ea49259d6ee3feb4d19d0fc844010c0a838716af5eecd",
+          "thread-resources.jsonl": "b86d471e00cb9aad3af05037abe365d277a1fe4138631f039272f4f473d0af3d",
+          "threads.jsonl": "0b589a8bfcd743d58ef9712974d7b1f8791a60d8252e870df37e9e1dbbe5db8b",
+          "token-alignment-events.jsonl": "f4892f67ab6c463c3cf6efef075697f135411ed0f8f405588f53ab20cacba3eb",
+          "track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+          "vad-sources.jsonl": "66522b59786794b25a65cf1b4e2d1d07cc60a6065fdcb75910f473c3fc7ed2b3",
+          "warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "worker.json": "155a372c60e3fdc3cb2ce2bdf5d9316406c365a354c3e9388ea05458f244b712",
+          "zip-events.jsonl": "45e72e9351235667eb9376ae3e0e70c7921459019d88811035ed86a8f1342c5c",
+          "zip-sources.jsonl": "073e729684c3a70c23248a531197cd4dbaad9b9ba07d8bcffe8b2ffe292e1de0",
+          "zip-token-snapshots.jsonl": "01ff87fe184f3c5ed29f33f97a1c841b2d2b2654c9abd1a9f6b2a973c0740674"
+        },
+        "code_sha256": {
+          "token_splice.py": "b379f13c17151a059d55f8f30b8edafe3951c4a33939b7116d1159f695461ab3",
+          "splice_replay.py": "34ce448641df042661818709153cf419b2cc970a86799f414f1ef75eba9e1ced"
+        },
+        "scope_ko": "정답 비의존 사전 구조 후보의 literal 교체를 저장 로그에서만 재생. 비선택 원본은 보존하며 문장부호/공백/중복 제거 없음. 신규 ASR/실시간 입력/실제 교체/UI 실행 없음."
+      },
+      "worsened_sources": [],
+      "sources_with_active_patches": 1,
+      "sources_with_changed_final_raw_text": 1,
+      "input_summary_sha256": "214287757ce8f01fa4a7cb3187dc597ed4411ff40202f3eff2ca4d36ac97095b"
+    },
+    "digital-silence": {
+      "replay": {
+        "schema": "guarded-token-splice-replay-v1",
+        "native_source_commit": "fcc942af41f33b31f3df6e564afd407a593ff759",
+        "session_id": "1f140007fab8d88d9f0360a0b54263fcdfe450e1f44e6de21a922f84886765ef",
+        "sources": 6,
+        "structural_candidate_job_ids": [],
+        "policies": {
+          "zip_only": {
+            "policy": "zip_only",
+            "selected_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 0,
+              "worsened_sources": 0,
+              "error_delta": 0
+            },
+            "simulated_patch_admissions": 0,
+            "final_active_patches": 0,
+            "final_active_patch_ids": [],
+            "decision_reasons": {},
+            "ignored_events": {},
+            "conservation_checks": 165,
+            "mechanical_missing_or_changed_unselected_zip_characters": 0,
+            "final_retained_zip_characters": 0,
+            "final_replaced_original_characters": 0,
+            "visible_text_changes": 0,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "boundary_diagnostics": {
+              "patches": 0,
+              "left_overlap_at_least_two_characters": 0,
+              "right_overlap_at_least_two_characters": 0,
+              "max_overlap_characters": 0,
+              "adjacent_punctuation_boundaries": 0,
+              "scope_ko": "중복 가능성의 기술적 관측. 2자는 표시용 고정 집계이며 선택/필터에 쓰지 않음. 실제 인식 삽입/삭제는 CER의 I/D로 별도 평가."
+            },
+            "trace_first_visible_from_source_start_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "trace_patch_admission_from_owned_end_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "trace_patch_admissions_before_source_audio_end": 0,
+            "timing_scope_ko": "M3-4 audit assessed_ns의 순서/가용 시점으로 재생한 상태 전환. 새 실시간 입력/ASR/실제 merge dispatch/UI 지연 측정이 아님.",
+            "unmeasured": {
+              "new_native_asr_rtf": null,
+              "new_native_asr_cpu_percent": null,
+              "new_native_asr_rss_mib": null,
+              "actual_merge_apply_s": null,
+              "ui_display_s": null,
+              "acoustic_alignment_s": null
+            }
+          },
+          "guarded_replace_v1": {
+            "policy": "guarded_replace_v1",
+            "selected_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "zip_cer": {
+              "planned": 6,
+              "successful": 6,
+              "complete": true,
+              "cer": {
+                "errors": 0,
+                "substitutions": 0,
+                "deletions": 0,
+                "insertions": 0,
+                "reference_characters": 0,
+                "value": null,
+                "empty_reference_samples": 6,
+                "empty_reference_nonempty_hypotheses": 0
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "versus_zip": {
+              "improved_sources": 0,
+              "tied_sources": 0,
+              "worsened_sources": 0,
+              "error_delta": 0
+            },
+            "simulated_patch_admissions": 0,
+            "final_active_patches": 0,
+            "final_active_patch_ids": [],
+            "decision_reasons": {},
+            "ignored_events": {},
+            "conservation_checks": 165,
+            "mechanical_missing_or_changed_unselected_zip_characters": 0,
+            "final_retained_zip_characters": 0,
+            "final_replaced_original_characters": 0,
+            "visible_text_changes": 0,
+            "normalized_suffix_rewrite_events": 0,
+            "normalized_removed_suffix_characters": 0,
+            "boundary_diagnostics": {
+              "patches": 0,
+              "left_overlap_at_least_two_characters": 0,
+              "right_overlap_at_least_two_characters": 0,
+              "max_overlap_characters": 0,
+              "adjacent_punctuation_boundaries": 0,
+              "scope_ko": "중복 가능성의 기술적 관측. 2자는 표시용 고정 집계이며 선택/필터에 쓰지 않음. 실제 인식 삽입/삭제는 CER의 I/D로 별도 평가."
+            },
+            "trace_first_visible_from_source_start_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "trace_patch_admission_from_owned_end_s": {
+              "n": 0,
+              "mean": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "trace_patch_admissions_before_source_audio_end": 0,
+            "timing_scope_ko": "M3-4 audit assessed_ns의 순서/가용 시점으로 재생한 상태 전환. 새 실시간 입력/ASR/실제 merge dispatch/UI 지연 측정이 아님.",
+            "unmeasured": {
+              "new_native_asr_rtf": null,
+              "new_native_asr_cpu_percent": null,
+              "new_native_asr_rss_mib": null,
+              "actual_merge_apply_s": null,
+              "ui_display_s": null,
+              "acoustic_alignment_s": null
+            }
+          }
+        },
+        "input_files_sha256": {
+          "admission.jsonl": "1ba719e8e12a1a602b4f524899257c447cc652d714fa7c8706f52958f66b9118",
+          "capture/backlog.jsonl": "00823ac29ba4d75e04b05a47f5d2a4f66691f551f7ae9f2d6ac232958f74b685",
+          "capture/decoder.jsonl": "4df5b47f0f94c922e51afa1fdc279d3fb4b60cd06cf6d86bce3e97fafd17fda3",
+          "capture/producer.jsonl": "a0b7b3f0f3f537671200f103e5488878e7be1b0c108cd28f8fcac4e21837f53c",
+          "console.log": "c129028eaf565726df78bd3060e66d655f1da0c9767c28eef71311f93fef50bc",
+          "execution.json": "d30985bbf9142568254d2ae82d0e77f4b80bfa50fe111e0093c6759909eaf436",
+          "process-resources.jsonl": "f319e916a9ea8d46ae2e27a6c548b8f61b0ea5ab371c55d7e9471fb21e029853",
+          "refine-jobs.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "refine-receipts.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "refine-results.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "summary.json": "0994004b0b6a5ab114cf28a279ac3cd46391ef77d34f967f0dfabfdd55c4b896",
+          "thermal.jsonl": "2ef57450f8990a9df45e16257de216ff3a51118cae3cc834f6c576c3c02c5c31",
+          "thread-resources.jsonl": "ef6a752298d52c589f3c7f0cb30471c7fed54914e8d1d77ec8dfcb597b47906d",
+          "threads.jsonl": "10bd33508145cdf5a324e8e551a4b2ddee276300d6b821fa90607b3f115b7256",
+          "token-alignment-events.jsonl": "dcc0be39aded1ec81c989ece30a9945d5e7968e1323cb24b72cd0593322a14d9",
+          "track.json": "c96be17e61d2adea333bb1970ec63f3bb29eff162ea98891913001abca579f95",
+          "vad-sources.jsonl": "33b45e269fbb524a536d38728d407acdfc166e9653c78b5a9e7b5f287411a6d9",
+          "warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "worker.json": "1f140007fab8d88d9f0360a0b54263fcdfe450e1f44e6de21a922f84886765ef",
+          "zip-events.jsonl": "b6a8cd78a18c3c268f8aa3859fed25673f25c3f85b858b3b2e925f3af8236fee",
+          "zip-sources.jsonl": "4221f4e4b9e585667c5951d7650e742401e840d5c4ed760b87e4b3bd10685bbc",
+          "zip-token-snapshots.jsonl": "7ee818038d5df15746bc9ecd453a6b2d807fe174a4218e860b9b183f084cc3b3"
+        },
+        "code_sha256": {
+          "token_splice.py": "b379f13c17151a059d55f8f30b8edafe3951c4a33939b7116d1159f695461ab3",
+          "splice_replay.py": "34ce448641df042661818709153cf419b2cc970a86799f414f1ef75eba9e1ced"
+        },
+        "scope_ko": "정답 비의존 사전 구조 후보의 literal 교체를 저장 로그에서만 재생. 비선택 원본은 보존하며 문장부호/공백/중복 제거 없음. 신규 ASR/실시간 입력/실제 교체/UI 실행 없음."
+      },
+      "worsened_sources": [],
+      "sources_with_active_patches": 0,
+      "sources_with_changed_final_raw_text": 0,
+      "input_summary_sha256": "0994004b0b6a5ab114cf28a279ac3cd46391ef77d34f967f0dfabfdd55c4b896"
+    }
+  },
+  "tests": {
+    "host": {
+      "count": 279,
+      "wall_s": 39.318,
+      "sha256": "f9ce857d7c33f36f0b91364ace9bddbb584d010d2da1e548b00e70ffda875b30",
+      "scope_ko": "모의/기록 재생 단위 테스트. 새 실제 ASR 성공 증거가 아님."
+    },
+    "rp5": {
+      "count": 279,
+      "wall_s": 64.954,
+      "sha256": "3ef48274097eb5198887311ccc301e6e813c71c3897755685ef8facefb4daad8",
+      "scope_ko": "모의/기록 재생 단위 테스트. 새 실제 ASR 성공 증거가 아님."
+    }
+  },
+  "worsened_sources": [
+    {
+      "dataset": "kss-dev50",
+      "id": "kss-train-01001",
+      "error_delta": 2,
+      "zip_errors": 2,
+      "selected_errors": 4,
+      "active_patch_ids": [
+        1
+      ],
+      "parts": [
+        {
+          "kind": "refine",
+          "original_range": [
+            0,
+            22
+          ],
+          "job_id": 1
+        }
+      ],
+      "refine_payload_source_ranges_s": [
+        [
+          0.38,
+          4.9284375
+        ]
+      ],
+      "zip_hypothesis_sha256": "2b9ef70f856d8a7117302bd1040c0a26da10a15c56054b742bfc421ae0d4df09",
+      "selected_hypothesis_sha256": "7be9583c005f849aae7db22a5acda019922586ebbbe3842ac230567fa7b7b87d"
+    },
+    {
+      "dataset": "kss-dev50",
+      "id": "kss-train-01011",
+      "error_delta": 1,
+      "zip_errors": 0,
+      "selected_errors": 1,
+      "active_patch_ids": [
+        13
+      ],
+      "parts": [
+        {
+          "kind": "refine",
+          "original_range": [
+            0,
+            7
+          ],
+          "job_id": 13
+        }
+      ],
+      "refine_payload_source_ranges_s": [
+        [
+          0.124,
+          1.31625
+        ]
+      ],
+      "zip_hypothesis_sha256": "6cc00047c0e9b54eb9e2ddb2536fcab778675995fd72d9a07ef8d7008b126b85",
+      "selected_hypothesis_sha256": "cdf5178b1cd693a3c79fe3bb1957b04a5df61ea16eb347d0f3f2ab34e106577f"
+    },
+    {
+      "dataset": "kss-dev50",
+      "id": "kss-train-01035",
+      "error_delta": 3,
+      "zip_errors": 0,
+      "selected_errors": 3,
+      "active_patch_ids": [
+        41
+      ],
+      "parts": [
+        {
+          "kind": "refine",
+          "original_range": [
+            0,
+            23
+          ],
+          "job_id": 41
+        }
+      ],
+      "refine_payload_source_ranges_s": [
+        [
+          0.124,
+          3.8010625
+        ]
+      ],
+      "zip_hypothesis_sha256": "90ee9b655dd47b2f8affeb216e05319272b79db3ef13f21c1114d30669e29599",
+      "selected_hypothesis_sha256": "ac419972034599a0e3b5e0320b769afb244157d22b1b8c28f4f47c4dc9c3ac28"
+    },
+    {
+      "dataset": "kss-dev50",
+      "id": "kss-train-01036",
+      "error_delta": 1,
+      "zip_errors": 0,
+      "selected_errors": 1,
+      "active_patch_ids": [
+        42
+      ],
+      "parts": [
+        {
+          "kind": "refine",
+          "original_range": [
+            0,
+            20
+          ],
+          "job_id": 42
+        }
+      ],
+      "refine_payload_source_ranges_s": [
+        [
+          0.38,
+          4.273125
+        ]
+      ],
+      "zip_hypothesis_sha256": "4d9d4546b5389dd6b89fc16030987edfc6fd83ef22c304ff77ec7c7696759354",
+      "selected_hypothesis_sha256": "2c63ba0bd7eddf84ee7674c4f1f19a4139abe7aeb09237fa187ec91adfd6c5b1"
+    },
+    {
+      "dataset": "kss-dev50",
+      "id": "kss-train-01041",
+      "error_delta": 3,
+      "zip_errors": 3,
+      "selected_errors": 6,
+      "active_patch_ids": [
+        48
+      ],
+      "parts": [
+        {
+          "kind": "refine",
+          "original_range": [
+            0,
+            20
+          ],
+          "job_id": 48
+        }
+      ],
+      "refine_payload_source_ranges_s": [
+        [
+          0.54,
+          3.9009375
+        ]
+      ],
+      "zip_hypothesis_sha256": "68873c4f8b6d7212603896807f6a80a73b69a4716e09a0256a9cabf7d8b4df67",
+      "selected_hypothesis_sha256": "da0dd4724654bde1e1f8d27666644ab52ee1b0dad8b96ff39e85cb312dcbdcb3"
+    }
+  ],
+  "preservation": {
+    "protected_files": 5404,
+    "changed": [],
+    "missing": [],
+    "environment_unchanged": true,
+    "system_settings_unchanged": true,
+    "working_tree_clean": true,
+    "source_commit": "b981084a092103e47cbe59f23648a063bdb38850",
+    "native_asr_inference": false
+  },
+  "before_source_commit": "5e7ec77b1bca979d03ddf761e4c3bd726a4201f1",
+  "native_files_sha256": {
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/token-alignment-events.jsonl": "9f7d4ffda2b91cbb61c154a2651f3a242d16a97911817a827b466da09c08e5db",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/threads.jsonl": "148ba92ab60391d859a6bacdf31e919b27019a9036e3f8bdd7e49f9687efb82d",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/execution.json": "7ef0598158eb2bcb02fa077bb6a151e72de5d5b816e1fa0ad7b11440bd4d3338",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/thermal.jsonl": "152b65b3cc81213eec5198b209f9cd10419e8040dcc5cbdd6fe1a119957c2b10",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/refine-jobs.jsonl": "c4b622e14d12c960709a986330f2ab81d631635f1dfa76a838260c527dcadb2e",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/worker.json": "8a73dc6205f77bf7106c1ebe820ffb1c18590959c542fa478d448a3db788c901",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/process-resources.jsonl": "440fcf8eb945ff9bb19330a87d3ea54bd01d9c585d6e68c2b580dc471b6c048a",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/thread-resources.jsonl": "7e1694ced18b0b6a84f02ea49b6fbad59f34478a54322981922cad088ac09f73",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/refine-results.jsonl": "d95df4efa865c460e12b8772e2a03b33e5642442c26c8a544f8fe78e05a60a0f",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/zip-events.jsonl": "fa51c2f5abcb5165f440fabec9591516e7bb84890c76d7a8bcc93c055cf3312b",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/console.log": "ebf47122e3487b2d5468f620e56dbbc5b46d0b078f8dee815073f9abff9b87ad",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/refine-receipts.jsonl": "6b28c5fa145662f3d3f5a4e9261cb694ca5bd501c6628536bae3aea5555f7c44",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/zip-sources.jsonl": "4ba7da68feb84e508c4050209fa820ba57b1fdac055c9ae7d55f7cbd850ddcbd",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/admission.jsonl": "bf09ce0b797fccbd4fb9c251abec3f07ce34eb194d81068f4bdc1df54bcb8c78",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/summary.json": "7606bc8ff99b5840e26c018fcabe0518fcb7be19fbb8ad98467ebc84969724a6",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/zip-token-snapshots.jsonl": "4a054f1a8e6ed3e77f6b19c9932fa8bc2d1fffe3cc8fa1b557d7d2ce7208ebea",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/vad-sources.jsonl": "b648cd13af5e2f53e02e4e8889743c33c62c7bae85a5d3b76612b6ea3429ef91",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/capture/decoder.jsonl": "dcb8b4f30a479b391e2c3f8dde2a6f025a96ecc3cd320af2577b808c42d53eaf",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/capture/producer.jsonl": "0fc66c9a3d781e04fee55e25c6dbffc9394f74750b1802b010689542671e07d5",
+    "results/preflight/m34-continuous-token-20261103-01/kss-dev50/vad0/capture/backlog.jsonl": "abc3f19925c2f51551232d212393f8c30caf53aa828eeb54d420590a34c44c65",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/token-alignment-events.jsonl": "f4892f67ab6c463c3cf6efef075697f135411ed0f8f405588f53ab20cacba3eb",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/threads.jsonl": "0b589a8bfcd743d58ef9712974d7b1f8791a60d8252e870df37e9e1dbbe5db8b",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/execution.json": "a784dec52e27d64794ffa8eae5350f13f934bda1885781e2b4b8a87fa1aa2811",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/thermal.jsonl": "bef3c6e959dc36f69f0ea49259d6ee3feb4d19d0fc844010c0a838716af5eecd",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/refine-jobs.jsonl": "77b2c0ad41f16ab705a203ac7f7db54b26fe3e586094ee6991569707510681f6",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/worker.json": "155a372c60e3fdc3cb2ce2bdf5d9316406c365a354c3e9388ea05458f244b712",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/process-resources.jsonl": "c41ece0e474c1c2c7afd812f3ee932d25e7a24f8a34a6f49aea108c18dcb9924",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/thread-resources.jsonl": "b86d471e00cb9aad3af05037abe365d277a1fe4138631f039272f4f473d0af3d",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/refine-results.jsonl": "b40aff6f5b44a2e26eabc4de71b9deba0c9af7b71fe962a6459cceae85108bbc",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/zip-events.jsonl": "45e72e9351235667eb9376ae3e0e70c7921459019d88811035ed86a8f1342c5c",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/console.log": "6371c72a9ee4a894d9cd9425e8080050d5946645daa9352dd7514ae77807236e",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/refine-receipts.jsonl": "8ab3a8fbcfbfe5bde8fd65d8fe2007e04c0e42d54fec46f29e10f9ea86fe6373",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/zip-sources.jsonl": "073e729684c3a70c23248a531197cd4dbaad9b9ba07d8bcffe8b2ffe292e1de0",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/admission.jsonl": "87a89e667047c4d6b0c41dfa682f30c307db5a18597c865ac3cc2541a646df12",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/summary.json": "214287757ce8f01fa4a7cb3187dc597ed4411ff40202f3eff2ca4d36ac97095b",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/zip-token-snapshots.jsonl": "01ff87fe184f3c5ed29f33f97a1c841b2d2b2654c9abd1a9f6b2a973c0740674",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/vad-sources.jsonl": "66522b59786794b25a65cf1b4e2d1d07cc60a6065fdcb75910f473c3fc7ed2b3",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/capture/decoder.jsonl": "374baf24633b24812bc600ecd7046f69655a4d415cf8b67a4c4484f6ac49b368",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/capture/producer.jsonl": "a210bbd1b86ceef8a26d1f9040b5d130bdb7951ef7746b122501e52d8eb48a66",
+    "results/preflight/m34-continuous-token-20261103-01/synthetic-120/vad0/capture/backlog.jsonl": "f709a8bdf0f467011e251e293370678249cac3788faea6de413957e91478b41a",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/token-alignment-events.jsonl": "dcc0be39aded1ec81c989ece30a9945d5e7968e1323cb24b72cd0593322a14d9",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/threads.jsonl": "10bd33508145cdf5a324e8e551a4b2ddee276300d6b821fa90607b3f115b7256",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/execution.json": "d30985bbf9142568254d2ae82d0e77f4b80bfa50fe111e0093c6759909eaf436",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/thermal.jsonl": "2ef57450f8990a9df45e16257de216ff3a51118cae3cc834f6c576c3c02c5c31",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/refine-jobs.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/worker.json": "1f140007fab8d88d9f0360a0b54263fcdfe450e1f44e6de21a922f84886765ef",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/process-resources.jsonl": "f319e916a9ea8d46ae2e27a6c548b8f61b0ea5ab371c55d7e9471fb21e029853",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/thread-resources.jsonl": "ef6a752298d52c589f3c7f0cb30471c7fed54914e8d1d77ec8dfcb597b47906d",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/refine-results.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/zip-events.jsonl": "b6a8cd78a18c3c268f8aa3859fed25673f25c3f85b858b3b2e925f3af8236fee",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/console.log": "c129028eaf565726df78bd3060e66d655f1da0c9767c28eef71311f93fef50bc",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/refine-receipts.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/zip-sources.jsonl": "4221f4e4b9e585667c5951d7650e742401e840d5c4ed760b87e4b3bd10685bbc",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/admission.jsonl": "1ba719e8e12a1a602b4f524899257c447cc652d714fa7c8706f52958f66b9118",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/track.json": "c96be17e61d2adea333bb1970ec63f3bb29eff162ea98891913001abca579f95",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/summary.json": "0994004b0b6a5ab114cf28a279ac3cd46391ef77d34f967f0dfabfdd55c4b896",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/zip-token-snapshots.jsonl": "7ee818038d5df15746bc9ecd453a6b2d807fe174a4218e860b9b183f084cc3b3",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/vad-sources.jsonl": "33b45e269fbb524a536d38728d407acdfc166e9653c78b5a9e7b5f287411a6d9",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/capture/decoder.jsonl": "4df5b47f0f94c922e51afa1fdc279d3fb4b60cd06cf6d86bce3e97fafd17fda3",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/capture/producer.jsonl": "a0b7b3f0f3f537671200f103e5488878e7be1b0c108cd28f8fcac4e21837f53c",
+    "results/preflight/m34-continuous-token-20261103-01/digital-silence/vad0/capture/backlog.jsonl": "00823ac29ba4d75e04b05a47f5d2a4f66691f551f7ae9f2d6ac232958f74b685"
+  },
+  "semantic_files_sha256": {
+    "kss-dev50/summary.json": "30601b115939c6ca19bf0830ed08d5948c3a22a03f2be024060172519abd8664",
+    "kss-dev50/guarded_replace_v1/scores.jsonl": "e730ed5d7f9179d8340ac5bc4a46be9dee91c3666e873da1facf180e4f13d490",
+    "kss-dev50/guarded_replace_v1/boundaries.jsonl": "63080fd3b251cd43ea7393be0e5d104750cd7b30a702152dcbc8264b1145c73e",
+    "kss-dev50/guarded_replace_v1/decisions.jsonl": "e8cd100e855b2ca1de72e011ddf8bb67abdc905940cc7cf10a34bde3a0ab0b68",
+    "kss-dev50/guarded_replace_v1/finals.jsonl": "e688a090d21129221edd1caefd63f881375ae1d7893b09080d508e8e0f62e8d0",
+    "kss-dev50/guarded_replace_v1/timeline.jsonl": "7fc612a9e70d88158ad86e6c2b02f3de30fe389aef894583982ec4c52bef7def",
+    "kss-dev50/guarded_replace_v1/summary.json": "f2347103b67df2ba88fa56fc1195b1a739c7313388357782d9971aca8eb75f0a",
+    "kss-dev50/zip_only/scores.jsonl": "5007bb33ba524c8c7e5a7eb1e8c62e50b767ad69921b858a97e75d5f88188254",
+    "kss-dev50/zip_only/boundaries.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "kss-dev50/zip_only/decisions.jsonl": "47feb07128c3ca4f7602dfe816ad4d801acc28f034a5d012c439af28b63d4d99",
+    "kss-dev50/zip_only/finals.jsonl": "5688fe664e0fd5f8d6af031f9b5b263799ab189d5fe006bd5f4ea437390c2343",
+    "kss-dev50/zip_only/timeline.jsonl": "399a205e051daa58bde44a0e5c16d8534baac2dfff992543f5f3a7c7ee3d6d8e",
+    "kss-dev50/zip_only/summary.json": "952a7852d36137b7095fff3baef8794226408934e3313e0a5737b318b4ff4081",
+    "synthetic-120/summary.json": "49892e2e482cd8f8a29dc99d17bc4f6747cb2bbe3de989afbda4e32d25bd5ad6",
+    "synthetic-120/guarded_replace_v1/scores.jsonl": "15f74fc5d2364412d7bcebb5a113f17ac19fddfee660a4dc8cbef1957b704393",
+    "synthetic-120/guarded_replace_v1/boundaries.jsonl": "10f0f79d5745a918922e56c216f58a778f6dc6b2c19840a867a9e963654a1052",
+    "synthetic-120/guarded_replace_v1/decisions.jsonl": "a14f8a7e8a81ffde493b34422efbe34b3969538ea8652f28c7088339a4596a38",
+    "synthetic-120/guarded_replace_v1/finals.jsonl": "c055574b0f83daf098bdf4d4f04a3ec4cd1bd5cbcd2b9782923fcc0295d4e09a",
+    "synthetic-120/guarded_replace_v1/timeline.jsonl": "d6dcbbf642e6c813e12c1b65fbd48d3397d5695db0c4ff997e0a3d01a33c2e7a",
+    "synthetic-120/guarded_replace_v1/summary.json": "ad57f27948d9c639485f05aefab9cfdae0a65c01829f3baa72a8dd6aa84007d5",
+    "synthetic-120/zip_only/scores.jsonl": "bda3ee78aac0dcdf3341ddf07d9a260ef8614c34d742787051f507dbe238bcb8",
+    "synthetic-120/zip_only/boundaries.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "synthetic-120/zip_only/decisions.jsonl": "eb414348601020fe9b055852c5d6178b15996dbc4d11f53fb6405ca307c944e5",
+    "synthetic-120/zip_only/finals.jsonl": "7ca1d654515cce114927d05a6ac3d3edd6c84480991eea59eaceae45f7445203",
+    "synthetic-120/zip_only/timeline.jsonl": "9b71e7a94afc8f6c489f111662b9a8b07dc2240f9685278e77c0823305b26a8a",
+    "synthetic-120/zip_only/summary.json": "4cab3b7e20bfa4568b52f3783272ccec60df1e38f3d16793ed5c12d2f457c826",
+    "digital-silence/summary.json": "bc4690af447e1a243ae5483a096fc7e477159f0f731f759a181bc5079b420a36",
+    "digital-silence/guarded_replace_v1/scores.jsonl": "4e3a646f0da670a310ceb73c7223bf41532ab8ed9273f0eac85dc45cf82b763d",
+    "digital-silence/guarded_replace_v1/boundaries.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "digital-silence/guarded_replace_v1/decisions.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "digital-silence/guarded_replace_v1/finals.jsonl": "fc6e89734d5d9e780f721a5c37bb133894bdfb788e90a313b30c813a0f63df4f",
+    "digital-silence/guarded_replace_v1/timeline.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "digital-silence/guarded_replace_v1/summary.json": "a5bbb9404ffaf16d8b9e4dabe69309abd1d00b9d297289d86a5d5f8420b76a01",
+    "digital-silence/zip_only/scores.jsonl": "4e3a646f0da670a310ceb73c7223bf41532ab8ed9273f0eac85dc45cf82b763d",
+    "digital-silence/zip_only/boundaries.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "digital-silence/zip_only/decisions.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "digital-silence/zip_only/finals.jsonl": "fc6e89734d5d9e780f721a5c37bb133894bdfb788e90a313b30c813a0f63df4f",
+    "digital-silence/zip_only/timeline.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "digital-silence/zip_only/summary.json": "91053b7769176968f25622aa20be7619d44184147c87762bdc41312c48e09981"
+  },
+  "evidence": {
+    "maintenance": "results/maintenance/m35-guarded-splice-20261103-01",
+    "replays": "results/merge-replays/m35-guarded-splice-20261103-01",
+    "files_sha256": {
+      "plan.json": "fa3d9b2bdf02843a341f16108be43de3e78f4cd6b5fa4a0334f5f74a5aac5eb6",
+      "suite.py": "252981c9bb27546169b5b0cb293871a3f2a8520cafff9b8b755dc91cfbbd00b3",
+      "audit.py": "4f46349ac9d26f29044155beb94a7c24bce93ddc3b65b68c8470afb6e1ebf33b",
+      "analyze.py": "16de22dec4fc6f7cc529e2f195f2a02db8184608d20981c601cfd24d12b04ded",
+      "host-tests.log": "f9ce857d7c33f36f0b91364ace9bddbb584d010d2da1e548b00e70ffda875b30",
+      "rp5-tests.log": "3ef48274097eb5198887311ccc301e6e813c71c3897755685ef8facefb4daad8",
+      "host-suite.log": "637716d57d7586f95e84f98c5954bf6bb47b9dad28688538e5b2b3a8f0553539",
+      "rp5-suite.log": "0cee2f4b35b30c914e0c1beb6a03768d9f2302c1d83dd65cdff267a0f5d8bc21",
+      "host-suite.json": "0ce8eec2e543908e9a355a48d5a8c844f103d9706f01d0c813b088600dd6513a",
+      "rp5-suite.json": "8715844b472a1ea7d688782afa276ad15cadd09dc9fb46c4b6dea6a31c71b24c",
+      "preservation-before.json": "25715b35b6c67a9e9534b447da3ce7f96e0f38c89a93c6748ddcb66a6e20b9e1",
+      "preservation-after.json": "c5dcc482243ecd411ae3a1979cc49afea208789fd7f64d123e5cf9c4d5ff2277"
+    },
+    "executions": {
+      "host/kss-dev50": {
+        "python": "3.11.14",
+        "machine": "x86_64",
+        "wall_s": 0.3290044200839475,
+        "new_native_asr_inference": false,
+        "realtime_input_supplied": false,
+        "actual_live_replacements": 0
+      },
+      "rp5/kss-dev50": {
+        "python": "3.11.18",
+        "machine": "aarch64",
+        "wall_s": 0.6835177760076476,
+        "new_native_asr_inference": false,
+        "realtime_input_supplied": false,
+        "actual_live_replacements": 0
+      },
+      "host/synthetic-120": {
+        "python": "3.11.14",
+        "machine": "x86_64",
+        "wall_s": 3.1303205239819363,
+        "new_native_asr_inference": false,
+        "realtime_input_supplied": false,
+        "actual_live_replacements": 0
+      },
+      "rp5/synthetic-120": {
+        "python": "3.11.18",
+        "machine": "aarch64",
+        "wall_s": 6.522771425006795,
+        "new_native_asr_inference": false,
+        "realtime_input_supplied": false,
+        "actual_live_replacements": 0
+      },
+      "host/digital-silence": {
+        "python": "3.11.14",
+        "machine": "x86_64",
+        "wall_s": 0.01478435704484582,
+        "new_native_asr_inference": false,
+        "realtime_input_supplied": false,
+        "actual_live_replacements": 0
+      },
+      "rp5/digital-silence": {
+        "python": "3.11.18",
+        "machine": "aarch64",
+        "wall_s": 0.0321868210012326,
+        "new_native_asr_inference": false,
+        "realtime_input_supplied": false,
+        "actual_live_replacements": 0
+      }
+    }
+  },
+  "actual_live_replacements": 0,
+  "unmeasured": {
+    "new_asr_rtf": null,
+    "new_asr_cpu_percent": null,
+    "new_asr_rss_mib": null,
+    "actual_merge_apply_s": null,
+    "ui_display_s": null,
+    "acoustic_alignment_s": null
+  },
+  "scope_ko": "M3-4 실제 직렬 로그의 모델 없는 causal 재생. 후보34개·보류66개 유지, literal 교체/비선택 Zip 복사 보존. 정답은 결정 뒤 채점. 새 ASR/1배속 입력/실시간 교체/UI 실행 없음. 개발·합성/무음 자료로 독립 최종 평가 아님.",
+  "decision_ko": "평균 CER 개선과 KSS5개 악화를 함께 보존한다. 비선택 영역 보존과 경계 반복 진단0이 의미적 안전성을 증명하지 않는다. 자동 교체 기본값은 유지하며 전체 caption 교체/Refine 입력 앞부분 누락 가능성을 별도 정책에서 검증한다."
+}
