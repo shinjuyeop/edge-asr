@@ -1,0 +1,4232 @@
+{
+  "schema": "m31-concurrent-matrix-v1",
+  "client_work_date": "2026-11-03",
+  "status": "completed",
+  "source_commit": "acf51360613be2c49dd6be53c5ecd8b2be9cd728",
+  "order": [
+    {
+      "dataset": "kss-dev50",
+      "label": "z1-only",
+      "zip_threads": 1,
+      "refine_threads": 0
+    },
+    {
+      "dataset": "kss-dev50",
+      "label": "z1-s1",
+      "zip_threads": 1,
+      "refine_threads": 1
+    },
+    {
+      "dataset": "kss-dev50",
+      "label": "z1-s2",
+      "zip_threads": 1,
+      "refine_threads": 2
+    },
+    {
+      "dataset": "kss-dev50",
+      "label": "z2-only",
+      "zip_threads": 2,
+      "refine_threads": 0
+    },
+    {
+      "dataset": "kss-dev50",
+      "label": "z2-s1",
+      "zip_threads": 2,
+      "refine_threads": 1
+    },
+    {
+      "dataset": "synthetic-120",
+      "label": "z2-s1",
+      "zip_threads": 2,
+      "refine_threads": 1
+    },
+    {
+      "dataset": "synthetic-120",
+      "label": "z2-only",
+      "zip_threads": 2,
+      "refine_threads": 0
+    },
+    {
+      "dataset": "synthetic-120",
+      "label": "z1-s2",
+      "zip_threads": 1,
+      "refine_threads": 2
+    },
+    {
+      "dataset": "synthetic-120",
+      "label": "z1-s1",
+      "zip_threads": 1,
+      "refine_threads": 1
+    },
+    {
+      "dataset": "synthetic-120",
+      "label": "z1-only",
+      "zip_threads": 1,
+      "refine_threads": 0
+    }
+  ],
+  "config_files_sha256": {
+    "zipformer": "de61d3627f72f1ff5abcd9fe4931feb8a48ff072cf8d1ab7d15d5dea6fbebab3",
+    "sensevoice": "a2bc9a87ef8d2d60e4afe354bb7e3c3961bc948b72d5d33da749f42ab8ce8d77"
+  },
+  "model_files": {
+    "zipformer": {
+      "tokens": {
+        "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/tokens.txt",
+        "sha256": "016bdf0965029263b7ad01b742366ee542ef0bef38261510e8176ff6f2e9e668"
+      },
+      "encoder": {
+        "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/encoder-epoch-99-avg-1.int8.onnx",
+        "sha256": "8d0b1aa24fbedd4e3948564ab7facd151b8ce9b0c48fc987c541de2de3af5697"
+      },
+      "decoder": {
+        "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/decoder-epoch-99-avg-1.onnx",
+        "sha256": "b29cfb4575141e50a30a22b2c4579934f3d4f45b83c9c8c08c3aef5a3fa7abfc"
+      },
+      "joiner": {
+        "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/joiner-epoch-99-avg-1.int8.onnx",
+        "sha256": "128b80a66a1f718488af8560f9d15895109b99ff3e573f0a0130e03774ef1ced"
+      }
+    },
+    "sensevoice": {
+      "model": {
+        "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/model.int8.onnx",
+        "sha256": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51"
+      },
+      "tokens": {
+        "path": "/home/deepet/projects/edge-asr/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17/tokens.txt",
+        "sha256": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc"
+      }
+    }
+  },
+  "settings": {
+    "capture": {
+      "chunk_ms": 100,
+      "queue_capacity_chunks": 5,
+      "drop_policy": "drop_newest",
+      "drain_timeout_s": 10.0
+    },
+    "refine_window_frames": 80000,
+    "context_frames": 0,
+    "refine_queue_capacity": 2,
+    "warmup_runs": 3,
+    "warmup_prefix_max_frames": 80000,
+    "repetitions": 1
+  },
+  "datasets": {
+    "kss-dev50": {
+      "audio_s": 164.919,
+      "sources": 50,
+      "reference_characters": 756,
+      "runs": {
+        "z1-only": {
+          "summary": {
+            "schema": "concurrent-wav-summary-v1",
+            "status": "completed",
+            "input_complete": true,
+            "zip_threads": 1,
+            "refine_threads": 0,
+            "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+            "track_float32_sha256": "8caf6f852b7eced49b0f35674f05c8e889d31bece921510b3cebb7d59ae9142e",
+            "audio_s": 164.919,
+            "planned_sources": 50,
+            "zip_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "first_partial_from_source_start_s": {
+              "n": 50,
+              "mean": 0.9700890607000017,
+              "p50": 0.8515934429999987,
+              "p95": 1.4527007509999805,
+              "max": 1.4680236740000225
+            },
+            "zip_finalize_from_source_end_s": {
+              "n": 50,
+              "mean": 0.13503941870000147,
+              "p50": 0.13030424399998708,
+              "p95": 0.19356905200000085,
+              "max": 0.20302162000000123
+            },
+            "no_partial_sources": 0,
+            "input_dropped_chunks": 0,
+            "input_dropped_audio_s": 0.0,
+            "input_backlog_event_max_audio_s": 0.1,
+            "input_backlog_audio_s": {
+              "n": 1653,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "input_queue_wait_s": {
+              "n": 1650,
+              "mean": 0.0008122689418183077,
+              "p50": 0.0006294499999910386,
+              "p95": 0.001121971999999971,
+              "max": 0.07449573900001383
+            },
+            "chunk_processing_s": {
+              "n": 1650,
+              "mean": 0.014254447021212072,
+              "p50": 0.00042815099999415906,
+              "p95": 0.050994018000011465,
+              "max": 0.11804180000000031
+            },
+            "coordinator_active_rtf": 0.14258667770176775,
+            "refine": null,
+            "refine_reason": "streaming_only_control",
+            "producer_cpu_s": 0.19659825800000003,
+            "producer_lifetime_peak_rss_mib": 291.609375,
+            "unmeasured": {
+              "hybrid_merged_cer": null,
+              "acoustic_endpoint_latency_s": null,
+              "aligned_recognition_latency_s": null,
+              "ui_display_latency_s": null,
+              "microphone_overruns": null
+            },
+            "zip_call_rtf": 0.1411900352657969,
+            "resources": {
+              "model_roles": [
+                "zip"
+              ],
+              "sample_count": 1644,
+              "paired_intervals": 1643,
+              "paired_wall_s": 164.97496664299953,
+              "observed_model_cpu_percent": 15.632674777748992,
+              "model_group_rss_observed_max_mib": 272.3125,
+              "complete_model_rss_samples": 1644,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "threads": {
+              "zip": {
+                "snapshots": 165,
+                "observed_tid_max": 5,
+                "active_at_least_1_percent": 1,
+                "rows": [
+                  {
+                    "tid": "11094",
+                    "cpu_s": 25.280000000000005,
+                    "paired_s": 164.67397712699312,
+                    "mean_cpu_percent": 15.35154518100003
+                  },
+                  {
+                    "tid": "11110",
+                    "cpu_s": 0.35000000000000014,
+                    "paired_s": 164.67397712699312,
+                    "mean_cpu_percent": 0.21254117141416184
+                  },
+                  {
+                    "tid": "11098",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.67397712699312,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "11099",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.67397712699312,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "11100",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.67397712699312,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              },
+              "refine": {
+                "snapshots": 0,
+                "observed_tid_max": null,
+                "active_at_least_1_percent": null,
+                "rows": [],
+                "runtime_roles_confirmed": false
+              }
+            },
+            "source_sha256": {
+              "zip-sources.jsonl": "dcbbfcc14e9f41c4366107e546ccdf28d58db10d7a9bb32179edab235fb2c356",
+              "track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+              "refine-jobs.jsonl": "98a54c5c31a55a651954480dc1d1d10fb01e50ef602e2b179a3f57b60ef379ae",
+              "process-resources.jsonl": "ac9fdbfdd27461140af83610a88643aaf3e30e4d328bd65a26e488a47ad68ff2",
+              "thread-resources.jsonl": "2a3aa66c84dc759843dc01dfcd38d9d20dbb8fbcdd757674387b679c898f0d97",
+              "worker.json": "1ab61ae4a1e6d5b530130b3eba166def15eedb32dda6bd29e0d25314d446f149",
+              "zip-events.jsonl": "38c46636557a59d1007e8775ce3752a6892442841d4093babf8205411c6a3d35",
+              "capture/backlog.jsonl": "4ee051c67537d28999ce70050093c59f87bcd69f5f99305cacc2f7b80ee4a22e",
+              "capture/decoder.jsonl": "9da99904b12df544e89e11d6da6475b03e9a6e646eeb58248e0fa4409e82325e",
+              "capture/producer.jsonl": "5816ff0444515728b631063140a4f90df2380c1ab8d65449bd42986fca6a29e3"
+            }
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-only",
+            "source_sha256": {
+              "execution.json": "b3c60f09fdc291b3a63e58ae5b26c1db29d123737c5d40d0814b1cced1c76c60",
+              "thermal.jsonl": "9e1b77ca878e3ff9f0a83c320c77d3ca4ed5379751ce79e14e6366112e14aec7"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 167,
+            "before": {
+              "at_utc": "2026-11-03T03:37:52.103123+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 51.8,
+              "fan_rpm": 2940,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T03:40:42.029423+00:00",
+              "elapsed_from_before_s": 169.9263020070066,
+              "temperature_c": 57.85,
+              "fan_rpm": 2977,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 169,
+            "fan_rpm_max": 2977,
+            "temperature_mc_max_monitor": 59500,
+            "temperature_mc_max_with_before_after": 59500,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "loading": {
+            "zip_wall_s": 2.4429982870060485,
+            "zip_cpu_s": 2.679661383,
+            "zip_loading_rss_mib": 278.109375,
+            "zip_warmup_s": 1.1676982559874887,
+            "warmup_frames": 45066
+          },
+          "resource_sample_intervals_s": {
+            "n": 1645,
+            "mean": 0.10041870203221881,
+            "p50": 0.100243725,
+            "p95": 0.100509002,
+            "max": 0.138128274
+          },
+          "model_limits_verified": true,
+          "rescore_matches": true,
+          "source_commit": "acf51360613be2c49dd6be53c5ecd8b2be9cd728",
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "refine_environment": null
+        },
+        "z1-s1": {
+          "summary": {
+            "schema": "concurrent-wav-summary-v1",
+            "status": "completed",
+            "input_complete": true,
+            "zip_threads": 1,
+            "refine_threads": 1,
+            "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+            "track_float32_sha256": "8caf6f852b7eced49b0f35674f05c8e889d31bece921510b3cebb7d59ae9142e",
+            "audio_s": 164.919,
+            "planned_sources": 50,
+            "zip_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "first_partial_from_source_start_s": {
+              "n": 50,
+              "mean": 0.9715818874000004,
+              "p50": 0.8485715970000012,
+              "p95": 1.4607727060000002,
+              "max": 1.4683287250000205
+            },
+            "zip_finalize_from_source_end_s": {
+              "n": 50,
+              "mean": 0.14455193668000083,
+              "p50": 0.13942969100000013,
+              "p95": 0.2090293820000113,
+              "max": 0.21799303499999922
+            },
+            "no_partial_sources": 0,
+            "input_dropped_chunks": 0,
+            "input_dropped_audio_s": 0.0,
+            "input_backlog_event_max_audio_s": 0.1,
+            "input_backlog_audio_s": {
+              "n": 1653,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "input_queue_wait_s": {
+              "n": 1650,
+              "mean": 0.0009036916309089153,
+              "p50": 0.0006178929999975935,
+              "p95": 0.00111361999999815,
+              "max": 0.06646983999999634
+            },
+            "chunk_processing_s": {
+              "n": 1650,
+              "mean": 0.014558405763030417,
+              "p50": 0.0004291520000023752,
+              "p95": 0.04438705199999049,
+              "max": 0.1331580170000004
+            },
+            "coordinator_active_rtf": 0.14562780032973183,
+            "refine": {
+              "complete": true,
+              "planned_windows": 54,
+              "enqueued": 54,
+              "successful": 54,
+              "failed_windows": 0,
+              "missing_results": 0,
+              "dropped_windows": 0,
+              "cer": {
+                "planned": 50,
+                "successful": 50,
+                "complete": true,
+                "cer": {
+                  "errors": 39,
+                  "substitutions": 25,
+                  "deletions": 9,
+                  "insertions": 5,
+                  "reference_characters": 756,
+                  "value": 0.051587301587301584
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "queue_wait_s": {
+                "n": 54,
+                "mean": 0.017393492037037037,
+                "p50": 0.000974563,
+                "p95": 0.20155773,
+                "max": 0.393382231
+              },
+              "decode_s": {
+                "n": 54,
+                "mean": 0.31637009374074077,
+                "p50": 0.318846228,
+                "p95": 0.499854665,
+                "max": 0.535081478
+              },
+              "dispatch_from_window_end_s": {
+                "n": 54,
+                "mean": 0.044701267148149794,
+                "p50": 0.03978170699999595,
+                "p95": 0.08874323300000242,
+                "max": 0.10007978200000878
+              },
+              "window_end_to_return_s": {
+                "n": 54,
+                "mean": 0.37868772411111234,
+                "p50": 0.3789723810000112,
+                "p95": 0.5376693760000109,
+                "max": 0.5841856939999994
+              },
+              "final_from_source_file_end_s": {
+                "n": 50,
+                "mean": 0.3657027463200004,
+                "p50": 0.3744434899999973,
+                "p95": 0.5067889599999944,
+                "max": 0.5841856939999994
+              },
+              "backlog_event_max_audio_s": 5.0,
+              "backlog_event_max_windows": 1,
+              "backlog_audio_s": {
+                "n": 1655,
+                "mean": 0.0009906344410876135,
+                "p50": 0.0,
+                "p95": 0.0,
+                "max": 0.2941875
+              },
+              "backlog_end_audio_s": 0.0,
+              "zip_refine_call_overlap_s": 5.371288166000001,
+              "refine_calls_with_zip_overlap": 52,
+              "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님."
+            },
+            "refine_reason": null,
+            "producer_cpu_s": 0.191718608,
+            "producer_lifetime_peak_rss_mib": 292.140625,
+            "unmeasured": {
+              "hybrid_merged_cer": null,
+              "acoustic_endpoint_latency_s": null,
+              "aligned_recognition_latency_s": null,
+              "ui_display_latency_s": null,
+              "microphone_overruns": null
+            },
+            "zip_call_rtf": 0.14465678231131635,
+            "resources": {
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "sample_count": 1644,
+              "paired_intervals": 1643,
+              "paired_wall_s": 165.16066865299982,
+              "observed_model_cpu_percent": 27.754791969454416,
+              "model_group_rss_observed_max_mib": 663.84375,
+              "complete_model_rss_samples": 1644,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "threads": {
+              "zip": {
+                "snapshots": 165,
+                "observed_tid_max": 6,
+                "active_at_least_1_percent": 1,
+                "rows": [
+                  {
+                    "tid": "11490",
+                    "cpu_s": 25.910000000000014,
+                    "paired_s": 164.85425402100373,
+                    "mean_cpu_percent": 15.716913193334323
+                  },
+                  {
+                    "tid": "11519",
+                    "cpu_s": 0.45000000000000023,
+                    "paired_s": 164.85425402100373,
+                    "mean_cpu_percent": 0.27296838815131014
+                  },
+                  {
+                    "tid": "11528",
+                    "cpu_s": 0.01,
+                    "paired_s": 161.80613435000123,
+                    "mean_cpu_percent": 0.006180235403417463
+                  },
+                  {
+                    "tid": "11507",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.85425402100373,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "11508",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.85425402100373,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "11509",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.85425402100373,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              },
+              "refine": {
+                "snapshots": 165,
+                "observed_tid_max": 4,
+                "active_at_least_1_percent": 1,
+                "rows": [
+                  {
+                    "tid": "11494",
+                    "cpu_s": 18.78999999999999,
+                    "paired_s": 164.85422116800328,
+                    "mean_cpu_percent": 11.397948967804142
+                  },
+                  {
+                    "tid": "11496",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.85422116800328,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "11497",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.85422116800328,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "11498",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.85422116800328,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              }
+            },
+            "source_sha256": {
+              "refine-results.jsonl": "bdb2a936cdfb65de2e7d0dcec95eeb7de9b1988f84936a3beca2fe1816481017",
+              "zip-sources.jsonl": "cec76ef201c67382a42eb718868422b3657e757e8ac2141ea59a780afa9c2a58",
+              "track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+              "refine-jobs.jsonl": "8e25f7d24090ca46a9b4e0457020407cb7152bec3c333a7faaa023ee77cb2a68",
+              "process-resources.jsonl": "92817418454849f64c6a1f37b2415218ec7a203d4c7cf5453d1f5e591817d37c",
+              "thread-resources.jsonl": "0c9ab96d4c13637661ad2ec1145b175116f4a61711e78af4d4e551dfd52f0b10",
+              "worker.json": "f953e102bb51684ba6c39739ecbd96dfffa812a0df7ca2acd144eaa663740231",
+              "zip-events.jsonl": "a52d6c814de5db1f5a04a106018f9a2658bf1decae5f442ace32c3f1e2bb0e16",
+              "capture/backlog.jsonl": "0b01c9d3fb741cd8e06b3798ff26a5e737bb417ad5261d5f56ea254a66ddff2e",
+              "capture/decoder.jsonl": "29707dd7eb7dd858adb0db0e5fd42151b5885c00ae3ee7452dcf8e8c27ea33cf",
+              "capture/producer.jsonl": "20bbc99ce6b3942a827c8243bdaaa4b1fb9671625df104150bf158ced20d59c0"
+            }
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s1",
+            "source_sha256": {
+              "execution.json": "bee11fa3f725f5d242b333c41fafcbe3c21525e2380f8c51afcee3c0008e00b6",
+              "thermal.jsonl": "bfdc4c6b934998c020587c07fe926a7f7830709a4ed0979da4493810f71d7811"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 171,
+            "before": {
+              "at_utc": "2026-11-03T03:41:07.222383+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 52.9,
+              "fan_rpm": 2982,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T03:44:01.079598+00:00",
+              "elapsed_from_before_s": 173.85721394700522,
+              "temperature_c": 58.4,
+              "fan_rpm": 5146,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 173,
+            "fan_rpm_max": 5156,
+            "temperature_mc_max_monitor": 62800,
+            "temperature_mc_max_with_before_after": 62800,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "loading": {
+            "zip_wall_s": 2.444723360997159,
+            "zip_cpu_s": 2.67524673,
+            "zip_loading_rss_mib": 277.640625,
+            "zip_warmup_s": 1.1729192689963384,
+            "warmup_frames": 45066,
+            "refine_wall_s": 1.8758669509988977,
+            "refine_cpu_s": 2.111550364,
+            "refine_loading_rss_mib": 363.125,
+            "refine_warmup_s": 0.84127694099152
+          },
+          "resource_sample_intervals_s": {
+            "n": 1645,
+            "mean": 0.10052420963039502,
+            "p50": 0.100280478,
+            "p95": 0.100727349,
+            "max": 0.138523874
+          },
+          "model_limits_verified": true,
+          "rescore_matches": true,
+          "source_commit": "acf51360613be2c49dd6be53c5ecd8b2be9cd728",
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "refine_environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          }
+        },
+        "z1-s2": {
+          "summary": {
+            "schema": "concurrent-wav-summary-v1",
+            "status": "completed",
+            "input_complete": true,
+            "zip_threads": 1,
+            "refine_threads": 2,
+            "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+            "track_float32_sha256": "8caf6f852b7eced49b0f35674f05c8e889d31bece921510b3cebb7d59ae9142e",
+            "audio_s": 164.919,
+            "planned_sources": 50,
+            "zip_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "first_partial_from_source_start_s": {
+              "n": 50,
+              "mean": 0.9697167276200014,
+              "p50": 0.8489041279999991,
+              "p95": 1.4526734300000044,
+              "max": 1.4677289470000119
+            },
+            "zip_finalize_from_source_end_s": {
+              "n": 50,
+              "mean": 0.15626107396000125,
+              "p50": 0.1539467220000006,
+              "p95": 0.22697793300000058,
+              "max": 0.2319757320000022
+            },
+            "no_partial_sources": 0,
+            "input_dropped_chunks": 0,
+            "input_dropped_audio_s": 0.0,
+            "input_backlog_event_max_audio_s": 0.1,
+            "input_backlog_audio_s": {
+              "n": 1653,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "input_queue_wait_s": {
+              "n": 1650,
+              "mean": 0.001075901257575488,
+              "p50": 0.000630615999998696,
+              "p95": 0.0011294169999871428,
+              "max": 0.06448789099999885
+            },
+            "chunk_processing_s": {
+              "n": 1650,
+              "mean": 0.014889412687273073,
+              "p50": 0.0004397809999971969,
+              "p95": 0.04094122700000469,
+              "max": 0.16383868500000176
+            },
+            "coordinator_active_rtf": 0.1489377350057372,
+            "refine": {
+              "complete": true,
+              "planned_windows": 54,
+              "enqueued": 54,
+              "successful": 54,
+              "failed_windows": 0,
+              "missing_results": 0,
+              "dropped_windows": 0,
+              "cer": {
+                "planned": 50,
+                "successful": 50,
+                "complete": true,
+                "cer": {
+                  "errors": 39,
+                  "substitutions": 25,
+                  "deletions": 9,
+                  "insertions": 5,
+                  "reference_characters": 756,
+                  "value": 0.051587301587301584
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "queue_wait_s": {
+                "n": 54,
+                "mean": 0.006115738,
+                "p50": 0.001011045,
+                "p95": 0.011590609,
+                "max": 0.200890218
+              },
+              "decode_s": {
+                "n": 54,
+                "mean": 0.2018760339074074,
+                "p50": 0.202105448,
+                "p95": 0.309022167,
+                "max": 0.31468754
+              },
+              "dispatch_from_window_end_s": {
+                "n": 54,
+                "mean": 0.04478158424074148,
+                "p50": 0.04069836200000054,
+                "p95": 0.08878079800000194,
+                "max": 0.09969670300000644
+              },
+              "window_end_to_return_s": {
+                "n": 54,
+                "mean": 0.2529892642962968,
+                "p50": 0.25481376599999805,
+                "p95": 0.34354823999998985,
+                "max": 0.3716923279999991
+              },
+              "final_from_source_file_end_s": {
+                "n": 50,
+                "mean": 0.24597895678000042,
+                "p50": 0.24937769900000717,
+                "p95": 0.33222912700000506,
+                "max": 0.3716923279999991
+              },
+              "backlog_event_max_audio_s": 5.0,
+              "backlog_event_max_windows": 1,
+              "backlog_audio_s": {
+                "n": 1654,
+                "mean": 0.00027388149939540504,
+                "p50": 0.0,
+                "p95": 0.0,
+                "max": 0.24775
+              },
+              "backlog_end_audio_s": 0.0,
+              "zip_refine_call_overlap_s": 5.611223314999999,
+              "refine_calls_with_zip_overlap": 53,
+              "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님."
+            },
+            "refine_reason": null,
+            "producer_cpu_s": 0.218111059,
+            "producer_lifetime_peak_rss_mib": 292.09375,
+            "unmeasured": {
+              "hybrid_merged_cer": null,
+              "acoustic_endpoint_latency_s": null,
+              "aligned_recognition_latency_s": null,
+              "ui_display_latency_s": null,
+              "microphone_overruns": null
+            },
+            "zip_call_rtf": 0.1479382340603573,
+            "resources": {
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "sample_count": 1642,
+              "paired_intervals": 1641,
+              "paired_wall_s": 164.97063023899986,
+              "observed_model_cpu_percent": 31.302541504016155,
+              "model_group_rss_observed_max_mib": 661.25,
+              "complete_model_rss_samples": 1642,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "threads": {
+              "zip": {
+                "snapshots": 165,
+                "observed_tid_max": 6,
+                "active_at_least_1_percent": 1,
+                "rows": [
+                  {
+                    "tid": "11908",
+                    "cpu_s": 26.490000000000006,
+                    "paired_s": 164.86645164100628,
+                    "mean_cpu_percent": 16.06755027255727
+                  },
+                  {
+                    "tid": "11936",
+                    "cpu_s": 0.47000000000000025,
+                    "paired_s": 164.86645164100628,
+                    "mean_cpu_percent": 0.285079223408906
+                  },
+                  {
+                    "tid": "11926",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.86645164100628,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "11927",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.86645164100628,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "11928",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.86645164100628,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "11945",
+                    "cpu_s": 0.0,
+                    "paired_s": 161.8565749230038,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              },
+              "refine": {
+                "snapshots": 165,
+                "observed_tid_max": 5,
+                "active_at_least_1_percent": 2,
+                "rows": [
+                  {
+                    "tid": "11912",
+                    "cpu_s": 12.859999999999982,
+                    "paired_s": 164.8665819200105,
+                    "mean_cpu_percent": 7.800246629871516
+                  },
+                  {
+                    "tid": "11917",
+                    "cpu_s": 11.020000000000001,
+                    "paired_s": 164.8665819200105,
+                    "mean_cpu_percent": 6.684192679718837
+                  },
+                  {
+                    "tid": "11914",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.8665819200105,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "11915",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.8665819200105,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "11916",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.8665819200105,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              }
+            },
+            "source_sha256": {
+              "refine-results.jsonl": "6e2f4eeda55af1f31618e990cc78ff0db5e6a5e7f12875459b25d969a1a45903",
+              "zip-sources.jsonl": "108b2bef1e4943bbccdf4526dacff3477d4d5178de964c6141e5bb700712ff2d",
+              "track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+              "refine-jobs.jsonl": "efaa3f3ada1271c26f07a39410b9cfe434be1a663898efbc8ad746850ead2795",
+              "process-resources.jsonl": "0dd44333eb20dd23c8bc0406cf6b2e3fdac0290fb503c8e2f7000c92c4f41c08",
+              "thread-resources.jsonl": "6970ed5223d7c6e568051d444470adabb53256e04fbe61fe8f2be28333451c47",
+              "worker.json": "530e8e0cd70a8f3c1d36ef80c6e1ea1eabc81aa23949cf844c01b88046e27d34",
+              "zip-events.jsonl": "b9fc0747e632e8661718974d2934d26465e49495a77a7df8f4e28a0c57d71881",
+              "capture/backlog.jsonl": "8a929fda6073ccbf456d30087bce08585f56a99d164ab87b0f9122da26bee05b",
+              "capture/decoder.jsonl": "14c302aa907788138ba763bcfd90fc081d4f91f0356fb511bfec02fe92de9332",
+              "capture/producer.jsonl": "a840170fd4dea1c5edbdfd3a92efcf86440990a8838af33834aa3c4a9b2d45c6"
+            }
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s2",
+            "source_sha256": {
+              "execution.json": "cf192a8af55c8dc4479d7e6670e7ebc7437a61af0d48960b4d4876af5c57567d",
+              "thermal.jsonl": "fb5c398f1ade330de7749495964e13123cbb476c831bc2e80cd94d0321240234"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 170,
+            "before": {
+              "at_utc": "2026-11-03T03:44:25.266525+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 52.35,
+              "fan_rpm": 3093,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T03:47:18.208540+00:00",
+              "elapsed_from_before_s": 172.94201624700509,
+              "temperature_c": 60.6,
+              "fan_rpm": 5175,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 172,
+            "fan_rpm_max": 5180,
+            "temperature_mc_max_monitor": 63900,
+            "temperature_mc_max_with_before_after": 63900,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "loading": {
+            "zip_wall_s": 2.5063880719972076,
+            "zip_cpu_s": 2.741500425,
+            "zip_loading_rss_mib": 276.59375,
+            "zip_warmup_s": 1.1746551140095107,
+            "warmup_frames": 45066,
+            "refine_wall_s": 1.862906659996952,
+            "refine_cpu_s": 2.119656567,
+            "refine_loading_rss_mib": 365.0625,
+            "refine_warmup_s": 0.5034706500009634
+          },
+          "resource_sample_intervals_s": {
+            "n": 1643,
+            "mean": 0.10053101475776009,
+            "p50": 0.100282283,
+            "p95": 0.100787992,
+            "max": 0.136851993
+          },
+          "model_limits_verified": true,
+          "rescore_matches": true,
+          "source_commit": "acf51360613be2c49dd6be53c5ecd8b2be9cd728",
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "refine_environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          }
+        },
+        "z2-only": {
+          "summary": {
+            "schema": "concurrent-wav-summary-v1",
+            "status": "completed",
+            "input_complete": true,
+            "zip_threads": 2,
+            "refine_threads": 0,
+            "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+            "track_float32_sha256": "8caf6f852b7eced49b0f35674f05c8e889d31bece921510b3cebb7d59ae9142e",
+            "audio_s": 164.919,
+            "planned_sources": 50,
+            "zip_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "first_partial_from_source_start_s": {
+              "n": 50,
+              "mean": 0.9637454674000009,
+              "p50": 0.8410530330000014,
+              "p95": 1.4447910389999947,
+              "max": 1.4589639220000095
+            },
+            "zip_finalize_from_source_end_s": {
+              "n": 50,
+              "mean": 0.11530383024000272,
+              "p50": 0.10927770099999634,
+              "p95": 0.17024135400001228,
+              "max": 0.1790311980000041
+            },
+            "no_partial_sources": 0,
+            "input_dropped_chunks": 0,
+            "input_dropped_audio_s": 0.0,
+            "input_backlog_event_max_audio_s": 0.1,
+            "input_backlog_audio_s": {
+              "n": 1653,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "input_queue_wait_s": {
+              "n": 1650,
+              "mean": 0.0006571022290905396,
+              "p50": 0.0006320229999943194,
+              "p95": 0.0011149719999963281,
+              "max": 0.022607859999993707
+            },
+            "chunk_processing_s": {
+              "n": 1650,
+              "mean": 0.011316709161818265,
+              "p50": 0.00044172499999461934,
+              "p95": 0.03918282299999731,
+              "max": 0.09378924700000368
+            },
+            "coordinator_active_rtf": 0.1131935927239397,
+            "refine": null,
+            "refine_reason": "streaming_only_control",
+            "producer_cpu_s": 0.194404158,
+            "producer_lifetime_peak_rss_mib": 292.625,
+            "unmeasured": {
+              "hybrid_merged_cer": null,
+              "acoustic_endpoint_latency_s": null,
+              "aligned_recognition_latency_s": null,
+              "ui_display_latency_s": null,
+              "microphone_overruns": null
+            },
+            "zip_call_rtf": 0.11211523774701523,
+            "resources": {
+              "model_roles": [
+                "zip"
+              ],
+              "sample_count": 1643,
+              "paired_intervals": 1642,
+              "paired_wall_s": 164.92548377400013,
+              "observed_model_cpu_percent": 43.09218828631014,
+              "model_group_rss_observed_max_mib": 271.328125,
+              "complete_model_rss_samples": 1643,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "threads": {
+              "zip": {
+                "snapshots": 165,
+                "observed_tid_max": 8,
+                "active_at_least_1_percent": 4,
+                "rows": [
+                  {
+                    "tid": "12339",
+                    "cpu_s": 26.340000000000035,
+                    "paired_s": 164.72517804300878,
+                    "mean_cpu_percent": 15.990269558623767
+                  },
+                  {
+                    "tid": "12330",
+                    "cpu_s": 20.490000000000006,
+                    "paired_s": 164.72517804300878,
+                    "mean_cpu_percent": 12.438899895831458
+                  },
+                  {
+                    "tid": "12345",
+                    "cpu_s": 13.640000000000008,
+                    "paired_s": 164.72517804300878,
+                    "mean_cpu_percent": 8.28045849580972
+                  },
+                  {
+                    "tid": "12344",
+                    "cpu_s": 9.789999999999994,
+                    "paired_s": 164.72517804300878,
+                    "mean_cpu_percent": 5.9432323074763245
+                  },
+                  {
+                    "tid": "12347",
+                    "cpu_s": 0.38000000000000017,
+                    "paired_s": 164.72517804300878,
+                    "mean_cpu_percent": 0.23068726014719157
+                  },
+                  {
+                    "tid": "12334",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.72517804300878,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "12335",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.72517804300878,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "12336",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.72517804300878,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              },
+              "refine": {
+                "snapshots": 0,
+                "observed_tid_max": null,
+                "active_at_least_1_percent": null,
+                "rows": [],
+                "runtime_roles_confirmed": false
+              }
+            },
+            "source_sha256": {
+              "zip-sources.jsonl": "7fba3ccafd28ffba7594c1853c3a06d647ae67212035f0cb89228369e163a343",
+              "track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+              "refine-jobs.jsonl": "5cacb4d675a336657e9230561a34997d3d964e4ea519342d2520683ce7b54699",
+              "process-resources.jsonl": "3af49348b262e649a2235cc82880797d5e0179de909ee1f86d1ee1bd9d362371",
+              "thread-resources.jsonl": "1851a59c60355bf83826a0853791e8b2451dd6b68a2fab3d16d6245bd355e092",
+              "worker.json": "e61cddd4d5529452a18eabeb05e81c37bcf4b58da33155c58abea133593f47af",
+              "zip-events.jsonl": "f28d03f447c7ef00d554418a288dc408511b573abfc943e052e4974651be97f8",
+              "capture/backlog.jsonl": "7ee11a06255f20f1460ebc8013bb478575c7e8e69434e8cefc729058d58db847",
+              "capture/decoder.jsonl": "3d299ce1220e0ae3e77393944a821d36081909e06381f7f7b90538db43b5497b",
+              "capture/producer.jsonl": "f9a587885dac11894579a04b8cf1e6d15182a84dee6f3728e8e723c643aef78c"
+            }
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-only",
+            "source_sha256": {
+              "execution.json": "afb5c4728d6429f5a9a126d030f61a7bb7b9e89bc6c79a1342aba9683f5d72f7",
+              "thermal.jsonl": "d36a065cdd66b7f1594187b3adec60bf598c8ed7104a7695f1a3ef004faf3405"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 167,
+            "before": {
+              "at_utc": "2026-11-03T03:47:59.466961+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 52.35,
+              "fan_rpm": 3092,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T03:50:49.237178+00:00",
+              "elapsed_from_before_s": 169.77021606299968,
+              "temperature_c": 60.05,
+              "fan_rpm": 5193,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 169,
+            "fan_rpm_max": 5193,
+            "temperature_mc_max_monitor": 63900,
+            "temperature_mc_max_with_before_after": 63900,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "loading": {
+            "zip_wall_s": 2.5125833450001664,
+            "zip_cpu_s": 2.801862377,
+            "zip_loading_rss_mib": 277.125,
+            "zip_warmup_s": 0.9229755509877577,
+            "warmup_frames": 45066
+          },
+          "resource_sample_intervals_s": {
+            "n": 1644,
+            "mean": 0.10045240392092435,
+            "p50": 0.100256223,
+            "p95": 0.100638633,
+            "max": 0.138837004
+          },
+          "model_limits_verified": true,
+          "rescore_matches": true,
+          "source_commit": "acf51360613be2c49dd6be53c5ecd8b2be9cd728",
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "refine_environment": null
+        },
+        "z2-s1": {
+          "summary": {
+            "schema": "concurrent-wav-summary-v1",
+            "status": "completed",
+            "input_complete": true,
+            "zip_threads": 2,
+            "refine_threads": 1,
+            "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+            "track_float32_sha256": "8caf6f852b7eced49b0f35674f05c8e889d31bece921510b3cebb7d59ae9142e",
+            "audio_s": 164.919,
+            "planned_sources": 50,
+            "zip_cer": {
+              "planned": 50,
+              "successful": 50,
+              "complete": true,
+              "cer": {
+                "errors": 88,
+                "substitutions": 71,
+                "deletions": 11,
+                "insertions": 6,
+                "reference_characters": 756,
+                "value": 0.1164021164021164
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "first_partial_from_source_start_s": {
+              "n": 50,
+              "mean": 0.9625545426600013,
+              "p50": 0.8419949310000003,
+              "p95": 1.445335387,
+              "max": 1.4609288870000228
+            },
+            "zip_finalize_from_source_end_s": {
+              "n": 50,
+              "mean": 0.13403053106000024,
+              "p50": 0.12486660800000493,
+              "p95": 0.19222742400000925,
+              "max": 0.20452257600000223
+            },
+            "no_partial_sources": 0,
+            "input_dropped_chunks": 0,
+            "input_dropped_audio_s": 0.0,
+            "input_backlog_event_max_audio_s": 0.1,
+            "input_backlog_audio_s": {
+              "n": 1653,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "input_queue_wait_s": {
+              "n": 1650,
+              "mean": 0.0007699231127272934,
+              "p50": 0.0006236350000001778,
+              "p95": 0.0011503420000025244,
+              "max": 0.01956587399999421
+            },
+            "chunk_processing_s": {
+              "n": 1650,
+              "mean": 0.012255976192121208,
+              "p50": 0.00045526300000009456,
+              "p95": 0.0393721380000045,
+              "max": 0.11817552499999806
+            },
+            "coordinator_active_rtf": 0.12258023954720741,
+            "refine": {
+              "complete": true,
+              "planned_windows": 54,
+              "enqueued": 54,
+              "successful": 54,
+              "failed_windows": 0,
+              "missing_results": 0,
+              "dropped_windows": 0,
+              "cer": {
+                "planned": 50,
+                "successful": 50,
+                "complete": true,
+                "cer": {
+                  "errors": 39,
+                  "substitutions": 25,
+                  "deletions": 9,
+                  "insertions": 5,
+                  "reference_characters": 756,
+                  "value": 0.051587301587301584
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "queue_wait_s": {
+                "n": 54,
+                "mean": 0.018464448555555554,
+                "p50": 0.001162176,
+                "p95": 0.218930023,
+                "max": 0.417520377
+              },
+              "decode_s": {
+                "n": 54,
+                "mean": 0.33382438344444443,
+                "p50": 0.333643577,
+                "p95": 0.516451068,
+                "max": 0.551910032
+              },
+              "dispatch_from_window_end_s": {
+                "n": 54,
+                "mean": 0.043908321185187366,
+                "p50": 0.039268241999998565,
+                "p95": 0.08789909200000068,
+                "max": 0.10044175200000893
+              },
+              "window_end_to_return_s": {
+                "n": 54,
+                "mean": 0.3964139768888914,
+                "p50": 0.39644149099999026,
+                "p95": 0.5613585770000071,
+                "max": 0.6095891749999991
+              },
+              "final_from_source_file_end_s": {
+                "n": 50,
+                "mean": 0.3838603794600018,
+                "p50": 0.3940767970000003,
+                "p95": 0.5218790090000027,
+                "max": 0.6095891749999991
+              },
+              "backlog_event_max_audio_s": 5.0,
+              "backlog_event_max_windows": 1,
+              "backlog_audio_s": {
+                "n": 1655,
+                "mean": 0.0010526435045317222,
+                "p50": 0.0,
+                "p95": 0.0,
+                "max": 0.2941875
+              },
+              "backlog_end_audio_s": 0.0,
+              "zip_refine_call_overlap_s": 4.991961117000001,
+              "refine_calls_with_zip_overlap": 52,
+              "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님."
+            },
+            "refine_reason": null,
+            "producer_cpu_s": 0.229020789,
+            "producer_lifetime_peak_rss_mib": 289.84375,
+            "unmeasured": {
+              "hybrid_merged_cer": null,
+              "acoustic_endpoint_latency_s": null,
+              "aligned_recognition_latency_s": null,
+              "ui_display_latency_s": null,
+              "microphone_overruns": null
+            },
+            "zip_call_rtf": 0.12099180963382,
+            "resources": {
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "sample_count": 1643,
+              "paired_intervals": 1642,
+              "paired_wall_s": 165.19493558900024,
+              "observed_model_cpu_percent": 57.23541079687663,
+              "model_group_rss_observed_max_mib": 657.921875,
+              "complete_model_rss_samples": 1643,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "threads": {
+              "zip": {
+                "snapshots": 165,
+                "observed_tid_max": 9,
+                "active_at_least_1_percent": 4,
+                "rows": [
+                  {
+                    "tid": "12762",
+                    "cpu_s": 27.400000000000006,
+                    "paired_s": 164.9930755910027,
+                    "mean_cpu_percent": 16.606757527159015
+                  },
+                  {
+                    "tid": "12740",
+                    "cpu_s": 22.35999999999999,
+                    "paired_s": 164.9930755910027,
+                    "mean_cpu_percent": 13.552083879827567
+                  },
+                  {
+                    "tid": "12766",
+                    "cpu_s": 13.590000000000003,
+                    "paired_s": 164.9930755910027,
+                    "mean_cpu_percent": 8.236709299054418
+                  },
+                  {
+                    "tid": "12765",
+                    "cpu_s": 9.659999999999995,
+                    "paired_s": 164.9930755910027,
+                    "mean_cpu_percent": 5.854791157385254
+                  },
+                  {
+                    "tid": "12770",
+                    "cpu_s": 0.5100000000000003,
+                    "paired_s": 164.9930755910027,
+                    "mean_cpu_percent": 0.3091038809799672
+                  },
+                  {
+                    "tid": "12757",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.9930755910027,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "12758",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.9930755910027,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "12759",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.9930755910027,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "12779",
+                    "cpu_s": 0.0,
+                    "paired_s": 161.98050134300138,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              },
+              "refine": {
+                "snapshots": 165,
+                "observed_tid_max": 4,
+                "active_at_least_1_percent": 1,
+                "rows": [
+                  {
+                    "tid": "12744",
+                    "cpu_s": 20.229999999999986,
+                    "paired_s": 164.9930731649947,
+                    "mean_cpu_percent": 12.26112079248914
+                  },
+                  {
+                    "tid": "12746",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.9930731649947,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "12747",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.9930731649947,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "12748",
+                    "cpu_s": 0.0,
+                    "paired_s": 164.9930731649947,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              }
+            },
+            "source_sha256": {
+              "refine-results.jsonl": "57bc0d34f30a0db8fba89f9c6d205b3fcae85f7ed6296e8fd08588dbb44d6dab",
+              "zip-sources.jsonl": "c99eb2c936be20a801da4fa1b142ae49152ab16eda8628bbeb86b0bee1d2f654",
+              "track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+              "refine-jobs.jsonl": "874e8e365b53558870c4ef991df497fb77d6ddbdb3fd858c8da8d011b71aecc4",
+              "process-resources.jsonl": "7926d354af1791e09fb3c3d4c4908c58ef5437b08148656c0786a5ca4c42e884",
+              "thread-resources.jsonl": "46af3bff28ff2c7757e157e1b9fb2f37ebe6241c8e86c2a5d659fa2a5d1e7871",
+              "worker.json": "e5b5fe7dbab725c09ee49f716e8313ebaf862c681bf8d510839cc6c6c502d33c",
+              "zip-events.jsonl": "75136e005da37b4ecad89ad678d42f6dc996d5664e28899b8f260362ba3f7d35",
+              "capture/backlog.jsonl": "e6ed501ffca1a3f5a37b4db4192ea49f96f8ca01b790e812aeb58b4c79c88fc3",
+              "capture/decoder.jsonl": "c873c47bf071366c69e329254c401a9c2fd822363b45611257b9a1f9e9cd1ecb",
+              "capture/producer.jsonl": "8748e6a26795f41befb6436f8efb747d7d50032eb339c6492c71cacecd65059b"
+            }
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-s1",
+            "source_sha256": {
+              "execution.json": "616182472e5b216bf6276166895b01a9d5547d5744a63c1b99ecb6fe26f2181a",
+              "thermal.jsonl": "57b56f5e2153c57a0cf4cf2eff211ceb8e33d928ffbac62f6cb7798c751f7f79"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 170,
+            "before": {
+              "at_utc": "2026-11-03T03:51:27.569975+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 52.9,
+              "fan_rpm": 3110,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T03:54:20.537440+00:00",
+              "elapsed_from_before_s": 172.9674667950021,
+              "temperature_c": 63.9,
+              "fan_rpm": 5208,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 172,
+            "fan_rpm_max": 5219,
+            "temperature_mc_max_monitor": 65550,
+            "temperature_mc_max_with_before_after": 65550,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "loading": {
+            "zip_wall_s": 2.49514268799976,
+            "zip_cpu_s": 2.779705768,
+            "zip_loading_rss_mib": 276.125,
+            "zip_warmup_s": 0.9628049909952097,
+            "warmup_frames": 45066,
+            "refine_wall_s": 1.835731675993884,
+            "refine_cpu_s": 2.0706630660000003,
+            "refine_loading_rss_mib": 359.21875,
+            "refine_warmup_s": 0.840505286003463
+          },
+          "resource_sample_intervals_s": {
+            "n": 1644,
+            "mean": 0.10060645635401463,
+            "p50": 0.100314497,
+            "p95": 0.101000096,
+            "max": 0.139021945
+          },
+          "model_limits_verified": true,
+          "rescore_matches": true,
+          "source_commit": "acf51360613be2c49dd6be53c5ecd8b2be9cd728",
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "refine_environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          }
+        }
+      },
+      "paired_controls": {
+        "z1-s1": {
+          "control": "z1-only",
+          "first_partial_paired_delta_s": {
+            "n": 50,
+            "mean": 0.0014928267,
+            "p50": 0.000113091,
+            "p95": 0.016980648,
+            "max": 0.037597121
+          },
+          "changed_zip_sources": []
+        },
+        "z1-s2": {
+          "control": "z1-only",
+          "first_partial_paired_delta_s": {
+            "n": 50,
+            "mean": -0.00037233308000000074,
+            "p50": -0.000142842,
+            "p95": 0.013599345,
+            "max": 0.017111952
+          },
+          "changed_zip_sources": []
+        },
+        "z2-s1": {
+          "control": "z2-only",
+          "first_partial_paired_delta_s": {
+            "n": 50,
+            "mean": -0.0011909247400000004,
+            "p50": 0.001041687,
+            "p95": 0.01134778,
+            "max": 0.014556293
+          },
+          "changed_zip_sources": []
+        }
+      },
+      "same_refine_1t_outputs_across_zip_threads": true
+    },
+    "synthetic-120": {
+      "audio_s": 120.586875,
+      "sources": 1,
+      "reference_characters": 519,
+      "runs": {
+        "z2-s1": {
+          "summary": {
+            "schema": "concurrent-wav-summary-v1",
+            "status": "completed",
+            "input_complete": true,
+            "zip_threads": 2,
+            "refine_threads": 1,
+            "manifest_sha256": "5effb0c014a49d53dc1be638c667d166b1f8b7b45e619c507c5a2992074f4f66",
+            "track_float32_sha256": "54e8a4acad68dbc93c34966af4b9d3fe6b56e2b796010baaf1121cbbf0a5cfb9",
+            "audio_s": 120.586875,
+            "planned_sources": 1,
+            "zip_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "first_partial_from_source_start_s": {
+              "n": 1,
+              "mean": 0.831073597,
+              "p50": null,
+              "p95": null,
+              "max": 0.831073597
+            },
+            "zip_finalize_from_source_end_s": {
+              "n": 1,
+              "mean": 0.07567715599999758,
+              "p50": null,
+              "p95": null,
+              "max": 0.07567715599999758
+            },
+            "no_partial_sources": 0,
+            "input_dropped_chunks": 0,
+            "input_dropped_audio_s": 0.0,
+            "input_backlog_event_max_audio_s": 0.1,
+            "input_backlog_audio_s": {
+              "n": 1209,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "input_queue_wait_s": {
+              "n": 1206,
+              "mean": 0.0006496763101160745,
+              "p50": 0.0006434130000059213,
+              "p95": 0.0011276569999978392,
+              "max": 0.0020626449999952
+            },
+            "chunk_processing_s": {
+              "n": 1206,
+              "mean": 0.010782615414593799,
+              "p50": 0.0006078569999914407,
+              "p95": 0.03835599999999939,
+              "max": 0.0745924269999989
+            },
+            "coordinator_active_rtf": 0.10778166408576235,
+            "refine": {
+              "complete": true,
+              "planned_windows": 25,
+              "enqueued": 25,
+              "successful": 25,
+              "failed_windows": 0,
+              "missing_results": 0,
+              "dropped_windows": 0,
+              "cer": {
+                "planned": 1,
+                "successful": 1,
+                "complete": true,
+                "cer": {
+                  "errors": 95,
+                  "substitutions": 20,
+                  "deletions": 74,
+                  "insertions": 1,
+                  "reference_characters": 519,
+                  "value": 0.18304431599229287
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "queue_wait_s": {
+                "n": 25,
+                "mean": 0.00118521148,
+                "p50": 0.001150361,
+                "p95": 0.002090757,
+                "max": 0.002292796
+              },
+              "decode_s": {
+                "n": 25,
+                "mean": 0.4935180155200001,
+                "p50": 0.503222508,
+                "p95": 0.539664274,
+                "max": 0.543400137
+              },
+              "dispatch_from_window_end_s": {
+                "n": 25,
+                "mean": 0.0011963779200000956,
+                "p50": 0.0012461010000066608,
+                "p95": 0.0015125740000030419,
+                "max": 0.0015682539999986034
+              },
+              "window_end_to_return_s": {
+                "n": 25,
+                "mean": 0.4962399267599997,
+                "p50": 0.5061196449999983,
+                "p95": 0.5426913890000016,
+                "max": 0.5465005170000001
+              },
+              "final_from_source_file_end_s": {
+                "n": 1,
+                "mean": 0.12635132399999804,
+                "p50": null,
+                "p95": null,
+                "max": 0.12635132399999804
+              },
+              "backlog_event_max_audio_s": 5.0,
+              "backlog_event_max_windows": 1,
+              "backlog_audio_s": {
+                "n": 1210,
+                "mean": 0.0,
+                "p50": 0.0,
+                "p95": 0.0,
+                "max": 0.0
+              },
+              "backlog_end_audio_s": 0.0,
+              "zip_refine_call_overlap_s": 1.6377338040000002,
+              "refine_calls_with_zip_overlap": 25,
+              "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님."
+            },
+            "refine_reason": null,
+            "producer_cpu_s": 0.16457710199999998,
+            "producer_lifetime_peak_rss_mib": 291.78125,
+            "unmeasured": {
+              "hybrid_merged_cer": null,
+              "acoustic_endpoint_latency_s": null,
+              "aligned_recognition_latency_s": null,
+              "ui_display_latency_s": null,
+              "microphone_overruns": null
+            },
+            "zip_call_rtf": 0.10615789103084401,
+            "resources": {
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "sample_count": 1200,
+              "paired_intervals": 1199,
+              "paired_wall_s": 120.55403252300009,
+              "observed_model_cpu_percent": 52.54905097257004,
+              "model_group_rss_observed_max_mib": 689.203125,
+              "complete_model_rss_samples": 1200,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "threads": {
+              "zip": {
+                "snapshots": 121,
+                "observed_tid_max": 9,
+                "active_at_least_1_percent": 4,
+                "rows": [
+                  {
+                    "tid": "13229",
+                    "cpu_s": 18.210000000000022,
+                    "paired_s": 120.65442963200621,
+                    "mean_cpu_percent": 15.092690799285354
+                  },
+                  {
+                    "tid": "13205",
+                    "cpu_s": 14.719999999999986,
+                    "paired_s": 120.65442963200621,
+                    "mean_cpu_percent": 12.200132266088957
+                  },
+                  {
+                    "tid": "13233",
+                    "cpu_s": 8.910000000000007,
+                    "paired_s": 120.65442963200621,
+                    "mean_cpu_percent": 7.384726799650326
+                  },
+                  {
+                    "tid": "13232",
+                    "cpu_s": 6.369999999999994,
+                    "paired_s": 120.65442963200621,
+                    "mean_cpu_percent": 5.279540933083333
+                  },
+                  {
+                    "tid": "13239",
+                    "cpu_s": 0.38000000000000017,
+                    "paired_s": 120.65442963200621,
+                    "mean_cpu_percent": 0.3149490666517534
+                  },
+                  {
+                    "tid": "13224",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.65442963200621,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "13225",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.65442963200621,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "13226",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.65442963200621,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "13252",
+                    "cpu_s": 0.0,
+                    "paired_s": 114.6241009390069,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              },
+              "refine": {
+                "snapshots": 121,
+                "observed_tid_max": 4,
+                "active_at_least_1_percent": 1,
+                "rows": [
+                  {
+                    "tid": "13209",
+                    "cpu_s": 14.50999999999998,
+                    "paired_s": 120.65441765000287,
+                    "mean_cpu_percent": 12.026082660388717
+                  },
+                  {
+                    "tid": "13211",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.65441765000287,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "13212",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.65441765000287,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "13213",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.65441765000287,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              }
+            },
+            "source_sha256": {
+              "refine-results.jsonl": "06a0cd9432a9348db4cba57e38ba195fce8f5de9d7b9438560ab9fb1b814cf9f",
+              "zip-sources.jsonl": "946a83711231bb116d6114457452aafb071ad42bc9a6d5b7d285b7375c4e8e17",
+              "track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+              "refine-jobs.jsonl": "809453ed8926c6ec9e4fdc82b999c44a8b53402e7a599712756559c7f01f6557",
+              "process-resources.jsonl": "bbe98b121138fa34821ed5413135ec55564eb488afe493c828015605d50e99f5",
+              "thread-resources.jsonl": "d1f1970a7291cc452064d9dc24edfd492780660b238d2be5b6e1a14357d344b2",
+              "worker.json": "e6c2475263173b8092a78b6385f053b1f86a706fb3f84c48ab18faa62a89e924",
+              "zip-events.jsonl": "9ccf714df0fcbf836235a4ccc390efb43b23b1c3542ebdec9af687e62c4a7637",
+              "capture/backlog.jsonl": "da52a663ea69aaa691b84cc5ac01921db84430743a402bf1a1dcb21dc91ac864",
+              "capture/decoder.jsonl": "865891bbf495610f6d455a1b5a8f34c5d9eb948a87f247362d1e7cb3d04724e6",
+              "capture/producer.jsonl": "d67f572608d9e176d881f450187e8be3b2767920aa2760aebc51d72e530bde8f"
+            }
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-s1",
+            "source_sha256": {
+              "execution.json": "552f691176e8b0f3bf5d59de43fdbcef62bf229027ac9e6aaa605eb08e721de9",
+              "thermal.jsonl": "8f67c3149fb655d75ccd17c17a66cde70bcc06a24c3510f376784cdcf7a27cd2"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 128,
+            "before": {
+              "at_utc": "2026-11-03T03:55:05.803742+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 52.9,
+              "fan_rpm": 3118,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T03:57:16.189528+00:00",
+              "elapsed_from_before_s": 130.3857845760067,
+              "temperature_c": 63.35,
+              "fan_rpm": 5225,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 130,
+            "fan_rpm_max": 5225,
+            "temperature_mc_max_monitor": 66100,
+            "temperature_mc_max_with_before_after": 66100,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "loading": {
+            "zip_wall_s": 2.4456236109981546,
+            "zip_cpu_s": 2.7343124129999996,
+            "zip_loading_rss_mib": 278.171875,
+            "zip_warmup_s": 1.593997225005296,
+            "warmup_frames": 80000,
+            "refine_wall_s": 1.8649369459890295,
+            "refine_cpu_s": 2.098779655,
+            "refine_loading_rss_mib": 415.734375,
+            "refine_warmup_s": 1.4564891280024312
+          },
+          "resource_sample_intervals_s": {
+            "n": 1201,
+            "mean": 0.10054646068859283,
+            "p50": 0.100317922,
+            "p95": 0.100919019,
+            "max": 0.138253548
+          },
+          "model_limits_verified": true,
+          "rescore_matches": true,
+          "source_commit": "acf51360613be2c49dd6be53c5ecd8b2be9cd728",
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "refine_environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          }
+        },
+        "z2-only": {
+          "summary": {
+            "schema": "concurrent-wav-summary-v1",
+            "status": "completed",
+            "input_complete": true,
+            "zip_threads": 2,
+            "refine_threads": 0,
+            "manifest_sha256": "5effb0c014a49d53dc1be638c667d166b1f8b7b45e619c507c5a2992074f4f66",
+            "track_float32_sha256": "54e8a4acad68dbc93c34966af4b9d3fe6b56e2b796010baaf1121cbbf0a5cfb9",
+            "audio_s": 120.586875,
+            "planned_sources": 1,
+            "zip_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "first_partial_from_source_start_s": {
+              "n": 1,
+              "mean": 0.831252567,
+              "p50": null,
+              "p95": null,
+              "max": 0.831252567
+            },
+            "zip_finalize_from_source_end_s": {
+              "n": 1,
+              "mean": 0.0626157659999933,
+              "p50": null,
+              "p95": null,
+              "max": 0.0626157659999933
+            },
+            "no_partial_sources": 0,
+            "input_dropped_chunks": 0,
+            "input_dropped_audio_s": 0.0,
+            "input_backlog_event_max_audio_s": 0.1,
+            "input_backlog_audio_s": {
+              "n": 1209,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "input_queue_wait_s": {
+              "n": 1206,
+              "mean": 0.0006212237479269728,
+              "p50": 0.0006242830000005029,
+              "p95": 0.0010805259999955297,
+              "max": 0.0015488259999996146
+            },
+            "chunk_processing_s": {
+              "n": 1206,
+              "mean": 0.01029476985489219,
+              "p50": 0.0005705970000065008,
+              "p95": 0.031810892999999396,
+              "max": 0.06207849599999804
+            },
+            "coordinator_active_rtf": 0.10288134205230892,
+            "refine": null,
+            "refine_reason": "streaming_only_control",
+            "producer_cpu_s": 0.14523335800000003,
+            "producer_lifetime_peak_rss_mib": 291.390625,
+            "unmeasured": {
+              "hybrid_merged_cer": null,
+              "acoustic_endpoint_latency_s": null,
+              "aligned_recognition_latency_s": null,
+              "ui_display_latency_s": null,
+              "microphone_overruns": null
+            },
+            "zip_call_rtf": 0.10169351458025586,
+            "resources": {
+              "model_roles": [
+                "zip"
+              ],
+              "sample_count": 1202,
+              "paired_intervals": 1201,
+              "paired_wall_s": 120.58091995900023,
+              "observed_model_cpu_percent": 39.65801556022271,
+              "model_group_rss_observed_max_mib": 260.203125,
+              "complete_model_rss_samples": 1202,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "threads": {
+              "zip": {
+                "snapshots": 121,
+                "observed_tid_max": 8,
+                "active_at_least_1_percent": 4,
+                "rows": [
+                  {
+                    "tid": "13593",
+                    "cpu_s": 18.040000000000017,
+                    "paired_s": 120.48113263699634,
+                    "mean_cpu_percent": 14.973298810489805
+                  },
+                  {
+                    "tid": "13584",
+                    "cpu_s": 13.759999999999982,
+                    "paired_s": 120.48113263699634,
+                    "mean_cpu_percent": 11.4208753676463
+                  },
+                  {
+                    "tid": "13597",
+                    "cpu_s": 8.970000000000008,
+                    "paired_s": 120.48113263699634,
+                    "mean_cpu_percent": 7.4451491313799085
+                  },
+                  {
+                    "tid": "13596",
+                    "cpu_s": 6.459999999999998,
+                    "paired_s": 120.48113263699634,
+                    "mean_cpu_percent": 5.361835383357207
+                  },
+                  {
+                    "tid": "13603",
+                    "cpu_s": 0.2700000000000001,
+                    "paired_s": 120.48113263699634,
+                    "mean_cpu_percent": 0.224101478870967
+                  },
+                  {
+                    "tid": "13588",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.48113263699634,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "13589",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.48113263699634,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "13590",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.48113263699634,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              },
+              "refine": {
+                "snapshots": 0,
+                "observed_tid_max": null,
+                "active_at_least_1_percent": null,
+                "rows": [],
+                "runtime_roles_confirmed": false
+              }
+            },
+            "source_sha256": {
+              "zip-sources.jsonl": "d8e2821b79b9c5884c53f7657a1062e827271b1444c0b5e7fb6a73c4fb673f8e",
+              "track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+              "refine-jobs.jsonl": "ef87ba8373a415f6ee5cefa3b365322a8594db23a1cc5fbf5ef2f04b52ba4cb2",
+              "process-resources.jsonl": "9d3e299f584b83246a702c16b4cc04a835d0dfbf915707dfdb98f19bf0bf11b5",
+              "thread-resources.jsonl": "0b85d9cc85ba3cd12a22f91f56596ab47829c094f25fb9ce2036b648a5dfe459",
+              "worker.json": "4e89402acce63edb5ffe663cad4c503c5d4732552896f896600b7b7b84cf386d",
+              "zip-events.jsonl": "caee08cebcf9beb4489ef10ebbf0b540c2dd1abcfa954ce9f01e5e8715c98f4c",
+              "capture/backlog.jsonl": "90cf8aaf505c9a12a77a5f226c834d5fc7bedb11d70d489625f67883832f9fc2",
+              "capture/decoder.jsonl": "4eefe09964c97880a8d41c3245f657681bc93aeafd64edfc498ac6f6c2dcdafb",
+              "capture/producer.jsonl": "efebfa98a17471ccd71101d66a29895187e2290d8bfb25c29e1214aa0c1d8c41"
+            }
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-only",
+            "source_sha256": {
+              "execution.json": "580c9f21c23664c8416f67b6b17bf996abaddc80f946b8f6f3f8683d892f26e0",
+              "thermal.jsonl": "320ecae00b601f17739b2bd2a8ce66e1a647aa8c6c10fbd89aa48533778a82c3"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 124,
+            "before": {
+              "at_utc": "2026-11-03T03:58:35.808843+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 52.9,
+              "fan_rpm": 3096,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T04:00:41.843579+00:00",
+              "elapsed_from_before_s": 126.03473539299739,
+              "temperature_c": 60.05,
+              "fan_rpm": 5213,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 126,
+            "fan_rpm_max": 5217,
+            "temperature_mc_max_monitor": 65550,
+            "temperature_mc_max_with_before_after": 65550,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "loading": {
+            "zip_wall_s": 2.431425943999784,
+            "zip_cpu_s": 2.717158784,
+            "zip_loading_rss_mib": 277.8125,
+            "zip_warmup_s": 1.5655795550119365,
+            "warmup_frames": 80000
+          },
+          "resource_sample_intervals_s": {
+            "n": 1203,
+            "mean": 0.1004152346251041,
+            "p50": 0.100249087,
+            "p95": 0.100599329,
+            "max": 0.131148657
+          },
+          "model_limits_verified": true,
+          "rescore_matches": true,
+          "source_commit": "acf51360613be2c49dd6be53c5ecd8b2be9cd728",
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "refine_environment": null
+        },
+        "z1-s2": {
+          "summary": {
+            "schema": "concurrent-wav-summary-v1",
+            "status": "completed",
+            "input_complete": true,
+            "zip_threads": 1,
+            "refine_threads": 2,
+            "manifest_sha256": "5effb0c014a49d53dc1be638c667d166b1f8b7b45e619c507c5a2992074f4f66",
+            "track_float32_sha256": "54e8a4acad68dbc93c34966af4b9d3fe6b56e2b796010baaf1121cbbf0a5cfb9",
+            "audio_s": 120.586875,
+            "planned_sources": 1,
+            "zip_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "first_partial_from_source_start_s": {
+              "n": 1,
+              "mean": 0.838779986,
+              "p50": null,
+              "p95": null,
+              "max": 0.838779986
+            },
+            "zip_finalize_from_source_end_s": {
+              "n": 1,
+              "mean": 0.09865884799999947,
+              "p50": null,
+              "p95": null,
+              "max": 0.09865884799999947
+            },
+            "no_partial_sources": 0,
+            "input_dropped_chunks": 0,
+            "input_dropped_audio_s": 0.0,
+            "input_backlog_event_max_audio_s": 0.1,
+            "input_backlog_audio_s": {
+              "n": 1209,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "input_queue_wait_s": {
+              "n": 1206,
+              "mean": 0.0006312513358209342,
+              "p50": 0.0006111159999875326,
+              "p95": 0.0010963239999999264,
+              "max": 0.006537364999999795
+            },
+            "chunk_processing_s": {
+              "n": 1206,
+              "mean": 0.013080630843283432,
+              "p50": 0.0005643559999999326,
+              "p95": 0.040483588999997266,
+              "max": 0.09747998999999652
+            },
+            "coordinator_active_rtf": 0.13078895446246971,
+            "refine": {
+              "complete": true,
+              "planned_windows": 25,
+              "enqueued": 25,
+              "successful": 25,
+              "failed_windows": 0,
+              "missing_results": 0,
+              "dropped_windows": 0,
+              "cer": {
+                "planned": 1,
+                "successful": 1,
+                "complete": true,
+                "cer": {
+                  "errors": 95,
+                  "substitutions": 20,
+                  "deletions": 74,
+                  "insertions": 1,
+                  "reference_characters": 519,
+                  "value": 0.18304431599229287
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "queue_wait_s": {
+                "n": 25,
+                "mean": 0.001287635,
+                "p50": 0.001418048,
+                "p95": 0.002021663,
+                "max": 0.002220036
+              },
+              "decode_s": {
+                "n": 25,
+                "mean": 0.29144499792,
+                "p50": 0.299063669,
+                "p95": 0.314133304,
+                "max": 0.315207718
+              },
+              "dispatch_from_window_end_s": {
+                "n": 25,
+                "mean": 0.037019634199998847,
+                "p50": 0.03914473300000054,
+                "p95": 0.03944278300000015,
+                "max": 0.061759863999999
+              },
+              "window_end_to_return_s": {
+                "n": 25,
+                "mean": 0.3300811660000005,
+                "p50": 0.33949709099999836,
+                "p95": 0.3559976580000068,
+                "max": 0.35945702300000093
+              },
+              "final_from_source_file_end_s": {
+                "n": 1,
+                "mean": 0.08103606499999216,
+                "p50": null,
+                "p95": null,
+                "max": 0.08103606499999216
+              },
+              "backlog_event_max_audio_s": 5.0,
+              "backlog_event_max_windows": 1,
+              "backlog_audio_s": {
+                "n": 1210,
+                "mean": 0.0,
+                "p50": 0.0,
+                "p95": 0.0,
+                "max": 0.0
+              },
+              "backlog_end_audio_s": 0.0,
+              "zip_refine_call_overlap_s": 1.5151788880000001,
+              "refine_calls_with_zip_overlap": 25,
+              "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님."
+            },
+            "refine_reason": null,
+            "producer_cpu_s": 0.16075501099999998,
+            "producer_lifetime_peak_rss_mib": 293.15625,
+            "unmeasured": {
+              "hybrid_merged_cer": null,
+              "acoustic_endpoint_latency_s": null,
+              "aligned_recognition_latency_s": null,
+              "ui_display_latency_s": null,
+              "microphone_overruns": null
+            },
+            "zip_call_rtf": 0.12976132343590446,
+            "resources": {
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "sample_count": 1200,
+              "paired_intervals": 1199,
+              "paired_wall_s": 120.55727606600003,
+              "observed_model_cpu_percent": 28.218952111505466,
+              "model_group_rss_observed_max_mib": 687.625,
+              "complete_model_rss_samples": 1200,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "threads": {
+              "zip": {
+                "snapshots": 121,
+                "observed_tid_max": 6,
+                "active_at_least_1_percent": 1,
+                "rows": [
+                  {
+                    "tid": "13938",
+                    "cpu_s": 17.310000000000027,
+                    "paired_s": 120.65772261598613,
+                    "mean_cpu_percent": 14.346367248362599
+                  },
+                  {
+                    "tid": "13968",
+                    "cpu_s": 0.34000000000000014,
+                    "paired_s": 120.65772261598613,
+                    "mean_cpu_percent": 0.28178884254438347
+                  },
+                  {
+                    "tid": "13956",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.65772261598613,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "13957",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.65772261598613,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "13958",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.65772261598613,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "13981",
+                    "cpu_s": 0.0,
+                    "paired_s": 114.6020456309925,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              },
+              "refine": {
+                "snapshots": 121,
+                "observed_tid_max": 5,
+                "active_at_least_1_percent": 2,
+                "rows": [
+                  {
+                    "tid": "13942",
+                    "cpu_s": 8.919999999999982,
+                    "paired_s": 120.65768407899304,
+                    "mean_cpu_percent": 7.39281552442211
+                  },
+                  {
+                    "tid": "13947",
+                    "cpu_s": 7.28,
+                    "paired_s": 120.65768407899304,
+                    "mean_cpu_percent": 6.0335983203803885
+                  },
+                  {
+                    "tid": "13944",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.65768407899304,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "13945",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.65768407899304,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "13946",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.65768407899304,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              }
+            },
+            "source_sha256": {
+              "refine-results.jsonl": "0764cad24aa83a4022f6e117f11f12685cfcb5ca11c4584b2b3e52b15971bb5f",
+              "zip-sources.jsonl": "a0bff1e2a4a62f82984589a100d864cfda04bc7515e7aa77e9b5a5fd19daeb36",
+              "track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+              "refine-jobs.jsonl": "2de4be41fab97fe762637756faf891401d407601cff6da735091569cfe80b49a",
+              "process-resources.jsonl": "e4b2f23d29e97ffcb92e225fbfe40b4617d58371a7be6b129f9ce65a64305e2b",
+              "thread-resources.jsonl": "b031ca1de66de96b5c7459ce479b8638e4556cd1b3d4e5e250e8ced3d793fbb8",
+              "worker.json": "94b53f09e11bdff5d4f0a2cf45543cf00cc788c829eb9cbbecf22ad56dc87e30",
+              "zip-events.jsonl": "26302cec1427c14045c91742b10d4b458056b7ea05e7d334efd9a81f910a6906",
+              "capture/backlog.jsonl": "15e4a93012c7fe3439eb584d2ef39debd1cf73df03172df6cc64aa6358203ae3",
+              "capture/decoder.jsonl": "5478e0ba3e3313d8ed90c136d5c7ccdeb5822cb5415c4ad97b3d83d929de10be",
+              "capture/producer.jsonl": "a5396bee87dafa46ca1ebfd1274eb5182d0a58fb846dca9dc73088221254625c"
+            }
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s2",
+            "source_sha256": {
+              "execution.json": "e4a904c39ca31afefa27e4ee2f9310e2bb16e6911c298a787af3d0a70ed68f58",
+              "thermal.jsonl": "3d84045646f018133b81d14a3563dd535c0b37f12ba223fede1281af0d07a689"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 128,
+            "before": {
+              "at_utc": "2026-11-03T04:02:02.360116+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 51.8,
+              "fan_rpm": 3086,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T04:04:12.544605+00:00",
+              "elapsed_from_before_s": 130.18448648900085,
+              "temperature_c": 61.15,
+              "fan_rpm": 5211,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 130,
+            "fan_rpm_max": 5211,
+            "temperature_mc_max_monitor": 63900,
+            "temperature_mc_max_with_before_after": 63900,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "loading": {
+            "zip_wall_s": 2.442193350987509,
+            "zip_cpu_s": 2.6777888780000003,
+            "zip_loading_rss_mib": 278.15625,
+            "zip_warmup_s": 1.9835988620034186,
+            "warmup_frames": 80000,
+            "refine_wall_s": 1.8454856160096824,
+            "refine_cpu_s": 2.102117455,
+            "refine_loading_rss_mib": 415.765625,
+            "refine_warmup_s": 0.848209225005121
+          },
+          "resource_sample_intervals_s": {
+            "n": 1201,
+            "mean": 0.10054893445878436,
+            "p50": 0.100286622,
+            "p95": 0.100789516,
+            "max": 0.155355769
+          },
+          "model_limits_verified": true,
+          "rescore_matches": true,
+          "source_commit": "acf51360613be2c49dd6be53c5ecd8b2be9cd728",
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "refine_environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          }
+        },
+        "z1-s1": {
+          "summary": {
+            "schema": "concurrent-wav-summary-v1",
+            "status": "completed",
+            "input_complete": true,
+            "zip_threads": 1,
+            "refine_threads": 1,
+            "manifest_sha256": "5effb0c014a49d53dc1be638c667d166b1f8b7b45e619c507c5a2992074f4f66",
+            "track_float32_sha256": "54e8a4acad68dbc93c34966af4b9d3fe6b56e2b796010baaf1121cbbf0a5cfb9",
+            "audio_s": 120.586875,
+            "planned_sources": 1,
+            "zip_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "first_partial_from_source_start_s": {
+              "n": 1,
+              "mean": 0.839712589,
+              "p50": null,
+              "p95": null,
+              "max": 0.839712589
+            },
+            "zip_finalize_from_source_end_s": {
+              "n": 1,
+              "mean": 0.08771808399998804,
+              "p50": null,
+              "p95": null,
+              "max": 0.08771808399998804
+            },
+            "no_partial_sources": 0,
+            "input_dropped_chunks": 0,
+            "input_dropped_audio_s": 0.0,
+            "input_backlog_event_max_audio_s": 0.1,
+            "input_backlog_audio_s": {
+              "n": 1209,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "input_queue_wait_s": {
+              "n": 1206,
+              "mean": 0.0006271706716420611,
+              "p50": 0.0006255610000067691,
+              "p95": 0.0010960660000023381,
+              "max": 0.0017064240000053132
+            },
+            "chunk_processing_s": {
+              "n": 1206,
+              "mean": 0.013048947359867174,
+              "p50": 0.0005692269999997279,
+              "p95": 0.0431649450000009,
+              "max": 0.08726104999999507
+            },
+            "coordinator_active_rtf": 0.13047264492035507,
+            "refine": {
+              "complete": true,
+              "planned_windows": 25,
+              "enqueued": 25,
+              "successful": 25,
+              "failed_windows": 0,
+              "missing_results": 0,
+              "dropped_windows": 0,
+              "cer": {
+                "planned": 1,
+                "successful": 1,
+                "complete": true,
+                "cer": {
+                  "errors": 95,
+                  "substitutions": 20,
+                  "deletions": 74,
+                  "insertions": 1,
+                  "reference_characters": 519,
+                  "value": 0.18304431599229287
+                },
+                "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+              },
+              "queue_wait_s": {
+                "n": 25,
+                "mean": 0.00130136348,
+                "p50": 0.001349772,
+                "p95": 0.001684145,
+                "max": 0.00191287
+              },
+              "decode_s": {
+                "n": 25,
+                "mean": 0.48738569639999996,
+                "p50": 0.497249535,
+                "p95": 0.534578884,
+                "max": 0.564199523
+              },
+              "dispatch_from_window_end_s": {
+                "n": 25,
+                "mean": 0.0011050862400001193,
+                "p50": 0.0011601420000033613,
+                "p95": 0.0016265639999986092,
+                "max": 0.0016728669999963586
+              },
+              "window_end_to_return_s": {
+                "n": 25,
+                "mean": 0.4901160905999998,
+                "p50": 0.4998013539999988,
+                "p95": 0.5377909930000015,
+                "max": 0.5663689590000018
+              },
+              "final_from_source_file_end_s": {
+                "n": 1,
+                "mean": 0.10205616099999304,
+                "p50": null,
+                "p95": null,
+                "max": 0.10205616099999304
+              },
+              "backlog_event_max_audio_s": 5.0,
+              "backlog_event_max_windows": 1,
+              "backlog_audio_s": {
+                "n": 1210,
+                "mean": 0.0,
+                "p50": 0.0,
+                "p95": 0.0,
+                "max": 0.0
+              },
+              "backlog_end_audio_s": 0.0,
+              "zip_refine_call_overlap_s": 1.781849582,
+              "refine_calls_with_zip_overlap": 25,
+              "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님."
+            },
+            "refine_reason": null,
+            "producer_cpu_s": 0.14651306599999997,
+            "producer_lifetime_peak_rss_mib": 291.765625,
+            "unmeasured": {
+              "hybrid_merged_cer": null,
+              "acoustic_endpoint_latency_s": null,
+              "aligned_recognition_latency_s": null,
+              "ui_display_latency_s": null,
+              "microphone_overruns": null
+            },
+            "zip_call_rtf": 0.12942882948082057,
+            "resources": {
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "sample_count": 1201,
+              "paired_intervals": 1200,
+              "paired_wall_s": 120.591753263,
+              "observed_model_cpu_percent": 26.054849647534148,
+              "model_group_rss_observed_max_mib": 698.25,
+              "complete_model_rss_samples": 1201,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "threads": {
+              "zip": {
+                "snapshots": 121,
+                "observed_tid_max": 6,
+                "active_at_least_1_percent": 1,
+                "rows": [
+                  {
+                    "tid": "14333",
+                    "cpu_s": 17.160000000000018,
+                    "paired_s": 120.59182920701278,
+                    "mean_cpu_percent": 14.22981980855641
+                  },
+                  {
+                    "tid": "14376",
+                    "cpu_s": 0.3300000000000001,
+                    "paired_s": 120.59182920701278,
+                    "mean_cpu_percent": 0.2736503809337769
+                  },
+                  {
+                    "tid": "14352",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.59182920701278,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "14353",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.59182920701278,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "14354",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.59182920701278,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "14389",
+                    "cpu_s": 0.0,
+                    "paired_s": 114.54884204600239,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              },
+              "refine": {
+                "snapshots": 121,
+                "observed_tid_max": 4,
+                "active_at_least_1_percent": 1,
+                "rows": [
+                  {
+                    "tid": "14337",
+                    "cpu_s": 13.659999999999991,
+                    "paired_s": 120.59178780000366,
+                    "mean_cpu_percent": 11.327471172957912
+                  },
+                  {
+                    "tid": "14339",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.59178780000366,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "14340",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.59178780000366,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "14341",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.59178780000366,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              }
+            },
+            "source_sha256": {
+              "refine-results.jsonl": "bf46d529acbff04fcc55590b8655badace17cbf8606c62c4c8d1237479858dce",
+              "zip-sources.jsonl": "008fd494503650cbf90a22af489ef35fddca7adcb70f4eccfcca975867eb272a",
+              "track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+              "refine-jobs.jsonl": "b176b46d694b59ac9ecd23fea43427046a2a95c38260d0e7eb3f4bb2bfe21904",
+              "process-resources.jsonl": "686b2bb93156f7b707e87f5f8a4eabc8e9de8c0b0955992b9eeba4d376c6fd72",
+              "thread-resources.jsonl": "7f868627553b8376f812bf83bce4706982b9a86149476d1632ce94bef7ea2de9",
+              "worker.json": "766b46857379176a90731e3489c19d37cdd4030fb33f62d0d35b0afbce8e3b36",
+              "zip-events.jsonl": "08873018ff3b7df7292a5f4924bce510e5a444509f245df6f325806e718d2015",
+              "capture/backlog.jsonl": "ce7d0c7f4430dfe06f8c36fda8f633d60fbc4da6ddd2560474be8b8d6acebc34",
+              "capture/decoder.jsonl": "bed992601471d4d34da13169846992930824d1955260a485ece0724af201b9c4",
+              "capture/producer.jsonl": "8c87b8c96e9c387f39b59d4c16ad8ad821da3634cfb54d27273158b915de5260"
+            }
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s1",
+            "source_sha256": {
+              "execution.json": "80b079a8895b4ae3ef4610fae6140877ddd36407108926e599b650c6d6d92e39",
+              "thermal.jsonl": "3e7a3bccd8964968b330ce9f0f8192667c73332791b5e700269821b60cef2c2e"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 129,
+            "before": {
+              "at_utc": "2026-11-03T04:05:14.876970+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 52.35,
+              "fan_rpm": 3095,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T04:07:26.199860+00:00",
+              "elapsed_from_before_s": 131.32289081800263,
+              "temperature_c": 60.05,
+              "fan_rpm": 5208,
+              "cpu0_freq_khz": 2400000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 131,
+            "fan_rpm_max": 5210,
+            "temperature_mc_max_monitor": 63900,
+            "temperature_mc_max_with_before_after": 63900,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "loading": {
+            "zip_wall_s": 2.4986638059926918,
+            "zip_cpu_s": 2.733777323,
+            "zip_loading_rss_mib": 289.65625,
+            "zip_warmup_s": 2.009764129994437,
+            "warmup_frames": 80000,
+            "refine_wall_s": 1.8513885309948819,
+            "refine_cpu_s": 2.087180178,
+            "refine_loading_rss_mib": 422.265625,
+            "refine_warmup_s": 1.4640542810084298
+          },
+          "resource_sample_intervals_s": {
+            "n": 1202,
+            "mean": 0.1004941516056573,
+            "p50": 0.1002819,
+            "p95": 0.100756674,
+            "max": 0.137690296
+          },
+          "model_limits_verified": true,
+          "rescore_matches": true,
+          "source_commit": "acf51360613be2c49dd6be53c5ecd8b2be9cd728",
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "refine_environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          }
+        },
+        "z1-only": {
+          "summary": {
+            "schema": "concurrent-wav-summary-v1",
+            "status": "completed",
+            "input_complete": true,
+            "zip_threads": 1,
+            "refine_threads": 0,
+            "manifest_sha256": "5effb0c014a49d53dc1be638c667d166b1f8b7b45e619c507c5a2992074f4f66",
+            "track_float32_sha256": "54e8a4acad68dbc93c34966af4b9d3fe6b56e2b796010baaf1121cbbf0a5cfb9",
+            "audio_s": 120.586875,
+            "planned_sources": 1,
+            "zip_cer": {
+              "planned": 1,
+              "successful": 1,
+              "complete": true,
+              "cer": {
+                "errors": 58,
+                "substitutions": 44,
+                "deletions": 12,
+                "insertions": 2,
+                "reference_characters": 519,
+                "value": 0.11175337186897881
+              },
+              "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved"
+            },
+            "first_partial_from_source_start_s": {
+              "n": 1,
+              "mean": 0.839514728,
+              "p50": null,
+              "p95": null,
+              "max": 0.839514728
+            },
+            "zip_finalize_from_source_end_s": {
+              "n": 1,
+              "mean": 0.07943959399999301,
+              "p50": null,
+              "p95": null,
+              "max": 0.07943959399999301
+            },
+            "no_partial_sources": 0,
+            "input_dropped_chunks": 0,
+            "input_dropped_audio_s": 0.0,
+            "input_backlog_event_max_audio_s": 0.1,
+            "input_backlog_audio_s": {
+              "n": 1209,
+              "mean": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "input_queue_wait_s": {
+              "n": 1206,
+              "mean": 0.0006042633955225285,
+              "p50": 0.0006092090000038297,
+              "p95": 0.0010869729999996025,
+              "max": 0.0013330120000000084
+            },
+            "chunk_processing_s": {
+              "n": 1206,
+              "mean": 0.012873997329187448,
+              "p50": 0.0005364499999984673,
+              "p95": 0.03916450200000199,
+              "max": 0.07898116200000516
+            },
+            "coordinator_active_rtf": 0.1287264349444789,
+            "refine": null,
+            "refine_reason": "streaming_only_control",
+            "producer_cpu_s": 0.12433280800000002,
+            "producer_lifetime_peak_rss_mib": 291.375,
+            "unmeasured": {
+              "hybrid_merged_cer": null,
+              "acoustic_endpoint_latency_s": null,
+              "aligned_recognition_latency_s": null,
+              "ui_display_latency_s": null,
+              "microphone_overruns": null
+            },
+            "zip_call_rtf": 0.12779344611094692,
+            "resources": {
+              "model_roles": [
+                "zip"
+              ],
+              "sample_count": 1202,
+              "paired_intervals": 1201,
+              "paired_wall_s": 120.57195733200003,
+              "observed_model_cpu_percent": 14.273634086084817,
+              "model_group_rss_observed_max_mib": 260.734375,
+              "complete_model_rss_samples": 1202,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "threads": {
+              "zip": {
+                "snapshots": 121,
+                "observed_tid_max": 5,
+                "active_at_least_1_percent": 1,
+                "rows": [
+                  {
+                    "tid": "14717",
+                    "cpu_s": 16.890000000000025,
+                    "paired_s": 120.47155521700915,
+                    "mean_cpu_percent": 14.0199069976108
+                  },
+                  {
+                    "tid": "14733",
+                    "cpu_s": 0.23000000000000007,
+                    "paired_s": 120.47155521700915,
+                    "mean_cpu_percent": 0.1909164363203363
+                  },
+                  {
+                    "tid": "14721",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.47155521700915,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "14722",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.47155521700915,
+                    "mean_cpu_percent": 0.0
+                  },
+                  {
+                    "tid": "14723",
+                    "cpu_s": 0.0,
+                    "paired_s": 120.47155521700915,
+                    "mean_cpu_percent": 0.0
+                  }
+                ],
+                "runtime_roles_confirmed": false
+              },
+              "refine": {
+                "snapshots": 0,
+                "observed_tid_max": null,
+                "active_at_least_1_percent": null,
+                "rows": [],
+                "runtime_roles_confirmed": false
+              }
+            },
+            "source_sha256": {
+              "zip-sources.jsonl": "77f0bf1c60a3dedf3d728bde44bb5330fb2230796ff2dd085bf1d5efd05dc449",
+              "track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+              "refine-jobs.jsonl": "34120f6df2533d1a2e158dcf38b3e7a067568275df36c1005f91a2a1941a106b",
+              "process-resources.jsonl": "6c0ee3e2c222791a39a0a564185a51cea6b5343b2ba395da805996ad7a1e1e32",
+              "thread-resources.jsonl": "e09abc2c6318b2a1839ea6590b6d5ebe0ebe8fbb2ab589919794d6f498e4e836",
+              "worker.json": "91ece02377beb5f7f90605a3f3c222b099ed442797c2ab5874c211f920e2f3b0",
+              "zip-events.jsonl": "52e8759c376537efbc059b5c46297060896a91a8780237128be177a9426d5f57",
+              "capture/backlog.jsonl": "ce60d8ed2736ce365ea98d34e8f71b1bd668d1fe13807ebe0c252d9edf060b6b",
+              "capture/decoder.jsonl": "9f76ad9d8f8dfc50f5c46fb1890facc049755cff6d5e2b28aeab8dd69690a6f9",
+              "capture/producer.jsonl": "6b40c124a08d4d0bc63f81dd1a14c27928c1862b597e2f51cffb0fec6eaca45f"
+            }
+          },
+          "thermal": {
+            "run": "/d/shin/edge-asr/results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-only",
+            "source_sha256": {
+              "execution.json": "4ee31e5353fb77a24c7e15603a6bb52cc269a8c220b5f1ce5a1ffa4152a40ff6",
+              "thermal.jsonl": "82768246d9b6bcddf1ee23dbf1e4850bc6d062d6c19b346241fe58d1233c7492"
+            },
+            "status": "completed",
+            "control_valid": false,
+            "rejection": null,
+            "thermal_sample_count": 125,
+            "before": {
+              "at_utc": "2026-11-03T04:08:27.633798+00:00",
+              "elapsed_from_before_s": 0.0,
+              "temperature_c": 52.9,
+              "fan_rpm": 3095,
+              "cpu0_freq_khz": 1500000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "after": {
+              "at_utc": "2026-11-03T04:10:34.628885+00:00",
+              "elapsed_from_before_s": 126.99508945300477,
+              "temperature_c": 59.5,
+              "fan_rpm": 5208,
+              "cpu0_freq_khz": 1600000,
+              "current_limits": 0,
+              "history_limits": 14
+            },
+            "software_stop_mc": null,
+            "first_observed_software_temperature_limit": null,
+            "first_observed_current_limit": null,
+            "current_limit_observed": false,
+            "new_history_bits": 0,
+            "telemetry_missing_samples": 0,
+            "fan_missing_samples": 0,
+            "fan_positive_samples": 127,
+            "fan_rpm_max": 5208,
+            "temperature_mc_max_monitor": 60600,
+            "temperature_mc_max_with_before_after": 60600,
+            "scope": "과거 표본 재분석. 실제 임계값 통과 순간은 표본 사이 미확인. 현재 제한 0은 표본 사이 제한 부재를 증명하지 않음."
+          },
+          "loading": {
+            "zip_wall_s": 2.489397293989896,
+            "zip_cpu_s": 2.726196117,
+            "zip_loading_rss_mib": 276.78125,
+            "zip_warmup_s": 1.9835026030050358,
+            "warmup_frames": 80000
+          },
+          "resource_sample_intervals_s": {
+            "n": 1203,
+            "mean": 0.10040592369742321,
+            "p50": 0.100218662,
+            "p95": 0.100475949,
+            "max": 0.139056041
+          },
+          "model_limits_verified": true,
+          "rescore_matches": true,
+          "source_commit": "acf51360613be2c49dd6be53c5ecd8b2be9cd728",
+          "environment": {
+            "edge_asr": "0.1.0",
+            "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+            "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+            "machine": "aarch64",
+            "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+            "runtime": {
+              "sherpa_package_version": "2.0.1",
+              "sherpa_core_package_version": "2.0.1",
+              "python_onnxruntime_package_version": "1.31.1",
+              "sherpa_native_onnxruntime_version": "1.28.2",
+              "native_version_source": "sherpa_onnx.onnxruntime_version",
+              "status": "available",
+              "reason": null
+            },
+            "packages": [
+              {
+                "name": "cffi",
+                "version": "2.1.1"
+              },
+              {
+                "name": "flatbuffers",
+                "version": "25.12.19"
+              },
+              {
+                "name": "numpy",
+                "version": "2.4.6"
+              },
+              {
+                "name": "onnxruntime",
+                "version": "1.31.1"
+              },
+              {
+                "name": "packaging",
+                "version": "26.3"
+              },
+              {
+                "name": "protobuf",
+                "version": "7.36.2"
+              },
+              {
+                "name": "pycparser",
+                "version": "3.12"
+              },
+              {
+                "name": "sherpa-onnx-core",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sherpa_onnx",
+                "version": "2.0.1"
+              },
+              {
+                "name": "sounddevice",
+                "version": "0.5.6"
+              },
+              {
+                "name": "soundfile",
+                "version": "0.14.0"
+              },
+              {
+                "name": "typing_extensions",
+                "version": "4.16.0"
+              }
+            ]
+          },
+          "refine_environment": null
+        }
+      },
+      "paired_controls": {
+        "z1-s1": {
+          "control": "z1-only",
+          "first_partial_paired_delta_s": {
+            "n": 1,
+            "mean": 0.000197861,
+            "p50": null,
+            "p95": null,
+            "max": 0.000197861
+          },
+          "changed_zip_sources": []
+        },
+        "z1-s2": {
+          "control": "z1-only",
+          "first_partial_paired_delta_s": {
+            "n": 1,
+            "mean": -0.000734742,
+            "p50": null,
+            "p95": null,
+            "max": -0.000734742
+          },
+          "changed_zip_sources": []
+        },
+        "z2-s1": {
+          "control": "z2-only",
+          "first_partial_paired_delta_s": {
+            "n": 1,
+            "mean": -0.00017897,
+            "p50": null,
+            "p95": null,
+            "max": -0.00017897
+          },
+          "changed_zip_sources": []
+        }
+      },
+      "same_refine_1t_outputs_across_zip_threads": true
+    }
+  },
+  "tests": {
+    "host": {
+      "count": 221,
+      "seconds": 17.461,
+      "passed": true
+    },
+    "rp5": {
+      "count": 221,
+      "seconds": 34.623,
+      "passed": true
+    }
+  },
+  "post_measurement_tests": {
+    "host": {
+      "count": 222,
+      "seconds": 17.439,
+      "passed": true
+    },
+    "rp5": {
+      "count": 222,
+      "seconds": 34.561,
+      "passed": true
+    }
+  },
+  "raw_files_verified": 176,
+  "preservation": {
+    "protected_files": 4286,
+    "changed": [],
+    "missing": [],
+    "environment": {
+      "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+      "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+      "resolved_python": "/home/deepet/.local/share/uv/python/cpython-3.11.18-linux-aarch64-gnu/bin/python3.11",
+      "packages": {
+        "numpy": "2.4.6",
+        "sherpa-onnx": "2.0.1",
+        "sherpa-onnx-core": "2.0.1",
+        "onnxruntime": "1.31.1"
+      }
+    },
+    "environment_unchanged": true,
+    "system_settings_unchanged": true,
+    "active_guards": [],
+    "active_workers": [],
+    "active_refine_children": [],
+    "active_input_children": [],
+    "active_group_members": [],
+    "coordinator_active": false,
+    "same_boot": true,
+    "source_commit": "acf51360613be2c49dd6be53c5ecd8b2be9cd728",
+    "working_tree_clean": true
+  },
+  "evidence_sha256": {
+    "results/maintenance/m31-concurrent-20261103-01/transfer-manifest.json": "bade2859848fdbe0af60961f9877d8178bcfadf3ea9465d7563f2984c3d3cdb7",
+    "results/maintenance/m31-concurrent-20261103-01/plan.json": "1c0c1afd2ffd1890359ff105d923c92881dcae86dddef484928c750f879915e2",
+    "results/maintenance/m31-concurrent-20261103-01/suite.json": "a1d570da14b8f7d423730bb42f5cb261f7db7b990cf8e0dedb44d829070ccfe7",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-only/execution.json": "b3c60f09fdc291b3a63e58ae5b26c1db29d123737c5d40d0814b1cced1c76c60",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-only/worker.json": "1ab61ae4a1e6d5b530130b3eba166def15eedb32dda6bd29e0d25314d446f149",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-only/track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-only/summary.json": "dc992cc6432b4b1536eda139cf6f3499153ffddcb75d8aaa9653d62e89ee6b4f",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-only/refine-jobs.jsonl": "98a54c5c31a55a651954480dc1d1d10fb01e50ef602e2b179a3f57b60ef379ae",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-only/capture/producer.jsonl": "5816ff0444515728b631063140a4f90df2380c1ab8d65449bd42986fca6a29e3",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-only/process-resources.jsonl": "ac9fdbfdd27461140af83610a88643aaf3e30e4d328bd65a26e488a47ad68ff2",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-only/zip-sources.jsonl": "dcbbfcc14e9f41c4366107e546ccdf28d58db10d7a9bb32179edab235fb2c356",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s1/execution.json": "bee11fa3f725f5d242b333c41fafcbe3c21525e2380f8c51afcee3c0008e00b6",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s1/worker.json": "f953e102bb51684ba6c39739ecbd96dfffa812a0df7ca2acd144eaa663740231",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s1/track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s1/summary.json": "e4ae9d5ca3c61d5112a6261ecfaeb001d0677879d70fb420b5e957ccf32f6134",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s1/refine-jobs.jsonl": "8e25f7d24090ca46a9b4e0457020407cb7152bec3c333a7faaa023ee77cb2a68",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s1/refine-results.jsonl": "bdb2a936cdfb65de2e7d0dcec95eeb7de9b1988f84936a3beca2fe1816481017",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s1/capture/producer.jsonl": "20bbc99ce6b3942a827c8243bdaaa4b1fb9671625df104150bf158ced20d59c0",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s1/process-resources.jsonl": "92817418454849f64c6a1f37b2415218ec7a203d4c7cf5453d1f5e591817d37c",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s1/zip-sources.jsonl": "cec76ef201c67382a42eb718868422b3657e757e8ac2141ea59a780afa9c2a58",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s2/execution.json": "cf192a8af55c8dc4479d7e6670e7ebc7437a61af0d48960b4d4876af5c57567d",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s2/worker.json": "530e8e0cd70a8f3c1d36ef80c6e1ea1eabc81aa23949cf844c01b88046e27d34",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s2/track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s2/summary.json": "ef219fd2f22315201738cdca779f782e651984ccc19dd53b6710919d3d965255",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s2/refine-jobs.jsonl": "efaa3f3ada1271c26f07a39410b9cfe434be1a663898efbc8ad746850ead2795",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s2/refine-results.jsonl": "6e2f4eeda55af1f31618e990cc78ff0db5e6a5e7f12875459b25d969a1a45903",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s2/capture/producer.jsonl": "a840170fd4dea1c5edbdfd3a92efcf86440990a8838af33834aa3c4a9b2d45c6",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s2/process-resources.jsonl": "0dd44333eb20dd23c8bc0406cf6b2e3fdac0290fb503c8e2f7000c92c4f41c08",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z1-s2/zip-sources.jsonl": "108b2bef1e4943bbccdf4526dacff3477d4d5178de964c6141e5bb700712ff2d",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-only/execution.json": "afb5c4728d6429f5a9a126d030f61a7bb7b9e89bc6c79a1342aba9683f5d72f7",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-only/worker.json": "e61cddd4d5529452a18eabeb05e81c37bcf4b58da33155c58abea133593f47af",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-only/track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-only/summary.json": "a2aea233398d07320436bc3ebc96f984963fde2c4cebcd92f2429e7d7603632f",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-only/refine-jobs.jsonl": "5cacb4d675a336657e9230561a34997d3d964e4ea519342d2520683ce7b54699",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-only/capture/producer.jsonl": "f9a587885dac11894579a04b8cf1e6d15182a84dee6f3728e8e723c643aef78c",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-only/process-resources.jsonl": "3af49348b262e649a2235cc82880797d5e0179de909ee1f86d1ee1bd9d362371",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-only/zip-sources.jsonl": "7fba3ccafd28ffba7594c1853c3a06d647ae67212035f0cb89228369e163a343",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-s1/execution.json": "616182472e5b216bf6276166895b01a9d5547d5744a63c1b99ecb6fe26f2181a",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-s1/worker.json": "e5b5fe7dbab725c09ee49f716e8313ebaf862c681bf8d510839cc6c6c502d33c",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-s1/track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-s1/summary.json": "c3b9551ba1a57e4b4e86610bbf7564d7d7014bea137c783982e8c6bbb2e9341e",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-s1/refine-jobs.jsonl": "874e8e365b53558870c4ef991df497fb77d6ddbdb3fd858c8da8d011b71aecc4",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-s1/refine-results.jsonl": "57bc0d34f30a0db8fba89f9c6d205b3fcae85f7ed6296e8fd08588dbb44d6dab",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-s1/capture/producer.jsonl": "8748e6a26795f41befb6436f8efb747d7d50032eb339c6492c71cacecd65059b",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-s1/process-resources.jsonl": "7926d354af1791e09fb3c3d4c4908c58ef5437b08148656c0786a5ca4c42e884",
+    "results/preflight/m31-concurrent-20261103-01/kss-dev50/z2-s1/zip-sources.jsonl": "c99eb2c936be20a801da4fa1b142ae49152ab16eda8628bbeb86b0bee1d2f654",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-s1/execution.json": "552f691176e8b0f3bf5d59de43fdbcef62bf229027ac9e6aaa605eb08e721de9",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-s1/worker.json": "e6c2475263173b8092a78b6385f053b1f86a706fb3f84c48ab18faa62a89e924",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-s1/track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-s1/summary.json": "9fe1cb4b93dca61762de7be2f9d49738f1993e31150c8394a569bed5249647ff",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-s1/refine-jobs.jsonl": "809453ed8926c6ec9e4fdc82b999c44a8b53402e7a599712756559c7f01f6557",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-s1/refine-results.jsonl": "06a0cd9432a9348db4cba57e38ba195fce8f5de9d7b9438560ab9fb1b814cf9f",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-s1/capture/producer.jsonl": "d67f572608d9e176d881f450187e8be3b2767920aa2760aebc51d72e530bde8f",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-s1/process-resources.jsonl": "bbe98b121138fa34821ed5413135ec55564eb488afe493c828015605d50e99f5",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-s1/zip-sources.jsonl": "946a83711231bb116d6114457452aafb071ad42bc9a6d5b7d285b7375c4e8e17",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-only/execution.json": "580c9f21c23664c8416f67b6b17bf996abaddc80f946b8f6f3f8683d892f26e0",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-only/worker.json": "4e89402acce63edb5ffe663cad4c503c5d4732552896f896600b7b7b84cf386d",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-only/track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-only/summary.json": "d96b8b76af06ad66e9e687079df12140f5d433a61487e99348e9b903d6a1f7bb",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-only/refine-jobs.jsonl": "ef87ba8373a415f6ee5cefa3b365322a8594db23a1cc5fbf5ef2f04b52ba4cb2",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-only/capture/producer.jsonl": "efebfa98a17471ccd71101d66a29895187e2290d8bfb25c29e1214aa0c1d8c41",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-only/process-resources.jsonl": "9d3e299f584b83246a702c16b4cc04a835d0dfbf915707dfdb98f19bf0bf11b5",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z2-only/zip-sources.jsonl": "d8e2821b79b9c5884c53f7657a1062e827271b1444c0b5e7fb6a73c4fb673f8e",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s2/execution.json": "e4a904c39ca31afefa27e4ee2f9310e2bb16e6911c298a787af3d0a70ed68f58",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s2/worker.json": "94b53f09e11bdff5d4f0a2cf45543cf00cc788c829eb9cbbecf22ad56dc87e30",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s2/track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s2/summary.json": "c04b0a9e29f0f5a7ce9672dc86e943ba69f5aaff447b69b3cfefda20ca63f077",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s2/refine-jobs.jsonl": "2de4be41fab97fe762637756faf891401d407601cff6da735091569cfe80b49a",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s2/refine-results.jsonl": "0764cad24aa83a4022f6e117f11f12685cfcb5ca11c4584b2b3e52b15971bb5f",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s2/capture/producer.jsonl": "a5396bee87dafa46ca1ebfd1274eb5182d0a58fb846dca9dc73088221254625c",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s2/process-resources.jsonl": "e4b2f23d29e97ffcb92e225fbfe40b4617d58371a7be6b129f9ce65a64305e2b",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s2/zip-sources.jsonl": "a0bff1e2a4a62f82984589a100d864cfda04bc7515e7aa77e9b5a5fd19daeb36",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s1/execution.json": "80b079a8895b4ae3ef4610fae6140877ddd36407108926e599b650c6d6d92e39",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s1/worker.json": "766b46857379176a90731e3489c19d37cdd4030fb33f62d0d35b0afbce8e3b36",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s1/track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s1/summary.json": "dcf33c31d7943bd5c7c205075dc3495c2cac82f6fb3afb58fd50c02c3108878e",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s1/refine-jobs.jsonl": "b176b46d694b59ac9ecd23fea43427046a2a95c38260d0e7eb3f4bb2bfe21904",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s1/refine-results.jsonl": "bf46d529acbff04fcc55590b8655badace17cbf8606c62c4c8d1237479858dce",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s1/capture/producer.jsonl": "8c87b8c96e9c387f39b59d4c16ad8ad821da3634cfb54d27273158b915de5260",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s1/process-resources.jsonl": "686b2bb93156f7b707e87f5f8a4eabc8e9de8c0b0955992b9eeba4d376c6fd72",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-s1/zip-sources.jsonl": "008fd494503650cbf90a22af489ef35fddca7adcb70f4eccfcca975867eb272a",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-only/execution.json": "4ee31e5353fb77a24c7e15603a6bb52cc269a8c220b5f1ce5a1ffa4152a40ff6",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-only/worker.json": "91ece02377beb5f7f90605a3f3c222b099ed442797c2ab5874c211f920e2f3b0",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-only/track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-only/summary.json": "75735d3e775e755dcd3e794dc879ec7e1d59d12584854d227c635cdd9c8b74ec",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-only/refine-jobs.jsonl": "34120f6df2533d1a2e158dcf38b3e7a067568275df36c1005f91a2a1941a106b",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-only/capture/producer.jsonl": "6b40c124a08d4d0bc63f81dd1a14c27928c1862b597e2f51cffb0fec6eaca45f",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-only/process-resources.jsonl": "6c0ee3e2c222791a39a0a564185a51cea6b5343b2ba395da805996ad7a1e1e32",
+    "results/preflight/m31-concurrent-20261103-01/synthetic-120/z1-only/zip-sources.jsonl": "77f0bf1c60a3dedf3d728bde44bb5330fb2230796ff2dd085bf1d5efd05dc449",
+    "results/maintenance/m31-concurrent-20261103-01/preservation-after.json": "727e0a4caeb00a8df5a807f42978b353e3e103916116053dcf84a1ee23da9788",
+    "results/maintenance/m31-concurrent-20261103-01/host-tests.log": "f504908c825b7f6b86d55c2a11a9e5346fcc63547e3a65c8a686facd92ccf6ff",
+    "results/maintenance/m31-concurrent-20261103-01/rp5-tests.log": "6896c6c5081145055ed897ac7603a560f5b3e96ef01fd470c644b9ae05304778",
+    "results/maintenance/m31-concurrent-20261103-01/host-tests-final.log": "bf8f5b02eb9d19d75d65c95c32cf6a612d3eb99c959bf6d3a36d3c49ba2d92dd",
+    "results/maintenance/m31-concurrent-20261103-01/rp5-tests-final.log": "d2c9c46a0147945a2325203642f451fc6e6d47f0e84313f2552eb4594aa63bd4",
+    "results/maintenance/m31-concurrent-20261103-01/preservation-before.json": "b3ad4b37a5eeef76496fe56803bc83907791a3c8ca0255fe3f9c1a416d9804d9",
+    "results/maintenance/m31-concurrent-20261103-01/cooling-before.json": "732e501d119c64eddb65b933b1cf8fb4f6628a3b4f06a4588a0f97751106254f",
+    "results/maintenance/m31-concurrent-20261103-01/cooling-after.json": "f9e20c6b8706016d3da3fa05afc509260cb56c42ebb16f9c8da738d1328b5c22",
+    "results/maintenance/m31-concurrent-20261103-01/launcher.json": "02198f9074ed8ba2b20d93f73ab7c46e29a5d3476364807230b639728fb53a36",
+    "results/maintenance/m31-concurrent-20261103-01/controller.log": "013ae1cc823bce945e37457b5d120a1124fc25c4775eab900713cc40290a4b20",
+    "results/maintenance/m31-concurrent-20261103-01/audit.py": "ad51a1abb118e31d4e1ded000acdd5a046fc5943cf96617de00c1276de4b2466",
+    "results/maintenance/m31-concurrent-20261103-01/suite.py": "f767116ee4335e403fc37cbdc3801e40005e21e31f619b131e5fde08d424ee52",
+    "results/maintenance/m31-concurrent-20261103-01/analyze.py": "57ee4b9ecaad68ff0a9cf615fc26d6f779df8dc8fc47226b8b0e2badf68a1d65"
+  },
+  "unmeasured": {
+    "hybrid_merged_cer": null,
+    "aligned_recognition_latency_s": null,
+    "microphone_latency_s": null
+  },
+  "scope_ko": "단독 대조군 포함 같은 1배속 WAV 입력 10회, 조건별1회. 자료별 집계, 입력/Refine 손실은 실패/누락 보존. 실제 병합 서비스·마이크·자연 대화·독립 평가·통제 클럭 성능 순위 아님."
+}

@@ -2,7 +2,7 @@
 
 Raspberry Pi 5(ARM64, Debian 13, RAM 8GB)에서 한국어 ASR 모델을 비교하고 실시간 배포하기 위한 연구 저장소입니다. **Host에서 개발하고 RP5에서 실제 추론·성능을 검증합니다.** 기준 Python은 3.11이며 모델·오디오·가상환경·원시 결과는 각 장비에 보존합니다.
 
-Zipformer INT8의 batch/1배속 모사와 SenseVoiceSmall INT8의 batch 평가를 구현했습니다. 공통 입력·CER·RTF·CPU/RSS·실패 기록·재채점을 사용합니다. 현재는 VAD와 발화 구간 정책을 검증하는 M3 단계입니다. [현재 상태·다음 작업](docs/status.md), [전체 문서](docs/README.md), [실측 기록](results/summaries/README.md)을 참고하세요.
+Zipformer INT8의 batch/1배속 모사와 SenseVoiceSmall INT8의 batch 평가를 구현했습니다. 공통 입력·CER·RTF·CPU/RSS·실패 기록·재채점을 사용합니다. 현재는 VAD·발화 구간 정책과 Streaming/Refine 동시 부하를 검증하는 M3 단계입니다. [현재 상태·다음 작업](docs/status.md), [전체 문서](docs/README.md), [실측 기록](results/summaries/README.md)을 참고하세요.
 
 ## 빠른 시작
 
@@ -69,6 +69,7 @@ Host `/d/shin/edge-asr`와 RP5 `/home/deepet/projects/edge-asr`는 **main 하나
 - M1/M2: Zipformer batch·paced_stream과 SenseVoice batch를 RP5에서 실행하고 Host 재채점을 대조했습니다. 모델 간 비교에는 같은 자료·정규화·실행 조건과 각 기록의 한계를 확인해야 합니다.
 - M3: 공개 자료 98개 중 18개를 보류하고 개발 80개 × 원음/RMS로 실제 VAD 160회를 확인했습니다. 배포 라벨 예비 비교에서 초단문 전체 누락은 9/64·4/64였으나 RMS의 새 누락과 비음성 검출 증가가 남았습니다. [예비 결과](results/summaries/m3-vad-provisional-20261029.md).
 - 추가 공학 검사: 중첩 입력에서 bounded VAD의 실제 연속 활성 37.572초/34.788초와 3/5/8초 구간·유한 버퍼를 검증했습니다. native는 같은 입력에서 30초 안전 예산으로 중단했습니다. 기본 경로·안전 제한·전처리 미승인 상태는 유지하며 자연 장문/실서비스 검증과 구분합니다. [추가 RP5 결과](results/summaries/m3-vad-overlap-rp5-20261102.md).
-- 다음 과제: 확정 구간 주석, 자연 장문·마이크·장시간 운영, 고부하 냉각 조건입니다. 실제 endpoint·Hybrid 동시 실행·Qwen3-ASR은 후속 범위입니다. 기존 단독 batch 수치로 동시 성능을 추정하지 않습니다.
+- 실제 동시 계측: 같은 1배속 WAV로 단독 대조군과 1T+1T/1T+2T/2T+1T의 [10회 비교](results/summaries/m31-concurrent-20261103.md)를 완료했습니다. 입력/Refine 드롭은 0이고 1+2의 Refine 반환이 가장 빨랐지만, 고정5초 장문 Refine의 정확도 회귀가 남았습니다. 병합 서비스 채택과 구분합니다.
+- 다음 과제: 구간 경계·결과 교체 정확도, 확정 구간 주석, 자연 장문·마이크·장시간 운영과 고부하 냉각 조건입니다. 실제 endpoint·Hybrid 결과 병합·Qwen3-ASR은 후속 범위입니다. 기존 단독 batch 수치로 동시 성능을 추정하지 않습니다.
 
 초기 Zipformer 3.526초 WAV의 1/2/4스레드 결과는 **동일 단일 샘플의 각 1회 측정**입니다. [보존 기록](experiments/m1_zipformer/README.md)에서 출처와 한계를 확인할 수 있습니다. 과거 보고서의 수치·환경을 현재 조건으로 소급 변경하지 않습니다.
