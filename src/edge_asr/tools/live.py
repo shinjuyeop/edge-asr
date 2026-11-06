@@ -16,19 +16,23 @@ from edge_asr.dataset import load_audio, load_manifest, resolve_path
 from edge_asr.realtime.captions import PREFIX, render
 from edge_asr.tools.reports.captions import summarize
 
+REFINE_CONFIGS = {"sensevoice": "sensevoice_eval.toml", "qwen3": "qwen3_eval.toml"}
 
-def start(root, *, wav=None, manifest=None, output=None):
+
+def start(root, *, wav=None, manifest=None, output=None, refine_model="sensevoice"):
     from edge_asr.tools.probes.thermal import run
 
     if (wav is None) == (manifest is None):
         raise ValueError("--wav 또는 --manifest 중 하나가 필요합니다.")
+    if refine_model not in REFINE_CONFIGS:
+        raise ValueError("보정 모델은 sensevoice 또는 qwen3여야 합니다.")
     if output is not None and output.exists():
         raise FileExistsError("기존 출력 폴더를 덮어쓰지 않습니다.")
     if subprocess.check_output(["git", "status", "--porcelain"], cwd=root).strip():
         raise ValueError("소스 변경을 commit/push/pull한 뒤 실행하세요.")
     if sys.platform != "linux":
         raise ValueError("현재 MVP 실행은 기존 Linux RP5 런타임을 사용합니다.")
-    for filename in ("zipformer_paced.toml", "sensevoice_eval.toml"):
+    for filename in ("zipformer_paced.toml", REFINE_CONFIGS[refine_model]):
         config = load_evaluation_config(root / "configs" / filename)
         for path in create_adapter(config["model"], 16000, root).model_files.values():
             if not path.is_file() or path.stat().st_size == 0:
@@ -68,7 +72,8 @@ def start(root, *, wav=None, manifest=None, output=None):
         manifest = directory / "input.jsonl"
         write_jsonl(manifest, rows)
     print(
-        f"결과: {directory}\n모델 준비 후 WAV를 1배속으로 입력합니다. 보정 후보는 별도 표시합니다.",
+        f"결과: {directory}\n보정 모델: {refine_model} (2스레드)\n"
+        "모델 준비 후 WAV를 1배속으로 입력합니다. 보정 후보는 별도 표시합니다.",
         flush=True,
     )
     command = [
@@ -89,6 +94,8 @@ def start(root, *, wav=None, manifest=None, output=None):
         "vad0",
         "--caption-display",
     ]
+    if refine_model != "sensevoice":
+        command += ["--refine-config", str(root / "configs" / REFINE_CONFIGS[refine_model])]
     with (directory / "terminal-events.jsonl").open("x") as terminal:
 
         def display(line):
@@ -138,6 +145,12 @@ def main(argv=None):
     source.add_argument("--wav", type=Path, help="16kHz mono PCM16 WAV")
     source.add_argument("--manifest", type=Path, help="기존 해시 포함 평가 manifest")
     parser.add_argument("--output", type=Path, help="새 실행 폴더; 기본 results/live/고유ID")
+    parser.add_argument(
+        "--refine-model",
+        choices=tuple(REFINE_CONFIGS),
+        default="sensevoice",
+        help="별도 보정 후보 모델, 기본 sensevoice; qwen3는 별도 Qwen+VAD 환경 필요",
+    )
     args = parser.parse_args(argv)
     root = Path.cwd()
     try:
@@ -146,6 +159,7 @@ def main(argv=None):
             wav=resolve_path(args.wav, root) if args.wav else None,
             manifest=resolve_path(args.manifest, root) if args.manifest else None,
             output=resolve_path(args.output, root) if args.output else None,
+            refine_model=args.refine_model,
         )
     except (OSError, ValueError, KeyError) as error:
         parser.exit(2, f"오류: {error}\n")

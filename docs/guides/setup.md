@@ -67,6 +67,8 @@ Qwen3-ASR은 [sherpa CPU·INT8 ONNX 경로](../research/qwen3_deployment.md)를 
   --evaluation configs/qwen3_eval.toml
 ```
 
+Qwen과 온라인 VAD를 함께 사용하는 별도 환경은 `.venv-qwen3-vad-20261106-01`이다. 위 batch 환경을 수정하지 않고 새로 만들었다. 같은 Python·NumPy·sherpa/native ORT에 Python onnxruntime 1.31.1을 추가했으며, 전이 의존성을 포함한 wheel 8개의 SHA-256 lock으로 설치하고 `pip check`를 통과했다. 설치 로그·wheel·lock·freeze는 `results/maintenance/qwen3-realtime-20261106-01/`에 보존한다. sherpa 내부 ORT 1.28.2와 Python VAD용 ORT 1.31.1은 별도 런타임이다. 새 장비에서 설치할 때의 선택 의존성 조합은 `.[qwen3,vad-probability]`이며, 이미 준비된 환경에는 재설치하지 않는다. [동시 실행 조건](../research/qwen3_realtime.md), [자막 모델 선택](live_captions.md).
+
 ## 자산 및 환경 기록
 
 모델·WAV는 Git으로 전달하지 않습니다. 기존 RP5 자산은 수정하지 않고 새 배포 경로의 `models/`에서 심볼릭 링크로 참조할 수 있습니다. 예시 경로와 파일명은 [실험 README](../../experiments/m1_zipformer/README.md)에 있습니다. 자산을 별도로 수급할 때는 배포처·라이선스·버전·SHA-256을 로컬 실행 기록에 남깁니다.

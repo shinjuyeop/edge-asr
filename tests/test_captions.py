@@ -1,6 +1,7 @@
 """실제 모델 없이 분리 표시·원문 보존·늦은 반환·터미널 실패·실제 IPC를 검증한다."""
 
 import contextlib
+import hashlib
 import io
 import json
 import tempfile
@@ -14,6 +15,7 @@ import test_online_vad as vad_fixture
 
 from edge_asr.realtime.captions import CaptionReplay, render
 from edge_asr.streaming import read_events
+from edge_asr.tools import live
 from edge_asr.tools.live import start
 from edge_asr.tools.probes import thermal as guard
 from edge_asr.tools.reports.captions import summarize
@@ -111,7 +113,67 @@ class CaptionTests(unittest.TestCase):
                 start(root, wav=root / "a", manifest=root / "b")
             with self.assertRaises(FileExistsError):
                 start(root, wav=root / "a", output=root)
+            with self.assertRaises(ValueError):
+                start(root, wav=root / "a", refine_model="unknown")
             self.assertEqual(list(root.iterdir()), [])
+
+    def test_model_selection_requires_only_selected_assets_and_reaches_guard(self):
+        from edge_asr.adapters import create_adapter
+        from edge_asr.adapters.qwen3 import MODEL_FILES
+        from edge_asr.artifacts import digest
+        from edge_asr.config import load_evaluation_config
+
+        repository = Path(__file__).resolve().parents[1]
+        for model in ("sensevoice", "qwen3"):
+            with self.subTest(model=model), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                (root / "configs").mkdir()
+                for filename in ("zipformer_paced.toml", live.REFINE_CONFIGS[model]):
+                    config_path = root / "configs" / filename
+                    config_path.write_bytes((repository / "configs" / filename).read_bytes())
+                    config = load_evaluation_config(config_path)
+                    if config["model"]["family"] == "qwen3_asr":
+                        paths = [root / config["model"]["path"] / name for name in MODEL_FILES]
+                    else:
+                        paths = create_adapter(config["model"], 16000, root).model_files.values()
+                    for path in paths:
+                        path.parent.mkdir(parents=True, exist_ok=True)
+                        path.write_bytes(b"fixture model; never loaded")
+                vad = root / "models/silero-vad-k2-20261029/silero_vad.onnx"
+                vad.parent.mkdir(parents=True)
+                vad.write_bytes(b"fixture vad; never loaded")
+                wav = root / "voice.wav"
+                vad_fixture.fixtures.write_wav(wav, array("h", [1] * 1600))
+                output = root / "output"
+                with (
+                    patch.object(live.subprocess, "check_output", return_value=b""),
+                    patch.object(live.sys, "platform", "linux"),
+                    patch("edge_asr.vad.MODEL_SHA", digest(vad)),
+                    patch(
+                        "edge_asr.adapters.qwen3.MODEL_FILES",
+                        {
+                            name: hashlib.sha256(b"fixture model; never loaded").hexdigest()
+                            for name in MODEL_FILES
+                        },
+                    ),
+                    patch.object(guard, "run", return_value=1) as run,
+                    contextlib.redirect_stdout(io.StringIO()),
+                ):
+                    kwargs = {} if model == "sensevoice" else {"refine_model": model}
+                    self.assertEqual(start(root, wav=wav, output=output, **kwargs), 1)
+                command = run.call_args.args[2]
+                self.assertIn("--caption-display", command)
+                self.assertEqual(command[command.index("--refine-threads") + 1], "2")
+                if model == "qwen3":
+                    self.assertEqual(
+                        command[command.index("--refine-config") + 1],
+                        str(root / "configs/qwen3_eval.toml"),
+                    )
+                else:
+                    self.assertNotIn("--refine-config", command)
+                summary = json.loads((output / "summary.json").read_text())
+                self.assertEqual(summary["status"], "failed_or_unverified")
+                self.assertEqual(summary["automatic_replacements"], 0)
 
     def test_guard_console_callback_preserves_log_and_fails_on_display_error(self):
         for fail in (False, True):

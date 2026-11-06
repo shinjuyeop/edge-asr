@@ -247,6 +247,7 @@ sherpa_onnx.OfflineRecognizer.from_qwen3_asr=staticmethod(make_qwen)
                 str(self.vad_path),
                 "--refine-config",
                 str(config),
+                "--caption-display",
             ],
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
@@ -260,6 +261,26 @@ sherpa_onnx.OfflineRecognizer.from_qwen3_asr=staticmethod(make_qwen)
             self.assertEqual(row["adapter_result"]["native_stderr"], "")
             self.assertTrue(row["adapter_result"]["context_budget"]["fits"])
         self.assertEqual(summarize(self.root / "run", self.root / "rescore.json"), summary)
+
+        from edge_asr.tools.reports.captions import summarize as captions
+
+        (self.root / "run").rename(self.root / "runtime")
+        events = read_jsonl(self.root / "runtime/caption-events.jsonl")
+        shown = [
+            {
+                "event": event,
+                "stdout_started_ns": event["emitted_ns"] + 1,
+                "stdout_flushed_ns": event["emitted_ns"] + 2,
+            }
+            for event in events
+        ]
+        (self.root / "terminal-events.jsonl").write_text(
+            "".join(json.dumps(row) + "\n" for row in shown)
+        )
+        report = captions(self.root, True)
+        self.assertEqual(report["refine_candidate_displays"], 2)
+        self.assertEqual(report["native_metrics"]["refine_family"], "qwen3_asr")
+        self.assertEqual(report["automatic_replacements"], 0)
 
     def test_silence_is_empty_hypothesis_and_null_latency_without_asr_fallback(self):
         self.fixture.env["FIXTURE_VAD_SILENT"] = "1"

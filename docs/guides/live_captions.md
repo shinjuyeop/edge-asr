@@ -1,6 +1,6 @@
 # WAV 실시간 자막 MVP
 
-`live`는 WAV를 1배속 100ms 청크로 입력하고 터미널에 자막을 표시한다. 스피커 없이 SSH에서 사용할 수 있다. Zipformer 1T·SenseVoice 2T·온라인 Silero VAD 1T와 기존 모델·가상환경을 사용한다. 마이크 입력·스피커 재생은 별도다.
+`live`는 WAV를 1배속 100ms 청크로 입력하고 터미널에 자막을 표시한다. 스피커 없이 SSH에서 사용할 수 있다. 기본값은 Zipformer 1T·SenseVoice 2T·온라인 Silero VAD 1T이며, 별도 환경에서 Qwen 2T를 보정 후보로 선택할 수 있다. 마이크 입력·스피커 재생은 별도다.
 
 ## 실행
 
@@ -20,13 +20,23 @@ cd /home/deepet/projects/edge-asr
   --manifest data/evaluation/kss-dev50/manifest.jsonl
 ```
 
+Qwen 후보는 준비된 **Qwen+VAD 환경**에서 명시적으로 선택한다. batch용 `.venv-qwen3-onnx-20261106-01`에는 Python VAD 런타임이 없으므로 아래 환경과 구분한다. 기존 환경에 패키지를 추가하지 않는다. Qwen·Zipformer·Silero 모델이 필요하고, 이 선택에는 SenseVoice 모델이 필요하지 않다.
+
+```bash
+.venv-qwen3-vad-20261106-01/bin/python scripts/edge_asr.py live \
+  --refine-model qwen3 \
+  --wav models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/test_wavs/0.wav
+```
+
+`--refine-model sensevoice`는 기본값과 같다. 두 후보 모두 Refine 2T·원음·vad0·최대 5초·문맥 0을 사용한다. Qwen은 검증한 모델 자산·한국어·KV 512·출력 128 설정을 유지한다. 선택한 모델은 시작 메시지와 원시 worker 설정에 기록된다. [같은 VAD 구간·동시 실행 검증](../research/qwen3_realtime.md)의 범위에서 사용하는 후보이며 더 높은 정확도를 모든 발화에 보장하지 않는다.
+
 ## 표시 정책
 
 ```text
 [파일ID][Zip 임시] 현재까지의 빠른 전사
 [파일ID][Zip 최종] 원본 WAV의 Zip 최종 전사
 [파일ID][보정 대기 0.124~3.526초]
-[파일ID][보정 후보·자동 적용 안 함 0.124~3.526초] 해당 구간의 SenseVoice 결과
+[파일ID][보정 후보·자동 적용 안 함 0.124~3.526초] 해당 구간의 선택한 보정 모델 결과
 ```
 
 Zip은 원본 WAV마다 연속 상태를 유지한다. VAD가 방출한 최대5초 구간의 보정은 원본 ID·원본 시작 기준 구간을 붙여 별도 표시한다. 늦은 보정도 이전 원본 ID에 표시한다. Zip을 자동 덮어쓰지 않으며 두 모델 원문에 문구·반복·문장부호 필터를 적용하지 않는다. terminal 제어 문자는 화면에서만 escape한다. [M3-5의 KSS5개 악화](../../results/summaries/m35-guarded-splice-20261103.md)를 반영한 첫 정책이며 보정이 항상 더 정확하다는 뜻은 아니다.
