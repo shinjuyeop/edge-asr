@@ -1,0 +1,3032 @@
+{
+  "automatic_replacements": 0,
+  "cases": [
+    {
+      "admission_mc": 53000,
+      "dataset": "prospective",
+      "directory": "results/comparisons/file-validation-20261106-01/offline-prospective-sensevoice-t2-01",
+      "error": null,
+      "exit_code": 0,
+      "failed_segments": [],
+      "family": "sensevoice",
+      "full_corpus_cer": 0.12697368421052632,
+      "id": "offline-prospective-sensevoice-t2-01",
+      "initial_temperature_mc": 52900,
+      "limit_verified": true,
+      "model_files": {
+        "model": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51",
+        "tokens": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc"
+      },
+      "num_threads": 2,
+      "operational_valid": true,
+      "overall": {
+        "cer": {
+          "deletions": 104,
+          "empty_reference_nonempty_hypotheses": 0,
+          "empty_reference_samples": 0,
+          "errors": 193,
+          "insertions": 19,
+          "reference_characters": 1520,
+          "scope": "successful_nonempty_references",
+          "substitutions": 70,
+          "value": 0.12697368421052632
+        },
+        "complete": true,
+        "failed": 0,
+        "file_processing_s": {
+          "max": 2.0456777240005977,
+          "mean": 0.9642470277668205,
+          "n": 30,
+          "p50": 1.0108816550000483,
+          "p95": 1.7264003950003826
+        },
+        "file_rtf": {
+          "max": 0.0854032853220243,
+          "mean": 0.07521302194259018,
+          "n": 30,
+          "p50": 0.07534579882632444,
+          "p95": 0.08516881903736395
+        },
+        "interrupted": 0,
+        "mean_process_cpu_percent": 156.23244872450204,
+        "not_attempted": 0,
+        "planned": 30,
+        "reference_character_coverage": 1.0,
+        "rss_observed_max_mib": 503.71875,
+        "rtf": 0.07539069802711652,
+        "successful": 30,
+        "total_audio_s": 383.70000000000005,
+        "total_inference_wall_s": 28.927410833004615
+      },
+      "phase": "offline",
+      "rejection": null,
+      "rescore_matches": true,
+      "segmented": {
+        "asr_calls": 86,
+        "asr_rtf_against_original_audio": 0.04019945618974027,
+        "asr_wall_s": 15.424531340003341,
+        "condition": "bounded_vad_5s",
+        "empty_segment_files": 0,
+        "predictions_sha256": "99836edb04f3ba79c1633f0f3c20484bd35e756681463159d71bada4cab9c9ed",
+        "rss_scope": "ASR+VAD 공존 프로세스",
+        "selected_frames": 4122624,
+        "timing_scope": "overall.rtf는 원본 오디오 길이 대비 전처리/구간화/ASR/결과 연결/검증/계측을 포함한 파일 파이프라인 비용. asr_rtf는 ASR 호출만. WAV I/O/검증용 참조 PCM/모델 로딩/워밍업/파일 기록 제외.",
+        "vad_neural_wall_s": 5.404995392025739
+      },
+      "separate_warmup_verified": true,
+      "source_commit": "15c1c7388cb7870f91feb1a08871089a4ecf3b23",
+      "status": "completed",
+      "summary_sha256": "4b6f4192a364656ff6a25c97004de9116069c4f4040c01ce248387c62c23d6d5",
+      "thermal": {
+        "current_limits": [
+          0
+        ],
+        "history_after": 0,
+        "history_before": 0,
+        "max_c": 65.0,
+        "missing_samples": 0,
+        "samples": 45
+      }
+    },
+    {
+      "admission_mc": 53000,
+      "dataset": "prospective",
+      "directory": "results/comparisons/file-validation-20261106-01/offline-prospective-qwen3_asr-t2-01",
+      "error": null,
+      "exit_code": 1,
+      "failed_segments": [
+        {
+          "context_budget": {
+            "audio_tokens_upper_bound": 1,
+            "context_tokens_upper_bound": 134,
+            "feature_frames": 5,
+            "fits": true,
+            "max_total_len": 512,
+            "prompt_tokens_upper_bound": 133,
+            "reserved_output_tokens": 129
+          },
+          "error": "RuntimeError: Qwen 출력 잘림/반복 경고 또는 token 상한 도달. raw 결과를 보존합니다.",
+          "frames": 896,
+          "native_warning": "/project/sherpa-onnx/csrc/offline-recognizer-qwen3-asr-impl.cc:GenerateText:1096 qwen3-asr: decode collapsed into a repetition loop after 65 tokens; truncating the repetition\n",
+          "reason": "vad_end",
+          "seconds": 0.056,
+          "segment_id": 1,
+          "source_id": "fleurs-ko-validation-0009"
+        }
+      ],
+      "family": "qwen3_asr",
+      "full_corpus_cer": null,
+      "id": "offline-prospective-qwen3_asr-t2-01",
+      "initial_temperature_mc": 51800,
+      "limit_verified": true,
+      "model_files": {
+        "conv_frontend.onnx": "d22dc4423e0940e49884e903d2ea2f7e5567c14fc1aed97e4e26d6b8f208ef9e",
+        "decoder.int8.onnx": "4f6885be5959ae26af3089d38ee7972c5fafbeeb1cf8d5e76eab6d8b61ca5771",
+        "encoder.int8.onnx": "60748d3e6744a57c9c91e1b17424a6c2990567e8adceb0783940c03ed98fa9d9",
+        "tokenizer/merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+        "tokenizer/tokenizer_config.json": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c",
+        "tokenizer/vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      },
+      "num_threads": 2,
+      "operational_valid": false,
+      "overall": {
+        "cer": {
+          "deletions": 81,
+          "empty_reference_nonempty_hypotheses": 0,
+          "empty_reference_samples": 0,
+          "errors": 197,
+          "insertions": 35,
+          "reference_characters": 1493,
+          "scope": "successful_nonempty_references",
+          "substitutions": 81,
+          "value": 0.1319490957803081
+        },
+        "complete": false,
+        "failed": 1,
+        "file_processing_s": {
+          "max": 14.781670305000262,
+          "mean": 7.038204127620545,
+          "n": 29,
+          "p50": 7.149820398999509,
+          "p95": 12.600043540000115
+        },
+        "file_rtf": {
+          "max": 0.7362442668559851,
+          "mean": 0.5447754294163463,
+          "n": 29,
+          "p50": 0.5431220731205688,
+          "p95": 0.6808462215516734
+        },
+        "interrupted": 0,
+        "mean_process_cpu_percent": 190.037153409441,
+        "not_attempted": 0,
+        "planned": 30,
+        "reference_character_coverage": 0.9822368421052632,
+        "rss_observed_max_mib": 1777.171875,
+        "rtf": 0.5424651031228294,
+        "successful": 29,
+        "total_audio_s": 376.26000000000005,
+        "total_inference_wall_s": 204.1079197009958
+      },
+      "phase": "offline",
+      "qwen_output_checks": {
+        "all_context_budgets_fit": true,
+        "calls": 86,
+        "max_returned_tokens": 37,
+        "native_warning_calls": 1
+      },
+      "rejection": null,
+      "rescore_matches": true,
+      "segmented": {
+        "asr_calls": 84,
+        "asr_rtf_against_original_audio": 0.5079586126029964,
+        "asr_wall_s": 191.12450757800343,
+        "condition": "bounded_vad_5s",
+        "empty_segment_files": 0,
+        "predictions_sha256": "d093fe578df575468d4af844ff959e4bb07a59e54d24beec68e9429cf9c7cd11",
+        "rss_scope": "ASR+VAD 공존 프로세스",
+        "selected_frames": 4041728,
+        "timing_scope": "overall.rtf는 원본 오디오 길이 대비 전처리/구간화/ASR/결과 연결/검증/계측을 포함한 파일 파이프라인 비용. asr_rtf는 ASR 호출만. WAV I/O/검증용 참조 PCM/모델 로딩/워밍업/파일 기록 제외.",
+        "vad_neural_wall_s": 5.26270700294117
+      },
+      "separate_warmup_verified": true,
+      "source_commit": "15c1c7388cb7870f91feb1a08871089a4ecf3b23",
+      "status": "failed_or_unverified",
+      "summary_sha256": "b21343599ce405a24a18609ea0ae6f340652e5e96bf6ca242ce9d49ccf6b60e3",
+      "thermal": {
+        "current_limits": [
+          0
+        ],
+        "history_after": 0,
+        "history_before": 0,
+        "max_c": 76.55,
+        "missing_samples": 0,
+        "samples": 235
+      }
+    },
+    {
+      "admission_mc": 60000,
+      "changed_segment_transcripts": 0,
+      "child_exit_code": 0,
+      "dataset": "prospective",
+      "directory": "results/comparisons/file-validation-followup-20261106-04/concurrent-prospective-sensevoice-t2-01",
+      "error": null,
+      "exit_code": 0,
+      "failed_output_indices": [],
+      "family": "sensevoice",
+      "id": "concurrent-prospective-sensevoice-t2-01",
+      "initial_temperature_mc": 58950,
+      "limit_verified": true,
+      "model_files": {
+        "model": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51",
+        "tokens": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc"
+      },
+      "num_threads": 2,
+      "operational_valid": true,
+      "original_pcm_verified": true,
+      "phase": "concurrent",
+      "rejection": null,
+      "rescore_matches": true,
+      "resource_sampling_error": null,
+      "same_offline_online_geometry_and_pcm": true,
+      "separate_warmup_verified": true,
+      "source_commit": "40529f9eebe4f0c2f6301b8bc859f36cd8f7bd4f",
+      "status": "completed",
+      "summary": {
+        "audio_s": 383.7,
+        "chunk_processing_s": {
+          "max": 0.1246991600000058,
+          "mean": 0.017456896902006837,
+          "n": 3837,
+          "p50": 0.00425247600000489,
+          "p95": 0.045330416000012974
+        },
+        "coordinator_active_rtf": 0.1745320033828667,
+        "first_partial_from_source_start_s": {
+          "max": 4.0051018539999745,
+          "mean": 2.06995603873684,
+          "n": 19,
+          "p50": 2.063463998999964,
+          "p95": 4.0051018539999745
+        },
+        "input_backlog_audio_s": {
+          "max": 0.0,
+          "mean": 0.0,
+          "n": 3839,
+          "p50": 0.0,
+          "p95": 0.0
+        },
+        "input_backlog_event_max_audio_s": 0.1,
+        "input_complete": true,
+        "input_dropped_audio_s": 0.0,
+        "input_dropped_chunks": 0,
+        "input_queue_wait_s": {
+          "max": 0.024984067999980653,
+          "mean": 0.0007087698433672113,
+          "n": 3837,
+          "p50": 0.0006230509999909373,
+          "p95": 0.0011382839999924954
+        },
+        "manifest_sha256": "9c7b7f192591a94d09d4b4f5e251be4283ecfa9ef19d428180e16c37ab649e7d",
+        "no_partial_sources": 11,
+        "planned_sources": 30,
+        "producer_cpu_s": 0.579260977,
+        "producer_lifetime_peak_rss_mib": 308.859375,
+        "refine": {
+          "backlog_audio_s": {
+            "max": 0.152,
+            "mean": 6.875e-05,
+            "n": 3840,
+            "p50": 0.0,
+            "p95": 0.0
+          },
+          "backlog_end_audio_s": 0.0,
+          "backlog_event_max_audio_s": 5.0,
+          "backlog_event_max_payload_audio_s": 5.0,
+          "backlog_event_max_windows": 1,
+          "cer": {
+            "cer": {
+              "deletions": 104,
+              "errors": 193,
+              "insertions": 19,
+              "reference_characters": 1520,
+              "substitutions": 70,
+              "value": 0.12697368421052632
+            },
+            "complete": true,
+            "planned": 30,
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+            "successful": 30
+          },
+          "complete": true,
+          "decision_audio_after_owned_end_s": {
+            "max": 0.3,
+            "mean": 0.17069767441860484,
+            "n": 86,
+            "p50": 0.1,
+            "p95": 0.3
+          },
+          "decode_s": {
+            "max": 0.332048146,
+            "mean": 0.19465901931395346,
+            "n": 86,
+            "p50": 0.187915862,
+            "p95": 0.31274794
+          },
+          "dispatch_after_vad_emission_s": {
+            "max": 0.01657169,
+            "mean": 0.006790556604651163,
+            "n": 86,
+            "p50": 0.006597746,
+            "p95": 0.011420033
+          },
+          "dispatch_from_window_end_s": {
+            "max": 0.4580742199999861,
+            "mean": 0.2719223163255816,
+            "n": 86,
+            "p50": 0.25799164100000027,
+            "p95": 0.4410883609999985
+          },
+          "dropped_windows": 0,
+          "enqueued": 86,
+          "failed_windows": 0,
+          "final_from_source_file_end_s": {
+            "max": 0.32186543799999967,
+            "mean": -1.5513295762666672,
+            "n": 30,
+            "p50": -1.8116328439999734,
+            "p95": 0.1401877680000041
+          },
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님.",
+          "missing_results": 0,
+          "no_vad_segment_sources": 0,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "planned_windows": 86,
+          "queue_wait_s": {
+            "max": 0.118818061,
+            "mean": 0.005456628639534885,
+            "n": 86,
+            "p50": 0.001141057,
+            "p95": 0.016401607
+          },
+          "refine_calls_with_zip_overlap": 78,
+          "successful": 86,
+          "vad_emission_from_owned_end_s": {
+            "max": 0.4511010919999876,
+            "mean": 0.26513175972092823,
+            "n": 86,
+            "p50": 0.24735319499999875,
+            "p95": 0.43572025799998926
+          },
+          "vad_emission_to_return_s": {
+            "max": 0.345088251,
+            "mean": 0.20713556396511626,
+            "n": 86,
+            "p50": 0.196502536,
+            "p95": 0.326113558
+          },
+          "window_end_to_return_s": {
+            "max": 0.6840709019999736,
+            "mean": 0.47226732368604557,
+            "n": 86,
+            "p50": 0.49045132099996636,
+            "p95": 0.658409325999969
+          },
+          "zip_refine_call_overlap_s": 3.217389304
+        },
+        "refine_family": "sensevoice",
+        "refine_policy": "vad0",
+        "refine_reason": null,
+        "refine_threads": 2,
+        "resources": {
+          "complete_model_rss_samples": 3816,
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling"
+          ],
+          "model_group_rss_observed_max_mib": 697.6875,
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "observed_model_cpu_percent": 29.38675483194763,
+          "paired_intervals": 3815,
+          "paired_wall_s": 383.71028255700037,
+          "sample_count": 3816,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+        },
+        "schema": "concurrent-wav-summary-v1",
+        "status": "completed",
+        "track_float32_sha256": "40bfd7249c5e388c8dd67cbae5e0ea9c996dad792ed4587ca84d3386033495eb",
+        "unmeasured": {
+          "acoustic_endpoint_latency_s": null,
+          "aligned_recognition_latency_s": null,
+          "hybrid_merged_cer": null,
+          "microphone_overruns": null,
+          "ui_display_latency_s": null
+        },
+        "zip_call_rtf": 0.13384494341673173,
+        "zip_cer": {
+          "cer": {
+            "deletions": 671,
+            "errors": 774,
+            "insertions": 1,
+            "reference_characters": 1520,
+            "substitutions": 102,
+            "value": 0.5092105263157894
+          },
+          "complete": true,
+          "planned": 30,
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+          "successful": 30
+        },
+        "zip_finalize_from_source_end_s": {
+          "max": 0.18354264900000317,
+          "mean": 0.14509309280000307,
+          "n": 30,
+          "p50": 0.14382873399999596,
+          "p95": 0.18281325300000617
+        },
+        "zip_threads": 1
+      },
+      "summary_sha256": "d04767930cd553c5ac52946e220865d11ab36ad270441c0da9ab09e78503bec5",
+      "thermal": {
+        "current_limits": [
+          0
+        ],
+        "history_after": 0,
+        "history_before": 0,
+        "max_c": 68.85,
+        "missing_samples": 0,
+        "samples": 389
+      }
+    },
+    {
+      "admission_mc": 60000,
+      "child_exit_code": 0,
+      "dataset": "sustained",
+      "directory": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-sensevoice-t2-01",
+      "error": null,
+      "exit_code": 0,
+      "failed_output_indices": [],
+      "family": "sensevoice",
+      "id": "concurrent-sustained-sensevoice-t2-01",
+      "initial_temperature_mc": 58950,
+      "limit_verified": true,
+      "model_files": {
+        "model": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51",
+        "tokens": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc"
+      },
+      "num_threads": 2,
+      "operational_valid": true,
+      "original_pcm_verified": true,
+      "phase": "concurrent",
+      "rejection": null,
+      "rescore_matches": true,
+      "resource_sampling_error": null,
+      "separate_warmup_verified": true,
+      "source_commit": "40529f9eebe4f0c2f6301b8bc859f36cd8f7bd4f",
+      "status": "completed",
+      "summary": {
+        "audio_s": 1808.803125,
+        "chunk_processing_s": {
+          "max": 0.12197594300005221,
+          "mean": 0.01864650200221161,
+          "n": 18089,
+          "p50": 0.006168730999888794,
+          "p95": 0.046859541000003446
+        },
+        "coordinator_active_rtf": 0.1864212559490481,
+        "first_partial_from_source_start_s": {
+          "max": 0.84437504,
+          "mean": 0.84437504,
+          "n": 1,
+          "p50": null,
+          "p95": null
+        },
+        "input_backlog_audio_s": {
+          "max": 0.0,
+          "mean": 0.0,
+          "n": 18092,
+          "p50": 0.0,
+          "p95": 0.0
+        },
+        "input_backlog_event_max_audio_s": 0.1,
+        "input_complete": true,
+        "input_dropped_audio_s": 0.0,
+        "input_dropped_chunks": 0,
+        "input_queue_wait_s": {
+          "max": 0.044200805000173204,
+          "mean": 0.0006576443178721812,
+          "n": 18089,
+          "p50": 0.0006489319999900545,
+          "p95": 0.0011407360000248445
+        },
+        "manifest_sha256": "7e4d79439117c07a6ce1063890c6875d9e67b784ba456bf8db181c5f4c768d31",
+        "no_partial_sources": 0,
+        "planned_sources": 1,
+        "producer_cpu_s": 2.740747316,
+        "producer_lifetime_peak_rss_mib": 466.328125,
+        "refine": {
+          "backlog_audio_s": {
+            "max": 0.0,
+            "mean": 0.0,
+            "n": 18097,
+            "p50": 0.0,
+            "p95": 0.0
+          },
+          "backlog_end_audio_s": 0.0,
+          "backlog_event_max_audio_s": 5.0,
+          "backlog_event_max_payload_audio_s": 5.0,
+          "backlog_event_max_windows": 1,
+          "cer": {
+            "cer": {
+              "deletions": 84,
+              "errors": 485,
+              "insertions": 90,
+              "reference_characters": 7785,
+              "substitutions": 311,
+              "value": 0.06229929351316635
+            },
+            "complete": true,
+            "planned": 1,
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+            "successful": 1
+          },
+          "complete": true,
+          "decision_audio_after_owned_end_s": {
+            "max": 0.3,
+            "mean": 0.29010316139767206,
+            "n": 601,
+            "p50": 0.3,
+            "p95": 0.3
+          },
+          "decode_s": {
+            "max": 0.33880497,
+            "mean": 0.16463110109816972,
+            "n": 601,
+            "p50": 0.163614942,
+            "p95": 0.26649208
+          },
+          "dispatch_after_vad_emission_s": {
+            "max": 0.015210055,
+            "mean": 0.006055542074875208,
+            "n": 601,
+            "p50": 0.005979348,
+            "p95": 0.010805621
+          },
+          "dispatch_from_window_end_s": {
+            "max": 0.4159610510000675,
+            "mean": 0.34902280980199796,
+            "n": 601,
+            "p50": 0.3578233560001536,
+            "p95": 0.40268029899999647
+          },
+          "dropped_windows": 0,
+          "enqueued": 601,
+          "failed_windows": 0,
+          "final_from_source_file_end_s": {
+            "max": 0.3194592080001257,
+            "mean": 0.3194592080001257,
+            "n": 1,
+            "p50": null,
+            "p95": null
+          },
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님.",
+          "missing_results": 0,
+          "no_vad_segment_sources": 0,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "planned_windows": 601,
+          "queue_wait_s": {
+            "max": 0.004973516,
+            "mean": 0.0010338075324459236,
+            "n": 601,
+            "p50": 0.001023859,
+            "p95": 0.001608688
+          },
+          "refine_calls_with_zip_overlap": 597,
+          "successful": 601,
+          "vad_emission_from_owned_end_s": {
+            "max": 0.40950745999998617,
+            "mean": 0.342967267727118,
+            "n": 601,
+            "p50": 0.352083212000025,
+            "p95": 0.39584850100004587
+          },
+          "vad_emission_to_return_s": {
+            "max": 0.354164055,
+            "mean": 0.17192362254575705,
+            "n": 601,
+            "p50": 0.169947198,
+            "p95": 0.279794106
+          },
+          "window_end_to_return_s": {
+            "max": 0.7323298520000208,
+            "mean": 0.514890890272877,
+            "n": 601,
+            "p50": 0.5173162090000005,
+            "p95": 0.6287794999998368
+          },
+          "zip_refine_call_overlap_s": 20.894928472999993
+        },
+        "refine_family": "sensevoice",
+        "refine_policy": "vad0",
+        "refine_reason": null,
+        "refine_threads": 2,
+        "resources": {
+          "complete_model_rss_samples": 17987,
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling"
+          ],
+          "model_group_rss_observed_max_mib": 1091.6875,
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "observed_model_cpu_percent": 33.03535078956196,
+          "paired_intervals": 17986,
+          "paired_wall_s": 1809.3950441380014,
+          "sample_count": 17987,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+        },
+        "schema": "concurrent-wav-summary-v1",
+        "status": "completed",
+        "track_float32_sha256": "477a6301e9ba22f3b2d826d932cb4a1c60d3a43f3c347dcf340b886df91ccaea",
+        "unmeasured": {
+          "acoustic_endpoint_latency_s": null,
+          "aligned_recognition_latency_s": null,
+          "hybrid_merged_cer": null,
+          "microphone_overruns": null,
+          "ui_display_latency_s": null
+        },
+        "zip_call_rtf": 0.14226082613219726,
+        "zip_cer": {
+          "cer": {
+            "deletions": 134,
+            "errors": 792,
+            "insertions": 36,
+            "reference_characters": 7785,
+            "substitutions": 622,
+            "value": 0.10173410404624278
+          },
+          "complete": true,
+          "planned": 1,
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+          "successful": 1
+        },
+        "zip_finalize_from_source_end_s": {
+          "max": 0.16558535400008623,
+          "mean": 0.16558535400008623,
+          "n": 1,
+          "p50": null,
+          "p95": null
+        },
+        "zip_threads": 1
+      },
+      "summary_sha256": "c1d3f456fd95d9265b64792cb5404fe7be2aa8ca02490ec3cbacb6cacd8a61f0",
+      "sustained_trends": {
+        "bins": [
+          {
+            "current_limit_samples": 0,
+            "current_limits_observed": [
+              0
+            ],
+            "end_s": 300,
+            "group_rss_mib": {
+              "max": 772.25,
+              "mean": 766.0131578947369,
+              "n": 2983,
+              "p50": 768.75,
+              "p95": 771.75
+            },
+            "refine_backlog_sampled_audio_s": {
+              "max": 0.0,
+              "mean": 0.0,
+              "n": 3000,
+              "p50": 0.0,
+              "p95": 0.0
+            },
+            "refine_dropped_windows": 0,
+            "refine_owned_end_to_return_s": {
+              "max": 0.6375277979999794,
+              "mean": 0.5065482831666658,
+              "n": 102,
+              "p50": 0.5132563069999492,
+              "p95": 0.6127193989999995
+            },
+            "refine_queue_wait_s": {
+              "max": 0.004973516,
+              "mean": 0.001090488735294118,
+              "n": 102,
+              "p50": 0.001095751,
+              "p95": 0.001732072
+            },
+            "refine_successful": 102,
+            "refine_windows": 102,
+            "resources": {
+              "complete_model_rss_samples": 2983,
+              "model_group_rss_observed_max_mib": 772.25,
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "observed_model_cpu_percent": 31.74008958278253,
+              "paired_intervals": 2982,
+              "paired_wall_s": 299.96764738699994,
+              "sample_count": 2983,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "rss_by_role_mib": {
+              "refine": {
+                "max": 378.296875,
+                "mean": 375.78497422896413,
+                "n": 2983,
+                "p50": 378.296875,
+                "p95": 378.296875
+              },
+              "zip": {
+                "max": 393.953125,
+                "mean": 390.2281836657727,
+                "n": 2983,
+                "p50": 390.453125,
+                "p95": 393.453125
+              }
+            },
+            "start_s": 0,
+            "temperature_c": {
+              "max": 68.85,
+              "mean": 65.30389830508459,
+              "n": 295,
+              "p50": 65.0,
+              "p95": 67.2
+            },
+            "thermal_samples": 295
+          },
+          {
+            "current_limit_samples": 0,
+            "current_limits_observed": [
+              0
+            ],
+            "end_s": 600,
+            "group_rss_mib": {
+              "max": 797.75,
+              "mean": 782.6738765928907,
+              "n": 2982,
+              "p50": 782.75,
+              "p95": 796.25
+            },
+            "refine_backlog_sampled_audio_s": {
+              "max": 0.0,
+              "mean": 0.0,
+              "n": 3000,
+              "p50": 0.0,
+              "p95": 0.0
+            },
+            "refine_dropped_windows": 0,
+            "refine_owned_end_to_return_s": {
+              "max": 0.6716298960000131,
+              "mean": 0.5130212508787916,
+              "n": 99,
+              "p50": 0.5093712880000112,
+              "p95": 0.636874468999963
+            },
+            "refine_queue_wait_s": {
+              "max": 0.002478413,
+              "mean": 0.0010596373131313134,
+              "n": 99,
+              "p50": 0.001084444,
+              "p95": 0.001611229
+            },
+            "refine_successful": 99,
+            "refine_windows": 99,
+            "resources": {
+              "complete_model_rss_samples": 2982,
+              "model_group_rss_observed_max_mib": 797.75,
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "observed_model_cpu_percent": 32.22894670140586,
+              "paired_intervals": 2981,
+              "paired_wall_s": 299.885692497,
+              "sample_count": 2982,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "rss_by_role_mib": {
+              "refine": {
+                "max": 378.796875,
+                "mean": 378.5604564889336,
+                "n": 2982,
+                "p50": 378.796875,
+                "p95": 378.796875
+              },
+              "zip": {
+                "max": 418.953125,
+                "mean": 404.1134201039571,
+                "n": 2982,
+                "p50": 403.953125,
+                "p95": 417.453125
+              }
+            },
+            "start_s": 300,
+            "temperature_c": {
+              "max": 69.95,
+              "mean": 65.24796610169481,
+              "n": 295,
+              "p50": 65.0,
+              "p95": 67.2
+            },
+            "thermal_samples": 295
+          },
+          {
+            "current_limit_samples": 0,
+            "current_limits_observed": [
+              0
+            ],
+            "end_s": 900,
+            "group_rss_mib": {
+              "max": 839.25,
+              "mean": 817.731220657277,
+              "n": 2982,
+              "p50": 817.25,
+              "p95": 837.75
+            },
+            "refine_backlog_sampled_audio_s": {
+              "max": 0.0,
+              "mean": 0.0,
+              "n": 3000,
+              "p50": 0.0,
+              "p95": 0.0
+            },
+            "refine_dropped_windows": 0,
+            "refine_owned_end_to_return_s": {
+              "max": 0.6780331429999933,
+              "mean": 0.5251421654444437,
+              "n": 99,
+              "p50": 0.5240521749999516,
+              "p95": 0.6300417889999608
+            },
+            "refine_queue_wait_s": {
+              "max": 0.002853636,
+              "mean": 0.001024603,
+              "n": 99,
+              "p50": 0.001002129,
+              "p95": 0.001643293
+            },
+            "refine_successful": 99,
+            "refine_windows": 99,
+            "resources": {
+              "complete_model_rss_samples": 2982,
+              "model_group_rss_observed_max_mib": 839.25,
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "observed_model_cpu_percent": 32.67846431981772,
+              "paired_intervals": 2981,
+              "paired_wall_s": 299.89169332099954,
+              "sample_count": 2982,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "rss_by_role_mib": {
+              "refine": {
+                "max": 378.796875,
+                "mean": 378.796875,
+                "n": 2982,
+                "p50": 378.796875,
+                "p95": 378.796875
+              },
+              "zip": {
+                "max": 460.453125,
+                "mean": 438.934345657277,
+                "n": 2982,
+                "p50": 438.453125,
+                "p95": 458.953125
+              }
+            },
+            "start_s": 600,
+            "temperature_c": {
+              "max": 68.85,
+              "mean": 65.16649659863926,
+              "n": 294,
+              "p50": 65.0,
+              "p95": 67.2
+            },
+            "thermal_samples": 294
+          },
+          {
+            "current_limit_samples": 0,
+            "current_limits_observed": [
+              0
+            ],
+            "end_s": 1200,
+            "group_rss_mib": {
+              "max": 900.25,
+              "mean": 868.6287726358149,
+              "n": 2982,
+              "p50": 868.25,
+              "p95": 896.25
+            },
+            "refine_backlog_sampled_audio_s": {
+              "max": 0.0,
+              "mean": 0.0,
+              "n": 3000,
+              "p50": 0.0,
+              "p95": 0.0
+            },
+            "refine_dropped_windows": 0,
+            "refine_owned_end_to_return_s": {
+              "max": 0.6411276730000282,
+              "mean": 0.5137572079394077,
+              "n": 99,
+              "p50": 0.5250788340000554,
+              "p95": 0.6134042999999565
+            },
+            "refine_queue_wait_s": {
+              "max": 0.003468822,
+              "mean": 0.0009960544040404046,
+              "n": 99,
+              "p50": 0.000937501,
+              "p95": 0.001613328
+            },
+            "refine_successful": 99,
+            "refine_windows": 99,
+            "resources": {
+              "complete_model_rss_samples": 2982,
+              "model_group_rss_observed_max_mib": 900.25,
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "observed_model_cpu_percent": 33.38504943310356,
+              "paired_intervals": 2981,
+              "paired_wall_s": 299.8647649169993,
+              "sample_count": 2982,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "rss_by_role_mib": {
+              "refine": {
+                "max": 378.796875,
+                "mean": 378.796875,
+                "n": 2982,
+                "p50": 378.796875,
+                "p95": 378.796875
+              },
+              "zip": {
+                "max": 521.453125,
+                "mean": 489.83189763581487,
+                "n": 2982,
+                "p50": 489.453125,
+                "p95": 517.453125
+              }
+            },
+            "start_s": 900,
+            "temperature_c": {
+              "max": 70.5,
+              "mean": 65.10813559322008,
+              "n": 295,
+              "p50": 65.0,
+              "p95": 66.65
+            },
+            "thermal_samples": 295
+          },
+          {
+            "current_limit_samples": 0,
+            "current_limits_observed": [
+              0
+            ],
+            "end_s": 1500,
+            "group_rss_mib": {
+              "max": 976.75,
+              "mean": 937.7731310760979,
+              "n": 2983,
+              "p50": 936.25,
+              "p95": 972.75
+            },
+            "refine_backlog_sampled_audio_s": {
+              "max": 0.0,
+              "mean": 0.0,
+              "n": 3000,
+              "p50": 0.0,
+              "p95": 0.0
+            },
+            "refine_dropped_windows": 0,
+            "refine_owned_end_to_return_s": {
+              "max": 0.6879213089998757,
+              "mean": 0.5179475878787684,
+              "n": 99,
+              "p50": 0.5239949589999924,
+              "p95": 0.6402806429998691
+            },
+            "refine_queue_wait_s": {
+              "max": 0.00194869,
+              "mean": 0.0010068312525252526,
+              "n": 99,
+              "p50": 0.000978581,
+              "p95": 0.001608688
+            },
+            "refine_successful": 99,
+            "refine_windows": 99,
+            "resources": {
+              "complete_model_rss_samples": 2983,
+              "model_group_rss_observed_max_mib": 976.75,
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "observed_model_cpu_percent": 33.74068313595917,
+              "paired_intervals": 2982,
+              "paired_wall_s": 299.9346503809994,
+              "sample_count": 2983,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "rss_by_role_mib": {
+              "refine": {
+                "max": 378.796875,
+                "mean": 378.796875,
+                "n": 2983,
+                "p50": 378.796875,
+                "p95": 378.796875
+              },
+              "zip": {
+                "max": 597.953125,
+                "mean": 558.9762560760979,
+                "n": 2983,
+                "p50": 557.453125,
+                "p95": 593.953125
+              }
+            },
+            "start_s": 1200,
+            "temperature_c": {
+              "max": 69.4,
+              "mean": 65.21813559322014,
+              "n": 295,
+              "p50": 65.0,
+              "p95": 66.65
+            },
+            "thermal_samples": 295
+          },
+          {
+            "current_limit_samples": 0,
+            "current_limits_observed": [
+              0
+            ],
+            "end_s": 1800,
+            "group_rss_mib": {
+              "max": 1061.75,
+              "mean": 1019.1261314113309,
+              "n": 2983,
+              "p50": 1018.75,
+              "p95": 1057.25
+            },
+            "refine_backlog_sampled_audio_s": {
+              "max": 0.0,
+              "mean": 0.0,
+              "n": 3000,
+              "p50": 0.0,
+              "p95": 0.0
+            },
+            "refine_dropped_windows": 0,
+            "refine_owned_end_to_return_s": {
+              "max": 0.7323298520000208,
+              "mean": 0.5149313871099912,
+              "n": 100,
+              "p50": 0.5106298650000554,
+              "p95": 0.6328767109998807
+            },
+            "refine_queue_wait_s": {
+              "max": 0.004073193,
+              "mean": 0.00101936762,
+              "n": 100,
+              "p50": 0.000958067,
+              "p95": 0.001558304
+            },
+            "refine_successful": 100,
+            "refine_windows": 100,
+            "resources": {
+              "complete_model_rss_samples": 2983,
+              "model_group_rss_observed_max_mib": 1061.75,
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "observed_model_cpu_percent": 34.2158356073655,
+              "paired_intervals": 2982,
+              "paired_wall_s": 299.9488341530003,
+              "sample_count": 2983,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "rss_by_role_mib": {
+              "refine": {
+                "max": 378.796875,
+                "mean": 378.796875,
+                "n": 2983,
+                "p50": 378.796875,
+                "p95": 378.796875
+              },
+              "zip": {
+                "max": 682.953125,
+                "mean": 640.3292564113309,
+                "n": 2983,
+                "p50": 639.953125,
+                "p95": 678.453125
+              }
+            },
+            "start_s": 1500,
+            "temperature_c": {
+              "max": 69.4,
+              "mean": 65.04863945578201,
+              "n": 294,
+              "p50": 65.0,
+              "p95": 66.65
+            },
+            "thermal_samples": 294
+          },
+          {
+            "current_limit_samples": 0,
+            "current_limits_observed": [
+              0
+            ],
+            "end_s": 1808.803125,
+            "group_rss_mib": {
+              "max": 1065.25,
+              "mean": 1063.9454022988505,
+              "n": 87,
+              "p50": 1064.25,
+              "p95": 1065.25
+            },
+            "refine_backlog_sampled_audio_s": {
+              "max": 0.0,
+              "mean": 0.0,
+              "n": 89,
+              "p50": 0.0,
+              "p95": 0.0
+            },
+            "refine_dropped_windows": 0,
+            "refine_owned_end_to_return_s": {
+              "max": 0.5614315000000261,
+              "mean": 0.5259746250000035,
+              "n": 2,
+              "p50": 0.4905177499999809,
+              "p95": 0.5614315000000261
+            },
+            "refine_queue_wait_s": {
+              "max": 0.001602143,
+              "mean": 0.0012973655000000001,
+              "n": 2,
+              "p50": 0.000992588,
+              "p95": 0.001602143
+            },
+            "refine_successful": 2,
+            "refine_windows": 2,
+            "resources": {
+              "complete_model_rss_samples": 87,
+              "model_group_rss_observed_max_mib": 1065.25,
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "observed_model_cpu_percent": 30.689823490381006,
+              "paired_intervals": 86,
+              "paired_wall_s": 8.667368194000003,
+              "sample_count": 87,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "rss_by_role_mib": {
+              "refine": {
+                "max": 378.796875,
+                "mean": 378.796875,
+                "n": 87,
+                "p50": 378.796875,
+                "p95": 378.796875
+              },
+              "zip": {
+                "max": 686.453125,
+                "mean": 685.1485272988506,
+                "n": 87,
+                "p50": 685.453125,
+                "p95": 686.453125
+              }
+            },
+            "start_s": 1800,
+            "temperature_c": {
+              "max": 66.1,
+              "mean": 64.9388888888889,
+              "n": 9,
+              "p50": 65.0,
+              "p95": 66.1
+            },
+            "thermal_samples": 9
+          }
+        ],
+        "first_window": {
+          "current_limit_samples": 0,
+          "current_limits_observed": [
+            0
+          ],
+          "end_s": 360,
+          "group_rss_mib": {
+            "max": 773.75,
+            "mean": 769.315202815957,
+            "n": 2983,
+            "p50": 770.75,
+            "p95": 773.25
+          },
+          "refine_backlog_sampled_audio_s": {
+            "max": 0.0,
+            "mean": 0.0,
+            "n": 3000,
+            "p50": 0.0,
+            "p95": 0.0
+          },
+          "refine_dropped_windows": 0,
+          "refine_owned_end_to_return_s": {
+            "max": 0.6375277979999794,
+            "mean": 0.5033341071584141,
+            "n": 101,
+            "p50": 0.5132563069999492,
+            "p95": 0.6138289019999945
+          },
+          "refine_queue_wait_s": {
+            "max": 0.004973516,
+            "mean": 0.0011103817920792083,
+            "n": 101,
+            "p50": 0.001131124,
+            "p95": 0.001732072
+          },
+          "refine_successful": 101,
+          "refine_windows": 101,
+          "resources": {
+            "complete_model_rss_samples": 2983,
+            "model_group_rss_observed_max_mib": 773.75,
+            "model_roles": [
+              "zip",
+              "refine"
+            ],
+            "observed_model_cpu_percent": 32.019447638549565,
+            "paired_intervals": 2982,
+            "paired_wall_s": 299.9427132039999,
+            "sample_count": 2983,
+            "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+          },
+          "rss_by_role_mib": {
+            "refine": {
+              "max": 378.296875,
+              "mean": 377.5146088250084,
+              "n": 2983,
+              "p50": 378.296875,
+              "p95": 378.296875
+            },
+            "zip": {
+              "max": 395.453125,
+              "mean": 391.8005939909487,
+              "n": 2983,
+              "p50": 392.453125,
+              "p95": 394.953125
+            }
+          },
+          "start_s": 60,
+          "temperature_c": {
+            "max": 68.85,
+            "mean": 65.26847457627103,
+            "n": 295,
+            "p50": 65.0,
+            "p95": 67.2
+          },
+          "thermal_samples": 295
+        },
+        "group_rss_median_delta_mib": 233.0,
+        "last_window": {
+          "current_limit_samples": 0,
+          "current_limits_observed": [
+            0
+          ],
+          "end_s": 1748.803125,
+          "group_rss_mib": {
+            "max": 1046.75,
+            "mean": 1004.7154710023466,
+            "n": 2983,
+            "p50": 1003.75,
+            "p95": 1043.25
+          },
+          "refine_backlog_sampled_audio_s": {
+            "max": 0.0,
+            "mean": 0.0,
+            "n": 3000,
+            "p50": 0.0,
+            "p95": 0.0
+          },
+          "refine_dropped_windows": 0,
+          "refine_owned_end_to_return_s": {
+            "max": 0.6879213089998757,
+            "mean": 0.5162900312599913,
+            "n": 100,
+            "p50": 0.5089748580001014,
+            "p95": 0.6328767109998807
+          },
+          "refine_queue_wait_s": {
+            "max": 0.004073193,
+            "mean": 0.0010134407899999997,
+            "n": 100,
+            "p50": 0.000944566,
+            "p95": 0.001575898
+          },
+          "refine_successful": 100,
+          "refine_windows": 100,
+          "resources": {
+            "complete_model_rss_samples": 2983,
+            "model_group_rss_observed_max_mib": 1046.75,
+            "model_roles": [
+              "zip",
+              "refine"
+            ],
+            "observed_model_cpu_percent": 33.982220724475155,
+            "paired_intervals": 2982,
+            "paired_wall_s": 299.9215408149997,
+            "sample_count": 2983,
+            "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+          },
+          "rss_by_role_mib": {
+            "refine": {
+              "max": 378.796875,
+              "mean": 378.796875,
+              "n": 2983,
+              "p50": 378.796875,
+              "p95": 378.796875
+            },
+            "zip": {
+              "max": 667.953125,
+              "mean": 625.9185960023466,
+              "n": 2983,
+              "p50": 624.953125,
+              "p95": 664.453125
+            }
+          },
+          "start_s": 1448.803125,
+          "temperature_c": {
+            "max": 69.4,
+            "mean": 65.11037414965955,
+            "n": 294,
+            "p50": 65.0,
+            "p95": 66.65
+          },
+          "thermal_samples": 294
+        },
+        "scope": "사전 고정 300초 창. 소유 끝 기준 Refine 구간, 100ms RSS/큐 표본. 각 구성 단회·반복 합성 입력이며 누수 부재/상시 안정성 입증 아님",
+        "time_origin": "worker.replay.t0_monotonic_ns"
+      },
+      "thermal": {
+        "current_limits": [
+          0
+        ],
+        "history_after": 0,
+        "history_before": 0,
+        "max_c": 73.8,
+        "missing_samples": 0,
+        "samples": 1962
+      }
+    },
+    {
+      "admission_mc": 60000,
+      "child_exit_code": 0,
+      "dataset": "sustained",
+      "directory": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-qwen3_asr-t2-01",
+      "error": null,
+      "exit_code": 0,
+      "failed_output_indices": [],
+      "family": "qwen3_asr",
+      "id": "concurrent-sustained-qwen3_asr-t2-01",
+      "initial_temperature_mc": 59500,
+      "limit_verified": true,
+      "model_files": {
+        "conv_frontend.onnx": "d22dc4423e0940e49884e903d2ea2f7e5567c14fc1aed97e4e26d6b8f208ef9e",
+        "decoder.int8.onnx": "4f6885be5959ae26af3089d38ee7972c5fafbeeb1cf8d5e76eab6d8b61ca5771",
+        "encoder.int8.onnx": "60748d3e6744a57c9c91e1b17424a6c2990567e8adceb0783940c03ed98fa9d9",
+        "tokenizer/merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+        "tokenizer/tokenizer_config.json": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c",
+        "tokenizer/vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      },
+      "num_threads": 2,
+      "operational_valid": true,
+      "original_pcm_verified": true,
+      "phase": "concurrent",
+      "qwen_output_checks": {
+        "all_context_budgets_fit": true,
+        "calls": 601,
+        "max_returned_tokens": 25,
+        "native_warning_calls": 0
+      },
+      "rejection": null,
+      "rescore_matches": true,
+      "resource_sampling_error": null,
+      "separate_warmup_verified": true,
+      "source_commit": "40529f9eebe4f0c2f6301b8bc859f36cd8f7bd4f",
+      "status": "completed",
+      "summary": {
+        "audio_s": 1808.803125,
+        "chunk_processing_s": {
+          "max": 0.1997407189999194,
+          "mean": 0.030620662612084872,
+          "n": 18089,
+          "p50": 0.011514340000076118,
+          "p95": 0.10085889500010126
+        },
+        "coordinator_active_rtf": 0.30604834292565936,
+        "first_partial_from_source_start_s": {
+          "max": 0.844609015,
+          "mean": 0.844609015,
+          "n": 1,
+          "p50": null,
+          "p95": null
+        },
+        "input_backlog_audio_s": {
+          "max": 0.1,
+          "mean": 5.52730488613752e-06,
+          "n": 18092,
+          "p50": 0.0,
+          "p95": 0.0
+        },
+        "input_backlog_event_max_audio_s": 0.2,
+        "input_complete": true,
+        "input_dropped_audio_s": 0.0,
+        "input_dropped_chunks": 0,
+        "input_queue_wait_s": {
+          "max": 0.10196803999997428,
+          "mean": 0.0013017849069050275,
+          "n": 18089,
+          "p50": 0.0008670440000742019,
+          "p95": 0.0021686420000150974
+        },
+        "manifest_sha256": "7e4d79439117c07a6ce1063890c6875d9e67b784ba456bf8db181c5f4c768d31",
+        "no_partial_sources": 0,
+        "planned_sources": 1,
+        "producer_cpu_s": 6.7822133760000005,
+        "producer_lifetime_peak_rss_mib": 466.109375,
+        "refine": {
+          "backlog_audio_s": {
+            "max": 3.408,
+            "mean": 0.12055805739514362,
+            "n": 18120,
+            "p50": 0.0,
+            "p95": 1.24
+          },
+          "backlog_end_audio_s": 0.0,
+          "backlog_event_max_audio_s": 5.0,
+          "backlog_event_max_payload_audio_s": 5.0,
+          "backlog_event_max_windows": 2,
+          "cer": {
+            "cer": {
+              "deletions": 43,
+              "errors": 376,
+              "insertions": 22,
+              "reference_characters": 7785,
+              "substitutions": 311,
+              "value": 0.04829800899165061
+            },
+            "complete": true,
+            "planned": 1,
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+            "successful": 1
+          },
+          "complete": true,
+          "decision_audio_after_owned_end_s": {
+            "max": 0.3,
+            "mean": 0.29010316139767206,
+            "n": 601,
+            "p50": 0.3,
+            "p95": 0.3
+          },
+          "decode_s": {
+            "max": 4.457118119,
+            "mean": 2.3168381654359376,
+            "n": 601,
+            "p50": 2.396388037,
+            "p95": 3.475709856
+          },
+          "dispatch_after_vad_emission_s": {
+            "max": 0.012907411,
+            "mean": 0.006632961455906823,
+            "n": 601,
+            "p50": 0.006681143,
+            "p95": 0.010302589
+          },
+          "dispatch_from_window_end_s": {
+            "max": 0.42724415400005,
+            "mean": 0.35167644414975163,
+            "n": 601,
+            "p50": 0.36073100099997646,
+            "p95": 0.40442002700001467
+          },
+          "dropped_windows": 0,
+          "enqueued": 601,
+          "failed_windows": 0,
+          "final_from_source_file_end_s": {
+            "max": 2.939940790000037,
+            "mean": 2.939940790000037,
+            "n": 1,
+            "p50": null,
+            "p95": null
+          },
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님.",
+          "missing_results": 0,
+          "no_vad_segment_sources": 0,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "planned_windows": 601,
+          "queue_wait_s": {
+            "max": 3.866355497,
+            "mean": 0.3080864415723793,
+            "n": 601,
+            "p50": 0.001562668,
+            "p95": 1.16262272
+          },
+          "refine_calls_with_zip_overlap": 601,
+          "successful": 601,
+          "vad_emission_from_owned_end_s": {
+            "max": 0.4232361360000141,
+            "mean": 0.3450434826938395,
+            "n": 601,
+            "p50": 0.35458430299999577,
+            "p95": 0.3982294369999977
+          },
+          "vad_emission_to_return_s": {
+            "max": 4.727863037,
+            "mean": 2.6317532920149764,
+            "n": 601,
+            "p50": 2.590191531,
+            "p95": 3.80301138
+          },
+          "window_end_to_return_s": {
+            "max": 4.913130694000074,
+            "mean": 2.976796774708814,
+            "n": 601,
+            "p50": 2.9413898999998764,
+            "p95": 3.981515884000032
+          },
+          "zip_refine_call_overlap_s": 362.094725684
+        },
+        "refine_family": "qwen3_asr",
+        "refine_policy": "vad0",
+        "refine_reason": null,
+        "refine_threads": 2,
+        "resources": {
+          "complete_model_rss_samples": 17861,
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling"
+          ],
+          "model_group_rss_observed_max_mib": 2432.296875,
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "observed_model_cpu_percent": 187.11612717649584,
+          "paired_intervals": 17860,
+          "paired_wall_s": 1811.5595118119984,
+          "sample_count": 17861,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+        },
+        "schema": "concurrent-wav-summary-v1",
+        "status": "completed",
+        "track_float32_sha256": "477a6301e9ba22f3b2d826d932cb4a1c60d3a43f3c347dcf340b886df91ccaea",
+        "unmeasured": {
+          "acoustic_endpoint_latency_s": null,
+          "aligned_recognition_latency_s": null,
+          "hybrid_merged_cer": null,
+          "microphone_overruns": null,
+          "ui_display_latency_s": null
+        },
+        "zip_call_rtf": 0.23261294904828297,
+        "zip_cer": {
+          "cer": {
+            "deletions": 134,
+            "errors": 792,
+            "insertions": 36,
+            "reference_characters": 7785,
+            "substitutions": 622,
+            "value": 0.10173410404624278
+          },
+          "complete": true,
+          "planned": 1,
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+          "successful": 1
+        },
+        "zip_finalize_from_source_end_s": {
+          "max": 0.14452318500002548,
+          "mean": 0.14452318500002548,
+          "n": 1,
+          "p50": null,
+          "p95": null
+        },
+        "zip_threads": 1
+      },
+      "summary_sha256": "2a19bb9e1625de5996302736054d20ea268ad3b9bf88c410ace49a662f673135",
+      "sustained_trends": {
+        "bins": [
+          {
+            "current_limit_samples": 133,
+            "current_limits_observed": [
+              0,
+              6,
+              8
+            ],
+            "end_s": 300,
+            "group_rss_mib": {
+              "max": 2111.65625,
+              "mean": 2085.8932265282,
+              "n": 2961,
+              "p50": 2104.15625,
+              "p95": 2111.15625
+            },
+            "refine_backlog_sampled_audio_s": {
+              "max": 2.904,
+              "mean": 0.11067199999999996,
+              "n": 3000,
+              "p50": 0.0,
+              "p95": 1.24
+            },
+            "refine_dropped_windows": 0,
+            "refine_owned_end_to_return_s": {
+              "max": 4.418929603999999,
+              "mean": 2.7993401687254904,
+              "n": 102,
+              "p50": 2.773065537000008,
+              "p95": 3.905630164999991
+            },
+            "refine_queue_wait_s": {
+              "max": 3.223198688,
+              "mean": 0.2808457026862745,
+              "n": 102,
+              "p50": 0.001331786,
+              "p95": 1.165205152
+            },
+            "refine_successful": 102,
+            "refine_windows": 102,
+            "resources": {
+              "complete_model_rss_samples": 2961,
+              "model_group_rss_observed_max_mib": 2111.65625,
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "observed_model_cpu_percent": 176.95029408921377,
+              "paired_intervals": 2960,
+              "paired_wall_s": 299.897777922,
+              "sample_count": 2961,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "rss_by_role_mib": {
+              "refine": {
+                "max": 1720.703125,
+                "mean": 1699.0359517477204,
+                "n": 2961,
+                "p50": 1716.703125,
+                "p95": 1720.703125
+              },
+              "zip": {
+                "max": 390.953125,
+                "mean": 386.85727478047954,
+                "n": 2961,
+                "p50": 387.453125,
+                "p95": 390.453125
+              }
+            },
+            "start_s": 0,
+            "temperature_c": {
+              "max": 85.9,
+              "mean": 80.65529010238916,
+              "n": 293,
+              "p50": 81.5,
+              "p95": 84.25
+            },
+            "thermal_samples": 293
+          },
+          {
+            "current_limit_samples": 205,
+            "current_limits_observed": [
+              0,
+              6,
+              8
+            ],
+            "end_s": 600,
+            "group_rss_mib": {
+              "max": 2139.65625,
+              "mean": 2124.7353307705307,
+              "n": 2959,
+              "p50": 2123.15625,
+              "p95": 2138.15625
+            },
+            "refine_backlog_sampled_audio_s": {
+              "max": 2.904,
+              "mean": 0.10739999999999979,
+              "n": 3000,
+              "p50": 0.0,
+              "p95": 0.824
+            },
+            "refine_dropped_windows": 0,
+            "refine_owned_end_to_return_s": {
+              "max": 4.65217210000003,
+              "mean": 2.943919924414144,
+              "n": 99,
+              "p50": 2.9101166749999834,
+              "p95": 4.291560937999975
+            },
+            "refine_queue_wait_s": {
+              "max": 3.651936058,
+              "mean": 0.2860903724343435,
+              "n": 99,
+              "p50": 0.001532518,
+              "p95": 1.055650829
+            },
+            "refine_successful": 99,
+            "refine_windows": 99,
+            "resources": {
+              "complete_model_rss_samples": 2959,
+              "model_group_rss_observed_max_mib": 2139.65625,
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "observed_model_cpu_percent": 184.15470330196254,
+              "paired_intervals": 2958,
+              "paired_wall_s": 299.82943150499926,
+              "sample_count": 2959,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "rss_by_role_mib": {
+              "refine": {
+                "max": 1722.703125,
+                "mean": 1722.6017393967556,
+                "n": 2959,
+                "p50": 1722.703125,
+                "p95": 1722.703125
+              },
+              "zip": {
+                "max": 416.953125,
+                "mean": 402.13359137377495,
+                "n": 2959,
+                "p50": 400.453125,
+                "p95": 415.453125
+              }
+            },
+            "start_s": 300,
+            "temperature_c": {
+              "max": 87.55,
+              "mean": 82.3559726962457,
+              "n": 293,
+              "p50": 82.6,
+              "p95": 85.35
+            },
+            "thermal_samples": 293
+          },
+          {
+            "current_limit_samples": 212,
+            "current_limits_observed": [
+              0,
+              6,
+              8
+            ],
+            "end_s": 900,
+            "group_rss_mib": {
+              "max": 2181.15625,
+              "mean": 2159.584555715252,
+              "n": 2957,
+              "p50": 2159.15625,
+              "p95": 2179.15625
+            },
+            "refine_backlog_sampled_audio_s": {
+              "max": 2.872,
+              "mean": 0.1171733333333333,
+              "n": 3000,
+              "p50": 0.0,
+              "p95": 1.272
+            },
+            "refine_dropped_windows": 0,
+            "refine_owned_end_to_return_s": {
+              "max": 4.59826568699998,
+              "mean": 3.0112933985555568,
+              "n": 99,
+              "p50": 2.969389662000026,
+              "p95": 3.8919860460000564
+            },
+            "refine_queue_wait_s": {
+              "max": 3.526514391,
+              "mean": 0.28809043773737375,
+              "n": 99,
+              "p50": 0.001678265,
+              "p95": 1.16262272
+            },
+            "refine_successful": 99,
+            "refine_windows": 99,
+            "resources": {
+              "complete_model_rss_samples": 2957,
+              "model_group_rss_observed_max_mib": 2181.15625,
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "observed_model_cpu_percent": 188.2713725662112,
+              "paired_intervals": 2956,
+              "paired_wall_s": 299.96594400000026,
+              "sample_count": 2957,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "rss_by_role_mib": {
+              "refine": {
+                "max": 1722.703125,
+                "mean": 1722.703125,
+                "n": 2957,
+                "p50": 1722.703125,
+                "p95": 1722.703125
+              },
+              "zip": {
+                "max": 458.453125,
+                "mean": 436.88143071525195,
+                "n": 2957,
+                "p50": 436.453125,
+                "p95": 456.453125
+              }
+            },
+            "start_s": 600,
+            "temperature_c": {
+              "max": 87.0,
+              "mean": 82.59624573378842,
+              "n": 293,
+              "p50": 83.15,
+              "p95": 84.8
+            },
+            "thermal_samples": 293
+          },
+          {
+            "current_limit_samples": 222,
+            "current_limits_observed": [
+              0,
+              6,
+              8
+            ],
+            "end_s": 1200,
+            "group_rss_mib": {
+              "max": 2242.15625,
+              "mean": 2210.215262512682,
+              "n": 2957,
+              "p50": 2210.15625,
+              "p95": 2238.15625
+            },
+            "refine_backlog_sampled_audio_s": {
+              "max": 2.872,
+              "mean": 0.12417866666666667,
+              "n": 3000,
+              "p50": 0.0,
+              "p95": 1.208
+            },
+            "refine_dropped_windows": 0,
+            "refine_owned_end_to_return_s": {
+              "max": 4.744948088000001,
+              "mean": 3.0131737262626177,
+              "n": 99,
+              "p50": 2.9798357519999854,
+              "p95": 4.290723705999881
+            },
+            "refine_queue_wait_s": {
+              "max": 3.643281009,
+              "mean": 0.32234855766666665,
+              "n": 99,
+              "p50": 0.001616791,
+              "p95": 1.073931529
+            },
+            "refine_successful": 99,
+            "refine_windows": 99,
+            "resources": {
+              "complete_model_rss_samples": 2957,
+              "model_group_rss_observed_max_mib": 2242.15625,
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "observed_model_cpu_percent": 190.05824700563903,
+              "paired_intervals": 2956,
+              "paired_wall_s": 299.823874511,
+              "sample_count": 2957,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "rss_by_role_mib": {
+              "refine": {
+                "max": 1722.703125,
+                "mean": 1722.703125,
+                "n": 2957,
+                "p50": 1722.703125,
+                "p95": 1722.703125
+              },
+              "zip": {
+                "max": 519.453125,
+                "mean": 487.51213751268176,
+                "n": 2957,
+                "p50": 487.453125,
+                "p95": 515.453125
+              }
+            },
+            "start_s": 900,
+            "temperature_c": {
+              "max": 86.45,
+              "mean": 82.60187074829939,
+              "n": 294,
+              "p50": 83.15,
+              "p95": 84.8
+            },
+            "thermal_samples": 294
+          },
+          {
+            "current_limit_samples": 222,
+            "current_limits_observed": [
+              0,
+              6,
+              8
+            ],
+            "end_s": 1500,
+            "group_rss_mib": {
+              "max": 2320.15625,
+              "mean": 2279.8228602841677,
+              "n": 2956,
+              "p50": 2278.65625,
+              "p95": 2315.65625
+            },
+            "refine_backlog_sampled_audio_s": {
+              "max": 3.096,
+              "mean": 0.12985866666666676,
+              "n": 3000,
+              "p50": 0.0,
+              "p95": 1.368
+            },
+            "refine_dropped_windows": 0,
+            "refine_owned_end_to_return_s": {
+              "max": 4.608059189999949,
+              "mean": 3.05245088659594,
+              "n": 99,
+              "p50": 3.025180872999954,
+              "p95": 3.913629323999885
+            },
+            "refine_queue_wait_s": {
+              "max": 3.555141683,
+              "mean": 0.31855092589898987,
+              "n": 99,
+              "p50": 0.001661328,
+              "p95": 1.238367
+            },
+            "refine_successful": 99,
+            "refine_windows": 99,
+            "resources": {
+              "complete_model_rss_samples": 2956,
+              "model_group_rss_observed_max_mib": 2320.15625,
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "observed_model_cpu_percent": 191.68396819132101,
+              "paired_intervals": 2955,
+              "paired_wall_s": 299.9311864339998,
+              "sample_count": 2956,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "rss_by_role_mib": {
+              "refine": {
+                "max": 1722.703125,
+                "mean": 1722.703125,
+                "n": 2956,
+                "p50": 1722.703125,
+                "p95": 1722.703125
+              },
+              "zip": {
+                "max": 597.453125,
+                "mean": 557.1197352841677,
+                "n": 2956,
+                "p50": 555.953125,
+                "p95": 592.953125
+              }
+            },
+            "start_s": 1200,
+            "temperature_c": {
+              "max": 86.45,
+              "mean": 82.70511945392492,
+              "n": 293,
+              "p50": 83.15,
+              "p95": 84.8
+            },
+            "thermal_samples": 293
+          },
+          {
+            "current_limit_samples": 223,
+            "current_limits_observed": [
+              0,
+              6,
+              8
+            ],
+            "end_s": 1800,
+            "group_rss_mib": {
+              "max": 2403.15625,
+              "mean": 2361.106368363206,
+              "n": 2957,
+              "p50": 2360.65625,
+              "p95": 2399.15625
+            },
+            "refine_backlog_sampled_audio_s": {
+              "max": 3.408,
+              "mean": 0.1377813333333334,
+              "n": 3000,
+              "p50": 0.0,
+              "p95": 1.368
+            },
+            "refine_dropped_windows": 0,
+            "refine_owned_end_to_return_s": {
+              "max": 4.913130694000074,
+              "mean": 3.0519468047300005,
+              "n": 100,
+              "p50": 3.0233318650000456,
+              "p95": 4.464832521000062
+            },
+            "refine_queue_wait_s": {
+              "max": 3.866355497,
+              "mean": 0.36217181376,
+              "n": 100,
+              "p50": 0.001665037,
+              "p95": 1.324307078
+            },
+            "refine_successful": 100,
+            "refine_windows": 100,
+            "resources": {
+              "complete_model_rss_samples": 2957,
+              "model_group_rss_observed_max_mib": 2403.15625,
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "observed_model_cpu_percent": 191.7626713150047,
+              "paired_intervals": 2956,
+              "paired_wall_s": 299.8810957609996,
+              "sample_count": 2957,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "rss_by_role_mib": {
+              "refine": {
+                "max": 1722.703125,
+                "mean": 1722.703125,
+                "n": 2957,
+                "p50": 1722.703125,
+                "p95": 1722.703125
+              },
+              "zip": {
+                "max": 680.453125,
+                "mean": 638.403243363206,
+                "n": 2957,
+                "p50": 637.953125,
+                "p95": 676.453125
+              }
+            },
+            "start_s": 1500,
+            "temperature_c": {
+              "max": 86.45,
+              "mean": 82.77023809523811,
+              "n": 294,
+              "p50": 83.15,
+              "p95": 84.8
+            },
+            "thermal_samples": 294
+          },
+          {
+            "current_limit_samples": 6,
+            "current_limits_observed": [
+              0,
+              6,
+              8
+            ],
+            "end_s": 1808.803125,
+            "group_rss_mib": {
+              "max": 2406.15625,
+              "mean": 2404.598778735632,
+              "n": 87,
+              "p50": 2404.65625,
+              "p95": 2405.65625
+            },
+            "refine_backlog_sampled_audio_s": {
+              "max": 0.664,
+              "mean": 0.037303370786516854,
+              "n": 89,
+              "p50": 0.0,
+              "p95": 0.664
+            },
+            "refine_dropped_windows": 0,
+            "refine_owned_end_to_return_s": {
+              "max": 2.8034548420000647,
+              "mean": 2.662293740000109,
+              "n": 2,
+              "p50": 2.5211326380001537,
+              "p95": 2.8034548420000647
+            },
+            "refine_queue_wait_s": {
+              "max": 0.001083979,
+              "mean": 0.0010418670000000001,
+              "n": 2,
+              "p50": 0.000999755,
+              "p95": 0.001083979
+            },
+            "refine_successful": 2,
+            "refine_windows": 2,
+            "resources": {
+              "complete_model_rss_samples": 87,
+              "model_group_rss_observed_max_mib": 2406.15625,
+              "model_roles": [
+                "zip",
+                "refine"
+              ],
+              "observed_model_cpu_percent": 170.5727197893914,
+              "paired_intervals": 86,
+              "paired_wall_s": 8.705964246999999,
+              "sample_count": 87,
+              "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+            },
+            "rss_by_role_mib": {
+              "refine": {
+                "max": 1722.703125,
+                "mean": 1722.703125,
+                "n": 87,
+                "p50": 1722.703125,
+                "p95": 1722.703125
+              },
+              "zip": {
+                "max": 683.453125,
+                "mean": 681.8956537356322,
+                "n": 87,
+                "p50": 681.953125,
+                "p95": 682.953125
+              }
+            },
+            "start_s": 1800,
+            "temperature_c": {
+              "max": 86.45,
+              "mean": 83.08125000000001,
+              "n": 8,
+              "p50": 83.15,
+              "p95": 86.45
+            },
+            "thermal_samples": 8
+          }
+        ],
+        "first_window": {
+          "current_limit_samples": 172,
+          "current_limits_observed": [
+            0,
+            6,
+            8
+          ],
+          "end_s": 360,
+          "group_rss_mib": {
+            "max": 2116.65625,
+            "mean": 2103.0154929874957,
+            "n": 2959,
+            "p50": 2107.15625,
+            "p95": 2114.65625
+          },
+          "refine_backlog_sampled_audio_s": {
+            "max": 2.904,
+            "mean": 0.1174773333333335,
+            "n": 3000,
+            "p50": 0.0,
+            "p95": 1.208
+          },
+          "refine_dropped_windows": 0,
+          "refine_owned_end_to_return_s": {
+            "max": 4.47166962,
+            "mean": 2.8879542693861358,
+            "n": 101,
+            "p50": 2.8657711689999985,
+            "p95": 4.170965618999958
+          },
+          "refine_queue_wait_s": {
+            "max": 3.507984131,
+            "mean": 0.31614558391089104,
+            "n": 101,
+            "p50": 0.0013864,
+            "p95": 1.208249885
+          },
+          "refine_successful": 101,
+          "refine_windows": 101,
+          "resources": {
+            "complete_model_rss_samples": 2959,
+            "model_group_rss_observed_max_mib": 2116.65625,
+            "model_roles": [
+              "zip",
+              "refine"
+            ],
+            "observed_model_cpu_percent": 181.07429272321403,
+            "paired_intervals": 2958,
+            "paired_wall_s": 299.8493004360002,
+            "sample_count": 2959,
+            "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+          },
+          "rss_by_role_mib": {
+            "refine": {
+              "max": 1722.703125,
+              "mean": 1714.5263760983441,
+              "n": 2959,
+              "p50": 1718.703125,
+              "p95": 1722.703125
+            },
+            "zip": {
+              "max": 393.953125,
+              "mean": 388.4891168891517,
+              "n": 2959,
+              "p50": 388.453125,
+              "p95": 391.953125
+            }
+          },
+          "start_s": 60,
+          "temperature_c": {
+            "max": 85.9,
+            "mean": 81.62952218430054,
+            "n": 293,
+            "p50": 82.05,
+            "p95": 84.25
+          },
+          "thermal_samples": 293
+        },
+        "group_rss_median_delta_mib": 239.5,
+        "last_window": {
+          "current_limit_samples": 224,
+          "current_limits_observed": [
+            0,
+            6,
+            8
+          ],
+          "end_s": 1748.803125,
+          "group_rss_mib": {
+            "max": 2389.15625,
+            "mean": 2346.9067570993916,
+            "n": 2958,
+            "p50": 2346.65625,
+            "p95": 2385.15625
+          },
+          "refine_backlog_sampled_audio_s": {
+            "max": 3.408,
+            "mean": 0.12342400000000005,
+            "n": 3000,
+            "p50": 0.0,
+            "p95": 1.368
+          },
+          "refine_dropped_windows": 0,
+          "refine_owned_end_to_return_s": {
+            "max": 4.659671150000122,
+            "mean": 3.009803436150007,
+            "n": 100,
+            "p50": 2.9657816480000747,
+            "p95": 3.8266643850001856
+          },
+          "refine_queue_wait_s": {
+            "max": 3.705244791,
+            "mean": 0.30073874416,
+            "n": 100,
+            "p50": 0.001617014,
+            "p95": 1.123251351
+          },
+          "refine_successful": 100,
+          "refine_windows": 100,
+          "resources": {
+            "complete_model_rss_samples": 2958,
+            "model_group_rss_observed_max_mib": 2389.15625,
+            "model_roles": [
+              "zip",
+              "refine"
+            ],
+            "observed_model_cpu_percent": 191.6493928130107,
+            "paired_intervals": 2957,
+            "paired_wall_s": 299.9331182649992,
+            "sample_count": 2958,
+            "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+          },
+          "rss_by_role_mib": {
+            "refine": {
+              "max": 1722.703125,
+              "mean": 1722.703125,
+              "n": 2958,
+              "p50": 1722.703125,
+              "p95": 1722.703125
+            },
+            "zip": {
+              "max": 666.453125,
+              "mean": 624.2036320993915,
+              "n": 2958,
+              "p50": 623.953125,
+              "p95": 662.453125
+            }
+          },
+          "start_s": 1448.803125,
+          "temperature_c": {
+            "max": 86.45,
+            "mean": 82.75527210884356,
+            "n": 294,
+            "p50": 83.15,
+            "p95": 84.8
+          },
+          "thermal_samples": 294
+        },
+        "scope": "사전 고정 300초 창. 소유 끝 기준 Refine 구간, 100ms RSS/큐 표본. 각 구성 단회·반복 합성 입력이며 누수 부재/상시 안정성 입증 아님",
+        "time_origin": "worker.replay.t0_monotonic_ns"
+      },
+      "thermal": {
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "history_after": 14,
+        "history_before": 0,
+        "max_c": 87.55,
+        "missing_samples": 0,
+        "samples": 1970
+      }
+    }
+  ],
+  "datasets": {
+    "prospective": {
+      "audio_s": 383.70000000000005,
+      "manifest_sha256": "9c7b7f192591a94d09d4b4f5e251be4283ecfa9ef19d428180e16c37ab649e7d",
+      "sources": 30
+    },
+    "sustained": {
+      "audio_s": 1808.803125,
+      "manifest_sha256": "7e4d79439117c07a6ce1063890c6875d9e67b784ba456bf8db181c5f4c768d31",
+      "sources": 1
+    }
+  },
+  "date": "2026-11-06",
+  "default_refine": "sensevoice",
+  "device_interruption_scope": "두 차례 재부팅 전 오류 원인은 이전 부팅 journal 미보존으로 미확인. 단회쓰기검사/보존대조/이후운영결과는 저장장치 건강 증명 아님",
+  "device_snapshot_during_qwen": {
+    "at_utc": "2026-11-06T11:20:04.763433+00:00",
+    "boot_id": "f3382727-a8ac-4f1c-9dbc-828220851601",
+    "captured_until_s": 1318.2,
+    "connectors": {
+      "/sys/class/drm/card1-HDMI-A-1/status": "connected",
+      "/sys/class/drm/card1-HDMI-A-2/status": "disconnected",
+      "/sys/class/drm/card1-Writeback-1/status": "unknown",
+      "/sys/class/drm/card1-Writeback-2/status": "unknown"
+    },
+    "memory_kib": {
+      "MemAvailable": 5403152,
+      "MemTotal": 8252368,
+      "SwapFree": 2097136,
+      "SwapTotal": 2097136
+    },
+    "scope": "Qwen 지속 입력 중 장치 전체 단회 관측. 시간 전체 최저 가용 메모리나 최고 swap 관측 아님",
+    "swap_used_kib": 0
+  },
+  "followup_status": {
+    "cases": [
+      {
+        "exit_code": 0,
+        "id": "concurrent-prospective-sensevoice-t2-01"
+      },
+      {
+        "exit_code": 0,
+        "id": "concurrent-sustained-sensevoice-t2-01"
+      },
+      {
+        "exit_code": 0,
+        "id": "concurrent-sustained-qwen3_asr-t2-01"
+      }
+    ],
+    "finished_at_utc": "2026-11-06T11:31:14.281798+00:00",
+    "status": "completed"
+  },
+  "interruption": {
+    "current_run_admission_mc": 60000,
+    "performance_claim": null,
+    "recovery_sha256": "338dec034a37c8f30f686d4f7ed15b76f975f3802b29a752d9334893fa468f24",
+    "run_id": "file-validation-followup-20261106-01",
+    "second_recovery_sha256": "660b8194be671f27ba4f661e0070bd94c6a7796fee2be27b31975cd7cad194cd",
+    "second_run_id": "file-validation-followup-20261106-02",
+    "status": "two_attempts_interrupted_by_user_reboots_after_connectivity_and_io_errors",
+    "third_run_id": "file-validation-followup-20261106-03",
+    "third_run_status": "blocked_before_inference_at_original_53c_admission"
+  },
+  "original_status": {
+    "cases": [
+      {
+        "exit_code": 0,
+        "id": "offline-prospective-sensevoice-t2-01",
+        "queue_loss_only": false
+      },
+      {
+        "exit_code": 1,
+        "id": "offline-prospective-qwen3_asr-t2-01",
+        "queue_loss_only": false
+      }
+    ],
+    "finished_at_utc": "2026-11-06T09:37:44.768617+00:00",
+    "status": "stopped_after_failure"
+  },
+  "paired_successful_subset": {
+    "equal": 5,
+    "failed_source_ids": [
+      "fleurs-ko-validation-0009"
+    ],
+    "improved": 13,
+    "qwen3_asr": {
+      "deletions": 81,
+      "empty_reference_nonempty_hypotheses": 0,
+      "empty_reference_samples": 0,
+      "errors": 197,
+      "insertions": 35,
+      "reference_characters": 1493,
+      "scope": "successful_nonempty_references",
+      "substitutions": 81,
+      "value": 0.1319490957803081
+    },
+    "same_vad_segments_verified": true,
+    "scope": "Qwen 성공 29개에 한정한 사후 진단. 실패 1개를 포함한 전체 30개 Qwen CER 아님",
+    "sensevoice": {
+      "deletions": 104,
+      "empty_reference_nonempty_hypotheses": 0,
+      "empty_reference_samples": 0,
+      "errors": 193,
+      "insertions": 19,
+      "reference_characters": 1493,
+      "scope": "successful_nonempty_references",
+      "substitutions": 70,
+      "value": 0.12926992632283993
+    },
+    "sources": 29,
+    "worsened": 11
+  },
+  "plan_sha256": {
+    "results/comparisons/file-validation-20261106-01/plan.json": "60c1bc0acc1425c2dcc085cf9f87dcda008f025d1a8585128a5dafb6c3cb9f8c",
+    "results/comparisons/file-validation-followup-20261106-04/plan.json": "31839167befe10df6e63b26ff50f522925728e7f2bcacd391f140c534007a3c9"
+  },
+  "preservation": {
+    "audit_scope": "existing_assets_and_environment",
+    "changed": [],
+    "environment_unchanged": true,
+    "missing": [],
+    "protected_files": 13582,
+    "source_commit": "40529f9eebe4f0c2f6301b8bc859f36cd8f7bd4f",
+    "system_settings_unchanged": true,
+    "working_tree_clean": true
+  },
+  "qwen_decision": "실험 옵션 유지. 새문장1개 반복 경고 실패, 같은성공29개에서 우위 확인 못함. 정책변경은 별도 개발/새평가 필요",
+  "qwen_prospective_online": {
+    "full_corpus_cer": null,
+    "reason": "original_offline_gate_failed",
+    "status": "not_attempted"
+  },
+  "raw_artifact_count": 85,
+  "raw_artifacts": [
+    {
+      "bytes": 349,
+      "path": "results/comparisons/file-validation-20261106-01/campaign.json",
+      "sha256": "e8bb758735594018ac26732423c80e766375adfe0034e709da3798e972838544"
+    },
+    {
+      "bytes": 505,
+      "path": "results/comparisons/file-validation-20261106-01/configs/qwen3_asr.toml",
+      "sha256": "c8daba8a66c566f1d7d4afd53cd86c52ef30092aebb191c2cea2338fbff53055"
+    },
+    {
+      "bytes": 531,
+      "path": "results/comparisons/file-validation-20261106-01/configs/sensevoice.toml",
+      "sha256": "490c351feae521f17c22ad6e08bd7735b851acb165f538c305d8c56f9f36f42e"
+    },
+    {
+      "bytes": 4910,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-qwen3_asr-t2-01/admission.jsonl",
+      "sha256": "d6fa5a315ff64ff1dbaee6ea35c402fdd13f80a98738fab2a8422ef792c04cd4"
+    },
+    {
+      "bytes": 175,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-qwen3_asr-t2-01/console.log",
+      "sha256": "f2882bf5d71060d4426b1c3cea03b41ecb0d5879d3723b7d3b5e1e99a912a8ef"
+    },
+    {
+      "bytes": 3804,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-qwen3_asr-t2-01/execution.json",
+      "sha256": "418d5e1e0aa23d7226699331fb0e3d0c5af6c04dd616fbe66b53c14d3d3fafb3"
+    },
+    {
+      "bytes": 320237,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-qwen3_asr-t2-01/predictions.jsonl",
+      "sha256": "d093fe578df575468d4af844ff959e4bb07a59e54d24beec68e9429cf9c7cd11"
+    },
+    {
+      "bytes": 34137,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-qwen3_asr-t2-01/scores.jsonl",
+      "sha256": "dc7b9a0af6adc07b365e70dea7a61d6c113e598e0d7c50f3e19944bb4153e84e"
+    },
+    {
+      "bytes": 6810,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-qwen3_asr-t2-01/summary.json",
+      "sha256": "b21343599ce405a24a18609ea0ae6f340652e5e96bf6ca242ce9d49ccf6b60e3"
+    },
+    {
+      "bytes": 633,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-qwen3_asr-t2-01/summary.md",
+      "sha256": "83aae6417998838c79a501c0db602ef715e733a70aa848042e6ce8333d131671"
+    },
+    {
+      "bytes": 61022,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-qwen3_asr-t2-01/thermal.jsonl",
+      "sha256": "b5db0e76a480c74265fb78a22fd5c82e2f9731d068cd78d8d7c8dad9219a0d59"
+    },
+    {
+      "bytes": 173992,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-qwen3_asr-t2-01/threads.jsonl",
+      "sha256": "fccbcacb33116904687bfc9b02b775d20bc6573115f0c29982539b7825927404"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-qwen3_asr-t2-01/warnings.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 13767,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-qwen3_asr-t2-01/worker.json",
+      "sha256": "6240f06b13cc23538d0046bd0f00382b473255de7729acb87151a7f3dc3e9ff2"
+    },
+    {
+      "bytes": 2806,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-sensevoice-t2-01/admission.jsonl",
+      "sha256": "c48b6aac6bc429ee9d8fa81e107bc7b6a61b8cad82b9def454f9d712e1a23abe"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-sensevoice-t2-01/console.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3794,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-sensevoice-t2-01/execution.json",
+      "sha256": "d3564d7069b57bdf5d272fcefd399d0c7c75c67359e29c6986322aa70807f069"
+    },
+    {
+      "bytes": 182355,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-sensevoice-t2-01/predictions.jsonl",
+      "sha256": "99836edb04f3ba79c1633f0f3c20484bd35e756681463159d71bada4cab9c9ed"
+    },
+    {
+      "bytes": 34245,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-sensevoice-t2-01/scores.jsonl",
+      "sha256": "7219b2f0eb5920e5ea006a8f934d324f44cf1b7faa2bff62333025974edd2198"
+    },
+    {
+      "bytes": 6790,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-sensevoice-t2-01/summary.json",
+      "sha256": "4b6f4192a364656ff6a25c97004de9116069c4f4040c01ce248387c62c23d6d5"
+    },
+    {
+      "bytes": 635,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-sensevoice-t2-01/summary.md",
+      "sha256": "b37f0456d10403d03b5a7fcb6a6807fb23fd9b34507473d6adb95737b9d05d2a"
+    },
+    {
+      "bytes": 11262,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-sensevoice-t2-01/thermal.jsonl",
+      "sha256": "796e0968fe6115ab6970215ded64f7514f91482f4bde63733bef012f9b1759ce"
+    },
+    {
+      "bytes": 25460,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-sensevoice-t2-01/threads.jsonl",
+      "sha256": "9c7a31025a8f9363ccf5918129b5819ff3061cb6ad908e88bb6875324d504fe3"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-sensevoice-t2-01/warnings.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 8921,
+      "path": "results/comparisons/file-validation-20261106-01/offline-prospective-sensevoice-t2-01/worker.json",
+      "sha256": "a99ea757c6955d7aea25bfd2cfd7d7ebaecea61d2b57a3ab1df3e75cc3acb78b"
+    },
+    {
+      "bytes": 13255,
+      "path": "results/comparisons/file-validation-20261106-01/plan.json",
+      "sha256": "60c1bc0acc1425c2dcc085cf9f87dcda008f025d1a8585128a5dafb6c3cb9f8c"
+    },
+    {
+      "bytes": 364,
+      "path": "results/comparisons/file-validation-followup-20261106-04/campaign.json",
+      "sha256": "12a26a26cd4ca1bcb2ccf9347575de82faead727fe52790700afab29942385a7"
+    },
+    {
+      "bytes": 3041,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-prospective-sensevoice-t2-01/admission.jsonl",
+      "sha256": "528938fd7f05243ab20448bc622c9d8834e838dfe136af58f39346112cad00ea"
+    },
+    {
+      "bytes": 309867,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-prospective-sensevoice-t2-01/capture/backlog.jsonl",
+      "sha256": "5a3db053bbdec15695bdd486cb0e0fc9a3491303d83f642673aa919daf8700d3"
+    },
+    {
+      "bytes": 804676,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-prospective-sensevoice-t2-01/capture/decoder.jsonl",
+      "sha256": "a025b46c894d23a1eacc85b7eba4fbdcaf3fda9ef2240d8ebd8f6ae0cdc043f8"
+    },
+    {
+      "bytes": 432455,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-prospective-sensevoice-t2-01/capture/producer.jsonl",
+      "sha256": "37b9b1d0b5ed59d4a41cb02e7f31aa6a44535e8a8d2c4608f067de9f5f9a1860"
+    },
+    {
+      "bytes": 203,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-prospective-sensevoice-t2-01/console.log",
+      "sha256": "6ed7b9961e0097fd672a7dc26273e2305618273bd2eb662ba6772d78a90ab049"
+    },
+    {
+      "bytes": 3860,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-prospective-sensevoice-t2-01/execution.json",
+      "sha256": "99862cd66f3e070f8d308f8eda27197a810eff2af9d697c00d0a5271e5698304"
+    },
+    {
+      "bytes": 986786,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-prospective-sensevoice-t2-01/process-resources.jsonl",
+      "sha256": "32189b6cd5ef09887869a3e177baa8be0b3b7f55669379188b6ddefb4de1c6e4"
+    },
+    {
+      "bytes": 89799,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-prospective-sensevoice-t2-01/refine-jobs.jsonl",
+      "sha256": "a497b3d51f10d6bbd93f9f8c1c65c0777bb0c4c90885786a53f7b438b4d9ecd4"
+    },
+    {
+      "bytes": 118445,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-prospective-sensevoice-t2-01/refine-results.jsonl",
+      "sha256": "556c281b3f890e4a22be330f7c44a015d4257666fb3b8fd39d0021dc3318fba5"
+    },
+    {
+      "bytes": 9024,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-prospective-sensevoice-t2-01/summary.json",
+      "sha256": "d04767930cd553c5ac52946e220865d11ab36ad270441c0da9ab09e78503bec5"
+    },
+    {
+      "bytes": 101355,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-prospective-sensevoice-t2-01/thermal.jsonl",
+      "sha256": "081f0046df19c18cc8f9b28ef9fc572cff66d0b93bbc3bf378812bbd743ae2b5"
+    },
+    {
+      "bytes": 432447,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-prospective-sensevoice-t2-01/thread-resources.jsonl",
+      "sha256": "56a378d869c4e09eb4fd220ec2c02b1540c2b6105791514151f625bac61bbfbe"
+    },
+    {
+      "bytes": 232226,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-prospective-sensevoice-t2-01/threads.jsonl",
+      "sha256": "5ddaed942a455ebaa60178ea8dd8a4d564ba9a867794ef51467cb5d245ef2d42"
+    },
+    {
+      "bytes": 11408,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-prospective-sensevoice-t2-01/track.json",
+      "sha256": "59c27ff10cf8fe52f45629767bcf39c94932180fa2f4d7ea272caf57f882f8b0"
+    },
+    {
+      "bytes": 77793,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-prospective-sensevoice-t2-01/vad-sources.jsonl",
+      "sha256": "a8655565c9989f2ecbcc3d820061e08ec021d0b7c6c9db5a054a169d9a2ce805"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-prospective-sensevoice-t2-01/warnings.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 556596,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-prospective-sensevoice-t2-01/worker.json",
+      "sha256": "94d7feb38becd1b2f6b69230d3af83c569d706e9d17afe7c8f4b5f92007584ce"
+    },
+    {
+      "bytes": 1092966,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-prospective-sensevoice-t2-01/zip-events.jsonl",
+      "sha256": "0b7622304e89b10cae6fc49587bace541f6bcc343d71238d026f0103b6201e0c"
+    },
+    {
+      "bytes": 15549,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-prospective-sensevoice-t2-01/zip-sources.jsonl",
+      "sha256": "38125961ba59df08b10e79604ff727bb3e5c1fe9eae43e624f184f540aa88db2"
+    },
+    {
+      "bytes": 10526,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-qwen3_asr-t2-01/admission.jsonl",
+      "sha256": "eaab3cee45ce04525132c34fe00f2ac7435ab34310d8f402a24a714b8aaef941"
+    },
+    {
+      "bytes": 1472473,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-qwen3_asr-t2-01/capture/backlog.jsonl",
+      "sha256": "c22519dc438c1ec353816ca15ff1c09d61347ef7d8b1ef8c1476608cc24846ea"
+    },
+    {
+      "bytes": 219701444,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-qwen3_asr-t2-01/capture/decoder.jsonl",
+      "sha256": "c8966977f8c66591efdc495419b55f276f8bed77d9cf452373993c46c188a749"
+    },
+    {
+      "bytes": 2103613,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-qwen3_asr-t2-01/capture/producer.jsonl",
+      "sha256": "f104aed85a54454e4f61552c32e5ad500daf4c2f46a8b7d3c0d5c68631f69371"
+    },
+    {
+      "bytes": 200,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-qwen3_asr-t2-01/console.log",
+      "sha256": "2a23b22b77147fcd25d266e33e76d38250495b335fe3c3fa927c6aa2247af103"
+    },
+    {
+      "bytes": 4188,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-qwen3_asr-t2-01/execution.json",
+      "sha256": "b5f8ebf0c884b971e62d4cd912f70dcf54da9beecb8e34b60968ada9f1a46489"
+    },
+    {
+      "bytes": 4699601,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-qwen3_asr-t2-01/process-resources.jsonl",
+      "sha256": "59aab585b9bac9424097e3b7444e33680930a7543755e5c91e9c402aa72237be"
+    },
+    {
+      "bytes": 639208,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-qwen3_asr-t2-01/refine-jobs.jsonl",
+      "sha256": "a8697a5574b1752ea460ddd2e5137aebe195ca73acc6a3c70a23fd8c40a77a7b"
+    },
+    {
+      "bytes": 1033079,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-qwen3_asr-t2-01/refine-results.jsonl",
+      "sha256": "d6f6675cc97a09475b7fac23d86c7157c8fcc586c7150bfe561d3c44192f4943"
+    },
+    {
+      "bytes": 9353,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-qwen3_asr-t2-01/summary.json",
+      "sha256": "2a19bb9e1625de5996302736054d20ea268ad3b9bf88c410ace49a662f673135"
+    },
+    {
+      "bytes": 526876,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-qwen3_asr-t2-01/thermal.jsonl",
+      "sha256": "e7498477594a17f36f4d59f7c828fa85c99ef4a2a136d7721e5d6016263c1175"
+    },
+    {
+      "bytes": 2285715,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-qwen3_asr-t2-01/thread-resources.jsonl",
+      "sha256": "b5979005dd08264d24de7209c0e335da9f2612eaefd9260a8c64e173af7ec179"
+    },
+    {
+      "bytes": 1168817,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-qwen3_asr-t2-01/threads.jsonl",
+      "sha256": "161dda8c1801386c10fc39c5cb3c3552db8c3b1eb90a00b2ba97670b966843e4"
+    },
+    {
+      "bytes": 27249,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-qwen3_asr-t2-01/track.json",
+      "sha256": "a03b730a639ebecab2277045bd2c67ccfac2c9ef2de6c67f9399f3fdb41d0837"
+    },
+    {
+      "bytes": 381081,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-qwen3_asr-t2-01/vad-sources.jsonl",
+      "sha256": "a0b4eca0d1710f87e5e29f7bdfd90b1c2feaa1700cc3c445ab5bdf560ebb135d"
+    },
+    {
+      "bytes": 450735,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-qwen3_asr-t2-01/warnings.jsonl",
+      "sha256": "2c12e4e4bf312befe9b5060f4d9ab5ca941153666c7652fcfe26a0b6a5fdc0fa"
+    },
+    {
+      "bytes": 2549725,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-qwen3_asr-t2-01/worker.json",
+      "sha256": "580267c3089acc7313ccf96ea3ac5c55332f37234e688333369a92a3d0c9ed9f"
+    },
+    {
+      "bytes": 220810578,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-qwen3_asr-t2-01/zip-events.jsonl",
+      "sha256": "3660d937fcb6dfe497bf5f4b81345095f8a2d32583a591a0a7ecab1cab8197a6"
+    },
+    {
+      "bytes": 51066,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-qwen3_asr-t2-01/zip-sources.jsonl",
+      "sha256": "673b847c2c56628d21fe1dfe3a41706a71536344e8727be0d7b7bb87c231e8aa"
+    },
+    {
+      "bytes": 4445,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-sensevoice-t2-01/admission.jsonl",
+      "sha256": "cbbe9ff925df486f94c86016d7447c007d8aa5d4a18d23d771bdc313c2975b75"
+    },
+    {
+      "bytes": 1472457,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-sensevoice-t2-01/capture/backlog.jsonl",
+      "sha256": "c8ca487c5833ddd9894e4c2bc164afb7b9dd66d84005baeeecbb5712cbdf883e"
+    },
+    {
+      "bytes": 219704792,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-sensevoice-t2-01/capture/decoder.jsonl",
+      "sha256": "270f28fa98f19130bc659809c83a92434a2514e885e54f6afac97aaf05bebf6f"
+    },
+    {
+      "bytes": 2103509,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-sensevoice-t2-01/capture/producer.jsonl",
+      "sha256": "2bef52e6fa03b47ba05b29d81adace9474804051765bc11320f24607d50bf32e"
+    },
+    {
+      "bytes": 201,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-sensevoice-t2-01/console.log",
+      "sha256": "793202932807d9923ebca83402a14bfe7a2665e5fd1ddeb818c94fc12edd804d"
+    },
+    {
+      "bytes": 3853,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-sensevoice-t2-01/execution.json",
+      "sha256": "1595ad69abe9ee260cabeb673a8d8000cfb2a84ccdfc4cb679f0710f4682a41d"
+    },
+    {
+      "bytes": 4694424,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-sensevoice-t2-01/process-resources.jsonl",
+      "sha256": "668788922de0d287af79a529dc4597381acd2f254d06dd923b24303953d03590"
+    },
+    {
+      "bytes": 639210,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-sensevoice-t2-01/refine-jobs.jsonl",
+      "sha256": "75d796a044b2e7166888c6e19090467e766cdb8acfd9094fa3a408e29cd326c8"
+    },
+    {
+      "bytes": 825765,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-sensevoice-t2-01/refine-results.jsonl",
+      "sha256": "f09ea89b0a7159225dc7ee38d3ac65467e4ab6042e348a97e413291d76ba56cd"
+    },
+    {
+      "bytes": 8958,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-sensevoice-t2-01/summary.json",
+      "sha256": "c1d3f456fd95d9265b64792cb5404fe7be2aa8ca02490ec3cbacb6cacd8a61f0"
+    },
+    {
+      "bytes": 513327,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-sensevoice-t2-01/thermal.jsonl",
+      "sha256": "f84b0e4546604b1c4afd4a52ce41c2acc15756043233d9ce370e98334830feca"
+    },
+    {
+      "bytes": 2042816,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-sensevoice-t2-01/thread-resources.jsonl",
+      "sha256": "2ea763d0613974a039ada58c8b79af8ada25d26d9f4e517c53529c24b95bee14"
+    },
+    {
+      "bytes": 1167539,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-sensevoice-t2-01/threads.jsonl",
+      "sha256": "7c6464efcf595f37e4b5d990b8a26ca6943814d8a27f8be704a6852c252d7420"
+    },
+    {
+      "bytes": 27249,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-sensevoice-t2-01/track.json",
+      "sha256": "a03b730a639ebecab2277045bd2c67ccfac2c9ef2de6c67f9399f3fdb41d0837"
+    },
+    {
+      "bytes": 381081,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-sensevoice-t2-01/vad-sources.jsonl",
+      "sha256": "b5c223002b397d0edac75d18bcee253193d36fb33277538a8d8e14ec2639e3b7"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-sensevoice-t2-01/warnings.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 2544483,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-sensevoice-t2-01/worker.json",
+      "sha256": "ac0863011c750092b248d8008e0e4afaa3ee50f59a2668dbd79fea406c5bb762"
+    },
+    {
+      "bytes": 220813581,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-sensevoice-t2-01/zip-events.jsonl",
+      "sha256": "715a62abbde913f34577512bc55b2f88335631f4cbc9eac0e41a82a0c6328a3a"
+    },
+    {
+      "bytes": 51066,
+      "path": "results/comparisons/file-validation-followup-20261106-04/concurrent-sustained-sensevoice-t2-01/zip-sources.jsonl",
+      "sha256": "06353a87ef85360f982b27da6f176c8b5ae380e60301188e000018192c032862"
+    },
+    {
+      "bytes": 13599,
+      "path": "results/comparisons/file-validation-followup-20261106-04/plan.json",
+      "sha256": "31839167befe10df6e63b26ff50f522925728e7f2bcacd391f140c534007a3c9"
+    }
+  ],
+  "raw_artifacts_bytes": 921127137,
+  "runtime": {
+    "machine": "aarch64",
+    "packages": [
+      {
+        "name": "flatbuffers",
+        "version": "25.12.19"
+      },
+      {
+        "name": "numpy",
+        "version": "2.4.6"
+      },
+      {
+        "name": "onnxruntime",
+        "version": "1.31.1"
+      },
+      {
+        "name": "packaging",
+        "version": "26.3"
+      },
+      {
+        "name": "pip",
+        "version": "26.2.2"
+      },
+      {
+        "name": "protobuf",
+        "version": "7.36.2"
+      },
+      {
+        "name": "setuptools",
+        "version": "79.0.1"
+      },
+      {
+        "name": "sherpa-onnx-core",
+        "version": "2.0.1"
+      },
+      {
+        "name": "sherpa_onnx",
+        "version": "2.0.1"
+      },
+      {
+        "name": "typing_extensions",
+        "version": "4.16.0"
+      }
+    ],
+    "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+    "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+    "runtime": {
+      "native_version_source": "sherpa_onnx.onnxruntime_version",
+      "python_onnxruntime_package_version": "1.31.1",
+      "reason": null,
+      "sherpa_core_package_version": "2.0.1",
+      "sherpa_native_onnxruntime_version": "1.28.2",
+      "sherpa_package_version": "2.0.1",
+      "status": "available"
+    }
+  },
+  "schema": "file-validation-with-failure-v1",
+  "source_analysis_sha256": "192c9f1138bc29fa8c68247993fbfe64cce7b62622c27aa27d32528c3eea6476",
+  "source_finalize_sha256": "a5f448a70149b9d686ae9f3ed41f77b891866d9f2737c5e7b4ed9a8bcb7bc976",
+  "source_trends_sha256": "482d0653978fbbbd09ab1f90b7acec69ad6cd1af2f177fe839f07b5133c06133",
+  "sustained_cross_model": {
+    "same_geometry_and_pcm": true,
+    "same_zip_transcript": true,
+    "segments": 601
+  },
+  "transfer": {
+    "all_equal": true,
+    "bytes": 1029893451,
+    "errors": [],
+    "file_count": 227,
+    "groups": {
+      "campaign_artifacts": {
+        "bytes": 923716643,
+        "files": 123
+      },
+      "new_data": {
+        "bytes": 95299553,
+        "files": 70
+      },
+      "rp5_maintenance": {
+        "bytes": 10877255,
+        "files": 34
+      }
+    },
+    "inventory_sha256": "9c126dc2e99e8cfd8bde4aa8a26f466b5e87179eb04db0e424b4218af22fff1a",
+    "scope": "새 자료2종·원 캠페인과 후속01~04 전체·닫힌 시점 RP5 점검 폴더. 점검 기록은 rp5-final에 분리 보관"
+  },
+  "unmeasured": {
+    "display_latency": null,
+    "indefinite_stability": null,
+    "microphone": null,
+    "natural_conversation_accuracy": null,
+    "speaker_independent_accuracy": null,
+    "training_data_nonoverlap": null
+  },
+  "verification": {
+    "reproduction": {
+      "canonical_reports_equal": true,
+      "native_asr_inference": false,
+      "saved_summaries_per_machine": 5,
+      "scope": "모델 없는 요약 재집계·고정 시간 창·원본 및 방출 PCM·워밍업·구간/전사 검증. Host/RP5 정렬 JSON 바이트 동일",
+      "sha256": "e140d08ece22b4c486ef0753bd260070204140e6b4179b9f3449165c7b956639"
+    },
+    "source_static_checks": "Ruff·131개파일형식·diff공백·배포shell문법·M1두체크섬 통과",
+    "test_scope": "단위·모의 모델/실제IPC. RP5 실제 추론과 별도",
+    "tests": {
+      "host": {
+        "history_sha256": "3f173b95d057fa0911b18a5db814b2205a5128a6d76a73d1c486f09fd85c934d",
+        "previous_rescores": 29,
+        "seconds": 46.813,
+        "test_log_sha256": "8cbe3bb4bb2d9e7f202719b4c0424a165c0edeb839fa1f1e2425daeb9b8447b0",
+        "tests": 319
+      },
+      "rp5": {
+        "history_sha256": "ab957112dcf4df830cfa434caa3a4728c16ae7ed461372b4c024cbf8bdc90c77",
+        "previous_rescores": 29,
+        "seconds": 73.457,
+        "test_log_sha256": "a3b4cab0f0df626e27da964fc84a1b936c5f9c74e339efca5874fab0d2b0b804",
+        "tests": 319
+      }
+    }
+  },
+  "zip_level_diagnostic": {
+    "groups": {
+      "at_least_minus45": {
+        "empty_zip_final": 0,
+        "reference_characters": 923,
+        "sensevoice_cer": 0.12351029252437704,
+        "sources": 19,
+        "zip_cer": 0.19176598049837487
+      },
+      "below_minus45": {
+        "empty_zip_final": 11,
+        "reference_characters": 597,
+        "sensevoice_cer": 0.1323283082077052,
+        "sources": 11,
+        "zip_cer": 1.0
+      }
+    },
+    "scope": "사후 기술 통계. 과거 test100 분석의 -45dBFS 구분 재사용. 음량의 인과효과 입증 아님. 입력/gain/선정/점수 변경 없음"
+  }
+}

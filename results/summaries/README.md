@@ -4,6 +4,7 @@
 
 | 기록 | 내용 |
 | --- | --- |
+| [새 FLEURS 평가·30분 동시 부하](file-validation-20261106.md) | 새 문장 SenseVoice30/30·Qwen29/30, 같은 성공29개 CER12.93/13.19%; 별도60°C 시작 30분은 두 모델601구간·드롭0, 반환p95 0.629/3.982초·Qwen 열 제한 관측 |
 | [Qwen VAD 구간·Zip 동시 실행](qwen3-realtime-20261106.md) | 13/13개 성공·입력/보정 드롭 0, KSS CER 3.70%·5개 악화; Qwen 2T 반환 p95 약 3.1~3.4초·별도 후보 선택, 기본 SenseVoice 유지 |
 | [Qwen3-ASR RP5 KSS 세 모델 비교](qwen3-kss-dev50-20261106.md) | 별도 환경·9개 구성·450/450회 성공, Qwen CER 3.57%이나 SenseVoice 대비 7개 악화·처리 비용으로 실시간 채택 보류; 각 300개 테스트·5,647개 파일 보존 |
 | [Qwen3-ASR 배포 경로 검토](qwen3-route-review-20261106.md) | sherpa 2.0.1 CPU·INT8 ONNX 선정, RP5 설치 API·ARM64 wheel 확인. 새 모델 로딩·전사·성능 실측 없음 |

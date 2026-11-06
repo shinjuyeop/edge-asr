@@ -13,7 +13,7 @@ WAV 실시간 자막은 RP5에서 다음 명령으로 실행합니다. Zip 자�
   --wav models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/test_wavs/0.wav
 ```
 
-Qwen 후보는 별도 `.venv-qwen3-vad-20261106-01/bin/python`에서 같은 명령에 `--refine-model qwen3`를 추가합니다. 기본값은 SenseVoice이며 자동 교체는 하지 않습니다. [정확도·반환 지연 비교](results/summaries/qwen3-realtime-20261106.md).
+Qwen 후보는 별도 `.venv-qwen3-vad-20261106-01/bin/python`에서 같은 명령에 `--refine-model qwen3`를 추가합니다. 기본값은 SenseVoice이며 자동 교체는 하지 않습니다. [기존 정확도·반환 지연 비교](results/summaries/qwen3-realtime-20261106.md) 이후 [새 문장 평가](results/summaries/file-validation-20261106.md)에서 Qwen의 짧은 잔여 구간 실패가 확인돼 실험 옵션으로 유지합니다.
 
 이미 준비된 Host/RP5 `.venv`를 사용합니다. 새 환경 설치는 [설치 안내](docs/guides/setup.md)를 따릅니다. Debian 13의 시스템 Python을 프로젝트의 3.11로 가정하지 않습니다.
 
@@ -76,8 +76,10 @@ Host `/d/shin/edge-asr`와 RP5 `/home/deepet/projects/edge-asr`는 **main 하나
 
 ## 현재 검증 범위
 
-RP5에서 세 모델의 batch 평가, Zipformer와 SenseVoice/Qwen의 WAV 1배속 동시 추론·VAD를 검증했습니다. **Refine은 후보로 표시하며 자동 교체하지 않습니다.** 같은 VAD 구간의 KSS CER는 Qwen 3.70%·SenseVoice 5.56%였지만 Qwen으로 5개 발화가 악화됐고 보정 반환도 더 느렸습니다. 실제 마이크·독립 평가·화면 표시 지연·상시 운영은 아직 검증하지 않았습니다.
+RP5에서 세 모델의 batch 평가, Zipformer와 SenseVoice/Qwen의 WAV 1배속 동시 추론·VAD를 검증했습니다. **Refine은 후보로 표시하며 자동 교체하지 않습니다.** 같은 VAD 구간의 KSS CER는 Qwen 3.70%·SenseVoice 5.56%였지만 Qwen으로 5개 발화가 악화됐고 보정 반환도 더 느렸습니다. 자연 대화·실제 마이크·화면 표시 지연·상시 운영은 아직 검증하지 않았습니다.
 
 현재 채택한 설정과 다음 완료 기준은 [현재 상태](docs/status.md)에, 각 실험의 조건·정확도·속도·실패는 [결과 색인](results/summaries/README.md)에 모았습니다. 과거 결과는 해당 데이터와 실행 조건의 기록이며 다른 환경의 성능을 보장하지 않습니다.
+
+새 FLEURS 30개에서 SenseVoice는 30개, Qwen은 29개만 성공했습니다. 같은 성공 29개의 CER는 SenseVoice 12.93%·Qwen 13.19%로 Qwen의 우위를 확인하지 못했습니다. 복구 후 별도 60°C 시작 조건의 30분 동시 검사는 두 모델 모두 완료했고 입력·보정 드롭은 0이었습니다. 보정 반환 p95는 SenseVoice 0.629초·Qwen 3.982초였고, Qwen은 최고 87.55°C와 열 제한이 관측됐습니다. 기본 SenseVoice를 유지합니다. 이는 반복 합성 WAV의 단회 부하 검사이며 `live` 화면 표시나 상시 운영 검증은 아닙니다.
 
 초기 Zipformer 3.526초 WAV의 1/2/4스레드 결과는 **동일 단일 샘플의 각 1회 측정**입니다. [보존 기록](experiments/m1_zipformer/README.md)에서 출처와 한계를 확인할 수 있습니다. 과거 보고서의 수치·환경을 현재 조건으로 소급 변경하지 않습니다.
