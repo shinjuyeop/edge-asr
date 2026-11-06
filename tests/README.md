@@ -12,7 +12,7 @@ bash -n scripts/deploy_rp5.sh
 
 | 영역 | 주요 테스트 | 확인하는 계약 |
 | --- | --- | --- |
-| 평가·어댑터 | `test_evaluation*.py`, `test_sensevoice.py`, `test_cli.py` | 모델1회 로딩·발화별 상태·미지원 모드·정규화/CER·재채점·실패 보존 |
+| 평가·어댑터 | `test_evaluation*.py`, `test_sensevoice.py`, `test_qwen3*.py`, `test_cli.py` | 모델1회 로딩·발화별 상태·미지원 모드·정규화/CER·재채점·실패 보존·Qwen 입력 예산/자산 고정/잘림 거부 |
 | 입력·동시 실행 | `test_streaming.py`, `test_concurrent_probe.py`, `test_online_vad.py` | 독립1배속 입력·유한 큐·실제 드롭·PCM/원본 좌표·결과 수신·자식 회수 |
 | 자막 | `test_captions.py` | 원문 분리·늦은 반환·중복/해시 오류·stdout 실패·저장 원시 재집계 |
 | 병합 연구 | `test_merging.py`, `test_segment_merge.py`, `test_token_alignment.py`, `test_token_splice.py` | 정답 비의존·문자/음성 소유권·후보 보류·앵커/접두부 오류·복사 보존 |

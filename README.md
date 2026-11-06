@@ -2,7 +2,7 @@
 
 Raspberry Pi 5(ARM64, Debian 13, RAM 8GB)에서 한국어 ASR 모델을 비교하고 실시간 배포하기 위한 연구 저장소입니다. **Host에서 개발하고 RP5에서 실제 추론·성능을 검증합니다.** 기준 Python은 3.11이며 모델·오디오·가상환경·원시 결과는 각 장비에 보존합니다.
 
-Zipformer INT8의 batch/1배속 모사와 SenseVoiceSmall INT8의 batch 평가를 구현했습니다. 공통 입력·CER·RTF·CPU/RSS·실패 기록·재채점을 사용합니다. WAV 자막 MVP의 Zip/보정 후보 분리 표시를 RP5에서 실제 검증했습니다. [현재 상태·다음 작업](docs/status.md), [전체 문서](docs/README.md), [실측 기록](results/summaries/README.md)을 참고하세요.
+Zipformer INT8의 batch/1배속 모사와 SenseVoiceSmall·Qwen3-ASR-0.6B INT8의 batch 평가를 구현했습니다. 공통 입력·CER·RTF·CPU/RSS·실패 기록·재채점을 사용합니다. WAV 자막 MVP의 Zip/보정 후보 분리 표시를 RP5에서 실제 검증했습니다. [현재 상태·다음 작업](docs/status.md), [전체 문서](docs/README.md), [실측 기록](results/summaries/README.md)을 참고하세요.
 
 ## 빠른 시작
 
@@ -33,7 +33,7 @@ WAV 실시간 자막은 RP5에서 다음 명령으로 실행합니다. Zip 자�
 
 ```text
 src/edge_asr/
-  adapters/          Zipformer·SenseVoice 모델별 호출
+  adapters/          Zipformer·SenseVoice·Qwen 모델별 호출
   tools/
     data/            데이터 준비·검수 결정 반영
     probes/          RP5 측정·외부 온도/시간 제한
@@ -74,7 +74,7 @@ Host `/d/shin/edge-asr`와 RP5 `/home/deepet/projects/edge-asr`는 **main 하나
 
 ## 현재 검증 범위
 
-RP5에서 두 모델의 batch 평가, WAV 1배속 동시 추론과 VAD, 터미널 자막 분리 표시를 검증했습니다. **Refine은 후보로 표시하며 자동 교체하지 않습니다.** 구간별 정확도 악화가 남아 있기 때문입니다. 실제 마이크·화면 표시 지연·상시 운영은 아직 검증하지 않았습니다.
+RP5에서 세 모델의 batch 평가, Zipformer/SenseVoice의 WAV 1배속 동시 추론과 VAD, 터미널 자막 분리 표시를 검증했습니다. **Refine은 후보로 표시하며 자동 교체하지 않습니다.** 구간별 정확도 악화가 남아 있기 때문입니다. Qwen의 온라인 VAD·Zip 동시 실행과 실제 마이크·화면 표시 지연·상시 운영은 아직 검증하지 않았습니다.
 
 현재 채택한 설정과 다음 완료 기준은 [현재 상태](docs/status.md)에, 각 실험의 조건·정확도·속도·실패는 [결과 색인](results/summaries/README.md)에 모았습니다. 과거 결과는 해당 데이터와 실행 조건의 기록이며 다른 환경의 성능을 보장하지 않습니다.
 

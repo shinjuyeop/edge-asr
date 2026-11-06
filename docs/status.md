@@ -1,12 +1,13 @@
 # 현재 상태와 다음 작업
 
-2026-11-06 기준. **WAV 실시간 자막 MVP를 사용할 수 있다. 다음 모델 검증은 Qwen3-ASR-0.6B INT8의 RP5 CPU 실행이다.** 마이크 입력은 장치 준비를 기다린다. 현재 명령은 [사용 안내](guides/live_captions.md), 전체 실험의 수치와 근거는 [검증 기록](../results/summaries/README.md)에서 확인한다.
+2026-11-06 기준. **WAV 실시간 자막 MVP와 세 모델의 공통 batch 평가를 사용할 수 있다. Qwen3-ASR-0.6B INT8의 RP5 CPU 실행·KSS 비교를 완료했다.** 다음은 Qwen의 같은 VAD 구간·Zip 동시 실행 검증이다. 마이크 입력은 장치 준비를 기다린다. 현재 명령은 [사용 안내](guides/live_captions.md), 전체 실험의 수치와 근거는 [검증 기록](../results/summaries/README.md)에서 확인한다.
 
 ## 지금 가능한 일
 
 | 기능 | 검증 범위 | 근거 |
 | --- | --- | --- |
 | Zipformer·SenseVoice batch 비교 | RP5 KSS/FLEURS·1/2/4스레드, CER·RTF·CPU/RSS | [M2 비교](../results/summaries/m2-3-comparison-20261028.md) |
+| Qwen을 포함한 세 모델 batch 비교 | 별도 환경·같은 KSS 50·1/2/4스레드 단회 탐색, 450/450회 성공 | [Qwen KSS 비교](../results/summaries/qwen3-kss-dev50-20261106.md) |
 | WAV 1배속 Streaming + VAD + Refine | RP5 실제 동시 추론·유한 큐·입력/보정 손실 계측 | [온라인 VAD](../results/summaries/m31-online-vad-20261103.md) |
 | 한 명령 자막 표시 | Zip 원문과 구간별 보정 후보 분리, 실제 4회·드롭 0 | [WAV MVP](../results/summaries/m36-wav-mvp-20261103.md) |
 | 저장 결과 검증 | 모델 없는 재채점·이벤트/PCM 해시 대조·병합 정책 재생 | [제한 교체 재생](../results/summaries/m35-guarded-splice-20261103.md) |
@@ -14,6 +15,8 @@
 WAV MVP의 KSS 첫 stdout p50/p95는 0.853/1.459초, 소유 구간 끝→보정 stdout p95는 0.639초였다. stdout은 파일로 캡처했으며 실제 화면·SSH 도착 지연을 뜻하지 않는다. 기존 모델별 전사는 유지됐다. 수치는 해당 개발 자료의 측정값이다.
 
 [저장소 정리 검증](../results/summaries/refactor-20261103.md)에서 Host/RP5 각 287개 테스트와 기존 29개 기록 재집계가 통과했고, 공식 WAV의 짧은 실제 추론도 이전 전사와 일치했다. 모델·환경·기존 기록은 유지했다.
+
+이번 Qwen 통합 후 Host/RP5는 각 300개 테스트를 통과했다. Qwen CER는 3.57%, SenseVoice는 5.16%였지만 Qwen으로 7개 발화가 악화됐다. Qwen 2T의 batch RTF는 0.6898, 파일 처리 p95는 3.400초, 추론 RSS 관측 최대는 1778.8MiB였다. 세 모델 모두 새 후보 환경에서 비교했고 기존 `.venv`와 보호 대상 5,647개 파일은 유지했다. **Qwen은 정확도 개선 후보이며 자막 MVP의 SenseVoice 보정 경로는 유지한다.**
 
 ## 유지하는 결정
 
@@ -25,9 +28,9 @@ WAV MVP의 KSS 첫 stdout p50/p95는 0.853/1.459초, 소유 구간 끝→보정 
 
 ## 다음 순서와 완료 기준
 
-1. **Qwen 별도 환경의 짧은 WAV:** [배포 경로 검토](research/qwen3_deployment.md)에서 sherpa-onnx 2.0.1 CPU + 배포 INT8 ONNX를 선정했다. Host/RP5의 `e7c7754`와 RP5 설치 API·ARM64 wheel 메타데이터까지 확인했다. 새 환경·모델 다운로드·로딩·전사·실측은 아직 없다. 별도 환경에서 실제 로딩·전사·RSS와 언어·KV/token 한계를 확인하면 첫 관문을 통과한다.
-2. **Qwen 공통 batch 비교:** 어댑터·설정·계약 검사 후 같은 KSS 50·원음·`ko_cer_v1`로 CER·RTF·CPU/RSS·실패를 비교한다. 현재 공통 평가기는 미구현 Qwen을 거부한다. 기존 모델의 정책과 과거 결과를 변경하지 않는다.
-3. **실시간 보정 후보 판단:** batch 결과에 따라 같은 VAD 구간과 Zip 동시 실행을 실측한다. 음성/문자 범위와 개별 악화를 해결하는 정책을 사전에 고정하기 전까지 자동 교체는 보류한다.
+1. **같은 VAD 구간의 Qwen:** [입력·출력 계약](research/qwen3_batch.md)을 유지하고 원음·`vad0` 최대 5초 구간에서 Qwen 단독 CER와 개별 악화를 확인한다. 전체 파일 batch의 개선을 구간별 개선으로 대신하지 않는다.
+2. **Zip + Qwen 동시 실행:** Zip 1T + Qwen 1/2T + VAD를 후속 측정의 시작점으로 삼는다. 구간 끝→반환/출력·큐 적체·드롭·CPU/RSS·온도와 반복 안정성을 실측한다. 현재 배치 결과는 최적 스레드나 실시간 채택 판정이 아니다.
+3. **보정 정책:** 음성/문자 범위와 개별 악화를 해결하는 정책을 사전에 고정하기 전까지 자동 교체는 보류한다. 기존 자막 MVP는 Zip 원문·SenseVoice 후보를 분리 표시한다.
 4. **마이크·실제 사용 검증:** 장치가 준비되면 지원 샘플레이트·입력 레벨·capture·드롭/백로그를 확인한다. 자연 장문·독립 평가·장시간 실행도 별도 검증한다. WAV MVP 최장 단일 입력 120.587초나 과거 8분 batch 부하를 상시 운영 합격으로 대신하지 않는다.
 
-화면 렌더링, SSH 네트워크 도착, 음소 정렬 인식 지연, 실제 마이크, 새 MVP의 8분/상시 운영은 미검증이다. Qwen 검토는 성능 측정이나 채택 완료가 아니다. 재학습·자체 재양자화는 후속 과제로 둔다. 과거 단계별 계획은 [연구 문서 색인](research/README.md)에 보존한다.
+화면 렌더링, SSH 네트워크 도착, 음소 정렬 인식 지연, 실제 마이크, 새 MVP의 8분/상시 운영은 미검증이다. Qwen 실측은 KSS 개발 자료의 batch 단회 탐색 범위다. 재학습·자체 재양자화는 후속 과제로 둔다. 과거 단계별 계획은 [연구 문서 색인](research/README.md)에 보존한다.

@@ -1,6 +1,8 @@
-# Qwen3-ASR INT8의 첫 실제 실행과 공통 batch 비교 계획
+# Qwen3-ASR INT8의 첫 실제 실행과 공통 batch 비교 계약
 
 2026-11-06. [경로 검토](qwen3_deployment.md) 이후 별도 `.venv-qwen3-onnx-20261106-01`에서 짧은 WAV 로딩·전사가 완료됐다. 실제 모델은 `models/qwen3-20261106-01/`에 보관하며 기존 환경·모델은 유지한다.
+
+후속 [KSS 실측 결과](../../results/summaries/qwen3-kss-dev50-20261106.md)에서 아래 사전 계획의 9개 구성·450개 채점 호출을 완료했고 Host/RP5 재집계가 일치했다. Qwen CER 3.57%와 SenseVoice 대비 7개 악화·처리 비용을 확인해 실시간 채택은 보류했다. 아래는 실행 전에 고정한 계약이며 결과에 맞춰 입력이나 출력 정책을 바꾸지 않았다.
 
 ## 첫 실행
 
@@ -16,7 +18,7 @@
 - [v2.0.1 offline-stream](https://github.com/k2-fsa/sherpa-onnx/blob/af2d8d81dbfa61c4cea4c568da78f3982edca005/sherpa-onnx/csrc/offline-stream.cc)은 centered-STFT 프레임 수를 `floor(samples/160)` 이하로 제한한다. Qwen 구현의 100프레임 chunk마다 13 audio token, 나머지는 `ceil(remainder/8)` 규칙으로 trimming 전 상한을 구한다.
 - 한국어 고정 prompt의 UTF-8 byte 수를 byte-BPE token 수의 보수적 상한으로 사용한다. 확인한 `<|audio_pad|>`는 단일 special token이다. prompt 상한+audio token 상한+최대 새 토큰+1이 KV 길이를 넘으면 추론 전에 실패 처리한다. 따라서 초 단위의 임의 cutoff로 원본을 자르지 않는다.
 - 기본 KV 512·최대 새 토큰 128·temperature 1e-6·top_p 0.8·seed 42·hotwords 없음으로 고정한다. native stderr의 잘림/반복 경고 또는 반환 token 상한 도달은 실패로 처리하며 text/tokens/경고를 보존한다. native의 반복 정리·UTF-8 정리 등을 적용하기 전 생성 토큰 전체를 확보했다고 주장하지 않는다.
-- ITN은 스위치 미제공을 null로 표시한다. 추가 텍스트 교정 없이 native text를 공통 `ko_cer_v1`로 채점한다. 실패 원문은 `adapter_result`에 남기며 성공 CER에 섞지 않는다.
+- ITN은 스위치 미제공을 null로 표시한다. 추가 텍스트 교정 없이 native text를 공통 `ko_cer_v1`로 채점한다. 채점 대상 추론의 실패 원문은 `adapter_result`에 남기며 성공 CER에 섞지 않는다.
 
 ## 결과 확인 전에 고정하는 첫 비교
 

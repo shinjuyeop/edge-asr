@@ -1,0 +1,1737 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-06",
+  "source_commit": "eec0906c1f61481693fb2f5c870cba059c5ce67f",
+  "campaign_status": "completed",
+  "scope": "exploratory_single_pass_batch_operational_thermal_policy",
+  "normalization": "ko_cer_v1",
+  "samples_per_case": 50,
+  "cases_completed": 9,
+  "repetitions_per_configuration": 1,
+  "scored_utterance_calls": 450,
+  "warmup_calls": 27,
+  "unique_audio_files": 50,
+  "unique_audio_duration_s": 164.919,
+  "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+  "same_references_audio_runtime_and_source": true,
+  "runtime": {
+    "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+    "machine": "aarch64",
+    "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+    "runtime": {
+      "sherpa_package_version": "2.0.1",
+      "sherpa_core_package_version": "2.0.1",
+      "python_onnxruntime_package_version": null,
+      "sherpa_native_onnxruntime_version": "1.28.2",
+      "native_version_source": "sherpa_onnx.onnxruntime_version",
+      "status": "available",
+      "reason": null
+    },
+    "packages": [
+      {
+        "name": "numpy",
+        "version": "2.4.6"
+      },
+      {
+        "name": "pip",
+        "version": "26.2.2"
+      },
+      {
+        "name": "setuptools",
+        "version": "79.0.1"
+      },
+      {
+        "name": "sherpa-onnx-core",
+        "version": "2.0.1"
+      },
+      {
+        "name": "sherpa_onnx",
+        "version": "2.0.1"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "qwen3_asr-t1-01",
+      "family": "qwen3_asr",
+      "num_threads": 1,
+      "operational_valid": true,
+      "control_valid": false,
+      "limit_verified": true,
+      "overall": {
+        "planned": 50,
+        "successful": 50,
+        "failed": 0,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": true,
+        "reference_character_coverage": 1.0,
+        "cer": {
+          "value": 0.03571428571428571,
+          "reference_characters": 756,
+          "errors": 27,
+          "substitutions": 24,
+          "deletions": 3,
+          "insertions": 0,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.8728286289193186,
+        "total_audio_s": 164.919,
+        "total_inference_wall_s": 143.9460246527451,
+        "mean_process_cpu_percent": 100.14127083797241,
+        "file_processing_s": {
+          "n": 50,
+          "mean": 2.878920493054902,
+          "p50": 2.9030953909968957,
+          "p95": 4.423613335995469,
+          "max": 4.523625253990758
+        },
+        "file_rtf": {
+          "n": 50,
+          "mean": 0.908156426875642,
+          "p50": 0.8693851177820736,
+          "p95": 1.276389866667567,
+          "max": 1.315835291513265
+        },
+        "rss_observed_max_mib": 1766.53125
+      },
+      "load_s": 5.21495600300841,
+      "load_cpu_s": 5.433564646,
+      "load_rss_observed_max_mib": 1418.921875,
+      "max_temperature_c": 66.65,
+      "thermal_sample_count": 159,
+      "current_limits_observed": [
+        0
+      ],
+      "history_limits_before": 14,
+      "history_limits_after": 14,
+      "qwen_output_validation": {
+        "max_returned_tokens": 26,
+        "max_context_upper_bound": 209,
+        "native_warning_files": 0,
+        "all_context_budgets_fit": true
+      },
+      "host_rescore_matches": true,
+      "native_policy": {
+        "backend": "sherpa_onnx",
+        "factory": "OfflineRecognizer.from_qwen3_asr",
+        "supported_modes": [
+          "batch"
+        ],
+        "provider": "cpu",
+        "feature_dim": 128,
+        "language": "ko",
+        "stream_language": "Korean",
+        "use_itn": null,
+        "use_itn_reason": "선정 Qwen API에 ITN 스위치 없음. 모델 고유 표기 유지",
+        "quantization": "int8",
+        "quantization_evidence": "sha256_bound_onnx_graph_inspection",
+        "graph_precision": {
+          "conv_frontend": "float32",
+          "encoder": "float32_int8_DynamicQuantizeLinear_MatMulInteger",
+          "decoder": "float32_uint8_DynamicQuantizeLinear_MatMulInteger"
+        },
+        "quantization_method": null,
+        "quantization_method_reason": "그래프 연산·dtype는 확인. 배포 자산의 생성 절차 전체는 미검증",
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "temperature": 1e-06,
+        "top_p": 0.8,
+        "seed": 42,
+        "hotwords": "",
+        "tail_padding_s": null,
+        "output_policy": "sherpa_qwen3_native_text_v1",
+        "native_output_scope": "native의 prefix·반복 tail·UTF-8 정리 이후 반환 text/tokens",
+        "context_policy": "sherpa_2.0.1_centered_frames_byte_prompt_upper_bound_v1",
+        "stderr_capture_scope": "동일 프로세스에서 순차 전사. decode 중 fd2를 보존·복원하며 원문 재출력"
+      },
+      "model_files": {
+        "conv_frontend.onnx": {
+          "sha256": "d22dc4423e0940e49884e903d2ea2f7e5567c14fc1aed97e4e26d6b8f208ef9e"
+        },
+        "encoder.int8.onnx": {
+          "sha256": "60748d3e6744a57c9c91e1b17424a6c2990567e8adceb0783940c03ed98fa9d9"
+        },
+        "decoder.int8.onnx": {
+          "sha256": "4f6885be5959ae26af3089d38ee7972c5fafbeeb1cf8d5e76eab6d8b61ca5771"
+        },
+        "tokenizer/vocab.json": {
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        },
+        "tokenizer/merges.txt": {
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        "tokenizer/tokenizer_config.json": {
+          "sha256": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c"
+        }
+      }
+    },
+    {
+      "id": "zipformer-t1-01",
+      "family": "zipformer",
+      "num_threads": 1,
+      "operational_valid": true,
+      "control_valid": false,
+      "limit_verified": true,
+      "overall": {
+        "planned": 50,
+        "successful": 50,
+        "failed": 0,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": true,
+        "reference_character_coverage": 1.0,
+        "cer": {
+          "value": 0.1164021164021164,
+          "reference_characters": 756,
+          "errors": 88,
+          "substitutions": 71,
+          "deletions": 11,
+          "insertions": 6,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.13653498344692291,
+        "total_audio_s": 164.919,
+        "total_inference_wall_s": 22.51721293508308,
+        "mean_process_cpu_percent": 100.15157933184415,
+        "file_processing_s": {
+          "n": 50,
+          "mean": 0.4503442587016616,
+          "p50": 0.42722711799433455,
+          "p95": 0.6948191290139221,
+          "max": 0.7726492140209302
+        },
+        "file_rtf": {
+          "n": 50,
+          "mean": 0.13829979608634665,
+          "p50": 0.13715374658304522,
+          "p95": 0.15160149258267966,
+          "max": 0.1689899439884558
+        },
+        "rss_observed_max_mib": 252.1875
+      },
+      "load_s": 2.458306566986721,
+      "load_cpu_s": 2.692665984,
+      "load_rss_observed_max_mib": 269.140625,
+      "max_temperature_c": 63.9,
+      "thermal_sample_count": 29,
+      "current_limits_observed": [
+        0
+      ],
+      "history_limits_before": 14,
+      "history_limits_after": 14,
+      "qwen_output_validation": null,
+      "host_rescore_matches": true,
+      "native_policy": {
+        "backend": "sherpa_onnx",
+        "factory": "OnlineRecognizer.from_transducer",
+        "supported_modes": [
+          "batch",
+          "paced_stream"
+        ],
+        "provider": "cpu",
+        "feature_dim": 80,
+        "language": "ko",
+        "language_policy": "Korean_model_not_runtime_language_argument",
+        "use_itn": null,
+        "itn_reason": "no_separate_itn_in_this_adapter",
+        "quantization": {
+          "encoder": "int8_filename",
+          "decoder": "unspecified_by_filename",
+          "joiner": "int8_filename"
+        },
+        "quantization_evidence": "filename_convention_not_graph_dtype_inspection",
+        "quantization_method": null,
+        "quantization_method_reason": "배포 모델의 양자화 알고리즘은 검증하지 않았습니다.",
+        "tail_padding_s": 0.66,
+        "output_policy": "runtime_text_unmodified"
+      },
+      "model_files": {
+        "tokens": {
+          "sha256": "016bdf0965029263b7ad01b742366ee542ef0bef38261510e8176ff6f2e9e668"
+        },
+        "encoder": {
+          "sha256": "8d0b1aa24fbedd4e3948564ab7facd151b8ce9b0c48fc987c541de2de3af5697"
+        },
+        "decoder": {
+          "sha256": "b29cfb4575141e50a30a22b2c4579934f3d4f45b83c9c8c08c3aef5a3fa7abfc"
+        },
+        "joiner": {
+          "sha256": "128b80a66a1f718488af8560f9d15895109b99ff3e573f0a0130e03774ef1ced"
+        }
+      }
+    },
+    {
+      "id": "sensevoice-t1-01",
+      "family": "sensevoice",
+      "num_threads": 1,
+      "operational_valid": true,
+      "control_valid": false,
+      "limit_verified": true,
+      "overall": {
+        "planned": 50,
+        "successful": 50,
+        "failed": 0,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": true,
+        "reference_character_coverage": 1.0,
+        "cer": {
+          "value": 0.051587301587301584,
+          "reference_characters": 756,
+          "errors": 39,
+          "substitutions": 25,
+          "deletions": 9,
+          "insertions": 5,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.0985647287999047,
+        "total_audio_s": 164.919,
+        "total_inference_wall_s": 16.255196508951485,
+        "mean_process_cpu_percent": 100.10543393947331,
+        "file_processing_s": {
+          "n": 50,
+          "mean": 0.3251039301790297,
+          "p50": 0.3174383300356567,
+          "p95": 0.5084510250017047,
+          "max": 0.5775959150050767
+        },
+        "file_rtf": {
+          "n": 50,
+          "mean": 0.0999000532475996,
+          "p50": 0.09779904526310759,
+          "p95": 0.11062035248645805,
+          "max": 0.12934341363715943
+        },
+        "rss_observed_max_mib": 444.6875
+      },
+      "load_s": 1.8614075439982116,
+      "load_cpu_s": 2.095325272,
+      "load_rss_observed_max_mib": 423.1875,
+      "max_temperature_c": 60.6,
+      "thermal_sample_count": 22,
+      "current_limits_observed": [
+        0
+      ],
+      "history_limits_before": 14,
+      "history_limits_after": 14,
+      "qwen_output_validation": null,
+      "host_rescore_matches": true,
+      "native_policy": {
+        "backend": "sherpa_onnx",
+        "factory": "OfflineRecognizer.from_sense_voice",
+        "supported_modes": [
+          "batch"
+        ],
+        "provider": "cpu",
+        "feature_dim": 80,
+        "language": "ko",
+        "use_itn": false,
+        "quantization": "int8",
+        "quantization_evidence": "declared_configuration_not_graph_dtype_inspection",
+        "quantization_method": null,
+        "quantization_method_reason": "배포된 INT8 ONNX를 사용. 변환·양자화 알고리즘은 검증하지 않았습니다.",
+        "tail_padding_s": null,
+        "tail_padding_reason": "not_used_by_offline_sensevoice",
+        "output_policy": "sensevoice_control_tokens_v1",
+        "control_token_pattern": "<\\|[A-Za-z][A-Za-z0-9_]*\\|>"
+      },
+      "model_files": {
+        "model": {
+          "sha256": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51"
+        },
+        "tokens": {
+          "sha256": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc"
+        }
+      }
+    },
+    {
+      "id": "sensevoice-t2-01",
+      "family": "sensevoice",
+      "num_threads": 2,
+      "operational_valid": true,
+      "control_valid": false,
+      "limit_verified": true,
+      "overall": {
+        "planned": 50,
+        "successful": 50,
+        "failed": 0,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": true,
+        "reference_character_coverage": 1.0,
+        "cer": {
+          "value": 0.051587301587301584,
+          "reference_characters": 756,
+          "errors": 39,
+          "substitutions": 25,
+          "deletions": 9,
+          "insertions": 5,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.05816285252769411,
+        "total_audio_s": 164.919,
+        "total_inference_wall_s": 9.592159476014785,
+        "mean_process_cpu_percent": 198.8379848322134,
+        "file_processing_s": {
+          "n": 50,
+          "mean": 0.19184318952029572,
+          "p50": 0.18712981301359832,
+          "p95": 0.2943288779933937,
+          "max": 0.3393836980103515
+        },
+        "file_rtf": {
+          "n": 50,
+          "mean": 0.05936941584231529,
+          "p50": 0.05745255696833434,
+          "p95": 0.06998565471629416,
+          "max": 0.08149335173799609
+        },
+        "rss_observed_max_mib": 437.6875
+      },
+      "load_s": 1.8432249629986472,
+      "load_cpu_s": 2.1002778789999996,
+      "load_rss_observed_max_mib": 415.6875,
+      "max_temperature_c": 66.65,
+      "thermal_sample_count": 15,
+      "current_limits_observed": [
+        0
+      ],
+      "history_limits_before": 14,
+      "history_limits_after": 14,
+      "qwen_output_validation": null,
+      "host_rescore_matches": true,
+      "native_policy": {
+        "backend": "sherpa_onnx",
+        "factory": "OfflineRecognizer.from_sense_voice",
+        "supported_modes": [
+          "batch"
+        ],
+        "provider": "cpu",
+        "feature_dim": 80,
+        "language": "ko",
+        "use_itn": false,
+        "quantization": "int8",
+        "quantization_evidence": "declared_configuration_not_graph_dtype_inspection",
+        "quantization_method": null,
+        "quantization_method_reason": "배포된 INT8 ONNX를 사용. 변환·양자화 알고리즘은 검증하지 않았습니다.",
+        "tail_padding_s": null,
+        "tail_padding_reason": "not_used_by_offline_sensevoice",
+        "output_policy": "sensevoice_control_tokens_v1",
+        "control_token_pattern": "<\\|[A-Za-z][A-Za-z0-9_]*\\|>"
+      },
+      "model_files": {
+        "model": {
+          "sha256": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51"
+        },
+        "tokens": {
+          "sha256": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc"
+        }
+      }
+    },
+    {
+      "id": "qwen3_asr-t2-01",
+      "family": "qwen3_asr",
+      "num_threads": 2,
+      "operational_valid": true,
+      "control_valid": false,
+      "limit_verified": true,
+      "overall": {
+        "planned": 50,
+        "successful": 50,
+        "failed": 0,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": true,
+        "reference_character_coverage": 1.0,
+        "cer": {
+          "value": 0.03571428571428571,
+          "reference_characters": 756,
+          "errors": 27,
+          "substitutions": 24,
+          "deletions": 3,
+          "insertions": 0,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.6897770251149797,
+        "total_audio_s": 164.919,
+        "total_inference_wall_s": 113.75733720493736,
+        "mean_process_cpu_percent": 196.13837992360808,
+        "file_processing_s": {
+          "n": 50,
+          "mean": 2.275146744098747,
+          "p50": 2.2437013189774007,
+          "p95": 3.3997251800028607,
+          "max": 3.7913907159818336
+        },
+        "file_rtf": {
+          "n": 50,
+          "mean": 0.710872057672111,
+          "p50": 0.6956809039066929,
+          "p95": 0.8820074336301454,
+          "max": 0.98647031235521
+        },
+        "rss_observed_max_mib": 1778.75
+      },
+      "load_s": 5.070878422993701,
+      "load_cpu_s": 5.364900296,
+      "load_rss_observed_max_mib": 1406.515625,
+      "max_temperature_c": 73.8,
+      "thermal_sample_count": 127,
+      "current_limits_observed": [
+        0
+      ],
+      "history_limits_before": 14,
+      "history_limits_after": 14,
+      "qwen_output_validation": {
+        "max_returned_tokens": 26,
+        "max_context_upper_bound": 209,
+        "native_warning_files": 0,
+        "all_context_budgets_fit": true
+      },
+      "host_rescore_matches": true,
+      "native_policy": {
+        "backend": "sherpa_onnx",
+        "factory": "OfflineRecognizer.from_qwen3_asr",
+        "supported_modes": [
+          "batch"
+        ],
+        "provider": "cpu",
+        "feature_dim": 128,
+        "language": "ko",
+        "stream_language": "Korean",
+        "use_itn": null,
+        "use_itn_reason": "선정 Qwen API에 ITN 스위치 없음. 모델 고유 표기 유지",
+        "quantization": "int8",
+        "quantization_evidence": "sha256_bound_onnx_graph_inspection",
+        "graph_precision": {
+          "conv_frontend": "float32",
+          "encoder": "float32_int8_DynamicQuantizeLinear_MatMulInteger",
+          "decoder": "float32_uint8_DynamicQuantizeLinear_MatMulInteger"
+        },
+        "quantization_method": null,
+        "quantization_method_reason": "그래프 연산·dtype는 확인. 배포 자산의 생성 절차 전체는 미검증",
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "temperature": 1e-06,
+        "top_p": 0.8,
+        "seed": 42,
+        "hotwords": "",
+        "tail_padding_s": null,
+        "output_policy": "sherpa_qwen3_native_text_v1",
+        "native_output_scope": "native의 prefix·반복 tail·UTF-8 정리 이후 반환 text/tokens",
+        "context_policy": "sherpa_2.0.1_centered_frames_byte_prompt_upper_bound_v1",
+        "stderr_capture_scope": "동일 프로세스에서 순차 전사. decode 중 fd2를 보존·복원하며 원문 재출력"
+      },
+      "model_files": {
+        "conv_frontend.onnx": {
+          "sha256": "d22dc4423e0940e49884e903d2ea2f7e5567c14fc1aed97e4e26d6b8f208ef9e"
+        },
+        "encoder.int8.onnx": {
+          "sha256": "60748d3e6744a57c9c91e1b17424a6c2990567e8adceb0783940c03ed98fa9d9"
+        },
+        "decoder.int8.onnx": {
+          "sha256": "4f6885be5959ae26af3089d38ee7972c5fafbeeb1cf8d5e76eab6d8b61ca5771"
+        },
+        "tokenizer/vocab.json": {
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        },
+        "tokenizer/merges.txt": {
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        "tokenizer/tokenizer_config.json": {
+          "sha256": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c"
+        }
+      }
+    },
+    {
+      "id": "zipformer-t2-01",
+      "family": "zipformer",
+      "num_threads": 2,
+      "operational_valid": true,
+      "control_valid": false,
+      "limit_verified": true,
+      "overall": {
+        "planned": 50,
+        "successful": 50,
+        "failed": 0,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": true,
+        "reference_character_coverage": 1.0,
+        "cer": {
+          "value": 0.1164021164021164,
+          "reference_characters": 756,
+          "errors": 88,
+          "substitutions": 71,
+          "deletions": 11,
+          "insertions": 6,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.10857895566454305,
+        "total_audio_s": 164.919,
+        "total_inference_wall_s": 17.906732789240777,
+        "mean_process_cpu_percent": 323.4631593196169,
+        "file_processing_s": {
+          "n": 50,
+          "mean": 0.35813465578481557,
+          "p50": 0.36109415104147047,
+          "p95": 0.5514946570037864,
+          "max": 0.612188906990923
+        },
+        "file_rtf": {
+          "n": 50,
+          "mean": 0.11010022709223191,
+          "p50": 0.10877016934391985,
+          "p95": 0.12107891657049219,
+          "max": 0.13391895254505318
+        },
+        "rss_observed_max_mib": 249.40625
+      },
+      "load_s": 2.4438971200142987,
+      "load_cpu_s": 2.729756876,
+      "load_rss_observed_max_mib": 270.140625,
+      "max_temperature_c": 73.25,
+      "thermal_sample_count": 24,
+      "current_limits_observed": [
+        0
+      ],
+      "history_limits_before": 14,
+      "history_limits_after": 14,
+      "qwen_output_validation": null,
+      "host_rescore_matches": true,
+      "native_policy": {
+        "backend": "sherpa_onnx",
+        "factory": "OnlineRecognizer.from_transducer",
+        "supported_modes": [
+          "batch",
+          "paced_stream"
+        ],
+        "provider": "cpu",
+        "feature_dim": 80,
+        "language": "ko",
+        "language_policy": "Korean_model_not_runtime_language_argument",
+        "use_itn": null,
+        "itn_reason": "no_separate_itn_in_this_adapter",
+        "quantization": {
+          "encoder": "int8_filename",
+          "decoder": "unspecified_by_filename",
+          "joiner": "int8_filename"
+        },
+        "quantization_evidence": "filename_convention_not_graph_dtype_inspection",
+        "quantization_method": null,
+        "quantization_method_reason": "배포 모델의 양자화 알고리즘은 검증하지 않았습니다.",
+        "tail_padding_s": 0.66,
+        "output_policy": "runtime_text_unmodified"
+      },
+      "model_files": {
+        "tokens": {
+          "sha256": "016bdf0965029263b7ad01b742366ee542ef0bef38261510e8176ff6f2e9e668"
+        },
+        "encoder": {
+          "sha256": "8d0b1aa24fbedd4e3948564ab7facd151b8ce9b0c48fc987c541de2de3af5697"
+        },
+        "decoder": {
+          "sha256": "b29cfb4575141e50a30a22b2c4579934f3d4f45b83c9c8c08c3aef5a3fa7abfc"
+        },
+        "joiner": {
+          "sha256": "128b80a66a1f718488af8560f9d15895109b99ff3e573f0a0130e03774ef1ced"
+        }
+      }
+    },
+    {
+      "id": "zipformer-t4-01",
+      "family": "zipformer",
+      "num_threads": 4,
+      "operational_valid": true,
+      "control_valid": false,
+      "limit_verified": true,
+      "overall": {
+        "planned": 50,
+        "successful": 50,
+        "failed": 0,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": true,
+        "reference_character_coverage": 1.0,
+        "cer": {
+          "value": 0.12037037037037036,
+          "reference_characters": 756,
+          "errors": 91,
+          "substitutions": 74,
+          "deletions": 11,
+          "insertions": 6,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.1941915592793903,
+        "total_audio_s": 164.919,
+        "total_inference_wall_s": 32.02587776479777,
+        "mean_process_cpu_percent": 396.1506497956285,
+        "file_processing_s": {
+          "n": 50,
+          "mean": 0.6405175552959554,
+          "p50": 0.6350287229870446,
+          "p95": 1.05916723102564,
+          "max": 1.2113005919964053
+        },
+        "file_rtf": {
+          "n": 50,
+          "mean": 0.19661094040344035,
+          "p50": 0.19297017683518358,
+          "p95": 0.21724196511557556,
+          "max": 0.28700530257488605
+        },
+        "rss_observed_max_mib": 249.578125
+      },
+      "load_s": 2.4330938039929606,
+      "load_cpu_s": 2.793545659,
+      "load_rss_observed_max_mib": 270.140625,
+      "max_temperature_c": 76.0,
+      "thermal_sample_count": 38,
+      "current_limits_observed": [
+        0
+      ],
+      "history_limits_before": 14,
+      "history_limits_after": 14,
+      "qwen_output_validation": null,
+      "host_rescore_matches": true,
+      "native_policy": {
+        "backend": "sherpa_onnx",
+        "factory": "OnlineRecognizer.from_transducer",
+        "supported_modes": [
+          "batch",
+          "paced_stream"
+        ],
+        "provider": "cpu",
+        "feature_dim": 80,
+        "language": "ko",
+        "language_policy": "Korean_model_not_runtime_language_argument",
+        "use_itn": null,
+        "itn_reason": "no_separate_itn_in_this_adapter",
+        "quantization": {
+          "encoder": "int8_filename",
+          "decoder": "unspecified_by_filename",
+          "joiner": "int8_filename"
+        },
+        "quantization_evidence": "filename_convention_not_graph_dtype_inspection",
+        "quantization_method": null,
+        "quantization_method_reason": "배포 모델의 양자화 알고리즘은 검증하지 않았습니다.",
+        "tail_padding_s": 0.66,
+        "output_policy": "runtime_text_unmodified"
+      },
+      "model_files": {
+        "tokens": {
+          "sha256": "016bdf0965029263b7ad01b742366ee542ef0bef38261510e8176ff6f2e9e668"
+        },
+        "encoder": {
+          "sha256": "8d0b1aa24fbedd4e3948564ab7facd151b8ce9b0c48fc987c541de2de3af5697"
+        },
+        "decoder": {
+          "sha256": "b29cfb4575141e50a30a22b2c4579934f3d4f45b83c9c8c08c3aef5a3fa7abfc"
+        },
+        "joiner": {
+          "sha256": "128b80a66a1f718488af8560f9d15895109b99ff3e573f0a0130e03774ef1ced"
+        }
+      }
+    },
+    {
+      "id": "sensevoice-t4-01",
+      "family": "sensevoice",
+      "num_threads": 4,
+      "operational_valid": true,
+      "control_valid": false,
+      "limit_verified": true,
+      "overall": {
+        "planned": 50,
+        "successful": 50,
+        "failed": 0,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": true,
+        "reference_character_coverage": 1.0,
+        "cer": {
+          "value": 0.051587301587301584,
+          "reference_characters": 756,
+          "errors": 39,
+          "substitutions": 25,
+          "deletions": 9,
+          "insertions": 5,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.045043135380432836,
+        "total_audio_s": 164.919,
+        "total_inference_wall_s": 7.428468843805604,
+        "mean_process_cpu_percent": 395.4957326838433,
+        "file_processing_s": {
+          "n": 50,
+          "mean": 0.14856937687611207,
+          "p50": 0.14660552801797166,
+          "p95": 0.21436322899535298,
+          "max": 0.250890210038051
+        },
+        "file_rtf": {
+          "n": 50,
+          "mean": 0.046747505662386724,
+          "p50": 0.04451039449432667,
+          "p95": 0.06118706398327806,
+          "max": 0.07541009705854892
+        },
+        "rss_observed_max_mib": 434.359375
+      },
+      "load_s": 1.8412006830330938,
+      "load_cpu_s": 2.1413684500000003,
+      "load_rss_observed_max_mib": 413.359375,
+      "max_temperature_c": 73.25,
+      "thermal_sample_count": 13,
+      "current_limits_observed": [
+        0
+      ],
+      "history_limits_before": 14,
+      "history_limits_after": 14,
+      "qwen_output_validation": null,
+      "host_rescore_matches": true,
+      "native_policy": {
+        "backend": "sherpa_onnx",
+        "factory": "OfflineRecognizer.from_sense_voice",
+        "supported_modes": [
+          "batch"
+        ],
+        "provider": "cpu",
+        "feature_dim": 80,
+        "language": "ko",
+        "use_itn": false,
+        "quantization": "int8",
+        "quantization_evidence": "declared_configuration_not_graph_dtype_inspection",
+        "quantization_method": null,
+        "quantization_method_reason": "배포된 INT8 ONNX를 사용. 변환·양자화 알고리즘은 검증하지 않았습니다.",
+        "tail_padding_s": null,
+        "tail_padding_reason": "not_used_by_offline_sensevoice",
+        "output_policy": "sensevoice_control_tokens_v1",
+        "control_token_pattern": "<\\|[A-Za-z][A-Za-z0-9_]*\\|>"
+      },
+      "model_files": {
+        "model": {
+          "sha256": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51"
+        },
+        "tokens": {
+          "sha256": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc"
+        }
+      }
+    },
+    {
+      "id": "qwen3_asr-t4-01",
+      "family": "qwen3_asr",
+      "num_threads": 4,
+      "operational_valid": true,
+      "control_valid": false,
+      "limit_verified": true,
+      "overall": {
+        "planned": 50,
+        "successful": 50,
+        "failed": 0,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": true,
+        "reference_character_coverage": 1.0,
+        "cer": {
+          "value": 0.03571428571428571,
+          "reference_characters": 756,
+          "errors": 27,
+          "substitutions": 24,
+          "deletions": 3,
+          "insertions": 0,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.6850958363998554,
+        "total_audio_s": 164.919,
+        "total_inference_wall_s": 112.98532024322776,
+        "mean_process_cpu_percent": 382.2736638398726,
+        "file_processing_s": {
+          "n": 50,
+          "mean": 2.259706404864555,
+          "p50": 2.227274089003913,
+          "p95": 3.6607182869920507,
+          "max": 3.858487745979801
+        },
+        "file_rtf": {
+          "n": 50,
+          "mean": 0.7031354346457839,
+          "p50": 0.6880663418052341,
+          "p95": 0.8577742175770524,
+          "max": 0.9772623530981009
+        },
+        "rss_observed_max_mib": 1785.296875
+      },
+      "load_s": 5.181443089968525,
+      "load_cpu_s": 5.615742048,
+      "load_rss_observed_max_mib": 1420.265625,
+      "max_temperature_c": 79.85,
+      "thermal_sample_count": 125,
+      "current_limits_observed": [
+        0
+      ],
+      "history_limits_before": 14,
+      "history_limits_after": 14,
+      "qwen_output_validation": {
+        "max_returned_tokens": 26,
+        "max_context_upper_bound": 209,
+        "native_warning_files": 0,
+        "all_context_budgets_fit": true
+      },
+      "host_rescore_matches": true,
+      "native_policy": {
+        "backend": "sherpa_onnx",
+        "factory": "OfflineRecognizer.from_qwen3_asr",
+        "supported_modes": [
+          "batch"
+        ],
+        "provider": "cpu",
+        "feature_dim": 128,
+        "language": "ko",
+        "stream_language": "Korean",
+        "use_itn": null,
+        "use_itn_reason": "선정 Qwen API에 ITN 스위치 없음. 모델 고유 표기 유지",
+        "quantization": "int8",
+        "quantization_evidence": "sha256_bound_onnx_graph_inspection",
+        "graph_precision": {
+          "conv_frontend": "float32",
+          "encoder": "float32_int8_DynamicQuantizeLinear_MatMulInteger",
+          "decoder": "float32_uint8_DynamicQuantizeLinear_MatMulInteger"
+        },
+        "quantization_method": null,
+        "quantization_method_reason": "그래프 연산·dtype는 확인. 배포 자산의 생성 절차 전체는 미검증",
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "temperature": 1e-06,
+        "top_p": 0.8,
+        "seed": 42,
+        "hotwords": "",
+        "tail_padding_s": null,
+        "output_policy": "sherpa_qwen3_native_text_v1",
+        "native_output_scope": "native의 prefix·반복 tail·UTF-8 정리 이후 반환 text/tokens",
+        "context_policy": "sherpa_2.0.1_centered_frames_byte_prompt_upper_bound_v1",
+        "stderr_capture_scope": "동일 프로세스에서 순차 전사. decode 중 fd2를 보존·복원하며 원문 재출력"
+      },
+      "model_files": {
+        "conv_frontend.onnx": {
+          "sha256": "d22dc4423e0940e49884e903d2ea2f7e5567c14fc1aed97e4e26d6b8f208ef9e"
+        },
+        "encoder.int8.onnx": {
+          "sha256": "60748d3e6744a57c9c91e1b17424a6c2990567e8adceb0783940c03ed98fa9d9"
+        },
+        "decoder.int8.onnx": {
+          "sha256": "4f6885be5959ae26af3089d38ee7972c5fafbeeb1cf8d5e76eab6d8b61ca5771"
+        },
+        "tokenizer/vocab.json": {
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        },
+        "tokenizer/merges.txt": {
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        "tokenizer/tokenizer_config.json": {
+          "sha256": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c"
+        }
+      }
+    }
+  ],
+  "paired_accuracy": [
+    {
+      "num_threads": 1,
+      "qwen_vs": "sensevoice",
+      "improved": 18,
+      "worsened": 7,
+      "equal": 25,
+      "worsened_ids": [
+        "kss-train-01004",
+        "kss-train-01005",
+        "kss-train-01008",
+        "kss-train-01009",
+        "kss-train-01024",
+        "kss-train-01026",
+        "kss-train-01029"
+      ],
+      "error_delta_qwen_minus_baseline": -12
+    },
+    {
+      "num_threads": 1,
+      "qwen_vs": "zipformer",
+      "improved": 29,
+      "worsened": 3,
+      "equal": 18,
+      "worsened_ids": [
+        "kss-train-01008",
+        "kss-train-01009",
+        "kss-train-01029"
+      ],
+      "error_delta_qwen_minus_baseline": -61
+    },
+    {
+      "num_threads": 2,
+      "qwen_vs": "sensevoice",
+      "improved": 18,
+      "worsened": 7,
+      "equal": 25,
+      "worsened_ids": [
+        "kss-train-01004",
+        "kss-train-01005",
+        "kss-train-01008",
+        "kss-train-01009",
+        "kss-train-01024",
+        "kss-train-01026",
+        "kss-train-01029"
+      ],
+      "error_delta_qwen_minus_baseline": -12
+    },
+    {
+      "num_threads": 2,
+      "qwen_vs": "zipformer",
+      "improved": 29,
+      "worsened": 3,
+      "equal": 18,
+      "worsened_ids": [
+        "kss-train-01008",
+        "kss-train-01009",
+        "kss-train-01029"
+      ],
+      "error_delta_qwen_minus_baseline": -61
+    },
+    {
+      "num_threads": 4,
+      "qwen_vs": "sensevoice",
+      "improved": 18,
+      "worsened": 7,
+      "equal": 25,
+      "worsened_ids": [
+        "kss-train-01004",
+        "kss-train-01005",
+        "kss-train-01008",
+        "kss-train-01009",
+        "kss-train-01024",
+        "kss-train-01026",
+        "kss-train-01029"
+      ],
+      "error_delta_qwen_minus_baseline": -12
+    },
+    {
+      "num_threads": 4,
+      "qwen_vs": "zipformer",
+      "improved": 30,
+      "worsened": 2,
+      "equal": 18,
+      "worsened_ids": [
+        "kss-train-01009",
+        "kss-train-01029"
+      ],
+      "error_delta_qwen_minus_baseline": -64
+    }
+  ],
+  "cross_thread_transcripts": [
+    {
+      "family": "qwen3_asr",
+      "threads_vs_1": 2,
+      "different_raw_transcripts": 0,
+      "different_ids": []
+    },
+    {
+      "family": "qwen3_asr",
+      "threads_vs_1": 4,
+      "different_raw_transcripts": 0,
+      "different_ids": []
+    },
+    {
+      "family": "sensevoice",
+      "threads_vs_1": 2,
+      "different_raw_transcripts": 0,
+      "different_ids": []
+    },
+    {
+      "family": "sensevoice",
+      "threads_vs_1": 4,
+      "different_raw_transcripts": 0,
+      "different_ids": []
+    },
+    {
+      "family": "zipformer",
+      "threads_vs_1": 2,
+      "different_raw_transcripts": 0,
+      "different_ids": []
+    },
+    {
+      "family": "zipformer",
+      "threads_vs_1": 4,
+      "different_raw_transcripts": 1,
+      "different_ids": [
+        "kss-train-01008"
+      ]
+    }
+  ],
+  "unmeasured": {
+    "concurrent_zip_qwen_latency_s": null,
+    "refine_latency_s": null,
+    "drops": null,
+    "backlog": null,
+    "microphone": null
+  },
+  "selection": null,
+  "selection_reason": "단회 탐색. 반복 안정성·독립 자료·VAD 구간 동시 실행은 미검증",
+  "raw_artifacts": [
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/campaign.json",
+      "bytes": 690,
+      "sha256": "bc947c5f58594a6d47ec44e2b177c6c1fffd77b300abf9827185e91e65384d74"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/configs/qwen3_asr-t1-01.toml",
+      "bytes": 505,
+      "sha256": "0e44255d87fc993fa6c044304ea6b03bcff3ddd29e543e1727e6a5e86bfac6b5"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/configs/qwen3_asr-t2-01.toml",
+      "bytes": 505,
+      "sha256": "c8daba8a66c566f1d7d4afd53cd86c52ef30092aebb191c2cea2338fbff53055"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/configs/qwen3_asr-t4-01.toml",
+      "bytes": 505,
+      "sha256": "b33bef9616e2fe41fc54e0ec9c92ec4003f30a2346ea82aa073821739ac10333"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/configs/sensevoice-t1-01.toml",
+      "bytes": 531,
+      "sha256": "a2bc9a87ef8d2d60e4afe354bb7e3c3961bc948b72d5d33da749f42ab8ce8d77"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/configs/sensevoice-t2-01.toml",
+      "bytes": 531,
+      "sha256": "490c351feae521f17c22ad6e08bd7735b851acb165f538c305d8c56f9f36f42e"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/configs/sensevoice-t4-01.toml",
+      "bytes": 531,
+      "sha256": "b803eaf405d20b9f0d3be464ad327504f4a320c5b9c7f687d3ab0f2a38391ce9"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/configs/zipformer-t1-01.toml",
+      "bytes": 515,
+      "sha256": "9dad9217f86726487b565ed1f1cfd7eb4154a9b28f23c093ec9a71de741e5e3e"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/configs/zipformer-t2-01.toml",
+      "bytes": 515,
+      "sha256": "00beb9bb099a137eb05a731a25ff7f5d9158a8324e3a2d6834b16f5816f91511"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/configs/zipformer-t4-01.toml",
+      "bytes": 515,
+      "sha256": "b70dea3c0708d4650d82b617103439eca90a3e9e53a6e7da6e89fc4151f326e7"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/plan.json",
+      "bytes": 32955,
+      "sha256": "ea79265db5dffa868c4c0fe47242db51f80abbb6f32274ebbf53b11097ba28d5"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t1-01/admission.jsonl",
+      "bytes": 1452,
+      "sha256": "3c3fc2da301887b58431d6fa6fac9a2de9806672dafb08e7ec6d1cf4bd2595dd"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t1-01/console.log",
+      "bytes": 1560,
+      "sha256": "c6548a800260ff75c9ebbade94c167e2e76f714084ddb3a23898588ee9c471a2"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t1-01/evaluations/eval-20261106T070444Z-yycgya9m/environment.json",
+      "bytes": 935,
+      "sha256": "cc1b4f2515e606515ac0e2951216f7f26c1d71998d8214690d84e12a5b855ea3"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t1-01/evaluations/eval-20261106T070444Z-yycgya9m/manifest.json",
+      "bytes": 19102,
+      "sha256": "bd2fac60c134a6e20da0d15b86411a8287ddfdb1023a46159e4face2ec17a942"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t1-01/evaluations/eval-20261106T070444Z-yycgya9m/predictions.jsonl",
+      "bytes": 157315,
+      "sha256": "91df4e19fedf4350146daf8e255ffd427e3653627de285f05786bd916849ec6b"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t1-01/evaluations/eval-20261106T070444Z-yycgya9m/progress.jsonl",
+      "bytes": 157315,
+      "sha256": "91df4e19fedf4350146daf8e255ffd427e3653627de285f05786bd916849ec6b"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t1-01/evaluations/eval-20261106T070444Z-yycgya9m/scores.jsonl",
+      "bytes": 34802,
+      "sha256": "bc6569812bf13a91b62c3314503d37edea4599fa71ce512e9d09d9ebc670d031"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t1-01/evaluations/eval-20261106T070444Z-yycgya9m/summary.json",
+      "bytes": 3665,
+      "sha256": "286fd15879608411e3f0dfa69c75cdc1b4cab54907f8f795a354c9fb748d133f"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t1-01/evaluations/eval-20261106T070444Z-yycgya9m/summary.md",
+      "bytes": 1097,
+      "sha256": "b63b659c7833f25552ae4b6851a307b7b17677822145f03cbfa39dfee09c04d2"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t1-01/execution.json",
+      "bytes": 3587,
+      "sha256": "e6f9df9863a994378a2a6b64057315b0a506c342cd4f161f7be6e7e8e0b8ac17"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t1-01/thermal.jsonl",
+      "bytes": 42375,
+      "sha256": "00a0dad802f5acd8714ad19dc2bd2625c4e2201145ecd6a600e6a8805b5d6e1e"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t1-01/threads.jsonl",
+      "bytes": 75737,
+      "sha256": "586b048f0e2a6aed4750b21957b6f8cd2ad08a19b8ddcdd7f6432219ff2f2a10"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t1-01/warnings.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t2-01/admission.jsonl",
+      "bytes": 4838,
+      "sha256": "4216ae725389e78c0894cce329869d65a1da54c89214a4416f836ddacbca8a9f"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t2-01/console.log",
+      "bytes": 1560,
+      "sha256": "48a72e1103ec7c7c65056a5fd4e200324540abb4774c452e96066fbc19878940"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t2-01/evaluations/eval-20261106T070955Z-y5uxv4l1/environment.json",
+      "bytes": 935,
+      "sha256": "cc1b4f2515e606515ac0e2951216f7f26c1d71998d8214690d84e12a5b855ea3"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t2-01/evaluations/eval-20261106T070955Z-y5uxv4l1/manifest.json",
+      "bytes": 18913,
+      "sha256": "c16f4ae5b6a3aac277b34d3ee07540dddbd9bc138895eff78d4199cb789ff807"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t2-01/evaluations/eval-20261106T070955Z-y5uxv4l1/predictions.jsonl",
+      "bytes": 136168,
+      "sha256": "008d552fc94c8fd1655d549bcb96244d4decb5bdadea80930d78f9216875ca08"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t2-01/evaluations/eval-20261106T070955Z-y5uxv4l1/progress.jsonl",
+      "bytes": 136168,
+      "sha256": "008d552fc94c8fd1655d549bcb96244d4decb5bdadea80930d78f9216875ca08"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t2-01/evaluations/eval-20261106T070955Z-y5uxv4l1/scores.jsonl",
+      "bytes": 34649,
+      "sha256": "a0e9d99e4f53617fac80525e49034a38fc8841bf22cb210cdef43a6d9f13e7a1"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t2-01/evaluations/eval-20261106T070955Z-y5uxv4l1/summary.json",
+      "bytes": 3665,
+      "sha256": "76bb90d9e9c9733781330359de9be9335c52aa35dc121ec011d21757fbb9fa36"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t2-01/evaluations/eval-20261106T070955Z-y5uxv4l1/summary.md",
+      "bytes": 1097,
+      "sha256": "c9adbd72267021bb1171bee4099831b7196c460ff0eed2a4eca99b1cbf1bc741"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t2-01/execution.json",
+      "bytes": 3587,
+      "sha256": "4e7c94862a7525645de27d059741e8c42021cb8ff58f521536b56e1d43cb011a"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t2-01/thermal.jsonl",
+      "bytes": 33741,
+      "sha256": "dcf46f88dd9480e28caf669c53a028f13ac7386ae1fb496b56205ef2eb6135db"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t2-01/threads.jsonl",
+      "bytes": 86797,
+      "sha256": "cde30925deb9c251b6c6d3bcd451a40134403e59b1e7b737740bac85901a3ba4"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t2-01/warnings.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t4-01/admission.jsonl",
+      "bytes": 11126,
+      "sha256": "992ddb6187b46ffd45995c484e66a98c4d9083a11a65a8e1ff353a5afd9562d5"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t4-01/console.log",
+      "bytes": 1560,
+      "sha256": "58e832734b2030b688e539bfaff763f83695c8d6569cbb92962ffcf114e29c46"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t4-01/evaluations/eval-20261106T071718Z-hnn94q1d/environment.json",
+      "bytes": 935,
+      "sha256": "cc1b4f2515e606515ac0e2951216f7f26c1d71998d8214690d84e12a5b855ea3"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t4-01/evaluations/eval-20261106T071718Z-hnn94q1d/manifest.json",
+      "bytes": 18972,
+      "sha256": "0d7f13a749b859c7c61d9dfc113e5a5457fdd2ad43102e697dc2f8e7c35edd5b"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t4-01/evaluations/eval-20261106T071718Z-hnn94q1d/predictions.jsonl",
+      "bytes": 140122,
+      "sha256": "817d028b1d508871fc55a382f04d3db860b73164b61025926feef4514a43a616"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t4-01/evaluations/eval-20261106T071718Z-hnn94q1d/progress.jsonl",
+      "bytes": 140122,
+      "sha256": "817d028b1d508871fc55a382f04d3db860b73164b61025926feef4514a43a616"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t4-01/evaluations/eval-20261106T071718Z-hnn94q1d/scores.jsonl",
+      "bytes": 34841,
+      "sha256": "ded6e01f5c11ab9cc5282963b7242137fc6e299e76004d60995bbb7bce50b5cd"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t4-01/evaluations/eval-20261106T071718Z-hnn94q1d/summary.json",
+      "bytes": 3677,
+      "sha256": "49ff1d6a14a1e8d1c9bb222773200d2705bdd900df1db63457a89668d87aac29"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t4-01/evaluations/eval-20261106T071718Z-hnn94q1d/summary.md",
+      "bytes": 1097,
+      "sha256": "2c1a3f7e33827fef8fa48581d2a9f5c42ffb2e773fff27907f1351f835a65aae"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t4-01/execution.json",
+      "bytes": 3587,
+      "sha256": "27d03c1a0ee0e30efeac470b1e78042d307000e6d37f7104f2b96c719767cde3"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t4-01/thermal.jsonl",
+      "bytes": 33194,
+      "sha256": "02977ffd1cd9bde41e6d4d7e441c04e11336be9edd93864a6ad0f511554386b0"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t4-01/threads.jsonl",
+      "bytes": 137648,
+      "sha256": "8ca81a45c22cde8daa5f9ef502c58bc8f968f65b32292b74aebd9443a9bb722f"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/qwen3_asr-t4-01/warnings.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t1-01/admission.jsonl",
+      "bytes": 3872,
+      "sha256": "6aaa500a134b42855c88ee00ee0fb09327c2eb10373e78acea167a7adaa33de7"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t1-01/console.log",
+      "bytes": 1562,
+      "sha256": "a39b4611b79ee8e0a9fb3fd4a7d9ca16e14f871eb4e8a7ce5ed6d843711adc24"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t1-01/evaluations/eval-20261106T070840Z-2u15vjjt/environment.json",
+      "bytes": 935,
+      "sha256": "cc1b4f2515e606515ac0e2951216f7f26c1d71998d8214690d84e12a5b855ea3"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t1-01/evaluations/eval-20261106T070840Z-2u15vjjt/manifest.json",
+      "bytes": 14402,
+      "sha256": "30ec722a44d0af72d0b96685305266b760ea2c44101b971a0e2869a41c62058b"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t1-01/evaluations/eval-20261106T070840Z-2u15vjjt/predictions.jsonl",
+      "bytes": 64899,
+      "sha256": "02aea3f8c13f96320707ca43cee42bc010ce11963228e28f1c14bcddb6d881c2"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t1-01/evaluations/eval-20261106T070840Z-2u15vjjt/progress.jsonl",
+      "bytes": 64899,
+      "sha256": "02aea3f8c13f96320707ca43cee42bc010ce11963228e28f1c14bcddb6d881c2"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t1-01/evaluations/eval-20261106T070840Z-2u15vjjt/scores.jsonl",
+      "bytes": 34943,
+      "sha256": "1a79341ddacbbd57e30f4618d60a78cf64ab371521e775e39ab966c108a59093"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t1-01/evaluations/eval-20261106T070840Z-2u15vjjt/summary.json",
+      "bytes": 3692,
+      "sha256": "a3d072e73117a702b23864b7247c3e6d54d521d805f6943032910bc67e271cb1"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t1-01/evaluations/eval-20261106T070840Z-2u15vjjt/summary.md",
+      "bytes": 1095,
+      "sha256": "ad255d0f2a534b13aecd5ce7df8c85f12a6220c7a3f5b4e86f098b5fd0109fb9"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t1-01/execution.json",
+      "bytes": 3589,
+      "sha256": "2ba255dd4c9d98bf2f4262cc4a1f197db6306265477091e17022ffe1005862b0"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t1-01/thermal.jsonl",
+      "bytes": 5396,
+      "sha256": "a709626058c4c260b20e2de1e351085762e423a52039e5e3745ef3621d5f83f6"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t1-01/threads.jsonl",
+      "bytes": 9336,
+      "sha256": "14d9422561584779a01998e6a439bdd2cea8e1bde07585c80896b5ba08ce9ecd"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t1-01/warnings.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t2-01/admission.jsonl",
+      "bytes": 5565,
+      "sha256": "e6cacda1b085469b0306d5c188cf8edd880ea852fd0e240f1f0e95fd8574df8d"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t2-01/console.log",
+      "bytes": 1562,
+      "sha256": "bbe0f54145eb782bdfdd2c67db4a705f2389983df68b203ffe283acd7f470662"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t2-01/evaluations/eval-20261106T070923Z-czdxdi4p/environment.json",
+      "bytes": 935,
+      "sha256": "cc1b4f2515e606515ac0e2951216f7f26c1d71998d8214690d84e12a5b855ea3"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t2-01/evaluations/eval-20261106T070923Z-czdxdi4p/manifest.json",
+      "bytes": 14410,
+      "sha256": "bb9b6b4c761008d827335fb270015617ecf9dfe3643ba64849c74dc71cd614e0"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t2-01/evaluations/eval-20261106T070923Z-czdxdi4p/predictions.jsonl",
+      "bytes": 61009,
+      "sha256": "15f5efae7d261f7dd24f065cc0ac1643cc9bd5b247e9d07f66b431d09e125714"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t2-01/evaluations/eval-20261106T070923Z-czdxdi4p/progress.jsonl",
+      "bytes": 61009,
+      "sha256": "15f5efae7d261f7dd24f065cc0ac1643cc9bd5b247e9d07f66b431d09e125714"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t2-01/evaluations/eval-20261106T070923Z-czdxdi4p/scores.jsonl",
+      "bytes": 34922,
+      "sha256": "2f48612026fcd9c585e0b487b3a0ee495e147ac09c5bc655a44c1993e05957dd"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t2-01/evaluations/eval-20261106T070923Z-czdxdi4p/summary.json",
+      "bytes": 3698,
+      "sha256": "a2a983ecb19f7a2f374b58a345f242005a5a27a55a024f22057052ca382a3cc7"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t2-01/evaluations/eval-20261106T070923Z-czdxdi4p/summary.md",
+      "bytes": 1094,
+      "sha256": "30498f200f3b85231820934ac536c707e04ecce8711b9cbd4599d963e84c94e6"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t2-01/execution.json",
+      "bytes": 3589,
+      "sha256": "3a2b1d1adf5850e7d2249c85e1ffa71709d8ab0d3c9df8037382f31c1336317b"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t2-01/thermal.jsonl",
+      "bytes": 3510,
+      "sha256": "fd2c4f0f7d3d77cd8ad4c99b8a873e9bcb280bf38eacaf45d1f125094b72de6a"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t2-01/threads.jsonl",
+      "bytes": 6683,
+      "sha256": "85a3b14da50a086dda9e0e17bc9457884e3408a4d257cb9155babfac648d2093"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t2-01/warnings.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t4-01/admission.jsonl",
+      "bytes": 17663,
+      "sha256": "6e4ba2a3bb30ec454a04793fb5558d9e5c06b11cc7763c52c2c6f21491902894"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t4-01/console.log",
+      "bytes": 1562,
+      "sha256": "41194b8476692c7acf5e571f5ab5cd8ae03accfdf23af578f739f443afe1f4ed"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t4-01/evaluations/eval-20261106T071621Z-wehs2r1d/environment.json",
+      "bytes": 935,
+      "sha256": "cc1b4f2515e606515ac0e2951216f7f26c1d71998d8214690d84e12a5b855ea3"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t4-01/evaluations/eval-20261106T071621Z-wehs2r1d/manifest.json",
+      "bytes": 14414,
+      "sha256": "4e6a9ffe8bd36680691c621da5e53a62f46bc3b6beec12a8b8d4aa1e1c1a8b5e"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t4-01/evaluations/eval-20261106T071621Z-wehs2r1d/predictions.jsonl",
+      "bytes": 60190,
+      "sha256": "18ecc37d4f3e4dc45031eb83d148322597c251c1f92233a9e2cacf42cb79c2f7"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t4-01/evaluations/eval-20261106T071621Z-wehs2r1d/progress.jsonl",
+      "bytes": 60190,
+      "sha256": "18ecc37d4f3e4dc45031eb83d148322597c251c1f92233a9e2cacf42cb79c2f7"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t4-01/evaluations/eval-20261106T071621Z-wehs2r1d/scores.jsonl",
+      "bytes": 35038,
+      "sha256": "8e20abf4785913199ef8101938ab1a0ad8956dac41ae6fdd92b8e2eced6be812"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t4-01/evaluations/eval-20261106T071621Z-wehs2r1d/summary.json",
+      "bytes": 3710,
+      "sha256": "c0f24966857e7b77f654ffa59a53b05cd28de38af761d4acea8b03180bbf2fb3"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t4-01/evaluations/eval-20261106T071621Z-wehs2r1d/summary.md",
+      "bytes": 1094,
+      "sha256": "c0adaaa9fc4bf660fe7db5e36d0f746f4509f870eba637946a274455804b1ce7"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t4-01/execution.json",
+      "bytes": 3589,
+      "sha256": "f3bb5eb45c3f75ca759f917efed546a8a64ad42d72fcb28a5ffe69a8aa81a962"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t4-01/thermal.jsonl",
+      "bytes": 2968,
+      "sha256": "fecde0afe6972d1b07b6e418cd5f430fba950b02e00e88d1fbda6a5c945935c9"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t4-01/threads.jsonl",
+      "bytes": 7055,
+      "sha256": "d93daa603cf361f517e683b9cb1240552f2cc2135a081ce07b2998c003dcfc12"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/sensevoice-t4-01/warnings.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t1-01/admission.jsonl",
+      "bytes": 8222,
+      "sha256": "7f7de4f1ea0e81a94e0953757b860d9e834369274a55cf262e2f1f02ce33ca2c"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t1-01/console.log",
+      "bytes": 1560,
+      "sha256": "f2ed761b6d2f5bbde99385a2cdf3618544d786bffe6cec3a68c59079d2e0940c"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t1-01/evaluations/eval-20261106T070757Z-6nh4hrpo/environment.json",
+      "bytes": 935,
+      "sha256": "cc1b4f2515e606515ac0e2951216f7f26c1d71998d8214690d84e12a5b855ea3"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t1-01/evaluations/eval-20261106T070757Z-6nh4hrpo/manifest.json",
+      "bytes": 15644,
+      "sha256": "95e08f46541803b0d8d51d87486256119efa7175a8a3cd56caa8a306b8258be3"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t1-01/evaluations/eval-20261106T070757Z-6nh4hrpo/predictions.jsonl",
+      "bytes": 60577,
+      "sha256": "4c2cb93bb8ec66fa9ba83dc3ee86dc65e5e955475029916e4da80608d1bfd8f0"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t1-01/evaluations/eval-20261106T070757Z-6nh4hrpo/progress.jsonl",
+      "bytes": 60577,
+      "sha256": "4c2cb93bb8ec66fa9ba83dc3ee86dc65e5e955475029916e4da80608d1bfd8f0"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t1-01/evaluations/eval-20261106T070757Z-6nh4hrpo/scores.jsonl",
+      "bytes": 34852,
+      "sha256": "e06e9c74c7bc34623f22151f3e757068a074698353de7a2f427f5c5f8bd710e6"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t1-01/evaluations/eval-20261106T070757Z-6nh4hrpo/summary.json",
+      "bytes": 3692,
+      "sha256": "f52d6ae517538d1dbdb25d0e4464481169384b6273913140816f5d1cc09d6986"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t1-01/evaluations/eval-20261106T070757Z-6nh4hrpo/summary.md",
+      "bytes": 1096,
+      "sha256": "89401e89e3d6d2862b4e54701d14b384294b4e1954a96fbcf5ce6b20b6f758b9"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t1-01/execution.json",
+      "bytes": 3587,
+      "sha256": "b82227ef344706d77657ffa6b769623c67609e97a506c57e540ee6d412f02990"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t1-01/thermal.jsonl",
+      "bytes": 7280,
+      "sha256": "aabf554a36e1c258d34ca77ef8a780fd0083c14231b1945ff0dc03cddfbdf600"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t1-01/threads.jsonl",
+      "bytes": 12641,
+      "sha256": "30cf11eb1639c2a9aece2678c80e5f1b530d09022a8c4a6a69734023d8c2d008"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t1-01/warnings.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t2-01/admission.jsonl",
+      "bytes": 18630,
+      "sha256": "9d68a4027062b7d25466bdd4087915de287b423d2a36eff4ecc7f7ebc96d03b9"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t2-01/console.log",
+      "bytes": 1560,
+      "sha256": "eaab4a7f4f8664ae2c124f64147a6702e115cb283894a499d33cd597aef9c040"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t2-01/evaluations/eval-20261106T071319Z-i_vlqhir/environment.json",
+      "bytes": 935,
+      "sha256": "cc1b4f2515e606515ac0e2951216f7f26c1d71998d8214690d84e12a5b855ea3"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t2-01/evaluations/eval-20261106T071319Z-i_vlqhir/manifest.json",
+      "bytes": 15645,
+      "sha256": "1523fbe1d0ab4af5db770c9ed58b608304c41914be4146d68d34ad1df972e40c"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t2-01/evaluations/eval-20261106T071319Z-i_vlqhir/predictions.jsonl",
+      "bytes": 58014,
+      "sha256": "be4a69120e11b77eeea771530e47edb52b4464fa110cf56bc316ac24110cec6d"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t2-01/evaluations/eval-20261106T071319Z-i_vlqhir/progress.jsonl",
+      "bytes": 58014,
+      "sha256": "be4a69120e11b77eeea771530e47edb52b4464fa110cf56bc316ac24110cec6d"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t2-01/evaluations/eval-20261106T071319Z-i_vlqhir/scores.jsonl",
+      "bytes": 34902,
+      "sha256": "513897db5d21e73e457b05a03ea4e7b565e9dec4fa93346c781702b3059234ba"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t2-01/evaluations/eval-20261106T071319Z-i_vlqhir/summary.json",
+      "bytes": 3698,
+      "sha256": "10d7a3c6914faa031675bc8d282b8530a35be7346e79491ff6e183d5f23e7fb3"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t2-01/evaluations/eval-20261106T071319Z-i_vlqhir/summary.md",
+      "bytes": 1096,
+      "sha256": "fa57dbb745291ca6d0276ede535cbea63bfcaeff68d32eba9b39f3738925fc5d"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t2-01/execution.json",
+      "bytes": 3587,
+      "sha256": "2a9a6a4492ab1595e256c42e763e89468799548047127e72191d7a4a110631a6"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t2-01/thermal.jsonl",
+      "bytes": 5940,
+      "sha256": "febcd6a8fd0fadfce7f2d64e2d93bbf6702518cbb6b497e174e5d3f52f8a4b7f"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t2-01/threads.jsonl",
+      "bytes": 14435,
+      "sha256": "3b627f06e1aa6eb672d0ee682f7cf7a6690188acaf21b9966ae4a7b23d010eeb"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t2-01/warnings.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t4-01/admission.jsonl",
+      "bytes": 12097,
+      "sha256": "c4e9be39601d13c2d84f8a79e99aa7115288777052da197c7a98e85e334ae07c"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t4-01/console.log",
+      "bytes": 1560,
+      "sha256": "a82ddceb6a28f7ee558483b952cf8cb8937cdb968d038897a1c7a9b03eb4454d"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t4-01/evaluations/eval-20261106T071431Z-sihb0pma/environment.json",
+      "bytes": 935,
+      "sha256": "cc1b4f2515e606515ac0e2951216f7f26c1d71998d8214690d84e12a5b855ea3"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t4-01/evaluations/eval-20261106T071431Z-sihb0pma/manifest.json",
+      "bytes": 15648,
+      "sha256": "d5776f642162134a00689ade2c51f3c3a2f8cff0246838d0bbc386c192832cef"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t4-01/evaluations/eval-20261106T071431Z-sihb0pma/predictions.jsonl",
+      "bytes": 66215,
+      "sha256": "44caec0c7796df7fe03d75d4757e446b75c6bcdea50d0c4484567c77be86483d"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t4-01/evaluations/eval-20261106T071431Z-sihb0pma/progress.jsonl",
+      "bytes": 66215,
+      "sha256": "44caec0c7796df7fe03d75d4757e446b75c6bcdea50d0c4484567c77be86483d"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t4-01/evaluations/eval-20261106T071431Z-sihb0pma/scores.jsonl",
+      "bytes": 34901,
+      "sha256": "b15e20c1f4e2fc62d9458c35fa5e3f2e196af279266cbbeb01f499820b026077"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t4-01/evaluations/eval-20261106T071431Z-sihb0pma/summary.json",
+      "bytes": 3689,
+      "sha256": "a7927a65ea4db8357433f72031b3edb12492a7ecfc3c78a2ec51baa07b0969e6"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t4-01/evaluations/eval-20261106T071431Z-sihb0pma/summary.md",
+      "bytes": 1096,
+      "sha256": "fd658d5b08c3c4c1cf346ab387015fd0102c3f3d6acf1bca17761c714d40fe63"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t4-01/execution.json",
+      "bytes": 3587,
+      "sha256": "ad63d450993215ea7060bb8e5b49d0937d4cb853284f77c0cc94bf3c4c467824"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t4-01/thermal.jsonl",
+      "bytes": 9716,
+      "sha256": "dcc5b616f3ffd212536e64ba2c545397613e5afa79a6355426d396af4e4f1416"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t4-01/threads.jsonl",
+      "bytes": 38662,
+      "sha256": "c64cffc36ed73bd7d0db0fb0bf986b3c477e0aa6cedb2ba90f1291a8fc17e18d"
+    },
+    {
+      "path": "results/comparisons/qwen3-kss-dev50-20261106-01/zipformer-t4-01/warnings.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

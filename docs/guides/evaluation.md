@@ -2,7 +2,7 @@
 
 모델을 한 번 로드하고 여러 WAV를 순차 처리하여 CER·batch RTF·추론 구간 CPU/RSS를 기록합니다. 입력·채점·실행·저장은 공통이며 모델 호출은 `adapters/zipformer.py`, `adapters/sensevoice.py`로 분리했습니다. 저장된 가설은 모델·오디오 없이 재채점할 수 있습니다.
 
-기본은 CPU Zipformer의 batch 평가입니다. 온라인 모델에 전체 PCM을 대기 없이 전달하고 파일마다 새 스트림을 생성·flush합니다. `configs/sensevoice_eval.toml`은 SenseVoiceSmall INT8 Offline batch 설정이며, `configs/zipformer_paced.toml`은 [1배속 스트리밍 모사](streaming_evaluation.md) 설정입니다. 모델별 기존 측정은 [결과 색인](../../results/summaries/README.md), 현재 구현 상태는 [프로젝트 상태](../status.md)에서 확인합니다.
+기본은 CPU Zipformer의 batch 평가입니다. 온라인 모델에 전체 PCM을 대기 없이 전달하고 파일마다 새 스트림을 생성·flush합니다. `configs/sensevoice_eval.toml`과 `configs/qwen3_eval.toml`은 각각 SenseVoiceSmall·Qwen3-ASR INT8 Offline batch 설정이며, `configs/zipformer_paced.toml`은 [1배속 스트리밍 모사](streaming_evaluation.md) 설정입니다. Qwen은 [별도 환경](setup.md)과 [확인한 자산·입력 예산](../research/qwen3_batch.md)이 필요합니다. 모델별 기존 측정은 [결과 색인](../../results/summaries/README.md), 현재 구현 상태는 [프로젝트 상태](../status.md)에서 확인합니다.
 
 ## RP5 시작
 

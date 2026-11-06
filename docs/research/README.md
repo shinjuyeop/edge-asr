@@ -4,8 +4,8 @@
 
 ## M2 모델·비교 계약
 
-- [Qwen 첫 실제 실행·공통 batch 비교 계획](qwen3_batch.md) — 별도 환경 smoke 통과, 같은 KSS·세 모델·1/2/4스레드 탐색 비교
-- [Qwen3-ASR-0.6B RP5 CPU 배포 경로 검토](qwen3_deployment.md) — 2026-11-06, sherpa INT8 ONNX 선정·설치 API 확인. 모델 실행은 미검증
+- [Qwen 첫 실제 실행·공통 batch 비교 계약](qwen3_batch.md) — 별도 환경 smoke·같은 KSS·세 모델·1/2/4스레드 탐색 비교 완료, 결과 연결
+- [Qwen3-ASR-0.6B RP5 CPU 배포 경로 검토](qwen3_deployment.md) — 2026-11-06 모델 수급 전 sherpa INT8 ONNX 선정·설치 API 확인 기록
 - [M2-0 / M2-1 / M2-2: SenseVoiceSmall INT8 batch 통합·실측](m2_sensevoice.md)
 - [M2-3 통제 모델 비교](m2_comparison.md)
 - [M2-3 외부 자료 선택과 평가 범위](m2_external_data.md)
