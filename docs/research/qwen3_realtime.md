@@ -2,6 +2,8 @@
 
 2026-11-06 사전 계획. [전체 파일 batch](../../results/summaries/qwen3-kss-dev50-20261106.md)의 정확도 개선이 최대 5초 VAD 구간에서도 유지되는지, Zip과 함께 실행할 때 손실·반환 지연·메모리·발열이 어떤지 확인한다. 자동 교체는 계속 보류한다.
 
+완료 결과는 [13개 비교·자막 후보 선택 검증](../../results/summaries/qwen3-realtime-20261106.md)에 기록했다. 아래는 결과를 보기 전에 고정한 절차를 보존한다.
+
 ## 환경과 입력
 
 기존 `.venv`와 `.venv-qwen3-onnx-20261106-01`을 보존하고 RP5에 `.venv-qwen3-vad-20261106-01`을 별도로 만든다. Python 3.11.18·NumPy 2.4.6·sherpa/core 2.0.1·native ORT 1.28.2를 유지하고, VAD에는 기존과 같은 [Python ORT 1.31.1](https://pypi.org/project/onnxruntime/1.31.1/)을 설치한다. ARM64 wheel과 전이 의존성 8개의 실제 SHA-256으로 고정한 설치·freeze·pip check를 새 maintenance 경로에 기록한다. 기존 가중치는 수정하지 않는다.

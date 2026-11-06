@@ -1,0 +1,4756 @@
+{
+  "automatic_replacements": 0,
+  "campaign_status": "completed",
+  "caption_option_validation": {
+    "refine_model": "qwen3_asr",
+    "refine_threads": 2,
+    "run_id": "results/live/qwen3-wav-20261106-01",
+    "same_previous_zip_transcript": true,
+    "scope": "정답 없는 공식 3.5265초 WAV 1회. 화면/SSH 지연·성능 분포·정확도 추정 아님",
+    "source_commit": "5d0c5b7be3e6efd4f07f5916a1ce8b2d2bafc6ba",
+    "status": "completed",
+    "summary": {
+      "audio_s": 3.5265,
+      "automatic_replacements": 0,
+      "available_to_stdout_flush_s": {
+        "max": 0.002262801,
+        "mean": 0.0004724674444444444,
+        "n": 9,
+        "p50": 0.000190968,
+        "p95": 0.002262801
+      },
+      "display_events": 9,
+      "first_zip_stdout_from_audio_start_s": {
+        "max": 0.842720198,
+        "mean": 0.842720198,
+        "n": 1,
+        "p50": null,
+        "p95": null
+      },
+      "native_metrics": {
+        "audio_s": 3.5265,
+        "chunk_processing_s": {
+          "max": 0.08803598899999976,
+          "mean": 0.01695544188888891,
+          "n": 36,
+          "p50": 0.004164926000000069,
+          "p95": 0.04233737000000004
+        },
+        "coordinator_active_rtf": 0.17316626740400334,
+        "first_partial_from_source_start_s": {
+          "max": 0.842495081,
+          "mean": 0.842495081,
+          "n": 1,
+          "p50": null,
+          "p95": null
+        },
+        "input_backlog_audio_s": {
+          "max": 0.0,
+          "mean": 0.0,
+          "n": 39,
+          "p50": 0.0,
+          "p95": 0.0
+        },
+        "input_backlog_event_max_audio_s": 0.1,
+        "input_complete": true,
+        "input_dropped_audio_s": 0.0,
+        "input_dropped_chunks": 0,
+        "input_queue_wait_s": {
+          "max": 0.0011509009999999265,
+          "mean": 0.0004123773333333675,
+          "n": 36,
+          "p50": 0.0003338049999999093,
+          "p95": 0.0010360280000001332
+        },
+        "manifest_sha256": "3fae6ea7151b905d3c3ba877bf26d62d956b006ca253faee23658559608aa768",
+        "no_partial_sources": 0,
+        "planned_sources": 1,
+        "producer_cpu_s": 0.005281693000000004,
+        "producer_lifetime_peak_rss_mib": 284.828125,
+        "refine": {
+          "backlog_audio_s": {
+            "max": 0.0,
+            "mean": 0.0,
+            "n": 64,
+            "p50": 0.0,
+            "p95": 0.0
+          },
+          "backlog_end_audio_s": 0.0,
+          "backlog_event_max_audio_s": 3.3705,
+          "backlog_event_max_payload_audio_s": 3.3705,
+          "backlog_event_max_windows": 1,
+          "cer": {
+            "cer": {
+              "deletions": 0,
+              "empty_reference_nonempty_hypotheses": 1,
+              "empty_reference_samples": 1,
+              "errors": 0,
+              "insertions": 0,
+              "reference_characters": 0,
+              "substitutions": 0,
+              "value": null
+            },
+            "complete": true,
+            "planned": 1,
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+            "successful": 1
+          },
+          "complete": true,
+          "decision_audio_after_owned_end_s": {
+            "max": 0.0,
+            "mean": 0.0,
+            "n": 1,
+            "p50": null,
+            "p95": null
+          },
+          "decode_s": {
+            "max": 2.570842443,
+            "mean": 2.570842443,
+            "n": 1,
+            "p50": null,
+            "p95": null
+          },
+          "dispatch_after_vad_emission_s": {
+            "max": 0.007837616,
+            "mean": 0.007837616,
+            "n": 1,
+            "p50": null,
+            "p95": null
+          },
+          "dispatch_from_window_end_s": {
+            "max": 0.010305717000000048,
+            "mean": 0.010305717000000048,
+            "n": 1,
+            "p50": null,
+            "p95": null
+          },
+          "dropped_windows": 0,
+          "enqueued": 1,
+          "failed_windows": 0,
+          "final_from_source_file_end_s": {
+            "max": 2.5823116350000004,
+            "mean": 2.5823116350000004,
+            "n": 1,
+            "p50": null,
+            "p95": null
+          },
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님.",
+          "missing_results": 0,
+          "no_vad_segment_sources": 0,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "planned_windows": 1,
+          "queue_wait_s": {
+            "max": 0.000951284,
+            "mean": 0.000951284,
+            "n": 1,
+            "p50": null,
+            "p95": null
+          },
+          "refine_calls_with_zip_overlap": 1,
+          "successful": 1,
+          "vad_emission_from_owned_end_s": {
+            "max": 0.002468100999999834,
+            "mean": 0.002468100999999834,
+            "n": 1,
+            "p50": null,
+            "p95": null
+          },
+          "vad_emission_to_return_s": {
+            "max": 2.579843534,
+            "mean": 2.579843534,
+            "n": 1,
+            "p50": null,
+            "p95": null
+          },
+          "window_end_to_return_s": {
+            "max": 2.5823116350000004,
+            "mean": 2.5823116350000004,
+            "n": 1,
+            "p50": null,
+            "p95": null
+          },
+          "zip_refine_call_overlap_s": 0.076834265
+        },
+        "refine_family": "qwen3_asr",
+        "refine_policy": "vad0",
+        "refine_reason": null,
+        "refine_threads": 2,
+        "resources": {
+          "complete_model_rss_samples": 60,
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling",
+            "caption_events_and_result_reader"
+          ],
+          "model_group_rss_observed_max_mib": 1867.984375,
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "observed_model_cpu_percent": 94.19272046694736,
+          "paired_intervals": 59,
+          "paired_wall_s": 5.934641203999999,
+          "sample_count": 60,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+        },
+        "schema": "concurrent-wav-summary-v1",
+        "source_sha256": {
+          "capture/backlog.jsonl": "ca07d569702096da1f5cb4ad0b20c9b6cbd9520da7e68640d4517b95e4a2c3b3",
+          "capture/decoder.jsonl": "203f5a1d22450f8094ac75baaa24b2c78c4d4bb4210118f942aad437f177e92b",
+          "capture/producer.jsonl": "43acc6ff7acd3adba467d91f9347796bb8446c0bfb53e6dd8aec799051fd87af",
+          "process-resources.jsonl": "8fa7ce6737d5de395e182e9656b583d4b9aacf18cc17cf89d525292e55cae21e",
+          "refine-jobs.jsonl": "3726160203f8f4da632448fe984be74ce0ef6b5ddf9420e26b6f298e505a7572",
+          "refine-results.jsonl": "731e02a6129b3e31d2c757d76c3df5a025581445e7dd056e615b636e801fad27",
+          "thread-resources.jsonl": "efbb958d6960586e6337f6544bb782209a58374db4ae043ce832d58a8f5cec72",
+          "track.json": "9b1fb1020f648d00ee3777b66bb22e798e6c9a15cef8b9e963b5d901702ec417",
+          "vad-sources.jsonl": "60865aaf504d97ca0346b81889d20576b3bd32a4a6b14c8747ff98f077bd1762",
+          "worker.json": "776468ba75411488f16ae31ff907dd895f108d5f80ca118f1ffc8ee7f8191fcf",
+          "zip-events.jsonl": "09c0bc9f7741b40d6761b94c7cf0848d50fa43aef7d8d474f35c448d1cf0ebce",
+          "zip-sources.jsonl": "e2f19087949369ca490ef1981160d9303529753a3c5067b9bddfd78f4580753f"
+        },
+        "status": "completed",
+        "threads": {
+          "refine": {
+            "active_at_least_1_percent": 4,
+            "observed_tid_max": 7,
+            "rows": [
+              {
+                "cpu_s": 2.4299999999999997,
+                "mean_cpu_percent": 40.25533021635333,
+                "paired_s": 6.036467684999479,
+                "tid": "9840"
+              },
+              {
+                "cpu_s": 1.72,
+                "mean_cpu_percent": 28.493484762192484,
+                "paired_s": 6.036467684999479,
+                "tid": "9851"
+              },
+              {
+                "cpu_s": 0.33,
+                "mean_cpu_percent": 5.4667732392578605,
+                "paired_s": 6.036467684999479,
+                "tid": "9847"
+              },
+              {
+                "cpu_s": 0.23,
+                "mean_cpu_percent": 3.8101752879675996,
+                "paired_s": 6.036467684999479,
+                "tid": "9848"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 6.036467684999479,
+                "tid": "9844"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 6.036467684999479,
+                "tid": "9845"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 6.036467684999479,
+                "tid": "9846"
+              }
+            ],
+            "runtime_roles_confirmed": false,
+            "snapshots": 7
+          },
+          "zip": {
+            "active_at_least_1_percent": 1,
+            "observed_tid_max": 8,
+            "rows": [
+              {
+                "cpu_s": 0.6500000000000001,
+                "mean_cpu_percent": 10.768349481391379,
+                "paired_s": 6.036208252000506,
+                "tid": "9834"
+              },
+              {
+                "cpu_s": 0.01,
+                "mean_cpu_percent": 0.16566691509832887,
+                "paired_s": 6.036208252000506,
+                "tid": "9893"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 6.036208252000506,
+                "tid": "9878"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 6.036208252000506,
+                "tid": "9879"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 6.036208252000506,
+                "tid": "9880"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 6.036208252000506,
+                "tid": "9891"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 6.036208252000506,
+                "tid": "9892"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 2.0163615649998974,
+                "tid": "9904"
+              }
+            ],
+            "runtime_roles_confirmed": false,
+            "snapshots": 7
+          }
+        },
+        "track_float32_sha256": "2816ff642b6bbc948017b77fe100b9cb9c241e05b07ba23183be3f29c02190ae",
+        "unmeasured": {
+          "acoustic_endpoint_latency_s": null,
+          "aligned_recognition_latency_s": null,
+          "hybrid_merged_cer": null,
+          "microphone_overruns": null,
+          "ui_display_latency_s": null
+        },
+        "zip_call_rtf": 0.13233732510988233,
+        "zip_cer": {
+          "cer": {
+            "deletions": 0,
+            "empty_reference_nonempty_hypotheses": 1,
+            "empty_reference_samples": 1,
+            "errors": 0,
+            "insertions": 0,
+            "reference_characters": 0,
+            "substitutions": 0,
+            "value": null
+          },
+          "complete": true,
+          "planned": 1,
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+          "successful": 1
+        },
+        "zip_finalize_from_source_end_s": {
+          "max": 0.08838114399999997,
+          "mean": 0.08838114399999997,
+          "n": 1,
+          "p50": null,
+          "p95": null
+        },
+        "zip_threads": 1
+      },
+      "reference_available": false,
+      "reference_policy": "empty_placeholder_not_silence_ground_truth",
+      "refine_candidate_displays": 1,
+      "refine_owned_end_to_stdout_s": {
+        "max": 2.5849331679999996,
+        "mean": 2.5849331679999996,
+        "n": 1,
+        "p50": null,
+        "p95": null
+      },
+      "schema": "separate-caption-mvp-v1",
+      "scope_ko": "실제 1배속 입력/NN/부모 stdout flush. 화면 렌더링·SSH 도착은 미계측. 모델 PID CPU/RSS는 터미널 부모/guard를 제외.",
+      "source_commit": "5d0c5b7be3e6efd4f07f5916a1ce8b2d2bafc6ba",
+      "sources": 1,
+      "status": "completed",
+      "unmeasured": {
+        "acoustic_recognition_delay_s": null,
+        "merged_cer": null,
+        "microphone_overruns": null,
+        "screen_paint_s": null
+      },
+      "zip_cer": null,
+      "zip_final_displays": 1
+    }
+  },
+  "cases": [
+    {
+      "asr_loading": {
+        "cpu_s": 2.150493007,
+        "resources": {
+          "rss_missing_count": 0,
+          "rss_observed_max_mib": 368.609375,
+          "rss_sample_count": 20,
+          "sample_interval_s": 0.1
+        },
+        "wall_s": 1.8926667639998414
+      },
+      "control_valid": false,
+      "current_limits_observed": [
+        0
+      ],
+      "dataset": "kss",
+      "family": "sensevoice",
+      "guard_status": "completed",
+      "history_limits_after": 0,
+      "history_limits_before": 0,
+      "id": "offline-kss-sensevoice-t2-01",
+      "max_temperature_c": 61.15,
+      "model_files": {
+        "model": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51",
+        "tokens": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc"
+      },
+      "num_threads": 2,
+      "operational_valid": true,
+      "overall": {
+        "cer": {
+          "deletions": 9,
+          "empty_reference_nonempty_hypotheses": 0,
+          "empty_reference_samples": 0,
+          "errors": 42,
+          "insertions": 7,
+          "reference_characters": 756,
+          "scope": "successful_nonempty_references",
+          "substitutions": 26,
+          "value": 0.05555555555555555
+        },
+        "complete": true,
+        "failed": 0,
+        "file_processing_s": {
+          "max": 0.531197943999814,
+          "mean": 0.29392352869997923,
+          "n": 50,
+          "p50": 0.29242290699994555,
+          "p95": 0.4262084160000086
+        },
+        "file_rtf": {
+          "max": 0.1131112252142567,
+          "mean": 0.09049227262686692,
+          "n": 50,
+          "p50": 0.09076145639212523,
+          "p95": 0.09979106801136924
+        },
+        "interrupted": 0,
+        "mean_process_cpu_percent": 158.17135978064104,
+        "not_attempted": 0,
+        "planned": 50,
+        "reference_character_coverage": 1.0,
+        "rss_observed_max_mib": 399.359375,
+        "rtf": 0.08911148160611548,
+        "successful": 50,
+        "total_audio_s": 164.919,
+        "total_inference_wall_s": 14.69617643499896
+      },
+      "phase": "offline",
+      "repeat": 1,
+      "rescore_matches": true,
+      "segmented": {
+        "asr_calls": 57,
+        "asr_rtf_against_original_audio": 0.0538964527555852,
+        "asr_wall_s": 8.888549091998357,
+        "condition": "bounded_vad_5s",
+        "empty_segment_files": 0,
+        "predictions_sha256": "51f2531f30bdc9047c3abecb2505e0e5a434188737d567c34ccb5d4a4c70d2df",
+        "rss_scope": "ASR+VAD 공존 프로세스",
+        "selected_frames": 2366401,
+        "timing_scope": "overall.rtf는 원본 오디오 길이 대비 전처리/구간화/ASR/결과 연결/검증/계측을 포함한 파일 파이프라인 비용. asr_rtf는 ASR 호출만. WAV I/O/검증용 참조 PCM/모델 로딩/워밍업/파일 기록 제외.",
+        "vad_neural_wall_s": 2.28507823400696
+      },
+      "vad_loading": {
+        "cpu_s": 0.048047906999999945,
+        "resources": {
+          "rss_missing_count": 0,
+          "rss_observed_max_mib": 386.8125,
+          "rss_sample_count": 2,
+          "sample_interval_s": 0.1
+        },
+        "wall_s": 0.08799681599998621
+      },
+      "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6"
+    },
+    {
+      "asr_loading": {
+        "cpu_s": 5.4968128169999995,
+        "resources": {
+          "rss_missing_count": 0,
+          "rss_observed_max_mib": 1438.46875,
+          "rss_sample_count": 54,
+          "sample_interval_s": 0.1
+        },
+        "wall_s": 5.258523141000069
+      },
+      "control_valid": false,
+      "current_limits_observed": [
+        0
+      ],
+      "dataset": "kss",
+      "family": "qwen3_asr",
+      "guard_status": "completed",
+      "history_limits_after": 0,
+      "history_limits_before": 0,
+      "id": "offline-kss-qwen3_asr-t1-01",
+      "max_temperature_c": 65.55,
+      "model_files": {
+        "conv_frontend.onnx": "d22dc4423e0940e49884e903d2ea2f7e5567c14fc1aed97e4e26d6b8f208ef9e",
+        "decoder.int8.onnx": "4f6885be5959ae26af3089d38ee7972c5fafbeeb1cf8d5e76eab6d8b61ca5771",
+        "encoder.int8.onnx": "60748d3e6744a57c9c91e1b17424a6c2990567e8adceb0783940c03ed98fa9d9",
+        "tokenizer/merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+        "tokenizer/tokenizer_config.json": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c",
+        "tokenizer/vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      },
+      "num_threads": 1,
+      "operational_valid": true,
+      "overall": {
+        "cer": {
+          "deletions": 3,
+          "empty_reference_nonempty_hypotheses": 0,
+          "empty_reference_samples": 0,
+          "errors": 28,
+          "insertions": 1,
+          "reference_characters": 756,
+          "scope": "successful_nonempty_references",
+          "substitutions": 24,
+          "value": 0.037037037037037035
+        },
+        "complete": true,
+        "failed": 0,
+        "file_processing_s": {
+          "max": 5.04420699100001,
+          "mean": 2.924932187020013,
+          "n": 50,
+          "p50": 2.9141889939999146,
+          "p95": 4.337775049000129
+        },
+        "file_rtf": {
+          "max": 1.3230299338298008,
+          "mean": 0.9211348636514995,
+          "n": 50,
+          "p50": 0.9035820519007589,
+          "p95": 1.2846848136753106
+        },
+        "interrupted": 0,
+        "mean_process_cpu_percent": 100.16157783831572,
+        "not_attempted": 0,
+        "planned": 50,
+        "reference_character_coverage": 1.0,
+        "rss_observed_max_mib": 1739.5,
+        "rtf": 0.8867784145610914,
+        "successful": 50,
+        "total_audio_s": 164.919,
+        "total_inference_wall_s": 146.24660935100064
+      },
+      "phase": "offline",
+      "qwen_output_validation": {
+        "all_context_budgets_fit": true,
+        "max_returned_tokens": 26,
+        "native_warning_count": 0
+      },
+      "repeat": 1,
+      "rescore_matches": true,
+      "segmented": {
+        "asr_calls": 57,
+        "asr_rtf_against_original_audio": 0.8518206004220268,
+        "asr_wall_s": 140.48140160100024,
+        "condition": "bounded_vad_5s",
+        "empty_segment_files": 0,
+        "predictions_sha256": "e3bbb336dcb3d3a9b5babc419aa4f715a44746953be00010af253b676e32d8d6",
+        "rss_scope": "ASR+VAD 공존 프로세스",
+        "selected_frames": 2366401,
+        "timing_scope": "overall.rtf는 원본 오디오 길이 대비 전처리/구간화/ASR/결과 연결/검증/계측을 포함한 파일 파이프라인 비용. asr_rtf는 ASR 호출만. WAV I/O/검증용 참조 PCM/모델 로딩/워밍업/파일 기록 제외.",
+        "vad_neural_wall_s": 2.2865262600032565
+      },
+      "vad_loading": {
+        "cpu_s": 0.04617912900000043,
+        "resources": {
+          "rss_missing_count": 0,
+          "rss_observed_max_mib": 1309.296875,
+          "rss_sample_count": 2,
+          "sample_interval_s": 0.1
+        },
+        "wall_s": 0.046832697000127155
+      },
+      "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6"
+    },
+    {
+      "asr_loading": {
+        "cpu_s": 5.421896192,
+        "resources": {
+          "rss_missing_count": 0,
+          "rss_observed_max_mib": 1427.96875,
+          "rss_sample_count": 53,
+          "sample_interval_s": 0.1
+        },
+        "wall_s": 5.11986416700006
+      },
+      "control_valid": false,
+      "current_limits_observed": [
+        0
+      ],
+      "dataset": "kss",
+      "family": "qwen3_asr",
+      "guard_status": "completed",
+      "history_limits_after": 0,
+      "history_limits_before": 0,
+      "id": "offline-kss-qwen3_asr-t2-01",
+      "max_temperature_c": 73.8,
+      "model_files": {
+        "conv_frontend.onnx": "d22dc4423e0940e49884e903d2ea2f7e5567c14fc1aed97e4e26d6b8f208ef9e",
+        "decoder.int8.onnx": "4f6885be5959ae26af3089d38ee7972c5fafbeeb1cf8d5e76eab6d8b61ca5771",
+        "encoder.int8.onnx": "60748d3e6744a57c9c91e1b17424a6c2990567e8adceb0783940c03ed98fa9d9",
+        "tokenizer/merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+        "tokenizer/tokenizer_config.json": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c",
+        "tokenizer/vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      },
+      "num_threads": 2,
+      "operational_valid": true,
+      "overall": {
+        "cer": {
+          "deletions": 3,
+          "empty_reference_nonempty_hypotheses": 0,
+          "empty_reference_samples": 0,
+          "errors": 28,
+          "insertions": 1,
+          "reference_characters": 756,
+          "scope": "successful_nonempty_references",
+          "substitutions": 24,
+          "value": 0.037037037037037035
+        },
+        "complete": true,
+        "failed": 0,
+        "file_processing_s": {
+          "max": 3.955257151000069,
+          "mean": 2.3459469584200043,
+          "n": 50,
+          "p50": 2.3381816210001034,
+          "p95": 3.7400578520000636
+        },
+        "file_rtf": {
+          "max": 1.002483239513645,
+          "mean": 0.7311839006183611,
+          "n": 50,
+          "p50": 0.7238253624252552,
+          "p95": 0.9033716244854937
+        },
+        "interrupted": 0,
+        "mean_process_cpu_percent": 191.0917864621816,
+        "not_attempted": 0,
+        "planned": 50,
+        "reference_character_coverage": 1.0,
+        "rss_observed_max_mib": 1737.9375,
+        "rtf": 0.7112421729515714,
+        "successful": 50,
+        "total_audio_s": 164.919,
+        "total_inference_wall_s": 117.29734792100021
+      },
+      "phase": "offline",
+      "qwen_output_validation": {
+        "all_context_budgets_fit": true,
+        "max_returned_tokens": 26,
+        "native_warning_count": 0
+      },
+      "repeat": 1,
+      "rescore_matches": true,
+      "segmented": {
+        "asr_calls": 57,
+        "asr_rtf_against_original_audio": 0.6760507470940238,
+        "asr_wall_s": 111.49361315999931,
+        "condition": "bounded_vad_5s",
+        "empty_segment_files": 0,
+        "predictions_sha256": "fb8c43fba4850621b8fbb75a1780b7a8c830a1fc29b87e8a3508a6c8d4102d79",
+        "rss_scope": "ASR+VAD 공존 프로세스",
+        "selected_frames": 2366401,
+        "timing_scope": "overall.rtf는 원본 오디오 길이 대비 전처리/구간화/ASR/결과 연결/검증/계측을 포함한 파일 파이프라인 비용. asr_rtf는 ASR 호출만. WAV I/O/검증용 참조 PCM/모델 로딩/워밍업/파일 기록 제외.",
+        "vad_neural_wall_s": 2.3201274270043086
+      },
+      "vad_loading": {
+        "cpu_s": 0.04766999900000002,
+        "resources": {
+          "rss_missing_count": 0,
+          "rss_observed_max_mib": 1298.875,
+          "rss_sample_count": 2,
+          "sample_interval_s": 0.1
+        },
+        "wall_s": 0.0868251809999947
+      },
+      "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6"
+    },
+    {
+      "asr_loading": {
+        "cpu_s": 5.458185126,
+        "resources": {
+          "rss_missing_count": 0,
+          "rss_observed_max_mib": 1433.5,
+          "rss_sample_count": 53,
+          "sample_interval_s": 0.1
+        },
+        "wall_s": 5.171472880999772
+      },
+      "control_valid": false,
+      "current_limits_observed": [
+        0
+      ],
+      "dataset": "synthetic120",
+      "family": "qwen3_asr",
+      "guard_status": "completed",
+      "history_limits_after": 0,
+      "history_limits_before": 0,
+      "id": "offline-synthetic120-qwen3_asr-t2-01",
+      "max_temperature_c": 71.6,
+      "model_files": {
+        "conv_frontend.onnx": "d22dc4423e0940e49884e903d2ea2f7e5567c14fc1aed97e4e26d6b8f208ef9e",
+        "decoder.int8.onnx": "4f6885be5959ae26af3089d38ee7972c5fafbeeb1cf8d5e76eab6d8b61ca5771",
+        "encoder.int8.onnx": "60748d3e6744a57c9c91e1b17424a6c2990567e8adceb0783940c03ed98fa9d9",
+        "tokenizer/merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+        "tokenizer/tokenizer_config.json": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c",
+        "tokenizer/vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      },
+      "num_threads": 2,
+      "operational_valid": true,
+      "overall": {
+        "cer": {
+          "deletions": 3,
+          "empty_reference_nonempty_hypotheses": 0,
+          "empty_reference_samples": 0,
+          "errors": 27,
+          "insertions": 2,
+          "reference_characters": 519,
+          "scope": "successful_nonempty_references",
+          "substitutions": 22,
+          "value": 0.05202312138728324
+        },
+        "complete": true,
+        "failed": 0,
+        "file_processing_s": {
+          "max": 80.29244762000008,
+          "mean": 80.29244762000008,
+          "n": 1,
+          "p50": null,
+          "p95": null
+        },
+        "file_rtf": {
+          "max": 0.665847320614288,
+          "mean": 0.665847320614288,
+          "n": 1,
+          "p50": null,
+          "p95": null
+        },
+        "interrupted": 0,
+        "mean_process_cpu_percent": 192.31438628424243,
+        "not_attempted": 0,
+        "planned": 1,
+        "reference_character_coverage": 1.0,
+        "rss_observed_max_mib": 1744.390625,
+        "rtf": 0.665847320614288,
+        "successful": 1,
+        "total_audio_s": 120.586875,
+        "total_inference_wall_s": 80.29244762000008
+      },
+      "phase": "offline",
+      "qwen_output_validation": {
+        "all_context_budgets_fit": true,
+        "max_returned_tokens": 23,
+        "native_warning_count": 0
+      },
+      "repeat": 1,
+      "rescore_matches": true,
+      "segmented": {
+        "asr_calls": 43,
+        "asr_rtf_against_original_audio": 0.6309268919440788,
+        "asr_wall_s": 76.08150225299914,
+        "condition": "bounded_vad_5s",
+        "empty_segment_files": 0,
+        "predictions_sha256": "b605c923764fba0ecf50497f177db7b1b401dc7aa9d3813dcae1a50feacbb447",
+        "rss_scope": "ASR+VAD 공존 프로세스",
+        "selected_frames": 1587438,
+        "timing_scope": "overall.rtf는 원본 오디오 길이 대비 전처리/구간화/ASR/결과 연결/검증/계측을 포함한 파일 파이프라인 비용. asr_rtf는 ASR 호출만. WAV I/O/검증용 참조 PCM/모델 로딩/워밍업/파일 기록 제외.",
+        "vad_neural_wall_s": 1.6845943039843405
+      },
+      "vad_loading": {
+        "cpu_s": 0.046408576000000146,
+        "resources": {
+          "rss_missing_count": 0,
+          "rss_observed_max_mib": 1304.34375,
+          "rss_sample_count": 2,
+          "sample_interval_s": 0.1
+        },
+        "wall_s": 0.08557793600039076
+      },
+      "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6"
+    },
+    {
+      "asr_loading": {
+        "cpu_s": 5.261371968000001,
+        "resources": {
+          "rss_missing_count": 0,
+          "rss_observed_max_mib": 1404.625,
+          "rss_sample_count": 52,
+          "sample_interval_s": 0.1
+        },
+        "wall_s": 5.055348014000174
+      },
+      "control_valid": false,
+      "current_limits_observed": [
+        0
+      ],
+      "dataset": "synthetic120",
+      "family": "qwen3_asr",
+      "guard_status": "completed",
+      "history_limits_after": 0,
+      "history_limits_before": 0,
+      "id": "offline-synthetic120-qwen3_asr-t1-01",
+      "max_temperature_c": 68.85,
+      "model_files": {
+        "conv_frontend.onnx": "d22dc4423e0940e49884e903d2ea2f7e5567c14fc1aed97e4e26d6b8f208ef9e",
+        "decoder.int8.onnx": "4f6885be5959ae26af3089d38ee7972c5fafbeeb1cf8d5e76eab6d8b61ca5771",
+        "encoder.int8.onnx": "60748d3e6744a57c9c91e1b17424a6c2990567e8adceb0783940c03ed98fa9d9",
+        "tokenizer/merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+        "tokenizer/tokenizer_config.json": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c",
+        "tokenizer/vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      },
+      "num_threads": 1,
+      "operational_valid": true,
+      "overall": {
+        "cer": {
+          "deletions": 3,
+          "empty_reference_nonempty_hypotheses": 0,
+          "empty_reference_samples": 0,
+          "errors": 27,
+          "insertions": 2,
+          "reference_characters": 519,
+          "scope": "successful_nonempty_references",
+          "substitutions": 22,
+          "value": 0.05202312138728324
+        },
+        "complete": true,
+        "failed": 0,
+        "file_processing_s": {
+          "max": 102.51934858699997,
+          "mean": 102.51934858699997,
+          "n": 1,
+          "p50": null,
+          "p95": null
+        },
+        "file_rtf": {
+          "max": 0.850170042029864,
+          "mean": 0.850170042029864,
+          "n": 1,
+          "p50": null,
+          "p95": null
+        },
+        "interrupted": 0,
+        "mean_process_cpu_percent": 100.16635942419718,
+        "not_attempted": 0,
+        "planned": 1,
+        "reference_character_coverage": 1.0,
+        "rss_observed_max_mib": 1738.421875,
+        "rtf": 0.850170042029864,
+        "successful": 1,
+        "total_audio_s": 120.586875,
+        "total_inference_wall_s": 102.51934858699997
+      },
+      "phase": "offline",
+      "qwen_output_validation": {
+        "all_context_budgets_fit": true,
+        "max_returned_tokens": 23,
+        "native_warning_count": 0
+      },
+      "repeat": 1,
+      "rescore_matches": true,
+      "segmented": {
+        "asr_calls": 43,
+        "asr_rtf_against_original_audio": 0.8149572768595305,
+        "asr_wall_s": 98.2731512750006,
+        "condition": "bounded_vad_5s",
+        "empty_segment_files": 0,
+        "predictions_sha256": "d43f8d80ed7cf78ff90a15791944742a853dbde88dc82ea9e07aa87bdcf41f72",
+        "rss_scope": "ASR+VAD 공존 프로세스",
+        "selected_frames": 1587438,
+        "timing_scope": "overall.rtf는 원본 오디오 길이 대비 전처리/구간화/ASR/결과 연결/검증/계측을 포함한 파일 파이프라인 비용. asr_rtf는 ASR 호출만. WAV I/O/검증용 참조 PCM/모델 로딩/워밍업/파일 기록 제외.",
+        "vad_neural_wall_s": 1.7106829000022117
+      },
+      "vad_loading": {
+        "cpu_s": 0.04750288700000027,
+        "resources": {
+          "rss_missing_count": 0,
+          "rss_observed_max_mib": 1275.875,
+          "rss_sample_count": 2,
+          "sample_interval_s": 0.1
+        },
+        "wall_s": 0.08666425499995967
+      },
+      "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6"
+    },
+    {
+      "asr_loading": {
+        "cpu_s": 2.11398366,
+        "resources": {
+          "rss_missing_count": 0,
+          "rss_observed_max_mib": 541.953125,
+          "rss_sample_count": 20,
+          "sample_interval_s": 0.1
+        },
+        "wall_s": 1.856347587000073
+      },
+      "control_valid": false,
+      "current_limits_observed": [
+        0
+      ],
+      "dataset": "synthetic120",
+      "family": "sensevoice",
+      "guard_status": "completed",
+      "history_limits_after": 0,
+      "history_limits_before": 0,
+      "id": "offline-synthetic120-sensevoice-t2-01",
+      "max_temperature_c": 65.55,
+      "model_files": {
+        "model": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51",
+        "tokens": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc"
+      },
+      "num_threads": 2,
+      "operational_valid": true,
+      "overall": {
+        "cer": {
+          "deletions": 4,
+          "empty_reference_nonempty_hypotheses": 0,
+          "empty_reference_samples": 0,
+          "errors": 32,
+          "insertions": 4,
+          "reference_characters": 519,
+          "scope": "successful_nonempty_references",
+          "substitutions": 24,
+          "value": 0.06165703275529865
+        },
+        "complete": true,
+        "failed": 0,
+        "file_processing_s": {
+          "max": 10.333858727000006,
+          "mean": 10.333858727000006,
+          "n": 1,
+          "p50": null,
+          "p95": null
+        },
+        "file_rtf": {
+          "max": 0.08569638053063408,
+          "mean": 0.08569638053063408,
+          "n": 1,
+          "p50": null,
+          "p95": null
+        },
+        "interrupted": 0,
+        "mean_process_cpu_percent": 164.21904732121843,
+        "not_attempted": 0,
+        "planned": 1,
+        "reference_character_coverage": 1.0,
+        "rss_observed_max_mib": 584.65625,
+        "rtf": 0.08569638053063408,
+        "successful": 1,
+        "total_audio_s": 120.586875,
+        "total_inference_wall_s": 10.333858727000006
+      },
+      "phase": "offline",
+      "repeat": 1,
+      "rescore_matches": true,
+      "segmented": {
+        "asr_calls": 43,
+        "asr_rtf_against_original_audio": 0.050494843613791654,
+        "asr_wall_s": 6.0890153950008425,
+        "condition": "bounded_vad_5s",
+        "empty_segment_files": 0,
+        "predictions_sha256": "8493220453c0525f471f1f018936c0b419209607436cb600ad7399d856d72428",
+        "rss_scope": "ASR+VAD 공존 프로세스",
+        "selected_frames": 1587438,
+        "timing_scope": "overall.rtf는 원본 오디오 길이 대비 전처리/구간화/ASR/결과 연결/검증/계측을 포함한 파일 파이프라인 비용. asr_rtf는 ASR 호출만. WAV I/O/검증용 참조 PCM/모델 로딩/워밍업/파일 기록 제외.",
+        "vad_neural_wall_s": 1.686756846006574
+      },
+      "vad_loading": {
+        "cpu_s": 0.04647183300000002,
+        "resources": {
+          "rss_missing_count": 0,
+          "rss_observed_max_mib": 560.15625,
+          "rss_sample_count": 2,
+          "sample_interval_s": 0.1
+        },
+        "wall_s": 0.08576084400010586
+      },
+      "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6"
+    },
+    {
+      "changed_segment_indices": [],
+      "changed_segment_transcripts": 0,
+      "control_valid": false,
+      "current_limits_observed": [
+        0
+      ],
+      "dataset": "kss",
+      "dropped_owned_audio_s": 0.0,
+      "dropped_source_ids": [],
+      "family": "sensevoice",
+      "guard_status": "completed",
+      "history_limits_after": 0,
+      "history_limits_before": 0,
+      "id": "concurrent-kss-sensevoice-t2-01",
+      "max_temperature_c": 61.7,
+      "model_files": {
+        "model": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51",
+        "tokens": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc"
+      },
+      "num_threads": 2,
+      "operational_valid": true,
+      "phase": "concurrent",
+      "repeat": 1,
+      "rescore_matches": true,
+      "same_offline_online_pcm": true,
+      "summary": {
+        "audio_s": 164.919,
+        "chunk_processing_s": {
+          "max": 0.1938863280000005,
+          "mean": 0.019266834755757807,
+          "n": 1650,
+          "p50": 0.004381276000003709,
+          "p95": 0.05543465499999911
+        },
+        "coordinator_active_rtf": 0.19272677266421862,
+        "first_partial_from_source_start_s": {
+          "max": 1.4748975390000112,
+          "mean": 0.9745586909000018,
+          "n": 50,
+          "p50": 0.8559087340000104,
+          "p95": 1.4648400640000148
+        },
+        "input_backlog_audio_s": {
+          "max": 0.0,
+          "mean": 0.0,
+          "n": 1653,
+          "p50": 0.0,
+          "p95": 0.0
+        },
+        "input_backlog_event_max_audio_s": 0.1,
+        "input_complete": true,
+        "input_dropped_audio_s": 0.0,
+        "input_dropped_chunks": 0,
+        "input_queue_wait_s": {
+          "max": 0.09460011900000609,
+          "mean": 0.0014683934606056688,
+          "n": 1650,
+          "p50": 0.0006465390000016669,
+          "p95": 0.001173281999996334
+        },
+        "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+        "no_partial_sources": 0,
+        "planned_sources": 50,
+        "producer_cpu_s": 0.250366036,
+        "producer_lifetime_peak_rss_mib": 295.640625,
+        "refine": {
+          "backlog_audio_s": {
+            "max": 0.0,
+            "mean": 0.0,
+            "n": 1654,
+            "p50": 0.0,
+            "p95": 0.0
+          },
+          "backlog_end_audio_s": 0.0,
+          "backlog_event_max_audio_s": 4.5484375,
+          "backlog_event_max_payload_audio_s": 4.5484375,
+          "backlog_event_max_windows": 1,
+          "cer": {
+            "cer": {
+              "deletions": 9,
+              "errors": 42,
+              "insertions": 7,
+              "reference_characters": 756,
+              "substitutions": 26,
+              "value": 0.05555555555555555
+            },
+            "complete": true,
+            "planned": 50,
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+            "successful": 50
+          },
+          "complete": true,
+          "decision_audio_after_owned_end_s": {
+            "max": 0.3,
+            "mean": 0.06737609649122805,
+            "n": 57,
+            "p50": 0.0,
+            "p95": 0.3
+          },
+          "decode_s": {
+            "max": 0.302851131,
+            "mean": 0.1819793597192983,
+            "n": 57,
+            "p50": 0.184163367,
+            "p95": 0.269101892
+          },
+          "dispatch_after_vad_emission_s": {
+            "max": 0.015968616,
+            "mean": 0.006305277000000001,
+            "n": 57,
+            "p50": 0.006348524,
+            "p95": 0.010505521
+          },
+          "dispatch_from_window_end_s": {
+            "max": 0.4537852310000119,
+            "mean": 0.13497991789473746,
+            "n": 57,
+            "p50": 0.07549115100000847,
+            "p95": 0.43432392200000436
+          },
+          "dropped_windows": 0,
+          "enqueued": 57,
+          "failed_windows": 0,
+          "final_from_source_file_end_s": {
+            "max": 0.3865320670000001,
+            "mean": 0.2448137953600029,
+            "n": 50,
+            "p50": 0.24933762700000273,
+            "p95": 0.33790798100000075
+          },
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님.",
+          "missing_results": 0,
+          "no_vad_segment_sources": 0,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "planned_windows": 57,
+          "queue_wait_s": {
+            "max": 0.002170101,
+            "mean": 0.0009929297192982458,
+            "n": 57,
+            "p50": 0.000925022,
+            "p95": 0.002089897
+          },
+          "refine_calls_with_zip_overlap": 57,
+          "successful": 57,
+          "vad_emission_from_owned_end_s": {
+            "max": 0.4451186299999996,
+            "mean": 0.1286746408947356,
+            "n": 57,
+            "p50": 0.06742471399999772,
+            "p95": 0.43084851999999785
+          },
+          "vad_emission_to_return_s": {
+            "max": 0.321377109,
+            "mean": 0.1894752838947368,
+            "n": 57,
+            "p50": 0.190897021,
+            "p95": 0.280949456
+          },
+          "window_end_to_return_s": {
+            "max": 0.7246281480000221,
+            "mean": 0.3181499247894755,
+            "n": 57,
+            "p50": 0.27203561899999995,
+            "p95": 0.6364919780000093
+          },
+          "zip_refine_call_overlap_s": 5.930637612000001
+        },
+        "refine_family": "sensevoice",
+        "refine_policy": "vad0",
+        "refine_reason": null,
+        "refine_threads": 2,
+        "resources": {
+          "complete_model_rss_samples": 1643,
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling"
+          ],
+          "model_group_rss_observed_max_mib": 670.234375,
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "observed_model_cpu_percent": 35.12852324286702,
+          "paired_intervals": 1642,
+          "paired_wall_s": 165.16492765400002,
+          "sample_count": 1643,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+        },
+        "schema": "concurrent-wav-summary-v1",
+        "source_sha256": {
+          "capture/backlog.jsonl": "eaece0b67454007828355060064fbf02d35a3f8e46452b0e9af77ead77628670",
+          "capture/decoder.jsonl": "bb1a232ff26dd1750220c8234c2f1d3e075f52efcc8f8ad1e141e218cdfe342a",
+          "capture/producer.jsonl": "a6401e02ac13cb3d42969c7d7221ebb87139b878e6a024a4ab09455422440a75",
+          "process-resources.jsonl": "b39a3b2e0eef01b453a49ee840cf3e25334ccdeace103131449ca3849aa3653c",
+          "refine-jobs.jsonl": "e96dbc6e3b44b79a3f8e280afdcc36c199055680fc1cb8d6dea6d8800eddc7f5",
+          "refine-results.jsonl": "00fce331e6c5530e7be97f8078b878cf26a4f618457940f1ac438db4ff503988",
+          "thread-resources.jsonl": "541cb7f99864de63e83c3e36caebaef2e5f3f95d5ebb4d0087a33a3ef4f571e0",
+          "track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+          "vad-sources.jsonl": "d00ac7fe887a12fb6751e830e1a51644ba9b2a9f8e9c6868598125ce9a439f26",
+          "worker.json": "fd5ffe1145de06a4be7fa3f2bc869f6e180870bff9f945afd851bea6355c65ac",
+          "zip-events.jsonl": "39c9f6ca0edc86ee2fc5cc3fbef9ff6d739c2cdd3f85dbe723199f4072b2cf53",
+          "zip-sources.jsonl": "49fe5a977a6422e8303d7292163732de8f4bdc890b98f3c9db92901da394060b"
+        },
+        "status": "completed",
+        "threads": {
+          "refine": {
+            "active_at_least_1_percent": 2,
+            "observed_tid_max": 5,
+            "rows": [
+              {
+                "cpu_s": 12.669999999999975,
+                "mean_cpu_percent": 7.680596637278219,
+                "paired_s": 164.96114297300028,
+                "tid": "5160"
+              },
+              {
+                "cpu_s": 10.580000000000004,
+                "mean_cpu_percent": 6.413631603978197,
+                "paired_s": 164.96114297300028,
+                "tid": "5165"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 164.96114297300028,
+                "tid": "5162"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 164.96114297300028,
+                "tid": "5163"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 164.96114297300028,
+                "tid": "5164"
+              }
+            ],
+            "runtime_roles_confirmed": false,
+            "snapshots": 165
+          },
+          "zip": {
+            "active_at_least_1_percent": 1,
+            "observed_tid_max": 8,
+            "rows": [
+              {
+                "cpu_s": 33.510000000000026,
+                "mean_cpu_percent": 20.3138727776299,
+                "paired_s": 164.96115913899985,
+                "tid": "5156"
+              },
+              {
+                "cpu_s": 0.5400000000000003,
+                "mean_cpu_percent": 0.32734978513638147,
+                "paired_s": 164.96115913899985,
+                "tid": "5189"
+              },
+              {
+                "cpu_s": 0.01,
+                "mean_cpu_percent": 0.006174899305107666,
+                "paired_s": 161.94596066899976,
+                "tid": "5198"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 164.96115913899985,
+                "tid": "5174"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 164.96115913899985,
+                "tid": "5175"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 164.96115913899985,
+                "tid": "5176"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 164.96115913899985,
+                "tid": "5186"
+              }
+            ],
+            "runtime_roles_confirmed": false,
+            "snapshots": 165
+          }
+        },
+        "track_float32_sha256": "8caf6f852b7eced49b0f35674f05c8e889d31bece921510b3cebb7d59ae9142e",
+        "unmeasured": {
+          "acoustic_endpoint_latency_s": null,
+          "aligned_recognition_latency_s": null,
+          "hybrid_merged_cer": null,
+          "microphone_overruns": null,
+          "ui_display_latency_s": null
+        },
+        "zip_call_rtf": 0.150945399050443,
+        "zip_cer": {
+          "cer": {
+            "deletions": 11,
+            "errors": 88,
+            "insertions": 6,
+            "reference_characters": 756,
+            "substitutions": 71,
+            "value": 0.1164021164021164
+          },
+          "complete": true,
+          "planned": 50,
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+          "successful": 50
+        },
+        "zip_finalize_from_source_end_s": {
+          "max": 0.2508950070000111,
+          "mean": 0.17218342802000117,
+          "n": 50,
+          "p50": 0.16797425899999752,
+          "p95": 0.24696901600000132
+        },
+        "zip_threads": 1
+      },
+      "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6"
+    },
+    {
+      "changed_segment_indices": [],
+      "changed_segment_transcripts": 0,
+      "control_valid": false,
+      "current_limits_observed": [
+        0
+      ],
+      "dataset": "kss",
+      "dropped_owned_audio_s": 0.0,
+      "dropped_source_ids": [],
+      "family": "qwen3_asr",
+      "guard_status": "completed",
+      "history_limits_after": 0,
+      "history_limits_before": 0,
+      "id": "concurrent-kss-qwen3_asr-t1-01",
+      "max_temperature_c": 69.4,
+      "model_files": {
+        "conv_frontend.onnx": "d22dc4423e0940e49884e903d2ea2f7e5567c14fc1aed97e4e26d6b8f208ef9e",
+        "decoder.int8.onnx": "4f6885be5959ae26af3089d38ee7972c5fafbeeb1cf8d5e76eab6d8b61ca5771",
+        "encoder.int8.onnx": "60748d3e6744a57c9c91e1b17424a6c2990567e8adceb0783940c03ed98fa9d9",
+        "tokenizer/merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+        "tokenizer/tokenizer_config.json": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c",
+        "tokenizer/vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      },
+      "num_threads": 1,
+      "operational_valid": true,
+      "phase": "concurrent",
+      "qwen_output_validation": {
+        "all_context_budgets_fit": true,
+        "max_returned_tokens": 26,
+        "native_warning_count": 0
+      },
+      "repeat": 1,
+      "rescore_matches": true,
+      "same_offline_online_pcm": true,
+      "summary": {
+        "audio_s": 164.919,
+        "chunk_processing_s": {
+          "max": 0.1743858110000005,
+          "mean": 0.022078615043030332,
+          "n": 1650,
+          "p50": 0.005525855000000135,
+          "p95": 0.06434544899999395
+        },
+        "coordinator_active_rtf": 0.2208399702642156,
+        "first_partial_from_source_start_s": {
+          "max": 1.4783626970000228,
+          "mean": 0.9829444001200025,
+          "n": 50,
+          "p50": 0.8593557160000014,
+          "p95": 1.4709208610000246
+        },
+        "input_backlog_audio_s": {
+          "max": 0.0,
+          "mean": 0.0,
+          "n": 1653,
+          "p50": 0.0,
+          "p95": 0.0
+        },
+        "input_backlog_event_max_audio_s": 0.1,
+        "input_complete": true,
+        "input_dropped_audio_s": 0.0,
+        "input_dropped_chunks": 0,
+        "input_queue_wait_s": {
+          "max": 0.07541554600000211,
+          "mean": 0.0012898363260605277,
+          "n": 1650,
+          "p50": 0.000728390999995554,
+          "p95": 0.001239485999995793
+        },
+        "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+        "no_partial_sources": 0,
+        "planned_sources": 50,
+        "producer_cpu_s": 0.347800522,
+        "producer_lifetime_peak_rss_mib": 298.671875,
+        "refine": {
+          "backlog_audio_s": {
+            "max": 3.01325,
+            "mean": 0.3035289598108745,
+            "n": 1692,
+            "p50": 0.0,
+            "p95": 2.0146875
+          },
+          "backlog_end_audio_s": 0.0,
+          "backlog_event_max_audio_s": 4.5484375,
+          "backlog_event_max_payload_audio_s": 4.5484375,
+          "backlog_event_max_windows": 2,
+          "cer": {
+            "cer": {
+              "deletions": 3,
+              "errors": 28,
+              "insertions": 1,
+              "reference_characters": 756,
+              "substitutions": 24,
+              "value": 0.037037037037037035
+            },
+            "complete": true,
+            "planned": 50,
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+            "successful": 50
+          },
+          "complete": true,
+          "decision_audio_after_owned_end_s": {
+            "max": 0.3,
+            "mean": 0.06737609649122805,
+            "n": 57,
+            "p50": 0.0,
+            "p95": 0.3
+          },
+          "decode_s": {
+            "max": 4.036119939,
+            "mean": 2.5594453511052637,
+            "n": 57,
+            "p50": 2.544569905,
+            "p95": 3.648422116
+          },
+          "dispatch_after_vad_emission_s": {
+            "max": 0.010210261,
+            "mean": 0.00596087703508772,
+            "n": 57,
+            "p50": 0.006179024,
+            "p95": 0.009463202
+          },
+          "dispatch_from_window_end_s": {
+            "max": 0.4521771569999977,
+            "mean": 0.13293697515789493,
+            "n": 57,
+            "p50": 0.07107760999999968,
+            "p95": 0.4288665959999918
+          },
+          "dropped_windows": 0,
+          "enqueued": 57,
+          "failed_windows": 0,
+          "final_from_source_file_end_s": {
+            "max": 4.03248919699999,
+            "mean": 3.2290326370800004,
+            "n": 50,
+            "p50": 3.2514534899999887,
+            "p95": 3.7121491850000012
+          },
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님.",
+          "missing_results": 0,
+          "no_vad_segment_sources": 0,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "planned_windows": 57,
+          "queue_wait_s": {
+            "max": 2.225755342,
+            "mean": 0.6083076763684211,
+            "n": 57,
+            "p50": 0.180611482,
+            "p95": 2.006121174
+          },
+          "refine_calls_with_zip_overlap": 57,
+          "successful": 57,
+          "vad_emission_from_owned_end_s": {
+            "max": 0.44615794899999983,
+            "mean": 0.12697609812280752,
+            "n": 57,
+            "p50": 0.0654220949999953,
+            "p95": 0.420426582999994
+          },
+          "vad_emission_to_return_s": {
+            "max": 4.047402964,
+            "mean": 3.1739037204210536,
+            "n": 57,
+            "p50": 3.205355303,
+            "p95": 3.659667621
+          },
+          "window_end_to_return_s": {
+            "max": 4.396239197,
+            "mean": 3.3008798185438577,
+            "n": 57,
+            "p50": 3.274819792999999,
+            "p95": 3.826913780999999
+          },
+          "zip_refine_call_overlap_s": 25.44271686500001
+        },
+        "refine_family": "qwen3_asr",
+        "refine_policy": "vad0",
+        "refine_reason": null,
+        "refine_threads": 1,
+        "resources": {
+          "complete_model_rss_samples": 1679,
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling"
+          ],
+          "model_group_rss_observed_max_mib": 2031.828125,
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "observed_model_cpu_percent": 109.82525248757347,
+          "paired_intervals": 1678,
+          "paired_wall_s": 168.9320040679998,
+          "sample_count": 1679,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+        },
+        "schema": "concurrent-wav-summary-v1",
+        "source_sha256": {
+          "capture/backlog.jsonl": "732a3747fce17aacb98949e5d7a8fc74db050f207df6da368f2681e8af00c228",
+          "capture/decoder.jsonl": "7aa0ef285ff007e2d2263713821d7c3433a8a0c1cb01f9427f6d35950155958b",
+          "capture/producer.jsonl": "dd2f849381785811dc5e54f9bd8be88276de110958ddd1ffdf1b4c10e3b69354",
+          "process-resources.jsonl": "63a77130d1056aaef26b8f8010673c7fa6fcb71aa8ad5482d0996497b1f553ce",
+          "refine-jobs.jsonl": "3ba2f99aa35548e5ea46ca70acb67e4d32e214ab2986be87eda7055a2ea3f788",
+          "refine-results.jsonl": "e8db1fa4154b361fc00087f6a32708632c5ee51dd8196d55c5369385d3b4b94e",
+          "thread-resources.jsonl": "af7f894ad46551fb2a2e7a8db4b3fd6b27c27ed91e15834c8be4e1bc7905078e",
+          "track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+          "vad-sources.jsonl": "cf66da2c681ce33acf35f862938f220be2bef921861393f1291bee4723d093f3",
+          "worker.json": "b7e2db0a019423ddf63acb82e6841e8fdac1efa7937b895c2e344c4d0cdfdcbc",
+          "zip-events.jsonl": "5038d7e19765d745f563e8fccaf95086c2d52cd5292e2d4575016a47e7de9329",
+          "zip-sources.jsonl": "57cb9a21111426493dcde29ee05dd2ee57a8e4f7aa27cd84f9cb889a4acc5115"
+        },
+        "status": "completed",
+        "threads": {
+          "refine": {
+            "active_at_least_1_percent": 1,
+            "observed_tid_max": 4,
+            "rows": [
+              {
+                "cpu_s": 145.30000000000013,
+                "mean_cpu_percent": 86.4223174637651,
+                "paired_s": 168.12786819899975,
+                "tid": "5597"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 168.12786819899975,
+                "tid": "5599"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 168.12786819899975,
+                "tid": "5600"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 168.12786819899975,
+                "tid": "5601"
+              }
+            ],
+            "runtime_roles_confirmed": false,
+            "snapshots": 168
+          },
+          "zip": {
+            "active_at_least_1_percent": 1,
+            "observed_tid_max": 8,
+            "rows": [
+              {
+                "cpu_s": 38.51000000000001,
+                "mean_cpu_percent": 22.90518475642523,
+                "paired_s": 168.12787327199976,
+                "tid": "5589"
+              },
+              {
+                "cpu_s": 0.7800000000000005,
+                "mean_cpu_percent": 0.46393259179464247,
+                "paired_s": 168.12787327199976,
+                "tid": "5644"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 168.12787327199976,
+                "tid": "5630"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 168.12787327199976,
+                "tid": "5631"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 168.12787327199976,
+                "tid": "5632"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 168.12787327199976,
+                "tid": "5643"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 165.11447662399996,
+                "tid": "5653"
+              }
+            ],
+            "runtime_roles_confirmed": false,
+            "snapshots": 168
+          }
+        },
+        "track_float32_sha256": "8caf6f852b7eced49b0f35674f05c8e889d31bece921510b3cebb7d59ae9142e",
+        "unmeasured": {
+          "acoustic_endpoint_latency_s": null,
+          "aligned_recognition_latency_s": null,
+          "hybrid_merged_cer": null,
+          "microphone_overruns": null,
+          "ui_display_latency_s": null
+        },
+        "zip_call_rtf": 0.17028958568145589,
+        "zip_cer": {
+          "cer": {
+            "deletions": 11,
+            "errors": 88,
+            "insertions": 6,
+            "reference_characters": 756,
+            "substitutions": 71,
+            "value": 0.1164021164021164
+          },
+          "complete": true,
+          "planned": 50,
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+          "successful": 50
+        },
+        "zip_finalize_from_source_end_s": {
+          "max": 0.23226290400000238,
+          "mean": 0.15863458234000108,
+          "n": 50,
+          "p50": 0.15251271099999997,
+          "p95": 0.22467429000001005
+        },
+        "zip_threads": 1
+      },
+      "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6"
+    },
+    {
+      "changed_segment_indices": [],
+      "changed_segment_transcripts": 0,
+      "control_valid": false,
+      "current_limits_observed": [
+        0
+      ],
+      "dataset": "kss",
+      "dropped_owned_audio_s": 0.0,
+      "dropped_source_ids": [],
+      "family": "qwen3_asr",
+      "guard_status": "completed",
+      "history_limits_after": 0,
+      "history_limits_before": 0,
+      "id": "concurrent-kss-qwen3_asr-t2-01",
+      "max_temperature_c": 71.6,
+      "model_files": {
+        "conv_frontend.onnx": "d22dc4423e0940e49884e903d2ea2f7e5567c14fc1aed97e4e26d6b8f208ef9e",
+        "decoder.int8.onnx": "4f6885be5959ae26af3089d38ee7972c5fafbeeb1cf8d5e76eab6d8b61ca5771",
+        "encoder.int8.onnx": "60748d3e6744a57c9c91e1b17424a6c2990567e8adceb0783940c03ed98fa9d9",
+        "tokenizer/merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+        "tokenizer/tokenizer_config.json": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c",
+        "tokenizer/vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      },
+      "num_threads": 2,
+      "operational_valid": true,
+      "phase": "concurrent",
+      "qwen_output_validation": {
+        "all_context_budgets_fit": true,
+        "max_returned_tokens": 26,
+        "native_warning_count": 0
+      },
+      "repeat": 1,
+      "rescore_matches": true,
+      "same_offline_online_pcm": true,
+      "summary": {
+        "audio_s": 164.919,
+        "chunk_processing_s": {
+          "max": 0.25062897000000106,
+          "mean": 0.025782518287272856,
+          "n": 1650,
+          "p50": 0.0070912130000095885,
+          "p95": 0.0859047709999885
+        },
+        "coordinator_active_rtf": 0.2578630195732823,
+        "first_partial_from_source_start_s": {
+          "max": 1.5131278480000105,
+          "mean": 0.9979845904400009,
+          "n": 50,
+          "p50": 0.8747803050000016,
+          "p95": 1.4986510379999913
+        },
+        "input_backlog_audio_s": {
+          "max": 0.1,
+          "mean": 0.00018148820326678767,
+          "n": 1653,
+          "p50": 0.0,
+          "p95": 0.0
+        },
+        "input_backlog_event_max_audio_s": 0.2,
+        "input_complete": true,
+        "input_dropped_audio_s": 0.0,
+        "input_dropped_chunks": 0,
+        "input_queue_wait_s": {
+          "max": 0.15205330000000217,
+          "mean": 0.0018180684672728935,
+          "n": 1650,
+          "p50": 0.0007901690000000627,
+          "p95": 0.0016125060000007352
+        },
+        "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+        "no_partial_sources": 0,
+        "planned_sources": 50,
+        "producer_cpu_s": 0.50574891,
+        "producer_lifetime_peak_rss_mib": 294.921875,
+        "refine": {
+          "backlog_audio_s": {
+            "max": 2.0146875,
+            "mean": 0.0803995919881306,
+            "n": 1685,
+            "p50": 0.0,
+            "p95": 0.8340625
+          },
+          "backlog_end_audio_s": 0.0,
+          "backlog_event_max_audio_s": 4.5484375,
+          "backlog_event_max_payload_audio_s": 4.5484375,
+          "backlog_event_max_windows": 1,
+          "cer": {
+            "cer": {
+              "deletions": 3,
+              "errors": 28,
+              "insertions": 1,
+              "reference_characters": 756,
+              "substitutions": 24,
+              "value": 0.037037037037037035
+            },
+            "complete": true,
+            "planned": 50,
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+            "successful": 50
+          },
+          "complete": true,
+          "decision_audio_after_owned_end_s": {
+            "max": 0.3,
+            "mean": 0.06737609649122805,
+            "n": 57,
+            "p50": 0.0,
+            "p95": 0.3
+          },
+          "decode_s": {
+            "max": 3.294871773,
+            "mean": 2.0551314331578947,
+            "n": 57,
+            "p50": 2.123337268,
+            "p95": 2.991669972
+          },
+          "dispatch_after_vad_emission_s": {
+            "max": 0.010268742,
+            "mean": 0.0060656880350877206,
+            "n": 57,
+            "p50": 0.005996115,
+            "p95": 0.009548537
+          },
+          "dispatch_from_window_end_s": {
+            "max": 0.458187848999998,
+            "mean": 0.1342967896666683,
+            "n": 57,
+            "p50": 0.07313638400000144,
+            "p95": 0.43865738099999874
+          },
+          "dropped_windows": 0,
+          "enqueued": 57,
+          "failed_windows": 0,
+          "final_from_source_file_end_s": {
+            "max": 3.310582992999997,
+            "mean": 2.3560220297000023,
+            "n": 50,
+            "p50": 2.3067190250000067,
+            "p95": 3.027805210000004
+          },
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님.",
+          "missing_results": 0,
+          "no_vad_segment_sources": 0,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "planned_windows": 57,
+          "queue_wait_s": {
+            "max": 1.53805823,
+            "mean": 0.2041811480877193,
+            "n": 57,
+            "p50": 0.001104727,
+            "p95": 0.953931234
+          },
+          "refine_calls_with_zip_overlap": 57,
+          "successful": 57,
+          "vad_emission_from_owned_end_s": {
+            "max": 0.4564705839999874,
+            "mean": 0.12823110163157955,
+            "n": 57,
+            "p50": 0.06805338899999924,
+            "p95": 0.43423788300000865
+          },
+          "vad_emission_to_return_s": {
+            "max": 3.309835144,
+            "mean": 2.265565617701754,
+            "n": 57,
+            "p50": 2.240354805,
+            "p95": 3.003432276
+          },
+          "window_end_to_return_s": {
+            "max": 3.6743329930000073,
+            "mean": 2.3937967193333347,
+            "n": 57,
+            "p50": 2.3329371780000017,
+            "p95": 3.064818387
+          },
+          "zip_refine_call_overlap_s": 26.721844506999997
+        },
+        "refine_family": "qwen3_asr",
+        "refine_policy": "vad0",
+        "refine_reason": null,
+        "refine_threads": 2,
+        "resources": {
+          "complete_model_rss_samples": 1665,
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling"
+          ],
+          "model_group_rss_observed_max_mib": 2023.28125,
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "observed_model_cpu_percent": 166.5432955510584,
+          "paired_intervals": 1664,
+          "paired_wall_s": 168.2085124309997,
+          "sample_count": 1665,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+        },
+        "schema": "concurrent-wav-summary-v1",
+        "source_sha256": {
+          "capture/backlog.jsonl": "4e4cefe039319f561d1d0efe762afa28587bef047221ce8627b6975b3dddbbb8",
+          "capture/decoder.jsonl": "d7fff3d697cd18029a7baf22842fa2dd1cca26df8aa9d307cf695c4311c7112f",
+          "capture/producer.jsonl": "65f6320060017e06c3a61b90a1e147fa3ec5bfa10669c5015f6044515aaf44f9",
+          "process-resources.jsonl": "733f5ac450cfbda26c096035cac4573f9926a059c69f63748a3250220a942451",
+          "refine-jobs.jsonl": "86dacfcaa0210882e6040543aabd0f310f60d0218fc3d21f01d2a9a816059e99",
+          "refine-results.jsonl": "1e9a76318fd9784e0fe792f255d33d219eac042b99086b1091c14c965fc21db3",
+          "thread-resources.jsonl": "cdc3c4f5d184911e223614272dd6145ab2652b5aa89692e54af8738152891b99",
+          "track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+          "vad-sources.jsonl": "198b989158421cbf420722b2a5de3dbd0bc19821a85e6bacd2ea29f1be32dc99",
+          "worker.json": "617dd7353053e8fd15c2d309fdcfee5ce518e25b0e6c58f5de55eb72819f821e",
+          "zip-events.jsonl": "78be4ffb1b8f9f12329ec23d2147f1db104b97a068d2311bb04330e4966ce025",
+          "zip-sources.jsonl": "4bcf51ac24166be09442294957e694f650ab91c516e4dab199b7ff353428a796"
+        },
+        "status": "completed",
+        "threads": {
+          "refine": {
+            "active_at_least_1_percent": 4,
+            "observed_tid_max": 7,
+            "rows": [
+              {
+                "cpu_s": 117.20000000000007,
+                "mean_cpu_percent": 69.8429549972485,
+                "paired_s": 167.80504204699992,
+                "tid": "6156"
+              },
+              {
+                "cpu_s": 83.89000000000003,
+                "mean_cpu_percent": 49.99253835084621,
+                "paired_s": 167.80504204699992,
+                "tid": "6165"
+              },
+              {
+                "cpu_s": 14.929999999999998,
+                "mean_cpu_percent": 8.897229676697263,
+                "paired_s": 167.80504204699992,
+                "tid": "6161"
+              },
+              {
+                "cpu_s": 13.650000000000007,
+                "mean_cpu_percent": 8.13443972450889,
+                "paired_s": 167.80504204699992,
+                "tid": "6164"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 167.80504204699992,
+                "tid": "6158"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 167.80504204699992,
+                "tid": "6159"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 167.80504204699992,
+                "tid": "6160"
+              }
+            ],
+            "runtime_roles_confirmed": false,
+            "snapshots": 167
+          },
+          "zip": {
+            "active_at_least_1_percent": 1,
+            "observed_tid_max": 8,
+            "rows": [
+              {
+                "cpu_s": 48.24000000000003,
+                "mean_cpu_percent": 28.747699209224873,
+                "paired_s": 167.80473334199996,
+                "tid": "6148"
+              },
+              {
+                "cpu_s": 1.1600000000000008,
+                "mean_cpu_percent": 0.6912796658934671,
+                "paired_s": 167.80473334199996,
+                "tid": "6202"
+              },
+              {
+                "cpu_s": 0.01,
+                "mean_cpu_percent": 0.006068293112538546,
+                "paired_s": 164.79098511799975,
+                "tid": "6211"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 167.80473334199996,
+                "tid": "6188"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 167.80473334199996,
+                "tid": "6189"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 167.80473334199996,
+                "tid": "6190"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 167.80473334199996,
+                "tid": "6201"
+              }
+            ],
+            "runtime_roles_confirmed": false,
+            "snapshots": 167
+          }
+        },
+        "track_float32_sha256": "8caf6f852b7eced49b0f35674f05c8e889d31bece921510b3cebb7d59ae9142e",
+        "unmeasured": {
+          "acoustic_endpoint_latency_s": null,
+          "aligned_recognition_latency_s": null,
+          "hybrid_merged_cer": null,
+          "microphone_overruns": null,
+          "ui_display_latency_s": null
+        },
+        "zip_call_rtf": 0.19984059728108924,
+        "zip_cer": {
+          "cer": {
+            "deletions": 11,
+            "errors": 88,
+            "insertions": 6,
+            "reference_characters": 756,
+            "substitutions": 71,
+            "value": 0.1164021164021164
+          },
+          "complete": true,
+          "planned": 50,
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+          "successful": 50
+        },
+        "zip_finalize_from_source_end_s": {
+          "max": 0.3290398030000006,
+          "mean": 0.16908157562000156,
+          "n": 50,
+          "p50": 0.1677677010000025,
+          "p95": 0.23803504099999984
+        },
+        "zip_threads": 1
+      },
+      "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6"
+    },
+    {
+      "changed_segment_indices": [],
+      "changed_segment_transcripts": 0,
+      "control_valid": false,
+      "current_limits_observed": [
+        0
+      ],
+      "dataset": "synthetic120",
+      "dropped_owned_audio_s": 0.0,
+      "dropped_source_ids": [],
+      "family": "qwen3_asr",
+      "guard_status": "completed",
+      "history_limits_after": 0,
+      "history_limits_before": 0,
+      "id": "concurrent-synthetic120-qwen3_asr-t2-01",
+      "max_temperature_c": 72.15,
+      "model_files": {
+        "conv_frontend.onnx": "d22dc4423e0940e49884e903d2ea2f7e5567c14fc1aed97e4e26d6b8f208ef9e",
+        "decoder.int8.onnx": "4f6885be5959ae26af3089d38ee7972c5fafbeeb1cf8d5e76eab6d8b61ca5771",
+        "encoder.int8.onnx": "60748d3e6744a57c9c91e1b17424a6c2990567e8adceb0783940c03ed98fa9d9",
+        "tokenizer/merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+        "tokenizer/tokenizer_config.json": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c",
+        "tokenizer/vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      },
+      "num_threads": 2,
+      "operational_valid": true,
+      "phase": "concurrent",
+      "qwen_output_validation": {
+        "all_context_budgets_fit": true,
+        "max_returned_tokens": 23,
+        "native_warning_count": 0
+      },
+      "repeat": 1,
+      "rescore_matches": true,
+      "same_offline_online_pcm": true,
+      "summary": {
+        "audio_s": 120.586875,
+        "chunk_processing_s": {
+          "max": 0.1226063169999998,
+          "mean": 0.02432923095522397,
+          "n": 1206,
+          "p50": 0.007646861999987209,
+          "p95": 0.08554199099999948
+        },
+        "coordinator_active_rtf": 0.24323171112948477,
+        "first_partial_from_source_start_s": {
+          "max": 0.843557093,
+          "mean": 0.843557093,
+          "n": 1,
+          "p50": null,
+          "p95": null
+        },
+        "input_backlog_audio_s": {
+          "max": 0.0,
+          "mean": 0.0,
+          "n": 1209,
+          "p50": 0.0,
+          "p95": 0.0
+        },
+        "input_backlog_event_max_audio_s": 0.1,
+        "input_complete": true,
+        "input_dropped_audio_s": 0.0,
+        "input_dropped_chunks": 0,
+        "input_queue_wait_s": {
+          "max": 0.028009624999995708,
+          "mean": 0.0008906375679934836,
+          "n": 1206,
+          "p50": 0.000811892000001535,
+          "p95": 0.0016157650000003798
+        },
+        "manifest_sha256": "5effb0c014a49d53dc1be638c667d166b1f8b7b45e619c507c5a2992074f4f66",
+        "no_partial_sources": 0,
+        "planned_sources": 1,
+        "producer_cpu_s": 0.380277903,
+        "producer_lifetime_peak_rss_mib": 293.0,
+        "refine": {
+          "backlog_audio_s": {
+            "max": 1.976,
+            "mean": 0.061491085899513805,
+            "n": 1234,
+            "p50": 0.0,
+            "p95": 0.568
+          },
+          "backlog_end_audio_s": 0.0,
+          "backlog_event_max_audio_s": 5.0,
+          "backlog_event_max_payload_audio_s": 5.0,
+          "backlog_event_max_windows": 1,
+          "cer": {
+            "cer": {
+              "deletions": 3,
+              "errors": 27,
+              "insertions": 2,
+              "reference_characters": 519,
+              "substitutions": 22,
+              "value": 0.05202312138728324
+            },
+            "complete": true,
+            "planned": 1,
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+            "successful": 1
+          },
+          "complete": true,
+          "decision_audio_after_owned_end_s": {
+            "max": 0.3,
+            "mean": 0.28204651162790717,
+            "n": 43,
+            "p50": 0.3,
+            "p95": 0.3
+          },
+          "decode_s": {
+            "max": 3.579851522,
+            "mean": 1.920510577930232,
+            "n": 43,
+            "p50": 1.756655153,
+            "p95": 3.029841284
+          },
+          "dispatch_after_vad_emission_s": {
+            "max": 0.011133709,
+            "mean": 0.005465606813953488,
+            "n": 43,
+            "p50": 0.005088223,
+            "p95": 0.008695088
+          },
+          "dispatch_from_window_end_s": {
+            "max": 0.40780263899999625,
+            "mean": 0.3382350810930241,
+            "n": 43,
+            "p50": 0.35895451599999717,
+            "p95": 0.4021980159999998
+          },
+          "dropped_windows": 0,
+          "enqueued": 43,
+          "failed_windows": 0,
+          "final_from_source_file_end_s": {
+            "max": 2.54698548799999,
+            "mean": 2.54698548799999,
+            "n": 1,
+            "p50": null,
+            "p95": null
+          },
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님.",
+          "missing_results": 0,
+          "no_vad_segment_sources": 0,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "planned_windows": 43,
+          "queue_wait_s": {
+            "max": 2.891707667,
+            "mean": 0.1961285376744186,
+            "n": 43,
+            "p50": 0.00119756,
+            "p95": 0.800126687
+          },
+          "refine_calls_with_zip_overlap": 43,
+          "successful": 43,
+          "vad_emission_from_owned_end_s": {
+            "max": 0.4009966499999962,
+            "mean": 0.33276947427907017,
+            "n": 43,
+            "p50": 0.3541311649999983,
+            "p95": 0.39710979300000204
+          },
+          "vad_emission_to_return_s": {
+            "max": 3.6628128,
+            "mean": 2.1222690039069763,
+            "n": 43,
+            "p50": 2.067369611,
+            "p95": 3.055947865
+          },
+          "window_end_to_return_s": {
+            "max": 3.839143054999994,
+            "mean": 2.455038478186047,
+            "n": 43,
+            "p50": 2.421500776000002,
+            "p95": 3.398427925
+          },
+          "zip_refine_call_overlap_s": 17.129949245000002
+        },
+        "refine_family": "qwen3_asr",
+        "refine_policy": "vad0",
+        "refine_reason": null,
+        "refine_threads": 2,
+        "resources": {
+          "complete_model_rss_samples": 1217,
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling"
+          ],
+          "model_group_rss_observed_max_mib": 2011.015625,
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "observed_model_cpu_percent": 160.77036920684668,
+          "paired_intervals": 1216,
+          "paired_wall_s": 122.97042108900018,
+          "sample_count": 1217,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+        },
+        "schema": "concurrent-wav-summary-v1",
+        "source_sha256": {
+          "capture/backlog.jsonl": "67467b865833941b2c6e315a111d652a655f193f7acf4a284a81d0058b8b2de7",
+          "capture/decoder.jsonl": "f46e30f998dc387ffd6e0f8bfe2a61d2d97677d4f9ecd3e1db87001d94bff7dc",
+          "capture/producer.jsonl": "a38bf4903a839fdc78b3ede13081e4b402441b6caefcac06b3e473e07cb4b304",
+          "process-resources.jsonl": "5482d1617f0797b45f2e6c7faa9d34d89d6bf1aa3749dac481c5d5f00d10614f",
+          "refine-jobs.jsonl": "112238ca2ab1172713b84cf7fadfeb76fe34c0c4b89785e4d65d55330cd40666",
+          "refine-results.jsonl": "32eeafbfc7159c7d98e9197e3abef73a329be27b9de15e84d360c3c9caf70bb2",
+          "thread-resources.jsonl": "b61cddbcc59a9504c5a2d7065ed720d263e7e48180b4d7688d72add63c8f0ec1",
+          "track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+          "vad-sources.jsonl": "90950bd9dd20f03d07b8a54f954b20fbc8bdef4bcf324df3e4dc32c201f6e25f",
+          "worker.json": "9904a0caea0b3c7627f8d179b28195c7c99dc9c1491de9c147c1d2cd4977b030",
+          "zip-events.jsonl": "588a06491e7b3ca91d366538b3ec2cb6523403793fea9ba04b86e35744f738bb",
+          "zip-sources.jsonl": "8f931f76b868ea230837a9b34e91e86863ef5c7dcbdcf1d81675fa7576c3d2fc"
+        },
+        "status": "completed",
+        "threads": {
+          "refine": {
+            "active_at_least_1_percent": 4,
+            "observed_tid_max": 7,
+            "rows": [
+              {
+                "cpu_s": 82.25000000000003,
+                "mean_cpu_percent": 67.21750121331478,
+                "paired_s": 122.36396550800009,
+                "tid": "6741"
+              },
+              {
+                "cpu_s": 58.89999999999999,
+                "mean_cpu_percent": 48.13508597524909,
+                "paired_s": 122.36396550800009,
+                "tid": "6752"
+              },
+              {
+                "cpu_s": 10.290000000000004,
+                "mean_cpu_percent": 8.409338449665764,
+                "paired_s": 122.36396550800009,
+                "tid": "6749"
+              },
+              {
+                "cpu_s": 10.200000000000001,
+                "mean_cpu_percent": 8.335787384508334,
+                "paired_s": 122.36396550800009,
+                "tid": "6748"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 122.36396550800009,
+                "tid": "6745"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 122.36396550800009,
+                "tid": "6746"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 122.36396550800009,
+                "tid": "6747"
+              }
+            ],
+            "runtime_roles_confirmed": false,
+            "snapshots": 122
+          },
+          "zip": {
+            "active_at_least_1_percent": 1,
+            "observed_tid_max": 8,
+            "rows": [
+              {
+                "cpu_s": 33.57000000000001,
+                "mean_cpu_percent": 27.434879746020673,
+                "paired_s": 122.36248276200013,
+                "tid": "6735"
+              },
+              {
+                "cpu_s": 0.8400000000000005,
+                "mean_cpu_percent": 0.6864849266207141,
+                "paired_s": 122.36248276200013,
+                "tid": "6810"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 122.36248276200013,
+                "tid": "6794"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 122.36248276200013,
+                "tid": "6795"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 122.36248276200013,
+                "tid": "6796"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 122.36248276200013,
+                "tid": "6809"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 118.34051948800015,
+                "tid": "6821"
+              }
+            ],
+            "runtime_roles_confirmed": false,
+            "snapshots": 122
+          }
+        },
+        "track_float32_sha256": "54e8a4acad68dbc93c34966af4b9d3fe6b56e2b796010baaf1121cbbf0a5cfb9",
+        "unmeasured": {
+          "acoustic_endpoint_latency_s": null,
+          "aligned_recognition_latency_s": null,
+          "hybrid_merged_cer": null,
+          "microphone_overruns": null,
+          "ui_display_latency_s": null
+        },
+        "zip_call_rtf": 0.18361745766278478,
+        "zip_cer": {
+          "cer": {
+            "deletions": 12,
+            "errors": 58,
+            "insertions": 2,
+            "reference_characters": 519,
+            "substitutions": 44,
+            "value": 0.11175337186897881
+          },
+          "complete": true,
+          "planned": 1,
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+          "successful": 1
+        },
+        "zip_finalize_from_source_end_s": {
+          "max": 0.09294329799999446,
+          "mean": 0.09294329799999446,
+          "n": 1,
+          "p50": null,
+          "p95": null
+        },
+        "zip_threads": 1
+      },
+      "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6"
+    },
+    {
+      "changed_segment_indices": [],
+      "changed_segment_transcripts": 0,
+      "control_valid": false,
+      "current_limits_observed": [
+        0
+      ],
+      "dataset": "synthetic120",
+      "dropped_owned_audio_s": 0.0,
+      "dropped_source_ids": [],
+      "family": "qwen3_asr",
+      "guard_status": "completed",
+      "history_limits_after": 0,
+      "history_limits_before": 0,
+      "id": "concurrent-synthetic120-qwen3_asr-t1-01",
+      "max_temperature_c": 69.4,
+      "model_files": {
+        "conv_frontend.onnx": "d22dc4423e0940e49884e903d2ea2f7e5567c14fc1aed97e4e26d6b8f208ef9e",
+        "decoder.int8.onnx": "4f6885be5959ae26af3089d38ee7972c5fafbeeb1cf8d5e76eab6d8b61ca5771",
+        "encoder.int8.onnx": "60748d3e6744a57c9c91e1b17424a6c2990567e8adceb0783940c03ed98fa9d9",
+        "tokenizer/merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+        "tokenizer/tokenizer_config.json": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c",
+        "tokenizer/vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      },
+      "num_threads": 1,
+      "operational_valid": true,
+      "phase": "concurrent",
+      "qwen_output_validation": {
+        "all_context_budgets_fit": true,
+        "max_returned_tokens": 23,
+        "native_warning_count": 0
+      },
+      "repeat": 1,
+      "rescore_matches": true,
+      "same_offline_online_pcm": true,
+      "summary": {
+        "audio_s": 120.586875,
+        "chunk_processing_s": {
+          "max": 0.09289089000000672,
+          "mean": 0.020141694757048016,
+          "n": 1206,
+          "p50": 0.005721503000000183,
+          "p95": 0.06297546199999715
+        },
+        "coordinator_active_rtf": 0.20138336527923614,
+        "first_partial_from_source_start_s": {
+          "max": 0.844312503,
+          "mean": 0.844312503,
+          "n": 1,
+          "p50": null,
+          "p95": null
+        },
+        "input_backlog_audio_s": {
+          "max": 0.0,
+          "mean": 0.0,
+          "n": 1209,
+          "p50": 0.0,
+          "p95": 0.0
+        },
+        "input_backlog_event_max_audio_s": 0.1,
+        "input_complete": true,
+        "input_dropped_audio_s": 0.0,
+        "input_dropped_chunks": 0,
+        "input_queue_wait_s": {
+          "max": 0.002009192000002713,
+          "mean": 0.000710991715588726,
+          "n": 1206,
+          "p50": 0.0006948550000007714,
+          "p95": 0.0012419680000022026
+        },
+        "manifest_sha256": "5effb0c014a49d53dc1be638c667d166b1f8b7b45e619c507c5a2992074f4f66",
+        "no_partial_sources": 0,
+        "planned_sources": 1,
+        "producer_cpu_s": 0.27360221900000004,
+        "producer_lifetime_peak_rss_mib": 292.984375,
+        "refine": {
+          "backlog_audio_s": {
+            "max": 3.0,
+            "mean": 0.21001290322580626,
+            "n": 1240,
+            "p50": 0.0,
+            "p95": 1.432
+          },
+          "backlog_end_audio_s": 0.0,
+          "backlog_event_max_audio_s": 5.0,
+          "backlog_event_max_payload_audio_s": 5.0,
+          "backlog_event_max_windows": 1,
+          "cer": {
+            "cer": {
+              "deletions": 3,
+              "errors": 27,
+              "insertions": 2,
+              "reference_characters": 519,
+              "substitutions": 22,
+              "value": 0.05202312138728324
+            },
+            "complete": true,
+            "planned": 1,
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+            "successful": 1
+          },
+          "complete": true,
+          "decision_audio_after_owned_end_s": {
+            "max": 0.3,
+            "mean": 0.28204651162790717,
+            "n": 43,
+            "p50": 0.3,
+            "p95": 0.3
+          },
+          "decode_s": {
+            "max": 4.227014368,
+            "mean": 2.357841694906976,
+            "n": 43,
+            "p50": 2.183559904,
+            "p95": 3.552893678
+          },
+          "dispatch_after_vad_emission_s": {
+            "max": 0.011355357,
+            "mean": 0.005363953209302327,
+            "n": 43,
+            "p50": 0.005165576,
+            "p95": 0.008891256
+          },
+          "dispatch_from_window_end_s": {
+            "max": 0.4071095420000006,
+            "mean": 0.33949469604651183,
+            "n": 43,
+            "p50": 0.3473137149999985,
+            "p95": 0.4048356179999999
+          },
+          "dropped_windows": 0,
+          "enqueued": 43,
+          "failed_windows": 0,
+          "final_from_source_file_end_s": {
+            "max": 3.116857670999991,
+            "mean": 3.116857670999991,
+            "n": 1,
+            "p50": null,
+            "p95": null
+          },
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님.",
+          "missing_results": 0,
+          "no_vad_segment_sources": 0,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "planned_windows": 43,
+          "queue_wait_s": {
+            "max": 3.539594276,
+            "mean": 0.5056172566046512,
+            "n": 43,
+            "p50": 0.236615769,
+            "p95": 1.457673091
+          },
+          "refine_calls_with_zip_overlap": 43,
+          "successful": 43,
+          "vad_emission_from_owned_end_s": {
+            "max": 0.400086868999999,
+            "mean": 0.33413074283720934,
+            "n": 43,
+            "p50": 0.3444472780000041,
+            "p95": 0.3984914239999995
+          },
+          "vad_emission_to_return_s": {
+            "max": 4.618766819,
+            "mean": 2.8689855951860466,
+            "n": 43,
+            "p50": 2.70649576,
+            "p95": 3.662796725
+          },
+          "window_end_to_return_s": {
+            "max": 4.793898698999996,
+            "mean": 3.2031163380232557,
+            "n": 43,
+            "p50": 3.059441737,
+            "p95": 3.9750529759999997
+          },
+          "zip_refine_call_overlap_s": 15.687466124000002
+        },
+        "refine_family": "qwen3_asr",
+        "refine_policy": "vad0",
+        "refine_reason": null,
+        "refine_threads": 1,
+        "resources": {
+          "complete_model_rss_samples": 1229,
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling"
+          ],
+          "model_group_rss_observed_max_mib": 2021.09375,
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "observed_model_cpu_percent": 103.8071426654139,
+          "paired_intervals": 1228,
+          "paired_wall_s": 123.64274432800005,
+          "sample_count": 1229,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+        },
+        "schema": "concurrent-wav-summary-v1",
+        "source_sha256": {
+          "capture/backlog.jsonl": "41665ca7f52cf6b8eddbeba042f988351335e85f723f8c9d47b114a419f5aa5c",
+          "capture/decoder.jsonl": "c37ccaaeba32c2de74cf52aff8b6a52b180a0b3c3b4079a8471b8bfe86791248",
+          "capture/producer.jsonl": "2be3e6a10cb2f89e30b44b57fabd0f119d794bf3f9b40ba65ff35b869d2ced40",
+          "process-resources.jsonl": "a7f6c8bfa8e7f2daa39e3c7c287bc404088bd3b8975cf377aed6f69938d0c9b7",
+          "refine-jobs.jsonl": "775a41c85fa83d32bfb09f880bd768ac4708ffba697fd506cd20027f4afdb868",
+          "refine-results.jsonl": "00725c276dba0ba1ab13701311b627e25037a3b01a07f5b11503de952e5718b4",
+          "thread-resources.jsonl": "7c42ba6fbc11af47385404a329cac84588816f4a3fb7207b71be2fe1eb5bd7de",
+          "track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+          "vad-sources.jsonl": "8ca48142dbea34fca63f6a6a681ececd8642b61d767311ac5fc4e98270da02ec",
+          "worker.json": "d40ca9dbb79e29d395140f9a45f9702c48fe2f34dd9d563dc3430168a470e4af",
+          "zip-events.jsonl": "3d49d46e46e352374b910c98b3890d6fac0ba743d25423e7610597938b78f7cb",
+          "zip-sources.jsonl": "f9015b1a5829c5ce19caa7aab175de779ed5f539cbcad30226a107bb7bb1341f"
+        },
+        "status": "completed",
+        "threads": {
+          "refine": {
+            "active_at_least_1_percent": 1,
+            "observed_tid_max": 4,
+            "rows": [
+              {
+                "cpu_s": 100.72000000000006,
+                "mean_cpu_percent": 81.99356384184175,
+                "paired_s": 122.83890988600024,
+                "tid": "7263"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 122.83890988600024,
+                "tid": "7267"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 122.83890988600024,
+                "tid": "7268"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 122.83890988600024,
+                "tid": "7269"
+              }
+            ],
+            "runtime_roles_confirmed": false,
+            "snapshots": 123
+          },
+          "zip": {
+            "active_at_least_1_percent": 1,
+            "observed_tid_max": 8,
+            "rows": [
+              {
+                "cpu_s": 26.09000000000001,
+                "mean_cpu_percent": 21.239192460839913,
+                "paired_s": 122.83894525699998,
+                "tid": "7246"
+              },
+              {
+                "cpu_s": 0.5900000000000004,
+                "mean_cpu_percent": 0.4803037007242451,
+                "paired_s": 122.83894525699998,
+                "tid": "7335"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 122.83894525699998,
+                "tid": "7308"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 122.83894525699998,
+                "tid": "7309"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 122.83894525699998,
+                "tid": "7310"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 122.83894525699998,
+                "tid": "7331"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 118.82057282899996,
+                "tid": "7344"
+              }
+            ],
+            "runtime_roles_confirmed": false,
+            "snapshots": 123
+          }
+        },
+        "track_float32_sha256": "54e8a4acad68dbc93c34966af4b9d3fe6b56e2b796010baaf1121cbbf0a5cfb9",
+        "unmeasured": {
+          "acoustic_endpoint_latency_s": null,
+          "aligned_recognition_latency_s": null,
+          "hybrid_merged_cer": null,
+          "microphone_overruns": null,
+          "ui_display_latency_s": null
+        },
+        "zip_call_rtf": 0.15255466189832015,
+        "zip_cer": {
+          "cer": {
+            "deletions": 12,
+            "errors": 58,
+            "insertions": 2,
+            "reference_characters": 519,
+            "substitutions": 44,
+            "value": 0.11175337186897881
+          },
+          "complete": true,
+          "planned": 1,
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+          "successful": 1
+        },
+        "zip_finalize_from_source_end_s": {
+          "max": 0.09348329999998839,
+          "mean": 0.09348329999998839,
+          "n": 1,
+          "p50": null,
+          "p95": null
+        },
+        "zip_threads": 1
+      },
+      "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6"
+    },
+    {
+      "changed_segment_indices": [],
+      "changed_segment_transcripts": 0,
+      "control_valid": false,
+      "current_limits_observed": [
+        0
+      ],
+      "dataset": "synthetic120",
+      "dropped_owned_audio_s": 0.0,
+      "dropped_source_ids": [],
+      "family": "sensevoice",
+      "guard_status": "completed",
+      "history_limits_after": 0,
+      "history_limits_before": 0,
+      "id": "concurrent-synthetic120-sensevoice-t2-01",
+      "max_temperature_c": 62.8,
+      "model_files": {
+        "model": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51",
+        "tokens": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc"
+      },
+      "num_threads": 2,
+      "operational_valid": true,
+      "phase": "concurrent",
+      "repeat": 1,
+      "rescore_matches": true,
+      "same_offline_online_pcm": true,
+      "summary": {
+        "audio_s": 120.586875,
+        "chunk_processing_s": {
+          "max": 0.11429030499999726,
+          "mean": 0.017170508721393085,
+          "n": 1206,
+          "p50": 0.0044557760000003555,
+          "p95": 0.0459058219999946
+        },
+        "coordinator_active_rtf": 0.17168792355725662,
+        "first_partial_from_source_start_s": {
+          "max": 0.843020498,
+          "mean": 0.843020498,
+          "n": 1,
+          "p50": null,
+          "p95": null
+        },
+        "input_backlog_audio_s": {
+          "max": 0.0,
+          "mean": 0.0,
+          "n": 1210,
+          "p50": 0.0,
+          "p95": 0.0
+        },
+        "input_backlog_event_max_audio_s": 0.1,
+        "input_complete": true,
+        "input_dropped_audio_s": 0.0,
+        "input_dropped_chunks": 0,
+        "input_queue_wait_s": {
+          "max": 0.004499905999992393,
+          "mean": 0.0006582541733003725,
+          "n": 1206,
+          "p50": 0.000656484000003843,
+          "p95": 0.0011302629999931924
+        },
+        "manifest_sha256": "5effb0c014a49d53dc1be638c667d166b1f8b7b45e619c507c5a2992074f4f66",
+        "no_partial_sources": 0,
+        "planned_sources": 1,
+        "producer_cpu_s": 0.169959441,
+        "producer_lifetime_peak_rss_mib": 293.46875,
+        "refine": {
+          "backlog_audio_s": {
+            "max": 0.0,
+            "mean": 0.0,
+            "n": 1211,
+            "p50": 0.0,
+            "p95": 0.0
+          },
+          "backlog_end_audio_s": 0.0,
+          "backlog_event_max_audio_s": 5.0,
+          "backlog_event_max_payload_audio_s": 5.0,
+          "backlog_event_max_windows": 1,
+          "cer": {
+            "cer": {
+              "deletions": 4,
+              "errors": 32,
+              "insertions": 4,
+              "reference_characters": 519,
+              "substitutions": 24,
+              "value": 0.06165703275529865
+            },
+            "complete": true,
+            "planned": 1,
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+            "successful": 1
+          },
+          "complete": true,
+          "decision_audio_after_owned_end_s": {
+            "max": 0.3,
+            "mean": 0.28204651162790717,
+            "n": 43,
+            "p50": 0.3,
+            "p95": 0.3
+          },
+          "decode_s": {
+            "max": 0.299077025,
+            "mean": 0.15425074567441863,
+            "n": 43,
+            "p50": 0.146142906,
+            "p95": 0.241518084
+          },
+          "dispatch_after_vad_emission_s": {
+            "max": 0.011211191,
+            "mean": 0.005363068697674418,
+            "n": 43,
+            "p50": 0.004974093,
+            "p95": 0.008815477
+          },
+          "dispatch_from_window_end_s": {
+            "max": 0.4070925600000095,
+            "mean": 0.338146244372093,
+            "n": 43,
+            "p50": 0.34709738099999754,
+            "p95": 0.404486188000007
+          },
+          "dropped_windows": 0,
+          "enqueued": 43,
+          "failed_windows": 0,
+          "final_from_source_file_end_s": {
+            "max": 0.25454613299999096,
+            "mean": 0.25454613299999096,
+            "n": 1,
+            "p50": null,
+            "p95": null
+          },
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님.",
+          "missing_results": 0,
+          "no_vad_segment_sources": 0,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "planned_windows": 43,
+          "queue_wait_s": {
+            "max": 0.004611184,
+            "mean": 0.001000576488372093,
+            "n": 43,
+            "p50": 0.000850003,
+            "p95": 0.001684191
+          },
+          "refine_calls_with_zip_overlap": 41,
+          "successful": 43,
+          "vad_emission_from_owned_end_s": {
+            "max": 0.4001167759999973,
+            "mean": 0.332783175674418,
+            "n": 43,
+            "p50": 0.3444162410000047,
+            "p95": 0.3982770829999964
+          },
+          "vad_emission_to_return_s": {
+            "max": 0.311519702,
+            "mean": 0.160786421627907,
+            "n": 43,
+            "p50": 0.151635242,
+            "p95": 0.251987253
+          },
+          "window_end_to_return_s": {
+            "max": 0.6502643360000064,
+            "mean": 0.4935695973023259,
+            "n": 43,
+            "p50": 0.5147289270000002,
+            "p95": 0.6015522010000005
+          },
+          "zip_refine_call_overlap_s": 1.470080864
+        },
+        "refine_family": "sensevoice",
+        "refine_policy": "vad0",
+        "refine_reason": null,
+        "refine_threads": 2,
+        "resources": {
+          "complete_model_rss_samples": 1202,
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling"
+          ],
+          "model_group_rss_observed_max_mib": 700.71875,
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "observed_model_cpu_percent": 31.544923674014182,
+          "paired_intervals": 1201,
+          "paired_wall_s": 120.74842974299997,
+          "sample_count": 1202,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+        },
+        "schema": "concurrent-wav-summary-v1",
+        "source_sha256": {
+          "capture/backlog.jsonl": "f2d203ef28ba73eb5760c36af19b41eead7dc7c615f1816008cdcd15c9d1cb26",
+          "capture/decoder.jsonl": "34b515dc6f75743136ea890e5ce5c74f6701f6c210d1788cf900f78313c91ed7",
+          "capture/producer.jsonl": "43a1c61bf67feec9bf979c5252157815cafb3b1387891279f39026882edaf436",
+          "process-resources.jsonl": "d6048b26ce6ed754d76045c6921d7f9ba98902a215aa1a14b8d6bad9feb775b4",
+          "refine-jobs.jsonl": "ae6d002b9a6ac01ac22ece4c1a865482febb4ef0cadd9841234f262ad06ddf88",
+          "refine-results.jsonl": "a8bedebcc59d28fcd589df29a9c315d90539c94c97830b8bccebfaade13f5ceb",
+          "thread-resources.jsonl": "2b631f3c6fbc6df9f058a913b50415d31a0940a99371ae8f3a68bdab52a9bbc8",
+          "track.json": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0",
+          "vad-sources.jsonl": "d272530ce0ccf547f214a1fc390fc86d970220dc70c46bb73690da4ea514f034",
+          "worker.json": "19ae19d2ccd2a8798a5832159abf2fc8b322312e6f516a096d11fbc3e8a0eb77",
+          "zip-events.jsonl": "55357520629361121b9471c5fb7d8b391378d88c687d9f89eea578f6839d2b6b",
+          "zip-sources.jsonl": "e843e3a4bb6fcc1b8109f29123dd9f341d4ddfaa3a783f59c6dbbf953663ed06"
+        },
+        "status": "completed",
+        "threads": {
+          "refine": {
+            "active_at_least_1_percent": 2,
+            "observed_tid_max": 5,
+            "rows": [
+              {
+                "cpu_s": 8.289999999999988,
+                "mean_cpu_percent": 6.87154354050607,
+                "paired_s": 120.6424721190001,
+                "tid": "7740"
+              },
+              {
+                "cpu_s": 6.859999999999999,
+                "mean_cpu_percent": 5.686223002155815,
+                "paired_s": 120.6424721190001,
+                "tid": "7745"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 120.6424721190001,
+                "tid": "7742"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 120.6424721190001,
+                "tid": "7743"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 120.6424721190001,
+                "tid": "7744"
+              }
+            ],
+            "runtime_roles_confirmed": false,
+            "snapshots": 121
+          },
+          "zip": {
+            "active_at_least_1_percent": 1,
+            "observed_tid_max": 8,
+            "rows": [
+              {
+                "cpu_s": 22.10000000000002,
+                "mean_cpu_percent": 18.318590340697654,
+                "paired_s": 120.64247078500011,
+                "tid": "7736"
+              },
+              {
+                "cpu_s": 0.37000000000000016,
+                "mean_cpu_percent": 0.30669133149584293,
+                "paired_s": 120.64247078500011,
+                "tid": "7782"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 120.64247078500011,
+                "tid": "7765"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 120.64247078500011,
+                "tid": "7766"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 120.64247078500011,
+                "tid": "7767"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 120.64247078500011,
+                "tid": "7779"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 116.62382544899992,
+                "tid": "7791"
+              }
+            ],
+            "runtime_roles_confirmed": false,
+            "snapshots": 121
+          }
+        },
+        "track_float32_sha256": "54e8a4acad68dbc93c34966af4b9d3fe6b56e2b796010baaf1121cbbf0a5cfb9",
+        "unmeasured": {
+          "acoustic_endpoint_latency_s": null,
+          "aligned_recognition_latency_s": null,
+          "hybrid_merged_cer": null,
+          "microphone_overruns": null,
+          "ui_display_latency_s": null
+        },
+        "zip_call_rtf": 0.12945102767610475,
+        "zip_cer": {
+          "cer": {
+            "deletions": 12,
+            "errors": 58,
+            "insertions": 2,
+            "reference_characters": 519,
+            "substitutions": 44,
+            "value": 0.11175337186897881
+          },
+          "complete": true,
+          "planned": 1,
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+          "successful": 1
+        },
+        "zip_finalize_from_source_end_s": {
+          "max": 0.11512749299998859,
+          "mean": 0.11512749299998859,
+          "n": 1,
+          "p50": null,
+          "p95": null
+        },
+        "zip_threads": 1
+      },
+      "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6"
+    },
+    {
+      "changed_segment_indices": [],
+      "changed_segment_transcripts": 0,
+      "control_valid": false,
+      "current_limits_observed": [
+        0
+      ],
+      "dataset": "kss",
+      "dropped_owned_audio_s": 0.0,
+      "dropped_source_ids": [],
+      "family": "qwen3_asr",
+      "guard_status": "completed",
+      "history_limits_after": 0,
+      "history_limits_before": 0,
+      "id": "concurrent-kss-qwen3_asr-t2-02",
+      "max_temperature_c": 72.7,
+      "model_files": {
+        "conv_frontend.onnx": "d22dc4423e0940e49884e903d2ea2f7e5567c14fc1aed97e4e26d6b8f208ef9e",
+        "decoder.int8.onnx": "4f6885be5959ae26af3089d38ee7972c5fafbeeb1cf8d5e76eab6d8b61ca5771",
+        "encoder.int8.onnx": "60748d3e6744a57c9c91e1b17424a6c2990567e8adceb0783940c03ed98fa9d9",
+        "tokenizer/merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+        "tokenizer/tokenizer_config.json": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c",
+        "tokenizer/vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      },
+      "num_threads": 2,
+      "operational_valid": true,
+      "phase": "concurrent",
+      "qwen_output_validation": {
+        "all_context_budgets_fit": true,
+        "max_returned_tokens": 26,
+        "native_warning_count": 0
+      },
+      "repeat": 2,
+      "rescore_matches": true,
+      "same_offline_online_pcm": true,
+      "summary": {
+        "audio_s": 164.919,
+        "chunk_processing_s": {
+          "max": 0.32138144099999977,
+          "mean": 0.026331371317575826,
+          "n": 1650,
+          "p50": 0.007289923000001863,
+          "p95": 0.08756639300000302
+        },
+        "coordinator_active_rtf": 0.2633386804736809,
+        "first_partial_from_source_start_s": {
+          "max": 1.5126124900000093,
+          "mean": 0.9997835941000006,
+          "n": 50,
+          "p50": 0.8746524870000059,
+          "p95": 1.499647799999991
+        },
+        "input_backlog_audio_s": {
+          "max": 0.2,
+          "mean": 0.00024198427102238356,
+          "n": 1653,
+          "p50": 0.0,
+          "p95": 0.0
+        },
+        "input_backlog_event_max_audio_s": 0.3,
+        "input_complete": true,
+        "input_dropped_audio_s": 0.0,
+        "input_dropped_chunks": 0,
+        "input_queue_wait_s": {
+          "max": 0.22271001300000037,
+          "mean": 0.001964423994545373,
+          "n": 1650,
+          "p50": 0.000778365000002168,
+          "p95": 0.0018051969999817175
+        },
+        "manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+        "no_partial_sources": 0,
+        "planned_sources": 50,
+        "producer_cpu_s": 0.5386433500000001,
+        "producer_lifetime_peak_rss_mib": 292.90625,
+        "refine": {
+          "backlog_audio_s": {
+            "max": 2.0146875,
+            "mean": 0.090282881079478,
+            "n": 1686,
+            "p50": 0.0,
+            "p95": 1.19225
+          },
+          "backlog_end_audio_s": 0.0,
+          "backlog_event_max_audio_s": 4.5484375,
+          "backlog_event_max_payload_audio_s": 4.5484375,
+          "backlog_event_max_windows": 1,
+          "cer": {
+            "cer": {
+              "deletions": 3,
+              "errors": 28,
+              "insertions": 1,
+              "reference_characters": 756,
+              "substitutions": 24,
+              "value": 0.037037037037037035
+            },
+            "complete": true,
+            "planned": 50,
+            "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+            "successful": 50
+          },
+          "complete": true,
+          "decision_audio_after_owned_end_s": {
+            "max": 0.3,
+            "mean": 0.06737609649122805,
+            "n": 57,
+            "p50": 0.0,
+            "p95": 0.3
+          },
+          "decode_s": {
+            "max": 3.43213609,
+            "mean": 2.096434945719298,
+            "n": 57,
+            "p50": 2.128601218,
+            "p95": 3.098210546
+          },
+          "dispatch_after_vad_emission_s": {
+            "max": 0.010441254,
+            "mean": 0.006125607631578947,
+            "n": 57,
+            "p50": 0.006296438,
+            "p95": 0.009603366
+          },
+          "dispatch_from_window_end_s": {
+            "max": 0.450789769,
+            "mean": 0.1337489743508769,
+            "n": 57,
+            "p50": 0.07333136500000137,
+            "p95": 0.4283550259999913
+          },
+          "dropped_windows": 0,
+          "enqueued": 57,
+          "failed_windows": 0,
+          "final_from_source_file_end_s": {
+            "max": 3.4292777179999803,
+            "mean": 2.4106905679200015,
+            "n": 50,
+            "p50": 2.360150562000001,
+            "p95": 3.1397875840000005
+          },
+          "final_from_source_file_end_scope": "구간이 있는 원본만. 파일 끝 대비 마지막 인식 반환의 부호 있는 차이이며 음수 가능. 음향 끝/UI 확정 지연 아님.",
+          "missing_results": 0,
+          "no_vad_segment_sources": 0,
+          "overlap_scope": "native 호출 wall 구간 겹침. 같은 순간의 CPU 실행 시간을 직접 입증하는 값은 아님.",
+          "planned_windows": 57,
+          "queue_wait_s": {
+            "max": 1.627312956,
+            "mean": 0.22428478405263158,
+            "n": 57,
+            "p50": 0.001236956,
+            "p95": 1.070336382
+          },
+          "refine_calls_with_zip_overlap": 57,
+          "successful": 57,
+          "vad_emission_from_owned_end_s": {
+            "max": 0.44499453099999897,
+            "mean": 0.12762336671929936,
+            "n": 57,
+            "p50": 0.0675312770000005,
+            "p95": 0.41992582700000014
+          },
+          "vad_emission_to_return_s": {
+            "max": 3.443573763,
+            "mean": 2.327039628368421,
+            "n": 57,
+            "p50": 2.28966942,
+            "p95": 3.108191591
+          },
+          "window_end_to_return_s": {
+            "max": 3.7930277179999905,
+            "mean": 2.45466299508772,
+            "n": 57,
+            "p50": 2.370377136000002,
+            "p95": 3.251378054999999
+          },
+          "zip_refine_call_overlap_s": 27.58331461000001
+        },
+        "refine_family": "qwen3_asr",
+        "refine_policy": "vad0",
+        "refine_reason": null,
+        "refine_threads": 2,
+        "resources": {
+          "complete_model_rss_samples": 1664,
+          "main_pid_components": [
+            "zipformer",
+            "online_vad",
+            "coordinator_and_sampling"
+          ],
+          "model_group_rss_observed_max_mib": 2011.953125,
+          "model_roles": [
+            "zip",
+            "refine"
+          ],
+          "observed_model_cpu_percent": 169.89665383180974,
+          "paired_intervals": 1663,
+          "paired_wall_s": 168.2316829399997,
+          "sample_count": 1664,
+          "scope": "같은 인접 표본에서 모델 PID들이 모두 관측된 구간의 CPU 합/시간. 1코어=100%. producer 제외. RSS 합은 같은 시각 표본이며 공유 페이지 중복 가능."
+        },
+        "schema": "concurrent-wav-summary-v1",
+        "source_sha256": {
+          "capture/backlog.jsonl": "b08383f78fe560e82431d88f5df854587219febb6ecec7b98d52f4c2e1cabb85",
+          "capture/decoder.jsonl": "23c1006e11cce4957495fdfe816219294b8d3e7acbf719313226da0afa6ed09b",
+          "capture/producer.jsonl": "56892541bc7b6f86fff3a127769236091ba4dddf43a4cda3d4089368e7209e87",
+          "process-resources.jsonl": "2b3cc30999cabfed16eca5212380b92ef9cf1e284c28d4de10e265937be585ae",
+          "refine-jobs.jsonl": "07f6b63e6c7edbd0bbd84e62c65e72124678b2a559c7d6e8a8dedad405dcd399",
+          "refine-results.jsonl": "bcb5f40f655f4de8d0e6a5a00bb1517cdfda1295eb441075f1476911ed7c7842",
+          "thread-resources.jsonl": "3cf246d938bf5daf3a06f4bdec4ca8fc196094c6684d104fe054e06b7d6bd19f",
+          "track.json": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b",
+          "vad-sources.jsonl": "529278becd57b1344fdd29856c45f654be0f8045c562996cfa2fc4b70b5c982b",
+          "worker.json": "a2394df098c39d1bfd0c82c299361deff2577a4927e647e83a29636cd6b17f95",
+          "zip-events.jsonl": "854ddee64b8acdaf4451e8129d2edd47c4e2a5981ee51658ea1dc9562741b2a4",
+          "zip-sources.jsonl": "eb840cd7f5e82c7bed73b35d17ffdd795b93828a597887335ac112e0bbd8997a"
+        },
+        "status": "completed",
+        "threads": {
+          "refine": {
+            "active_at_least_1_percent": 4,
+            "observed_tid_max": 7,
+            "rows": [
+              {
+                "cpu_s": 119.56000000000007,
+                "mean_cpu_percent": 71.19692167817706,
+                "paired_s": 167.9286086840002,
+                "tid": "8096"
+              },
+              {
+                "cpu_s": 86.28,
+                "mean_cpu_percent": 51.3789762662522,
+                "paired_s": 167.9286086840002,
+                "tid": "8105"
+              },
+              {
+                "cpu_s": 14.899999999999995,
+                "mean_cpu_percent": 8.872818108103356,
+                "paired_s": 167.9286086840002,
+                "tid": "8101"
+              },
+              {
+                "cpu_s": 13.590000000000009,
+                "mean_cpu_percent": 8.092724703968102,
+                "paired_s": 167.9286086840002,
+                "tid": "8104"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 167.9286086840002,
+                "tid": "8098"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 167.9286086840002,
+                "tid": "8099"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 167.9286086840002,
+                "tid": "8100"
+              }
+            ],
+            "runtime_roles_confirmed": false,
+            "snapshots": 167
+          },
+          "zip": {
+            "active_at_least_1_percent": 1,
+            "observed_tid_max": 8,
+            "rows": [
+              {
+                "cpu_s": 49.21000000000001,
+                "mean_cpu_percent": 29.304175122594923,
+                "paired_s": 167.92828937899958,
+                "tid": "8088"
+              },
+              {
+                "cpu_s": 1.2000000000000008,
+                "mean_cpu_percent": 0.7145907365802464,
+                "paired_s": 167.92828937899958,
+                "tid": "8155"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 167.92828937899958,
+                "tid": "8141"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 167.92828937899958,
+                "tid": "8142"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 167.92828937899958,
+                "tid": "8143"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 167.92828937899958,
+                "tid": "8152"
+              },
+              {
+                "cpu_s": 0.0,
+                "mean_cpu_percent": 0.0,
+                "paired_s": 164.91345137499957,
+                "tid": "8164"
+              }
+            ],
+            "runtime_roles_confirmed": false,
+            "snapshots": 167
+          }
+        },
+        "track_float32_sha256": "8caf6f852b7eced49b0f35674f05c8e889d31bece921510b3cebb7d59ae9142e",
+        "unmeasured": {
+          "acoustic_endpoint_latency_s": null,
+          "aligned_recognition_latency_s": null,
+          "hybrid_merged_cer": null,
+          "microphone_overruns": null,
+          "ui_display_latency_s": null
+        },
+        "zip_call_rtf": 0.2041169046077167,
+        "zip_cer": {
+          "cer": {
+            "deletions": 11,
+            "errors": 88,
+            "insertions": 6,
+            "reference_characters": 756,
+            "substitutions": 71,
+            "value": 0.1164021164021164
+          },
+          "complete": true,
+          "planned": 50,
+          "scope": "null CER when capture/required output is incomplete; raw successful prefix preserved",
+          "successful": 50
+        },
+        "zip_finalize_from_source_end_s": {
+          "max": 0.3535229919999985,
+          "mean": 0.17059839738000107,
+          "n": 50,
+          "p50": 0.17003617700000007,
+          "p95": 0.23998644399999947
+        },
+        "zip_threads": 1
+      },
+      "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6"
+    }
+  ],
+  "date": "2026-11-06",
+  "paired_offline_accuracy": [
+    {
+      "dataset": "kss",
+      "equal": 33,
+      "error_delta_qwen_minus_sensevoice": -14,
+      "improved": 12,
+      "qwen_threads": 1,
+      "worsened": 5,
+      "worsened_ids": [
+        "kss-train-01004",
+        "kss-train-01024",
+        "kss-train-01026",
+        "kss-train-01028",
+        "kss-train-01029"
+      ]
+    },
+    {
+      "dataset": "kss",
+      "equal": 33,
+      "error_delta_qwen_minus_sensevoice": -14,
+      "improved": 12,
+      "qwen_threads": 2,
+      "worsened": 5,
+      "worsened_ids": [
+        "kss-train-01004",
+        "kss-train-01024",
+        "kss-train-01026",
+        "kss-train-01028",
+        "kss-train-01029"
+      ]
+    },
+    {
+      "dataset": "synthetic120",
+      "equal": 0,
+      "error_delta_qwen_minus_sensevoice": -5,
+      "improved": 1,
+      "qwen_threads": 1,
+      "worsened": 0,
+      "worsened_ids": []
+    },
+    {
+      "dataset": "synthetic120",
+      "equal": 0,
+      "error_delta_qwen_minus_sensevoice": -5,
+      "improved": 1,
+      "qwen_threads": 2,
+      "worsened": 0,
+      "worsened_ids": []
+    }
+  ],
+  "preservation": {
+    "audit_scope": "existing_assets_and_environment",
+    "changed": [],
+    "environment_unchanged": true,
+    "missing": [],
+    "protected_files": 9145,
+    "source_commit": "5d0c5b7be3e6efd4f07f5916a1ce8b2d2bafc6ba",
+    "system_settings_unchanged": true,
+    "working_tree_clean": true
+  },
+  "qwen2_kss_repeat": [
+    {
+      "complete": true,
+      "different_source_ids": [],
+      "model_output": "zip"
+    },
+    {
+      "complete": true,
+      "different_source_ids": [],
+      "model_output": "hypotheses"
+    }
+  ],
+  "raw_artifacts": [
+    {
+      "bytes": 1598,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/campaign.json",
+      "sha256": "e346031fbd53d8c70eb838b537562704779cc18b3b1ac55deb89ee13559eaf27"
+    },
+    {
+      "bytes": 6314,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t1-01/admission.jsonl",
+      "sha256": "14fba6f5b88a3eb60e72e7a5a5e74390b8fda584c691e72661bb09bbaa8039ac"
+    },
+    {
+      "bytes": 132803,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t1-01/capture/backlog.jsonl",
+      "sha256": "732a3747fce17aacb98949e5d7a8fc74db050f207df6da368f2681e8af00c228"
+    },
+    {
+      "bytes": 301059,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t1-01/capture/decoder.jsonl",
+      "sha256": "7aa0ef285ff007e2d2263713821d7c3433a8a0c1cb01f9427f6d35950155958b"
+    },
+    {
+      "bytes": 183351,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t1-01/capture/producer.jsonl",
+      "sha256": "dd2f849381785811dc5e54f9bd8be88276de110958ddd1ffdf1b4c10e3b69354"
+    },
+    {
+      "bytes": 184,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t1-01/console.log",
+      "sha256": "6fd7b71541e45fb665b75ec26dece92c18a57a5dbe86760962b5428d9d2769fb"
+    },
+    {
+      "bytes": 3707,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t1-01/execution.json",
+      "sha256": "4543892b8a18f1db4d7d75fa5f78e4cececc8aa2041d79b06b6e9886ab0224fc"
+    },
+    {
+      "bytes": 435494,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t1-01/process-resources.jsonl",
+      "sha256": "63a77130d1056aaef26b8f8010673c7fa6fcb71aa8ad5482d0996497b1f553ce"
+    },
+    {
+      "bytes": 58185,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t1-01/refine-jobs.jsonl",
+      "sha256": "3ba2f99aa35548e5ea46ca70acb67e4d32e214ab2986be87eda7055a2ea3f788"
+    },
+    {
+      "bytes": 95769,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t1-01/refine-results.jsonl",
+      "sha256": "e8db1fa4154b361fc00087f6a32708632c5ee51dd8196d55c5369385d3b4b94e"
+    },
+    {
+      "bytes": 8889,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t1-01/summary.json",
+      "sha256": "03252aa408bf1ae927ab9878df069069212a3a5800bcffc5a2bec0f2cb530ab0"
+    },
+    {
+      "bytes": 48976,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t1-01/thermal.jsonl",
+      "sha256": "b6cecb77950096cbb569464c62ce5d45dfd8d9782e9d82448e5efd4167ec5a49"
+    },
+    {
+      "bytes": 178610,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t1-01/thread-resources.jsonl",
+      "sha256": "af7f894ad46551fb2a2e7a8db4b3fd6b27c27ed91e15834c8be4e1bc7905078e"
+    },
+    {
+      "bytes": 106023,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t1-01/threads.jsonl",
+      "sha256": "ac263fe2a75474cba4dbee9d0b664bccf38effd9f611a56a8289e9e9758e2e17"
+    },
+    {
+      "bytes": 12843,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t1-01/track.json",
+      "sha256": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b"
+    },
+    {
+      "bytes": 75127,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t1-01/vad-sources.jsonl",
+      "sha256": "cf66da2c681ce33acf35f862938f220be2bef921861393f1291bee4723d093f3"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t1-01/warnings.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 256048,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t1-01/worker.json",
+      "sha256": "b7e2db0a019423ddf63acb82e6841e8fdac1efa7937b895c2e344c4d0cdfdcbc"
+    },
+    {
+      "bytes": 453286,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t1-01/zip-events.jsonl",
+      "sha256": "5038d7e19765d745f563e8fccaf95086c2d52cd5292e2d4575016a47e7de9329"
+    },
+    {
+      "bytes": 18083,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t1-01/zip-sources.jsonl",
+      "sha256": "57cb9a21111426493dcde29ee05dd2ee57a8e4f7aa27cd84f9cb889a4acc5115"
+    },
+    {
+      "bytes": 20353,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-01/admission.jsonl",
+      "sha256": "3bbc524360355de6a33e3f6193fa2b1ab4d088b1c0f6e3115cfc5ba72e50d7fa"
+    },
+    {
+      "bytes": 132851,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-01/capture/backlog.jsonl",
+      "sha256": "4e4cefe039319f561d1d0efe762afa28587bef047221ce8627b6975b3dddbbb8"
+    },
+    {
+      "bytes": 301017,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-01/capture/decoder.jsonl",
+      "sha256": "d7fff3d697cd18029a7baf22842fa2dd1cca26df8aa9d307cf695c4311c7112f"
+    },
+    {
+      "bytes": 183334,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-01/capture/producer.jsonl",
+      "sha256": "65f6320060017e06c3a61b90a1e147fa3ec5bfa10669c5015f6044515aaf44f9"
+    },
+    {
+      "bytes": 184,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-01/console.log",
+      "sha256": "e0756a3e7e7f0f4daf2870965763ea8cf99f5262d2efcf853de94efa16891e4e"
+    },
+    {
+      "bytes": 3707,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-01/execution.json",
+      "sha256": "5916ec6bb05b9bbec55b7de37eddbb05d9694d86fe115271b903c2139dfca029"
+    },
+    {
+      "bytes": 429190,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-01/process-resources.jsonl",
+      "sha256": "733f5ac450cfbda26c096035cac4573f9926a059c69f63748a3250220a942451"
+    },
+    {
+      "bytes": 58187,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-01/refine-jobs.jsonl",
+      "sha256": "86dacfcaa0210882e6040543aabd0f310f60d0218fc3d21f01d2a9a816059e99"
+    },
+    {
+      "bytes": 95764,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-01/refine-results.jsonl",
+      "sha256": "1e9a76318fd9784e0fe792f255d33d219eac042b99086b1091c14c965fc21db3"
+    },
+    {
+      "bytes": 9453,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-01/summary.json",
+      "sha256": "50b152774d8ed723ff254b1131c2799943119521bbe1192520ff6512396421ee"
+    },
+    {
+      "bytes": 48187,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-01/thermal.jsonl",
+      "sha256": "4dc73cb3693850d7b88b3ffe634684a3dd99d6549abefc3753d517b5ce37b47f"
+    },
+    {
+      "bytes": 212390,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-01/thread-resources.jsonl",
+      "sha256": "cdc3c4f5d184911e223614272dd6145ab2652b5aa89692e54af8738152891b99"
+    },
+    {
+      "bytes": 105099,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-01/threads.jsonl",
+      "sha256": "24d18ff992af72254f0c25f4845d74f606b028f7031952e56f23e42e034a7af7"
+    },
+    {
+      "bytes": 12843,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-01/track.json",
+      "sha256": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b"
+    },
+    {
+      "bytes": 75124,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-01/vad-sources.jsonl",
+      "sha256": "198b989158421cbf420722b2a5de3dbd0bc19821a85e6bacd2ea29f1be32dc99"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-01/warnings.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 256084,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-01/worker.json",
+      "sha256": "617dd7353053e8fd15c2d309fdcfee5ce518e25b0e6c58f5de55eb72819f821e"
+    },
+    {
+      "bytes": 452983,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-01/zip-events.jsonl",
+      "sha256": "78be4ffb1b8f9f12329ec23d2147f1db104b97a068d2311bb04330e4966ce025"
+    },
+    {
+      "bytes": 18083,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-01/zip-sources.jsonl",
+      "sha256": "4bcf51ac24166be09442294957e694f650ab91c516e4dab199b7ff353428a796"
+    },
+    {
+      "bytes": 7253,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-02/admission.jsonl",
+      "sha256": "3102823495db95f987401f073ed013eb2a673f4ee78d2c2df53daac4f1c0f686"
+    },
+    {
+      "bytes": 132850,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-02/capture/backlog.jsonl",
+      "sha256": "b08383f78fe560e82431d88f5df854587219febb6ecec7b98d52f4c2e1cabb85"
+    },
+    {
+      "bytes": 301033,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-02/capture/decoder.jsonl",
+      "sha256": "23c1006e11cce4957495fdfe816219294b8d3e7acbf719313226da0afa6ed09b"
+    },
+    {
+      "bytes": 183326,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-02/capture/producer.jsonl",
+      "sha256": "56892541bc7b6f86fff3a127769236091ba4dddf43a4cda3d4089368e7209e87"
+    },
+    {
+      "bytes": 184,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-02/console.log",
+      "sha256": "f83dd559a863281e2071554e45eea102044a4bbd767583a200d6d74caf4c62a9"
+    },
+    {
+      "bytes": 3707,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-02/execution.json",
+      "sha256": "f4d703c443e2d1537149b77078e8da5761ded366f1a9a9fd98d4579d204e5635"
+    },
+    {
+      "bytes": 432435,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-02/process-resources.jsonl",
+      "sha256": "2b3cc30999cabfed16eca5212380b92ef9cf1e284c28d4de10e265937be585ae"
+    },
+    {
+      "bytes": 58178,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-02/refine-jobs.jsonl",
+      "sha256": "07f6b63e6c7edbd0bbd84e62c65e72124678b2a559c7d6e8a8dedad405dcd399"
+    },
+    {
+      "bytes": 95735,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-02/refine-results.jsonl",
+      "sha256": "bcb5f40f655f4de8d0e6a5a00bb1517cdfda1295eb441075f1476911ed7c7842"
+    },
+    {
+      "bytes": 9414,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-02/summary.json",
+      "sha256": "a8cd8ffafc1b09c0c3b8bc3d4a16453e1970fe04924f46131f795ceddb2cba8a"
+    },
+    {
+      "bytes": 48188,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-02/thermal.jsonl",
+      "sha256": "76d565d2a5ad1424b3eff162f03575b13357ae2f018cc9e0907837af308d6448"
+    },
+    {
+      "bytes": 212401,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-02/thread-resources.jsonl",
+      "sha256": "3cf246d938bf5daf3a06f4bdec4ca8fc196094c6684d104fe054e06b7d6bd19f"
+    },
+    {
+      "bytes": 104774,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-02/threads.jsonl",
+      "sha256": "480d539605af0bcf227084c176d56185d8c009181c189ad8ae3a22b9aafa6d08"
+    },
+    {
+      "bytes": 12843,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-02/track.json",
+      "sha256": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b"
+    },
+    {
+      "bytes": 75103,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-02/vad-sources.jsonl",
+      "sha256": "529278becd57b1344fdd29856c45f654be0f8045c562996cfa2fc4b70b5c982b"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-02/warnings.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 256322,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-02/worker.json",
+      "sha256": "a2394df098c39d1bfd0c82c299361deff2577a4927e647e83a29636cd6b17f95"
+    },
+    {
+      "bytes": 453000,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-02/zip-events.jsonl",
+      "sha256": "854ddee64b8acdaf4451e8129d2edd47c4e2a5981ee51658ea1dc9562741b2a4"
+    },
+    {
+      "bytes": 18083,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-qwen3_asr-t2-02/zip-sources.jsonl",
+      "sha256": "eb840cd7f5e82c7bed73b35d17ffdd795b93828a597887335ac112e0bbd8997a"
+    },
+    {
+      "bytes": 14502,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-sensevoice-t2-01/admission.jsonl",
+      "sha256": "3f837b78865cb1df9f32100c8a4800629ae00d19c85b52d6c4368f7f044c3357"
+    },
+    {
+      "bytes": 132803,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-sensevoice-t2-01/capture/backlog.jsonl",
+      "sha256": "eaece0b67454007828355060064fbf02d35a3f8e46452b0e9af77ead77628670"
+    },
+    {
+      "bytes": 301147,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-sensevoice-t2-01/capture/decoder.jsonl",
+      "sha256": "bb1a232ff26dd1750220c8234c2f1d3e075f52efcc8f8ad1e141e218cdfe342a"
+    },
+    {
+      "bytes": 183346,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-sensevoice-t2-01/capture/producer.jsonl",
+      "sha256": "a6401e02ac13cb3d42969c7d7221ebb87139b878e6a024a4ab09455422440a75"
+    },
+    {
+      "bytes": 185,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-sensevoice-t2-01/console.log",
+      "sha256": "36a9c69a763249dd6cb3d7124a72201d1875bf82f9d8ca71043217d56c0f97ad"
+    },
+    {
+      "bytes": 3709,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-sensevoice-t2-01/execution.json",
+      "sha256": "1bb980861e434667eb61caae0d2f5b88eb3f27d4318ee0c817df94aba017b321"
+    },
+    {
+      "bytes": 424482,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-sensevoice-t2-01/process-resources.jsonl",
+      "sha256": "b39a3b2e0eef01b453a49ee840cf3e25334ccdeace103131449ca3849aa3653c"
+    },
+    {
+      "bytes": 58180,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-sensevoice-t2-01/refine-jobs.jsonl",
+      "sha256": "e96dbc6e3b44b79a3f8e280afdcc36c199055680fc1cb8d6dea6d8800eddc7f5"
+    },
+    {
+      "bytes": 75930,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-sensevoice-t2-01/refine-results.jsonl",
+      "sha256": "00fce331e6c5530e7be97f8078b878cf26a4f618457940f1ac438db4ff503988"
+    },
+    {
+      "bytes": 9076,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-sensevoice-t2-01/summary.json",
+      "sha256": "c1ee9889e02a675f2386ab6ea1b13d382b73293e7791dbe42d2f43b0df6d2765"
+    },
+    {
+      "bytes": 44784,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-sensevoice-t2-01/thermal.jsonl",
+      "sha256": "8ff841f1b778489ee679a56eeaa7ac7b6f0fb4d96a0bb259a09ea43a986a6830"
+    },
+    {
+      "bytes": 186632,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-sensevoice-t2-01/thread-resources.jsonl",
+      "sha256": "541cb7f99864de63e83c3e36caebaef2e5f3f95d5ebb4d0087a33a3ef4f571e0"
+    },
+    {
+      "bytes": 101191,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-sensevoice-t2-01/threads.jsonl",
+      "sha256": "33bb4f263141022d4ce1ba948369f3bfc614b649e19cef13541be6e809238ca4"
+    },
+    {
+      "bytes": 12843,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-sensevoice-t2-01/track.json",
+      "sha256": "a8084bcc0cd739b168834e28c4bafc4d6421971f17b0152dc1d95478c15da23b"
+    },
+    {
+      "bytes": 75121,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-sensevoice-t2-01/vad-sources.jsonl",
+      "sha256": "d00ac7fe887a12fb6751e830e1a51644ba9b2a9f8e9c6868598125ce9a439f26"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-sensevoice-t2-01/warnings.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 250897,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-sensevoice-t2-01/worker.json",
+      "sha256": "fd5ffe1145de06a4be7fa3f2bc869f6e180870bff9f945afd851bea6355c65ac"
+    },
+    {
+      "bytes": 453254,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-sensevoice-t2-01/zip-events.jsonl",
+      "sha256": "39c9f6ca0edc86ee2fc5cc3fbef9ff6d739c2cdd3f85dbe723199f4072b2cf53"
+    },
+    {
+      "bytes": 18083,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-kss-sensevoice-t2-01/zip-sources.jsonl",
+      "sha256": "49fe5a977a6422e8303d7292163732de8f4bdc890b98f3c9db92901da394060b"
+    },
+    {
+      "bytes": 30402,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t1-01/admission.jsonl",
+      "sha256": "43d76532c8588a8b9e594264bbe1c788b49e5ee520bb00f55e1f252f7e6733b6"
+    },
+    {
+      "bytes": 96842,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t1-01/capture/backlog.jsonl",
+      "sha256": "41665ca7f52cf6b8eddbeba042f988351335e85f723f8c9d47b114a419f5aa5c"
+    },
+    {
+      "bytes": 1122486,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t1-01/capture/decoder.jsonl",
+      "sha256": "c37ccaaeba32c2de74cf52aff8b6a52b180a0b3c3b4079a8471b8bfe86791248"
+    },
+    {
+      "bytes": 132779,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t1-01/capture/producer.jsonl",
+      "sha256": "2be3e6a10cb2f89e30b44b57fabd0f119d794bf3f9b40ba65ff35b869d2ced40"
+    },
+    {
+      "bytes": 193,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t1-01/console.log",
+      "sha256": "2d5244eb9b85d40b3690f0f25a6b80d88de4b401da1dfbd10b41afea8442fc1c"
+    },
+    {
+      "bytes": 3726,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t1-01/execution.json",
+      "sha256": "e0c43d4f7bef0481c599160a5476bd3305767e61139785a84ae2c95a438e8554"
+    },
+    {
+      "bytes": 316087,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t1-01/process-resources.jsonl",
+      "sha256": "a7f6c8bfa8e7f2daa39e3c7c287bc404088bd3b8975cf377aed6f69938d0c9b7"
+    },
+    {
+      "bytes": 44724,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t1-01/refine-jobs.jsonl",
+      "sha256": "775a41c85fa83d32bfb09f880bd768ac4708ffba697fd506cd20027f4afdb868"
+    },
+    {
+      "bytes": 72374,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t1-01/refine-results.jsonl",
+      "sha256": "00725c276dba0ba1ab13701311b627e25037a3b01a07f5b11503de952e5718b4"
+    },
+    {
+      "bytes": 8776,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t1-01/summary.json",
+      "sha256": "953c088092c719c7a450bc2e5a61f72d4701f8d8935c83180f928f88c85cde0a"
+    },
+    {
+      "bytes": 38756,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t1-01/thermal.jsonl",
+      "sha256": "e1b70ec18674b9fb4044bc3c6a99a304d78ae661158170446c29261a46307e96"
+    },
+    {
+      "bytes": 130636,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t1-01/thread-resources.jsonl",
+      "sha256": "7c42ba6fbc11af47385404a329cac84588816f4a3fb7207b71be2fe1eb5bd7de"
+    },
+    {
+      "bytes": 80230,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t1-01/threads.jsonl",
+      "sha256": "1c7f3721063f05474be13276d4283368bb71bd3d1a7bfd577dfba3769402e472"
+    },
+    {
+      "bytes": 2237,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t1-01/track.json",
+      "sha256": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0"
+    },
+    {
+      "bytes": 27565,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t1-01/vad-sources.jsonl",
+      "sha256": "8ca48142dbea34fca63f6a6a681ececd8642b61d767311ac5fc4e98270da02ec"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t1-01/warnings.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 194203,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t1-01/worker.json",
+      "sha256": "d40ca9dbb79e29d395140f9a45f9702c48fe2f34dd9d563dc3430168a470e4af"
+    },
+    {
+      "bytes": 1202039,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t1-01/zip-events.jsonl",
+      "sha256": "3d49d46e46e352374b910c98b3890d6fac0ba743d25423e7610597938b78f7cb"
+    },
+    {
+      "bytes": 3630,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t1-01/zip-sources.jsonl",
+      "sha256": "f9015b1a5829c5ce19caa7aab175de779ed5f539cbcad30226a107bb7bb1341f"
+    },
+    {
+      "bytes": 28065,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t2-01/admission.jsonl",
+      "sha256": "17e52c37e56ba702a73fd755da21ff01667db3dba9f3291190faad538592444a"
+    },
+    {
+      "bytes": 96842,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t2-01/capture/backlog.jsonl",
+      "sha256": "67467b865833941b2c6e315a111d652a655f193f7acf4a284a81d0058b8b2de7"
+    },
+    {
+      "bytes": 1122433,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t2-01/capture/decoder.jsonl",
+      "sha256": "f46e30f998dc387ffd6e0f8bfe2a61d2d97677d4f9ecd3e1db87001d94bff7dc"
+    },
+    {
+      "bytes": 132765,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t2-01/capture/producer.jsonl",
+      "sha256": "a38bf4903a839fdc78b3ede13081e4b402441b6caefcac06b3e473e07cb4b304"
+    },
+    {
+      "bytes": 193,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t2-01/console.log",
+      "sha256": "089eab8d54d04885fb88ff57d53a196738807d9d2b8511015a10c74da1bc743c"
+    },
+    {
+      "bytes": 3726,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t2-01/execution.json",
+      "sha256": "4f87e724b0cfcac98bbf0f3752280f455a4ac77ccb308eef25bedb5c20185175"
+    },
+    {
+      "bytes": 311375,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t2-01/process-resources.jsonl",
+      "sha256": "5482d1617f0797b45f2e6c7faa9d34d89d6bf1aa3749dac481c5d5f00d10614f"
+    },
+    {
+      "bytes": 44726,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t2-01/refine-jobs.jsonl",
+      "sha256": "112238ca2ab1172713b84cf7fadfeb76fe34c0c4b89785e4d65d55330cd40666"
+    },
+    {
+      "bytes": 72346,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t2-01/refine-results.jsonl",
+      "sha256": "32eeafbfc7159c7d98e9197e3abef73a329be27b9de15e84d360c3c9caf70bb2"
+    },
+    {
+      "bytes": 9286,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t2-01/summary.json",
+      "sha256": "dbe201aed3df686c7a6af6ed1541f9ff910cd385f62a3b62c9e48d0a8fe8f25a"
+    },
+    {
+      "bytes": 37976,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t2-01/thermal.jsonl",
+      "sha256": "d95ce576289f180aa0edaf63e68008b9f3fed205f02a2cabb736c40dc5469e16"
+    },
+    {
+      "bytes": 154934,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t2-01/thread-resources.jsonl",
+      "sha256": "b61cddbcc59a9504c5a2d7065ed720d263e7e48180b4d7688d72add63c8f0ec1"
+    },
+    {
+      "bytes": 79547,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t2-01/threads.jsonl",
+      "sha256": "6cea87e89b3925dce9e0c46a20cbddfa6c292caa740eb0466ed0e28fff00d150"
+    },
+    {
+      "bytes": 2237,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t2-01/track.json",
+      "sha256": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0"
+    },
+    {
+      "bytes": 27568,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t2-01/vad-sources.jsonl",
+      "sha256": "90950bd9dd20f03d07b8a54f954b20fbc8bdef4bcf324df3e4dc32c201f6e25f"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t2-01/warnings.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 194016,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t2-01/worker.json",
+      "sha256": "9904a0caea0b3c7627f8d179b28195c7c99dc9c1491de9c147c1d2cd4977b030"
+    },
+    {
+      "bytes": 1201914,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t2-01/zip-events.jsonl",
+      "sha256": "588a06491e7b3ca91d366538b3ec2cb6523403793fea9ba04b86e35744f738bb"
+    },
+    {
+      "bytes": 3630,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-qwen3_asr-t2-01/zip-sources.jsonl",
+      "sha256": "8f931f76b868ea230837a9b34e91e86863ef5c7dcbdcf1d81675fa7576c3d2fc"
+    },
+    {
+      "bytes": 25734,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-sensevoice-t2-01/admission.jsonl",
+      "sha256": "ff96ff33ba9aee87db8d7689640c31129720c90c26a330911d42ec3718ecb81b"
+    },
+    {
+      "bytes": 96923,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-sensevoice-t2-01/capture/backlog.jsonl",
+      "sha256": "f2d203ef28ba73eb5760c36af19b41eead7dc7c615f1816008cdcd15c9d1cb26"
+    },
+    {
+      "bytes": 1122528,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-sensevoice-t2-01/capture/decoder.jsonl",
+      "sha256": "34b515dc6f75743136ea890e5ce5c74f6701f6c210d1788cf900f78313c91ed7"
+    },
+    {
+      "bytes": 132780,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-sensevoice-t2-01/capture/producer.jsonl",
+      "sha256": "43a1c61bf67feec9bf979c5252157815cafb3b1387891279f39026882edaf436"
+    },
+    {
+      "bytes": 194,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-sensevoice-t2-01/console.log",
+      "sha256": "2007bef8a40a382764ff1f25c8951f513d0ce8d02f321ba11ee52193226966fc"
+    },
+    {
+      "bytes": 3728,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-sensevoice-t2-01/execution.json",
+      "sha256": "b0b74fc7b1e8f2deafd94df2037cb0ca66dafa2269893dde92610c7ad992769c"
+    },
+    {
+      "bytes": 311618,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-sensevoice-t2-01/process-resources.jsonl",
+      "sha256": "d6048b26ce6ed754d76045c6921d7f9ba98902a215aa1a14b8d6bad9feb775b4"
+    },
+    {
+      "bytes": 44728,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-sensevoice-t2-01/refine-jobs.jsonl",
+      "sha256": "ae6d002b9a6ac01ac22ece4c1a865482febb4ef0cadd9841234f262ad06ddf88"
+    },
+    {
+      "bytes": 57818,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-sensevoice-t2-01/refine-results.jsonl",
+      "sha256": "a8bedebcc59d28fcd589df29a9c315d90539c94c97830b8bccebfaade13f5ceb"
+    },
+    {
+      "bytes": 8925,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-sensevoice-t2-01/summary.json",
+      "sha256": "55e2c6ada1c2d25d7382a313db08291dfd768ae57e6501d97d59c8916add6bcf"
+    },
+    {
+      "bytes": 33778,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-sensevoice-t2-01/thermal.jsonl",
+      "sha256": "a53fe375cd2f2277fdc837621be89cb7bb0a99c64f9c4c6271dbc9cdc8d68fff"
+    },
+    {
+      "bytes": 136702,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-sensevoice-t2-01/thread-resources.jsonl",
+      "sha256": "2b631f3c6fbc6df9f058a913b50415d31a0940a99371ae8f3a68bdab52a9bbc8"
+    },
+    {
+      "bytes": 75449,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-sensevoice-t2-01/threads.jsonl",
+      "sha256": "5fdd98c9172b11e9ef1f155218dac7320f6980fe487acfaf00681da2c174129d"
+    },
+    {
+      "bytes": 2237,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-sensevoice-t2-01/track.json",
+      "sha256": "7ee57e03eb701b6bfef38a683696189c60e2e7f3563524fac75810512d6862b0"
+    },
+    {
+      "bytes": 27570,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-sensevoice-t2-01/vad-sources.jsonl",
+      "sha256": "d272530ce0ccf547f214a1fc390fc86d970220dc70c46bb73690da4ea514f034"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-sensevoice-t2-01/warnings.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 189053,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-sensevoice-t2-01/worker.json",
+      "sha256": "19ae19d2ccd2a8798a5832159abf2fc8b322312e6f516a096d11fbc3e8a0eb77"
+    },
+    {
+      "bytes": 1202113,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-sensevoice-t2-01/zip-events.jsonl",
+      "sha256": "55357520629361121b9471c5fb7d8b391378d88c687d9f89eea578f6839d2b6b"
+    },
+    {
+      "bytes": 3630,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/concurrent-synthetic120-sensevoice-t2-01/zip-sources.jsonl",
+      "sha256": "e843e3a4bb6fcc1b8109f29123dd9f341d4ddfaa3a783f59c6dbbf953663ed06"
+    },
+    {
+      "bytes": 505,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/configs/concurrent-kss-qwen3_asr-t1-01.toml",
+      "sha256": "0e44255d87fc993fa6c044304ea6b03bcff3ddd29e543e1727e6a5e86bfac6b5"
+    },
+    {
+      "bytes": 505,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/configs/concurrent-kss-qwen3_asr-t2-01.toml",
+      "sha256": "c8daba8a66c566f1d7d4afd53cd86c52ef30092aebb191c2cea2338fbff53055"
+    },
+    {
+      "bytes": 505,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/configs/concurrent-kss-qwen3_asr-t2-02.toml",
+      "sha256": "c8daba8a66c566f1d7d4afd53cd86c52ef30092aebb191c2cea2338fbff53055"
+    },
+    {
+      "bytes": 531,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/configs/concurrent-kss-sensevoice-t2-01.toml",
+      "sha256": "490c351feae521f17c22ad6e08bd7735b851acb165f538c305d8c56f9f36f42e"
+    },
+    {
+      "bytes": 505,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/configs/concurrent-synthetic120-qwen3_asr-t1-01.toml",
+      "sha256": "0e44255d87fc993fa6c044304ea6b03bcff3ddd29e543e1727e6a5e86bfac6b5"
+    },
+    {
+      "bytes": 505,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/configs/concurrent-synthetic120-qwen3_asr-t2-01.toml",
+      "sha256": "c8daba8a66c566f1d7d4afd53cd86c52ef30092aebb191c2cea2338fbff53055"
+    },
+    {
+      "bytes": 531,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/configs/concurrent-synthetic120-sensevoice-t2-01.toml",
+      "sha256": "490c351feae521f17c22ad6e08bd7735b851acb165f538c305d8c56f9f36f42e"
+    },
+    {
+      "bytes": 505,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/configs/offline-kss-qwen3_asr-t1-01.toml",
+      "sha256": "0e44255d87fc993fa6c044304ea6b03bcff3ddd29e543e1727e6a5e86bfac6b5"
+    },
+    {
+      "bytes": 505,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/configs/offline-kss-qwen3_asr-t2-01.toml",
+      "sha256": "c8daba8a66c566f1d7d4afd53cd86c52ef30092aebb191c2cea2338fbff53055"
+    },
+    {
+      "bytes": 531,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/configs/offline-kss-sensevoice-t2-01.toml",
+      "sha256": "490c351feae521f17c22ad6e08bd7735b851acb165f538c305d8c56f9f36f42e"
+    },
+    {
+      "bytes": 505,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/configs/offline-synthetic120-qwen3_asr-t1-01.toml",
+      "sha256": "0e44255d87fc993fa6c044304ea6b03bcff3ddd29e543e1727e6a5e86bfac6b5"
+    },
+    {
+      "bytes": 505,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/configs/offline-synthetic120-qwen3_asr-t2-01.toml",
+      "sha256": "c8daba8a66c566f1d7d4afd53cd86c52ef30092aebb191c2cea2338fbff53055"
+    },
+    {
+      "bytes": 531,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/configs/offline-synthetic120-sensevoice-t2-01.toml",
+      "sha256": "490c351feae521f17c22ad6e08bd7735b851acb165f538c305d8c56f9f36f42e"
+    },
+    {
+      "bytes": 199,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-geometry.json",
+      "sha256": "e7e757240808c2c305b734c1ca522076d63eed5e59aa9e1ad7fa1691016fd0ae"
+    },
+    {
+      "bytes": 2337,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t1-01/admission.jsonl",
+      "sha256": "e41bb1371046e2d1129c1f13bc4f4653ff10bfa73d024cfe283c75062d0bd074"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t1-01/console.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3674,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t1-01/execution.json",
+      "sha256": "ecc5aba0c2fb73820d1e8538a427d8d094e043caa03a021f413d004b942417ed"
+    },
+    {
+      "bytes": 265715,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t1-01/predictions.jsonl",
+      "sha256": "e3bbb336dcb3d3a9b5babc419aa4f715a44746953be00010af253b676e32d8d6"
+    },
+    {
+      "bytes": 34586,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t1-01/scores.jsonl",
+      "sha256": "ce7cb966ca23402b03b59eefce391c188ec266fc9a83b911449cb9073c5ef2f9"
+    },
+    {
+      "bytes": 6687,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t1-01/summary.json",
+      "sha256": "70937d83d6f6f6c57d2e11dd00fe18866efa7fe4028caf424bb4c4c3847d18e2"
+    },
+    {
+      "bytes": 635,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t1-01/summary.md",
+      "sha256": "de4d7b5960e7c4ed60aec5e882d3c75758dbd23461a8543a59fd249d519febca"
+    },
+    {
+      "bytes": 42686,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t1-01/thermal.jsonl",
+      "sha256": "49abe8fba528b7b3f131e1ae2cc17a14fa244e9c67942adc0fafcf6a43e6a12c"
+    },
+    {
+      "bytes": 86248,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t1-01/threads.jsonl",
+      "sha256": "908d1a562a7b37f35fb43779dcb4700f41e3e9aedb106ba97a1c899feb320dae"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t1-01/warnings.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 13578,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t1-01/worker.json",
+      "sha256": "2169c416d3bf5915c0ff2a5d56bc223994f5508d9361567b617b3b6ece01b7a6"
+    },
+    {
+      "bytes": 14268,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t2-01/admission.jsonl",
+      "sha256": "d3c503dcc9eb18b7cca97c8957ab8a17784293d397c0f93e129d399e67d18595"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t2-01/console.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3674,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t2-01/execution.json",
+      "sha256": "3cb84195a46f13c90022120607724643ca5951a7fb1d6aede12c3a2b5b794223"
+    },
+    {
+      "bytes": 254441,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t2-01/predictions.jsonl",
+      "sha256": "fb8c43fba4850621b8fbb75a1780b7a8c830a1fc29b87e8a3508a6c8d4102d79"
+    },
+    {
+      "bytes": 34714,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t2-01/scores.jsonl",
+      "sha256": "c9c77f22784d786550b858f3307d73c3b78726a4db575d65d6e755ed3cecdff2"
+    },
+    {
+      "bytes": 6706,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t2-01/summary.json",
+      "sha256": "82a573ac4b4adf751b8f4bb0c7a71e9ab03673486b3be67dd07551f992527ac7"
+    },
+    {
+      "bytes": 635,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t2-01/summary.md",
+      "sha256": "17d62e1937b5e791d45e8cce5200f7e610509a9a8a7c25f7f2f35e7e114b03dd"
+    },
+    {
+      "bytes": 34832,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t2-01/thermal.jsonl",
+      "sha256": "e08ed9c1ecfbc6f1615923394bdd595b74da8a8b09c5f1bc380940da3f1c1e3d"
+    },
+    {
+      "bytes": 97331,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t2-01/threads.jsonl",
+      "sha256": "61316f986b8cf94392bca25240b86fba5197191e34cfc2c77e8243999e325628"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t2-01/warnings.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 13477,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-qwen3_asr-t2-01/worker.json",
+      "sha256": "a7a372ea5c62f9f6ddda71dbd81aefb7a2ad11202d4abd7dbdf15300e4f97284"
+    },
+    {
+      "bytes": 2573,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-sensevoice-t2-01/admission.jsonl",
+      "sha256": "0c285e232e69ca22e23e1900322783add1ef31761f8269c034b42209bc0c1f8e"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-sensevoice-t2-01/console.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3676,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-sensevoice-t2-01/execution.json",
+      "sha256": "3b27a693162f909d8d1170e5cc20deb9267dabc9a9e83f9cf5eaa93540c0fcf3"
+    },
+    {
+      "bytes": 179107,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-sensevoice-t2-01/predictions.jsonl",
+      "sha256": "51f2531f30bdc9047c3abecb2505e0e5a434188737d567c34ccb5d4a4c70d2df"
+    },
+    {
+      "bytes": 34981,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-sensevoice-t2-01/scores.jsonl",
+      "sha256": "e7af319cbf216642cd355e2d9c9164c3bed1af6165fba6886eeefe65a9cf2720"
+    },
+    {
+      "bytes": 6742,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-sensevoice-t2-01/summary.json",
+      "sha256": "ba1c703f3f8b2bd1dbf207fc10290f4612ca153e0b1f90aa1c062b73a667a792"
+    },
+    {
+      "bytes": 635,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-sensevoice-t2-01/summary.md",
+      "sha256": "ce43d8f783329a79d3e403bbb4d9771b92559db496f273f8ead514537a845b69"
+    },
+    {
+      "bytes": 6025,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-sensevoice-t2-01/thermal.jsonl",
+      "sha256": "9d8a9e31e4520a4b54b610c1f41198aab82e3c8239153da41788076f66d263dd"
+    },
+    {
+      "bytes": 13107,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-sensevoice-t2-01/threads.jsonl",
+      "sha256": "1b979aa95342201f79d6ba04034b5fbaf4d9c681190b8d73400f1efae2139ac1"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-sensevoice-t2-01/warnings.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 8682,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-kss-sensevoice-t2-01/worker.json",
+      "sha256": "916274ef70738b34ed89a7d92fa44cd5b4128c8268e2a1feabc9834dc0d7820f"
+    },
+    {
+      "bytes": 30635,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t1-01/admission.jsonl",
+      "sha256": "6ca521e0d8393aae3881da77886e86150652f200454bbb3360d7844930a4aeec"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t1-01/console.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3693,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t1-01/execution.json",
+      "sha256": "6ca6474f6315516f160b03b1d67704367581e89ea1d71e286c341a52cb6e9a8a"
+    },
+    {
+      "bytes": 121040,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t1-01/predictions.jsonl",
+      "sha256": "d43f8d80ed7cf78ff90a15791944742a853dbde88dc82ea9e07aa87bdcf41f72"
+    },
+    {
+      "bytes": 7178,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t1-01/scores.jsonl",
+      "sha256": "e4efe10d7fdf335c69666607cd13bb484e3c24a9e893b405e92873335352640b"
+    },
+    {
+      "bytes": 5362,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t1-01/summary.json",
+      "sha256": "50c2665f2ba1b02ffaf56cf019c5e6ffd7679185c12f945565ed1622966b5933"
+    },
+    {
+      "bytes": 631,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t1-01/summary.md",
+      "sha256": "ed93a4c7388ddde0e3faf6030c28bc04986c13c83fa4ea589739ab89216a808b"
+    },
+    {
+      "bytes": 32477,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t1-01/thermal.jsonl",
+      "sha256": "6693aaeac656a64d2581e2d053e6853a727103fbde9a0b596605aec7c0b42793"
+    },
+    {
+      "bytes": 64929,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t1-01/threads.jsonl",
+      "sha256": "9d255b2ca5a2126f0b0ec8e5f40bf09e3d58df7cbd674e1707a8f0975d72f291"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t1-01/warnings.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 13307,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t1-01/worker.json",
+      "sha256": "9dfd196bfd67f27310eafea4df82a2e72b548a3ff77dbde121ebb0c77165c949"
+    },
+    {
+      "bytes": 26898,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t2-01/admission.jsonl",
+      "sha256": "e79d2825063b579d6e77b778c5c4bde2861d0a071c0227c4d41151009ffc757d"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t2-01/console.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3692,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t2-01/execution.json",
+      "sha256": "8f6b40c06ac8f6150ea45a44a6a54fe78e7ec76118cbbf4bed6617deb1954eea"
+    },
+    {
+      "bytes": 108345,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t2-01/predictions.jsonl",
+      "sha256": "b605c923764fba0ecf50497f177db7b1b401dc7aa9d3813dcae1a50feacbb447"
+    },
+    {
+      "bytes": 7182,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t2-01/scores.jsonl",
+      "sha256": "b2ffb8070abb9efabd0d3ce7a6a251d4e823cd2106faea211231b9c6f7093945"
+    },
+    {
+      "bytes": 5351,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t2-01/summary.json",
+      "sha256": "1d8d6608206801e290a421add9e9ae5de59874fc42372fa6aa417f4791da997a"
+    },
+    {
+      "bytes": 631,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t2-01/summary.md",
+      "sha256": "0d7dbb42b38cfcc03121546eff441754c99d4abd451321180e20951c3a403d69"
+    },
+    {
+      "bytes": 26454,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t2-01/thermal.jsonl",
+      "sha256": "8cf3ff5838ad1a5c8fb3ad183b2e3b131c7f192b7a0909191466d3bb15f53582"
+    },
+    {
+      "bytes": 72934,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t2-01/threads.jsonl",
+      "sha256": "da8e2782f0e541c21c4e295cdd9ac6315380611d1ed1c80be3ef303b30dd6cfb"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t2-01/warnings.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 13350,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-qwen3_asr-t2-01/worker.json",
+      "sha256": "fdbce64bfa3df603ff67bbca1b2629acc04595d4c0c43fd7b019c224bc64e1fd"
+    },
+    {
+      "bytes": 18707,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-sensevoice-t2-01/admission.jsonl",
+      "sha256": "90921db5713b8606f78457880726d316bac158cc167a87937218e2c9eec84431"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-sensevoice-t2-01/console.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3695,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-sensevoice-t2-01/execution.json",
+      "sha256": "c99150cd3071ead6d1da1cdf1753d772a698a3c2479ef5f2d0f396986b25033a"
+    },
+    {
+      "bytes": 53978,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-sensevoice-t2-01/predictions.jsonl",
+      "sha256": "8493220453c0525f471f1f018936c0b419209607436cb600ad7399d856d72428"
+    },
+    {
+      "bytes": 7175,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-sensevoice-t2-01/scores.jsonl",
+      "sha256": "df0e9907d4485af45959d4eecf59a63c7e3e462fd1200a46774d820cd5acdd63"
+    },
+    {
+      "bytes": 5381,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-sensevoice-t2-01/summary.json",
+      "sha256": "dd3caf5cc552c13a844a1fb5b9c3814e48932d8c35efffb6673f892730693b20"
+    },
+    {
+      "bytes": 633,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-sensevoice-t2-01/summary.md",
+      "sha256": "ad9af9145bab1538c1520de3e4f3d33173de37a541fd7508807bed450c65df1c"
+    },
+    {
+      "bytes": 4710,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-sensevoice-t2-01/thermal.jsonl",
+      "sha256": "e860eeaa4edbd2615b09e876dfb32dd2bab70b6b4a123a1b336ffb36157d78a3"
+    },
+    {
+      "bytes": 10062,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-sensevoice-t2-01/threads.jsonl",
+      "sha256": "23b0edf6a71a5df106a481269c1ec042839b0f03bccf8294ff80280f084e1b01"
+    },
+    {
+      "bytes": 0,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-sensevoice-t2-01/warnings.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 8691,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/offline-synthetic120-sensevoice-t2-01/worker.json",
+      "sha256": "baa58b18f8547c6496e9944e1689e68473a7381179163321bd94853bd4d4d2a7"
+    },
+    {
+      "bytes": 24448,
+      "path": "results/comparisons/qwen3-realtime-20261106-01/plan.json",
+      "sha256": "63f0c7779d8266645909a6808b04ec49e550aef1f979c846a57832334d1e7c27"
+    },
+    {
+      "bytes": 269,
+      "path": "results/live/qwen3-wav-20261106-01/input.jsonl",
+      "sha256": "3fae6ea7151b905d3c3ba877bf26d62d956b006ca253faee23658559608aa768"
+    },
+    {
+      "bytes": 22223,
+      "path": "results/live/qwen3-wav-20261106-01/runtime/admission.jsonl",
+      "sha256": "6e0324de640bbd621ec2cd393740216c97c6259cedf75fea17b9b6e5ff13bb0e"
+    },
+    {
+      "bytes": 1751,
+      "path": "results/live/qwen3-wav-20261106-01/runtime/caption-events.jsonl",
+      "sha256": "01c75d668f8edbc3d64b907164c9d6e5c1fce985daf2c10e56c72a83836bb74f"
+    },
+    {
+      "bytes": 3092,
+      "path": "results/live/qwen3-wav-20261106-01/runtime/capture/backlog.jsonl",
+      "sha256": "ca07d569702096da1f5cb4ad0b20c9b6cbd9520da7e68640d4517b95e4a2c3b3"
+    },
+    {
+      "bytes": 6479,
+      "path": "results/live/qwen3-wav-20261106-01/runtime/capture/decoder.jsonl",
+      "sha256": "203f5a1d22450f8094ac75baaa24b2c78c4d4bb4210118f942aad437f177e92b"
+    },
+    {
+      "bytes": 3846,
+      "path": "results/live/qwen3-wav-20261106-01/runtime/capture/producer.jsonl",
+      "sha256": "43acc6ff7acd3adba467d91f9347796bb8446c0bfb53e6dd8aec799051fd87af"
+    },
+    {
+      "bytes": 2053,
+      "path": "results/live/qwen3-wav-20261106-01/runtime/console.log",
+      "sha256": "0dfa30620ec336a4899946e9e40567446f63a9e72791c9819d191fdb6ac9e278"
+    },
+    {
+      "bytes": 3667,
+      "path": "results/live/qwen3-wav-20261106-01/runtime/execution.json",
+      "sha256": "1b949d74339658c085c3417ce61029df6e71fd7e04241e6c873bfdbce32797d0"
+    },
+    {
+      "bytes": 15210,
+      "path": "results/live/qwen3-wav-20261106-01/runtime/process-resources.jsonl",
+      "sha256": "8fa7ce6737d5de395e182e9656b583d4b9aacf18cc17cf89d525292e55cae21e"
+    },
+    {
+      "bytes": 994,
+      "path": "results/live/qwen3-wav-20261106-01/runtime/refine-jobs.jsonl",
+      "sha256": "3726160203f8f4da632448fe984be74ce0ef6b5ddf9420e26b6f298e505a7572"
+    },
+    {
+      "bytes": 1714,
+      "path": "results/live/qwen3-wav-20261106-01/runtime/refine-results.jsonl",
+      "sha256": "731e02a6129b3e31d2c757d76c3df5a025581445e7dd056e615b636e801fad27"
+    },
+    {
+      "bytes": 9341,
+      "path": "results/live/qwen3-wav-20261106-01/runtime/summary.json",
+      "sha256": "644ae48a01fa378560d5e6328c5c38ce923c995490b9d4cd0dc771cc7c43f613"
+    },
+    {
+      "bytes": 7073,
+      "path": "results/live/qwen3-wav-20261106-01/runtime/thermal.jsonl",
+      "sha256": "582abfb11e7e8c88c0bc2e6cf0b7e4812c9154694b0e020ef622a39c629c1816"
+    },
+    {
+      "bytes": 9074,
+      "path": "results/live/qwen3-wav-20261106-01/runtime/thread-resources.jsonl",
+      "sha256": "efbb958d6960586e6337f6544bb782209a58374db4ae043ce832d58a8f5cec72"
+    },
+    {
+      "bytes": 9187,
+      "path": "results/live/qwen3-wav-20261106-01/runtime/threads.jsonl",
+      "sha256": "fb8a611ed11a8c383568bc7ddd405893bfdc4efa8ca6b517e996dfd4854e3ee0"
+    },
+    {
+      "bytes": 431,
+      "path": "results/live/qwen3-wav-20261106-01/runtime/track.json",
+      "sha256": "9b1fb1020f648d00ee3777b66bb22e798e6c9a15cef8b9e963b5d901702ec417"
+    },
+    {
+      "bytes": 1395,
+      "path": "results/live/qwen3-wav-20261106-01/runtime/vad-sources.jsonl",
+      "sha256": "60865aaf504d97ca0346b81889d20576b3bd32a4a6b14c8747ff98f077bd1762"
+    },
+    {
+      "bytes": 0,
+      "path": "results/live/qwen3-wav-20261106-01/runtime/warnings.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 30703,
+      "path": "results/live/qwen3-wav-20261106-01/runtime/worker.json",
+      "sha256": "776468ba75411488f16ae31ff907dd895f108d5f80ca118f1ffc8ee7f8191fcf"
+    },
+    {
+      "bytes": 9402,
+      "path": "results/live/qwen3-wav-20261106-01/runtime/zip-events.jsonl",
+      "sha256": "09c0bc9f7741b40d6761b94c7cf0848d50fa43aef7d8d474f35c448d1cf0ebce"
+    },
+    {
+      "bytes": 292,
+      "path": "results/live/qwen3-wav-20261106-01/runtime/zip-sources.jsonl",
+      "sha256": "e2f19087949369ca490ef1981160d9303529753a3c5067b9bddfd78f4580753f"
+    },
+    {
+      "bytes": 11171,
+      "path": "results/live/qwen3-wav-20261106-01/summary.json",
+      "sha256": "ce5bfe5193c7647c42f59b2fcc6f8ac1b850a1d2cc799a10f19123eef57f0151"
+    },
+    {
+      "bytes": 2498,
+      "path": "results/live/qwen3-wav-20261106-01/terminal-events.jsonl",
+      "sha256": "9b3d742f4733da4e56421d552efbe9d094d09e07089aa966a4831971b646f99b"
+    },
+    {
+      "bytes": 9500,
+      "path": "results/maintenance/qwen3-realtime-20261106-01/analyze.py",
+      "sha256": "3d908ff37c50eb7abbd66b7141f3597f0fa7748aec0685f3bff8d277b58f6441"
+    },
+    {
+      "bytes": 188,
+      "path": "results/maintenance/qwen3-realtime-20261106-01/candidate-freeze.txt",
+      "sha256": "387fdba41baf15d03d62466fcf58336cf48f433850df4e346702ce0c0b83ba58"
+    },
+    {
+      "bytes": 4063,
+      "path": "results/maintenance/qwen3-realtime-20261106-01/finalize.py",
+      "sha256": "d94d5d1b8178d8bc24842b5bdf02626a3b846c146fb43d0c5788ad5b2412ed65"
+    },
+    {
+      "bytes": 55983,
+      "path": "results/maintenance/qwen3-realtime-20261106-01/host-final-code-tests.log",
+      "sha256": "29057a380339a3af0856566cb7f7f402755d995e65e5858a90876a8a96d64208"
+    },
+    {
+      "bytes": 6477,
+      "path": "results/maintenance/qwen3-realtime-20261106-01/host-history.json",
+      "sha256": "4285859e53239a4de9085593efe10a334bc20718ecad9f65007ba3955a3b4751"
+    },
+    {
+      "bytes": 278,
+      "path": "results/maintenance/qwen3-realtime-20261106-01/preservation-after.json",
+      "sha256": "bda00da7a11ed599ff75f79f67f5e417cb257c588f96590fa372d1c7890a8415"
+    },
+    {
+      "bytes": 55983,
+      "path": "results/maintenance/qwen3-realtime-20261106-01/rp5-final-code-tests.log",
+      "sha256": "875d09454fbafca4446374b264399935160f0568a3e4d1a9acba3e6fe5e68d77"
+    },
+    {
+      "bytes": 6478,
+      "path": "results/maintenance/qwen3-realtime-20261106-01/rp5-history.json",
+      "sha256": "29cbb78387f0243d973c7df8bbdc0783d73e2a3d07f92c654984d1239feb7add"
+    },
+    {
+      "bytes": 789,
+      "path": "results/maintenance/qwen3-realtime-20261106-01/runtime-lock.txt",
+      "sha256": "7eea22534094b7b0e35f2029f8a1a0fd73655bebbd42f545083c02cba6fb87e8"
+    },
+    {
+      "bytes": 1666,
+      "path": "results/maintenance/qwen3-realtime-20261106-01/wheel-metadata.json",
+      "sha256": "1162668be120e55344b2f76e893fb86ddf268ec3d1b71daa71e06950c4305b70"
+    }
+  ],
+  "runtime": {
+    "machine": "aarch64",
+    "packages": [
+      {
+        "name": "flatbuffers",
+        "version": "25.12.19"
+      },
+      {
+        "name": "numpy",
+        "version": "2.4.6"
+      },
+      {
+        "name": "onnxruntime",
+        "version": "1.31.1"
+      },
+      {
+        "name": "packaging",
+        "version": "26.3"
+      },
+      {
+        "name": "pip",
+        "version": "26.2.2"
+      },
+      {
+        "name": "protobuf",
+        "version": "7.36.2"
+      },
+      {
+        "name": "setuptools",
+        "version": "79.0.1"
+      },
+      {
+        "name": "sherpa-onnx-core",
+        "version": "2.0.1"
+      },
+      {
+        "name": "sherpa_onnx",
+        "version": "2.0.1"
+      },
+      {
+        "name": "typing_extensions",
+        "version": "4.16.0"
+      }
+    ],
+    "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+    "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+    "runtime": {
+      "native_version_source": "sherpa_onnx.onnxruntime_version",
+      "python_onnxruntime_package_version": "1.31.1",
+      "reason": null,
+      "sherpa_core_package_version": "2.0.1",
+      "sherpa_native_onnxruntime_version": "1.28.2",
+      "sherpa_package_version": "2.0.1",
+      "status": "available"
+    }
+  },
+  "schema": "qwen3-vad-concurrent-comparison-v1",
+  "scope": "KSS/합성 개발 자료. 구성별1회, Qwen2T KSS 동시 실행만 사전 지정 2회. 마이크/독립 평가/장시간 안정성 아님",
+  "source_commit": "be4a0e600f2d453534cd011bcb4ca35efc86b27f",
+  "unmeasured": {
+    "display_latency_s": null,
+    "independent_test_accuracy": null,
+    "long_term_stability": null,
+    "microphone": null,
+    "natural_conversation_accuracy": null
+  },
+  "verification": {
+    "host": {
+      "elapsed_s": 43.461,
+      "previous_rescore_matches": 29,
+      "test_scope": "단위/모의 모델·실제 IPC; RP5 실제 추론과 별도",
+      "tests": 307
+    },
+    "rp5": {
+      "elapsed_s": 70.489,
+      "previous_rescore_matches": 29,
+      "test_scope": "단위/모의 모델·실제 IPC; RP5 실제 추론과 별도",
+      "tests": 307
+    }
+  }
+}

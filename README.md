@@ -2,7 +2,7 @@
 
 Raspberry Pi 5(ARM64, Debian 13, RAM 8GB)에서 한국어 ASR 모델을 비교하고 실시간 배포하기 위한 연구 저장소입니다. **Host에서 개발하고 RP5에서 실제 추론·성능을 검증합니다.** 기준 Python은 3.11이며 모델·오디오·가상환경·원시 결과는 각 장비에 보존합니다.
 
-Zipformer INT8의 batch/1배속 모사와 SenseVoiceSmall·Qwen3-ASR-0.6B INT8의 batch 평가를 구현했습니다. 공통 입력·CER·RTF·CPU/RSS·실패 기록·재채점을 사용합니다. WAV 자막 MVP의 Zip/보정 후보 분리 표시를 RP5에서 실제 검증했습니다. [현재 상태·다음 작업](docs/status.md), [전체 문서](docs/README.md), [실측 기록](results/summaries/README.md)을 참고하세요.
+Zipformer INT8의 batch/1배속 모사와 SenseVoiceSmall·Qwen3-ASR-0.6B INT8의 batch 평가를 구현했습니다. 공통 입력·CER·RTF·CPU/RSS·실패 기록·재채점을 사용합니다. WAV 자막은 Zip 원문과 선택한 보정 후보를 분리 표시합니다. Qwen의 같은 VAD 구간·Zip 동시 실행 13개 비교를 RP5에서 완료했습니다. [현재 상태·다음 작업](docs/status.md), [전체 문서](docs/README.md), [실측 기록](results/summaries/README.md)을 참고하세요.
 
 ## 빠른 시작
 
@@ -12,6 +12,8 @@ WAV 실시간 자막은 RP5에서 다음 명령으로 실행합니다. Zip 자�
 .venv/bin/python scripts/edge_asr.py live \
   --wav models/sherpa-onnx-streaming-zipformer-korean-2024-06-16/test_wavs/0.wav
 ```
+
+Qwen 후보는 별도 `.venv-qwen3-vad-20261106-01/bin/python`에서 같은 명령에 `--refine-model qwen3`를 추가합니다. 기본값은 SenseVoice이며 자동 교체는 하지 않습니다. [정확도·반환 지연 비교](results/summaries/qwen3-realtime-20261106.md).
 
 이미 준비된 Host/RP5 `.venv`를 사용합니다. 새 환경 설치는 [설치 안내](docs/guides/setup.md)를 따릅니다. Debian 13의 시스템 Python을 프로젝트의 3.11로 가정하지 않습니다.
 
@@ -74,7 +76,7 @@ Host `/d/shin/edge-asr`와 RP5 `/home/deepet/projects/edge-asr`는 **main 하나
 
 ## 현재 검증 범위
 
-RP5에서 세 모델의 batch 평가, Zipformer/SenseVoice의 WAV 1배속 동시 추론과 VAD, 터미널 자막 분리 표시를 검증했습니다. **Refine은 후보로 표시하며 자동 교체하지 않습니다.** 구간별 정확도 악화가 남아 있기 때문입니다. Qwen의 온라인 VAD·Zip 동시 실행과 실제 마이크·화면 표시 지연·상시 운영은 아직 검증하지 않았습니다.
+RP5에서 세 모델의 batch 평가, Zipformer와 SenseVoice/Qwen의 WAV 1배속 동시 추론·VAD를 검증했습니다. **Refine은 후보로 표시하며 자동 교체하지 않습니다.** 같은 VAD 구간의 KSS CER는 Qwen 3.70%·SenseVoice 5.56%였지만 Qwen으로 5개 발화가 악화됐고 보정 반환도 더 느렸습니다. 실제 마이크·독립 평가·화면 표시 지연·상시 운영은 아직 검증하지 않았습니다.
 
 현재 채택한 설정과 다음 완료 기준은 [현재 상태](docs/status.md)에, 각 실험의 조건·정확도·속도·실패는 [결과 색인](results/summaries/README.md)에 모았습니다. 과거 결과는 해당 데이터와 실행 조건의 기록이며 다른 환경의 성능을 보장하지 않습니다.
 

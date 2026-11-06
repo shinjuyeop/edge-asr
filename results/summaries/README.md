@@ -4,6 +4,7 @@
 
 | 기록 | 내용 |
 | --- | --- |
+| [Qwen VAD 구간·Zip 동시 실행](qwen3-realtime-20261106.md) | 13/13개 성공·입력/보정 드롭 0, KSS CER 3.70%·5개 악화; Qwen 2T 반환 p95 약 3.1~3.4초·별도 후보 선택, 기본 SenseVoice 유지 |
 | [Qwen3-ASR RP5 KSS 세 모델 비교](qwen3-kss-dev50-20261106.md) | 별도 환경·9개 구성·450/450회 성공, Qwen CER 3.57%이나 SenseVoice 대비 7개 악화·처리 비용으로 실시간 채택 보류; 각 300개 테스트·5,647개 파일 보존 |
 | [Qwen3-ASR 배포 경로 검토](qwen3-route-review-20261106.md) | sherpa 2.0.1 CPU·INT8 ONNX 선정, RP5 설치 API·ARM64 wheel 확인. 새 모델 로딩·전사·성능 실측 없음 |
 | [WAV 자막 단계 구조 정리](refactor-20261103.md) | 실시간 공통 코드·문서 통합, Host/RP5 각 287개 테스트·기존 29개 재집계 일치·단일 WAV 실제 회귀·5,613개 파일 보존 |
