@@ -20,6 +20,7 @@ COMMANDS = {
     "compare": "probes.comparison",
     "thermal-run": "probes.thermal",
     "probe-load": "probes.load",
+    "probe-qwen3": "probes.qwen3",
     "probe-preprocessing": "probes.preprocessing",
     "probe-vad": "probes.vad",
     "probe-segments": "probes.segments",
