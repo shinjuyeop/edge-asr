@@ -4,6 +4,7 @@
 
 ## M2 모델·비교 계약
 
+- [Qwen3-ASR-0.6B RP5 CPU 배포 경로 검토](qwen3_deployment.md) — 2026-11-06, sherpa INT8 ONNX 선정·설치 API 확인. 모델 실행은 미검증
 - [M2-0 / M2-1 / M2-2: SenseVoiceSmall INT8 batch 통합·실측](m2_sensevoice.md)
 - [M2-3 통제 모델 비교](m2_comparison.md)
 - [M2-3 외부 자료 선택과 평가 범위](m2_external_data.md)

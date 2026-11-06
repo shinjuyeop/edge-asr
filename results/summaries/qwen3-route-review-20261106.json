@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-06",
+  "run_id": "qwen3-route-review-20261106-01",
+  "scope": "deployment_route_review_no_model_inference",
+  "baseline_source_commit": "e7c7754bc1c674df9ceb9b1b5c1b6f73adce06b7",
+  "decision": {
+    "family": "qwen3_asr",
+    "original_model": "Qwen/Qwen3-ASR-0.6B",
+    "backend": "sherpa_onnx",
+    "sherpa_version": "2.0.1",
+    "sherpa_core_version": "2.0.1",
+    "numpy_version": "2.4.6",
+    "provider": "cpu",
+    "mode": "batch",
+    "artifact_precision_label": "int8",
+    "graph_precision_verified": false,
+    "deployed_quantization_method": null,
+    "quantization_method_reason": "배포 ONNX 그래프·생성 기록은 미확인. 읽은 exporter 설정과 구분한다.",
+    "status": "selected_for_isolated_smoke_not_validated"
+  },
+  "upstream_revisions": {
+    "sherpa_onnx_v2.0.1": "af2d8d81dbfa61c4cea4c568da78f3982edca005",
+    "exporter_main_observed": "0829a577ee741e408e65763dfe01ff4fe75408e9"
+  },
+  "rp5": {
+    "architecture": "aarch64",
+    "cpu": "Cortex-A76",
+    "logical_cpus": 4,
+    "ram_class_gb": 8,
+    "os": "Debian GNU/Linux 13.3",
+    "system_python": "3.13.5",
+    "project_python": "3.11.18",
+    "sherpa_native_onnxruntime_version": "1.28.2",
+    "python_onnxruntime_package_version": "1.31.1",
+    "qwen_factory_present": true,
+    "offline_stream_has_set_option": true,
+    "api_probe_scope": "existing_environment_import_and_introspection_no_recognizer_created"
+  },
+  "distribution_metadata": {
+    "retrieved_at_utc": "2026-11-06T06:35:53.762332+00:00",
+    "arm64_wheels": [
+      {
+        "package": "sherpa-onnx",
+        "version": "2.0.1",
+        "filename": "sherpa_onnx-2.0.1-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+        "size_bytes": 4033427,
+        "sha256": "3acecd333a5647b6a2f7298a8a2b3bec5fe442c4a7f72076f8f708379679401f",
+        "url": "https://files.pythonhosted.org/packages/fc/d0/2860e16ca1372d1b2df7ba158a8909645f7beb5c23068ac0f3ce9c35ddfa/sherpa_onnx-2.0.1-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+        "yanked": false
+      },
+      {
+        "package": "sherpa-onnx-core",
+        "version": "2.0.1",
+        "filename": "sherpa_onnx_core-2.0.1-py3-none-manylinux2014_aarch64.whl",
+        "size_bytes": 13257723,
+        "sha256": "4a855a5c89c89885111e4e9c570e5da1aed63373c031b757d8046792d95fe8fe",
+        "url": "https://files.pythonhosted.org/packages/73/d0/399776c4b6fa0a618d23cf711d580607d9890f7838352dacb36a9246f2b7/sherpa_onnx_core-2.0.1-py3-none-manylinux2014_aarch64.whl",
+        "yanked": false
+      },
+      {
+        "package": "numpy",
+        "version": "2.4.6",
+        "filename": "numpy-2.4.6-cp311-cp311-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl",
+        "size_bytes": 15966692,
+        "sha256": "0ab0a9c4ffb1a6d95ef519fe4247dba8eb6b18ad93999f76b7f657039acabd47",
+        "url": "https://files.pythonhosted.org/packages/33/a8/6fa8c1a345a8c85dbb21932c447bee07c30a2c2a3f31e369c0a84b300147/numpy-2.4.6-cp311-cp311-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl",
+        "yanked": false
+      }
+    ],
+    "model_asset": {
+      "name": "sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25.tar.bz2",
+      "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25.tar.bz2",
+      "size_bytes_publisher_metadata": 878702423,
+      "sha256_publisher_metadata": "393f8a14e2f5fb96746aaab342997a40641001fbd5bf9592a080a8329178ee96",
+      "downloaded": false,
+      "local_sha256": null,
+      "local_sha256_reason": "모델 다운로드·로컬 검증 미실행"
+    }
+  },
+  "planned_initial_smoke": {
+    "num_threads": 1,
+    "sample_rate_hz": 16000,
+    "feature_dim": 128,
+    "language_config": "ko",
+    "stream_language": "Korean",
+    "use_itn": null,
+    "use_itn_reason": "선정 sherpa Qwen API에 별도 스위치 없음",
+    "max_total_len": 512,
+    "max_new_tokens": 128,
+    "temperature": 1e-06,
+    "top_p": 0.8,
+    "seed": 42,
+    "hotwords": "",
+    "policy_status": "초기 smoke 후보. 본 평가 token 예산은 입력·출력 보존 검사 후 고정",
+    "memory_budget_type": "RLIMIT_AS_virtual_address_space",
+    "memory_budget_bytes": 4294967296,
+    "env_created": false,
+    "model_acquired": false,
+    "execution_started": false
+  },
+  "measurement": {
+    "model_load_calls": 0,
+    "asr_calls": 0,
+    "cer": null,
+    "batch_rtf": null,
+    "model_load_s": null,
+    "inference_cpu_pct": null,
+    "inference_rss_mib": null,
+    "refine_latency_s": null,
+    "unmeasured_reason": "문서·소스·배포 메타데이터·설치 API 검토만 수행. 새 환경·모델·추론 미실행"
+  },
+  "preservation": {
+    "existing_environment_package_mutation_commands_run": false,
+    "existing_model_audio_result_mutation_commands_run": false,
+    "hardware_settings_changed": false,
+    "full_before_after_asset_hash_audit_performed": false,
+    "reason": "읽기 전용 경로 검토. 별도 환경·모델 추가 전 전체 보존 기준을 저장할 예정"
+  },
+  "validation": {
+    "host_mock_inference_performed": false,
+    "rp5_model_inference_performed": false,
+    "historical_287_test_suite_rerun": false,
+    "historical_29_reports_reaggregated": false
+  },
+  "raw_evidence": [
+    {
+      "path": "results/qwen3-route-review-20261106-01/distribution-metadata.json",
+      "size_bytes": 3907,
+      "sha256": "6631b4906718f4ea7028a771ec7822efaf0704fc83f42cb1c88deef643d7562c"
+    },
+    {
+      "path": "results/qwen3-route-review-20261106-01/numpy-pypi.json",
+      "size_bytes": 82899,
+      "sha256": "38fe67da36577cfe06638e1dcdebe6e318859f170c907294a0769c994ca70fc4"
+    },
+    {
+      "path": "results/qwen3-route-review-20261106-01/rp5-environment-api.json",
+      "size_bytes": 10024,
+      "sha256": "2e930045cd05d84916ce8003368b0ae4177ec12ddcfa6940dc150dae351cff90"
+    },
+    {
+      "path": "results/qwen3-route-review-20261106-01/sherpa-onnx-core-pypi.json",
+      "size_bytes": 15322,
+      "sha256": "109bb2908d1a07eb838f2c625335a186f0b27118cd4f26845b0148e4a1b5ab52"
+    },
+    {
+      "path": "results/qwen3-route-review-20261106-01/sherpa-onnx-pypi.json",
+      "size_bytes": 140239,
+      "sha256": "602fd8053a8e8fa4d40919c14be3a7f1e41f5a825869916951b5ac9f6d993f1a"
+    },
+    {
+      "path": "results/qwen3-route-review-20261106-01/sources/exporter_python.json",
+      "size_bytes": 56118,
+      "sha256": "087f41eae28533de49b0ca1eb5a97c62a5622210dfc8b64386423fde3e9b3fd3"
+    },
+    {
+      "path": "results/qwen3-route-review-20261106-01/sources/exporter_readme.json",
+      "size_bytes": 1016,
+      "sha256": "e05286650d521d9b768ead9ea78c2e1006d413d84fb895c613be6769c876e1c1"
+    },
+    {
+      "path": "results/qwen3-route-review-20261106-01/sources/exporter_run.json",
+      "size_bytes": 1650,
+      "sha256": "0b6097afa99649d44c98a449bffd98c5def59e34bf1b1c1c7b2479653542dcf2"
+    },
+    {
+      "path": "results/qwen3-route-review-20261106-01/sources/gguf_readme.json",
+      "size_bytes": 20892,
+      "sha256": "95074be9e1b0553e310b63d83ecae86862ca25bbe493cefa4bf4265eda14640c"
+    },
+    {
+      "path": "results/qwen3-route-review-20261106-01/sources/llama_mtmd.json",
+      "size_bytes": 11848,
+      "sha256": "d9b1022c8664835962697805dc22386179b3caf61716e212133dbbe9ea4a36b8"
+    },
+    {
+      "path": "results/qwen3-route-review-20261106-01/sources/native_c_readme.json",
+      "size_bytes": 68101,
+      "sha256": "65b41527fac1186015ab43f47c6a6ec4822a58a7409b929af5751f8a0eb204be"
+    },
+    {
+      "path": "results/qwen3-route-review-20261106-01/sources/qwen_impl.json",
+      "size_bytes": 86068,
+      "sha256": "4e40f38edb551bf393e8bb7d21fe4e2f71e87098662f955d1628738c712955ba"
+    },
+    {
+      "path": "results/qwen3-route-review-20261106-01/sources/qwen_model.json",
+      "size_bytes": 64840,
+      "sha256": "8ae498ef731a2179106d760771456305160120769a7f82f7d63b4aadfbb5f01e"
+    },
+    {
+      "path": "results/qwen3-route-review-20261106-01/SHA256SUMS",
+      "size_bytes": 1691,
+      "sha256": "a504d7ffa90c3ad1486d3b9cb6bd0d87e2bff66c9a6a4fbabfa8ee35f3f731f2"
+    }
+  ],
+  "next_gate": "별도 환경·새 자산 경로에서 짧은 공식 WAV 실제 로딩·전사·RSS 확인"
+}

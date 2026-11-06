@@ -55,7 +55,9 @@ python -c 'import numpy, sherpa_onnx; print(numpy.__version__, sherpa_onnx.__ver
 
 PyPI 배포 메타데이터에서도 [NumPy 2.4.6](https://pypi.org/project/numpy/2.4.6/#files), [sherpa-onnx 2.0.1](https://pypi.org/project/sherpa-onnx/2.0.1/#files)의 CPython 3.11 Linux aarch64 wheel 존재를 확인했습니다. 메타데이터 확인과 실제 설치·추론은 구분하며 이번 실제 RP5 확인의 근거는 사용자 전달 검사 보고입니다. 전이 의존성도 대상 환경에서 설치되어야 하고 이 두 고정값만으로 전체 환경 lock을 대체하지 않습니다. wheel을 찾지 못하면 자동 소스 빌드로 우회하지 말고 Python ABI·아키텍처·전이 의존성의 wheel 가용성을 점검합니다.
 
-SenseVoiceSmall INT8은 같은 sherpa CPU 런타임을 사용하며 새 후보 환경용 `.[sensevoice]` 선택 의존성을 추가했습니다. [M2-2 실제 RP5 검증](../../results/summaries/sensevoice-kss-dev50-20261028.md)에서는 기존 `.venv`·설치 패키지를 바꾸지 않고 새 모델 폴더만 추가했습니다. 새 장비·런타임·모델 조합은 별도로 확인해야 합니다. Qwen3-ASR 런타임은 아직 추가하지 않았습니다. 기본 설치에 PyTorch 등 무거운 패키지를 강제하지 않습니다.
+SenseVoiceSmall INT8은 같은 sherpa CPU 런타임을 사용하며 새 후보 환경용 `.[sensevoice]` 선택 의존성을 추가했습니다. [M2-2 실제 RP5 검증](../../results/summaries/sensevoice-kss-dev50-20261028.md)에서는 기존 `.venv`·설치 패키지를 바꾸지 않고 새 모델 폴더만 추가했습니다. 새 장비·런타임·모델 조합은 별도로 확인해야 합니다. 기본 설치에 PyTorch 등 무거운 패키지를 강제하지 않습니다.
+
+Qwen3-ASR은 [별도 환경의 sherpa CPU·INT8 ONNX 경로](../research/qwen3_deployment.md)를 첫 검증 대상으로 선정했습니다. 2026-11-06 RP5의 기존 2.0.1에서 Qwen 생성 API 존재와 ARM64 wheel 메타데이터를 확인했지만, 프로젝트 어댑터·새 환경 설치·모델 로딩·실제 전사는 아직 검증하지 않았습니다. 기존 `.venv`에는 추가 설치하지 않습니다.
 
 ## 자산 및 환경 기록
 
