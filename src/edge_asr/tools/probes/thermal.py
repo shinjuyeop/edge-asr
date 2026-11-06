@@ -17,7 +17,7 @@ from edge_asr.diagnostics import thread_snapshot
 from edge_asr.thermal import policy_settings, rejection, sample, temperature_warning
 
 
-def admit(output, *, budget_s=300):
+def admit(output, *, budget_s=300, max_temperature_mc=53000):
     start, stable = time.monotonic(), 0
     with (output / "admission.jsonl").open("x") as log:
         while time.monotonic() - start < budget_s:
@@ -27,7 +27,9 @@ def admit(output, *, budget_s=300):
             if rejection(row, row.get("history_limits") or 0) == "telemetry_unavailable":
                 raise RuntimeError("telemetry_unavailable")
             stable = (
-                stable + 1 if row["temperature_mc"] <= 53000 and not row["current_limits"] else 0
+                stable + 1
+                if row["temperature_mc"] <= max_temperature_mc and not row["current_limits"]
+                else 0
             )
             if stable >= 3:
                 # 대기 표본과 실제 기록에 다른 온도를 사용하지 않는다.
@@ -50,12 +52,23 @@ def terminate(process):
 
 
 def run(
-    root, output, command, *, temperature_policy="legacy75", console_callback=None, timeout_s=600
+    root,
+    output,
+    command,
+    *,
+    temperature_policy="legacy75",
+    console_callback=None,
+    timeout_s=600,
+    admission_mc=53000,
 ):
     if type(timeout_s) is not int or not 1 <= timeout_s <= 2100:
         raise ValueError("외부 제한은 정수 1~2100초여야 합니다.")
     if timeout_s > 600 and temperature_policy != "operational":
         raise ValueError("600초 초과 실행은 명시적인 운영 검사에서만 지원합니다.")
+    if type(admission_mc) is not int or admission_mc not in (53000, 60000):
+        raise ValueError("시작 상한은 53000 또는 60000m°C여야 합니다.")
+    if admission_mc != 53000 and temperature_policy != "operational":
+        raise ValueError("60°C 시작 상한은 별도 운영 검사에서만 지원합니다.")
     settings = policy_settings(temperature_policy)
     operational = temperature_policy == "operational"
     output.mkdir(parents=True, exist_ok=False)
@@ -68,7 +81,7 @@ def run(
             ["git", "rev-parse", "HEAD"], cwd=root, text=True
         ).strip(),
         "policy": {
-            "admission_mc": 53000,
+            "admission_mc": admission_mc,
             "admission_consecutive": 3,
             "stop_mc": 75000,
             "interval_s": 1,
@@ -111,7 +124,11 @@ def run(
 
     save(receipt, record)
     try:
-        record["before"] = admit(output)
+        record["before"] = (
+            admit(output)
+            if admission_mc == 53000
+            else admit(output, max_temperature_mc=admission_mc)
+        )
         record["status"] = "running"
         save(receipt, record)
         wrapped = [
@@ -267,6 +284,13 @@ def main():
         "--timeout-s", type=int, default=600, help="외부 제한; 기본600초, 운영 검사 최대2100초"
     )
     parser.add_argument(
+        "--admission-temperature-c",
+        type=int,
+        choices=(53, 60),
+        default=53,
+        help="시작 온도 상한; 기본53°C. 운영 검사만 별도60°C 조건 허용",
+    )
+    parser.add_argument(
         "--temperature-policy",
         choices=("legacy75", "warn75-stop80", "operational"),
         default="legacy75",
@@ -286,6 +310,7 @@ def main():
             command,
             temperature_policy=args.temperature_policy,
             timeout_s=args.timeout_s,
+            admission_mc=args.admission_temperature_c * 1000,
         )
     )
 

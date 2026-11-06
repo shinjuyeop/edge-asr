@@ -15,6 +15,70 @@ LIMITS = "Max address space         4294967296           4294967296           by
 
 
 class ThermalPolicyTests(unittest.TestCase):
+    def test_60_degree_admission_is_explicit_operational_only_and_recorded(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for value, policy in (
+                (True, "operational"),
+                (59999, "operational"),
+                (60000, "legacy75"),
+                (60000, "warn75-stop80"),
+            ):
+                with self.assertRaises(ValueError):
+                    guard.run(
+                        root, root / "bad", ["false"], temperature_policy=policy, admission_mc=value
+                    )
+                self.assertFalse((root / "bad").exists())
+            warm = {**COOL, "temperature_mc": 55650}
+            child = Mock()
+            child.poll.return_value = 0
+            child.wait.return_value = 0
+            with (
+                patch.object(guard, "admit", return_value=warm) as admission,
+                patch.object(guard, "sample", return_value=warm),
+                patch.object(guard.subprocess, "Popen", return_value=child),
+                patch.object(guard, "terminate"),
+            ):
+                # 실제 PID 제한이 확인되지 않으면 온도 조건을 만족해도 성공이 아니다.
+                self.assertEqual(
+                    guard.run(
+                        root,
+                        root / "warm",
+                        ["fixture"],
+                        temperature_policy="operational",
+                        admission_mc=60000,
+                    ),
+                    1,
+                )
+            admission.assert_called_once_with(root / "warm", max_temperature_mc=60000)
+            receipt = json.loads((root / "warm/execution.json").read_text())
+            self.assertEqual(receipt["before"], warm)
+            self.assertEqual(receipt["policy"]["admission_mc"], 60000)
+            self.assertEqual(receipt["policy"]["admission_consecutive"], 3)
+            self.assertEqual(receipt["policy"]["address_space_bytes"], 4294967296)
+            self.assertFalse(receipt["control_valid"])
+            self.assertFalse(receipt["operational_valid"])
+
+    def test_admission_uses_real_samples_and_resets_streak_on_current_limit(self):
+        values = [
+            {**COOL, "temperature_mc": 60001},
+            {**COOL, "temperature_mc": 55650},
+            {**COOL, "temperature_mc": 55650, "current_limits": 1},
+            {**COOL, "temperature_mc": 55100},
+            {**COOL, "temperature_mc": 56000},
+            {**COOL, "temperature_mc": 60000},
+        ]
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)
+            with (
+                patch.object(guard, "sample", side_effect=values),
+                patch.object(guard.time, "sleep"),
+            ):
+                self.assertEqual(guard.admit(path, max_temperature_mc=60000), values[-1])
+            self.assertEqual(
+                [json.loads(r) for r in (path / "admission.jsonl").read_text().splitlines()], values
+            )
+
     def test_extended_timeout_is_bounded_explicit_and_preserves_legacy_default(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
