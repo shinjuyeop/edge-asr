@@ -5,6 +5,7 @@
 | `zipformer_eval.toml` | Zipformer batch 평가 |
 | `zipformer_paced.toml` | Zipformer 1배속 모사 |
 | `sensevoice_eval.toml` | SenseVoice batch 평가 |
+| `qwen3_eval.toml` | 검증한 Qwen INT8 배포본·별도 환경의 batch 평가 |
 | `eval_manifest.example.jsonl` | 직접 준비할 평가 목록의 예시 |
 | `legacy/zipformer_streaming.toml` | M1 탐색 설정 보존. 원본 프로브가 자동으로 읽지 않음 |
 

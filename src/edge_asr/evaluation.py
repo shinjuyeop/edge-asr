@@ -225,6 +225,9 @@ def evaluate(
                         row["adapter_result"] = deepcopy(metadata)
                 except Exception as error:
                     row["status"], code = "failed", 1
+                    metadata = getattr(adapter, "last_result_metadata", None)
+                    if stage == "inference" and metadata is not None:
+                        row["adapter_result"] = deepcopy(metadata)
                     row["error"] = {
                         "stage": stage,
                         "type": type(error).__name__,

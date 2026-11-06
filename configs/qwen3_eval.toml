@@ -1,0 +1,18 @@
+# RP5 별도 환경 .venv-qwen3-onnx-20261106-01. 같은 배포 자산의 SHA-256을 검사한다.
+[model]
+family = "qwen3_asr"
+path = "models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25"
+num_threads = 1
+language = "ko"
+quantization = "int8" # frontend FP32 / encoder INT8 / decoder UINT8 혼합 그래프.
+max_total_len = 512
+max_new_tokens = 128
+
+[audio]
+sample_rate_hz = 16000
+
+[evaluation]
+mode = "batch"
+warmup_runs = 3
+normalization = "ko_cer_v1"
+output_dir = "results/evaluations"

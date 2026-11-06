@@ -5,7 +5,7 @@
 | 영역 | 책임 |
 | --- | --- |
 | `cli.py` | env/check-config/evaluate/score/live/tools 진입점·지연 import |
-| `adapters/` | Zipformer/SenseVoice 로딩·발화별 상태·전사·제어 태그 |
+| `adapters/` | Zipformer/SenseVoice/Qwen 로딩·발화별 상태·전사·출력 정책 |
 | `dataset.py`, `config.py` | manifest/PCM16/PCM 해시·모델/모드 설정 검증 |
 | `evaluation.py`, `scoring.py`, `metrics.py` | 공통 batch/paced 평가·실패 보존·CER/RTF·재채점 |
 | `streaming.py` | 독립 입력 프로세스·유한 큐·1배속 시계·백로그 복원 |

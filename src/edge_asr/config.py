@@ -68,6 +68,16 @@ def load_evaluation_config(path: str | Path) -> dict:
         if family == "zipformer"
         else {"model_file", "language", "use_itn", "quantization"}
     )
+    if family == "qwen3_asr":
+        model_keys = {
+            "family",
+            "path",
+            "num_threads",
+            "language",
+            "quantization",
+            "max_total_len",
+            "max_new_tokens",
+        }
     allowed = {
         "model": model_keys,
         "audio": {"sample_rate_hz"},
@@ -86,6 +96,13 @@ def load_evaluation_config(path: str | Path) -> dict:
             "quantization": "int8",
         }
     )
+    if family == "qwen3_asr":
+        model_defaults = {
+            "num_threads": 1,
+            "quantization": "int8",
+            "max_total_len": 512,
+            "max_new_tokens": 128,
+        }
     config = {
         "model": {**model_defaults, **supplied["model"]},
         "audio": {"sample_rate_hz": 16000, **supplied["audio"]},
@@ -120,7 +137,7 @@ def load_evaluation_config(path: str | Path) -> dict:
             or not 0 <= padding <= 10
         ):
             raise ValueError("model.tail_padding_s는 0~10초의 유한한 수여야 합니다.")
-    else:
+    elif family == "sensevoice":
         language = config["model"].get("language")
         if not isinstance(language, str) or language not in {"ko", "auto", "zh", "en", "ja", "yue"}:
             raise ValueError("SenseVoice model.language를 명시하세요: ko/auto/zh/en/ja/yue")
@@ -130,6 +147,16 @@ def load_evaluation_config(path: str | Path) -> dict:
             raise ValueError("현재 SenseVoice 어댑터는 배포 INT8 모델 설정을 사용합니다.")
         if config["audio"]["sample_rate_hz"] != 16000:
             raise ValueError("SenseVoice 입력은 16000Hz여야 합니다.")
+    else:
+        if config["model"].get("language") != "ko" or config["audio"]["sample_rate_hz"] != 16000:
+            raise ValueError("현재 Qwen 평가는 한국어 ko·16000Hz를 사용합니다.")
+        if config["model"]["quantization"] != "int8":
+            raise ValueError("현재 Qwen 경로는 확인한 INT8 배포본을 사용합니다.")
+        total, new = config["model"]["max_total_len"], config["model"]["max_new_tokens"]
+        if type(total) is not int or total != 512:
+            raise ValueError("현재 검증 Qwen KV 길이는 max_total_len=512입니다.")
+        if type(new) is not int or not 1 <= new <= 256:
+            raise ValueError("Qwen max_new_tokens는 1~256 정수여야 합니다.")
     for key in ("tokens", "encoder", "decoder", "joiner", "model_file"):
         if key in config["model"] and (
             not isinstance(config["model"][key], str) or not config["model"][key].strip()

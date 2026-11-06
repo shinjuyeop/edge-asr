@@ -21,6 +21,7 @@ COMMANDS = {
     "thermal-run": "probes.thermal",
     "probe-load": "probes.load",
     "probe-qwen3": "probes.qwen3",
+    "compare-qwen3": "probes.qwen3_comparison",
     "probe-preprocessing": "probes.preprocessing",
     "probe-vad": "probes.vad",
     "probe-segments": "probes.segments",
