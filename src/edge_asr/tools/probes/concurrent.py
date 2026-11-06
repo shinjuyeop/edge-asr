@@ -13,7 +13,7 @@ from pathlib import Path
 from edge_asr.adapters import create_adapter
 from edge_asr.artifacts import digest, write_json, write_jsonl
 from edge_asr.config import load_evaluation_config
-from edge_asr.dataset import Audio, float_digest
+from edge_asr.dataset import Audio, float_digest, load_audio
 from edge_asr.realtime.refine import RefineChannel
 from edge_asr.realtime.replay import RATE, WINDOW, ConcurrentReplay, prepare_track
 from edge_asr.realtime.vad import POLICIES, OnlineVadReplay, TimedProbability
@@ -37,6 +37,7 @@ def probe(
     token_diagnostics=False,
     caption_display=False,
     refine_config=None,
+    warmup_wav=None,
 ):
     if caption_display and (
         segment_merge or token_diagnostics or refine_policy != "vad0" or not refine_threads
@@ -180,6 +181,13 @@ def probe(
             info["planned_refine_reason"] = "online_vad_not_precomputed"
         warm_frames = min(WINDOW, sources[0]["end"])
         warm = Audio(audio.samples[:warm_frames], RATE, float_digest(audio.samples[:warm_frames]))
+        if warmup_wav is not None:
+            warm = load_audio(warmup_wav, RATE)
+            if len(warm.samples) > WINDOW:
+                raise ValueError("별도 워밍업 WAV는 최대5초입니다. 자동으로 자르지 않습니다.")
+            info["warmup_source"] = {"path": str(warmup_wav), "audio_sha256": warm.sha256}
+            warm_frames = len(warm.samples)
+            warm = Audio(warm.samples, RATE, float_digest(warm.samples))
         info["warmup_input"] = {"frames": warm_frames, "float32_sha256": warm.sha256}
         if refine_threads:
             refine = create_adapter(sconfig["model"], RATE, root)
@@ -442,6 +450,9 @@ def main():
     parser.add_argument("--refine-policy", choices=POLICIES, default="fixed5")
     parser.add_argument("--vad-model", type=Path)
     parser.add_argument(
+        "--warmup-wav", type=Path, help="평가 입력과 분리한 최대5초 16kHz PCM16 WAV"
+    )
+    parser.add_argument(
         "--refine-config", type=Path, help="별도 Offline Refine 설정; 기본 SenseVoice"
     )
     parser.add_argument(
@@ -472,6 +483,7 @@ def main():
         token_diagnostics=args.token_diagnostics,
         caption_display=args.caption_display,
         refine_config=args.refine_config,
+        warmup_wav=args.warmup_wav,
     )
 
 

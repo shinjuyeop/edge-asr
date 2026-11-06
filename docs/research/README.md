@@ -30,6 +30,7 @@
 
 ## 동시 실행과 병합 후보
 
+- [새 문장 평가와 30분 연속 입력](file_validation.md) — 문장 중복 제외·별도 워밍업·고정된 6개 조건의 사전 계획
 - [M3-1 Streaming + Refine 동시 부하 측정](m31_concurrent.md)
 - [M3-1 온라인 VAD와 Streaming/Refine 동시 계측](m31_online_vad.md)
 - [M3-2 파일 ID 단위 선택 정책과 저장 실측 로그 재생](m32_merge_replay.md)

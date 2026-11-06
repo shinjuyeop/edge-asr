@@ -181,6 +181,28 @@ runtime.K2SileroProbability=Probability
             2, ["--refine-policy", policy, "--vad-model", str(self.vad_path)]
         )
 
+    def test_external_warmup_is_separate_from_the_scored_track(self):
+        warm = self.root / "external-warm.wav"
+        fixtures.write_wav(warm, array("h", [77] * 3217))
+        result, summary = self.fixture.run_fixture(
+            2,
+            [
+                "--refine-policy",
+                "vad0",
+                "--vad-model",
+                str(self.vad_path),
+                "--warmup-wav",
+                str(warm),
+            ],
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertTrue(summary["input_complete"])
+        worker = json.loads((self.root / "run/worker.json").read_text())
+        self.assertEqual(worker["warmup_source"]["audio_sha256"], fixtures.digest(warm))
+        self.assertEqual(worker["warmup_input"]["frames"], 3217)
+        self.assertEqual(worker["audio_s"], (4103 + 4107) / 16000)
+        self.assertEqual(worker["refine_ready"]["warmup_runs"], 3)
+
     def test_real_cli_has_online_vad_cost_and_model_free_replay_with_ipc_geometry(self):
         result, summary = self.run_policy("vad-continuation200")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)

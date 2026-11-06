@@ -198,7 +198,19 @@ def measure(audio, condition, adapter, vad=None, *, convert=list):
     return result
 
 
-def probe(root, config_path, manifest, output, condition, vad_model, *, warmup_first_window=False):
+def probe(
+    root,
+    config_path,
+    manifest,
+    output,
+    condition,
+    vad_model,
+    *,
+    warmup_first_window=False,
+    warmup_wav=None,
+):
+    if warmup_first_window and warmup_wav is not None:
+        raise ValueError("첫 원본 워밍업과 별도 WAV 워밍업은 동시에 선택할 수 없습니다.")
     config = load_evaluation_config(config_path)
     model, evaluation = config["model"], config["evaluation"]
     if (
@@ -341,6 +353,15 @@ def probe(root, config_path, manifest, output, condition, vad_model, *, warmup_f
             }
         info["environment"] = environment()
         warm = audios[0]
+        if warmup_wav is not None:
+            warm = load_audio(warmup_wav, RATE)
+            if len(warm.samples) > MAXIMUM:
+                raise ValueError("별도 워밍업 WAV는 최대5초입니다. 자동으로 자르지 않습니다.")
+            info["warmup_source"] = {"path": str(warmup_wav), "audio_sha256": warm.sha256}
+            info["warmup_input"] = {
+                "frames": len(warm.samples),
+                "float32_sha256": float_digest(warm.samples),
+            }
         if warmup_first_window:
             samples = warm.samples[:MAXIMUM]
             warm = Audio(samples, RATE, float_digest(samples))
@@ -426,6 +447,9 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--condition", choices=CONDITIONS, required=True)
     parser.add_argument(
+        "--warmup-wav", type=Path, help="평가 입력과 분리한 최대5초 16kHz PCM16 WAV"
+    )
+    parser.add_argument(
         "--warmup-first-window", action="store_true", help="첫 원본 앞 최대5초로 ASR/VAD 워밍업"
     )
     parser.add_argument(
@@ -440,6 +464,7 @@ def main():
         args.condition,
         args.vad_model,
         warmup_first_window=args.warmup_first_window,
+        warmup_wav=args.warmup_wav,
     )
 
 

@@ -32,14 +32,17 @@ RECIPE = {
 }
 
 
-def validate_rows(value, revision):
+def validate_rows(value, revision, *, source_split="test", offset=0, count=None):
+    count = COUNT if count is None else count
+    if source_split not in ("train", "validation", "test") or offset < 0 or not 1 <= count <= 100:
+        raise ValueError("유효한 FLEURS split·행 범위가 필요합니다.")
     if (
         revision != REVISION
         or value.get("partial") is not False
-        or len(value.get("rows", [])) != COUNT
+        or len(value.get("rows", [])) != count
     ):
         raise ValueError("FLEURS 고정 리비전의 전체 100개 행이 필요합니다.")
-    for index, item in enumerate(value["rows"]):
+    for index, item in enumerate(value["rows"], offset):
         row = item["row"]
         if (
             item["row_idx"] != index
@@ -55,7 +58,7 @@ def validate_rows(value, revision):
         if len(audio) != 1:
             raise ValueError("오디오 URL 하나가 필요합니다.")
         url = urllib.parse.urlsplit(audio[0]["src"])
-        expected = f"/cached-assets/{DATASET}/--/{REVISION}/--/ko_kr/test/{index}/audio/audio.wav"
+        expected = f"/cached-assets/{DATASET}/--/{REVISION}/--/ko_kr/{source_split}/{index}/audio/audio.wav"
         if (
             url.scheme != "https"
             or url.netloc != "datasets-server.huggingface.co"

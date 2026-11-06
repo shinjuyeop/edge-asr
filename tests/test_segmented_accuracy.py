@@ -351,6 +351,47 @@ class SegmentedAccuracyTests(unittest.TestCase):
             self.assertEqual(model.transcribe.call_count, 4)
             self.assertEqual(before, [digest(p) for p in (config, manifest, wav)])
 
+    def test_external_warmup_never_uses_or_truncates_evaluation_input(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            config, manifest, wav = self.setup_fixture(root)
+            warm = root / "warm.wav"
+            write_wav(warm, array("h", [777] * 2200))
+            model = adapter()
+            with (
+                patch.object(probe, "create_adapter", return_value=model),
+                patch.object(probe.subprocess, "check_output", return_value="fixture"),
+            ):
+                self.assertEqual(
+                    probe.probe(
+                        root,
+                        config,
+                        manifest,
+                        root / "out",
+                        "full_batch",
+                        root / "vad",
+                        warmup_wav=warm,
+                    ),
+                    0,
+                )
+            calls = [c.args[0] for c in model.transcribe.call_args_list]
+            self.assertEqual([len(a.samples) for a in calls], [2200, 2200, 2200, 16000])
+            self.assertTrue(all(a.samples[0] == 777 / 32768 for a in calls[:3]))
+            self.assertEqual(calls[3].samples, probe.load_audio(wav, 16000).samples)
+            worker = json.loads((root / "out/worker.json").read_text())
+            self.assertEqual(worker["warmup_source"]["audio_sha256"], digest(warm))
+            with self.assertRaises(ValueError):
+                probe.probe(
+                    root,
+                    config,
+                    manifest,
+                    root / "bad",
+                    "full_batch",
+                    root / "vad",
+                    warmup_wav=warm,
+                    warmup_first_window=True,
+                )
+
     def test_vad_runner_loads_once_warms_without_extra_asr_and_resets_each_file(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

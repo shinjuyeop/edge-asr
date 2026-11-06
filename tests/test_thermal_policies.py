@@ -15,6 +15,48 @@ LIMITS = "Max address space         4294967296           4294967296           by
 
 
 class ThermalPolicyTests(unittest.TestCase):
+    def test_extended_timeout_is_bounded_explicit_and_preserves_legacy_default(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for seconds, policy in (
+                (0, "operational"),
+                (2101, "operational"),
+                (True, "operational"),
+                (900, "legacy75"),
+            ):
+                with self.assertRaises(ValueError):
+                    guard.run(
+                        root, root / "bad", ["false"], temperature_policy=policy, timeout_s=seconds
+                    )
+                self.assertFalse((root / "bad").exists())
+            for seconds in (600, 2100):
+                child = Mock()
+                child.poll.return_value = 0
+                child.wait.return_value = 0
+                with (
+                    patch.object(guard, "admit", return_value=COOL),
+                    patch.object(guard, "sample", return_value=COOL),
+                    patch.object(guard.subprocess, "Popen", return_value=child) as launch,
+                    patch.object(guard, "terminate"),
+                ):
+                    kwargs = {} if seconds == 600 else {"timeout_s": seconds}
+                    guard.run(
+                        root,
+                        root / str(seconds),
+                        ["fixture"],
+                        temperature_policy="operational",
+                        **kwargs,
+                    )
+                command = launch.call_args.args[0]
+                self.assertIn(f"{seconds}s", command)
+                self.assertIn("--as=4294967296", command)
+                self.assertEqual(
+                    json.loads((root / str(seconds) / "execution.json").read_text())["policy"][
+                        "timeout_s"
+                    ],
+                    seconds,
+                )
+
     def setUp(self):
         self.git = patch.object(guard.subprocess, "check_output", return_value="fixture\n")
         self.git.start()

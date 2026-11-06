@@ -1,0 +1,43 @@
+# 새 문장 평가와 30분 연속 입력 검증
+
+2026-11-06, 실제 결과를 보기 전에 고정한 계획. 마이크가 없는 현재 단계에서 [Qwen 동시 실행](qwen3_realtime.md)의 다음 범위인 새로운 공개 음성과 긴 입력을 확인한다. 기존 SenseVoice 기본값과 자동 교체 보류를 유지한다.
+
+## 입력과 해석 범위
+
+- 새 자료는 [FLEURS](https://huggingface.co/datasets/google/fleurs) 한국어 `validation`의 처음 100행에서 고른 30개다. 데이터 revision `70bb2e84b976b7e960aa89f1c648e09c59f894dd`, [rows API](https://huggingface.co/docs/dataset-viewer/rows)의 행 순서·revision 헤더·원음 URL을 고정한다. 기존 FLEURS test100·KSS dev50에 있는 문장 ID와 `ko_cer_v1` 정규화 정답, 이번 선택 내부 중복을 제외한 처음 30개를 사용한다. 전사를 보며 선택하지 않는다. 원음 해시 중복은 다른 파일로 대체하지 않고 준비 실패로 남긴다.
+- CC BY 4.0 출처 카드·응답·선정/제외 목록·원음과 16kHz mono PCM16 변환본·manifest·전체 해시를 새 `data/evaluation/fleurs-prospective30-20261106-01`에 보존한다. 문장 단위로 프로젝트의 기존 평가와 분리했으나 화자 ID가 제공되지 않아 화자 독립을 확인하지 못했고 모델 학습 자료 중복도 알 수 없다. 낭독 자료이며 자연 대화·잡음 시험이 아니다.
+- 지속 입력은 기존 `m23-stress/long-120.jsonl`의 120.586875초 PCM을 15회 그대로 연결한 **1,808.803125초 단일 WAV**다. gain·추가 gap·잘림 없이 프레임을 보존하고 정답도 15회 연결한다. `data/evaluation/sustained-30m-20261106-01`에 별도 보관한다. 파일 경계가 없으므로 반복 사이에 Zip/VAD를 reset하지 않는다. 반복 구간은 독립 정확도 표본이 아니며 운영 부하 검사다.
+- 모든 모델은 기존 공식 `0.wav` 3.5265초로 각각 3회 워밍업한다. 새 30개 문장과 워밍업을 분리하며 평가 입력을 잘라내지 않는다. 마이크, 잡음·자연 대화의 수동 정답 검수, 기존 Seoul heldout 자료 평가는 이번에 포함하지 않는다.
+
+## 고정 순서와 설정
+
+| 순서 | 입력 | 실행 |
+| --- | --- | --- |
+| 1–2 | 새 FLEURS 30개 | 같은 VAD 구간 Offline SenseVoice 2T → Qwen 2T |
+| 3–4 | 같은 30개 | 1배속 Zip 1T + VAD 1T + Qwen 2T → SenseVoice 2T |
+| 5–6 | 30분 단일 WAV | 1배속 Zip 1T + VAD 1T + SenseVoice 2T → Qwen 2T, 각 1회 |
+
+`vad0`·최대 소유 5초·문맥 0·원음·한국어·`ko_cer_v1`, Qwen 입력/출력 예산 512/128과 SenseVoice ITN 비활성화를 유지한다. 온라인은 100ms 입력, 입력 대기 5청크, Refine 대기 2구간이며 자동 교체는 0이다. 앞의 Offline 두 실행에서 원문/정답·구간 좌표·PCM이 일치해야 온라인을 진행한다. 온라인도 같은 구간/PCM/전사가 유지되는지 검증한다. 비교 결과로 이 평가 자료의 설정을 재튜닝하지 않는다.
+
+첫 부분 반환, 소유 끝→Refine 반환, 큐 대기·손실·종료 잔량, 모델별 CER와 문장별 개선/악화, 동시 관측한 주 PID+Refine CPU/RSS, 온도와 현재 제한을 기록한다. 지속 입력은 replay 시작을 기준으로 **60–360초와 끝 360초 전–끝 60초 전의 300초 창**에서 RSS 합의 중앙값을 비교하고 300초 구간별 자원/지연도 집계한다. 시작 로딩과 종료 drain을 제외한 제한된 추세이며, 각 1회로 누수 부재나 무기한 안정성을 입증하지 않는다. RSS 합에는 공유 페이지 중복이 가능하고 입력 전체를 메모리에 올리는 프로브의 비용이 포함된다.
+
+## 실행과 실패 보존
+
+기존 `.venv*`·모델·자료·결과를 변경하지 않고 검증된 `.venv-qwen3-vad-20261106-01`을 재사용한다. Host 테스트·main commit/push → RP5 pull·동일 테스트 → 실제 추론 순서다. 새로운 실행 ID는 `file-validation-20261106-01`이다. 기존 파일 해시와 패키지·부팅/열 설정의 전후 감사를 남긴다.
+
+운영 열 정책은 시작 53°C 이하·현재 제한 없음 3회, 기본 펌웨어 보호, 저전압/계측 누락 중단, 프로세스별 주소 공간 4GiB와 core dump 0을 유지한다. `thermal-run`의 기존 기본 제한은 600초다. 이번에만 새 문장 실행 900초, 지속 입력 2,100초를 명시한다. 600초를 넘는 지정은 운영 정책만 허용하고 최대 2,100초로 제한한다. 입력/추론/계측/외부 제한 실패는 중단한다. 검증된 Refine 큐 포화만 있으면 실패와 CER null을 보존하고 다음 고정 조건을 계속한다. 유리한 실행만 골라 요약하지 않는다.
+
+```bash
+# Host: 데이터 준비
+.venv/bin/python scripts/edge_asr.py tools prepare-validation fleurs \
+  --output data/evaluation/fleurs-prospective30-20261106-01
+.venv/bin/python scripts/edge_asr.py tools prepare-validation sustained \
+  --output data/evaluation/sustained-30m-20261106-01
+
+# main 동기화·자료 해시 검증 후 RP5: 고정된 6개 실제 실행
+PYTHONDONTWRITEBYTECODE=1 .venv-qwen3-vad-20261106-01/bin/python \
+  scripts/edge_asr.py tools validate-files \
+  --output results/comparisons/file-validation-20261106-01
+```
+
+기존 경로는 덮어쓰지 않는다. 준비 완료 자료의 재사용은 전체 해시를 검사하고, 미완료 자료나 기존 실행 폴더는 거부한다. 원시는 Git 제외 경로로 Host에도 회수하며 작은 요약과 한계만 버전 관리한다.

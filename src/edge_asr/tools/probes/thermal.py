@@ -49,7 +49,13 @@ def terminate(process):
             process.wait()
 
 
-def run(root, output, command, *, temperature_policy="legacy75", console_callback=None):
+def run(
+    root, output, command, *, temperature_policy="legacy75", console_callback=None, timeout_s=600
+):
+    if type(timeout_s) is not int or not 1 <= timeout_s <= 2100:
+        raise ValueError("외부 제한은 정수 1~2100초여야 합니다.")
+    if timeout_s > 600 and temperature_policy != "operational":
+        raise ValueError("600초 초과 실행은 명시적인 운영 검사에서만 지원합니다.")
     settings = policy_settings(temperature_policy)
     operational = temperature_policy == "operational"
     output.mkdir(parents=True, exist_ok=False)
@@ -66,7 +72,7 @@ def run(root, output, command, *, temperature_policy="legacy75", console_callbac
             "admission_consecutive": 3,
             "stop_mc": 75000,
             "interval_s": 1,
-            "timeout_s": 600,
+            "timeout_s": timeout_s,
             "address_space_bytes": 4294967296,
             "scope": "1Hz 표본. 고정 클럭 보장 아님. 현재 제한/새 이력/결측/75°C에서 중단.",
         },
@@ -112,7 +118,7 @@ def run(root, output, command, *, temperature_policy="legacy75", console_callbac
             "timeout",
             "--signal=TERM",
             "--kill-after=5s",
-            "600s",
+            f"{timeout_s}s",
             "prlimit",
             "--as=4294967296",
             "--core=0",
@@ -258,6 +264,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument(
+        "--timeout-s", type=int, default=600, help="외부 제한; 기본600초, 운영 검사 최대2100초"
+    )
+    parser.add_argument(
         "--temperature-policy",
         choices=("legacy75", "warn75-stop80", "operational"),
         default="legacy75",
@@ -271,7 +280,13 @@ def main():
     if subprocess.check_output(["git", "status", "--porcelain"]).strip():
         parser.error("소스 변경을 먼저 commit/push/pull 하세요.")
     raise SystemExit(
-        run(Path.cwd(), args.output.resolve(), command, temperature_policy=args.temperature_policy)
+        run(
+            Path.cwd(),
+            args.output.resolve(),
+            command,
+            temperature_policy=args.temperature_policy,
+            timeout_s=args.timeout_s,
+        )
     )
 
 
