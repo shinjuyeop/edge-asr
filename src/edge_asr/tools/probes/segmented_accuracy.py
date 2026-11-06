@@ -1,4 +1,4 @@
-"""고정 구간 정책의 SenseVoice 파일 평가. 동일 원음 전체 정답으로 채점한다."""
+"""고정 구간 정책의 Offline ASR 파일 평가. 동일 원음 전체 정답으로 채점한다."""
 
 import argparse
 import hashlib
@@ -14,7 +14,7 @@ from edge_asr.adapters import create_adapter
 from edge_asr.artifacts import digest, write_json, write_jsonl
 from edge_asr.audio_policy import preprocess
 from edge_asr.config import load_evaluation_config
-from edge_asr.dataset import Audio, load_audio, load_manifest, pcm_bytes
+from edge_asr.dataset import Audio, float_digest, load_audio, load_manifest, pcm_bytes
 from edge_asr.resources import RssSampler
 from edge_asr.runtime import environment
 from edge_asr.segmentation import SegmentPipeline
@@ -129,6 +129,7 @@ def measure(audio, condition, adapter, vad=None, *, convert=list):
                 adapter_result=deepcopy(getattr(adapter, "last_result_metadata", None)),
             )
         except Exception as error:
+            row["adapter_result"] = deepcopy(getattr(adapter, "last_result_metadata", None))
             row["error"] = f"{type(error).__name__}: {error}"
             raise
         finally:
@@ -197,21 +198,25 @@ def measure(audio, condition, adapter, vad=None, *, convert=list):
     return result
 
 
-def probe(root, config_path, manifest, output, condition, vad_model):
+def probe(root, config_path, manifest, output, condition, vad_model, *, warmup_first_window=False):
     config = load_evaluation_config(config_path)
     model, evaluation = config["model"], config["evaluation"]
-    if condition not in CONDITIONS or (
-        model["family"],
-        model["num_threads"],
-        model.get("language"),
-        model.get("use_itn"),
-        config["audio"]["sample_rate_hz"],
-        evaluation["mode"],
-        evaluation["warmup_runs"],
-        evaluation["normalization"],
-    ) != ("sensevoice", 1, "ko", False, RATE, "batch", 3, "ko_cer_v1"):
+    if (
+        condition not in CONDITIONS
+        or model["family"] not in ("sensevoice", "qwen3_asr")
+        or model["num_threads"] not in (1, 2)
+        or (model["family"] == "sensevoice" and model.get("use_itn") is not False)
+        or (
+            model.get("language"),
+            config["audio"]["sample_rate_hz"],
+            evaluation["mode"],
+            evaluation["warmup_runs"],
+            evaluation["normalization"],
+        )
+        != ("ko", RATE, "batch", 3, "ko_cer_v1")
+    ):
         raise ValueError(
-            "SenseVoice 1T/ko/ITN false/16k/batch/워밍업 3회/ko_cer_v1 고정 조건입니다."
+            "SenseVoice(ITN false)/Qwen 1T·2T/ko/16k/batch/워밍업 3회/ko_cer_v1 조건입니다."
         )
     if condition in VAD_CONDITIONS and digest(vad_model) != MODEL_SHA:
         raise ValueError("기존 검증한 Silero 가중치가 필요합니다.")
@@ -335,9 +340,14 @@ def probe(root, config_path, manifest, output, condition, vad_model):
                 "queue_capacity": 1,
             }
         info["environment"] = environment()
+        warm = audios[0]
+        if warmup_first_window:
+            samples = warm.samples[:MAXIMUM]
+            warm = Audio(samples, RATE, float_digest(samples))
+            info["warmup_input"] = {"frames": len(samples), "float32_sha256": warm.sha256}
         warm_began, warm_cpu = time.perf_counter(), time.process_time()
         for _ in range(3):
-            if not isinstance(adapter.transcribe(audios[0]), str):
+            if not isinstance(adapter.transcribe(warm), str):
                 raise TypeError("워밍업 전사는 문자열이어야 합니다.")
             info["warmup"]["asr_successful"] += 1
         info["warmup"].update(
@@ -357,10 +367,10 @@ def probe(root, config_path, manifest, output, condition, vad_model):
                     context_selection=info["settings"].get("context_selection", "all"),
                     native_budget_frames=None,
                 )
-                for offset in range(0, len(audios[0].samples), 1600):
+                for offset in range(0, len(warm.samples), 1600):
                     pipeline.accept(
-                        audios[0].samples[offset : offset + 1600],
-                        final=offset + 1600 >= len(audios[0].samples),
+                        warm.samples[offset : offset + 1600],
+                        final=offset + 1600 >= len(warm.samples),
                     )
                 pipeline.finish()
                 info["warmup"]["vad_successful"] += 1
@@ -416,11 +426,20 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--condition", choices=CONDITIONS, required=True)
     parser.add_argument(
+        "--warmup-first-window", action="store_true", help="첫 원본 앞 최대5초로 ASR/VAD 워밍업"
+    )
+    parser.add_argument(
         "--vad-model", type=Path, default=Path("models/silero-vad-k2-20261029/silero_vad.onnx")
     )
     args = parser.parse_args()
     return probe(
-        Path.cwd(), args.config, args.manifest, args.output, args.condition, args.vad_model
+        Path.cwd(),
+        args.config,
+        args.manifest,
+        args.output,
+        args.condition,
+        args.vad_model,
+        warmup_first_window=args.warmup_first_window,
     )
 
 

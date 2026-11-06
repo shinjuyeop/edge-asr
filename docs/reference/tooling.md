@@ -29,6 +29,7 @@
 | `prepare-public-review`, `materialize-review`, `prepare-annotations`, `review-annotations` | 공개 음성·검수/불확실 주석 관리 |
 | `compare`, `probe-*` | RP5 모델/전처리/VAD/구간/동시 부하 측정 |
 | `probe-qwen3`, `compare-qwen3` | [Qwen 별도 환경의 첫 실행·세 모델 KSS 단회 탐색](../research/qwen3_batch.md) |
+| `compare-qwen3-realtime` | [Qwen VAD 구간·Zip 동시 실행](../research/qwen3_realtime.md), 사전 고정 순서·실패 보존 |
 | `thermal-run` | 외부 시간/메모리/열 감시. [통제/운영 정책](../research/m3_thermal_policy.md) |
 | `summarize-*`, `replay-merge`, `replay-splice` | 저장 원시 대조·모델 없는 집계/정책 재생 |
 | `inspect-cooling` | 센서/기존 열 기록의 읽기 전용 점검 |

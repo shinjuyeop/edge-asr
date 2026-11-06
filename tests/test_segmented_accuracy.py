@@ -388,11 +388,11 @@ class SegmentedAccuracyTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             config, manifest, wav = self.setup_fixture(root)
-            config.write_text(config.read_text().replace("num_threads = 1", "num_threads = 2"))
+            config.write_text(config.read_text().replace("num_threads = 1", "num_threads = 4"))
             with self.assertRaises(ValueError):
                 probe.probe(root, config, manifest, root / "out", "full_batch", root / "vad")
             self.assertFalse((root / "out").exists())
-            config.write_text(config.read_text().replace("num_threads = 2", "num_threads = 1"))
+            config.write_text(config.read_text().replace("num_threads = 4", "num_threads = 1"))
             wav.write_bytes(wav.read_bytes() + b"changed")
             with (
                 patch.object(probe, "create_adapter") as factory,
@@ -407,6 +407,46 @@ class SegmentedAccuracyTests(unittest.TestCase):
             )
             with self.assertRaises(FileExistsError):
                 probe.probe(root, config, manifest, root / "out", "full_batch", root / "vad")
+
+    def test_qwen_two_threads_warmup_prefix_preserves_full_scored_input(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            config, manifest, wav = self.setup_fixture(root)
+            config.write_text(
+                (ROOT / "configs/qwen3_eval.toml")
+                .read_text()
+                .replace("num_threads = 1", "num_threads = 2")
+            )
+            write_wav(wav, array("h", [100] * 112137))
+            rows = json.loads(manifest.read_text())
+            rows["audio_sha256"] = digest(wav)
+            write_jsonl(manifest, [rows])
+            model = adapter()
+            with (
+                patch.object(probe, "create_adapter", return_value=model),
+                patch.object(probe.subprocess, "check_output", return_value="fixture"),
+            ):
+                self.assertEqual(
+                    probe.probe(
+                        root,
+                        config,
+                        manifest,
+                        root / "out",
+                        "fixed_windows_5s",
+                        root / "absent",
+                        warmup_first_window=True,
+                    ),
+                    0,
+                )
+            self.assertEqual(
+                [len(c.args[0].samples) for c in model.transcribe.call_args_list],
+                [80000, 80000, 80000, 80000, 32137],
+            )
+            row = read_predictions(root / "out/predictions.jsonl")[0]
+            self.assertEqual(row["segmented"]["selected_frames"], 112137)
+            self.assertEqual(
+                json.loads((root / "out/worker.json").read_text())["warmup_input"]["frames"], 80000
+            )
 
 
 if __name__ == "__main__":

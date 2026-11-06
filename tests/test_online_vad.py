@@ -209,6 +209,58 @@ runtime.K2SileroProbability=Probability
         with self.assertRaises(ValueError):
             summarize(self.root / "run", self.root / "bad.json")
 
+    def test_qwen_config_uses_qwen_child_and_preserves_native_metadata(self):
+        from edge_asr.adapters.qwen3 import MODEL_FILES
+
+        config = self.root / "configs/qwen3_eval.toml"
+        config.write_bytes((fixtures.ROOT / "configs/qwen3_eval.toml").read_bytes())
+        model = self.root / "models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25"
+        for name in MODEL_FILES:
+            path = model / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b"fixture-qwen")
+        site = self.root / "modules/sitecustomize.py"
+        with site.open("a") as f:
+            f.write("""
+import edge_asr.adapters.qwen3 as qwen
+import sherpa_onnx,time
+qwen.MODEL_FILES={name:hashlib.sha256(b'fixture-qwen').hexdigest() for name in qwen.MODEL_FILES}
+sherpa_onnx.__version__='2.0.1'
+class QStream:
+    def __init__(self):self.result=SimpleNamespace(text='가',tokens=['가'])
+    def set_option(self,key,value):assert (key,value)==('language','Korean')
+    def accept_waveform(self,rate,samples):assert rate==16000
+class QRecognizer:
+    def create_stream(self):return QStream()
+    def decode_stream(self,s):time.sleep(.03)
+def make_qwen(**kwargs):
+    assert kwargs['feature_dim']==128 and kwargs['num_threads']==2
+    return QRecognizer()
+sherpa_onnx.OfflineRecognizer.from_qwen3_asr=staticmethod(make_qwen)
+""")
+        result, summary = self.fixture.run_fixture(
+            2,
+            [
+                "--refine-policy",
+                "vad0",
+                "--vad-model",
+                str(self.vad_path),
+                "--refine-config",
+                str(config),
+            ],
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(summary["refine_family"], "qwen3_asr")
+        self.assertTrue(summary["refine"]["complete"])
+        worker = json.loads((self.root / "run/worker.json").read_text())
+        self.assertNotIn("sensevoice_config", worker)
+        self.assertEqual(worker["refine_config"]["model"]["family"], "qwen3_asr")
+        for row in read_jsonl(self.root / "run/refine-results.jsonl"):
+            self.assertEqual(row["adapter_result"]["raw_text"], "가")
+            self.assertEqual(row["adapter_result"]["native_stderr"], "")
+            self.assertTrue(row["adapter_result"]["context_budget"]["fits"])
+        self.assertEqual(summarize(self.root / "run", self.root / "rescore.json"), summary)
+
     def test_silence_is_empty_hypothesis_and_null_latency_without_asr_fallback(self):
         self.fixture.env["FIXTURE_VAD_SILENT"] = "1"
         result, summary = self.run_policy()

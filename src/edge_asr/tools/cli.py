@@ -22,6 +22,7 @@ COMMANDS = {
     "probe-load": "probes.load",
     "probe-qwen3": "probes.qwen3",
     "compare-qwen3": "probes.qwen3_comparison",
+    "compare-qwen3-realtime": "probes.qwen3_realtime",
     "probe-preprocessing": "probes.preprocessing",
     "probe-vad": "probes.vad",
     "probe-segments": "probes.segments",

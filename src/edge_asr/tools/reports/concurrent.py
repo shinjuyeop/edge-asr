@@ -430,6 +430,8 @@ def summarize(folder, output):
         for p in folder.rglob("*")
         if p.is_file() and (p.name in owned_names or p.parent.name == "capture")
     }
+    if "refine_family" in worker:
+        summary["refine_family"] = worker["refine_family"]
     write_json(output, summary)
     return summary
 

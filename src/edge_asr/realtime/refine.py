@@ -96,6 +96,7 @@ def refine_worker(
                         adapter_result=deepcopy(getattr(adapter, "last_result_metadata", None)),
                     )
                 except Exception as error:
+                    row["adapter_result"] = deepcopy(getattr(adapter, "last_result_metadata", None))
                     row["error"] = f"{type(error).__name__}: {error}"
                     raise
                 finally:

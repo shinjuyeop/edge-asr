@@ -36,6 +36,7 @@ def probe(
     segment_merge=False,
     token_diagnostics=False,
     caption_display=False,
+    refine_config=None,
 ):
     if caption_display and (
         segment_merge or token_diagnostics or refine_policy != "vad0" or not refine_threads
@@ -57,8 +58,16 @@ def probe(
             raise ValueError("기존 검증한 VAD 가중치가 필요합니다.")
     if (output / "worker.json").exists():
         raise FileExistsError("기존 실행을 덮어쓰지 않습니다.")
-    zpath, spath = root / "configs/zipformer_paced.toml", root / "configs/sensevoice_eval.toml"
+    zpath = root / "configs/zipformer_paced.toml"
+    spath = refine_config or root / "configs/sensevoice_eval.toml"
     zconfig, sconfig = load_evaluation_config(zpath), load_evaluation_config(spath)
+    family = sconfig["model"]["family"]
+    if family not in ("sensevoice", "qwen3_asr") or sconfig["evaluation"]["mode"] != "batch":
+        raise ValueError("Refine은 SenseVoice/Qwen batch 설정이 필요합니다.")
+    if refine_config is not None and not refine_threads:
+        raise ValueError("별도 Refine 설정에는 Refine 스레드가 필요합니다.")
+    if family == "qwen3_asr" and (segment_merge or token_diagnostics):
+        raise ValueError("Qwen은 별도 후보 표시/동시 측정만 지원하며 병합 실험은 미검증입니다.")
     zconfig["model"]["num_threads"] = zip_threads
     sconfig["model"]["num_threads"] = refine_threads or 1
     output.mkdir(parents=True, exist_ok=True)
@@ -74,8 +83,10 @@ def probe(
         "zip_threads": zip_threads,
         "refine_threads": refine_threads,
         "zip_config": zconfig,
-        "sensevoice_config": sconfig if refine_threads else None,
-        "config_files_sha256": {"zipformer": digest(zpath), "sensevoice": digest(spath)},
+        ("sensevoice_config" if refine_config is None else "refine_config"): sconfig
+        if refine_threads
+        else None,
+        "config_files_sha256": {"zipformer": digest(zpath), family: digest(spath)},
         "settings": {
             "capture": zconfig["streaming"],
             "refine_window_frames": WINDOW,
@@ -96,6 +107,8 @@ def probe(
             )
         },
     }
+    if refine_config is not None:
+        info["refine_family"] = family
     if refine_policy != "fixed5":
         info["settings"].update(
             refine_policy=refine_policy,
@@ -169,9 +182,9 @@ def probe(
         warm = Audio(audio.samples[:warm_frames], RATE, float_digest(audio.samples[:warm_frames]))
         info["warmup_input"] = {"frames": warm_frames, "float32_sha256": warm.sha256}
         if refine_threads:
-            sense = create_adapter(sconfig["model"], RATE, root)
-            info["sensevoice_model_files"] = {
-                k: {"path": str(p), "sha256": digest(p)} for k, p in sense.model_files.items()
+            refine = create_adapter(sconfig["model"], RATE, root)
+            info["sensevoice_model_files" if refine_config is None else "refine_model_files"] = {
+                k: {"path": str(p), "sha256": digest(p)} for k, p in refine.model_files.items()
             }
             channel = RefineChannel(
                 root,
@@ -429,6 +442,9 @@ def main():
     parser.add_argument("--refine-policy", choices=POLICIES, default="fixed5")
     parser.add_argument("--vad-model", type=Path)
     parser.add_argument(
+        "--refine-config", type=Path, help="별도 Offline Refine 설정; 기본 SenseVoice"
+    )
+    parser.add_argument(
         "--caption-display",
         action="store_true",
         help="연속 Zip과 구간별 보정 후보를 분리 표시; 자동 교체 없음",
@@ -455,6 +471,7 @@ def main():
         segment_merge=args.segment_merge,
         token_diagnostics=args.token_diagnostics,
         caption_display=args.caption_display,
+        refine_config=args.refine_config,
     )
 
 

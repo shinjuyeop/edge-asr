@@ -35,6 +35,10 @@ class OfflineFixture:
 
     def transcribe(self, audio):
         if audio.samples[0] < 0:
+            self.last_result_metadata = {
+                "raw_text": "잘린 문장",
+                "native_stderr": "Result is truncated",
+            }
             raise RuntimeError("fixture native failure")
         time.sleep(0.06)
         return "가"
@@ -198,6 +202,10 @@ class ConcurrentCoreTests(unittest.TestCase):
             finally:
                 channel.close()
             self.assertEqual(read_events(root / "refine-results.jsonl")[0]["status"], "failed")
+            self.assertEqual(
+                read_events(root / "refine-results.jsonl")[0]["adapter_result"]["native_stderr"],
+                "Result is truncated",
+            )
             self.assertFalse(channel.process.is_alive())
 
     def test_refine_callback_failure_propagates_and_reaps_reader_and_child(self):
