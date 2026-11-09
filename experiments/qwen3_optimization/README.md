@@ -5,3 +5,5 @@
 현재 재사용 가능한 Qwen 단독 smoke는 [tools/optimization/qwen3.py](../../src/edge_asr/tools/optimization/qwen3.py)에 있습니다. 아직 프로파일러나 GGUF 실행기를 구현하지 않았습니다. 구현이 생길 때 검증 범위와 실행법을 추가합니다.
 
 새 실행에는 `opt0-onnx-<날짜>-<번호>`처럼 단계·조건·고유 ID를 사용하고 원시 결과는 `results/optimization/<단계>/<실행ID>/`에 보관합니다. 검토한 요약만 [optimization 요약](../../results/summaries/optimization/README.md)에 추가합니다. 환경·모델·외부 엔진 소스/빌드는 이 폴더 안에 넣지 않습니다.
+
+첫 입력 준비는 `prepare_opt0.py`로 수행합니다. KSS 길이 표본과 기존 오류 PCM을 해시로 검증하고 새 경로에만 기록합니다. [실행 프로토콜](../../docs/research/opt0_pilot.md).

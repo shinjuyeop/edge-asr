@@ -21,6 +21,7 @@ COMMANDS = {
     "compare": "edge_asr.legacy.tools.probes.comparison",
     "thermal-run": "probes.thermal",
     "probe-load": "probes.load",
+    "opt0-baseline": "optimization.baseline",
     "probe-qwen3": "edge_asr.tools.optimization.qwen3",
     "compare-qwen3": "edge_asr.legacy.tools.probes.qwen3_comparison",
     "compare-qwen3-realtime": "edge_asr.legacy.tools.probes.qwen3_realtime",
