@@ -160,6 +160,9 @@ def run(
                 info["status"] = phase
                 info["active_call"] = {"source_id": s.id, "phase": phase, "repeat": repeat}
                 write_json(worker, info)
+                prepare_call = getattr(adapter, "prepare_call", None)
+                if prepare_call is not None:
+                    prepare_call(phase, s.id, repeat)
                 monitor = RssSampler(sample_device=True)
                 try:
                     with monitor:
