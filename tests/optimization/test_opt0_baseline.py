@@ -151,6 +151,30 @@ class Opt0Tests(unittest.TestCase):
         self.assertEqual(adapter.calls, [])
         self.assertIsNone(worker["model_load"])
 
+    def test_interrupted_call_keeps_its_identity_and_is_not_marked_unattempted(self):
+        adapter = Adapter()
+        original = adapter.transcribe
+
+        def interrupt(audio):
+            if round(audio.samples[0] * 32768) == 2:
+                raise KeyboardInterrupt()
+            return original(audio)
+
+        adapter.transcribe = interrupt
+        for row in self.rows:
+            row["reference"] = ""
+        write_jsonl(self.manifest, self.rows)
+        with self.assertRaises(KeyboardInterrupt):
+            self.execute(adapter, protocol="reproduction", repetitions=1)
+        worker = json.loads((self.output / "worker.json").read_text())
+        self.assertEqual(worker["active_call"]["source_id"], "2")
+        rows = [
+            json.loads(line)
+            for line in (self.output / "predictions.jsonl").read_text().splitlines()
+        ]
+        self.assertEqual([row["status"] for row in rows], ["success", "interrupted"])
+        self.assertTrue(adapter.closed)
+
 
 if __name__ == "__main__":
     unittest.main()

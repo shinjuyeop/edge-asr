@@ -158,6 +158,7 @@ def run(
                     "error": None,
                 }
                 info["status"] = phase
+                info["active_call"] = {"source_id": s.id, "phase": phase, "repeat": repeat}
                 write_json(worker, info)
                 monitor = RssSampler(sample_device=True)
                 try:
@@ -183,6 +184,7 @@ def run(
                 info["calls"].append(
                     {k: result[k] for k in ("source_id", "phase", "repeat", "status")}
                 )
+                info["active_call"] = None
                 write_json(worker, info)
                 print(f"{phase}: {s.id} {result['status']}", flush=True)
                 return result
@@ -193,6 +195,9 @@ def run(
                     if result["status"] != "success":
                         raise RuntimeError("첫 추론/워밍업 실패로 반복 기준선을 시작하지 않습니다.")
             for row, (repeat, s) in zip(rows, schedule(samples, repetitions, order_offset)):
+                # 외부 중단으로 결과가 돌아오지 않은 호출을 미실행과 구분한다.
+                row["status"] = "interrupted"
+                write_jsonl(output / "predictions.jsonl", rows)
                 result = transcribe(s, "steady" if protocol == "baseline" else "diagnostic", repeat)
                 row.update(
                     {
