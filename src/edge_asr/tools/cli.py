@@ -22,6 +22,7 @@ COMMANDS = {
     "thermal-run": "probes.thermal",
     "probe-load": "probes.load",
     "profile-qwen3": "optimization.profiling",
+    "benchmark-qwen3": "optimization.baseline",
     "opt0-baseline": "optimization.baseline",
     "probe-qwen3": "edge_asr.tools.optimization.qwen3",
     "compare-qwen3": "edge_asr.legacy.tools.probes.qwen3_comparison",

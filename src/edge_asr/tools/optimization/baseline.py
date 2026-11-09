@@ -46,7 +46,10 @@ def run(
     if protocol == "reproduction" and order_offset != 0:
         raise ValueError("재현 입력 순서는 바꿀 수 없습니다.")
     config = load_evaluation_config(config_path)
-    if config["model"]["family"] != "qwen3_asr" or config["evaluation"]["mode"] != "batch":
+    if (
+        config["model"]["family"] not in {"qwen3_asr", "qwen3_gguf"}
+        or config["evaluation"]["mode"] != "batch"
+    ):
         raise ValueError("Qwen batch 설정이 필요합니다.")
     samples, manifest_sha = load_manifest(manifest_path, root)
     if not samples:

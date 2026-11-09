@@ -6,6 +6,7 @@ SUPPORTED_MODES = {
     "zipformer": ("batch", "paced_stream"),
     "sensevoice": ("batch",),
     "qwen3_asr": ("batch",),
+    "qwen3_gguf": ("batch",),
 }
 
 
@@ -22,4 +23,8 @@ def create_adapter(model: dict, sample_rate_hz: int, root: Path):
         from edge_asr.adapters.qwen3 import Qwen3Adapter
 
         return Qwen3Adapter(model, sample_rate_hz, root)
+    if model["family"] == "qwen3_gguf":
+        from edge_asr.adapters.qwen3_gguf import Qwen3GGUFAdapter
+
+        return Qwen3GGUFAdapter(model, sample_rate_hz, root)
     raise ValueError(f"아직 구현하지 않은 모델 어댑터: {model['family']}")

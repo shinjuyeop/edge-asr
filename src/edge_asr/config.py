@@ -6,7 +6,7 @@ from pathlib import Path
 
 from edge_asr.adapters import SUPPORTED_MODES
 
-MODEL_FAMILIES = {"zipformer", "sensevoice", "qwen3_asr"}
+MODEL_FAMILIES = {"zipformer", "sensevoice", "qwen3_asr", "qwen3_gguf"}
 
 
 def load_config(path: str | Path) -> dict:
@@ -68,7 +68,7 @@ def load_evaluation_config(path: str | Path) -> dict:
         if family == "zipformer"
         else {"model_file", "language", "use_itn", "quantization"}
     )
-    if family == "qwen3_asr":
+    if family in {"qwen3_asr", "qwen3_gguf"}:
         model_keys = {
             "family",
             "path",
@@ -78,6 +78,8 @@ def load_evaluation_config(path: str | Path) -> dict:
             "max_total_len",
             "max_new_tokens",
         }
+    if family == "qwen3_gguf":
+        model_keys |= {"runtime_library", "runtime_manifest"}
     allowed = {
         "model": model_keys,
         "audio": {"sample_rate_hz"},
@@ -96,13 +98,15 @@ def load_evaluation_config(path: str | Path) -> dict:
             "quantization": "int8",
         }
     )
-    if family == "qwen3_asr":
+    if family in {"qwen3_asr", "qwen3_gguf"}:
         model_defaults = {
             "num_threads": 1,
             "quantization": "int8",
             "max_total_len": 512,
             "max_new_tokens": 128,
         }
+    if family == "qwen3_gguf":
+        model_defaults["quantization"] = "q8_0"
     config = {
         "model": {**model_defaults, **supplied["model"]},
         "audio": {"sample_rate_hz": 16000, **supplied["audio"]},
@@ -150,8 +154,16 @@ def load_evaluation_config(path: str | Path) -> dict:
     else:
         if config["model"].get("language") != "ko" or config["audio"]["sample_rate_hz"] != 16000:
             raise ValueError("현재 Qwen 평가는 한국어 ko·16000Hz를 사용합니다.")
-        if config["model"]["quantization"] != "int8":
-            raise ValueError("현재 Qwen 경로는 확인한 INT8 배포본을 사용합니다.")
+        expected_quantization = "q8_0" if family == "qwen3_gguf" else "int8"
+        if config["model"]["quantization"] != expected_quantization:
+            raise ValueError(f"현재 Qwen 경로의 양자화는 {expected_quantization}입니다.")
+        if family == "qwen3_gguf":
+            for key in ("runtime_library", "runtime_manifest"):
+                if (
+                    not isinstance(config["model"].get(key), str)
+                    or not config["model"][key].strip()
+                ):
+                    raise ValueError(f"model.{key} 경로가 필요합니다.")
         total, new = config["model"]["max_total_len"], config["model"]["max_new_tokens"]
         if type(total) is not int or total != 512:
             raise ValueError("현재 검증 Qwen KV 길이는 max_total_len=512입니다.")
