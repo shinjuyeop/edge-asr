@@ -1,12 +1,11 @@
 """확인한 Qwen3-ASR INT8 배포본의 Offline 어댑터. 길이 한계로 잘린 전사를 거부한다."""
 
-import os
-import tempfile
 from array import array
 from pathlib import Path
 
 from edge_asr.artifacts import digest
 from edge_asr.dataset import Audio, resolve_path
+from edge_asr.runtime import capture_native_stderr
 
 # 입력 길이 계산은 이 자산과 sherpa 2.0.1의 centered-STFT/100-frame chunk에 한정한다.
 MODEL_FILES = {
@@ -143,23 +142,8 @@ class Qwen3Adapter:
         stream = self.recognizer.create_stream()
         stream.set_option("language", "Korean")
         stream.accept_waveform(16000, self.np.frombuffer(audio.samples, dtype=self.np.float32))
-        # Native 경고는 Python redirect_stderr로 잡히지 않으므로 실제 fd2를 수집한다.
-        # 공통 batch는 순차 호출이고 Refine도 모델 전용 자식 프로세스를 사용한다.
-        with tempfile.TemporaryFile() as capture:
-            original = os.dup(2)
-            try:
-                os.dup2(capture.fileno(), 2)
-                self.recognizer.decode_stream(stream)
-            finally:
-                os.dup2(original, 2)
-                os.close(original)
-                capture.seek(0)
-                stderr = capture.read().decode("utf-8", errors="replace")
-                self.last_result_metadata["native_stderr"] = stderr
-                if stderr:
-                    # 외부 실행 console에도 원래 진단을 보존한다.
-                    with os.fdopen(os.dup(2), "w", encoding="utf-8") as log:
-                        log.write(stderr)
+        with capture_native_stderr(self.last_result_metadata):
+            self.recognizer.decode_stream(stream)
         text, tokens = stream.result.text, list(stream.result.tokens)
         self.last_result_metadata.update(
             raw_text=text, tokens=tokens, returned_token_count=len(tokens)
@@ -167,7 +151,7 @@ class Qwen3Adapter:
         if not isinstance(text, str) or any(not isinstance(t, str) for t in tokens):
             raise TypeError("Qwen text/tokens의 반환 형식이 다릅니다.")
         if len(tokens) >= self.model["max_new_tokens"] or any(
-            word in stderr.lower()
+            word in self.last_result_metadata["native_stderr"].lower()
             for word in ("truncat", "exceeds max_total_len", "no room for audio", "repetition loop")
         ):
             raise RuntimeError(

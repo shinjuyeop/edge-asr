@@ -11,12 +11,74 @@ from pathlib import Path
 from unittest.mock import Mock, patch
 
 from edge_asr.diagnostics import observe_threads, thread_snapshot
-from edge_asr.runtime import runtime_info
+from edge_asr.resources import measure_process
+from edge_asr.runtime import capture_native_stderr, runtime_info
 
 ROOT = Path(__file__).resolve().parents[2]
 
 
 class RuntimeTests(unittest.TestCase):
+    def test_measurement_excludes_sampler_boundaries_and_preserves_exception_resources(self):
+        for error in (None, RuntimeError("fixture load failed"), KeyboardInterrupt()):
+            with self.subTest(error=type(error).__name__):
+                clock = {"wall": 0, "cpu": 0}
+
+                class Sampler:
+                    def __enter__(self):
+                        clock.update(wall=10, cpu=5)
+
+                    def __exit__(self, *args):
+                        clock.update(wall=100, cpu=50)
+
+                    def metadata(self):
+                        return {"fixture_resources": True}
+
+                result = {"phase": "fixture"}
+                with (
+                    patch("edge_asr.resources.RssSampler", return_value=Sampler()) as sampler,
+                    patch(
+                        "edge_asr.resources.time.perf_counter", side_effect=lambda: clock["wall"]
+                    ),
+                    patch("edge_asr.resources.time.process_time", side_effect=lambda: clock["cpu"]),
+                ):
+                    try:
+                        with measure_process(result, sample_device=True):
+                            clock.update(wall=12, cpu=6)
+                            if error is not None:
+                                raise error
+                    except BaseException as caught:
+                        self.assertIs(caught, error)
+                    else:
+                        self.assertIsNone(error)
+                sampler.assert_called_once_with(sample_device=True)
+                self.assertEqual(
+                    result,
+                    {
+                        "phase": "fixture",
+                        "elapsed_s": 2,
+                        "process_cpu_s": 1,
+                        "resources": {"fixture_resources": True},
+                    },
+                )
+
+    def test_native_exception_preserves_diagnostics_and_restores_real_stderr(self):
+        metadata = {}
+        with tempfile.TemporaryFile() as console:
+            original = os.dup(2)
+            try:
+                os.dup2(console.fileno(), 2)
+                with self.assertRaisesRegex(RuntimeError, "fixture failure"):
+                    with capture_native_stderr(metadata):
+                        os.write(2, b"native warning: \xff\n")
+                        raise RuntimeError("fixture failure")
+                os.write(2, b"after capture\n")
+            finally:
+                os.dup2(original, 2)
+                os.close(original)
+            console.seek(0)
+            self.assertEqual(console.read().decode(), "native warning: \ufffd\nafter capture\n")
+        self.assertEqual(metadata["native_stderr"], "native warning: \ufffd\n")
+
     def test_python_package_and_native_versions_are_not_substituted(self):
         module = types.SimpleNamespace(onnxruntime_version="native-1.28.2")
         with (

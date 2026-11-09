@@ -4,22 +4,15 @@ import argparse
 import json
 import platform
 import sys
-from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 
 from edge_asr import __version__
 from edge_asr.config import load_config, load_evaluation_config
-from edge_asr.runtime import runtime_info
+from edge_asr.runtime import package_version, runtime_info
 
 
 def environment_info(*, probe_runtime=False) -> dict:
     """호출한 컴퓨터의 환경만 기록하며 RP5 여부나 추론 가능성을 보증하지 않는다."""
-    packages = {}
-    for name in ("numpy", "sherpa-onnx", "sherpa-onnx-core"):
-        try:
-            packages[name] = version(name)
-        except PackageNotFoundError:
-            packages[name] = None
     return {
         "edge_asr": __version__,
         "python": platform.python_version(),
@@ -27,7 +20,9 @@ def environment_info(*, probe_runtime=False) -> dict:
         "system": platform.system(),
         "release": platform.release(),
         "machine": platform.machine(),
-        "packages": packages,
+        "packages": {
+            name: package_version(name) for name in ("numpy", "sherpa-onnx", "sherpa-onnx-core")
+        },
         "runtime": runtime_info(probe=probe_runtime),
     }
 

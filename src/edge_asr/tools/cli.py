@@ -24,7 +24,6 @@ COMMANDS = {
     "profile-qwen3": "optimization.profiling",
     "benchmark-qwen3": "optimization.baseline",
     "opt0-baseline": "optimization.baseline",
-    "probe-qwen3": "edge_asr.tools.optimization.qwen3",
     "compare-qwen3": "edge_asr.legacy.tools.probes.qwen3_comparison",
     "compare-qwen3-realtime": "edge_asr.legacy.tools.probes.qwen3_realtime",
     "validate-files": "edge_asr.legacy.tools.probes.file_validation",

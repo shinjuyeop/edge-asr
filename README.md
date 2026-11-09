@@ -34,7 +34,7 @@ Qwen3-ASR-0.6B의 한국어 정확도·완료율을 유지하면서 RP5의 인�
 | ONNX 출발 참조 | [adapters/qwen3.py](src/edge_asr/adapters/qwen3.py) | sherpa-onnx 호출·context 예산·출력/경고 검사 |
 | 공통 평가·채점 | [evaluation.py](src/edge_asr/evaluation.py), [scoring.py](src/edge_asr/scoring.py), [metrics.py](src/edge_asr/metrics.py) | 일반 파일 평가·저장 가설 재채점·`ko_cer_v1`·CER/RTF 집계 |
 | 입력·자원·열 | [dataset.py](src/edge_asr/dataset.py), [resources.py](src/edge_asr/resources.py), [열 실행기](src/edge_asr/tools/probes/thermal.py), [센서](src/edge_asr/thermal.py) | WAV/해시 검증·CPU/RSS·온도/실제 클럭·실행 제한 |
-| 회귀 검사 | [GGUF 테스트](tests/optimization/test_qwen3_gguf.py), [실행기 테스트](tests/optimization/test_opt0_baseline.py), [전체 테스트 안내](tests/README.md) | Host 모의 검증과 실제 RP5 추론의 구분 |
+| 회귀 검사 | [GGUF 테스트](tests/optimization/test_qwen3_gguf.py), [실행기 테스트](tests/optimization/test_baseline.py), [전체 테스트 안내](tests/README.md) | Host 모의 검증과 실제 RP5 추론의 구분 |
 
 공통 코드의 책임과 의존 방향은 [아키텍처](docs/reference/architecture.md)에 있습니다.
 
@@ -49,7 +49,7 @@ Qwen3-ASR-0.6B의 한국어 정확도·완료율을 유지하면서 RP5의 인�
 | 데이터 준비·재검증 | [prepare_fixed100.py](experiments/qwen3_optimization/prepare_fixed100.py), [준비 절차](docs/research/fixed100.md) |
 | manifest 형식 예시 | [eval_manifest.example.jsonl](configs/eval_manifest.example.jsonl), [필드 명세](benchmarks/manifest.md) — 예시2줄이며 실제 평가 데이터가 아님 |
 
-음원·가중치·원시 결과는 로컬 자산이며 GitHub에는 올라가지 않습니다. 이전1T·KSS 실험 설정은 [설정 색인](configs/README.md)에서 구분합니다.
+음원·가중치·원시 결과는 로컬 자산이며 GitHub에는 올라가지 않습니다. KSS 등 이전 실험 설정은 [설정 색인](configs/README.md)에서 구분합니다.
 
 ## 저장소 구조
 

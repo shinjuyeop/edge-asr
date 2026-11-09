@@ -22,7 +22,7 @@
 
 ## 도구의 현재 소속
 
-새 Qwen 작업은 `tools/optimization/`의 `probe-qwen3`에서 시작합니다. `thermal-run`, `probe-load`, 데이터 준비·냉각 검사·유지보수는 공통 도구입니다. `live`, 모델 비교·VAD·병합 실행/보고서는 `legacy/tools/`에 있으며 기존 명령 이름은 유지합니다. `tools list`에서 실제 모듈 위치를 확인할 수 있습니다. [새 OPT 실행 안내](../guides/qwen3_optimization.md).
+새 Qwen 작업은 `tools/optimization/baseline.py`의 `benchmark-qwen3`로 첫 추론·워밍업·기준선을 측정합니다. `thermal-run`, `probe-load`, 데이터 준비·냉각 검사·유지보수는 공통 도구입니다. `live`, 모델 비교·VAD·병합 실행/보고서는 `legacy/tools/`에 있으며 기존 명령 이름은 유지합니다. `tools list`에서 실제 모듈 위치를 확인할 수 있습니다. [새 OPT 실행 안내](../guides/qwen3_optimization.md).
 
 ## 기존 연구·자료 명령
 
@@ -34,7 +34,7 @@
 | `compare`, `probe-*` | RP5 모델/전처리/VAD/구간/동시 부하 측정 |
 | `profile-qwen3` | [기존 ORT의 호출 경계 계측](../research/opt1_profiling.md), 별도 preload·on/off/abba |
 | `opt0-baseline`, `benchmark-qwen3` | [Qwen 단독 반복·고정 PCM 재현](../research/opt0_pilot.md), 첫 추론/워밍업/반복 구분. [OPT-2](../research/opt2_gguf.md)의 ONNX/GGUF도 같은 실행기 사용 |
-| `probe-qwen3`, `compare-qwen3` | [Qwen 별도 환경의 첫 실행·세 모델 KSS 단회 탐색](../archive/model-comparison/qwen3_batch.md) |
+| `compare-qwen3` | [Qwen 별도 환경의 첫 실행·세 모델 KSS 단회 탐색](../archive/model-comparison/qwen3_batch.md) |
 | `compare-qwen3-realtime` | [Qwen VAD 구간·Zip 동시 실행](../archive/model-comparison/qwen3_realtime.md), 사전 고정 순서·실패 보존 |
 | `prepare-validation`, `validate-files` | [새 문장 30개와 30분 연속 입력](../archive/model-comparison/file_validation.md), 별도 워밍업·원본 보존·고정 순서 |
 | `thermal-run` | 외부 시간/메모리/열 감시. [통제/운영 정책](../archive/model-comparison/m3_thermal_policy.md) |
@@ -50,3 +50,5 @@
 사용자가 온도 대기 없이 운영 검사를 선택한 경우 `thermal-run --temperature-policy operational --skip-temperature-admission`을 명시합니다. 시작 온도는 관측만 하고 온도/열 감속으로 중단하지 않으며, 기본 펌웨어 보호·전압/필수 센서·외부 시간·메모리 제한은 적용합니다. 기존 기본 정책은 유지합니다. [실험 조건 변경 기록](../research/opt0_pilot.md#프로토콜-수정-v3--사용자-지정-운영-조건).
 
 새100개 비교에서는 명시적 `warn75-stop80 --timeout-s 1800`도 지원합니다. 기존 시작53°C·75°C 경고·80°C/현재 제한/결측 중단은 유지하고 실제 ARM 클럭을 monitor/after에 기록합니다. legacy 기본600초와 운영 최대2100초는 그대로입니다. [실행 순서·열 조건 실패 시 별도 운영 측정](../research/fixed100_baseline.md)을 따릅니다.
+
+초기 배포용 `probe-qwen3`는 중복 native 호출을 제거하며 폐기했습니다. 현재 첫 추론 검사는 `benchmark-qwen3`를 사용합니다. 옛 smoke의 인자·debug/출력 규격을 그대로 재현하려면 정리 전 commit `f88b33f`를 사용합니다. 과거 기록은 변경하지 않습니다.

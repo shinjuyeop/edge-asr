@@ -2,6 +2,7 @@
 
 import os
 import time
+from contextlib import contextmanager
 from pathlib import Path
 from threading import Event, Thread
 
@@ -19,6 +20,24 @@ def process_sample(pid: int) -> dict | None:
         }
     except (OSError, ValueError, IndexError):
         return None
+
+
+@contextmanager
+def measure_process(result, *, sample_device=False):
+    """RSS 경계 수집 안쪽 호출만 계측한다. 예외에도 시간·자원을 result에 보존한다."""
+    sampler = RssSampler(sample_device=sample_device)
+    try:
+        with sampler:
+            began, cpu = time.perf_counter(), time.process_time()
+            try:
+                yield
+            finally:
+                result.update(
+                    elapsed_s=time.perf_counter() - began,
+                    process_cpu_s=time.process_time() - cpu,
+                )
+    finally:
+        result["resources"] = sampler.metadata()
 
 
 class RssSampler:

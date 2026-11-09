@@ -2,12 +2,11 @@
 
 import ctypes
 import json
-import os
-import tempfile
 from array import array
 
 from edge_asr.artifacts import digest
 from edge_asr.dataset import Audio, resolve_path
+from edge_asr.runtime import capture_native_stderr
 
 LLAMA_COMMIT = "7d7f0287530bc8981690f361d8c1627dbae1c99a"
 MODEL_FILES = {
@@ -115,20 +114,8 @@ class Qwen3GGUFAdapter:
             raise ValueError("16000Hz·최소 320프레임 입력이 필요합니다.")
         pcm = (ctypes.c_float * len(audio.samples)).from_buffer(audio.samples)
         self.last_result_metadata = {"output_policy": "gguf_raw_utf8_until_eog_v1"}
-        with tempfile.TemporaryFile() as capture:
-            original = os.dup(2)
-            try:
-                os.dup2(capture.fileno(), 2)
-                blob = self.library.edge_gguf_transcribe(self.handle, pcm, len(audio.samples))
-            finally:
-                os.dup2(original, 2)
-                os.close(original)
-                capture.seek(0)
-                stderr = capture.read().decode("utf-8", errors="replace")
-                self.last_result_metadata["native_stderr"] = stderr
-                if stderr:
-                    with os.fdopen(os.dup(2), "w", encoding="utf-8") as log:
-                        log.write(stderr)
+        with capture_native_stderr(self.last_result_metadata):
+            blob = self.library.edge_gguf_transcribe(self.handle, pcm, len(audio.samples))
         if not blob:
             raise RuntimeError("GGUF C ABI가 결과를 반환하지 않았습니다.")
         result = json.loads(blob)

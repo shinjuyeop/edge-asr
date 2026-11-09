@@ -40,7 +40,7 @@ class Adapter:
         self.closed = True
 
 
-class Opt0Tests(unittest.TestCase):
+class BaselineTests(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
@@ -79,6 +79,12 @@ class Opt0Tests(unittest.TestCase):
                 adapter_factory=lambda *args: adapter,
             )
         return code, json.loads((self.output / "worker.json").read_text())
+
+    def test_missing_external_limit_rejects_before_creating_worker(self):
+        with patch.object(baseline, "limits_verified", return_value=False):
+            with self.assertRaisesRegex(RuntimeError, "4GiB"):
+                baseline.run(self.root, self.config, self.manifest, self.output)
+        self.assertFalse(self.output.exists())
 
     def test_first_warmup_and_rotated_rounds_use_one_model_and_common_scores(self):
         adapter = Adapter()

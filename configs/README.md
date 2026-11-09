@@ -16,7 +16,6 @@
 | --- | --- |
 | [opt0_onnx_2t.toml](optimization/opt0_onnx_2t.toml) | OPT-0 소규모 반복·오류 재현. [프로토콜](../docs/research/opt0_pilot.md) |
 | [opt2_gguf_q8_2t.toml](optimization/opt2_gguf_q8_2t.toml) | OPT-2 최초 GGUF/KSS 비교. [비교 계약](../docs/research/opt2_gguf.md) |
-| [qwen3_onnx_int8.toml](optimization/qwen3_onnx_int8.toml) | 프로젝트 전환 당시1T 시작 설정. 현재2T 기준 설정과 구분 |
 | [legacy/](legacy/README.md) | 기존 세 모델 batch·Zip 1배속·M1 설정 |
 
 설정 안의 상대 경로는 저장소 루트 기준입니다. CLI 기본 모델은 Zipformer이므로 Qwen 실행에는 설정을 명시합니다. 기존 설정을 덮어쓰지 않고 새 후보 설정·고유 실행 ID를 사용합니다.

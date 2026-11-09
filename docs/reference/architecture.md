@@ -9,12 +9,11 @@
 | `dataset.py`, `config.py`, `audio_policy.py` | manifest·PCM·해시·설정/입력 검증 |
 | `evaluation.py`, `scoring.py`, `metrics.py` | 공통 평가·실패 보존·CER/RTF·재채점 |
 | `streaming.py`, `segmentation.py`, `vad*.py`, `textgrid.py` | 독립 1배속 입력·큐·구간/문맥·VAD·주석 |
-| `artifacts.py`, `resources.py`, `runtime.py`, `diagnostics.py` | 원자적 기록·프로세스 자원·런타임/제한 진단 |
+| `artifacts.py`, `resources.py`, `runtime.py`, `diagnostics.py` | 원자적 기록·공통 호출 계측·런타임/제한 진단·native stderr 수집 |
 | `thermal.py`, `cooling.py`, `tools/probes/{thermal,load}.py` | 공통 센서·열/시간/메모리 제한·부하 검사 |
 | `tools/data/`, `tools/reports/cooling.py`, `tools/maintenance/` | 공통 데이터 준비·냉각 보고·유지보수 |
 | `tools/optimization/profiling.py` | 별도 C API 계측·Python stream proxy·세션 순서/시계 검증. 원본 adapter/런타임 재사용 |
 | `tools/optimization/baseline.py` | 모델 1회 로딩·첫 추론·워밍업·회전 반복·고정 PCM 재현, 공통 scorer 재사용 |
-| `tools/optimization/qwen3.py` | 기존 Qwen 단독 로딩·첫 전사 smoke; 새 프로파일러는 아님 |
 | `legacy/realtime/` | 이전 연속 Zip·VAD·Refine IPC·WAV 자막 |
 | `legacy/tools/` | 이전 비교/VAD/병합/자막 실행과 저장 원시 집계 |
 | `legacy/*.py` | 과거 병합·토큰 정렬·VAD 진단 실험 |

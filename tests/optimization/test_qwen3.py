@@ -37,7 +37,7 @@ class QwenAdapterTests(unittest.TestCase):
         self.addCleanup(hashes.stop)
         self.config = self.root / "config.toml"
         self.config.write_text(
-            (ROOT / "configs/optimization/qwen3_onnx_int8.toml")
+            (ROOT / "configs/optimization/fixed100_onnx_2t.toml")
             .read_text()
             .replace("models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25", "model")
         )
@@ -190,7 +190,7 @@ class QwenAdapterTests(unittest.TestCase):
             ("max_new_tokens = 128", "max_new_tokens = true"),
             ("max_new_tokens = 128", "max_new_tokens = 0"),
             ("sample_rate_hz = 16000", "sample_rate_hz = 8000"),
-            ("num_threads = 1", "num_threads = 1\nuse_itn = false"),
+            ("[model]", "[model]\nuse_itn = false"),
             ('mode = "batch"', 'mode = "paced_stream"'),
         ]
         for before, after in replacements:

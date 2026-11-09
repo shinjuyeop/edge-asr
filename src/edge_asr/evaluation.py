@@ -5,19 +5,18 @@ import os
 import subprocess
 import sys
 import tempfile
-import time
 import traceback
 from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
 
 from edge_asr.adapters import create_adapter
-from edge_asr.artifacts import digest, write_json
+from edge_asr.artifacts import digest, write_json, write_jsonl
 from edge_asr.config import load_evaluation_config
 from edge_asr.dataset import load_audio, load_manifest, resolve_path
-from edge_asr.resources import RssSampler
+from edge_asr.resources import RssSampler, measure_process
 from edge_asr.runtime import environment
-from edge_asr.scoring import read_predictions, save_scores, write_jsonl
+from edge_asr.scoring import read_predictions, save_scores
 
 
 def new_output(base: Path, prefix: str) -> Path:
@@ -153,17 +152,16 @@ def evaluate(
             for key, path in adapter.model_files.items()
         }
         write_json(output / "manifest.json", info)
-        loading = RssSampler()
+        loading = {}
         try:
-            with loading:
-                started, cpu_started = time.perf_counter(), time.process_time()
-                try:
-                    adapter.load()
-                finally:
-                    info["model_load_s"] = time.perf_counter() - started
-                    info["model_load_cpu_s"] = time.process_time() - cpu_started
+            with measure_process(loading):
+                adapter.load()
         finally:
-            info["model_load_resources"] = loading.metadata()
+            info.update(
+                model_load_s=loading.get("elapsed_s"),
+                model_load_cpu_s=loading.get("process_cpu_s"),
+                model_load_resources=loading.get("resources"),
+            )
             write_json(output / "environment.json", environment())
             write_json(output / "manifest.json", info)
         with (output / "progress.jsonl").open("x", encoding="utf-8") as progress:
@@ -191,18 +189,13 @@ def evaluate(
                             write_json(output / "manifest.json", info)
                         warmed = True
                     stage = "inference"
-                    monitor = RssSampler(sample_device=mode == "paced_stream")
-                    try:
-                        with monitor:
-                            if mode == "batch":
-                                cpu_start = time.process_time()
-                                wall_start = time.perf_counter()
-                                try:
-                                    hypothesis = adapter.transcribe(audio)
-                                finally:
-                                    row["elapsed_s"] = time.perf_counter() - wall_start
-                                    row["process_cpu_s"] = time.process_time() - cpu_start
-                            else:
+                    if mode == "batch":
+                        with measure_process(row):
+                            hypothesis = adapter.transcribe(audio)
+                    else:
+                        monitor = RssSampler(sample_device=True)
+                        try:
+                            with monitor:
                                 row["streaming"] = {"events_directory": f"events/{ordinal:05d}"}
                                 try:
                                     hypothesis = run_paced(
@@ -215,8 +208,8 @@ def evaluate(
                                 finally:
                                     row["elapsed_s"] = row["streaming"].get("processing_s")
                                     row["process_cpu_s"] = row["streaming"].get("processing_cpu_s")
-                    finally:
-                        row["resources"] = monitor.metadata()
+                        finally:
+                            row["resources"] = monitor.metadata()
                     if not isinstance(hypothesis, str):
                         raise TypeError("어댑터가 문자열을 반환해야 합니다.")
                     row["hypothesis"], row["status"] = hypothesis, "success"

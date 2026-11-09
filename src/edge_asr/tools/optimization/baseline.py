@@ -3,7 +3,6 @@
 import argparse
 import os
 import subprocess
-import time
 from copy import deepcopy
 from pathlib import Path
 
@@ -11,7 +10,7 @@ from edge_asr.adapters import create_adapter
 from edge_asr.artifacts import digest, write_event, write_json, write_jsonl
 from edge_asr.config import load_evaluation_config
 from edge_asr.dataset import load_audio, load_manifest
-from edge_asr.resources import RssSampler
+from edge_asr.resources import measure_process
 from edge_asr.runtime import environment, limits_verified
 from edge_asr.scoring import save_scores
 
@@ -132,20 +131,12 @@ def run(
         # 로딩 실패에도 RSS 관측을 보존한다.
         info["status"] = "model_load"
         write_json(worker, info)
-        monitor = RssSampler(sample_device=True)
+        loading = {}
         try:
-            with monitor:
-                began, cpu = time.perf_counter(), time.process_time()
-                try:
-                    adapter.load()
-                finally:
-                    info["model_load"] = {
-                        "elapsed_s": time.perf_counter() - began,
-                        "process_cpu_s": time.process_time() - cpu,
-                    }
+            with measure_process(loading, sample_device=True):
+                adapter.load()
         finally:
-            if info["model_load"] is not None:
-                info["model_load"]["resources"] = monitor.metadata()
+            info["model_load"] = loading
             info["environment"] = environment()
             write_json(worker, info)
 
@@ -166,26 +157,15 @@ def run(
                 prepare_call = getattr(adapter, "prepare_call", None)
                 if prepare_call is not None:
                     prepare_call(phase, s.id, repeat)
-                monitor = RssSampler(sample_device=True)
                 try:
-                    with monitor:
-                        began, cpu = time.perf_counter(), time.process_time()
-                        try:
-                            text = adapter.transcribe(audio[s.id])
-                            if not isinstance(text, str):
-                                raise TypeError("ASR 전사는 문자열이어야 합니다.")
-                            result.update(status="success", hypothesis=text)
-                        finally:
-                            result.update(
-                                elapsed_s=time.perf_counter() - began,
-                                process_cpu_s=time.process_time() - cpu,
-                            )
+                    with measure_process(result, sample_device=True):
+                        text = adapter.transcribe(audio[s.id])
+                        if not isinstance(text, str):
+                            raise TypeError("ASR 전사는 문자열이어야 합니다.")
+                        result.update(status="success", hypothesis=text)
                 except Exception as error:
                     result["error"] = {"type": type(error).__name__, "message": str(error)}
-                result.update(
-                    resources=monitor.metadata(),
-                    adapter_result=deepcopy(adapter.last_result_metadata),
-                )
+                result["adapter_result"] = deepcopy(adapter.last_result_metadata)
                 write_event(log, result)
                 info["calls"].append(
                     {k: result[k] for k in ("source_id", "phase", "repeat", "status")}

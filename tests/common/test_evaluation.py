@@ -126,8 +126,8 @@ class EvaluationTests(unittest.TestCase):
         with (
             patch.object(self.fake, "load", load),
             patch.object(self.fake, "transcribe", transcribe),
-            patch("edge_asr.evaluation.time.perf_counter", side_effect=lambda: clock["wall"]),
-            patch("edge_asr.evaluation.time.process_time", side_effect=lambda: clock["cpu"]),
+            patch("edge_asr.resources.time.perf_counter", side_effect=lambda: clock["wall"]),
+            patch("edge_asr.resources.time.process_time", side_effect=lambda: clock["cpu"]),
         ):
             output, code = self.run_eval()
         self.assertEqual(code, 0)

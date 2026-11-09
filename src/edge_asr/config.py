@@ -6,7 +6,7 @@ from pathlib import Path
 
 from edge_asr.adapters import SUPPORTED_MODES
 
-MODEL_FAMILIES = {"zipformer", "sensevoice", "qwen3_asr", "qwen3_gguf"}
+MODEL_FAMILIES = set(SUPPORTED_MODES)
 
 
 def load_config(path: str | Path) -> dict:
@@ -118,11 +118,6 @@ def load_evaluation_config(path: str | Path) -> dict:
             **supplied["evaluation"],
         },
     }
-    if (
-        not isinstance(config["model"].get("family"), str)
-        or config["model"].get("family") not in MODEL_FAMILIES
-    ):
-        raise ValueError(f"알 수 없는 모델: {config['model'].get('family')}")
     if not isinstance(config["model"].get("path"), str) or not config["model"]["path"].strip():
         raise ValueError("model.path가 필요합니다.")
     for section, key, minimum in (
@@ -176,11 +171,6 @@ def load_evaluation_config(path: str | Path) -> dict:
             raise ValueError(f"model.{key}는 파일 경로 문자열이어야 합니다.")
     from edge_asr.metrics import NORMALIZATIONS
 
-    if not isinstance(config["evaluation"]["mode"], str) or config["evaluation"]["mode"] not in {
-        "batch",
-        "paced_stream",
-    }:
-        raise ValueError("공통 평가 모드는 batch 또는 paced_stream입니다.")
     if config["evaluation"]["mode"] == "paced_stream":
         streaming = supplied.get("streaming")
         if not isinstance(streaming, dict):

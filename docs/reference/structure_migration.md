@@ -7,9 +7,9 @@
 | `src/edge_asr/realtime/` | `src/edge_asr/legacy/realtime/` — Zip+VAD+Refine·자막 |
 | `merging.py`, `segment_merge.py`, `token_alignment.py`, `token_splice.py`, `vad_probe.py` | `src/edge_asr/legacy/` — 과거 병합·진단 |
 | `tools/live.py`, 비교/VAD probe·보고서·전용 데이터 준비 | `src/edge_asr/legacy/tools/` |
-| `tools/probes/qwen3.py` | `src/edge_asr/tools/optimization/qwen3.py` — 기존 Qwen smoke |
+| `tools/probes/qwen3.py` | 당시 `tools/optimization/qwen3.py`로 이동. 후속 정리에서 첫 추론 검사를 `baseline.py`로 통합 |
 | `configs/*_eval.toml`, `zipformer_paced.toml` | `configs/legacy/` — 파일 내용 그대로 유지 |
-| 신규 Qwen 설정 | `configs/optimization/qwen3_onnx_int8.toml` — 기존 정책, 새 출력 위치 |
+| 신규 Qwen 설정 | 현재 `configs/optimization/fixed100_{onnx,gguf_q8}_2t.toml`. 전환 당시1T 시작 설정은 후속 정리에서 폐기 |
 | `docs/research/`의 이전 계획 | `docs/archive/model-comparison/` |
 | 이전 `docs/status.md` | `docs/archive/model-comparison/status-20261106.md` — 전환 전 상태 |
 | 자막/Zip 1배속 가이드 | `docs/guides/legacy/` |
@@ -21,7 +21,7 @@
 
 `edge-asr`와 `scripts/edge_asr.py`의 명령 이름·인자·기본 모델은 유지합니다. `live`는 이전 Zip+Refine 실행이고 Qwen 단독 스트리밍을 뜻하지 않습니다. 도구 이름은 유지하되 dispatch와 내부 Python import 경로가 바뀝니다. 개별 Python 모듈을 직접 import한 외부 코드는 위 경로에 맞춰 수정해야 합니다.
 
-설정을 직접 지정한 명령은 예를 들어 `--config configs/qwen3_eval.toml`을 `--config configs/legacy/qwen3_eval.toml`로 바꿉니다. 예전 경로의 중복 파일이나 symlink는 두지 않습니다. 신규 OPT는 `configs/optimization/qwen3_onnx_int8.toml`을 명시합니다. 이전 명령을 바이트 단위로 재현하려면 당시 Git 커밋을 사용합니다.
+설정을 직접 지정한 명령은 예를 들어 `--config configs/qwen3_eval.toml`을 `--config configs/legacy/qwen3_eval.toml`로 바꿉니다. 신규 OPT는 [현재 기준 설정](../../configs/README.md)을 명시합니다. 후속 정리에서 초기 `probe-qwen3`와1T 시작 설정을 폐기했으며 원본은 정리 전 commit `f88b33f`에 있습니다. 이전 명령을 바이트 단위로 재현하려면 당시 Git 커밋을 사용합니다.
 
 `.venv*`, 패키지, 모델, 원본 데이터, 기존 원시·요약 JSON, `experiments/m1_zipformer/` 원본은 이동·재설치·덮어쓰지 않습니다. 이전 결과는 기존 링크와 실행 ID를 유지하고 새 요약만 `results/summaries/optimization/`로 구분합니다.
 

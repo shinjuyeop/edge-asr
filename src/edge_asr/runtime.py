@@ -1,8 +1,11 @@
-"""설치 패키지와 sherpa 네이티브 ORT를 구분한다. 기본 조회는 런타임을 import하지 않는다."""
+"""런타임 정보·외부 제한·native 진단 수집. 조회만으로 추론 라이브러리를 import하지 않는다."""
 
+import os
 import platform
 import re
 import sys
+import tempfile
+from contextlib import contextmanager
 from importlib import import_module
 from importlib.metadata import PackageNotFoundError, distributions, version
 
@@ -71,3 +74,22 @@ def environment() -> dict:
 def limits_verified(text):
     """동시 실행 프로브의 프로세스별 4GiB 주소 공간 제한을 확인한다."""
     return bool(re.search(r"Max address space\s+4294967296\s+4294967296\s+bytes", text))
+
+
+@contextmanager
+def capture_native_stderr(metadata):
+    """순차 native 호출의 fd2를 복원하고 성공/예외 모두 진단을 원시와 console에 남긴다."""
+    with tempfile.TemporaryFile() as capture:
+        original = os.dup(2)
+        try:
+            os.dup2(capture.fileno(), 2)
+            yield
+        finally:
+            os.dup2(original, 2)
+            os.close(original)
+            capture.seek(0)
+            stderr = capture.read().decode("utf-8", errors="replace")
+            metadata["native_stderr"] = stderr
+            if stderr:
+                with os.fdopen(os.dup(2), "w", encoding="utf-8") as log:
+                    log.write(stderr)
