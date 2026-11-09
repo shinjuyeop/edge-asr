@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "run_id": "refactor-core-20261109-01",
+  "source_commit": "9a9b362ef01fc73188da9e8927fe2c17669ac53a",
+  "scope": "behavior regression only, no speed or accuracy improvement claim",
+  "compared_scored_records": 9,
+  "cases": [
+    {
+      "id": "onnx",
+      "source_commit": "9a9b362ef01fc73188da9e8927fe2c17669ac53a",
+      "scored_count": 4,
+      "successful": 3,
+      "failed": 1,
+      "matches_previous": true,
+      "repetition_warning_count": 0,
+      "timed_calls": 8,
+      "execution_status": "failed_or_unverified",
+      "worker_status": "completed_with_model_failures",
+      "temperature_max_c": 65.0,
+      "current_limits": [
+        0
+      ],
+      "limits_verified": true
+    },
+    {
+      "id": "gguf",
+      "source_commit": "9a9b362ef01fc73188da9e8927fe2c17669ac53a",
+      "scored_count": 4,
+      "successful": 4,
+      "failed": 0,
+      "matches_previous": true,
+      "repetition_warning_count": 0,
+      "timed_calls": 8,
+      "execution_status": "completed",
+      "worker_status": "completed",
+      "temperature_max_c": 71.05,
+      "current_limits": [
+        0
+      ],
+      "limits_verified": true
+    },
+    {
+      "id": "onnx-warning",
+      "source_commit": "9a9b362ef01fc73188da9e8927fe2c17669ac53a",
+      "scored_count": 1,
+      "successful": 0,
+      "failed": 1,
+      "matches_previous": true,
+      "repetition_warning_count": 1,
+      "timed_calls": 1,
+      "execution_status": "completed",
+      "worker_status": "completed_with_model_failures",
+      "temperature_max_c": 67.2,
+      "current_limits": [
+        0
+      ],
+      "limits_verified": true
+    }
+  ],
+  "shared_scorer_matches_saved_new_summaries": true,
+  "unmeasured": {
+    "full100_cer": null,
+    "speed_improvement": null,
+    "visible_ttft_s": null
+  },
+  "before_commit": "f88b33f678dd4ae67cd5539b148d12f149a65529",
+  "kind": "shared_measurement_native_diagnostics_refactor",
+  "production_python_lines": {
+    "added": 85,
+    "removed": 264,
+    "net_reduction": 179,
+    "includes_blank_lines_and_comments": true
+  },
+  "removed": [
+    "src/edge_asr/tools/optimization/qwen3.py",
+    "configs/optimization/qwen3_onnx_int8.toml",
+    "tests/optimization/test_qwen3_probe.py"
+  ],
+  "renamed": {
+    "tests/optimization/test_opt0_baseline.py": "tests/optimization/test_baseline.py"
+  },
+  "retired_command": "tools probe-qwen3",
+  "replacement": "tools benchmark-qwen3 with explicit config and manifest; historical smoke schema/debug policy uses previous commit",
+  "verification": {
+    "host_tests": 347,
+    "rp5_tests": 347,
+    "historical_common_summaries": 47,
+    "historical_custom_extensions_recomputed": false,
+    "raw_and_verification_files_sha256_matched": 39,
+    "raw_files": 33,
+    "analysis_byte_identical": true,
+    "analysis_sha256": "133fc3ad60c5078236211a845d7f433e27afde5c513291857935db3edef4edb4",
+    "host_protected_files": 17466,
+    "rp5_protected_files": 14428,
+    "changed_protected_files": 0,
+    "missing_protected_files": 0,
+    "runtime_files_unchanged": 9,
+    "model_files_unchanged": 10,
+    "baseline_configs_scorer_native_bridge_changed": false
+  },
+  "raw_base": "results/optimization/opt2/refactor-core-20261109-01",
+  "maintenance_base": "results/maintenance/refactor-core-20261109-01"
+}

@@ -1,75 +1,43 @@
 # 현재 상태 — Qwen3-ASR 최적화
 
-2026-11-09부터 프로젝트 중심을 **RP5에서 Qwen3-ASR-0.6B의 한국어 정확도·완료율을 유지하면서 실제 인식 지연을 최소화하는 것**으로 전환합니다. 기존 모델 비교·Zip+Refine 자막 연구는 보존하고, 신규 작업은 OPT 단계·새 실행 ID로 구분합니다.
+2026-11-09 기준. 목표는 **RP5에서 Qwen3-ASR-0.6B의 한국어 정확도·완료율을 유지하면서 실제 인식 지연을 줄이는 것**입니다. [연구 계획·OPT-0~4](research/qwen3_optimization.md).
 
-## 현재 구현과 미완료 범위
+## 현재 구현
 
 | 영역 | 상태 |
 | --- | --- |
-| Qwen sherpa-onnx INT8 | RP5 로딩·전사·공통 batch 평가 완료, 어댑터 재사용 |
-| Qwen llama.cpp/libmtmd Q8_0 | 별도 빌드·모델 경로, 공통 batch·반복 평가 실제 검증 완료 |
-| 공통 평가 기반 | `ko_cer_v1`, 입력/모델 해시, 실패 보존, 재채점, CPU/RSS·열 계측 구현 |
-| 고정100개 입력 | Zeroth60·FLEURS40, 총891.145초. Host/RP5 검증·실측 완료. ONNX99/100 성공·GGUF100/100 성공, 전자는 전체 정확도 미완료 |
-| 이전 Zip+VAD+Refine | `legacy/`로 분리. WAV 자막 유지, 자동 교체 보류 |
-| OPT-0 | 첫 소규모 단독 운영 기준선·56ms 재현 완료. 전체 평가 확장·독립 반복은 후속 |
-| OPT-1 | Python·ORT 호출 경계 계측 완료. 실제 TTFT·operator별·단독 KV 비용은 미계측 |
-| OPT-2 | llama.cpp/libmtmd Q8_0 첫 비교 완료. 스레드/ARM 빌드·낮은 비트 양자화 최적화는 후속 |
-| OPT-3 | Qwen 단독 연속 입력·발화 중 부분 자막 미구현 |
-| OPT-4 | 새 독립 평가·최종 장시간 운영 검증 미완료 |
+| ONNX INT8 / GGUF Q8_0 | RP5 CPU 어댑터·단독 batch 평가 구현 |
+| 공통 평가 | 해시·실패 보존·`ko_cer_v1`·재채점·CPU/RSS·온도/실제 클럭 계측 |
+| 입력 | 고정 Zeroth60·FLEURS40, 총891.1448125초·정답3,848자. [출처·한계](research/fixed100.md) |
+| 코드 정리 | 공통 계측/native 경고 수집 통합, 초기 smoke·1T 시작 설정 제거. [검증 기록](../results/summaries/optimization/refactor-core-20261109.md) |
+| 미완료 | Qwen 발화 중 부분 자막·사용자 TTFT·독립 holdout·최종 장시간 검증. 마이크 없음 |
 
-[이번 구조 개편 검증](../results/summaries/optimization/restructure-20261109.md)은 Host/RP5 각 319개 테스트, 기존 29개 재집계 일치, 짧은 Qwen 실제 전사 회귀를 통과했습니다.
+이전 Zip+VAD+Refine 자막은 `legacy/`에 보존하며 자동 교체는 보류 상태입니다. [이전 연구](archive/model-comparison/README.md).
 
-이번 폴더 개편은 연구 범위와 의존성을 정리하는 작업입니다. 최적화 효과를 측정하거나 기존 추론 정책을 바꾼 작업이 아닙니다. [구조 이행 안내](reference/structure_migration.md).
+## 지금 사용하는 기준선
 
-## 출발점으로 보존하는 실측
+[고정100개 프로토콜](research/fixed100_baseline.md)과 [실측 보고서](../results/summaries/optimization/fixed100-baseline-20261109.md)를 따릅니다. 출발 참조는 기존 ONNX INT8 2T이며 FP16 원본 모델을 뜻하지 않습니다. 이후 GGUF 변경은 이번 GGUF2T 자체 값과 비교합니다.
 
-- [KSS 개발 50개](../results/summaries/qwen3-kss-dev50-20261106.md): Qwen CER 3.57%, 2T batch RTF 0.6898. 스레드별 1회 비교이므로 최적 구성 확정 근거로 삼지 않습니다.
-- [동일 VAD·Zip 동시 실행](../results/summaries/qwen3-realtime-20261106.md): KSS 보정 반환 p95 3.065초. 이는 구간 종료→완성 전사 반환이며 TTFT가 아닙니다.
-- [새 FLEURS·30분 검사](../results/summaries/file-validation-20261106.md): Qwen 29/30 성공, 같은 성공 29개 CER Qwen 13.19%·SenseVoice 12.93%. 실패 표본의 56ms 잔여 구간이 재현 대상입니다. 별도 30분 동시 실행 Qwen 반환 p95 3.982초·최고 87.55°C·열 제한 관측. 공통 주 프로세스 RSS 증가와 Qwen 추론 비용을 분리 조사합니다.
+| 구성 | 성공 | 성공 파일 CER | 성공 파일 RTF | 관측 최대 RSS |
+| --- | ---: | ---: | ---: | ---: |
+| ONNX INT8 2T | 99/100 | 9.61% (361/3,758) | 0.7483 | 2570.4MiB |
+| GGUF Q8_0 2T | 100/100 | 7.67% (295/3,848) | 0.6225 | 1772.7MiB |
 
-위 결과는 서로 다른 입력·실행 조건입니다. 새 Qwen 단독 구성의 성능으로 대체하지 않습니다. [이전 상태 전체](archive/model-comparison/status-20261106.md)와 [보고서 색인](../results/summaries/README.md)에 한계·원시 출처를 보존합니다.
+ONNX의23.04초1개는 보수적 context 검사에서 거부됐습니다. 전체100개 주 CER/RTF는 null이고 실패를 빈 가설로 둔 보조 CER는11.72%입니다. 같은 성공99개에서 GGUF CER는7.53%, 처리 합은 ONNX보다 약16.8% 작았습니다. 이번 구성의 실사용 관측값이며 엔진 외 양자화·프런트엔드·재부팅 상태도 달라 재현성 확인이 필요합니다.
 
-## OPT-0 첫 결과 — 2026-11-09
+ONNX 최고87.55°C·실제1.5~2.4GHz·열 제한, 재부팅 후 GGUF 최고75.45°C·약2.4GHz·현재 제한0을 기록했습니다. 첫 GGUF 미완료 원시는 보존하고 새 실행에서 전체100개를 처음부터 평가했습니다. 네트워크 단절 중 로컬 기록은 계속됐으나 이전 부팅 로그가 없어 단절 원인은 미확정입니다.
 
-[초기 단독 기준선·실패 재현 보고서](../results/summaries/optimization/opt0-pilot-20261109.md)를 완료했습니다. 고정 KSS 6개×5회는 30/30 성공, 기존 2T와 정규화 전사 모두 일치, 처리 RTF 0.6777·최대 RSS 1772.5MiB입니다. CER 2.20%는 이 6개(2/91자)의 값이며 기존 전체 50개 CER 3.57%의 개선을 뜻하지 않습니다.
-
-56ms만 독립 입력하면 새 모델 첫 호출부터 65토큰 반복 경고로 약 5.2초 후 실패했습니다. 문맥을 붙이면 경고가 없어져도 원 발화 정답에 없는 출력이 있어 해결책 채택은 보류합니다. 원 발화 전체는 경고 없이 반환했습니다. encoder/prefill/decode별 시간·TTFT는 아직 null입니다.
-
-초기 열 중단과 냉각 대기 후 사용자가 온도와 무관하게 진행하도록 요청했습니다. 최종 측정은 명시적 `operational --skip-temperature-admission`입니다. 최고 온도는 기준선 81.5°C·진단 82.05°C, 관측 현재 제한 플래그는 0입니다. 열 상태를 고정한 통제 실험과 구분하고 이후 실행도 실제 온도·클럭/감속을 결과에 기록합니다. Host/RP5 각 328개 테스트와 공통 재채점·원시 전송 대조를 통과했습니다.
-
-## OPT-1 첫 결과 — 2026-11-09
-
-[기존 ONNX 호출 경계 실측](../results/summaries/optimization/opt1-profile-20261109.md)을 완료했습니다. 기존 wheel을 수정하지 않고 별도 C API 계측 라이브러리를 사용했습니다. 고정 KSS 6개에서 계측 on 12호출의 내부 전사 시간은 token decode 53.26%, prefill 18.05%, Conv 13.85%, Encoder 9.37%, 입력/특징 호출 4.41%였습니다. native decode_stream의 ONNX Run 바깥 비용은 약 1.03%이며 이를 KV 갱신만의 시간으로 해석하지 않습니다.
-
-56ms 재현은 prefill 뒤 후속 decoder Run 64회에 약 4.6~4.7초를 썼습니다. stock 6/6·ABBA 24/24의 raw text/tokens와 진단 8개의 상태·출력은 OPT-0와 같았습니다. ABBA on/off 처리합 차이는 -0.85%로, 순수 오버헤드나 속도 개선의 추정값이 아닙니다. 첫 logits 준비·다음 decode 진입 경계를 기록했고 실제 토큰 반환 TTFT는 null입니다.
-
-Host/RP5 각 333개 테스트(native mock 포함), 원시·빌드 37파일 해시 및 공통 재채점/분석 일치를 확인했습니다. 기존 자산은 Host 16,439개·RP5 13,973개에서 변경·누락 0입니다. 온도는 stock 최고73.25°C·ABBA81.5°C·진단80.4°C, 관측 현재 제한 플래그는 모두0입니다.
-
-## OPT-2 첫 결과 — 2026-11-09
-
-[GGUF Q8_0 비교](../results/summaries/optimization/opt2-gguf-20261109.md)를 완료했습니다. 공식 text/mmproj Q8_0·고정 llama.cpp를 별도 경로에서 CPU 빌드하고 기존 Python 환경의 ctypes로 연결했습니다. 두 구성 모두 KSS6개×5회 30/30 성공·CER2.20%, KSS50개 50/50 성공·정답 문자 커버리지100%입니다.
-
-같은 시점 KSS50의 ONNX는 CER3.57%(27/756)·RTF0.7218·RSS1775.2MiB, GGUF는 CER2.65%(20/756)·RTF0.8025·RSS1673.7MiB였습니다. GGUF는 총 오류7개 감소·처리합 약11.2% 증가·RSS 약5.7% 감소이며 발화별 개선6·동률41·악화3개입니다. 사전 정확도 기준은 통과했으나 현재 구성의 속도 이득은 없었습니다. 양자화·프런트엔드도 다른 구성 전체의 운영 비교입니다.
-
-56ms에서 ONNX는 다시 반복 경고로 실패했고 GGUF는 EOG로 종료했지만 짧은 단어를 생성했습니다. 진단 CER는 null이며 정확한 음성 보존으로 채택하지 않습니다. KSS50 최고 온도는 ONNX85.9°C·GGUF85.35°C, 두 구성 모두 현재 열 제한을 관측했습니다. 내부 첫 토큰 선택 시각은 기록했으나 사용자 TTFT·부분 자막·장시간 안정성은 아직 미계측입니다.
-
-Host/RP5 각340개 테스트와 101개 원시/런타임/자산 파일 해시 대조·공통 재채점/분석 일치를 확인했습니다. 기존 자산 감사에서 변경·누락0입니다. 실패한 최초 smoke 준비 실행도 보존했습니다.
-
-## 고정100개 첫 기준선 — 2026-11-09
-
-[사전 고정 프로토콜](research/fixed100_baseline.md)과 [실측 보고서](../results/summaries/optimization/fixed100-baseline-20261109.md)에 초기값·실패·판정 기준을 기록했습니다. Zeroth60·FLEURS40, 총891.1448125초·정답3,848자를 같은 seed 순서로 평가했습니다. 출발 참조는 기존 양자화 ONNX INT8 2T이며 FP16 원본 모델이 아닙니다.
-
-ONNX는99/100 성공·성공99개 CER9.61%(361/3,758), RTF0.7483입니다. 23.04초1개가 기존 보수적 prompt/context 상한 검사에서 native 추론 전에 거부되어 전체100개 CER·주 RTF는 null입니다. 실패를 빈 가설로 둔 보조 CER는11.72%(451/3,848)이며 입력 거부의 빠른 반환을 속도 이득으로 채택하지 않습니다.
-
-GGUF는 첫 실행 중 연결 장애 뒤 사용자 재부팅으로 중단됐고, 새 ID의 전체100개 재시도에서100/100 성공·빈 출력0·CER7.67%·RTF0.6225·RSS1772.7MiB였습니다. 미완료 원시/NUL tail을 보존하고 두 시도를 이어 붙이지 않았습니다. 이후 GGUF 변경은 이번 GGUF2T 값과 비교합니다. 단회 운영 관측이며 온도·부팅 조건을 맞춘 엔진 속도 우위로 해석하지 않습니다.
-
-첫53°C admission은300초 timeout으로 ASR을 시작하지 못했습니다. 별도 운영 실행에서 온도·실제 ARM 클럭·열 제한을 기록했습니다. 네트워크 단절 동안에도 로컬 ASR/thermal 기록이 계속됐으나 이전 부팅 journal이 없어 연결 장애 원인은 미확정입니다. 재시도에서는 OS 설정 변경 없이 journal을 Host에도 수집했습니다. Host/RP5 각347개 테스트·해시·재채점/분석 일치·기존 자산 변경/누락0을 확인했습니다. 실제 TTFT·부분 자막·연속 입력 안정성은 미측정입니다.
+이번 코드 정리는 Host/RP5 각347개 테스트, 이전 공통 집계47개, 실제 회귀9건을 통과했습니다. **기준선 수치를 새로 측정한 작업은 아닙니다.**
 
 ## 다음 작업
 
-1. ONNX의 실제 prompt/context 예산과 긴 파일 입력 거부를 별도 변경으로 검증합니다. 기존 실패·목록은 보존하고 입력을 잘라100/100을 만들지 않습니다. 원인 미확정인 네트워크 단절도 모델 실패와 구분해 추적합니다.
-2. 같은100개에서 이번 GGUF2T 기준선 대비 스레드/ARM CPU 빌드 옵션을 한 항목씩 바꾸어 측정합니다. 기존 KSS50·ONNX·Q8_0 2T 결과는 보존하고 오류·실패·문자 커버리지도 함께 비교합니다. 낭독·소규모 회귀 결과로 해석하며 자유대화·잡음·독립 holdout의 정확도로 일반화하지 않습니다. 현재 Q8_0은 속도 개선 구성으로 채택하지 않습니다.
-3. 메모리 대역폭·세션 내부 KV 연산 등은 필요할 때 추가 계측합니다. 관측한 Run 바깥 1%만으로 전체 KV cache 영향이나 스레드 병목을 단정하지 않습니다.
-4. 짧은 잔여 구간의 수집/문맥/확정 정책을 후보로 검증하고, 입력 누락·정답 시각·실패를 포함해 평가합니다. Qwen 단독 부분 자막·실제 TTFT는 OPT-3에서 별도로 검증합니다.
+1. ONNX의 실제 prompt/context 예산을 검증하고 긴 파일 거부를 별도 변경으로 다룹니다. 기존 입력·실패 기록은 보존합니다.
+2. 같은100개와 GGUF2T 기준으로 스레드·ARM CPU 빌드 등을 한 항목씩 바꿉니다. 추가 오류·실패·빈 출력 없이 처리 비용이 줄었는지와 열 상태·재현성을 확인합니다.
+3. 필요하면 KV·메모리 병목을 추가 계측합니다. 관측한 ONNX Run 바깥1%만으로 전체 KV 비용을 단정하지 않습니다.
+4. Qwen 단독 VAD·연속 입력·부분 결과와 실제 TTFT·백로그·드롭은 OPT-3에서 검증합니다. 네트워크 장애는 모델 실패와 구분해 추적합니다.
 
-[연구 계획](research/qwen3_optimization.md), [OPT-0 고정 조건](research/opt0_pilot.md), [OPT-1 계측 정의](research/opt1_profiling.md), [OPT-2 비교 계약](research/opt2_gguf.md)을 따릅니다. Host 개발·모의 테스트 → main commit/push → RP5 동기화·실측 순서와 자산 보존 원칙을 유지합니다. 마이크 준비 전에는 WAV 입력 검증만 수행합니다.
+## 이전 단계의 근거
+
+[OPT-0 기준선·56ms 재현](../results/summaries/optimization/opt0-pilot-20261109.md) · [OPT-1 호출 경계 프로파일](../results/summaries/optimization/opt1-profile-20261109.md) · [OPT-2 최초 GGUF/KSS 비교](../results/summaries/optimization/opt2-gguf-20261109.md) · [전체 OPT 기록](../results/summaries/optimization/README.md). 각 당시 데이터·조건·한계는 해당 보고서에서 확인합니다.
+
+작업 순서는 **Host 개발·테스트 → main commit/push → RP5 동기화·실측**입니다. [실행 안내](guides/qwen3_optimization.md), [코드 구조](reference/architecture.md).
