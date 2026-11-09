@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "kind": "structure_refactor_verification",
+  "date": "2026-11-09",
+  "source_commit": "21b90b448d1deabe95b29f8a63375c392c99c83f",
+  "host": {
+    "tests": {
+      "count": 319,
+      "elapsed_s": 45.541,
+      "failures": 0,
+      "errors": 0,
+      "native_asr_inference": false,
+      "log_sha256": "be1b0f36041fd2851c67f10a06cb406978d89f644aaeb4ce9dfe467bb9510d82"
+    },
+    "history": 29,
+    "preservation": {
+      "protected_files": 16297,
+      "missing": [],
+      "changed": [],
+      "commit": "4e5dbed365a6cb8af8b6316f5bf847523d33f293"
+    }
+  },
+  "rp5": {
+    "tests": {
+      "count": 319,
+      "elapsed_s": 73.09,
+      "failures": 0,
+      "errors": 0,
+      "native_asr_inference": false,
+      "log_sha256": "9564cf18e20e3bdfc2e9ce904d656c1cef6c410c8e117f1f86b36dce36b343d4"
+    },
+    "history": 29,
+    "preservation": {
+      "protected_files": 13872,
+      "missing": [],
+      "changed": [],
+      "commit": "21b90b448d1deabe95b29f8a63375c392c99c83f"
+    }
+  },
+  "native_smoke": {
+    "status": "completed",
+    "runtime": {
+      "sherpa_package_version": "2.0.1",
+      "sherpa_core_package_version": "2.0.1",
+      "python_onnxruntime_package_version": null,
+      "sherpa_native_onnxruntime_version": "1.28.2",
+      "native_version_source": "sherpa_onnx.onnxruntime_version",
+      "status": "available",
+      "reason": null
+    },
+    "audio_duration_s": 3.5265,
+    "audio_sha256": "0faf0b037efe428e5e561195f4d2aa148b2a0a2a5fc540b2c184b9d5c241e984",
+    "num_threads": 1,
+    "warmup_runs": 0,
+    "same_text_as_previous": true,
+    "same_tokens_as_previous": true,
+    "model_load_s": 5.133230230014306,
+    "first_inference_s": 3.393041539005935,
+    "rss_observed_max_mib": 1506.5625,
+    "temperature_max_c": 61.7,
+    "current_limit_flags": [
+      0
+    ],
+    "external_limits_verified": true,
+    "policy": {
+      "admission_mc": 53000,
+      "admission_consecutive": 3,
+      "stop_mc": 75000,
+      "interval_s": 1,
+      "timeout_s": 180,
+      "address_space_bytes": 4294967296,
+      "scope": "1Hz 표본. 고정 클럭 보장 아님. 현재 제한/새 이력/결측/75°C에서 중단."
+    },
+    "ttft_s": null,
+    "cer": null,
+    "limitation": "단일 WAV 기능 회귀. warmup 0, 정확도/TTFT/steady-state/연속 사용/최적화 효과 검증 아님."
+  },
+  "source_logic": {
+    "source_files": 85,
+    "different": [],
+    "config_files_byte_equal": [
+      "configs/sensevoice_eval.toml",
+      "configs/zipformer_eval.toml",
+      "configs/qwen3_eval.toml",
+      "configs/zipformer_paced.toml"
+    ]
+  },
+  "raw_sha256": {
+    "results/optimization/verification/restructure-20261109-01/threads.jsonl": "638bf914b7c6fa202ba00623b4442575feee9443163bf7ebff79974bc377f090",
+    "results/optimization/verification/restructure-20261109-01/execution.json": "5a0b1ebd65e4ff6b187f5fbfc21b6687ac07e77a1ff96602d6fd96b94b89c5d0",
+    "results/optimization/verification/restructure-20261109-01/thermal.jsonl": "bfff7e104e655539d927bb95625ffb5d7767d272b6a104642d905f60ec1d9971",
+    "results/optimization/verification/restructure-20261109-01/worker.json": "1f132030774466c630cb32cb58c4cd4ec6b01caf19e9a6fafac61b43a9f12321",
+    "results/optimization/verification/restructure-20261109-01/console.log": "6183665bc1ad999011fd1d72eb233ec141497626a7a872da80d8e1650cb74b8a",
+    "results/optimization/verification/restructure-20261109-01/admission.jsonl": "0f7c297d1563ee3d9f496c6ed6886c61d07fe8dba97b3d891eb5ca166fdadb37"
+  }
+}
