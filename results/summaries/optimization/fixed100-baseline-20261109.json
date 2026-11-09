@@ -1,0 +1,1586 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-09",
+  "kind": "fixed100_initial_onnx_and_gguf_baseline",
+  "run_id": "fixed100-baseline-20261109-01",
+  "source_commit": "ea1ddd2c55518fcf476ece3288f9e9b6b0b11f68",
+  "recovery_source_commit": "367261542061740f1f315e328ab3e77494d1de6d",
+  "recovery_run_id": "fixed100-baseline-recovery-20261109-01",
+  "primary_cases": [
+    "operational-onnx-01",
+    "recovery-gguf-01"
+  ],
+  "infrastructure_interruption": {
+    "schema_version": 1,
+    "status": "infrastructure_interrupted_by_user_reboot_after_network_loss",
+    "original_driver_status_preserved": "running",
+    "original_worker_status_preserved": "steady",
+    "recovered_boot_id": "a06c75a5-1f03-4198-8c02-4ba3fc6b5038",
+    "recovered_boot_started_kst": "2026-11-09T17:51:59+09:00",
+    "previous_journal_persistent": false,
+    "previous_crash_log_found": false,
+    "cause": "unconfirmed",
+    "network_observation": "SSH timeout, ping unreachable, neighbor resolution FAILED; local thermal continued until17:51:34KST",
+    "last_valid_thermal": {
+      "at_utc": "2026-11-09T08:51:34.337093+00:00",
+      "monotonic_s": 255331.240376891,
+      "temperature_mc": 83700,
+      "cpu0_freq_khz": 2400000,
+      "governor": "ondemand",
+      "throttled_flags": 917512,
+      "current_limits": 8,
+      "history_limits": 14,
+      "arm_clock_hz": 2201030656,
+      "fan_rpm": 4294967295
+    },
+    "predictions_status_counts": {
+      "success": 48,
+      "interrupted": 1,
+      "not_attempted": 51
+    },
+    "measurements_phase_counts": {
+      "first_inference": 1,
+      "warmup": 3,
+      "steady": 44
+    },
+    "invalid_final_thermal_lines": [
+      {
+        "line": 333,
+        "bytes": 828,
+        "sha256": "45089870d9f0c98bfc764c9b52c1414d263daf1c09f722c3b62dc009c49d945d",
+        "ends_newline": false,
+        "nul_bytes": 828
+      }
+    ],
+    "raw_files_after_reboot": {
+      "results/optimization/opt2/fixed100-baseline-20261109-01/inputs/plan.json": "8954cb0f142976e5a26adf02b7afa69742d8b07010c5c758d7bcbdfc1be38884",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/inputs/evaluation.jsonl": "75ba1226dddfa0defb97f6fdbba89c31a762b541beb41299cdb0ac8490c45a06",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/controlled-onnx-01/execution.json": "352b171785fbcb575ecaae17350b2c554cba6a76f0b808eb3879a1dd545b1a15",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/controlled-onnx-01/admission.jsonl": "4f9de0b2755bccce536bf173870f75d784adbf7c4209fd6540b902116bebe30d",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/operational-onnx-01/measurements.jsonl": "38221bb7d9b62eb1d837218f8314532eceaa6fd3b82e57eb96248b38af7fb5bb",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/operational-onnx-01/scores.jsonl": "fcc751988db3d8a5083617ce93b7c56f93a553b24e624e456ef7afdad02d8076",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/operational-onnx-01/threads.jsonl": "c36761fc9feb9124ee22e50ed8fa0fc2ae72baaadd111180308307f38f9efef3",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/operational-onnx-01/execution.json": "5774797c3f79e8d7e662bcd706e5dc9729edc90580c8147bd4114759bda77e6e",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/operational-onnx-01/thermal.jsonl": "90ba6e111b743887ace85438e5c7991a607d672ea6ba50bfefe5f4115a3fe841",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/operational-onnx-01/summary.md": "4345d090d282dca1f34f82d3bd5b82d5cc949e91d601df49a73b53c52318a939",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/operational-onnx-01/worker.json": "a8735cc7734ba44d8ba9ad6598d160d336c66a456236e6b211a134655633f2c8",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/operational-onnx-01/console.log": "675b3634af4e0bd79d7849cc3471e3f0981a9799cd07a2cdcb3b2eabc2ac2104",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/operational-onnx-01/warnings.jsonl": "321b996cbd64f3217d8d3e1fedd1155901d3172ecd062a9cc621a0dec8c9e4cb",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/operational-onnx-01/summary.json": "85e18e80fe66885b758422f014957ed31f3994bc3d49c224692bad3d0b532411",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/operational-onnx-01/predictions.jsonl": "d0fe689ec512668d44d56e34dbce08f9688f4c3e2f0dd8145c6dcd3f27e1e006",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/operational-gguf-01/measurements.jsonl": "f334e87ff1e240473044a2614d0dc01627f1656ed18c774ab2b49522a890c792",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/operational-gguf-01/threads.jsonl": "0ad537e27ce15a1918ca32a65348e28f79b23fb507b1385914c18f145f168614",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/operational-gguf-01/execution.json": "90547f919b2bb883912b665a388ce8aeb33ddb6eb81cb62c82c01d3ec9e744ae",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/operational-gguf-01/thermal.jsonl": "bc6dadfff31957e39503114da5f8d47a587c2e2512f6dcdccf4f4aa1d489898b",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/operational-gguf-01/worker.json": "7f1ad11c2d90159718307ef06aaa82c7bd44a4749c36affa65ae185ac10a447c",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/operational-gguf-01/console.log": "88868f8a75fbc8e17fae94adc347694b216b01fd2e5d312e2e3c3e07f475d134",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/operational-gguf-01/warnings.jsonl": "90bba79860f00f4f65aab2c2ec86b9a94f868e210ef1c10e16417e9a8c373253",
+      "results/optimization/opt2/fixed100-baseline-20261109-01/operational-gguf-01/predictions.jsonl": "dacbdcbbbb7eadef100a17a176ea1290d929726eb04c33cab63b99d32c757d28"
+    },
+    "scope": "Do not adopt incomplete run as100 baseline or infer hardware cause. Persisted calls and predictions differ; original bytes unchanged."
+  },
+  "invalid_final_jsonl_records": [
+    {
+      "path": "results/optimization/opt2/fixed100-baseline-20261109-01/operational-gguf-01/thermal.jsonl",
+      "line": 333,
+      "bytes": 828,
+      "sha256": "45089870d9f0c98bfc764c9b52c1414d263daf1c09f722c3b62dc009c49d945d",
+      "policy": "preserve raw; ignore final incomplete record only"
+    },
+    {
+      "path": "results/optimization/opt2/fixed100-baseline-20261109-01/operational-gguf-01/warnings.jsonl",
+      "line": 329,
+      "bytes": 616,
+      "sha256": "f9d54bbe3ccaf08564c2928c55218a3f696989a05dffc8edf057773751aae153",
+      "policy": "preserve raw; ignore final incomplete record only"
+    }
+  ],
+  "baseline_roles": {
+    "project_initial": "onnx_INT8_2T_existing_deployment",
+    "gguf_optimization_reference": "gguf_Q8_0_2T_current_run"
+  },
+  "input_plan": {
+    "input_id": "edge100-20261109-01",
+    "source_manifest_sha256": "f693163f3d0d11a09873d3d5dbbd8a68aea6ebd1897cc051fd99dd076f8b76ab",
+    "evaluation_manifest_sha256": "75ba1226dddfa0defb97f6fdbba89c31a762b541beb41299cdb0ac8490c45a06",
+    "order_policy": "sha256(seed + '/' + source_id) ascending",
+    "order_seed": "edge-asr-fixed100-baseline-20261109-v1",
+    "count": 100,
+    "total_audio_s": 891.1448125,
+    "known_same_speaker_adjacent_pairs": 3,
+    "fleurs_speaker_identity": null,
+    "source_commit": "ea1ddd2c55518fcf476ece3288f9e9b6b0b11f68",
+    "source_dirty": false,
+    "configs": {
+      "configs/optimization/fixed100_onnx_2t.toml": "c00ad9dbe154cecca8bd690e976c4694124e69246616800c9ca1928e8801780e",
+      "configs/optimization/fixed100_gguf_q8_2t.toml": "91f519bedc7b575cc99788a0eb810abe80c4ccc47f61fffb3b3d51529afb1dd6"
+    }
+  },
+  "primary_mode": "operational",
+  "controlled_campaign_end_reason": "temperature_condition_failed:controlled-onnx-01",
+  "controlled_gguf_not_attempted_reason": "controlled_campaign_ended_after_onnx_temperature_failure",
+  "cases": [
+    {
+      "id": "controlled-onnx-01",
+      "data_path": "results/optimization/opt2/fixed100-baseline-20261109-01/controlled-onnx-01",
+      "effective_status": "blocked",
+      "backend": "onnx",
+      "source_commit": "ea1ddd2c55518fcf476ece3288f9e9b6b0b11f68",
+      "execution_status": "blocked",
+      "worker_status": null,
+      "guard_exit_code": null,
+      "control_valid": false,
+      "operational_valid": null,
+      "limits_verified": false,
+      "guard_error": "RuntimeError: cooling_admission_timeout",
+      "guard_rejection": null,
+      "policy": {
+        "admission_mc": 53000,
+        "admission_consecutive": 3,
+        "stop_mc": 80000,
+        "interval_s": 0.25,
+        "timeout_s": 1800,
+        "address_space_bytes": 4294967296,
+        "scope": "폴링 대기 0.25초+조회 비용. 75°C 경고, 80°C/현재 제한/새 이력/결측 중단. 고정 클럭/열평형 보장 아님.",
+        "name": "warn75-stop80",
+        "warn_mc": 75000
+      },
+      "planned": 100,
+      "scored_record_count": 0,
+      "scored_status_counts": {
+        "not_attempted": 100
+      },
+      "complete_100_success": false,
+      "accuracy_quality_gate": false,
+      "all_100_attempts_returned": false,
+      "empty_normalized_outputs": 0,
+      "successful_only_common_metrics": null,
+      "primary_full100_cer": null,
+      "primary_full100_rtf": null,
+      "all_attempt_rtf": null,
+      "failure_penalized_cer": null,
+      "model_load": null,
+      "first_inference_s": {
+        "n": 0,
+        "mean": null,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "warmup_s": {
+        "n": 0,
+        "mean": null,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "rss_observed_max_all_phases_mib": null,
+      "execution_start_temperature_c": null,
+      "max_observed_temperature_c": 57.3,
+      "admission_sample_count": 299,
+      "thermal_sample_count": 0,
+      "current_limits": [],
+      "current_limited_sample_count": 0,
+      "history_limits_before_after": [
+        null,
+        null
+      ],
+      "final_temperature_c": null,
+      "cpu0_freq_khz": {
+        "min": null,
+        "max": null
+      },
+      "fan_rpm": {
+        "min": null,
+        "max": null,
+        "unusable_uint32_max_count": 0
+      },
+      "thermal_warning_record_count": 0,
+      "native_stderr_nonempty_steady_count": 0,
+      "arm_clock_hz": {
+        "min": null,
+        "max": null,
+        "missing_count": 0,
+        "valid_count": 0
+      },
+      "final_worker_active_call": null,
+      "failures": [],
+      "controlled_speed_eligible": false
+    },
+    {
+      "id": "operational-onnx-01",
+      "data_path": "results/optimization/opt2/fixed100-baseline-20261109-01/operational-onnx-01",
+      "effective_status": "failed_or_unverified",
+      "backend": "onnx",
+      "source_commit": "ea1ddd2c55518fcf476ece3288f9e9b6b0b11f68",
+      "execution_status": "failed_or_unverified",
+      "worker_status": "completed_with_model_failures",
+      "guard_exit_code": 1,
+      "control_valid": false,
+      "operational_valid": false,
+      "limits_verified": true,
+      "guard_error": null,
+      "guard_rejection": null,
+      "policy": {
+        "admission_mc": null,
+        "admission_consecutive": 0,
+        "stop_mc": null,
+        "interval_s": 1,
+        "timeout_s": 1800,
+        "address_space_bytes": 4294967296,
+        "scope": "운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
+        "name": "operational",
+        "warn_mc": 80000,
+        "allow_thermal_limits": true,
+        "firmware_thermal_protection": "unchanged",
+        "temperature_admission": "observe_only"
+      },
+      "planned": 100,
+      "scored_record_count": 100,
+      "scored_status_counts": {
+        "success": 99,
+        "failed": 1
+      },
+      "complete_100_success": false,
+      "accuracy_quality_gate": false,
+      "all_100_attempts_returned": true,
+      "empty_normalized_outputs": 0,
+      "successful_only_common_metrics": {
+        "planned": 100,
+        "successful": 99,
+        "failed": 1,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": false,
+        "reference_character_coverage": 0.9766112266112266,
+        "cer": {
+          "value": 0.09606173496540713,
+          "reference_characters": 3758,
+          "errors": 361,
+          "substitutions": 202,
+          "deletions": 149,
+          "insertions": 10,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.7483279752927633,
+        "total_audio_s": 868.1048124999999,
+        "total_inference_wall_s": 649.6271166800288,
+        "mean_process_cpu_percent": 195.83078648833586,
+        "file_processing_s": {
+          "n": 99,
+          "mean": 6.561890067475039,
+          "p50": 6.162982459994964,
+          "p95": 11.068424661993049,
+          "max": 16.642332455987344
+        },
+        "file_rtf": {
+          "n": 99,
+          "mean": 0.7401484454689045,
+          "p50": 0.7193477356407066,
+          "p95": 0.9668856549352057,
+          "max": 1.1020718940109253
+        },
+        "rss_observed_max_mib": 2570.375
+      },
+      "primary_full100_cer": null,
+      "primary_full100_rtf": null,
+      "all_attempt_rtf": 0.728980440657658,
+      "failure_penalized_cer": {
+        "value": 0.1172037422037422,
+        "errors": 451,
+        "reference_characters": 3848,
+        "complete_attempt_coverage": true,
+        "policy": "non_success_empty_hypothesis_including_missing_outputs; incomplete is not a completed ASR accuracy result"
+      },
+      "model_load": {
+        "elapsed_s": 5.396620454004733,
+        "process_cpu_s": 5.672666918000001
+      },
+      "first_inference_s": {
+        "n": 1,
+        "mean": 5.162384007999208,
+        "p50": null,
+        "p95": null,
+        "max": 5.162384007999208
+      },
+      "warmup_s": {
+        "n": 3,
+        "mean": 5.46649273399574,
+        "p50": 5.429846575978445,
+        "p95": 5.55781186799868,
+        "max": 5.55781186799868
+      },
+      "rss_observed_max_all_phases_mib": 2570.375,
+      "execution_start_temperature_c": 54.0,
+      "max_observed_temperature_c": 87.55,
+      "admission_sample_count": 0,
+      "thermal_sample_count": 670,
+      "current_limits": [
+        0,
+        6,
+        8
+      ],
+      "current_limited_sample_count": 467,
+      "history_limits_before_after": [
+        14,
+        14
+      ],
+      "final_temperature_c": 79.3,
+      "cpu0_freq_khz": {
+        "min": 1800000,
+        "max": 2400000
+      },
+      "fan_rpm": {
+        "min": 3018,
+        "max": 9797,
+        "unusable_uint32_max_count": 0
+      },
+      "thermal_warning_record_count": 558,
+      "native_stderr_nonempty_steady_count": 0,
+      "arm_clock_hz": {
+        "min": 1500009472,
+        "max": 2400037120,
+        "missing_count": 0,
+        "valid_count": 671
+      },
+      "final_worker_active_call": null,
+      "failures": [
+        {
+          "source_id": "fleurs-14941719265693149665",
+          "status": "failed",
+          "error_type": "ValueError",
+          "error_message": "Qwen context 길이 상한 초과: 원본 입력을 자르지 않고 거부합니다.",
+          "context_budget": {
+            "feature_frames": 2304,
+            "audio_tokens_upper_bound": 300,
+            "prompt_tokens_upper_bound": 133,
+            "context_tokens_upper_bound": 433,
+            "reserved_output_tokens": 129,
+            "max_total_len": 512,
+            "fits": false
+          },
+          "token_count": null,
+          "termination": null
+        }
+      ],
+      "controlled_speed_eligible": false,
+      "longest_input_result": {
+        "source_id": "fleurs-14941719265693149665",
+        "duration_s": 23.04,
+        "status": "failed",
+        "elapsed_s": 2.14260071516037e-05,
+        "prompt_positions": null,
+        "termination": null,
+        "returned_token_count": null
+      },
+      "by_source": {
+        "fleurs_read_speech": {
+          "planned": 40,
+          "successful": 39,
+          "failed": 1,
+          "not_attempted": 0,
+          "interrupted": 0,
+          "complete": false,
+          "reference_character_coverage": 0.9423076923076923,
+          "cer": {
+            "value": 0.1,
+            "reference_characters": 1470,
+            "errors": 147,
+            "substitutions": 56,
+            "deletions": 90,
+            "insertions": 1,
+            "scope": "successful_nonempty_references",
+            "empty_reference_samples": 0,
+            "empty_reference_nonempty_hypotheses": 0
+          },
+          "rtf": 0.7082480055028811,
+          "total_audio_s": 360.35999999999996,
+          "total_inference_wall_s": 255.22425126301823,
+          "mean_process_cpu_percent": 195.6006093694185,
+          "file_processing_s": {
+            "n": 39,
+            "mean": 6.544211570846621,
+            "p50": 6.25163430700195,
+            "p95": 10.939344985992648,
+            "max": 16.642332455987344
+          },
+          "file_rtf": {
+            "n": 39,
+            "mean": 0.7048852577795793,
+            "p50": 0.6974945325024844,
+            "p95": 0.8901147443633389,
+            "max": 0.9064451228751277
+          },
+          "rss_observed_max_mib": 2570.375
+        },
+        "zeroth_read_speech": {
+          "planned": 60,
+          "successful": 60,
+          "failed": 0,
+          "not_attempted": 0,
+          "interrupted": 0,
+          "complete": true,
+          "reference_character_coverage": 1.0,
+          "cer": {
+            "value": 0.09353146853146853,
+            "reference_characters": 2288,
+            "errors": 214,
+            "substitutions": 146,
+            "deletions": 59,
+            "insertions": 9,
+            "scope": "successful_nonempty_references",
+            "empty_reference_samples": 0,
+            "empty_reference_nonempty_hypotheses": 0
+          },
+          "rtf": 0.7767737960237863,
+          "total_audio_s": 507.7448125,
+          "total_inference_wall_s": 394.4028654170106,
+          "mean_process_cpu_percent": 195.9797376952989,
+          "file_processing_s": {
+            "n": 60,
+            "mean": 6.57338109028351,
+            "p50": 6.088123373017879,
+            "p95": 11.068424661993049,
+            "max": 14.630004392995033
+          },
+          "file_rtf": {
+            "n": 60,
+            "mean": 0.7630695174669654,
+            "p50": 0.7399515800196483,
+            "p95": 0.9845592997354787,
+            "max": 1.1020718940109253
+          },
+          "rss_observed_max_mib": 2570.375
+        }
+      },
+      "by_length": {
+        "under10s": {
+          "planned": 81,
+          "successful": 81,
+          "failed": 0,
+          "not_attempted": 0,
+          "interrupted": 0,
+          "complete": true,
+          "reference_character_coverage": 1.0,
+          "cer": {
+            "value": 0.0905848787446505,
+            "reference_characters": 2804,
+            "errors": 254,
+            "substitutions": 130,
+            "deletions": 118,
+            "insertions": 6,
+            "scope": "successful_nonempty_references",
+            "empty_reference_samples": 0,
+            "empty_reference_nonempty_hypotheses": 0
+          },
+          "rtf": 0.7252390871765708,
+          "total_audio_s": 642.38375,
+          "total_inference_wall_s": 465.88180446706247,
+          "mean_process_cpu_percent": 195.65142913162273,
+          "file_processing_s": {
+            "n": 81,
+            "mean": 5.751627215642746,
+            "p50": 5.952421299007256,
+            "p95": 8.25865702398005,
+            "max": 9.769242522015702
+          },
+          "file_rtf": {
+            "n": 81,
+            "mean": 0.7233549599671772,
+            "p50": 0.706102538787635,
+            "p95": 0.8901147443633389,
+            "max": 1.0643806480560813
+          },
+          "rss_observed_max_mib": 2570.375
+        },
+        "10to15s": {
+          "planned": 17,
+          "successful": 17,
+          "failed": 0,
+          "not_attempted": 0,
+          "interrupted": 0,
+          "complete": true,
+          "reference_character_coverage": 1.0,
+          "cer": {
+            "value": 0.11670480549199085,
+            "reference_characters": 874,
+            "errors": 102,
+            "substitutions": 67,
+            "deletions": 31,
+            "insertions": 4,
+            "scope": "successful_nonempty_references",
+            "empty_reference_samples": 0,
+            "empty_reference_nonempty_hypotheses": 0
+          },
+          "rtf": 0.8058551482247494,
+          "total_audio_s": 207.36106250000003,
+          "total_inference_wall_s": 167.10297975697904,
+          "mean_process_cpu_percent": 196.26934271009137,
+          "file_processing_s": {
+            "n": 17,
+            "mean": 9.829587044528179,
+            "p50": 9.712760966998758,
+            "p95": 14.630004392995033,
+            "max": 14.630004392995033
+          },
+          "file_rtf": {
+            "n": 17,
+            "mean": 0.8103823071297086,
+            "p50": 0.782817501609993,
+            "p95": 1.1020718940109253,
+            "max": 1.1020718940109253
+          },
+          "rss_observed_max_mib": 2568.375
+        },
+        "15to30s": {
+          "planned": 2,
+          "successful": 1,
+          "failed": 1,
+          "not_attempted": 0,
+          "interrupted": 0,
+          "complete": false,
+          "reference_character_coverage": 0.47058823529411764,
+          "cer": {
+            "value": 0.0625,
+            "reference_characters": 80,
+            "errors": 5,
+            "substitutions": 5,
+            "deletions": 0,
+            "insertions": 0,
+            "scope": "successful_nonempty_references",
+            "empty_reference_samples": 0,
+            "empty_reference_nonempty_hypotheses": 0
+          },
+          "rtf": 0.9064451228751277,
+          "total_audio_s": 18.36,
+          "total_inference_wall_s": 16.642332455987344,
+          "mean_process_cpu_percent": 196.44820460390446,
+          "file_processing_s": {
+            "n": 1,
+            "mean": 16.642332455987344,
+            "p50": null,
+            "p95": null,
+            "max": 16.642332455987344
+          },
+          "file_rtf": {
+            "n": 1,
+            "mean": 0.9064451228751277,
+            "p50": null,
+            "p95": null,
+            "max": 0.9064451228751277
+          },
+          "rss_observed_max_mib": 2487.875
+        }
+      }
+    },
+    {
+      "id": "operational-gguf-01",
+      "data_path": "results/optimization/opt2/fixed100-baseline-20261109-01/operational-gguf-01",
+      "effective_status": "infrastructure_interrupted_by_reboot",
+      "backend": "gguf",
+      "source_commit": "ea1ddd2c55518fcf476ece3288f9e9b6b0b11f68",
+      "execution_status": "running",
+      "worker_status": "steady",
+      "guard_exit_code": null,
+      "control_valid": false,
+      "operational_valid": false,
+      "limits_verified": true,
+      "guard_error": null,
+      "guard_rejection": null,
+      "policy": {
+        "admission_mc": null,
+        "admission_consecutive": 0,
+        "stop_mc": null,
+        "interval_s": 1,
+        "timeout_s": 1800,
+        "address_space_bytes": 4294967296,
+        "scope": "운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
+        "name": "operational",
+        "warn_mc": 80000,
+        "allow_thermal_limits": true,
+        "firmware_thermal_protection": "unchanged",
+        "temperature_admission": "observe_only"
+      },
+      "planned": 100,
+      "scored_record_count": 100,
+      "scored_status_counts": {
+        "success": 48,
+        "interrupted": 1,
+        "not_attempted": 51
+      },
+      "complete_100_success": false,
+      "accuracy_quality_gate": false,
+      "all_100_attempts_returned": false,
+      "empty_normalized_outputs": 0,
+      "successful_only_common_metrics": {
+        "planned": 100,
+        "successful": 48,
+        "failed": 0,
+        "not_attempted": 51,
+        "interrupted": 1,
+        "complete": false,
+        "reference_character_coverage": 0.47895010395010396,
+        "cer": {
+          "value": 0.08355941399891481,
+          "reference_characters": 1843,
+          "errors": 154,
+          "substitutions": 91,
+          "deletions": 52,
+          "insertions": 11,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.7270519200230978,
+        "total_audio_s": 424.9281249999999,
+        "total_inference_wall_s": 308.94480915306485,
+        "mean_process_cpu_percent": 199.52848443412162,
+        "file_processing_s": {
+          "n": 48,
+          "mean": 6.436350190688851,
+          "p50": 6.0380125590018,
+          "p95": 9.308234177995473,
+          "max": 13.802617019973695
+        },
+        "file_rtf": {
+          "n": 48,
+          "mean": 0.7277301073162654,
+          "p50": 0.727217113318651,
+          "p95": 0.8454406420099565,
+          "max": 0.8773729627887962
+        },
+        "rss_observed_max_mib": 1770.0
+      },
+      "primary_full100_cer": null,
+      "primary_full100_rtf": null,
+      "all_attempt_rtf": null,
+      "failure_penalized_cer": {
+        "value": 0.5610706860706861,
+        "errors": 2159,
+        "reference_characters": 3848,
+        "complete_attempt_coverage": false,
+        "policy": "non_success_empty_hypothesis_including_missing_outputs; incomplete is not a completed ASR accuracy result"
+      },
+      "model_load": {
+        "elapsed_s": 1.3132545739936177,
+        "process_cpu_s": 1.1806430719999996
+      },
+      "first_inference_s": {
+        "n": 1,
+        "mean": 5.349363676010398,
+        "p50": null,
+        "p95": null,
+        "max": 5.349363676010398
+      },
+      "warmup_s": {
+        "n": 3,
+        "mean": 5.666663654662746,
+        "p50": 5.675930811004946,
+        "p95": 5.68203927698778,
+        "max": 5.68203927698778
+      },
+      "rss_observed_max_all_phases_mib": 1770.0,
+      "execution_start_temperature_c": 81.5,
+      "max_observed_temperature_c": 86.45,
+      "admission_sample_count": 0,
+      "thermal_sample_count": 332,
+      "current_limits": [
+        0,
+        6,
+        8
+      ],
+      "current_limited_sample_count": 315,
+      "history_limits_before_after": [
+        14,
+        null
+      ],
+      "final_temperature_c": null,
+      "cpu0_freq_khz": {
+        "min": 2400000,
+        "max": 2400000
+      },
+      "fan_rpm": {
+        "min": 9775,
+        "max": 9800,
+        "unusable_uint32_max_count": 244
+      },
+      "thermal_warning_record_count": 328,
+      "native_stderr_nonempty_steady_count": 48,
+      "arm_clock_hz": {
+        "min": 1500012800,
+        "max": 2400037120,
+        "missing_count": 0,
+        "valid_count": 332
+      },
+      "final_worker_active_call": {
+        "source_id": "zeroth-126_003_0166",
+        "phase": "steady",
+        "repeat": 1
+      },
+      "failures": [],
+      "controlled_speed_eligible": false,
+      "longest_input_result": {
+        "source_id": "fleurs-14941719265693149665",
+        "duration_s": 23.04,
+        "status": "not_attempted",
+        "elapsed_s": null,
+        "prompt_positions": null,
+        "termination": null,
+        "returned_token_count": null
+      },
+      "by_source": {
+        "fleurs_read_speech": {
+          "planned": 40,
+          "successful": 16,
+          "failed": 0,
+          "not_attempted": 24,
+          "interrupted": 0,
+          "complete": false,
+          "reference_character_coverage": 0.38782051282051283,
+          "cer": {
+            "value": 0.06115702479338843,
+            "reference_characters": 605,
+            "errors": 37,
+            "substitutions": 28,
+            "deletions": 9,
+            "insertions": 0,
+            "scope": "successful_nonempty_references",
+            "empty_reference_samples": 0,
+            "empty_reference_nonempty_hypotheses": 0
+          },
+          "rtf": 0.716408379242206,
+          "total_audio_s": 149.33999999999997,
+          "total_inference_wall_s": 106.98842735603102,
+          "mean_process_cpu_percent": 199.27875730195169,
+          "file_processing_s": {
+            "n": 16,
+            "mean": 6.686776709751939,
+            "p50": 6.580819002003409,
+            "p95": 13.802617019973695,
+            "max": 13.802617019973695
+          },
+          "file_rtf": {
+            "n": 16,
+            "mean": 0.7237857325181486,
+            "p50": 0.739090395518233,
+            "p95": 0.8454406420099565,
+            "max": 0.8454406420099565
+          },
+          "rss_observed_max_mib": 1770.0
+        },
+        "zeroth_read_speech": {
+          "planned": 60,
+          "successful": 32,
+          "failed": 0,
+          "not_attempted": 27,
+          "interrupted": 1,
+          "complete": false,
+          "reference_character_coverage": 0.541083916083916,
+          "cer": {
+            "value": 0.09450726978998385,
+            "reference_characters": 1238,
+            "errors": 117,
+            "substitutions": 63,
+            "deletions": 43,
+            "insertions": 11,
+            "scope": "successful_nonempty_references",
+            "empty_reference_samples": 0,
+            "empty_reference_nonempty_hypotheses": 0
+          },
+          "rtf": 0.7328196082361452,
+          "total_audio_s": 275.588125,
+          "total_inference_wall_s": 201.95638179703383,
+          "mean_process_cpu_percent": 199.6607798976334,
+          "file_processing_s": {
+            "n": 32,
+            "mean": 6.311136931157307,
+            "p50": 5.935565616993699,
+            "p95": 9.308234177995473,
+            "max": 11.64712608102127
+          },
+          "file_rtf": {
+            "n": 32,
+            "mean": 0.7297022947153241,
+            "p50": 0.7134016466383607,
+            "p95": 0.8658783567643914,
+            "max": 0.8773729627887962
+          },
+          "rss_observed_max_mib": 1770.0
+        }
+      },
+      "by_length": {
+        "under10s": {
+          "planned": 81,
+          "successful": 38,
+          "failed": 0,
+          "not_attempted": 42,
+          "interrupted": 1,
+          "complete": false,
+          "reference_character_coverage": 0.47004279600570614,
+          "cer": {
+            "value": 0.08118361153262518,
+            "reference_characters": 1318,
+            "errors": 107,
+            "substitutions": 50,
+            "deletions": 51,
+            "insertions": 6,
+            "scope": "successful_nonempty_references",
+            "empty_reference_samples": 0,
+            "empty_reference_nonempty_hypotheses": 0
+          },
+          "rtf": 0.7190849045972912,
+          "total_audio_s": 301.779125,
+          "total_inference_wall_s": 217.00481331007904,
+          "mean_process_cpu_percent": 199.77768964254778,
+          "file_processing_s": {
+            "n": 38,
+            "mean": 5.710652981844185,
+            "p50": 5.567589026992209,
+            "p95": 7.103514960996108,
+            "max": 7.509555420023389
+          },
+          "file_rtf": {
+            "n": 38,
+            "mean": 0.7227947247625618,
+            "p50": 0.7134016466383607,
+            "p95": 0.8454406420099565,
+            "max": 0.8658783567643914
+          },
+          "rss_observed_max_mib": 1770.0
+        },
+        "10to15s": {
+          "planned": 17,
+          "successful": 9,
+          "failed": 0,
+          "not_attempted": 8,
+          "interrupted": 0,
+          "complete": false,
+          "reference_character_coverage": 0.5091533180778032,
+          "cer": {
+            "value": 0.10112359550561797,
+            "reference_characters": 445,
+            "errors": 45,
+            "substitutions": 39,
+            "deletions": 1,
+            "insertions": 5,
+            "scope": "successful_nonempty_references",
+            "empty_reference_samples": 0,
+            "empty_reference_nonempty_hypotheses": 0
+          },
+          "rtf": 0.7456639420455592,
+          "total_audio_s": 104.78900000000002,
+          "total_inference_wall_s": 78.13737882301211,
+          "mean_process_cpu_percent": 199.55781008880916,
+          "file_processing_s": {
+            "n": 9,
+            "mean": 8.681930980334679,
+            "p50": 8.418072285014205,
+            "p95": 11.64712608102127,
+            "max": 11.64712608102127
+          },
+          "file_rtf": {
+            "n": 9,
+            "mean": 0.7458965648956709,
+            "p50": 0.7807297632130589,
+            "p95": 0.8773729627887962,
+            "max": 0.8773729627887962
+          },
+          "rss_observed_max_mib": 1770.0
+        },
+        "15to30s": {
+          "planned": 2,
+          "successful": 1,
+          "failed": 0,
+          "not_attempted": 1,
+          "interrupted": 0,
+          "complete": false,
+          "reference_character_coverage": 0.47058823529411764,
+          "cer": {
+            "value": 0.025,
+            "reference_characters": 80,
+            "errors": 2,
+            "substitutions": 2,
+            "deletions": 0,
+            "insertions": 0,
+            "scope": "successful_nonempty_references",
+            "empty_reference_samples": 0,
+            "empty_reference_nonempty_hypotheses": 0
+          },
+          "rtf": 0.7517765261423581,
+          "total_audio_s": 18.36,
+          "total_inference_wall_s": 13.802617019973695,
+          "mean_process_cpu_percent": 195.44446475594094,
+          "file_processing_s": {
+            "n": 1,
+            "mean": 13.802617019973695,
+            "p50": null,
+            "p95": null,
+            "max": 13.802617019973695
+          },
+          "file_rtf": {
+            "n": 1,
+            "mean": 0.7517765261423581,
+            "p50": null,
+            "p95": null,
+            "max": 0.7517765261423581
+          },
+          "rss_observed_max_mib": 1769.5
+        }
+      },
+      "internal_stage_s": {
+        "kv_reset_s": {
+          "n": 48,
+          "mean": 0.007286333354166668,
+          "p50": 0.00702721,
+          "p95": 0.008406147,
+          "max": 0.009204059
+        },
+        "preprocess_s": {
+          "n": 48,
+          "mean": 0.0013431188750000003,
+          "p50": 0.001264493,
+          "p95": 0.001810423,
+          "max": 0.003157768
+        },
+        "audio_and_prefill_s": {
+          "n": 48,
+          "mean": 4.071777050375,
+          "p50": 3.971808838,
+          "p95": 6.08958269,
+          "max": 8.446642378
+        },
+        "token_decode_s": {
+          "n": 48,
+          "mean": 2.330580335479167,
+          "p50": 2.092301698,
+          "p95": 4.090108785999999,
+          "max": 5.494989865000001
+        },
+        "sampling_s": {
+          "n": 48,
+          "mean": 0.024429194604166662,
+          "p50": 0.022246492,
+          "p95": 0.042347307,
+          "max": 0.052552057
+        },
+        "first_generated_token_s": {
+          "n": 48,
+          "mean": 4.081132743375,
+          "p50": 3.981939891,
+          "p95": 6.099238642,
+          "max": 8.458999742
+        }
+      },
+      "gguf_runtime_configuration": {
+        "audio_sample_rate": 16000,
+        "cache_type_k": "f16",
+        "cache_type_v": "f16",
+        "context": 512,
+        "flash_attention_setting": -1,
+        "llama_version": "0.9.0-dev",
+        "n_batch": 512,
+        "n_ubatch": 512,
+        "system_info": "CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | ",
+        "threads": 2,
+        "threads_batch": 2
+      }
+    },
+    {
+      "id": "recovery-gguf-01",
+      "data_path": "results/optimization/opt2/fixed100-baseline-recovery-20261109-01/operational-gguf-01",
+      "effective_status": "completed",
+      "backend": "gguf",
+      "source_commit": "367261542061740f1f315e328ab3e77494d1de6d",
+      "execution_status": "completed",
+      "worker_status": "completed",
+      "guard_exit_code": 0,
+      "control_valid": false,
+      "operational_valid": true,
+      "limits_verified": true,
+      "guard_error": null,
+      "guard_rejection": null,
+      "policy": {
+        "admission_mc": null,
+        "admission_consecutive": 0,
+        "stop_mc": null,
+        "interval_s": 1,
+        "timeout_s": 1800,
+        "address_space_bytes": 4294967296,
+        "scope": "운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
+        "name": "operational",
+        "warn_mc": 80000,
+        "allow_thermal_limits": true,
+        "firmware_thermal_protection": "unchanged",
+        "temperature_admission": "observe_only"
+      },
+      "planned": 100,
+      "scored_record_count": 100,
+      "scored_status_counts": {
+        "success": 100
+      },
+      "complete_100_success": true,
+      "accuracy_quality_gate": true,
+      "all_100_attempts_returned": true,
+      "empty_normalized_outputs": 0,
+      "successful_only_common_metrics": {
+        "planned": 100,
+        "successful": 100,
+        "failed": 0,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": true,
+        "reference_character_coverage": 1.0,
+        "cer": {
+          "value": 0.07666320166320166,
+          "reference_characters": 3848,
+          "errors": 295,
+          "substitutions": 133,
+          "deletions": 147,
+          "insertions": 15,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.6225190275749943,
+        "total_audio_s": 891.1448124999998,
+        "total_inference_wall_s": 554.7546021060006,
+        "mean_process_cpu_percent": 199.5319105355516,
+        "file_processing_s": {
+          "n": 100,
+          "mean": 5.547546021060006,
+          "p50": 5.259032793000017,
+          "p95": 8.069929825000031,
+          "max": 14.363498506999917
+        },
+        "file_rtf": {
+          "n": 100,
+          "mean": 0.6254240169121897,
+          "p50": 0.6263638963256787,
+          "p95": 0.7261240033699919,
+          "max": 0.7561287414665074
+        },
+        "rss_observed_max_mib": 1772.6875
+      },
+      "primary_full100_cer": {
+        "value": 0.07666320166320166,
+        "reference_characters": 3848,
+        "errors": 295,
+        "substitutions": 133,
+        "deletions": 147,
+        "insertions": 15,
+        "scope": "successful_nonempty_references",
+        "empty_reference_samples": 0,
+        "empty_reference_nonempty_hypotheses": 0
+      },
+      "primary_full100_rtf": 0.6225190275749943,
+      "all_attempt_rtf": 0.6225190275749942,
+      "failure_penalized_cer": {
+        "value": 0.07666320166320166,
+        "errors": 295,
+        "reference_characters": 3848,
+        "complete_attempt_coverage": true,
+        "policy": "non_success_empty_hypothesis_including_missing_outputs; incomplete is not a completed ASR accuracy result"
+      },
+      "model_load": {
+        "elapsed_s": 1.4454481600000122,
+        "process_cpu_s": 1.3243175270000003
+      },
+      "first_inference_s": {
+        "n": 1,
+        "mean": 4.9381424219999985,
+        "p50": null,
+        "p95": null,
+        "max": 4.9381424219999985
+      },
+      "warmup_s": {
+        "n": 3,
+        "mean": 4.958223410666676,
+        "p50": 4.956369066999969,
+        "p95": 4.961967167000012,
+        "max": 4.961967167000012
+      },
+      "rss_observed_max_all_phases_mib": 1772.6875,
+      "execution_start_temperature_c": 52.35,
+      "max_observed_temperature_c": 75.45,
+      "admission_sample_count": 0,
+      "thermal_sample_count": 574,
+      "current_limits": [
+        0
+      ],
+      "current_limited_sample_count": 0,
+      "history_limits_before_after": [
+        0,
+        0
+      ],
+      "final_temperature_c": 67.75,
+      "cpu0_freq_khz": {
+        "min": 1900000,
+        "max": 2400000
+      },
+      "fan_rpm": {
+        "min": 2704,
+        "max": 9803,
+        "unusable_uint32_max_count": 0
+      },
+      "thermal_warning_record_count": 0,
+      "native_stderr_nonempty_steady_count": 100,
+      "arm_clock_hz": {
+        "min": 2400017408,
+        "max": 2400037120,
+        "missing_count": 0,
+        "valid_count": 575
+      },
+      "final_worker_active_call": null,
+      "failures": [],
+      "controlled_speed_eligible": false,
+      "longest_input_result": {
+        "source_id": "fleurs-14941719265693149665",
+        "duration_s": 23.04,
+        "status": "success",
+        "elapsed_s": 14.363498506999917,
+        "prompt_positions": 330,
+        "termination": "eog",
+        "returned_token_count": 76
+      },
+      "by_source": {
+        "fleurs_read_speech": {
+          "planned": 40,
+          "successful": 40,
+          "failed": 0,
+          "not_attempted": 0,
+          "interrupted": 0,
+          "complete": true,
+          "reference_character_coverage": 1.0,
+          "cer": {
+            "value": 0.09038461538461538,
+            "reference_characters": 1560,
+            "errors": 141,
+            "substitutions": 45,
+            "deletions": 94,
+            "insertions": 2,
+            "scope": "successful_nonempty_references",
+            "empty_reference_samples": 0,
+            "empty_reference_nonempty_hypotheses": 0
+          },
+          "rtf": 0.5987712509494009,
+          "total_audio_s": 383.4,
+          "total_inference_wall_s": 229.56889761400026,
+          "mean_process_cpu_percent": 199.39936047681914,
+          "file_processing_s": {
+            "n": 40,
+            "mean": 5.739222440350007,
+            "p50": 5.418716965000044,
+            "p95": 8.297114117999968,
+            "max": 14.363498506999917
+          },
+          "file_rtf": {
+            "n": 40,
+            "mean": 0.606236143382594,
+            "p50": 0.5836829447530973,
+            "p95": 0.7120725595238085,
+            "max": 0.7376892007142931
+          },
+          "rss_observed_max_mib": 1772.6875
+        },
+        "zeroth_read_speech": {
+          "planned": 60,
+          "successful": 60,
+          "failed": 0,
+          "not_attempted": 0,
+          "interrupted": 0,
+          "complete": true,
+          "reference_character_coverage": 1.0,
+          "cer": {
+            "value": 0.0673076923076923,
+            "reference_characters": 2288,
+            "errors": 154,
+            "substitutions": 88,
+            "deletions": 53,
+            "insertions": 13,
+            "scope": "successful_nonempty_references",
+            "empty_reference_samples": 0,
+            "empty_reference_nonempty_hypotheses": 0
+          },
+          "rtf": 0.640451062199676,
+          "total_audio_s": 507.7448125,
+          "total_inference_wall_s": 325.1857044920003,
+          "mean_process_cpu_percent": 199.62548590015564,
+          "file_processing_s": {
+            "n": 60,
+            "mean": 5.419761741533338,
+            "p50": 5.14848513000004,
+            "p95": 7.931263695000098,
+            "max": 9.909613162000028
+          },
+          "file_rtf": {
+            "n": 60,
+            "mean": 0.6382159325985867,
+            "p50": 0.6330385675007905,
+            "p95": 0.7261240033699919,
+            "max": 0.7561287414665074
+          },
+          "rss_observed_max_mib": 1772.6875
+        }
+      },
+      "by_length": {
+        "under10s": {
+          "planned": 81,
+          "successful": 81,
+          "failed": 0,
+          "not_attempted": 0,
+          "interrupted": 0,
+          "complete": true,
+          "reference_character_coverage": 1.0,
+          "cer": {
+            "value": 0.07203994293865906,
+            "reference_characters": 2804,
+            "errors": 202,
+            "substitutions": 79,
+            "deletions": 113,
+            "insertions": 10,
+            "scope": "successful_nonempty_references",
+            "empty_reference_samples": 0,
+            "empty_reference_nonempty_hypotheses": 0
+          },
+          "rtf": 0.623319871914569,
+          "total_audio_s": 642.38375,
+          "total_inference_wall_s": 400.4105567700005,
+          "mean_process_cpu_percent": 199.6829073518334,
+          "file_processing_s": {
+            "n": 81,
+            "mean": 4.943340207037043,
+            "p50": 4.9810854349999545,
+            "p95": 6.31041472600009,
+            "max": 7.0611668169999575
+          },
+          "file_rtf": {
+            "n": 81,
+            "mean": 0.625922114966806,
+            "p50": 0.6289650971560323,
+            "p95": 0.7261240033699919,
+            "max": 0.7561287414665074
+          },
+          "rss_observed_max_mib": 1772.6875
+        },
+        "10to15s": {
+          "planned": 17,
+          "successful": 17,
+          "failed": 0,
+          "not_attempted": 0,
+          "interrupted": 0,
+          "complete": true,
+          "reference_character_coverage": 1.0,
+          "cer": {
+            "value": 0.09038901601830664,
+            "reference_characters": 874,
+            "errors": 79,
+            "substitutions": 45,
+            "deletions": 29,
+            "insertions": 5,
+            "scope": "successful_nonempty_references",
+            "empty_reference_samples": 0,
+            "empty_reference_nonempty_hypotheses": 0
+          },
+          "rtf": 0.6188292543784594,
+          "total_audio_s": 207.36106250000003,
+          "total_inference_wall_s": 128.32109169400013,
+          "mean_process_cpu_percent": 199.634563333424,
+          "file_processing_s": {
+            "n": 17,
+            "mean": 7.548299511411773,
+            "p50": 7.61302080400003,
+            "p95": 9.909613162000028,
+            "max": 9.909613162000028
+          },
+          "file_rtf": {
+            "n": 17,
+            "mean": 0.6226028275950898,
+            "p50": 0.6115109193894411,
+            "p95": 0.7464868671939757,
+            "max": 0.7464868671939757
+          },
+          "rss_observed_max_mib": 1772.6875
+        },
+        "15to30s": {
+          "planned": 2,
+          "successful": 2,
+          "failed": 0,
+          "not_attempted": 0,
+          "interrupted": 0,
+          "complete": true,
+          "reference_character_coverage": 1.0,
+          "cer": {
+            "value": 0.08235294117647059,
+            "reference_characters": 170,
+            "errors": 14,
+            "substitutions": 9,
+            "deletions": 5,
+            "insertions": 0,
+            "scope": "successful_nonempty_references",
+            "empty_reference_samples": 0,
+            "empty_reference_nonempty_hypotheses": 0
+          },
+          "rtf": 0.6285737594685978,
+          "total_audio_s": 41.4,
+          "total_inference_wall_s": 26.022953641999948,
+          "mean_process_cpu_percent": 196.702360924108,
+          "file_processing_s": {
+            "n": 2,
+            "mean": 13.011476820999974,
+            "p50": 11.65945513500003,
+            "p95": 14.363498506999917,
+            "max": 14.363498506999917
+          },
+          "file_rtf": {
+            "n": 2,
+            "mean": 0.6292311548955771,
+            "p50": 0.6234157338107603,
+            "p95": 0.6350465759803938,
+            "max": 0.6350465759803938
+          },
+          "rss_observed_max_mib": 1771.6875
+        }
+      },
+      "internal_stage_s": {
+        "kv_reset_s": {
+          "n": 100,
+          "mean": 0.00683904238,
+          "p50": 0.006737923,
+          "p95": 0.007181421,
+          "max": 0.007237679
+        },
+        "preprocess_s": {
+          "n": 100,
+          "mean": 0.00128277195,
+          "p50": 0.001226762,
+          "p95": 0.001938194,
+          "max": 0.002988786
+        },
+        "audio_and_prefill_s": {
+          "n": 100,
+          "mean": 3.426198648509999,
+          "p50": 3.272181919,
+          "p95": 5.04234223,
+          "max": 8.598223453
+        },
+        "token_decode_s": {
+          "n": 100,
+          "mean": 2.0892922100999995,
+          "p50": 1.8580577190000003,
+          "p95": 3.513699790999999,
+          "max": 5.704648067000003
+        },
+        "sampling_s": {
+          "n": 100,
+          "mean": 0.022793835260000006,
+          "p50": 0.021024621,
+          "p95": 0.036782076000000004,
+          "max": 0.04998699299999999
+        },
+        "first_generated_token_s": {
+          "n": 100,
+          "mean": 3.4349810469399995,
+          "p50": 3.280660295,
+          "p95": 5.052042134,
+          "max": 8.608492574
+        }
+      },
+      "gguf_runtime_configuration": {
+        "audio_sample_rate": 16000,
+        "cache_type_k": "f16",
+        "cache_type_v": "f16",
+        "context": 512,
+        "flash_attention_setting": -1,
+        "llama_version": "0.9.0-dev",
+        "n_batch": 512,
+        "n_ubatch": 512,
+        "system_info": "CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | ",
+        "threads": 2,
+        "threads_batch": 2
+      }
+    }
+  ],
+  "paired_comparison": {
+    "improved": 41,
+    "tied": 50,
+    "worsened": 8,
+    "not_both_successful": 1,
+    "normalized_different": 54
+  },
+  "same_successful_subset": {
+    "count": 99,
+    "metrics": {
+      "onnx": {
+        "planned": 99,
+        "successful": 99,
+        "failed": 0,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": true,
+        "reference_character_coverage": 1.0,
+        "cer": {
+          "value": 0.09606173496540713,
+          "reference_characters": 3758,
+          "errors": 361,
+          "substitutions": 202,
+          "deletions": 149,
+          "insertions": 10,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.7483279752927633,
+        "total_audio_s": 868.1048124999999,
+        "total_inference_wall_s": 649.6271166800288,
+        "mean_process_cpu_percent": 195.83078648833586,
+        "file_processing_s": {
+          "n": 99,
+          "mean": 6.561890067475039,
+          "p50": 6.162982459994964,
+          "p95": 11.068424661993049,
+          "max": 16.642332455987344
+        },
+        "file_rtf": {
+          "n": 99,
+          "mean": 0.7401484454689045,
+          "p50": 0.7193477356407066,
+          "p95": 0.9668856549352057,
+          "max": 1.1020718940109253
+        },
+        "rss_observed_max_mib": 2570.375
+      },
+      "gguf": {
+        "planned": 99,
+        "successful": 99,
+        "failed": 0,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": true,
+        "reference_character_coverage": 1.0,
+        "cer": {
+          "value": 0.07530601383714741,
+          "reference_characters": 3758,
+          "errors": 283,
+          "substitutions": 126,
+          "deletions": 142,
+          "insertions": 15,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.6224952284768042,
+        "total_audio_s": 868.1048124999999,
+        "total_inference_wall_s": 540.3911035990006,
+        "mean_process_cpu_percent": 199.57022089880212,
+        "file_processing_s": {
+          "n": 99,
+          "mean": 5.458495995949502,
+          "p50": 5.259032793000017,
+          "p95": 8.069929825000031,
+          "max": 11.65945513500003
+        },
+        "file_rtf": {
+          "n": 99,
+          "mean": 0.625444302600083,
+          "p50": 0.6286022969696962,
+          "p95": 0.7350506878333363,
+          "max": 0.7561287414665074
+        },
+        "rss_observed_max_mib": 1772.6875
+      }
+    },
+    "source_ids_sha256": "a626aabc08c2a22343266928cdec127e934d771511a9b412e730b0f6791d973d",
+    "scope": "supplementary same successful IDs only; not a complete100 benchmark"
+  },
+  "acceptance": {
+    "both_complete_100": false,
+    "gguf_accuracy_accepted_against_onnx": null,
+    "gguf_own_baseline_complete": true,
+    "gguf_extra_errors": null,
+    "observed_rtf_change_fraction": null,
+    "observed_rss_change_fraction": null,
+    "start_temperature_difference_c": 1.6499999999999986,
+    "accuracy_comparison_status": "incomplete_project_reference_or_candidate",
+    "controlled_speed_pair_eligible": false
+  },
+  "unmeasured": {
+    "visible_ttft_s": null,
+    "partial_caption_latency_s": null,
+    "long_run_stability": null
+  },
+  "raw_artifacts": {
+    "base": "results/optimization/opt2/fixed100-baseline-20261109-01",
+    "sha256_ledger": "results/maintenance/fixed100-baseline-20261109-01/rp5/artifact-hashes.json",
+    "verified_file_count": 36,
+    "analysis_sha256": "1944ab8d84b977085a1482b02cde035d1f0bae6f4b67b5953a33d02f164446f3"
+  },
+  "verification": {
+    "artifact_transfer": {
+      "verified_files": 43,
+      "raw_files": 36,
+      "mismatches": 0
+    },
+    "common_rescore_matches_saved_summaries": true,
+    "analysis_host_rp5_byte_identical": true,
+    "analysis_sha256": "1944ab8d84b977085a1482b02cde035d1f0bae6f4b67b5953a33d02f164446f3",
+    "tests": {
+      "host_full": 347,
+      "rp5_full_after_asr": 347,
+      "host_protocol_doc": 6
+    },
+    "preservation": {
+      "host": {
+        "protected_files": 17375,
+        "missing": [],
+        "changed": [],
+        "commit": "ea1ddd2c55518fcf476ece3288f9e9b6b0b11f68"
+      },
+      "rp5": {
+        "protected_files": 14364,
+        "missing": [],
+        "changed": [],
+        "commit": "367261542061740f1f315e328ab3e77494d1de6d"
+      }
+    },
+    "existing_runtime": {
+      "verified_file_count": 9,
+      "files": {
+        "runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/build.json": "76a60f809e3b3bdb89317debf1258e9622ebc6277b29a8895f45f0b0f545f539",
+        "runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c",
+        "runtimes/qwen3-opt/llama-q8-20261109-01/build/CMakeCache.txt": "2d21bf15406912c839456d69ef66f7edcbdfbdc1d3b02d4f5f03b0a09b139b24",
+        "runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+        "runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml-cpu.so": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+        "runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml.so": "9391d0da5efb090d836eb9f1050270045ae9f215ad8e41368a44d9cd73de82c1",
+        "runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libllama-common.so": "61278407f85381989b98522229bb57379af9988b301a704f8c55a6619d14bafd",
+        "runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libllama.so": "3981f9752c48c595e4fd2ef766e70e6051edc6f54e85e4e0044615e0ddba0999",
+        "runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libmtmd.so": "ba8bbb528c24a7cc5721b5cdf520d7ab159f5efb214548628ae5ce240f581296"
+      },
+      "engine_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+      "engine_dirty": false
+    },
+    "unchanged_model_files_after_actual": {
+      "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/conv_frontend.onnx": "d22dc4423e0940e49884e903d2ea2f7e5567c14fc1aed97e4e26d6b8f208ef9e",
+      "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/encoder.int8.onnx": "60748d3e6744a57c9c91e1b17424a6c2990567e8adceb0783940c03ed98fa9d9",
+      "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/decoder.int8.onnx": "4f6885be5959ae26af3089d38ee7972c5fafbeeb1cf8d5e76eab6d8b61ca5771",
+      "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/tokenizer/vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+      "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/tokenizer/merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+      "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/tokenizer/tokenizer_config.json": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c",
+      "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971",
+      "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/build.json": "76a60f809e3b3bdb89317debf1258e9622ebc6277b29a8895f45f0b0f545f539"
+    },
+    "kernel_live_log": {
+      "host_path": "results/maintenance/fixed100-baseline-20261109-01/kernel-live-recovery.log",
+      "sha256": "bb910c6ce23f690ab0a37b7d1a165629cc6961f5d6896513ee857e4d30be4c7b",
+      "scope": "current boot journal streamed during retry; previous boot unavailable"
+    },
+    "source_commits": {
+      "initial_actual": "ea1ddd2c55518fcf476ece3288f9e9b6b0b11f68",
+      "recovery_actual": "367261542061740f1f315e328ab3e77494d1de6d"
+    },
+    "interrupted_raw_unchanged_verified_on_rp5": true
+  }
+}

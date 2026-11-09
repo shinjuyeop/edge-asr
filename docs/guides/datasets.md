@@ -4,7 +4,7 @@
 
 ## 현재 최적화용 고정100개
 
-`data/evaluation/edge100-20261109-01/manifest.jsonl`을 준비했습니다. 공식 Zeroth60개(화자10명×6)와 FLEURS 한국어40개이며 총891.1448125초입니다. 형식은16kHz mono PCM16 WAV, 공통 `ko_cer_v1` 채점이며 낭독·개발 회귀용입니다. 자유발화·잡음·최종 독립 평가를 대신하지 않습니다. ASR 성능은 아직 미측정입니다.
+`data/evaluation/edge100-20261109-01/manifest.jsonl`을 준비했습니다. 공식 Zeroth60개(화자10명×6)와 FLEURS 한국어40개이며 총891.1448125초입니다. 형식은16kHz mono PCM16 WAV, 공통 `ko_cer_v1` 채점이며 낭독·개발 회귀용입니다. 자유발화·잡음·최종 독립 평가를 대신하지 않습니다. ASR 결과는 [고정100개 기준선 보고서](../../results/summaries/optimization/fixed100-baseline-20261109.md)에 기록합니다. 준비 시점의 정적 `statistics.json`과 원본 목록은 수정하지 않습니다.
 
 [출처·선정 규칙·원본 검증·준비/재검증 명령](../research/fixed100.md), [준비 결과](../../results/summaries/optimization/fixed100-preparation-20261109.md)를 따릅니다. 기존 KSS50·FLEURS test100·validation30과 원시 결과는 그대로 보존하며 아래 내용은 이전 KSS 기준선의 재현 안내입니다.
 

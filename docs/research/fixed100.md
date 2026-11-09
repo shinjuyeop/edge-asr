@@ -46,3 +46,5 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv/bin/python \
 ```
 
 최종 폴더에는 `manifest.jsonl`, `selection.json`, `statistics.json`, `provenance.json`, `original/`, `wav/`, 출처 문서·원본 전사 메타데이터가 있습니다. RP5에는 완성된 폴더를 새 경로로 복사한 뒤 같은 검증을 실행합니다. 실제 평가에는 이 manifest를 공통 `evaluate`에 전달하고 기존 시간·주소 공간·온도 기록 정책을 적용합니다. 다운로드·준비 완료만으로 CER·RTF·실시간 성능을 채우지 않습니다.
+
+이번 입력의 실제 초기값과 재부팅 중단·재시도 결과는 [고정100개 기준선 보고서](../../results/summaries/optimization/fixed100-baseline-20261109.md)에 분리해 기록했습니다.
