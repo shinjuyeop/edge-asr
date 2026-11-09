@@ -1,7 +1,6 @@
-# 탐색 실험
+# 실험 자료
 
-모델별 탐색 코드와 출처가 분명한 작은 요약을 보관합니다. 반복 가능한 공통 도구는 검증 후 `src/edge_asr/`로 옮기되 과거 실험 원본은 그대로 유지합니다.
+- [Qwen 최적화](qwen3_optimization/README.md): 새 OPT 연구의 실행·보존 규칙. 재사용 가능한 구현은 `src/edge_asr/tools/optimization/`에 둡니다.
+- [M1 Zipformer 원본](m1_zipformer/README.md): 이전 탐색 프로브·참조 코드·작은 요약·체크섬을 원래 경로에 보존합니다. 초기 원시 로그 3개는 `archive-initial-zipformer-20261028` 태그에 있습니다.
 
-- [m1_zipformer](m1_zipformer/README.md): 기존 RP5 원본 프로브와 동일 WAV 단일 샘플의 1/2/4스레드 각 1회 수치 요약. 초기 원시 로그 3개는 `archive-initial-zipformer-20261028` 태그에 보관합니다.
-
-추가 실행은 `각 실험/runs/<run-id>/`에 기록합니다(Git 제외). 가중치·WAV·가상환경·캐시는 넣지 않습니다. 원시 결과가 작더라도 반복 실험 전체를 무분별하게 커밋하지 않고 검토한 요약을 남깁니다.
+이전 M2/M3의 구현은 `src/edge_asr/legacy/`, 계획은 [보관 문서](../docs/archive/model-comparison/README.md)입니다. 단순히 폴더를 채우려고 미구현 profiler/backend/quantization 스크립트를 만들지 않습니다. 실제 검증한 일회성 코드만 목적과 출처를 적어 추가합니다.

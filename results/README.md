@@ -4,6 +4,8 @@
 
 | 경로 | 내용 |
 | --- | --- |
+| `optimization/<단계>/<실행ID>/` | 새 Qwen OPT 원시 결과 |
+| `summaries/optimization/` | 새 Qwen OPT 검토 요약 |
 | `evaluations/eval-*/` | 공통 batch/paced_stream 평가·원문 가설·이벤트 |
 | `scores/score-*/` | 저장 가설 재채점 |
 | `live/wav-*/`, `live/<실행ID>/` | WAV 자막·stdout·모델/열 계측 |

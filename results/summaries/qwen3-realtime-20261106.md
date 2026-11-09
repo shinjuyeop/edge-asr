@@ -1,6 +1,6 @@
 # Qwen 같은 VAD 구간·Zip 동시 실행 검증
 
-2026-11-06. 실측 소스 `be4a0e6`. [사전 고정 계획](../../docs/research/qwen3_realtime.md)의 원음·vad0·최대 5초·문맥 0·ko_cer_v1을 사용했다. KSS 개발 50개 164.919초와 기존 합성 120.586875초 1개를 분리 평가했다. 두 자료는 독립 평가·자연 대화가 아니다.
+2026-11-06. 실측 소스 `be4a0e6`. [사전 고정 계획](../../docs/archive/model-comparison/qwen3_realtime.md)의 원음·vad0·최대 5초·문맥 0·ko_cer_v1을 사용했다. KSS 개발 50개 164.919초와 기존 합성 120.586875초 1개를 분리 평가했다. 두 자료는 독립 평가·자연 대화가 아니다.
 
 ## 같은 구간의 Offline 평가
 
@@ -59,7 +59,7 @@ Qwen 동시 모델 RSS 합 관측 최대는 2031.8MiB(약 1.98GiB), 선택한 2T
 
 ## 자막 선택 옵션의 실제 확인
 
-비교 소스 `be4a0e6`의 13개 실행이 끝난 뒤, Host에서 테스트한 옵션 소스 `5d0c5b7`을 main에 push하고 RP5를 동기화했다. `live --refine-model qwen3`는 기존 Qwen 자산을 2T로 사용하며 기본 SenseVoice 경로는 유지한다. 준비된 `.venv-qwen3-vad-20261106-01`에서 실행한다. [명령과 제한](../../docs/guides/live_captions.md).
+비교 소스 `be4a0e6`의 13개 실행이 끝난 뒤, Host에서 테스트한 옵션 소스 `5d0c5b7`을 main에 push하고 RP5를 동기화했다. `live --refine-model qwen3`는 기존 Qwen 자산을 2T로 사용하며 기본 SenseVoice 경로는 유지한다. 준비된 `.venv-qwen3-vad-20261106-01`에서 실행한다. [명령과 제한](../../docs/guides/legacy/live_captions.md).
 
 공식 `0.wav` 3.5265초 **단일 입력 1회**를 `results/live/qwen3-wav-20261106-01/`에서 실제 실행했다. 표시 이벤트 9개, Zip 최종 1개·Qwen 보정 후보 1개였으며 입력/보정 드롭·종료 잔량·자동 교체는 모두 0이었다. 표시 원문·이벤트·PCM·native 결과를 재검증했고 Zip 원문은 이전 리팩터링 smoke와 같았다. Qwen 모델 선택과 실제 자식 프로세스 호출도 원시 설정으로 확인했다.
 

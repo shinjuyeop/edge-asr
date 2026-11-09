@@ -35,7 +35,7 @@ PyPI 메타데이터로 후보 의존성 NumPy 1.26.4, sherpa-onnx 1.12.40 및 �
 
 별도 프로세스에서 설치 없는 `scripts/benchmark_zipformer.py` 진입점도 확인했습니다. 임시 모의 NumPy/sherpa-onnx 모듈과 모의 프로브·합성 WAV를 사용하여 환경 검사 → 실행 4회 → JSON/Markdown 요약 생성을 통과했습니다. 실제 모델·ASR 런타임·RP5를 사용한 검증이 아닙니다.
 
-원본 프로브 및 결과 3개의 SHA-256은 초기 기록과 모두 일치합니다. CLI 도움말, Python 구문 검사 및 배포 Bash 구문 검사도 통과했습니다. 실제 RP5의 런타임 import·반복 추론·자원 수집·네트워크 배포는 아직 수행하지 않았습니다. 실행 절차는 [반복 벤치마크 안내](../reference/rp5_repeat_benchmark.md)를 따릅니다.
+원본 프로브 및 결과 3개의 SHA-256은 초기 기록과 모두 일치합니다. CLI 도움말, Python 구문 검사 및 배포 Bash 구문 검사도 통과했습니다. 실제 RP5의 런타임 import·반복 추론·자원 수집·네트워크 배포는 아직 수행하지 않았습니다. 실행 절차는 [반복 벤치마크 안내](model-comparison/rp5_repeat_benchmark.md)를 따릅니다.
 
 ## 2026-10-28 사용자 제공 RP5 반복 요약 수신
 
@@ -163,7 +163,7 @@ Host Linux x86_64 / Python 3.11.14에서 전체 테스트 **83개, 2.852초, 건
 
 ## 2026-10-28 M2-0 / M2-1 Host 구현·검사
 
-`codex/m2-sensevoice-batch`에서 SenseVoiceSmall INT8의 Offline batch 어댑터와 전용 설정, sherpa 네이티브 ORT/Python ORT 구분, 로딩 단계 CPU/RSS 별도 계측, 모델·언어·ITN·양자화·raw/제어 태그 메타데이터를 추가했습니다. 미지원 모드는 설정 검사에서 거부합니다. Linux 기존 PID의 TID별 CPU 관측은 선택 명령으로 제공하며 CPU 324%의 원인은 확정하지 않았습니다. [M2 안내](../research/m2_sensevoice.md)에 비교 계약·외부 시간/메모리 제한·실패 기록과 다음 RP5 실행 순서를 남겼습니다.
+`codex/m2-sensevoice-batch`에서 SenseVoiceSmall INT8의 Offline batch 어댑터와 전용 설정, sherpa 네이티브 ORT/Python ORT 구분, 로딩 단계 CPU/RSS 별도 계측, 모델·언어·ITN·양자화·raw/제어 태그 메타데이터를 추가했습니다. 미지원 모드는 설정 검사에서 거부합니다. Linux 기존 PID의 TID별 CPU 관측은 선택 명령으로 제공하며 CPU 324%의 원인은 확정하지 않았습니다. [M2 안내](model-comparison/m2_sensevoice.md)에 비교 계약·외부 시간/메모리 제한·실패 기록과 다음 RP5 실행 순서를 남겼습니다.
 
 Host Linux x86_64 / Python 3.11.14에서 `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v`로 전체 **101개, 3.160초, 건너뜀 없이 통과**했습니다. 기존 83개에 SenseVoice 10개와 런타임/진단 8개를 추가했습니다. 합성 WAV·가짜 NumPy/sherpa로 factory·인자·새 상태·결과 추출·언어/ITN·태그 분리·잘못된 자산/입력·로딩 실패·CER·재채점·CLI·미지원 모드 사전 거부를 검사했습니다. 스레드 진단 CLI는 Host 테스트 PID만 짧게 읽었습니다.
 

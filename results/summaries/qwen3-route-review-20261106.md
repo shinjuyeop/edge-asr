@@ -1,6 +1,6 @@
 # Qwen3-ASR-0.6B의 RP5 배포 경로 확인
 
-2026-11-06. **sherpa-onnx 2.0.1 CPU + 배포 INT8 ONNX를 첫 검증 경로로 선정했다.** 이번은 배포 검토이며 새 ASR 추론은 0회다. [구현 근거·조건·다음 실행 절차](../../docs/research/qwen3_deployment.md), [기계 판독 요약](qwen3-route-review-20261106.json).
+2026-11-06. **sherpa-onnx 2.0.1 CPU + 배포 INT8 ONNX를 첫 검증 경로로 선정했다.** 이번은 배포 검토이며 새 ASR 추론은 0회다. [구현 근거·조건·다음 실행 절차](../../docs/archive/model-comparison/qwen3_deployment.md), [기계 판독 요약](qwen3-route-review-20261106.json).
 
 ## 확인한 범위
 

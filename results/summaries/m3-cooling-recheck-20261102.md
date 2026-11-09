@@ -35,7 +35,7 @@ RP5 aarch64/Python 3.11.18, NumPy 2.4.6, sherpa/core 2.0.1, Python ORT 1.31.1을
 
 기존 KSS 원본 **50개 해시**, 제공자 `expanded_script`, `ko_cer_v1` 기준 **756자·164.919초**를 확인했다. 3/5/8초 초과 발화는 각각 34/4/0개다. 새 데이터 다운로드나 불확실한 청취 전사의 정답 승격은 없었다.
 
-다음 첫 평가안은 SenseVoice INT8 1T·ko·ITN false·identity PCM에서 완전 발화, 고정 5초 창, bounded VAD 5초 구간을 비교하는 것이다. 문맥은 모두 0, 구간 텍스트를 순서대로 단순 연결하고 중복 제거/금칙어/fallback을 넣지 않는다. 제공자 전사로 전체 CER 차이는 측정할 수 있지만 실제 음소 끝·구간별 정답·마이크 지연은 여전히 미확인이다. 냉각 미통과 상태에서 이 ASR 실험을 실행하지 않았다. [사전 조건·완료 기준](../../docs/research/m3_segmentation_accuracy.md).
+다음 첫 평가안은 SenseVoice INT8 1T·ko·ITN false·identity PCM에서 완전 발화, 고정 5초 창, bounded VAD 5초 구간을 비교하는 것이다. 문맥은 모두 0, 구간 텍스트를 순서대로 단순 연결하고 중복 제거/금칙어/fallback을 넣지 않는다. 제공자 전사로 전체 CER 차이는 측정할 수 있지만 실제 음소 끝·구간별 정답·마이크 지연은 여전히 미확인이다. 냉각 미통과 상태에서 이 ASR 실험을 실행하지 않았다. [사전 조건·완료 기준](../../docs/archive/model-comparison/m3_segmentation_accuracy.md).
 
 ## 검증·보존·다음 조건
 

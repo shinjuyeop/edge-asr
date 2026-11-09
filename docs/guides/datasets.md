@@ -63,6 +63,6 @@ ssh rp5 'cd /home/deepet/projects/edge-asr &&
 
 이때 RP5의 준비 명령은 기존 자료의 해시만 확인하므로 ffmpeg·네트워크를 사용하지 않습니다.
 
-실행 설정은 기존 `configs/zipformer_eval.toml`의 2스레드, 첫 발화로 워밍업 3회, 50개 파일 각 1회입니다. 파일마다 인식 상태를 새로 만들고 모델은 한 번만 로드합니다. CER·batch RTF·CPU/RSS는 전체와 development split으로 집계합니다. 파일 처리 시간 분포는 길이가 다른 50개 발화의 분포이며 같은 발화의 30회 반복이나 스트리밍 지연의 p50/p95가 아닙니다.
+실행 설정은 기존 `configs/legacy/zipformer_eval.toml`의 2스레드, 첫 발화로 워밍업 3회, 50개 파일 각 1회입니다. 파일마다 인식 상태를 새로 만들고 모델은 한 번만 로드합니다. CER·batch RTF·CPU/RSS는 전체와 development split으로 집계합니다. 파일 처리 시간 분포는 길이가 다른 50개 발화의 분포이며 같은 발화의 30회 반복이나 스트리밍 지연의 p50/p95가 아닙니다.
 
 결과 폴더는 `results/evaluations/eval-.../`입니다. manifest `completed`, 성공 50/50, 워밍업 3/3, 실패·미실행 0을 확인하고 Host에서 결과 회수·체크섬 대조·재채점을 수행합니다. 모델·기존 RP5 자산·과거 실험 결과는 변경하지 않습니다.

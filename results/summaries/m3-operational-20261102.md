@@ -47,7 +47,7 @@ sysfs 주파수가 2.4GHz로 남는 동안에도 실제 클럭과 제한 상태�
 - Host **201개(12.829초)**, RP5 **201개(26.284초)** 단위 테스트 통과. 과거 75/80°C 경계와 운영 감속 허용·저전압/결측 거부·제한 미확인 실패·운영/통제 판정 분리를 mock으로 검사한 뒤 실제 ARM64 부하를 별도 실행했다.
 - 원시 **8개**를 RP5와 Host 사이 SHA256으로 확인했다. worker/영수증·호출 ID/순환/음원 길이/시각·경고 로그·해시를 교차 검사했다. 같은 발화의 전사 해시는 모든 반복에서 같았으나 이는 CER 정답 검증이 아니다.
 - 기존 `.venv/models/data/results/experiments` 비 Markdown **4,106개 변경·누락 0**. Python·패키지 버전/경로와 기록한 시스템 설정이 같았고, 같은 부팅에서 guard/worker 종료를 확인했다. 모델·원음·기존 실험 결과·패키지 변경이나 다운로드는 없었다.
-- 원시: 양쪽 `results/preflight/m3-operational-20261102-01/zipformer-t2`. 사전 계획·보존 감사·launcher·테스트·전송 체크섬·분석 소스: 양쪽 `results/maintenance/m3-operational-20261102-01`. [정책·재현 절차](../../docs/research/m3_thermal_policy.md).
+- 원시: 양쪽 `results/preflight/m3-operational-20261102-01/zipformer-t2`. 사전 계획·보존 감사·launcher·테스트·전송 체크섬·분석 소스: 양쪽 `results/maintenance/m3-operational-20261102-01`. [정책·재현 절차](../../docs/archive/model-comparison/m3_thermal_policy.md).
 
 직전 검사와는 중단 정책·폴링 간격·실제 클럭 조회·호출 시각 필드·소스 리비전이 다르다. 과거 검사보다 오래 실행됐다는 사실을 속도 개선이나 같은 조건의 모델 우열로 해석하지 않는다.
 

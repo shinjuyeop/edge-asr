@@ -4,7 +4,7 @@
 
 ## 고정 조건
 
-소스 `3e39cfd`. [사전 계획](../../docs/research/m3_vad_context.md)에 따라 자료별 full → VAD0 → VAD200 순서로 각 1회 실행했다. SenseVoice 배포 INT8 1T·`ko`·ITN false·기존 태그 분리·identity·`ko_cer_v1`·기존 VAD 임계값을 유지했다. sherpa/core 2.0.1의 네이티브 ORT 1.28.2와 bounded VAD의 Python ORT 1.31.1을 구분했다.
+소스 `3e39cfd`. [사전 계획](../../docs/archive/model-comparison/m3_vad_context.md)에 따라 자료별 full → VAD0 → VAD200 순서로 각 1회 실행했다. SenseVoice 배포 INT8 1T·`ko`·ITN false·기존 태그 분리·identity·`ko_cer_v1`·기존 VAD 임계값을 유지했다. sherpa/core 2.0.1의 네이티브 ORT 1.28.2와 bounded VAD의 Python ORT 1.31.1을 구분했다.
 
 기존 `SegmentPipeline(context_frames=3200)`을 재사용했다. 공통 분할기·어댑터·모델 가중치는 변경하지 않았다. 소유 범위/순서는 문맥 0과 200ms에서 53개 입력 모두 같았다. 소유 구간은 최대 5초, 실제 과거 원음을 포함한 payload는 최대 5.2초다. 첫 구간의 시작 여유와 후속 구간의 문맥이 같은 정책에 들어 있으므로 두 효과를 독립적으로 입증했다고 부르지 않는다.
 

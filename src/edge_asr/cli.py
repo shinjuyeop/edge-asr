@@ -35,7 +35,7 @@ def environment_info(*, probe_runtime=False) -> dict:
 def main(argv: list[str] | None = None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
     if argv[:1] == ["live"]:
-        from edge_asr.tools.live import main as live_main
+        from edge_asr.legacy.tools.live import main as live_main
 
         return live_main(argv[1:])
     if argv[:1] == ["tools"]:
@@ -66,7 +66,7 @@ def main(argv: list[str] | None = None) -> int:
     check.add_argument("path", help="설정 파일 경로")
     check.add_argument("--evaluation", action="store_true", help="공통 파일 평가용 설정 검사")
     evaluate = commands.add_parser("evaluate", help="여러 WAV의 batch 또는 1배속 paced_stream 평가")
-    evaluate.add_argument("--config", type=Path, default=Path("configs/zipformer_eval.toml"))
+    evaluate.add_argument("--config", type=Path, default=Path("configs/legacy/zipformer_eval.toml"))
     evaluate.add_argument("--manifest", type=Path, required=True, help="오디오·정답 JSONL 목록")
     evaluate.add_argument(
         "--root", type=Path, default=Path.cwd(), help="상대 경로 기준, 기본 작업 폴더"

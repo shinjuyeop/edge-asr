@@ -41,7 +41,7 @@ ASR 로딩은 조건별 1.867/1.869/1.847초, VAD 추가 로딩은 0.088초다. 
 - **Host 209개 / RP5 209개 테스트 통과**(13.736/28.798초). 모델 없는 경계/PCM·빈 검출 삭제 채점·실패 보존·모델 재사용·워밍업·VAD reset·재채점·손상 거부 검사와 실제 ARM64 추론을 구분했다.
 - 원시 **33개**를 RP5↔Host SHA256으로 확인했다. 세 조건의 원음/정답/PCM/구간 payload·전사 태그 정리·공통 CER·모든 상태를 교차 검사했다. Host에서 원시 predictions만으로 재채점한 summary와 scores가 모두 일치했다.
 - 기존 `.venv/models/data/results/experiments` 비 Markdown **4,128개 변경·누락 0**, Python/패키지/기록한 시스템 설정 불변을 확인했다. 같은 부팅에서 coordinator·guard·worker 종료를 확인했다. 새 가중치/패키지 다운로드·환경 변경은 없다.
-- 원시: 양쪽 `results/preflight/m3-segmented-accuracy-20261102-01`. 고정 계획·보존 감사·실행 순서/명령/PID·테스트·전송 체크섬·분석 소스와 Host 재채점: `results/maintenance/m3-segmented-accuracy-20261102-01`. [실행·재채점 명령](../../docs/research/m3_segmentation_accuracy.md).
+- 원시: 양쪽 `results/preflight/m3-segmented-accuracy-20261102-01`. 고정 계획·보존 감사·실행 순서/명령/PID·테스트·전송 체크섬·분석 소스와 Host 재채점: `results/maintenance/m3-segmented-accuracy-20261102-01`. [실행·재채점 명령](../../docs/archive/model-comparison/m3_segmentation_accuracy.md).
 
 ## 다음 판단
 

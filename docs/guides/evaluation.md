@@ -2,7 +2,7 @@
 
 모델을 한 번 로드하고 여러 WAV를 순차 처리하여 CER·batch RTF·추론 구간 CPU/RSS를 기록합니다. 입력·채점·실행·저장은 공통이며 모델 호출은 `adapters/zipformer.py`, `adapters/sensevoice.py`로 분리했습니다. 저장된 가설은 모델·오디오 없이 재채점할 수 있습니다.
 
-기본은 CPU Zipformer의 batch 평가입니다. 온라인 모델에 전체 PCM을 대기 없이 전달하고 파일마다 새 스트림을 생성·flush합니다. `configs/sensevoice_eval.toml`과 `configs/qwen3_eval.toml`은 각각 SenseVoiceSmall·Qwen3-ASR INT8 Offline batch 설정이며, `configs/zipformer_paced.toml`은 [1배속 스트리밍 모사](streaming_evaluation.md) 설정입니다. Qwen은 [별도 환경](setup.md)과 [확인한 자산·입력 예산](../research/qwen3_batch.md)이 필요합니다. 모델별 기존 측정은 [결과 색인](../../results/summaries/README.md), 현재 구현 상태는 [프로젝트 상태](../status.md)에서 확인합니다.
+기본은 CPU Zipformer의 batch 평가입니다. 온라인 모델에 전체 PCM을 대기 없이 전달하고 파일마다 새 스트림을 생성·flush합니다. `configs/legacy/sensevoice_eval.toml`과 `configs/legacy/qwen3_eval.toml`은 각각 SenseVoiceSmall·Qwen3-ASR INT8 Offline batch 설정이며, `configs/legacy/zipformer_paced.toml`은 [1배속 스트리밍 모사](legacy/streaming_evaluation.md) 설정입니다. Qwen은 [별도 환경](setup.md)과 [확인한 자산·입력 예산](../archive/model-comparison/qwen3_batch.md)이 필요합니다. 모델별 기존 측정은 [결과 색인](../../results/summaries/README.md), 현재 구현 상태는 [프로젝트 상태](../status.md)에서 확인합니다.
 
 ## RP5 시작
 
@@ -11,7 +11,7 @@
 ```bash
 cd /home/deepet/projects/edge-asr &&
 git pull --ff-only origin main &&
-.venv/bin/python scripts/edge_asr.py check-config --evaluation configs/zipformer_eval.toml
+.venv/bin/python scripts/edge_asr.py check-config --evaluation configs/legacy/zipformer_eval.toml
 ```
 
 `scripts/edge_asr.py`는 현재 `src`를 사용합니다. 설치한 환경에서는 `edge-asr evaluate`, `edge-asr score`도 같은 기능을 제공합니다.
@@ -42,7 +42,7 @@ git pull --ff-only origin main &&
 
 ```bash
 .venv/bin/python scripts/edge_asr.py evaluate \
-  --config configs/zipformer_eval.toml \
+  --config configs/legacy/zipformer_eval.toml \
   --manifest data/evaluation/manifest.jsonl
 ```
 
@@ -62,7 +62,7 @@ git pull --ff-only origin main &&
 
 입력 목록의 오류·중복 ID는 모델 로딩 전에 거부합니다. WAV 누락·형식 오류·파일 추론 실패는 해당 파일을 기록하고 다음 파일을 계속 처리합니다. 워밍업 추론 실패는 남은 평가를 중단합니다. Ctrl-C에서는 완료 결과와 중단·미실행을 저장합니다. 종료 코드는 성공 0, 파일/워밍업 실패 1, 설정·목록·모델 준비 오류 2, 사용자 중단 130입니다. 요약 존재만으로 성공을 판단하지 말고 manifest와 성공/계획 수를 확인합니다.
 
-[공통 측정 계약](../reference/benchmark_design.md)은 batch와 Streaming/Refine 범위를 구분합니다. paced_stream은 [별도 계약](streaming_evaluation.md)에 따라 대기 제외 처리 시간과 대기 포함 replay·큐 지표를 분리합니다. 실행기 내부의 네이티브 충돌·OOM 강제 종료·하드 타임아웃 격리는 구현하지 않았습니다. RP5 실측 전 [외부 시간 제한·실패 기록 절차](../research/m2_sensevoice.md#외부-시간-제한과-실패-기록)를 적용합니다. 강제 종료에서는 마지막 `progress.jsonl`까지만 남고 manifest가 `running`일 수 있으며 이를 완료로 표시하지 않습니다.
+[공통 측정 계약](../reference/benchmark_design.md)은 batch와 Streaming/Refine 범위를 구분합니다. paced_stream은 [별도 계약](legacy/streaming_evaluation.md)에 따라 대기 제외 처리 시간과 대기 포함 replay·큐 지표를 분리합니다. 실행기 내부의 네이티브 충돌·OOM 강제 종료·하드 타임아웃 격리는 구현하지 않았습니다. RP5 실측 전 [외부 시간 제한·실패 기록 절차](../archive/model-comparison/m2_sensevoice.md#외부-시간-제한과-실패-기록)를 적용합니다. 강제 종료에서는 마지막 `progress.jsonl`까지만 남고 manifest가 `running`일 수 있으며 이를 완료로 표시하지 않습니다.
 
 ## 재채점
 

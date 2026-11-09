@@ -17,7 +17,7 @@ python -m pip install -e .
 python -m pip check
 python -m unittest discover -s tests -v
 edge-asr env
-edge-asr check-config --evaluation configs/zipformer_eval.toml
+edge-asr check-config --evaluation configs/legacy/zipformer_eval.toml
 ```
 
 필수 런타임은 표준 라이브러리뿐입니다. Python 3.11의 `tomllib`을 사용합니다. Python 패키지와 선택 의존성은 `pyproject.toml`에서 관리합니다. `.venv/`와 빌드 결과는 Git에 포함하지 않습니다.
@@ -57,17 +57,17 @@ PyPI 배포 메타데이터에서도 [NumPy 2.4.6](https://pypi.org/project/nump
 
 SenseVoiceSmall INT8은 같은 sherpa CPU 런타임을 사용하며 새 후보 환경용 `.[sensevoice]` 선택 의존성을 추가했습니다. [M2-2 실제 RP5 검증](../../results/summaries/sensevoice-kss-dev50-20261028.md)에서는 기존 `.venv`·설치 패키지를 바꾸지 않고 새 모델 폴더만 추가했습니다. 새 장비·런타임·모델 조합은 별도로 확인해야 합니다. 기본 설치에 PyTorch 등 무거운 패키지를 강제하지 않습니다.
 
-Qwen3-ASR은 [sherpa CPU·INT8 ONNX 경로](../research/qwen3_deployment.md)를 선정하고, 2026-11-06 RP5의 별도 `.venv-qwen3-onnx-20261106-01`에서 실제 설치·로딩·전사를 확인했습니다. Python 3.11.18 / NumPy 2.4.6 / sherpa-onnx·core 2.0.1 / native ORT 1.28.2를 사용합니다. 별도 Python onnxruntime 패키지는 설치하지 않았습니다. 기본 Python 3.13이나 기존 `.venv`는 변경하지 않았습니다.
+Qwen3-ASR은 [sherpa CPU·INT8 ONNX 경로](../archive/model-comparison/qwen3_deployment.md)를 선정하고, 2026-11-06 RP5의 별도 `.venv-qwen3-onnx-20261106-01`에서 실제 설치·로딩·전사를 확인했습니다. Python 3.11.18 / NumPy 2.4.6 / sherpa-onnx·core 2.0.1 / native ORT 1.28.2를 사용합니다. 별도 Python onnxruntime 패키지는 설치하지 않았습니다. 기본 Python 3.13이나 기존 `.venv`는 변경하지 않았습니다.
 
-새 환경용 선택 의존성은 `.[qwen3]`입니다. 이미 준비된 위 환경에는 재설치하지 않고 `scripts/edge_asr.py`로 실행합니다. 모델은 `models/qwen3-20261106-01/` 아래 별도로 보관합니다. 어댑터는 확인한 모델·토크나이저 6개 파일의 SHA-256과 sherpa 2.0.1에 한정하며 다른 변환본은 거부합니다. 다운로드·wheel 해시·설치 로그·전체 freeze는 로컬 `results/maintenance/qwen3-20261106-01/`에 보존했습니다. [입력 예산·실측 절차](../research/qwen3_batch.md)를 확인하세요.
+새 환경용 선택 의존성은 `.[qwen3]`입니다. 이미 준비된 위 환경에는 재설치하지 않고 `scripts/edge_asr.py`로 실행합니다. 모델은 `models/qwen3-20261106-01/` 아래 별도로 보관합니다. 어댑터는 확인한 모델·토크나이저 6개 파일의 SHA-256과 sherpa 2.0.1에 한정하며 다른 변환본은 거부합니다. 다운로드·wheel 해시·설치 로그·전체 freeze는 로컬 `results/maintenance/qwen3-20261106-01/`에 보존했습니다. [입력 예산·실측 절차](../archive/model-comparison/qwen3_batch.md)를 확인하세요.
 
 ```bash
 # RP5의 준비된 Qwen 환경. 설정 검사에는 추론이 없음.
 .venv-qwen3-onnx-20261106-01/bin/python scripts/edge_asr.py check-config \
-  --evaluation configs/qwen3_eval.toml
+  --evaluation configs/legacy/qwen3_eval.toml
 ```
 
-Qwen과 온라인 VAD를 함께 사용하는 별도 환경은 `.venv-qwen3-vad-20261106-01`이다. 위 batch 환경을 수정하지 않고 새로 만들었다. 같은 Python·NumPy·sherpa/native ORT에 Python onnxruntime 1.31.1을 추가했으며, 전이 의존성을 포함한 wheel 8개의 SHA-256 lock으로 설치하고 `pip check`를 통과했다. 설치 로그·wheel·lock·freeze는 `results/maintenance/qwen3-realtime-20261106-01/`에 보존한다. sherpa 내부 ORT 1.28.2와 Python VAD용 ORT 1.31.1은 별도 런타임이다. 새 장비에서 설치할 때의 선택 의존성 조합은 `.[qwen3,vad-probability]`이며, 이미 준비된 환경에는 재설치하지 않는다. [동시 실행 조건](../research/qwen3_realtime.md), [자막 모델 선택](live_captions.md).
+Qwen과 온라인 VAD를 함께 사용하는 별도 환경은 `.venv-qwen3-vad-20261106-01`이다. 위 batch 환경을 수정하지 않고 새로 만들었다. 같은 Python·NumPy·sherpa/native ORT에 Python onnxruntime 1.31.1을 추가했으며, 전이 의존성을 포함한 wheel 8개의 SHA-256 lock으로 설치하고 `pip check`를 통과했다. 설치 로그·wheel·lock·freeze는 `results/maintenance/qwen3-realtime-20261106-01/`에 보존한다. sherpa 내부 ORT 1.28.2와 Python VAD용 ORT 1.31.1은 별도 런타임이다. 새 장비에서 설치할 때의 선택 의존성 조합은 `.[qwen3,vad-probability]`이며, 이미 준비된 환경에는 재설치하지 않는다. [동시 실행 조건](../archive/model-comparison/qwen3_realtime.md), [자막 모델 선택](legacy/live_captions.md).
 
 ## 자산 및 환경 기록
 

@@ -6,10 +6,10 @@
 | --- | --- |
 | 오디오·정답 목록 | [manifest 명세](manifest.md), [데이터 준비](../docs/guides/datasets.md) |
 | batch 평가·저장 가설 재채점 | [공통 평가](../docs/guides/evaluation.md) |
-| 1배속 평가·큐·지연 | [paced_stream](../docs/guides/streaming_evaluation.md) |
-| 실제 자막 실행 | [WAV MVP](../docs/guides/live_captions.md) |
+| 1배속 평가·큐·지연 | [paced_stream](../docs/guides/legacy/streaming_evaluation.md) |
+| 실제 자막 실행 | [WAV MVP](../docs/guides/legacy/live_captions.md) |
 | CER/RTF/CPU/RSS의 범위 | [측정 계약](../docs/reference/benchmark_design.md) |
-| M1 단일 샘플 반복 재현 | [기존 프로브](../experiments/m1_zipformer/README.md), [반복 도구](../docs/reference/rp5_repeat_benchmark.md) |
+| M1 단일 샘플 반복 재현 | [기존 프로브](../experiments/m1_zipformer/README.md), [반복 도구](../docs/archive/model-comparison/rp5_repeat_benchmark.md) |
 | 완료한 측정과 한계 | [검증 기록](../results/summaries/README.md) |
 
 새 공통 평가의 원시는 `results/`에, M1 반복 프로브는 `benchmarks/runs/`에 저장한다. 모두 Git 제외이며 [결과 보관 정책](../results/README.md)을 따른다.

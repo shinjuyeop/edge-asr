@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "edge-asr"
 version = "0.1.0"
-description = "Raspberry Pi 5 한국어 ASR 비교 및 실시간 배포 연구"
+description = "Qwen3-ASR 기반 ARM64 Edge 한국어 음성 인식 지연 최적화"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = []

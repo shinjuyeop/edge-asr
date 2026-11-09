@@ -70,3 +70,12 @@ cache/
 
 # RP5 단일 작업 폴더 통합 시 원본·Git 메타데이터·과거 실행 보관
 /.local-backups/
+
+# 새 OPT 검토 요약만 허용; 원시·타임라인과 엔진 빌드는 제외
+!/results/summaries/optimization/
+/results/summaries/optimization/*
+!/results/summaries/optimization/*.md
+!/results/summaries/optimization/*.json
+!/results/summaries/optimization/*.csv
+/runtimes/*
+!/runtimes/README.md

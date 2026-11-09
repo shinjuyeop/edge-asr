@@ -32,4 +32,4 @@ Zipformer는 부하 전 표본으로부터 약 14.09초 후 중단 기준 위의
 
 RP5 `192.168.1.32:22`는 이번에 timeout/`No route to host`로 접속하지 못했다. 새 모델 실행·벤치마크·센서 조회·pull 성공 기록은 없다. Host main commit/push 이후 RP5의 main 동기화는 별도로 필요하다.
 
-연결 복구 후에는 [검증 절차](../../docs/research/m3_bounded_vad.md)에 따라 기존 환경/자산 보존 확인 → 읽기 전용 냉각 조회 → 기존 80개 개발 입력의 bounded VAD 실제 실행 → native 대비 경계/PCM/실패 대조 → 실제 30초 초과 활성과 RSS 확인 순서로 진행한다. 18개 보류 표본은 실행하지 않는다. Python ORT와 native ORT 동등성, 실제 단어/음소 보존, 마이크·드롭/백로그·Hybrid 동시 성능은 미검증이다. 사람 판단이 불확실한 라벨은 계속 보류한다.
+연결 복구 후에는 [검증 절차](../../docs/archive/model-comparison/m3_bounded_vad.md)에 따라 기존 환경/자산 보존 확인 → 읽기 전용 냉각 조회 → 기존 80개 개발 입력의 bounded VAD 실제 실행 → native 대비 경계/PCM/실패 대조 → 실제 30초 초과 활성과 RSS 확인 순서로 진행한다. 18개 보류 표본은 실행하지 않는다. Python ORT와 native ORT 동등성, 실제 단어/음소 보존, 마이크·드롭/백로그·Hybrid 동시 성능은 미검증이다. 사람 판단이 불확실한 라벨은 계속 보류한다.
