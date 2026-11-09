@@ -4,7 +4,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, call, patch
 
 from edge_asr import thermal
 from edge_asr.thermal import policy_settings, rejection, temperature_warning
@@ -140,6 +140,7 @@ class ThermalPolicyTests(unittest.TestCase):
                 (2101, "operational"),
                 (True, "operational"),
                 (900, "legacy75"),
+                (1801, "warn75-stop80"),
             ):
                 with self.assertRaises(ValueError):
                     guard.run(
@@ -173,6 +174,40 @@ class ThermalPolicyTests(unittest.TestCase):
                     ],
                     seconds,
                 )
+
+    def test_extended_control_run_keeps_temperature_stop_and_measures_actual_clock(self):
+        hot = {**COOL, "temperature_mc": 80000, "arm_clock_hz": 1500000000}
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            child = Mock()
+            child.poll.return_value = None
+            child.wait.return_value = 0
+            with (
+                patch.object(guard, "admit", return_value=COOL),
+                patch.object(guard, "sample", side_effect=[hot, hot]) as samples,
+                patch.object(guard.subprocess, "Popen", return_value=child) as launch,
+                patch.object(guard, "terminate") as stop,
+            ):
+                self.assertEqual(
+                    guard.run(
+                        root,
+                        root / "controlled",
+                        ["fixture"],
+                        temperature_policy="warn75-stop80",
+                        timeout_s=1800,
+                    ),
+                    1,
+                )
+            self.assertIn("1800s", launch.call_args.args[0])
+            self.assertIn("--as=4294967296", launch.call_args.args[0])
+            self.assertTrue(stop.called)
+            self.assertEqual(samples.call_args_list, [call(measure_arm_clock=True)] * 2)
+            receipt = json.loads((root / "controlled/execution.json").read_text())
+            self.assertEqual(receipt["status"], "control_rejected")
+            self.assertEqual(receipt["rejection"], "temperature_limit")
+            self.assertFalse(receipt["control_valid"])
+            self.assertEqual(receipt["policy"]["warn_mc"], 75000)
+            self.assertEqual(receipt["policy"]["stop_mc"], 80000)
 
     def setUp(self):
         self.git = patch.object(guard.subprocess, "check_output", return_value="fixture\n")

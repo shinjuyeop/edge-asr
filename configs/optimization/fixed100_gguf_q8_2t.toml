@@ -1,0 +1,21 @@
+# 고정100개 기준선. 모델/디코딩은 기존2T 설정 그대로이며 새 실행 ID를 사용한다.
+# OPT-2 초기 CPU 구성: text Q8_0 + audio mmproj Q8_0. ONNX INT8과 구성 전체를 비교한다.
+[model]
+family = "qwen3_gguf"
+path = "models/qwen3-opt/gguf-q8-20261109-01"
+runtime_library = "runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so"
+runtime_manifest = "runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/build.json"
+num_threads = 2
+language = "ko"
+quantization = "q8_0"
+max_total_len = 512
+max_new_tokens = 128
+
+[audio]
+sample_rate_hz = 16000
+
+[evaluation]
+mode = "batch"
+warmup_runs = 3
+normalization = "ko_cer_v1"
+output_dir = "results/optimization/opt2"

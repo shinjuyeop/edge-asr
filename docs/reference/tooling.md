@@ -48,3 +48,5 @@
 옛 `scripts/*.py` 명령은 [과거 명령 이행표](../archive/command_migration.md)에 모았다. 별칭은 유지하지만 새 문서는 현재 명령을 사용한다. 과거 원시/영수증의 명령이나 소스 해시를 현재 경로로 소급 변경하지 않는다.
 
 사용자가 온도 대기 없이 운영 검사를 선택한 경우 `thermal-run --temperature-policy operational --skip-temperature-admission`을 명시합니다. 시작 온도는 관측만 하고 온도/열 감속으로 중단하지 않으며, 기본 펌웨어 보호·전압/필수 센서·외부 시간·메모리 제한은 적용합니다. 기존 기본 정책은 유지합니다. [실험 조건 변경 기록](../research/opt0_pilot.md#프로토콜-수정-v3--사용자-지정-운영-조건).
+
+새100개 비교에서는 명시적 `warn75-stop80 --timeout-s 1800`도 지원합니다. 기존 시작53°C·75°C 경고·80°C/현재 제한/결측 중단은 유지하고 실제 ARM 클럭을 monitor/after에 기록합니다. legacy 기본600초와 운영 최대2100초는 그대로입니다. [실행 순서·열 조건 실패 시 별도 운영 측정](../research/fixed100_baseline.md)을 따릅니다.

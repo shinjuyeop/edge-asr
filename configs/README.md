@@ -5,6 +5,7 @@
 | [optimization/qwen3_onnx_int8.toml](optimization/qwen3_onnx_int8.toml) | Qwen 최적화 시작 설정. 기존 1T ONNX 정책·모델 재사용, 출력 경로 분리; 기준선 확정 전 |
 | [optimization/opt0_onnx_2t.toml](optimization/opt0_onnx_2t.toml) | OPT-0 소규모 실측의 2T 고정 설정. [프로토콜](../docs/research/opt0_pilot.md) |
 | [optimization/opt2_gguf_q8_2t.toml](optimization/opt2_gguf_q8_2t.toml) | 별도 llama.cpp/libmtmd CPU·text/mmproj Q8_0·2T. [비교 계약](../docs/research/opt2_gguf.md) |
+| [optimization/fixed100_onnx_2t.toml](optimization/fixed100_onnx_2t.toml), [optimization/fixed100_gguf_q8_2t.toml](optimization/fixed100_gguf_q8_2t.toml) | [새100개 출발 기준선](../docs/research/fixed100_baseline.md). 기존2T의 model/audio/디코딩·워밍업 정책 유지, 출력 경로 분리 |
 | [legacy/](legacy/README.md) | 기존 세 모델 batch·Zip 1배속·M1 설정 원본 |
 | `eval_manifest.example.jsonl` | 공통 평가 manifest 형식 예시 |
 

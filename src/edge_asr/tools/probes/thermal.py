@@ -64,8 +64,10 @@ def run(
 ):
     if type(timeout_s) is not int or not 1 <= timeout_s <= 2100:
         raise ValueError("외부 제한은 정수 1~2100초여야 합니다.")
-    if timeout_s > 600 and temperature_policy != "operational":
-        raise ValueError("600초 초과 실행은 명시적인 운영 검사에서만 지원합니다.")
+    if timeout_s > 600 and temperature_policy not in ("operational", "warn75-stop80"):
+        raise ValueError("600초 초과 실행은 명시적인 운영/75경고80중단 검사에서만 지원합니다.")
+    if temperature_policy == "warn75-stop80" and timeout_s > 1800:
+        raise ValueError("75경고80중단 검사의 시간 상한은1800초입니다.")
     if type(admission_mc) is not int or admission_mc not in (53000, 60000):
         raise ValueError("시작 상한은 53000 또는 60000m°C여야 합니다.")
     if admission_mc != 53000 and temperature_policy != "operational":
@@ -206,7 +208,11 @@ def run(
                 while process.poll() is None:
                     if forward_failed.is_set():
                         raise RuntimeError("console_forward_failed: " + forward_error[0])
-                    row = sample(measure_arm_clock=True) if operational else sample()
+                    row = (
+                        sample(measure_arm_clock=True)
+                        if temperature_policy != "legacy75"
+                        else sample()
+                    )
                     monitor.write(json.dumps(row) + "\n")
                     monitor.flush()
                     warn(row, "monitor")
@@ -254,7 +260,7 @@ def run(
                     process.stdout.close()
                     if forward_failed.is_set():
                         raise RuntimeError("console_forward_failed: " + forward_error[0])
-            after = sample(measure_arm_clock=True) if operational else sample()
+            after = sample(measure_arm_clock=True) if temperature_policy != "legacy75" else sample()
             warn(after, "after")
         reason = reason or reject(after)
         record["after"] = after
@@ -294,7 +300,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument(
-        "--timeout-s", type=int, default=600, help="외부 제한; 기본600초, 운영 검사 최대2100초"
+        "--timeout-s",
+        type=int,
+        default=600,
+        help="외부 제한; 기본600초, warn75-stop80 최대1800초, 운영 검사 최대2100초",
     )
     parser.add_argument(
         "--admission-temperature-c",

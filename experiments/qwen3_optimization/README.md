@@ -9,3 +9,5 @@
 첫 입력 준비는 `prepare_opt0.py`로 수행합니다. KSS 길이 표본과 기존 오류 PCM을 해시로 검증하고 새 경로에만 기록합니다. [실행 프로토콜](../../docs/research/opt0_pilot.md).
 
 새100개는 `prepare_fixed100.py`로 공식 Zeroth/FLEURS 원본에서 고정 선정합니다. [출처·할당량·원본 검증·준비 명령](../../docs/research/fixed100.md)을 따릅니다. 다운로드와 PCM 준비는 ASR 실측과 구분합니다.
+
+같은100개의 실행 순서는 `prepare_baseline100.py`가 원본을 보존하고 새 결과 경로에 해시 셔플로 준비합니다. `PYTHONPATH=src:.`와 `--output <새경로>`를 사용합니다. [출발 기준선·정확도/열 판정](../../docs/research/fixed100_baseline.md).

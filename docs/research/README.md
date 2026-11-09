@@ -11,3 +11,5 @@ OPT-1 계측 범위와 on/off 비교는 [호출 경계 계측 계획](opt1_profi
 OPT-2 첫 엔진+자산 구성 비교는 [GGUF Q8_0 프로토콜](opt2_gguf.md)에 모델·빌드·입력·판정 기준을 고정합니다.
 
 이후 기본 입력은 [고정100개](fixed100.md)입니다. Zeroth60·FLEURS40 원본 준비·선정·Host/RP5 검증을 ASR 실측과 구분합니다.
+
+새100개의 실제 초기값은 [ONNX 출발 기준선·GGUF 비교 프로토콜](fixed100_baseline.md)을 따릅니다. 양자화된 기존 ONNX 구성을 출발 참조로 유지하고 이후 GGUF 최적화는 같은 입력의 GGUF2T와 비교합니다.
