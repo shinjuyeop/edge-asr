@@ -10,7 +10,7 @@
 | 공통 평가 기반 | `ko_cer_v1`, 입력/모델 해시, 실패 보존, 재채점, CPU/RSS·열 계측 구현 |
 | 이전 Zip+VAD+Refine | `legacy/`로 분리. WAV 자막 유지, 자동 교체 보류 |
 | OPT-0 | 첫 소규모 단독 운영 기준선·56ms 재현 완료. 전체 평가 확장·독립 반복은 후속 |
-| OPT-1 | 전처리/encoder/prefill/decode 분리 프로파일링 미구현 |
+| OPT-1 | Python·ORT 호출 경계 계측 완료. 실제 TTFT·operator별·단독 KV 비용은 미계측 |
 | OPT-2 | llama.cpp/GGUF 어댑터·별도 빌드·동일 조건 실측 미완료 |
 | OPT-3 | Qwen 단독 연속 입력·발화 중 부분 자막 미구현 |
 | OPT-4 | 새 독립 평가·최종 장시간 운영 검증 미완료 |
@@ -35,11 +35,19 @@
 
 초기 열 중단과 냉각 대기 후 사용자가 온도와 무관하게 진행하도록 요청했습니다. 최종 측정은 명시적 `operational --skip-temperature-admission`입니다. 최고 온도는 기준선 81.5°C·진단 82.05°C, 관측 현재 제한 플래그는 0입니다. 열 상태를 고정한 통제 실험과 구분하고 이후 실행도 실제 온도·클럭/감속을 결과에 기록합니다. Host/RP5 각 328개 테스트와 공통 재채점·원시 전송 대조를 통과했습니다.
 
+## OPT-1 첫 결과 — 2026-11-09
+
+[기존 ONNX 호출 경계 실측](../results/summaries/optimization/opt1-profile-20261109.md)을 완료했습니다. 기존 wheel을 수정하지 않고 별도 C API 계측 라이브러리를 사용했습니다. 고정 KSS 6개에서 계측 on 12호출의 내부 전사 시간은 token decode 53.26%, prefill 18.05%, Conv 13.85%, Encoder 9.37%, 입력/특징 호출 4.41%였습니다. native decode_stream의 ONNX Run 바깥 비용은 약 1.03%이며 이를 KV 갱신만의 시간으로 해석하지 않습니다.
+
+56ms 재현은 prefill 뒤 후속 decoder Run 64회에 약 4.6~4.7초를 썼습니다. stock 6/6·ABBA 24/24의 raw text/tokens와 진단 8개의 상태·출력은 OPT-0와 같았습니다. ABBA on/off 처리합 차이는 -0.85%로, 순수 오버헤드나 속도 개선의 추정값이 아닙니다. 첫 logits 준비·다음 decode 진입 경계를 기록했고 실제 토큰 반환 TTFT는 null입니다.
+
+Host/RP5 각 333개 테스트(native mock 포함), 원시·빌드 37파일 해시 및 공통 재채점/분석 일치를 확인했습니다. 기존 자산은 Host 16,439개·RP5 13,973개에서 변경·누락 0입니다. 온도는 stock 최고73.25°C·ABBA81.5°C·진단80.4°C, 관측 현재 제한 플래그는 모두0입니다.
+
 ## 다음 작업
 
-1. OPT-1에서 특징·encoder·prefill·token decode 경계별 시간을 계측합니다. Python에서 가능한 범위와 native 계측이 필요한 부분을 구분합니다.
-2. 같은 KSS 6개와 56ms 사례로 일반 전사와 반복 디코딩의 호출 수·생성 토큰·시간을 비교합니다.
+1. OPT-2에서 LLM 실행 엔진·양자화 경로를 같은 입력/실패/정확도 계약으로 비교합니다. GGUF의 모델·오디오 자산과 ARM64 지원 API를 확인한 뒤 별도 빌드·모델 경로로 로딩부터 검증합니다.
+2. 메모리 대역폭·세션 내부 KV 연산 등은 필요할 때 추가 계측합니다. 관측한 Run 바깥 1%만으로 전체 KV cache 영향이나 스레드 병목을 단정하지 않습니다.
 3. 짧은 잔여 구간의 수집/문맥/확정 정책을 후보로 검증하고, 입력 누락·정답 시각·실패를 포함해 평가합니다.
-4. 최적화 후보를 채택하기 전 KSS 전체 회귀와 새로운 독립 평가의 판정 기준을 확정합니다.
+4. 최적화 후보를 채택하기 전 KSS 전체 회귀와 새로운 독립 평가의 판정 기준을 확정합니다. Qwen 단독 부분 자막·실제 TTFT는 OPT-3에서 별도로 검증합니다.
 
-[연구 계획](research/qwen3_optimization.md)과 [고정 프로토콜·조건 변경](research/opt0_pilot.md)을 따릅니다. Host 개발·모의 테스트 → main commit/push → RP5 동기화·실측 순서와 자산 보존 원칙을 유지합니다. 마이크 준비 전에는 WAV 입력 검증만 수행합니다.
+[연구 계획](research/qwen3_optimization.md), [OPT-0 고정 조건](research/opt0_pilot.md), [OPT-1 계측 정의](research/opt1_profiling.md)를 따릅니다. Host 개발·모의 테스트 → main commit/push → RP5 동기화·실측 순서와 자산 보존 원칙을 유지합니다. 마이크 준비 전에는 WAV 입력 검증만 수행합니다.

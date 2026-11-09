@@ -12,6 +12,7 @@
 | `artifacts.py`, `resources.py`, `runtime.py`, `diagnostics.py` | 원자적 기록·프로세스 자원·런타임/제한 진단 |
 | `thermal.py`, `cooling.py`, `tools/probes/{thermal,load}.py` | 공통 센서·열/시간/메모리 제한·부하 검사 |
 | `tools/data/`, `tools/reports/cooling.py`, `tools/maintenance/` | 공통 데이터 준비·냉각 보고·유지보수 |
+| `tools/optimization/profiling.py` | 별도 C API 계측·Python stream proxy·세션 순서/시계 검증. 원본 adapter/런타임 재사용 |
 | `tools/optimization/baseline.py` | 모델 1회 로딩·첫 추론·워밍업·회전 반복·고정 PCM 재현, 공통 scorer 재사용 |
 | `tools/optimization/qwen3.py` | 기존 Qwen 단독 로딩·첫 전사 smoke; 새 프로파일러는 아님 |
 | `legacy/realtime/` | 이전 연속 Zip·VAD·Refine IPC·WAV 자막 |

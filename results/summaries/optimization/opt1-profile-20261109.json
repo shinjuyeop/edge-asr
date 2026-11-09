@@ -1,0 +1,1026 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-09",
+  "kind": "opt1_ort_boundary_profile",
+  "cases": [
+    {
+      "id": "stock-anchor-01",
+      "source_commit": "fa3975b34063da74093199b232a1a170e035480b",
+      "execution_status": "completed",
+      "worker_status": "completed",
+      "operational_valid": true,
+      "limits_verified": true,
+      "overall": {
+        "planned": 6,
+        "successful": 6,
+        "failed": 0,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": true,
+        "reference_character_coverage": 1.0,
+        "cer": {
+          "value": 0.02197802197802198,
+          "reference_characters": 91,
+          "errors": 2,
+          "substitutions": 2,
+          "deletions": 0,
+          "insertions": 0,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.6746131296672198,
+        "total_audio_s": 19.779062500000002,
+        "total_inference_wall_s": 13.343215255008545,
+        "mean_process_cpu_percent": 195.20530246428467,
+        "file_processing_s": {
+          "n": 6,
+          "mean": 2.223869209168091,
+          "p50": 2.055108055996243,
+          "p95": 3.5374122169741895,
+          "max": 3.5374122169741895
+        },
+        "file_rtf": {
+          "n": 6,
+          "mean": 0.7088380299302458,
+          "p50": 0.6624495388546172,
+          "p95": 0.8759236941500627,
+          "max": 0.8759236941500627
+        },
+        "rss_observed_max_mib": 1697.84375
+      },
+      "initial_temperature_c": 54.0,
+      "max_temperature_c": 73.25,
+      "current_limits": [
+        0
+      ],
+      "policy": {
+        "admission_mc": null,
+        "admission_consecutive": 0,
+        "stop_mc": null,
+        "interval_s": 1,
+        "timeout_s": 300,
+        "address_space_bytes": 4294967296,
+        "scope": "운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
+        "name": "operational",
+        "warn_mc": 80000,
+        "allow_thermal_limits": true,
+        "firmware_thermal_protection": "unchanged",
+        "temperature_admission": "observe_only"
+      },
+      "config_sha256": "afeb8898f3f078cd5d2c4dbbb1e1edd7c739a5c60d5c146be677cbdbbf33bb9c",
+      "input_manifest_sha256": "ef6860fb9283a726718f69d8a3cb6bab84460738c4264fb3b10f86f8a64ff744"
+    },
+    {
+      "id": "profile-abba-01",
+      "source_commit": "fa3975b34063da74093199b232a1a170e035480b",
+      "execution_status": "completed",
+      "worker_status": "completed",
+      "operational_valid": true,
+      "limits_verified": true,
+      "overall": {
+        "planned": 24,
+        "successful": 24,
+        "failed": 0,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": true,
+        "reference_character_coverage": 1.0,
+        "cer": {
+          "value": 0.02197802197802198,
+          "reference_characters": 364,
+          "errors": 8,
+          "substitutions": 8,
+          "deletions": 0,
+          "insertions": 0,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.703940052263685,
+        "total_audio_s": 79.11625,
+        "total_inference_wall_s": 55.693097159906756,
+        "mean_process_cpu_percent": 195.69379429029135,
+        "file_processing_s": {
+          "n": 24,
+          "mean": 2.320545714996115,
+          "p50": 2.159148758975789,
+          "p95": 3.687487760995282,
+          "max": 3.7513404170167632
+        },
+        "file_rtf": {
+          "n": 24,
+          "mean": 0.7331841048313774,
+          "p50": 0.7048284869778677,
+          "p95": 0.8900538656671774,
+          "max": 0.8960163315108566
+        },
+        "rss_observed_max_mib": 1745.546875
+      },
+      "initial_temperature_c": 69.95,
+      "max_temperature_c": 81.5,
+      "current_limits": [
+        0
+      ],
+      "policy": {
+        "admission_mc": null,
+        "admission_consecutive": 0,
+        "stop_mc": null,
+        "interval_s": 1,
+        "timeout_s": 300,
+        "address_space_bytes": 4294967296,
+        "scope": "운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
+        "name": "operational",
+        "warn_mc": 80000,
+        "allow_thermal_limits": true,
+        "firmware_thermal_protection": "unchanged",
+        "temperature_admission": "observe_only"
+      },
+      "config_sha256": "afeb8898f3f078cd5d2c4dbbb1e1edd7c739a5c60d5c146be677cbdbbf33bb9c",
+      "input_manifest_sha256": "ef6860fb9283a726718f69d8a3cb6bab84460738c4264fb3b10f86f8a64ff744"
+    },
+    {
+      "id": "diagnostic-profile-01",
+      "source_commit": "fa3975b34063da74093199b232a1a170e035480b",
+      "execution_status": "completed",
+      "worker_status": "completed_with_model_failures",
+      "operational_valid": true,
+      "limits_verified": true,
+      "overall": {
+        "planned": 8,
+        "successful": 5,
+        "failed": 3,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": false,
+        "reference_character_coverage": null,
+        "cer": {
+          "value": null,
+          "reference_characters": 0,
+          "errors": 0,
+          "substitutions": 0,
+          "deletions": 0,
+          "insertions": 0,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 5,
+          "empty_reference_nonempty_hypotheses": 5
+        },
+        "rtf": 0.7166490160748751,
+        "total_audio_s": 14.308,
+        "total_inference_wall_s": 10.253814121999312,
+        "mean_process_cpu_percent": 195.8943143596156,
+        "file_processing_s": {
+          "n": 5,
+          "mean": 2.0507628243998623,
+          "p50": 0.804950452002231,
+          "p95": 4.294567860983079,
+          "max": 4.294567860983079
+        },
+        "file_rtf": {
+          "n": 5,
+          "mean": 1.1386406216376166,
+          "p50": 0.7780666937993373,
+          "p95": 2.41365587112341,
+          "max": 2.41365587112341
+        },
+        "rss_observed_max_mib": 1812.734375
+      },
+      "initial_temperature_c": 74.9,
+      "max_temperature_c": 80.4,
+      "current_limits": [
+        0
+      ],
+      "policy": {
+        "admission_mc": null,
+        "admission_consecutive": 0,
+        "stop_mc": null,
+        "interval_s": 1,
+        "timeout_s": 300,
+        "address_space_bytes": 4294967296,
+        "scope": "운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
+        "name": "operational",
+        "warn_mc": 80000,
+        "allow_thermal_limits": true,
+        "firmware_thermal_protection": "unchanged",
+        "temperature_admission": "observe_only"
+      },
+      "config_sha256": "afeb8898f3f078cd5d2c4dbbb1e1edd7c739a5c60d5c146be677cbdbbf33bb9c",
+      "input_manifest_sha256": "7c446adfc48194909701d6029976537f323d124a263e5e4e4c3ae0df341db81e"
+    }
+  ],
+  "source_commit": "fa3975b34063da74093199b232a1a170e035480b",
+  "model_files": {
+    "conv_frontend.onnx": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/conv_frontend.onnx",
+      "sha256": "d22dc4423e0940e49884e903d2ea2f7e5567c14fc1aed97e4e26d6b8f208ef9e"
+    },
+    "encoder.int8.onnx": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/encoder.int8.onnx",
+      "sha256": "60748d3e6744a57c9c91e1b17424a6c2990567e8adceb0783940c03ed98fa9d9"
+    },
+    "decoder.int8.onnx": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/decoder.int8.onnx",
+      "sha256": "4f6885be5959ae26af3089d38ee7972c5fafbeeb1cf8d5e76eab6d8b61ca5771"
+    },
+    "tokenizer/vocab.json": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/tokenizer/vocab.json",
+      "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    },
+    "tokenizer/merges.txt": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/tokenizer/merges.txt",
+      "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+    },
+    "tokenizer/tokenizer_config.json": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/tokenizer/tokenizer_config.json",
+      "sha256": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c"
+    }
+  },
+  "runtime": {
+    "sherpa_package_version": "2.0.1",
+    "sherpa_core_package_version": "2.0.1",
+    "python_onnxruntime_package_version": null,
+    "sherpa_native_onnxruntime_version": "1.28.2",
+    "native_version_source": "sherpa_onnx.onnxruntime_version",
+    "status": "available",
+    "reason": null
+  },
+  "profile_metadata": {
+    "library_sha256": "ee4e0bc6efa7538c9b528acf1b61ff527731d5942ddafe46b2757d5898a3490d",
+    "mode": "abba",
+    "ort_abi": "1.28.2/API28",
+    "runtime_bootstrap_s": 0.0010210080072283745,
+    "bootstrap_scope": "계측/원본 ORT dlopen은 adapter.load 타이머 전에 실행. stock과 로딩 시간 직접 비교하지 않음.",
+    "scope": "기존 CPU Session.Run 경계만 관측. 특징은 accept_waveform 경계. 전체 encoder/LLM 내부 시간 및 실제 첫 토큰 반환은 분리하지 않음.",
+    "first_token_scope": "first_logits_ready는 prefill Run 종료. first_decode_entry는 첫 비EOS 토큰 샘플링 이후 다음 Run 진입. 실제 TTFT 아님."
+  },
+  "all_baseline_raw_text_and_tokens_equal_to_opt0": true,
+  "diagnostic_status_raw_text_and_tokens_equal_to_opt0": true,
+  "baseline_profiled_calls": 12,
+  "unique_audio_inputs": 6,
+  "profiled_inner_time_s": 27.726209327999996,
+  "stages": {
+    "create_stream_s": {
+      "total_s": 0.0016009180000000002,
+      "mean_s": 0.00013340983333333335,
+      "share_percent": 0.0057740240689277125
+    },
+    "accept_waveform_s": {
+      "total_s": 1.2236126330000001,
+      "mean_s": 0.10196771941666667,
+      "share_percent": 4.4131984236456905
+    },
+    "ort_conv_s": {
+      "total_s": 3.840842274,
+      "mean_s": 0.3200701895,
+      "share_percent": 13.852749319472354
+    },
+    "ort_encoder_s": {
+      "total_s": 2.5976454909999998,
+      "mean_s": 0.2164704575833333,
+      "share_percent": 9.368916826205679
+    },
+    "ort_prefill_s": {
+      "total_s": 5.006025547,
+      "mean_s": 0.41716879558333336,
+      "share_percent": 18.055210821569258
+    },
+    "ort_token_decode_s": {
+      "total_s": 14.767427833000001,
+      "mean_s": 1.2306189860833334,
+      "share_percent": 53.26161848632785
+    },
+    "native_non_ort_s": {
+      "total_s": 0.2856696439999974,
+      "mean_s": 0.023805803666666448,
+      "share_percent": 1.0303234770412948
+    },
+    "other_python_s": {
+      "total_s": 0.0033849879999992005,
+      "mean_s": 0.0002820823333332667,
+      "share_percent": 0.012208621668959222
+    }
+  },
+  "decoder_gap_s": 0.10557611400000001,
+  "token_run_processing_s": {
+    "n": 176,
+    "mean": 0.08390583996022724,
+    "p50": 0.084494417,
+    "p95": 0.095007184,
+    "max": 0.098762953
+  },
+  "on_off_wall_relative_difference": -0.008482488243137132,
+  "wrapper_extra_s": {
+    "True": {
+      "n": 12,
+      "mean": 0.00014435000174108556,
+      "p50": 0.00013340800992445168,
+      "p95": 0.0002571310208323574,
+      "max": 0.0002571310208323574
+    },
+    "False": {
+      "n": 12,
+      "mean": 8.243582382193766e-05,
+      "p50": 8.144499947193573e-05,
+      "p95": 9.281598334842656e-05,
+      "max": 9.281598334842656e-05
+    }
+  },
+  "per_source": [
+    {
+      "id": "kss-train-01002",
+      "duration_s": 4.03025,
+      "on": {
+        "n": 2,
+        "mean": 3.108868328999961,
+        "p50": 3.0965785370208323,
+        "p95": 3.1211581209790893,
+        "max": 3.1211581209790893
+      },
+      "off": {
+        "n": 2,
+        "mean": 3.1070946579857264,
+        "p50": 3.0722266229859088,
+        "p95": 3.141962692985544,
+        "max": 3.141962692985544
+      },
+      "median_on_off_relative_difference": 0.007926470610184255,
+      "over_5_percent_observation": false,
+      "stage_mean_s": {
+        "create_stream_s": 0.00013122349999999998,
+        "accept_waveform_s": 0.124147235,
+        "ort_conv_s": 0.445662384,
+        "ort_encoder_s": 0.216880706,
+        "ort_prefill_s": 0.497653298,
+        "ort_token_decode_s": 1.7970732355,
+        "native_non_ort_s": 0.02681344749999992,
+        "other_python_s": 0.0003055294999998459
+      },
+      "first_logits_ready_s": {
+        "n": 2,
+        "mean": 1.299113238,
+        "p50": 1.288078263,
+        "p95": 1.310148213,
+        "max": 1.310148213
+      },
+      "first_decode_entry_s": {
+        "n": 2,
+        "mean": 1.3026927475,
+        "p50": 1.291667402,
+        "p95": 1.313718093,
+        "max": 1.313718093
+      },
+      "token_decode_calls": [
+        21
+      ]
+    },
+    {
+      "id": "kss-train-01003",
+      "duration_s": 3.6156875,
+      "on": {
+        "n": 2,
+        "mean": 2.5351343275106046,
+        "p50": 2.5218291050114203,
+        "p95": 2.548439550009789,
+        "max": 2.548439550009789
+      },
+      "off": {
+        "n": 2,
+        "mean": 2.530545429995982,
+        "p50": 2.5272256300086156,
+        "p95": 2.5338652299833484,
+        "max": 2.5338652299833484
+      },
+      "median_on_off_relative_difference": -0.0021353554400193042,
+      "over_5_percent_observation": false,
+      "stage_mean_s": {
+        "create_stream_s": 0.00013162150000000001,
+        "accept_waveform_s": 0.111319042,
+        "ort_conv_s": 0.315109637,
+        "ort_encoder_s": 0.2181117065,
+        "ort_prefill_s": 0.4399805995,
+        "ort_token_decode_s": 1.4252807385000004,
+        "native_non_ort_s": 0.024786172999999412,
+        "other_python_s": 0.00027950250000019494
+      },
+      "first_logits_ready_s": {
+        "n": 2,
+        "mean": 1.0992145524999999,
+        "p50": 1.09555195,
+        "p95": 1.102877155,
+        "max": 1.102877155
+      },
+      "first_decode_entry_s": {
+        "n": 2,
+        "mean": 1.1025712635,
+        "p50": 1.098863624,
+        "p95": 1.106278903,
+        "max": 1.106278903
+      },
+      "token_decode_calls": [
+        17
+      ]
+    },
+    {
+      "id": "kss-train-01022",
+      "duration_s": 2.2434375,
+      "on": {
+        "n": 2,
+        "mean": 1.607832279012655,
+        "p50": 1.6071376920153853,
+        "p95": 1.6085268660099246,
+        "max": 1.6085268660099246
+      },
+      "off": {
+        "n": 2,
+        "mean": 1.6691284964908846,
+        "p50": 1.625893857999472,
+        "p95": 1.7123631349822972,
+        "max": 1.7123631349822972
+      },
+      "median_on_off_relative_difference": -0.011535910472756594,
+      "over_5_percent_observation": false,
+      "stage_mean_s": {
+        "create_stream_s": 0.00013288,
+        "accept_waveform_s": 0.0693894565,
+        "ort_conv_s": 0.2899991175,
+        "ort_encoder_s": 0.2145278085,
+        "ort_prefill_s": 0.3187664715,
+        "ort_token_decode_s": 0.6931277630000001,
+        "native_non_ort_s": 0.021479157999999887,
+        "other_python_s": 0.0002789470000000849
+      },
+      "first_logits_ready_s": {
+        "n": 2,
+        "mean": 0.907160031,
+        "p50": 0.907141817,
+        "p95": 0.907178245,
+        "max": 0.907178245
+      },
+      "first_decode_entry_s": {
+        "n": 2,
+        "mean": 0.9097595695,
+        "p50": 0.909701911,
+        "p95": 0.909817228,
+        "max": 0.909817228
+      },
+      "token_decode_calls": [
+        10
+      ]
+    },
+    {
+      "id": "kss-train-01023",
+      "duration_s": 0.9260625,
+      "on": {
+        "n": 2,
+        "mean": 0.817367915995419,
+        "p50": 0.8049687079910655,
+        "p95": 0.8297671239997726,
+        "max": 0.8297671239997726
+      },
+      "off": {
+        "n": 2,
+        "mean": 0.8150772494846024,
+        "p50": 0.8059089909947943,
+        "p95": 0.8242455079744104,
+        "max": 0.8242455079744104
+      },
+      "median_on_off_relative_difference": -0.0011667359642782982,
+      "over_5_percent_observation": false,
+      "stage_mean_s": {
+        "create_stream_s": 0.0001372605,
+        "accept_waveform_s": 0.02876277,
+        "ort_conv_s": 0.0795790265,
+        "ort_encoder_s": 0.21515450749999998,
+        "ort_prefill_s": 0.2063202725,
+        "ort_token_decode_s": 0.2691128165,
+        "native_non_ort_s": 0.01795614849999999,
+        "other_python_s": 0.0002345480000000011
+      },
+      "first_logits_ready_s": {
+        "n": 2,
+        "mean": 0.5443500880000001,
+        "p50": 0.542076959,
+        "p95": 0.546623217,
+        "max": 0.546623217
+      },
+      "first_decode_entry_s": {
+        "n": 2,
+        "mean": 0.5461742875,
+        "p50": 0.543857825,
+        "p95": 0.54849075,
+        "max": 0.54849075
+      },
+      "token_decode_calls": [
+        4
+      ]
+    },
+    {
+      "id": "kss-train-01025",
+      "duration_s": 5.853,
+      "on": {
+        "n": 2,
+        "mean": 3.6870639489934547,
+        "p50": 3.686881205008831,
+        "p95": 3.6872466929780785,
+        "max": 3.6872466929780785
+      },
+      "off": {
+        "n": 2,
+        "mean": 3.7194140890060226,
+        "p50": 3.687487760995282,
+        "p95": 3.7513404170167632,
+        "max": 3.7513404170167632
+      },
+      "median_on_off_relative_difference": -0.00016449030498943973,
+      "over_5_percent_observation": false,
+      "stage_mean_s": {
+        "create_stream_s": 0.000135575,
+        "accept_waveform_s": 0.18214346399999998,
+        "ort_conv_s": 0.474901844,
+        "ort_encoder_s": 0.21654542599999999,
+        "ort_prefill_s": 0.6442122905000001,
+        "ort_token_decode_s": 2.1396251395,
+        "native_non_ort_s": 0.029021688499999865,
+        "other_python_s": 0.0003220569999995426
+      },
+      "first_logits_ready_s": {
+        "n": 2,
+        "mean": 1.5328799549999998,
+        "p50": 1.53127873,
+        "p95": 1.53448118,
+        "max": 1.53448118
+      },
+      "first_decode_entry_s": {
+        "n": 2,
+        "mean": 1.5374972965,
+        "p50": 1.535894766,
+        "p95": 1.539099827,
+        "max": 1.539099827
+      },
+      "token_decode_calls": [
+        23
+      ]
+    },
+    {
+      "id": "kss-train-01026",
+      "duration_s": 3.110625,
+      "on": {
+        "n": 2,
+        "mean": 2.107703963498352,
+        "p50": 2.105998590006493,
+        "p95": 2.109409336990211,
+        "max": 2.109409336990211
+      },
+      "off": {
+        "n": 2,
+        "mean": 2.141317892979714,
+        "p50": 2.1234870269836392,
+        "p95": 2.159148758975789,
+        "max": 2.159148758975789
+      },
+      "median_on_off_relative_difference": -0.008235716420640471,
+      "over_5_percent_observation": false,
+      "stage_mean_s": {
+        "create_stream_s": 0.0001318985,
+        "accept_waveform_s": 0.096044349,
+        "ort_conv_s": 0.315169128,
+        "ort_encoder_s": 0.217602591,
+        "ort_prefill_s": 0.3960798415,
+        "ort_token_decode_s": 1.0594942235000002,
+        "native_non_ort_s": 0.02277820649999962,
+        "other_python_s": 0.0002719099999999308
+      },
+      "first_logits_ready_s": {
+        "n": 2,
+        "mean": 1.039565311,
+        "p50": 1.035914265,
+        "p95": 1.043216357,
+        "max": 1.043216357
+      },
+      "first_decode_entry_s": {
+        "n": 2,
+        "mean": 1.04266152,
+        "p50": 1.039001548,
+        "p95": 1.046321492,
+        "max": 1.046321492
+      },
+      "token_decode_calls": [
+        13
+      ]
+    }
+  ],
+  "diagnostic": [
+    {
+      "id": "tail-first",
+      "status": "failed",
+      "duration_s": 0.056,
+      "elapsed_s": 5.239279189001536,
+      "parts_s": {
+        "create_stream_s": 0.000139556,
+        "accept_waveform_s": 0.001887848,
+        "ort_conv_s": 0.080141439,
+        "ort_encoder_s": 0.209184146,
+        "ort_prefill_s": 0.152529113,
+        "ort_token_decode_s": 4.742805440000001,
+        "native_non_ort_s": 0.051915177999998896,
+        "other_python_s": 0.0004431340000001782
+      },
+      "native_warning": true,
+      "returned_token_count": 1,
+      "ort_token_decode_calls": 64,
+      "ort_decoder_runs": 65,
+      "first_logits_ready_s": 0.465906015,
+      "first_decode_entry_s": 0.467179247,
+      "decoder_inter_run_gap_s": 0.029484318000000002,
+      "ttft_s": null,
+      "cer": null
+    },
+    {
+      "id": "tail-repeat",
+      "status": "failed",
+      "duration_s": 0.056,
+      "elapsed_s": 5.125676972995279,
+      "parts_s": {
+        "create_stream_s": 0.000134094,
+        "accept_waveform_s": 0.001902052,
+        "ort_conv_s": 0.079923659,
+        "ort_encoder_s": 0.219719692,
+        "ort_prefill_s": 0.143381024,
+        "ort_token_decode_s": 4.633461634999999,
+        "native_non_ort_s": 0.04659083200000058,
+        "other_python_s": 0.0003261130000007384
+      },
+      "native_warning": true,
+      "returned_token_count": 1,
+      "ort_token_decode_calls": 64,
+      "ort_decoder_runs": 65,
+      "first_logits_ready_s": 0.461582204,
+      "first_decode_entry_s": 0.462911029,
+      "decoder_inter_run_gap_s": 0.029598274000000004,
+      "ttft_s": null,
+      "cer": null
+    },
+    {
+      "id": "preceding-5s",
+      "status": "success",
+      "duration_s": 5.0,
+      "elapsed_s": 3.890333468996687,
+      "parts_s": {
+        "create_stream_s": 0.000131631,
+        "accept_waveform_s": 0.153767197,
+        "ort_conv_s": 0.448415917,
+        "ort_encoder_s": 0.218239865,
+        "ort_prefill_s": 0.582257199,
+        "ort_token_decode_s": 2.4541655149999997,
+        "native_non_ort_s": 0.03285791900000001,
+        "other_python_s": 0.00033402100000001766
+      },
+      "native_warning": false,
+      "returned_token_count": 26,
+      "ort_token_decode_calls": 26,
+      "ort_decoder_runs": 27,
+      "first_logits_ready_s": 1.420615762,
+      "first_decode_entry_s": 1.424918962,
+      "decoder_inter_run_gap_s": 0.014625389000000003,
+      "ttft_s": null,
+      "cer": null
+    },
+    {
+      "id": "tail-after-prefix",
+      "status": "failed",
+      "duration_s": 0.056,
+      "elapsed_s": 5.0893334900029,
+      "parts_s": {
+        "create_stream_s": 0.000131946,
+        "accept_waveform_s": 0.001877551,
+        "ort_conv_s": 0.083110258,
+        "ort_encoder_s": 0.216692853,
+        "ort_prefill_s": 0.146037915,
+        "ort_token_decode_s": 4.595594050000002,
+        "native_non_ort_s": 0.04536830099999811,
+        "other_python_s": 0.00030937300000033474
+      },
+      "native_warning": true,
+      "returned_token_count": 1,
+      "ort_token_decode_calls": 64,
+      "ort_decoder_runs": 65,
+      "first_logits_ready_s": 0.462529897,
+      "first_decode_entry_s": 0.463901833,
+      "decoder_inter_run_gap_s": 0.030205904999999998,
+      "ttft_s": null,
+      "cer": null
+    },
+    {
+      "id": "tail-context200ms",
+      "status": "success",
+      "duration_s": 0.256,
+      "elapsed_s": 0.617895903007593,
+      "parts_s": {
+        "create_stream_s": 0.000138668,
+        "accept_waveform_s": 0.008112544,
+        "ort_conv_s": 0.079817528,
+        "ort_encoder_s": 0.216759929,
+        "ort_prefill_s": 0.159493797,
+        "ort_token_decode_s": 0.135784114,
+        "native_non_ort_s": 0.017419300999999998,
+        "other_python_s": 0.0002546319999999769
+      },
+      "native_warning": false,
+      "returned_token_count": 2,
+      "ort_token_decode_calls": 2,
+      "ort_decoder_runs": 3,
+      "first_logits_ready_s": 0.479321546,
+      "first_decode_entry_s": 0.480799131,
+      "decoder_inter_run_gap_s": 0.001977829,
+      "ttft_s": null,
+      "cer": null
+    },
+    {
+      "id": "tail-context500ms",
+      "status": "success",
+      "duration_s": 0.556,
+      "elapsed_s": 0.646066437009722,
+      "parts_s": {
+        "create_stream_s": 0.000134816,
+        "accept_waveform_s": 0.017299042,
+        "ort_conv_s": 0.07967925,
+        "ort_encoder_s": 0.21724884,
+        "ort_prefill_s": 0.17769905,
+        "ort_token_decode_s": 0.136418933,
+        "native_non_ort_s": 0.017211096000000037,
+        "other_python_s": 0.00025876100000010727
+      },
+      "native_warning": false,
+      "returned_token_count": 2,
+      "ort_token_decode_calls": 2,
+      "ort_decoder_runs": 3,
+      "first_logits_ready_s": 0.506763927,
+      "first_decode_entry_s": 0.508389662,
+      "decoder_inter_run_gap_s": 0.002072997,
+      "ttft_s": null,
+      "cer": null
+    },
+    {
+      "id": "tail-context1000ms",
+      "status": "success",
+      "duration_s": 1.056,
+      "elapsed_s": 0.804950452002231,
+      "parts_s": {
+        "create_stream_s": 0.000136149,
+        "accept_waveform_s": 0.045085647,
+        "ort_conv_s": 0.160364786,
+        "ort_encoder_s": 0.223637519,
+        "ort_prefill_s": 0.218975057,
+        "ort_token_decode_s": 0.13826524299999998,
+        "native_non_ort_s": 0.018030824000000112,
+        "other_python_s": 0.00033670799999996337
+      },
+      "native_warning": false,
+      "returned_token_count": 2,
+      "ort_token_decode_calls": 2,
+      "ort_decoder_runs": 3,
+      "first_logits_ready_s": 0.663122978,
+      "first_decode_entry_s": 0.665413921,
+      "decoder_inter_run_gap_s": 0.0027441690000000003,
+      "ttft_s": null,
+      "cer": null
+    },
+    {
+      "id": "full-utterance",
+      "status": "success",
+      "duration_s": 7.44,
+      "elapsed_s": 4.294567860983079,
+      "parts_s": {
+        "create_stream_s": 0.000133816,
+        "accept_waveform_s": 0.228886318,
+        "ort_conv_s": 0.634894017,
+        "ort_encoder_s": 0.219098669,
+        "ort_prefill_s": 0.827248311,
+        "ort_token_decode_s": 2.350180502,
+        "native_non_ort_s": 0.0335724079999995,
+        "other_python_s": 0.0003807810000004963
+      },
+      "native_warning": false,
+      "returned_token_count": 25,
+      "ort_token_decode_calls": 25,
+      "ort_decoder_runs": 26,
+      "first_logits_ready_s": 1.926362942,
+      "first_decode_entry_s": 1.932106597,
+      "decoder_inter_run_gap_s": 0.016999353000000002,
+      "ttft_s": null,
+      "cer": null
+    }
+  ],
+  "unmeasured": {
+    "actual_ttft_s": null,
+    "isolated_kv_update_s": null,
+    "per_operator_profile": null,
+    "memory_bandwidth": null,
+    "live_caption_latency_s": null
+  },
+  "driver": {
+    "source_commit": "fa3975b34063da74093199b232a1a170e035480b",
+    "started_at_utc": "2026-11-09T05:44:46.657489+00:00",
+    "pid": 23383,
+    "status": "completed",
+    "cases": [
+      {
+        "id": "stock-anchor-01",
+        "exit_code": 0
+      },
+      {
+        "id": "profile-abba-01",
+        "exit_code": 0
+      },
+      {
+        "id": "diagnostic-profile-01",
+        "exit_code": 0
+      }
+    ],
+    "library_sha256": "ee4e0bc6efa7538c9b528acf1b61ff527731d5942ddafe46b2757d5898a3490d",
+    "original_ort_sha256": "cfc800d4438f15e8d9017521326776ca7117d8783cb847ccccc2fc61ac4d540f",
+    "active_case": null,
+    "finished_at_utc": "2026-11-09T05:46:52.742984+00:00"
+  },
+  "verification": {
+    "host_tests": {
+      "count": 333,
+      "elapsed_s": 46.552,
+      "actual_asr_inference": false
+    },
+    "rp5_tests": {
+      "count": 333,
+      "elapsed_s": 74.3,
+      "actual_asr_inference": false
+    },
+    "host_preservation": {
+      "protected_files": 16439,
+      "missing": [],
+      "changed": [],
+      "commit": "fa3975b34063da74093199b232a1a170e035480b"
+    },
+    "rp5_preservation": {
+      "protected_files": 13973,
+      "missing": [],
+      "changed": [],
+      "commit": "fa3975b34063da74093199b232a1a170e035480b"
+    },
+    "host_rp5_analysis_equal": true,
+    "native_mock_included": true
+  },
+  "raw_artifacts": {
+    "results/optimization/opt1/opt1-profile-20261109-01/driver.json": {
+      "sha256": "95ee39a30bcd0beacdd6a236d5995aa24f9809fef7eb2cfbdb4e7b04af67e1ac",
+      "bytes": 641
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/runtime-build.json": {
+      "sha256": "0417e7d602fa8818a38010fd540006324cee6114d783bcbb2e86ae77e8a042b0",
+      "bytes": 1507
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/stock-anchor-01/threads.jsonl": {
+      "sha256": "705bbc9c7ac2c17fac87758a4493f9ac55ae6d7605c19210243f67f9428c5aee",
+      "bytes": 15663
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/stock-anchor-01/execution.json": {
+      "sha256": "afdf3a05823bce8a32e302a5ceee13ca9f671126706c7e229b0a3f02b0f9681a",
+      "bytes": 3662
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/stock-anchor-01/console.log": {
+      "sha256": "c5a85c1417b9a8f64882555ccbabe793930c016a36510324669fb1cce411e7a5",
+      "bytes": 329
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/stock-anchor-01/summary.json": {
+      "sha256": "ae1c55b364208f934ff7ed0e662762ff784e3f26fb4d1cf85c176f0291ef9442",
+      "bytes": 3705
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/stock-anchor-01/predictions.jsonl": {
+      "sha256": "2bc7781026c97ef19be8bb2a335afb380a895ea229afec458e10e2bb6149f309",
+      "bytes": 25079
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/stock-anchor-01/warnings.jsonl": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/stock-anchor-01/summary.md": {
+      "sha256": "5bd5b2a1647022b8b2aa1c9c134a810c1a1ccc202c909835808b9df7fa35572b",
+      "bytes": 1093
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/stock-anchor-01/scores.jsonl": {
+      "sha256": "d74c7fee6ef404f16e9324279ecf8cef2814c44589d23437545cac20613652a6",
+      "bytes": 4290
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/stock-anchor-01/measurements.jsonl": {
+      "sha256": "3eed8601d75fc2186b952f872d1212195ac3def00c26dcfe6be01fdd06968bdb",
+      "bytes": 29969
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/stock-anchor-01/worker.json": {
+      "sha256": "a8a4584ccea29b01a323aa8fb222f95b0bb53f5f442489ae08c5181d8be223cc",
+      "bytes": 18189
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/stock-anchor-01/thermal.jsonl": {
+      "sha256": "b44b9e0f57c5899770c1dfefdcc65464513c26ee58714a7625c5aa20192f24c4",
+      "bytes": 6477
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/profile-abba-01/threads.jsonl": {
+      "sha256": "a7146cc33a44b460b7bbcf28ea5d4a79b04590aae97a4e63ccdeb127dac97101",
+      "bytes": 45438
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/profile-abba-01/execution.json": {
+      "sha256": "72424cf65efc71dd6d4fb698f540997a5f60ebf21abc6c13bbd982ed9b486ff4",
+      "bytes": 4431
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/profile-abba-01/console.log": {
+      "sha256": "716c94083a07616028cb55b8131f5abca510f5ccf2300ac3047da9f666aee84a",
+      "bytes": 905
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/profile-abba-01/summary.json": {
+      "sha256": "c48b036b85de5712130cd1eaf736e61c0420618209355da9796d928d9cb38335",
+      "bytes": 3687
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/profile-abba-01/predictions.jsonl": {
+      "sha256": "8713e0b3f266c910f933346d19dc7d0f8b30fc16e20ac6c33ed57a0815daebee",
+      "bytes": 138343
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/profile-abba-01/warnings.jsonl": {
+      "sha256": "7ac3090aac691669ebf4ff4cd0a67ae60774bf478a557ab98716b3966b67fbf9",
+      "bytes": 906
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/profile-abba-01/summary.md": {
+      "sha256": "556d025ca391536651585589e1d41ac4215d64657fcad67e5aa78a34774fd904",
+      "bytes": 1095
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/profile-abba-01/scores.jsonl": {
+      "sha256": "cbb744a3207cf228fc10f7c332fed5b96a1500a7729575c86ea8ca19d14d66ed",
+      "bytes": 17173
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/profile-abba-01/measurements.jsonl": {
+      "sha256": "58114cbb117e9bcd070aa28f523184c8cd7a3fe28168dd37d81dc3f2e0e284ae",
+      "bytes": 137384
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/profile-abba-01/worker.json": {
+      "sha256": "023197793f6544b3f567c1ecc597c83837219db1aea0db39c4ab8c53bec53d01",
+      "bytes": 20446
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/profile-abba-01/thermal.jsonl": {
+      "sha256": "235b493a9025525a5d3a38933aafdaacd058d49a88d2d2cbf2cfc8a19ce052b9",
+      "bytes": 17815
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/diagnostic-profile-01/threads.jsonl": {
+      "sha256": "3cf3d9ec6c0e163539b6f0e6d42de3a8153829677337ecc3f861d0ddca471a71",
+      "bytes": 21952
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/diagnostic-profile-01/execution.json": {
+      "sha256": "f9888ee7b3c71b4f0082e113feb1cd02dc62c64b1ffecef7016654b8e7d2d5c2",
+      "bytes": 4443
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/diagnostic-profile-01/console.log": {
+      "sha256": "52472564d58c3ccd61a41f5c5fa65904e8827f3327513e7af05aa14464c22314",
+      "bytes": 806
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/diagnostic-profile-01/summary.json": {
+      "sha256": "0eed1d89d2979b6919f2f2b4afdac5f4e8972917137983075a40cf50835065af",
+      "bytes": 10639
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/diagnostic-profile-01/predictions.jsonl": {
+      "sha256": "c4ef20254cd2c2f60a54a482cad1d9e75ad768d868ceae03fa5fb01c38f4b273",
+      "bytes": 71190
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/diagnostic-profile-01/warnings.jsonl": {
+      "sha256": "ea5fd247ab6e19be429a1a6763f60f9e0096133cc5556b317d0e5bcfef4d27e3",
+      "bytes": 302
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/diagnostic-profile-01/summary.md": {
+      "sha256": "d031a9595532371d8d7437d7c92590f55473af1db26f328347e2e440231f7933",
+      "bytes": 1088
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/diagnostic-profile-01/scores.jsonl": {
+      "sha256": "4526d33a918321e0c5a9d90514bb9ddfd1067c365615cd4394015c8ee520ba97",
+      "bytes": 3849
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/diagnostic-profile-01/measurements.jsonl": {
+      "sha256": "3381a2cfeba2df35df7e86f7906c88c4301176aa2b525487743251131fb6c17e",
+      "bytes": 67676
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/diagnostic-profile-01/worker.json": {
+      "sha256": "f1a1ba521b312bbf37ae2080aebb39e1c1d33d8b976eecf5d037b74c0f0b004b",
+      "bytes": 18036
+    },
+    "results/optimization/opt1/opt1-profile-20261109-01/diagnostic-profile-01/thermal.jsonl": {
+      "sha256": "3991354717e5919cd69cba3eada000889fb967eb5d188409261b210a4410cf61",
+      "bytes": 8905
+    },
+    "runtimes/qwen3-opt/ort-trace-20261109-01/rp5/libedge_asr_ort_trace.so": {
+      "sha256": "ee4e0bc6efa7538c9b528acf1b61ff527731d5942ddafe46b2757d5898a3490d",
+      "bytes": 72472
+    },
+    "runtimes/qwen3-opt/ort-trace-20261109-01/rp5/build.json": {
+      "sha256": "0417e7d602fa8818a38010fd540006324cee6114d783bcbb2e86ae77e8a042b0",
+      "bytes": 1507
+    }
+  },
+  "limitations": [
+    "ORT Run 경계이며 각 C++ 단계의 전체 비용은 아님",
+    "off도 같은 proxy/API hook 경로이므로 상시 hook 비용은 분리하지 않음",
+    "실제 TTFT·단독 KV 갱신·메모리 대역폭·operator별 내역은 미계측"
+  ]
+}

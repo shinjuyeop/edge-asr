@@ -1,6 +1,6 @@
 # Qwen 최적화 작업 시작
 
-현재 사용 가능한 것은 기존 sherpa-onnx INT8 어댑터, 단독 smoke·공통 batch 평가와 `tools opt0-baseline`입니다. 첫 추론·워밍업·반복·고정 PCM 진단의 조건은 [OPT-0 프로토콜](../research/opt0_pilot.md)을 따릅니다. 새 OPT 기준선 고정과 프로파일링은 [연구 계획](../research/qwen3_optimization.md)에 따라 이어서 구현합니다.
+현재 사용 가능한 것은 기존 sherpa-onnx INT8 어댑터, 단독 smoke·공통 batch 평가와 `tools opt0-baseline`입니다. 첫 추론·워밍업·반복·고정 PCM 진단의 조건은 [OPT-0 프로토콜](../research/opt0_pilot.md)을 따릅니다. OPT-1 호출 경계 계측은 [프로토콜](../research/opt1_profiling.md)과 `tools profile-qwen3`를 사용합니다. 계측 없이 실행하는 성능 평가와 구분합니다. 후속 엔진 비교·부분 자막은 [연구 계획](../research/qwen3_optimization.md)에 따라 이어서 구현합니다.
 
 ## 경로와 환경
 

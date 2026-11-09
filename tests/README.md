@@ -24,3 +24,5 @@ bash -n scripts/deploy_rp5.sh
 | 구조·보존 | `test_project_structure.py`, `test_consolidate.py` | 의존 방향·지연 import·문서 링크·원시/환경 보존·통합 충돌/복원 |
 
 Linux 프로세스 검사는 해당 환경에서, 합성 ffmpeg 변환 검사는 도구가 있을 때 실행한다. skip 수와 이유를 함께 읽는다. 실제 RP5 모델 실행과 원시 보존 검사는 [검증 기록](../results/summaries/README.md)에 별도로 남긴다. 리팩터링은 기존 원시의 재집계 일치와 CLI 호환성을 확인하고 새 실행은 별도 ID로 보존한다.
+
+ORT 계측의 native mock은 `EDGE_ASR_ORT_HEADERS`에 별도 공식 1.28.2 헤더 경로를 지정하고 g++가 있을 때 실행합니다. [빌드·검사 안내](../experiments/qwen3_optimization/profiling/README.md). 지정하지 않으면 해당 검사 1개만 이유와 함께 skip하며 Python 경계/실패 검사는 실행합니다. 실제 ASR 추론과 구분합니다.
