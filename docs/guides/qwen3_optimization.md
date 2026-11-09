@@ -1,32 +1,49 @@
-# Qwen 최적화 작업 시작
+# Qwen 최적화 실행 안내
 
-현재 사용 가능한 것은 기존 sherpa-onnx INT8 어댑터, 단독 smoke·공통 batch 평가와 `tools opt0-baseline`입니다. 첫 추론·워밍업·반복·고정 PCM 진단의 조건은 [OPT-0 프로토콜](../research/opt0_pilot.md)을 따릅니다. OPT-1 호출 경계 계측은 [프로토콜](../research/opt1_profiling.md)과 `tools profile-qwen3`를 사용합니다. 계측 없이 실행하는 성능 평가와 구분합니다. 새100개 ONNX/GGUF 초기값은 [기준선 프로토콜](../research/fixed100_baseline.md)과 [실측 보고서](../../results/summaries/optimization/fixed100-baseline-20261109.md)를 따릅니다. 부분 자막은 [연구 계획](../research/qwen3_optimization.md)에 따라 이어서 구현합니다.
+현재 기준은 [고정100개 ONNX/GGUF 실측](../../results/summaries/optimization/fixed100-baseline-20261109.md)입니다. ONNX INT8 2T는 프로젝트 출발 참조이고 이후 GGUF 변경은 이번 GGUF Q8_0 2T 결과와 비교합니다. 조건·실패 처리·온도 정책·재시도 범위는 [기준선 프로토콜](../research/fixed100_baseline.md)에 있습니다.
 
-## 경로와 환경
+## 환경과 설정
 
-저장소 루트에서 실행합니다. `configs/optimization/qwen3_onnx_int8.toml`은 기존 Qwen 모델·1스레드·입력/토큰 예산·3회 워밍업·`ko_cer_v1`을 유지하고 결과 상위 경로만 분리한 시작 설정입니다. 성능상 최적 스레드 수를 선언하는 설정이 아닙니다.
+저장소 루트에서 기존 환경을 사용합니다.
 
-RP5에서 이미 검증한 `.venv-qwen3-vad-20261106-01` 또는 해당 모델 런타임이 설치된 기존 별도 Qwen 환경을 사용할 수 있습니다. 신규 엔진은 별도 환경/빌드 경로에 설치하고 기존 `.venv`와 패키지를 갱신하지 않습니다. Host 테스트에는 실제 ARM 추론이 포함되지 않습니다.
+| 실행 위치·역할 | Python | 설정 |
+| --- | --- | --- |
+| Host 설정 검사·모의 테스트 | `.venv/bin/python` | 아래 두 설정 모두 검사 가능. ARM 실제 추론은 RP5에서 수행 |
+| RP5 ONNX 실제 추론 | `.venv-qwen3-onnx-20261106-01/bin/python` | [fixed100_onnx_2t.toml](../../configs/optimization/fixed100_onnx_2t.toml) |
+| RP5 GGUF 실제 추론 | `.venv/bin/python` | [fixed100_gguf_q8_2t.toml](../../configs/optimization/fixed100_gguf_q8_2t.toml) |
+
+GGUF는 기존 Python의 ctypes로 별도 llama.cpp/libmtmd C ABI를 호출합니다. 소스·빌드·바이너리는 `runtimes/qwen3-opt/llama-q8-20261109-01/`, 가중치는 `models/qwen3-opt/gguf-q8-20261109-01/`에 있습니다. [연결·빌드 안내](../../experiments/qwen3_optimization/gguf/README.md)를 따르며 기존 환경에 패키지를 갱신하지 않습니다.
+
+아래 명령은 Host에서도 모델 로딩 없이 확인할 수 있습니다.
 
 ```bash
-.venv/bin/python scripts/edge_asr.py check-config --evaluation configs/optimization/qwen3_onnx_int8.toml
-.venv/bin/python scripts/edge_asr.py tools probe-qwen3 --help
+.venv/bin/python scripts/edge_asr.py check-config --evaluation configs/optimization/fixed100_onnx_2t.toml
+.venv/bin/python scripts/edge_asr.py check-config --evaluation configs/optimization/fixed100_gguf_q8_2t.toml
+.venv/bin/python scripts/edge_asr.py tools benchmark-qwen3 --help
 .venv/bin/python scripts/edge_asr.py tools thermal-run --help
 ```
 
-## 실제 평가 준비
+## 실제 평가 순서
 
-평가 명령은 다음 형식입니다. 실제 manifest·고유 ID를 정한 뒤 실행하며 RP5 부하 실험은 기존 `thermal-run` 제한 아래에서 실행합니다. 아래는 호출 형식이고 완료한 OPT 실행 기록이 아닙니다.
+1. Host에서 변경·[모의 테스트](../../tests/README.md)를 마치고 main에 commit/push합니다. RP5는 같은 소스를 pull합니다.
+2. [고정100개](../research/fixed100.md)의 원본·WAV·해시를 확인합니다. [prepare_baseline100.py](../../experiments/qwen3_optimization/prepare_baseline100.py)로 원본을 보존한 채 **새 실행 경로**에 고정 순서 manifest를 준비합니다. 비교 구성의 순서·워밍업 입력은 같습니다.
+3. RP5에서 다른 실제 추론과 겹치지 않게 실행합니다. `tools benchmark-qwen3 --repetitions 1`은 모델1회 로딩 → 첫 추론1회 → 추가 워밍업3회 →100개 각1회이며 `thermal-run`의 외부 시간·4GiB 주소 공간 제한 안에서 사용합니다.
+4. 원시·해시를 Host에 회수하고 공통 재채점·실패/커버리지·열 상태를 검토한 뒤 [요약 폴더](../../results/summaries/optimization/README.md)와 [현재 상태](../status.md)를 갱신합니다.
+
+다음은 **GGUF 운영 측정의 호출 형식**입니다. `<...>`를 준비한 동일 순서 manifest와 새 실행 경로로 바꿉니다. 기존 사용자가 허용한 온도 대기 없는 운영 조건을 명시하며 온도·실제 클럭·제한 플래그를 기록합니다. 통제 비교의53°C 시작·75°C 경고/80°C 중단 조건과 전체 비교 순서는 기준선 프로토콜에서 구분합니다.
 
 ```bash
-.venv-qwen3-vad-20261106-01/bin/python scripts/edge_asr.py evaluate \
-  --config configs/optimization/qwen3_onnx_int8.toml \
-  --manifest <평가-manifest.jsonl> \
-  --output-dir results/optimization/opt0/<고유-실행ID>/evaluations
+.venv/bin/python scripts/edge_asr.py tools thermal-run \
+  --output "results/optimization/opt2/<고유ID>/gguf-2t" \
+  --timeout-s 1800 --temperature-policy operational --skip-temperature-admission \
+  -- .venv/bin/python scripts/edge_asr.py tools benchmark-qwen3 \
+  --config configs/optimization/fixed100_gguf_q8_2t.toml \
+  --manifest "<동일순서-manifest.jsonl>" \
+  --output "results/optimization/opt2/<고유ID>/gguf-2t" --repetitions 1
 ```
 
-`evaluate`는 상위 경로 아래 새 실행 폴더를 생성합니다. 단독 smoke의 `--output`은 새 경로여야 하며 4GiB 주소 공간 제한을 검사하므로 `thermal-run` 안에서 실행합니다. 기존 온도·시간·메모리 보호 기본값을 임의로 완화하지 않습니다. 이번 사용자는 온도 대기 없이 진행하도록 지정했으며 해당 실행에만 `--temperature-policy operational --skip-temperature-admission`을 명시하고 온도·클럭·제한 플래그를 기록합니다.
+ONNX 측정은 guard와 자식 명령 모두 표의 ONNX Python·설정을 사용합니다. `evaluate`도 공통 batch 평가를 지원하지만 첫 추론/워밍업을 분리하는 이번 기준선은 `benchmark-qwen3`를 사용합니다. [공통 평가·재채점](evaluation.md), [계측 범위](../reference/benchmark_design.md)를 따릅니다.
 
-GGUF Q8_0은 [빌드 안내](../../experiments/qwen3_optimization/gguf/README.md)와 [OPT-2 프로토콜](../research/opt2_gguf.md)을 따릅니다. 기존 `.venv`의 표준 라이브러리 ctypes로 별도 C ABI를 호출하므로 Python 환경을 수정하지 않습니다. `configs/optimization/opt2_gguf_q8_2t.toml`을 공통 `evaluate` 또는 `tools benchmark-qwen3`에 전달합니다. 후자는 기존 `opt0-baseline`과 같은 반복 실행기이며 ONNX/GGUF 둘 다 지원합니다.
+## 이전 실험 재현
 
-설정/환경/모델/입력 해시와 원시 결과를 보관한 뒤 요약만 `results/summaries/optimization/`에 추가합니다. 이전 실측과 새 OPT 실행을 합쳐 성능을 주장하지 않습니다. 성공한 입력만 CER로 보고하지 말고 실패·커버리지도 표시합니다. [공통 평가·재채점](evaluation.md), [측정 계약](../reference/benchmark_design.md)을 따릅니다.
+이전1T 시작 설정과 KSS 설정은 [설정 색인](../../configs/README.md)에 보존합니다. 소규모 반복·56ms 진단은 [OPT-0](../research/opt0_pilot.md), 별도 C API/ORT 호출 계측은 [OPT-1](../research/opt1_profiling.md), 최초 GGUF/KSS 비교는 [OPT-2](../research/opt2_gguf.md)를 따릅니다. `opt0-baseline`은 현재 `benchmark-qwen3`와 같은 실행기 이름입니다. 프로파일 계측 실행과 일반 성능 측정은 구분합니다.

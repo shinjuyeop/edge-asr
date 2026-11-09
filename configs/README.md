@@ -1,12 +1,22 @@
 # 실행 설정
 
-| 경로 | 용도 |
-| --- | --- |
-| [optimization/qwen3_onnx_int8.toml](optimization/qwen3_onnx_int8.toml) | Qwen 최적화 시작 설정. 기존 1T ONNX 정책·모델 재사용, 출력 경로 분리; 기준선 확정 전 |
-| [optimization/opt0_onnx_2t.toml](optimization/opt0_onnx_2t.toml) | OPT-0 소규모 실측의 2T 고정 설정. [프로토콜](../docs/research/opt0_pilot.md) |
-| [optimization/opt2_gguf_q8_2t.toml](optimization/opt2_gguf_q8_2t.toml) | 별도 llama.cpp/libmtmd CPU·text/mmproj Q8_0·2T. [비교 계약](../docs/research/opt2_gguf.md) |
-| [optimization/fixed100_onnx_2t.toml](optimization/fixed100_onnx_2t.toml), [optimization/fixed100_gguf_q8_2t.toml](optimization/fixed100_gguf_q8_2t.toml) | [새100개 출발 기준선](../docs/research/fixed100_baseline.md). 기존2T의 model/audio/디코딩·워밍업 정책 유지, 출력 경로 분리 |
-| [legacy/](legacy/README.md) | 기존 세 모델 batch·Zip 1배속·M1 설정 원본 |
-| `eval_manifest.example.jsonl` | 공통 평가 manifest 형식 예시 |
+## 현재 고정100개 평가
 
-설정 경로는 저장소 루트 기준입니다. 기존 CLI 기본 모델은 Zipformer로 유지하고 신규 OPT 명령에서 설정을 명시합니다. [공통 평가](../docs/guides/evaluation.md), [구조 이행](../docs/reference/structure_migration.md)을 참고하세요.
+| 설정 | 용도 |
+| --- | --- |
+| [fixed100_onnx_2t.toml](optimization/fixed100_onnx_2t.toml) | 기존 ONNX INT8 2T 출발 참조 |
+| [fixed100_gguf_q8_2t.toml](optimization/fixed100_gguf_q8_2t.toml) | GGUF Q8_0 2T 자체 최적화 기준선 |
+| [eval_manifest.example.jsonl](eval_manifest.example.jsonl) | manifest 형식만 보여 주는 예시2줄. 실제100개 음성·정답이 아님 |
+
+[평가 기준](../docs/research/fixed100_baseline.md), [최신 실측](../results/summaries/optimization/fixed100-baseline-20261109.md), [실행 안내](../docs/guides/qwen3_optimization.md)를 따릅니다. 실제 입력은 로컬 `data/evaluation/edge100-20261109-01/manifest.jsonl`이며 고정 평가 순서는 별도 실행 경로에서 준비합니다.
+
+## 이전 실험 재현
+
+| 설정 | 당시 용도 |
+| --- | --- |
+| [opt0_onnx_2t.toml](optimization/opt0_onnx_2t.toml) | OPT-0 소규모 반복·오류 재현. [프로토콜](../docs/research/opt0_pilot.md) |
+| [opt2_gguf_q8_2t.toml](optimization/opt2_gguf_q8_2t.toml) | OPT-2 최초 GGUF/KSS 비교. [비교 계약](../docs/research/opt2_gguf.md) |
+| [qwen3_onnx_int8.toml](optimization/qwen3_onnx_int8.toml) | 프로젝트 전환 당시1T 시작 설정. 현재2T 기준 설정과 구분 |
+| [legacy/](legacy/README.md) | 기존 세 모델 batch·Zip 1배속·M1 설정 |
+
+설정 안의 상대 경로는 저장소 루트 기준입니다. CLI 기본 모델은 Zipformer이므로 Qwen 실행에는 설정을 명시합니다. 기존 설정을 덮어쓰지 않고 새 후보 설정·고유 실행 ID를 사용합니다.
