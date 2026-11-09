@@ -51,6 +51,6 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv/bin/python -m unittest discover -
 
 실제 평가는 [Qwen 최적화 실행 안내](docs/guides/qwen3_optimization.md)를 따릅니다. 새 설정은 기존 Qwen 모델·디코딩 정책을 재사용하는 시작점이며 반복 실측으로 확정한 OPT 기준선은 아닙니다. 마이크는 아직 없고 파일 기반으로 검증합니다.
 
-다음 평가 준비는 [개발100개·확대 평가약1,000개 전략](docs/research/qwen3_optimization.md#평가-규모와-실행-주기--2026-11-09-합의)을 따릅니다. 개발 목록은 총 음성10~15분을 목표로 고정하고 변경한 구성부터 검사합니다. 확대 평가는 유망한 후보에 적용하며 새 목록의 실제 길이·파일럿 측정으로 소요 시간을 확인합니다. 현재 완료한 KSS50 결과와 새 준비 계획을 구분합니다.
+다음 평가 준비는 [고정100개 우선 전략](docs/research/qwen3_optimization.md#평가-규모와-실행-주기--2026-11-09-합의)을 따릅니다. 개발·후보 비교 모두 고유100개를 사용하고 총 음성10~15분을 목표로 선정합니다. 개발 중에는 변경한 구성부터 검사하며 약1,000개 확장은 선택 후속으로 둡니다. 새 목록의 실제 길이·파일럿 측정으로 소요 시간을 확인하고 현재 완료한 KSS50 결과와 새 준비 계획을 구분합니다. 100개 결과는 소규모 회귀 평가 범위로 해석합니다.
 
 기존 `evaluate`, `score`, `live`, `tools` 명령 이름은 유지합니다. 설정 파일 위치는 `configs/legacy/`로 바뀌었고, 인자 없는 `evaluate`의 기본 모델은 기존 Zipformer입니다. 과거 자막은 [legacy 사용법](docs/guides/legacy/live_captions.md)을 참고하세요. 문서 전체는 [문서 색인](docs/README.md), 계측 정의는 [측정 계약](docs/reference/benchmark_design.md)에 있습니다.
