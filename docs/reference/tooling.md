@@ -32,6 +32,7 @@
 | `prepare-volume`, `prepare-vad`, `prepare-vad-overlap`, `prepare-segments` | 원본 보존 파생 입력·구간 공학 검사 |
 | `prepare-public-review`, `materialize-review`, `prepare-annotations`, `review-annotations` | 공개 음성·검수/불확실 주석 관리 |
 | `compare`, `probe-*` | RP5 모델/전처리/VAD/구간/동시 부하 측정 |
+| `opt0-baseline` | [Qwen 단독 반복·고정 PCM 재현](../research/opt0_pilot.md), 첫 추론/워밍업/반복 구분 |
 | `probe-qwen3`, `compare-qwen3` | [Qwen 별도 환경의 첫 실행·세 모델 KSS 단회 탐색](../archive/model-comparison/qwen3_batch.md) |
 | `compare-qwen3-realtime` | [Qwen VAD 구간·Zip 동시 실행](../archive/model-comparison/qwen3_realtime.md), 사전 고정 순서·실패 보존 |
 | `prepare-validation`, `validate-files` | [새 문장 30개와 30분 연속 입력](../archive/model-comparison/file_validation.md), 별도 워밍업·원본 보존·고정 순서 |
@@ -44,3 +45,5 @@
 구체 옵션과 전체 목록은 CLI help를 기준으로 한다. 실험별 입력·조건·제약은 [연구 색인](../archive/model-comparison/README.md), 실제 수치는 [결과 색인](../../results/summaries/README.md)에 둔다. `probe-concurrent`의 구간 reset 병합·연속 token 진단·자막 표시는 서로 다른 모드이며 동시에 활성화하지 않는다.
 
 옛 `scripts/*.py` 명령은 [과거 명령 이행표](../archive/command_migration.md)에 모았다. 별칭은 유지하지만 새 문서는 현재 명령을 사용한다. 과거 원시/영수증의 명령이나 소스 해시를 현재 경로로 소급 변경하지 않는다.
+
+사용자가 온도 대기 없이 운영 검사를 선택한 경우 `thermal-run --temperature-policy operational --skip-temperature-admission`을 명시합니다. 시작 온도는 관측만 하고 온도/열 감속으로 중단하지 않으며, 기본 펌웨어 보호·전압/필수 센서·외부 시간·메모리 제한은 적용합니다. 기존 기본 정책은 유지합니다. [실험 조건 변경 기록](../research/opt0_pilot.md#프로토콜-수정-v3--사용자-지정-운영-조건).

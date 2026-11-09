@@ -4,7 +4,7 @@
 
 Qwen3-ASR-0.6B를 Raspberry Pi 5에서 실행하며 **한국어 정확도를 유지하면서 실제 음성 인식 지연을 줄이는** 프로젝트입니다. 추론 시간뿐 아니라 실패·메모리·발열·연속 입력의 안정성을 함께 평가합니다. Host에서 개발·모의 테스트한 뒤 main에 반영하고 RP5에서 실제 추론을 검증합니다.
 
-현재 Qwen의 sherpa-onnx INT8 batch 어댑터와 공통 평가기가 구현되어 있습니다. 새 OPT-0 기준선 고정, 구간별 프로파일링, GGUF 엔진 비교, Qwen 단독 부분 자막은 아직 완료하지 않았습니다. 이전 Zipformer/SenseVoice/Qwen 비교와 Zip+Refine 자막은 `legacy`로 구분해 보존합니다. 이전 실측을 새 최적화 성과로 표시하지 않습니다.
+현재 Qwen의 sherpa-onnx INT8 batch 어댑터와 공통 평가기가 구현되어 있습니다. 첫 OPT-0 소규모 운영 기준선과 56ms 오류 재현을 완료했습니다. 구간별 프로파일링, GGUF 엔진 비교, Qwen 단독 부분 자막은 후속 작업입니다. [첫 결과](results/summaries/optimization/opt0-pilot-20261109.md). 이전 Zipformer/SenseVoice/Qwen 비교와 Zip+Refine 자막은 `legacy`로 구분해 보존합니다. 이전 실측을 새 최적화 성과로 표시하지 않습니다.
 
 - [현재 상태와 다음 작업](docs/status.md)
 - [OPT-0~4 연구 계획](docs/research/qwen3_optimization.md)
@@ -20,7 +20,7 @@ src/edge_asr/
 ├── evaluation.py, scoring.py # 공통 평가·정규화·재채점
 ├── streaming.py, vad*.py     # 재사용 가능한 입력·VAD·계측 기반
 ├── tools/
-│   ├── optimization/        # 현재 Qwen 단독 smoke; 이후 검증된 OPT 도구
+│   ├── optimization/        # Qwen smoke·반복 기준선·고정 PCM 재현
 │   ├── data/                # 공통 평가 데이터 준비
 │   ├── probes/, reports/    # 공통 부하·열 검사와 냉각 보고
 │   └── maintenance/         # 자산 보존·유지보수
