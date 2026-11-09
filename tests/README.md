@@ -28,3 +28,5 @@ Linux 프로세스 검사는 해당 환경에서, 합성 ffmpeg 변환 검사는
 ORT 계측의 native mock은 `EDGE_ASR_ORT_HEADERS`에 별도 공식 1.28.2 헤더 경로를 지정하고 g++가 있을 때 실행합니다. [빌드·검사 안내](../experiments/qwen3_optimization/profiling/README.md). 지정하지 않으면 해당 검사 1개만 이유와 함께 skip하며 Python 경계/실패 검사는 실행합니다. 실제 ASR 추론과 구분합니다.
 
 GGUF의 선택적 C++ 문법 검사에는 `EDGE_ASR_LLAMA_SOURCE`를 고정 upstream 소스 경로로 지정합니다. 어댑터의 C ABI 모의 검사는 native 없이 실행하며 자산/바이너리 해시·같은 PCM 전달·원문 보존·잘림/반복/UTF-8 실패를 확인합니다. 실제 GGUF 로딩·정확도·처리 시간은 RP5 실행으로만 검증합니다.
+
+`optimization/test_fixed100.py`는 고정 선정의 입력 순서 독립성·화자 할당량·정규화 중복 제외·할당량 부족 거부·원본 해시·tar 경로/링크·FLAC 형식 검사를 수행합니다. 기존 ffmpeg가 있으면 합성 PCM의 실제 변환·원음 보존·프레임 불일치 거부도 확인합니다. 공개 데이터 다운로드나 ASR 추론은 하지 않습니다. 실제100개 파일의 준비·검증은 [별도 기록](../results/summaries/optimization/fixed100-preparation-20261109.md)에 남깁니다.

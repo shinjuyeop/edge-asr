@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "kind": "fixed100_dataset_preparation",
+  "date": "2026-11-09",
+  "input_id": "edge100-20261109-01",
+  "preparation_source_commit": "ba54783f269717d453fcaf880b3b381772d293ad",
+  "preparation_script_sha256": "803757d5541d30bb16836853c52846965de6525877e343fe6a46a7f9176f698f",
+  "preparation_source_dirty": false,
+  "dataset_path": "data/evaluation/edge100-20261109-01",
+  "statistics": {
+    "count": 100,
+    "total_audio_s": 891.1448125,
+    "min_audio_s": 4.2,
+    "max_audio_s": 23.04,
+    "source_counts": {
+      "fleurs": 40,
+      "zeroth": 60
+    },
+    "length_counts": {
+      "10to15s": 17,
+      "under10s": 81,
+      "15to30s": 2
+    },
+    "gender_counts": {
+      "female": 51,
+      "male": 49
+    },
+    "zeroth_speaker_counts": {
+      "104": 6,
+      "105": 6,
+      "112": 6,
+      "118": 6,
+      "121": 6,
+      "126": 6,
+      "132": 6,
+      "137": 6,
+      "147": 6,
+      "149": 6
+    },
+    "fleurs_speaker_count": null,
+    "reference_characters": 3848,
+    "unmeasured": {
+      "cer": null,
+      "rtf": null,
+      "ttft_s": null
+    },
+    "limitations": "낭독·개발 회귀100개. 자유발화·잡음·마이크·30초 이상 입력·독립 holdout·모델 학습 중복 미검증."
+  },
+  "files": 220,
+  "dataset_bytes": 60974318,
+  "model_inference_executed": false,
+  "verification": {
+    "unique_audio": 100,
+    "unique_normalized_references": 100,
+    "previous_normalized_reference_overlap": 0,
+    "previous_pcm_overlap": 0,
+    "previous_fleurs_sentence_id_overlap": 0,
+    "verified_source_formats": {
+      "('fleurs', 'pcm_f32le')": 40,
+      "('zeroth', 'flac')": 60
+    },
+    "manifest_sha256": "f693163f3d0d11a09873d3d5dbbd8a68aea6ebd1897cc051fd99dd076f8b76ab",
+    "preparation_source_commit": "ba54783f269717d453fcaf880b3b381772d293ad",
+    "asr_executed": false
+  },
+  "source_assets": {
+    "zeroth-prefix.bin": {
+      "url": "https://www.openslr.org/resources/40/zeroth_korean.tar.gz",
+      "sha256": "7cafae27a70315876bfea15406562e80a6f922d1fc437716a658020e64d97d41",
+      "bytes": 134217728
+    },
+    "fleurs-test.tar.gz": {
+      "url": "https://huggingface.co/datasets/google/fleurs/resolve/70bb2e84b976b7e960aa89f1c648e09c59f894dd/data/ko_kr/audio/test.tar.gz",
+      "sha256": "3489e529f2aad18d3357b746c5f955941d258b79dc60d8a102d5bced2a223184",
+      "bytes": 214425558
+    },
+    "fleurs-test.tsv": {
+      "url": "https://huggingface.co/datasets/google/fleurs/resolve/70bb2e84b976b7e960aa89f1c648e09c59f894dd/data/ko_kr/test.tsv",
+      "sha256": "cf2f7c8765f6203e3c46ef620d5e936d3f331b6e8865455557777dd1347517f5",
+      "bytes": 211844
+    },
+    "FLEURS_README.md": {
+      "url": "https://huggingface.co/datasets/google/fleurs/resolve/70bb2e84b976b7e960aa89f1c648e09c59f894dd/README.md",
+      "sha256": "688f79f2a5c731af3796e9f683eb02f9b3f09d040decd8c5625d0f37098e71c6",
+      "bytes": 385614
+    },
+    "ZEROTH_info.txt": {
+      "url": "https://www.openslr.org/resources/40/info.txt",
+      "sha256": "a6a9252ee4c93c0c18cf446ba41f82e260aaaf40447da0a3adffac71af3c16e2",
+      "bytes": 473
+    },
+    "ZEROTH_about.html": {
+      "url": "https://www.openslr.org/resources/40/about.html",
+      "sha256": "f367f9c7b73c70c5c5f4e5115d28133532f002857978098c7f9ad6f2864c5f92",
+      "bytes": 820
+    },
+    "ZEROTH_checksum.md5": {
+      "url": "https://www.openslr.org/resources/40/checksum.md5",
+      "sha256": "8945b198864a404b8948d11ba5c5467597c991e56819acdd4bf9871de160faba",
+      "bytes": 143
+    }
+  },
+  "zeroth_archive_verification_scope": "공식 ETag에 묶은128MiB prefix에서 완전한test457개와 다음train시작 확인. 전체10GB archive MD5는 미검증. prefix SHA와 개별원음 SHA를 고정.",
+  "ffmpeg": "ffmpeg version 4.4.2-0ubuntu0.22.04.1 Copyright (c) 2000-2021 the FFmpeg developers",
+  "host_rp5_all_file_sha256_equal": true,
+  "metadata_sha256": {
+    "manifest.jsonl": "f693163f3d0d11a09873d3d5dbbd8a68aea6ebd1897cc051fd99dd076f8b76ab",
+    "selection.json": "b94ebf9699b7a6262bd478d3e1bd45f590c5df91aa23cf8fea6eee113e17426d",
+    "statistics.json": "0ea7bd5274598c2aab58d6bccadf238f3c2fa30d571fe48e78c160e990dede85",
+    "provenance.json": "47db0ff4320d4d6a88d3013f36317beadad84cc65aaff2da28db0b3afea95671"
+  },
+  "selection_policy": {
+    "name": "qwen-fixed100-v1",
+    "seed": "edge-asr-fixed100-20261109-v1",
+    "count": 100,
+    "source_counts": {
+      "zeroth": 60,
+      "fleurs": 40
+    },
+    "zeroth_per_speaker": {
+      "0-10s": 5,
+      "10-30s": 1
+    },
+    "fleurs_gender_duration_quotas": {
+      "male": [
+        20,
+        4,
+        1
+      ],
+      "female": [
+        11,
+        3,
+        1
+      ]
+    },
+    "fleurs_duration_boundaries_s": [
+      0,
+      10,
+      15,
+      30
+    ],
+    "order": "source_id_lexical",
+    "normalization": "ko_cer_v1",
+    "audio": "16000Hz mono PCM16, no resampling, trimming, gain, padding",
+    "role": "development_regression_not_independent_holdout",
+    "license": "cc-by-4.0",
+    "target_duration_s": [
+      600,
+      900
+    ]
+  },
+  "excluded_previous_manifest_sha256": {
+    "data/evaluation/kss-dev50/manifest.jsonl": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+    "data/evaluation/fleurs-ko-test100/manifest.jsonl": "3e1c35d96c30b356c1ccc3b8a0b03dfa086c8d62344bd40abaae8cfbad4baede",
+    "data/evaluation/fleurs-prospective30-20261106-01/manifest.jsonl": "9c7b7f192591a94d09d4b4f5e251be4283ecfa9ef19d428180e16c37ab649e7d"
+  },
+  "host_tests": 346,
+  "rp5_tests": 346,
+  "preservation": {
+    "host": {
+      "protected_files": 16646,
+      "missing": [],
+      "changed": [],
+      "commit": "ba54783f269717d453fcaf880b3b381772d293ad"
+    },
+    "rp5": {
+      "protected_files": 14130,
+      "missing": [],
+      "changed": [],
+      "commit": "ba54783f269717d453fcaf880b3b381772d293ad"
+    }
+  },
+  "new100_asr_results": {
+    "cer": null,
+    "rtf": null,
+    "ttft_s": null
+  }
+}

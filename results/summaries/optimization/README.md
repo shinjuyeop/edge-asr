@@ -13,3 +13,5 @@
 - [2026-11-09 OPT-1 ONNX 호출 경계 실측](opt1-profile-20261109.md): 고정 KSS에서 prefill+token decode 약71%, 56ms 반복의 후속64회 decode 비용 확인. 기존 패키지·모델 보존·계측 on/off 비교.
 
 - [2026-11-09 OPT-2 GGUF Q8_0 CPU 비교](opt2-gguf-20261109.md): KSS50 양쪽50/50 성공. GGUF CER2.65%·RTF0.8025, ONNX CER3.57%·RTF0.7218. GGUF는 오류7개·RSS5.7% 감소, 처리11.2% 증가. 양쪽 열 제한 관측·속도 교체 보류.
+
+- [2026-11-09 고정100개 입력 준비·검증](fixed100-preparation-20261109.md): Zeroth60·FLEURS40, 14분51.145초. 이전 정답/PCM 중복0, Host/RP5 220파일 해시 일치·각346개 테스트. ASR 성능은 미측정.

@@ -2,6 +2,12 @@
 
 오디오·전사·준비 이력은 Git 제외 `data/evaluation/`에 보관합니다. Host에서 다운로드·형식 변환·검증하고 RP5에는 검증한 파일을 전달합니다. 추론은 RP5에서 수행합니다. [공통 평가 안내](evaluation.md)의 JSONL과 SHA-256 검증을 사용합니다.
 
+## 현재 최적화용 고정100개
+
+`data/evaluation/edge100-20261109-01/manifest.jsonl`을 준비했습니다. 공식 Zeroth60개(화자10명×6)와 FLEURS 한국어40개이며 총891.1448125초입니다. 형식은16kHz mono PCM16 WAV, 공통 `ko_cer_v1` 채점이며 낭독·개발 회귀용입니다. 자유발화·잡음·최종 독립 평가를 대신하지 않습니다. ASR 성능은 아직 미측정입니다.
+
+[출처·선정 규칙·원본 검증·준비/재검증 명령](../research/fixed100.md), [준비 결과](../../results/summaries/optimization/fixed100-preparation-20261109.md)를 따릅니다. 기존 KSS50·FLEURS test100·validation30과 원시 결과는 그대로 보존하며 아래 내용은 이전 KSS 기준선의 재현 안내입니다.
+
 ## 첫 공식 샘플과 KSS 개발용 50개
 
 `scripts/edge_asr.py tools prepare-official`는 기존 모델의 공식 `0.wav`를 수정 없이 검사하여 첫 동작 확인 목록을 만듭니다. 아래 50개 목록은 여러 발화에서의 개발 기준선을 준비하는 별도 작업입니다.
