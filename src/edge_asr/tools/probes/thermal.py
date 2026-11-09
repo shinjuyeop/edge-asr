@@ -60,6 +60,7 @@ def run(
     console_callback=None,
     timeout_s=600,
     admission_mc=53000,
+    skip_temperature_admission=False,
 ):
     if type(timeout_s) is not int or not 1 <= timeout_s <= 2100:
         raise ValueError("외부 제한은 정수 1~2100초여야 합니다.")
@@ -69,6 +70,10 @@ def run(
         raise ValueError("시작 상한은 53000 또는 60000m°C여야 합니다.")
     if admission_mc != 53000 and temperature_policy != "operational":
         raise ValueError("60°C 시작 상한은 별도 운영 검사에서만 지원합니다.")
+    if type(skip_temperature_admission) is not bool or (
+        skip_temperature_admission and temperature_policy != "operational"
+    ):
+        raise ValueError("온도 시작 대기 생략은 명시적인 operational 정책에서만 지원합니다.")
     settings = policy_settings(temperature_policy)
     operational = temperature_policy == "operational"
     output.mkdir(parents=True, exist_ok=False)
@@ -113,6 +118,10 @@ def run(
             firmware_thermal_protection="unchanged",
             scope="운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
         )
+    if skip_temperature_admission:
+        record["policy"].update(
+            admission_mc=None, admission_consecutive=0, temperature_admission="observe_only"
+        )
 
     def reject(row):
         return rejection(
@@ -125,10 +134,14 @@ def run(
     save(receipt, record)
     try:
         record["before"] = (
-            admit(output)
+            sample(measure_arm_clock=True)
+            if skip_temperature_admission
+            else admit(output)
             if admission_mc == 53000
             else admit(output, max_temperature_mc=admission_mc)
         )
+        if skip_temperature_admission and reject(record["before"]):
+            raise RuntimeError(reject(record["before"]))
         record["status"] = "running"
         save(receipt, record)
         wrapped = [
@@ -291,6 +304,11 @@ def main():
         help="시작 온도 상한; 기본53°C. 운영 검사만 별도60°C 조건 허용",
     )
     parser.add_argument(
+        "--skip-temperature-admission",
+        action="store_true",
+        help="명시적 operational 검사에서 온도 시작 대기 생략. 센서·전압·시간·메모리 제한 유지",
+    )
+    parser.add_argument(
         "--temperature-policy",
         choices=("legacy75", "warn75-stop80", "operational"),
         default="legacy75",
@@ -311,6 +329,7 @@ def main():
             temperature_policy=args.temperature_policy,
             timeout_s=args.timeout_s,
             admission_mc=args.admission_temperature_c * 1000,
+            skip_temperature_admission=args.skip_temperature_admission,
         )
     )
 

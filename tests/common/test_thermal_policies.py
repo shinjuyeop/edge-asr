@@ -15,6 +15,59 @@ LIMITS = "Max address space         4294967296           4294967296           by
 
 
 class ThermalPolicyTests(unittest.TestCase):
+    def test_skipping_temperature_admission_is_explicit_operational_only(self):
+        hot = {**COOL, "temperature_mc": 86000, "current_limits": 14, "history_limits": 14}
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with self.assertRaises(ValueError):
+                guard.run(root, root / "bad", ["false"], skip_temperature_admission=True)
+            self.assertFalse((root / "bad").exists())
+            child = Mock()
+            child.poll.return_value = 0
+            child.wait.return_value = 0
+            with (
+                patch.object(guard, "admit") as admission,
+                patch.object(guard, "sample", return_value=hot),
+                patch.object(guard.subprocess, "Popen", return_value=child),
+                patch.object(guard, "terminate"),
+            ):
+                guard.run(
+                    root,
+                    root / "hot",
+                    ["fixture"],
+                    temperature_policy="operational",
+                    skip_temperature_admission=True,
+                )
+            admission.assert_not_called()
+            receipt = json.loads((root / "hot/execution.json").read_text())
+            self.assertEqual(receipt["before"], hot)
+            self.assertIsNone(receipt["policy"]["admission_mc"])
+            self.assertIsNone(receipt["policy"]["stop_mc"])
+            self.assertEqual(receipt["policy"]["temperature_admission"], "observe_only")
+            self.assertFalse(receipt["operational_valid"])
+
+    def test_observe_only_temperature_still_rejects_voltage_before_launch(self):
+        hot = {**COOL, "temperature_mc": 86000, "current_limits": 15, "history_limits": 15}
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with (
+                patch.object(guard, "sample", return_value=hot),
+                patch.object(guard.subprocess, "Popen") as launch,
+            ):
+                self.assertEqual(
+                    guard.run(
+                        root,
+                        root / "bad",
+                        ["fixture"],
+                        temperature_policy="operational",
+                        skip_temperature_admission=True,
+                    ),
+                    1,
+                )
+            launch.assert_not_called()
+            receipt = json.loads((root / "bad/execution.json").read_text())
+            self.assertIn("current_undervoltage", receipt["error"])
+
     def test_60_degree_admission_is_explicit_operational_only_and_recorded(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
