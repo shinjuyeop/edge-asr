@@ -16,10 +16,10 @@ from edge_asr.runtime import environment, limits_verified
 from edge_asr.scoring import save_scores
 
 
-def schedule(samples, repetitions):
+def schedule(samples, repetitions, order_offset=0):
     """매 라운드 시작 파일을 회전한다. 순서가 열·초기 상태와 항상 겹치지 않게 한다."""
     for repeat in range(repetitions):
-        offset = repeat % len(samples)
+        offset = (repeat + order_offset) % len(samples)
         for sample in samples[offset:] + samples[:offset]:
             yield repeat + 1, sample
 
@@ -32,14 +32,19 @@ def run(
     *,
     protocol="baseline",
     repetitions=5,
+    order_offset=0,
     adapter_factory=None,
 ):
     if protocol not in ("baseline", "reproduction"):
         raise ValueError("baseline 또는 reproduction 프로토콜이 필요합니다.")
     if type(repetitions) is not int or not 1 <= repetitions <= 10:
         raise ValueError("반복 수는 1~10 정수여야 합니다.")
+    if type(order_offset) is not int or not 0 <= order_offset < 50:
+        raise ValueError("순서 offset은 0~49 정수여야 합니다.")
     if protocol == "reproduction" and repetitions != 1:
         raise ValueError("재현은 manifest의 고정 순서를 한 번 실행합니다.")
+    if protocol == "reproduction" and order_offset != 0:
+        raise ValueError("재현 입력 순서는 바꿀 수 없습니다.")
     config = load_evaluation_config(config_path)
     if config["model"]["family"] != "qwen3_asr" or config["evaluation"]["mode"] != "batch":
         raise ValueError("Qwen batch 설정이 필요합니다.")
@@ -76,6 +81,7 @@ def run(
         "input_manifest_sha256": manifest_sha,
         "environment": environment(),
         "repetitions": repetitions,
+        "order_offset": order_offset,
         "model_load": None,
         "calls": [],
         "unmeasured": {"ttft_s": None, "encoder_s": None, "prefill_s": None, "decode_s": None},
@@ -92,7 +98,7 @@ def run(
         for s in samples:
             if s.audio_sha256 is None or s.audio_sha256 != audio[s.id].sha256:
                 raise ValueError(f"입력 SHA-256 불일치 또는 누락: {s.id}")
-        for repeat, s in schedule(samples, repetitions):
+        for repeat, s in schedule(samples, repetitions, order_offset):
             rows.append(
                 {
                     "schema_version": 1,
@@ -186,7 +192,7 @@ def run(
                     result = transcribe(samples[0], phase)
                     if result["status"] != "success":
                         raise RuntimeError("첫 추론/워밍업 실패로 반복 기준선을 시작하지 않습니다.")
-            for row, (repeat, s) in zip(rows, schedule(samples, repetitions)):
+            for row, (repeat, s) in zip(rows, schedule(samples, repetitions, order_offset)):
                 result = transcribe(s, "steady" if protocol == "baseline" else "diagnostic", repeat)
                 row.update(
                     {
@@ -229,6 +235,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--protocol", choices=("baseline", "reproduction"), default="baseline")
     parser.add_argument("--repetitions", type=int, default=5)
+    parser.add_argument("--order-offset", type=int, default=0)
     args = parser.parse_args()
     return run(
         Path.cwd(),
@@ -237,6 +244,7 @@ def main():
         args.output.resolve(),
         protocol=args.protocol,
         repetitions=args.repetitions,
+        order_offset=args.order_offset,
     )
 
 

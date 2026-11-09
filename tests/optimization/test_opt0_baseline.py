@@ -62,7 +62,7 @@ class Opt0Tests(unittest.TestCase):
             )
         write_jsonl(self.manifest, self.rows)
 
-    def execute(self, adapter, *, protocol="baseline", repetitions=2):
+    def execute(self, adapter, *, protocol="baseline", repetitions=2, order_offset=0):
         with (
             patch.object(baseline, "limits_verified", return_value=True),
             patch.object(baseline, "environment", return_value={"fixture": True}),
@@ -75,6 +75,7 @@ class Opt0Tests(unittest.TestCase):
                 self.output,
                 protocol=protocol,
                 repetitions=repetitions,
+                order_offset=order_offset,
                 adapter_factory=lambda *args: adapter,
             )
         return code, json.loads((self.output / "worker.json").read_text())
@@ -96,6 +97,12 @@ class Opt0Tests(unittest.TestCase):
         with self.assertRaises(FileExistsError):
             self.execute(Adapter())
         self.assertEqual((self.output / "worker.json").read_bytes(), before)
+
+    def test_independent_run_rotates_only_scored_inputs_and_keeps_warmup_fixed(self):
+        adapter = Adapter()
+        code, _ = self.execute(adapter, repetitions=1, order_offset=1)
+        self.assertEqual(code, 0)
+        self.assertEqual(adapter.calls, [1, 1, 1, 1, 2, 1])
 
     def test_failure_keeps_native_metadata_and_does_not_shrink_denominator(self):
         code, worker = self.execute(Adapter(fail_second=True))
