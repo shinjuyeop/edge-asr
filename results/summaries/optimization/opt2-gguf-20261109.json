@@ -1,0 +1,1540 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-09",
+  "kind": "opt2_gguf_q8_cpu_comparison",
+  "run_id": "opt2-gguf-20261109-01",
+  "cases": [
+    {
+      "id": "gguf-smoke-02",
+      "data_path": "results/optimization/opt2/opt2-gguf-20261109-01/gguf-smoke-02",
+      "source_commit": "065c174554ac1f791f5bd577b70b97b108e1242c",
+      "execution_status": "completed",
+      "worker_status": "completed",
+      "source_dirty": false,
+      "limits_verified": true,
+      "operational_valid": true,
+      "config_sha256": "b08a1652a390b3b633cd517f6e5076ba34b0f6ae028b8f178ca5def9f5882793",
+      "input_manifest_sha256": "0062d7312c0579cb8b818f8136c0bbba780b110a6acd9aea2e4bb144462c4b11",
+      "overall": {
+        "planned": 1,
+        "successful": 1,
+        "failed": 0,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": true,
+        "reference_character_coverage": 1.0,
+        "cer": {
+          "value": 0.0,
+          "reference_characters": 3,
+          "errors": 0,
+          "substitutions": 0,
+          "deletions": 0,
+          "insertions": 0,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.8172298824440885,
+        "total_audio_s": 0.9260625,
+        "total_inference_wall_s": 0.7568059480108786,
+        "mean_process_cpu_percent": 198.48921443445192,
+        "file_processing_s": {
+          "n": 1,
+          "mean": 0.7568059480108786,
+          "p50": null,
+          "p95": null,
+          "max": 0.7568059480108786
+        },
+        "file_rtf": {
+          "n": 1,
+          "mean": 0.8172298824440885,
+          "p50": null,
+          "p95": null,
+          "max": 0.8172298824440885
+        },
+        "rss_observed_max_mib": 1575.390625
+      },
+      "model_load_s": 1.3692451609822456,
+      "rss_observed_max_all_phases_mib": 1575.390625,
+      "first_inference_s": {
+        "n": 1,
+        "mean": 0.7896686510066502,
+        "p50": null,
+        "p95": null,
+        "max": 0.7896686510066502
+      },
+      "warmup_s": {
+        "n": 3,
+        "mean": 0.7579936543382549,
+        "p50": 0.7573932110099122,
+        "p95": 0.7592046329809818,
+        "max": 0.7592046329809818
+      },
+      "temperature_c": {
+        "initial": 56.75,
+        "max": 69.4,
+        "final": 68.85
+      },
+      "current_limits": [
+        0
+      ],
+      "history_limits_before_after": [
+        14,
+        14
+      ],
+      "cpu0_freq_khz": {
+        "min": 1700000,
+        "max": 2400000
+      },
+      "fan_rpm": {
+        "min": 5110,
+        "max": 6864
+      },
+      "arm_clock_hz": {
+        "min": 1700014464,
+        "max": 2400033792,
+        "missing_count": 0
+      },
+      "thermal_sample_count": 9,
+      "policy": {
+        "admission_mc": null,
+        "admission_consecutive": 0,
+        "stop_mc": null,
+        "interval_s": 1,
+        "timeout_s": 600,
+        "address_space_bytes": 4294967296,
+        "scope": "운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
+        "name": "operational",
+        "warn_mc": 80000,
+        "allow_thermal_limits": true,
+        "firmware_thermal_protection": "unchanged",
+        "temperature_admission": "observe_only"
+      },
+      "internal_stage_s": {
+        "kv_reset_s": {
+          "n": 1,
+          "mean": 0.006702609,
+          "p50": null,
+          "p95": null,
+          "max": 0.006702609
+        },
+        "preprocess_s": {
+          "n": 1,
+          "mean": 0.000253798,
+          "p50": null,
+          "p95": null,
+          "max": 0.000253798
+        },
+        "audio_and_prefill_s": {
+          "n": 1,
+          "mean": 0.527688728,
+          "p50": null,
+          "p95": null,
+          "max": 0.527688728
+        },
+        "token_decode_s": {
+          "n": 1,
+          "mean": 0.218590488,
+          "p50": null,
+          "p95": null,
+          "max": 0.218590488
+        },
+        "sampling_s": {
+          "n": 1,
+          "mean": 0.0031520999999999997,
+          "p50": null,
+          "p95": null,
+          "max": 0.0031520999999999997
+        },
+        "first_generated_token_s": {
+          "n": 1,
+          "mean": 0.53528888,
+          "p50": null,
+          "p95": null,
+          "max": 0.53528888
+        },
+        "native_elapsed_s": {
+          "n": 1,
+          "mean": 0.756428277,
+          "p50": null,
+          "p95": null,
+          "max": 0.756428277
+        }
+      },
+      "runtime_configuration": {
+        "audio_sample_rate": 16000,
+        "cache_type_k": "f16",
+        "cache_type_v": "f16",
+        "context": 512,
+        "flash_attention_setting": -1,
+        "llama_version": "0.9.0-dev",
+        "n_batch": 512,
+        "n_ubatch": 512,
+        "system_info": "CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | ",
+        "threads": 2,
+        "threads_batch": 2
+      }
+    },
+    {
+      "id": "onnx-pilot-01",
+      "data_path": "results/optimization/opt2/opt2-gguf-20261109-01/onnx-pilot-01",
+      "source_commit": "065c174554ac1f791f5bd577b70b97b108e1242c",
+      "execution_status": "completed",
+      "worker_status": "completed",
+      "source_dirty": false,
+      "limits_verified": true,
+      "operational_valid": true,
+      "config_sha256": "afeb8898f3f078cd5d2c4dbbb1e1edd7c739a5c60d5c146be677cbdbbf33bb9c",
+      "input_manifest_sha256": "ef6860fb9283a726718f69d8a3cb6bab84460738c4264fb3b10f86f8a64ff744",
+      "overall": {
+        "planned": 30,
+        "successful": 30,
+        "failed": 0,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": true,
+        "reference_character_coverage": 1.0,
+        "cer": {
+          "value": 0.02197802197802198,
+          "reference_characters": 455,
+          "errors": 10,
+          "substitutions": 10,
+          "deletions": 0,
+          "insertions": 0,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.7145246441086541,
+        "total_audio_s": 98.89531249999999,
+        "total_inference_wall_s": 70.66313796807663,
+        "mean_process_cpu_percent": 195.68139787744505,
+        "file_processing_s": {
+          "n": 30,
+          "mean": 2.3554379322692207,
+          "p50": 2.1716203539981507,
+          "p95": 3.8031689589843154,
+          "max": 3.814436849002959
+        },
+        "file_rtf": {
+          "n": 30,
+          "mean": 0.7434336169504003,
+          "p50": 0.7211865110073337,
+          "p95": 0.8875970898278189,
+          "max": 0.8920027168925603
+        },
+        "rss_observed_max_mib": 1757.078125
+      },
+      "model_load_s": 5.235815952997655,
+      "rss_observed_max_all_phases_mib": 1757.078125,
+      "first_inference_s": {
+        "n": 1,
+        "mean": 0.8445970079919789,
+        "p50": null,
+        "p95": null,
+        "max": 0.8445970079919789
+      },
+      "warmup_s": {
+        "n": 3,
+        "mean": 0.8286018140012553,
+        "p50": 0.8286571970093064,
+        "p95": 0.8299059660057537,
+        "max": 0.8299059660057537
+      },
+      "temperature_c": {
+        "initial": 56.2,
+        "max": 83.7,
+        "final": 76.55
+      },
+      "current_limits": [
+        0,
+        8
+      ],
+      "history_limits_before_after": [
+        14,
+        14
+      ],
+      "cpu0_freq_khz": {
+        "min": 2400000,
+        "max": 2400000
+      },
+      "fan_rpm": {
+        "min": 3111,
+        "max": 9538
+      },
+      "arm_clock_hz": {
+        "min": 2311027968,
+        "max": 2400037120,
+        "missing_count": 0
+      },
+      "thermal_sample_count": 83,
+      "policy": {
+        "admission_mc": null,
+        "admission_consecutive": 0,
+        "stop_mc": null,
+        "interval_s": 1,
+        "timeout_s": 600,
+        "address_space_bytes": 4294967296,
+        "scope": "운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
+        "name": "operational",
+        "warn_mc": 80000,
+        "allow_thermal_limits": true,
+        "firmware_thermal_protection": "unchanged",
+        "temperature_admission": "observe_only"
+      }
+    },
+    {
+      "id": "gguf-pilot-01",
+      "data_path": "results/optimization/opt2/opt2-gguf-20261109-01/gguf-pilot-01",
+      "source_commit": "065c174554ac1f791f5bd577b70b97b108e1242c",
+      "execution_status": "completed",
+      "worker_status": "completed",
+      "source_dirty": false,
+      "limits_verified": true,
+      "operational_valid": true,
+      "config_sha256": "b08a1652a390b3b633cd517f6e5076ba34b0f6ae028b8f178ca5def9f5882793",
+      "input_manifest_sha256": "ef6860fb9283a726718f69d8a3cb6bab84460738c4264fb3b10f86f8a64ff744",
+      "overall": {
+        "planned": 30,
+        "successful": 30,
+        "failed": 0,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": true,
+        "reference_character_coverage": 1.0,
+        "cer": {
+          "value": 0.02197802197802198,
+          "reference_characters": 455,
+          "errors": 10,
+          "substitutions": 10,
+          "deletions": 0,
+          "insertions": 0,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.7593310349262362,
+        "total_audio_s": 98.89531249999999,
+        "total_inference_wall_s": 75.09427998997853,
+        "mean_process_cpu_percent": 199.2717790875284,
+        "file_processing_s": {
+          "n": 30,
+          "mean": 2.5031426663326175,
+          "p50": 2.4606867189868353,
+          "p95": 3.9268644739931915,
+          "max": 3.9378946390061174
+        },
+        "file_rtf": {
+          "n": 30,
+          "mean": 0.7874444360463259,
+          "p50": 0.7910586197265292,
+          "p95": 0.893880389258693,
+          "max": 0.8952415587486502
+        },
+        "rss_observed_max_mib": 1673.3125
+      },
+      "model_load_s": 1.1766553829947952,
+      "rss_observed_max_all_phases_mib": 1673.3125,
+      "first_inference_s": {
+        "n": 1,
+        "mean": 0.777696992008714,
+        "p50": null,
+        "p95": null,
+        "max": 0.777696992008714
+      },
+      "warmup_s": {
+        "n": 3,
+        "mean": 0.7836068356506681,
+        "p50": 0.7758280889829621,
+        "p95": 0.8025760039745364,
+        "max": 0.8025760039745364
+      },
+      "temperature_c": {
+        "initial": 76.55,
+        "max": 84.8,
+        "final": 79.3
+      },
+      "current_limits": [
+        0,
+        6,
+        8
+      ],
+      "history_limits_before_after": [
+        14,
+        14
+      ],
+      "cpu0_freq_khz": {
+        "min": 2400000,
+        "max": 2400000
+      },
+      "fan_rpm": {
+        "min": 9526,
+        "max": 9652
+      },
+      "arm_clock_hz": {
+        "min": 1500012800,
+        "max": 2400037120,
+        "missing_count": 0
+      },
+      "thermal_sample_count": 84,
+      "policy": {
+        "admission_mc": null,
+        "admission_consecutive": 0,
+        "stop_mc": null,
+        "interval_s": 1,
+        "timeout_s": 600,
+        "address_space_bytes": 4294967296,
+        "scope": "운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
+        "name": "operational",
+        "warn_mc": 80000,
+        "allow_thermal_limits": true,
+        "firmware_thermal_protection": "unchanged",
+        "temperature_admission": "observe_only"
+      },
+      "internal_stage_s": {
+        "kv_reset_s": {
+          "n": 30,
+          "mean": 0.007120432100000001,
+          "p50": 0.007020148,
+          "p95": 0.007618412,
+          "max": 0.009352388
+        },
+        "preprocess_s": {
+          "n": 30,
+          "mean": 0.0005826200333333332,
+          "p50": 0.000588023,
+          "p95": 0.000929063,
+          "max": 0.000941934
+        },
+        "audio_and_prefill_s": {
+          "n": 30,
+          "mean": 1.5891358060333332,
+          "p50": 1.61865578,
+          "p95": 2.478467138,
+          "max": 2.485758285
+        },
+        "token_decode_s": {
+          "n": 30,
+          "mean": 0.8940858095333334,
+          "p50": 0.7964256940000001,
+          "p95": 1.4336568680000001,
+          "max": 1.433932208
+        },
+        "sampling_s": {
+          "n": 30,
+          "mean": 0.010456464333333334,
+          "p50": 0.010030987,
+          "p95": 0.015768698,
+          "max": 0.017022394
+        },
+        "first_generated_token_s": {
+          "n": 30,
+          "mean": 1.5975476847333332,
+          "p50": 1.627649313,
+          "p95": 2.487211929,
+          "max": 2.494336298
+        },
+        "native_elapsed_s": {
+          "n": 30,
+          "mean": 2.501463960866667,
+          "p50": 2.460336364,
+          "p95": 3.926463267,
+          "max": 3.937491839
+        }
+      },
+      "runtime_configuration": {
+        "audio_sample_rate": 16000,
+        "cache_type_k": "f16",
+        "cache_type_v": "f16",
+        "context": 512,
+        "flash_attention_setting": -1,
+        "llama_version": "0.9.0-dev",
+        "n_batch": 512,
+        "n_ubatch": 512,
+        "system_info": "CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | ",
+        "threads": 2,
+        "threads_batch": 2
+      }
+    },
+    {
+      "id": "onnx-diagnostic-01",
+      "data_path": "results/optimization/opt2/opt2-gguf-20261109-01/onnx-diagnostic-01",
+      "source_commit": "065c174554ac1f791f5bd577b70b97b108e1242c",
+      "execution_status": "completed",
+      "worker_status": "completed_with_model_failures",
+      "source_dirty": false,
+      "limits_verified": true,
+      "operational_valid": true,
+      "config_sha256": "afeb8898f3f078cd5d2c4dbbb1e1edd7c739a5c60d5c146be677cbdbbf33bb9c",
+      "input_manifest_sha256": "7c446adfc48194909701d6029976537f323d124a263e5e4e4c3ae0df341db81e",
+      "overall": {
+        "planned": 8,
+        "successful": 5,
+        "failed": 3,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": false,
+        "reference_character_coverage": null,
+        "cer": {
+          "value": null,
+          "reference_characters": 0,
+          "errors": 0,
+          "substitutions": 0,
+          "deletions": 0,
+          "insertions": 0,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 5,
+          "empty_reference_nonempty_hypotheses": 5
+        },
+        "rtf": 0.7243982786556302,
+        "total_audio_s": 14.308,
+        "total_inference_wall_s": 10.364690571004758,
+        "mean_process_cpu_percent": 196.15109797753618,
+        "file_processing_s": {
+          "n": 5,
+          "mean": 2.0729381142009515,
+          "p50": 0.8442436039913446,
+          "p95": 4.446301738003967,
+          "max": 4.446301738003967
+        },
+        "file_rtf": {
+          "n": 5,
+          "mean": 1.189196685958675,
+          "p50": 0.7994731098402884,
+          "p95": 2.543228902368355,
+          "max": 2.543228902368355
+        },
+        "rss_observed_max_mib": 1809.609375
+      },
+      "model_load_s": 5.279410410003038,
+      "rss_observed_max_all_phases_mib": 1809.609375,
+      "first_inference_s": {
+        "n": 0,
+        "mean": null,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "warmup_s": {
+        "n": 0,
+        "mean": null,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "temperature_c": {
+        "initial": 80.4,
+        "max": 84.8,
+        "final": 79.3
+      },
+      "current_limits": [
+        0,
+        6,
+        8
+      ],
+      "history_limits_before_after": [
+        14,
+        14
+      ],
+      "cpu0_freq_khz": {
+        "min": 2400000,
+        "max": 2400000
+      },
+      "fan_rpm": {
+        "min": 9640,
+        "max": 9680
+      },
+      "arm_clock_hz": {
+        "min": 1500016128,
+        "max": 2400037120,
+        "missing_count": 0
+      },
+      "thermal_sample_count": 35,
+      "policy": {
+        "admission_mc": null,
+        "admission_consecutive": 0,
+        "stop_mc": null,
+        "interval_s": 1,
+        "timeout_s": 600,
+        "address_space_bytes": 4294967296,
+        "scope": "운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
+        "name": "operational",
+        "warn_mc": 80000,
+        "allow_thermal_limits": true,
+        "firmware_thermal_protection": "unchanged",
+        "temperature_admission": "observe_only"
+      }
+    },
+    {
+      "id": "gguf-diagnostic-01",
+      "data_path": "results/optimization/opt2/opt2-gguf-20261109-01/gguf-diagnostic-01",
+      "source_commit": "065c174554ac1f791f5bd577b70b97b108e1242c",
+      "execution_status": "completed",
+      "worker_status": "completed",
+      "source_dirty": false,
+      "limits_verified": true,
+      "operational_valid": true,
+      "config_sha256": "b08a1652a390b3b633cd517f6e5076ba34b0f6ae028b8f178ca5def9f5882793",
+      "input_manifest_sha256": "7c446adfc48194909701d6029976537f323d124a263e5e4e4c3ae0df341db81e",
+      "overall": {
+        "planned": 8,
+        "successful": 8,
+        "failed": 0,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": true,
+        "reference_character_coverage": null,
+        "cer": {
+          "value": null,
+          "reference_characters": 0,
+          "errors": 0,
+          "substitutions": 0,
+          "deletions": 0,
+          "insertions": 0,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 8,
+          "empty_reference_nonempty_hypotheses": 7
+        },
+        "rtf": 0.88142230830517,
+        "total_audio_s": 14.476,
+        "total_inference_wall_s": 12.759469335025642,
+        "mean_process_cpu_percent": 198.96868613736106,
+        "file_processing_s": {
+          "n": 8,
+          "mean": 1.5949336668782053,
+          "p50": 0.6646512419974897,
+          "p95": 4.672974150016671,
+          "max": 4.672974150016671
+        },
+        "file_rtf": {
+          "n": 8,
+          "mean": 5.171488044841352,
+          "p50": 1.1004369028884977,
+          "p95": 11.941825339558168,
+          "max": 11.941825339558168
+        },
+        "rss_observed_max_mib": 1712.59375
+      },
+      "model_load_s": 1.2052834880014416,
+      "rss_observed_max_all_phases_mib": 1712.59375,
+      "first_inference_s": {
+        "n": 0,
+        "mean": null,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "warmup_s": {
+        "n": 0,
+        "mean": null,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "temperature_c": {
+        "initial": 78.2,
+        "max": 83.7,
+        "final": 81.5
+      },
+      "current_limits": [
+        0,
+        8
+      ],
+      "history_limits_before_after": [
+        14,
+        14
+      ],
+      "cpu0_freq_khz": {
+        "min": 2400000,
+        "max": 2400000
+      },
+      "fan_rpm": {
+        "min": 9668,
+        "max": 9686
+      },
+      "arm_clock_hz": {
+        "min": 2201033984,
+        "max": 2400037120,
+        "missing_count": 0
+      },
+      "thermal_sample_count": 18,
+      "policy": {
+        "admission_mc": null,
+        "admission_consecutive": 0,
+        "stop_mc": null,
+        "interval_s": 1,
+        "timeout_s": 600,
+        "address_space_bytes": 4294967296,
+        "scope": "운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
+        "name": "operational",
+        "warn_mc": 80000,
+        "allow_thermal_limits": true,
+        "firmware_thermal_protection": "unchanged",
+        "temperature_admission": "observe_only"
+      },
+      "internal_stage_s": {
+        "kv_reset_s": {
+          "n": 8,
+          "mean": 0.006969400000000001,
+          "p50": 0.006958073,
+          "p95": 0.007193557,
+          "max": 0.007193557
+        },
+        "preprocess_s": {
+          "n": 8,
+          "mean": 0.00039308425,
+          "p50": 0.000178946,
+          "p95": 0.001147101,
+          "max": 0.001147101
+        },
+        "audio_and_prefill_s": {
+          "n": 8,
+          "mean": 1.103430489375,
+          "p50": 0.542177979,
+          "p95": 3.011936235,
+          "max": 3.011936235
+        },
+        "token_decode_s": {
+          "n": 8,
+          "mean": 0.4758622185,
+          "p50": 0.113926714,
+          "p95": 1.6348123540000001,
+          "max": 1.6348123540000001
+        },
+        "sampling_s": {
+          "n": 8,
+          "mean": 0.005739559125000001,
+          "p50": 0.0019827760000000003,
+          "p95": 0.017852345,
+          "max": 0.017852345
+        },
+        "first_generated_token_s": {
+          "n": 8,
+          "mean": 1.111490008875,
+          "p50": 0.549962782,
+          "p95": 3.020959713,
+          "max": 3.020959713
+        },
+        "native_elapsed_s": {
+          "n": 8,
+          "mean": 1.59245167725,
+          "p50": 0.664218239,
+          "p95": 4.672516127,
+          "max": 4.672516127
+        }
+      },
+      "runtime_configuration": {
+        "audio_sample_rate": 16000,
+        "cache_type_k": "f16",
+        "cache_type_v": "f16",
+        "context": 512,
+        "flash_attention_setting": -1,
+        "llama_version": "0.9.0-dev",
+        "n_batch": 512,
+        "n_ubatch": 512,
+        "system_info": "CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | ",
+        "threads": 2,
+        "threads_batch": 2
+      }
+    },
+    {
+      "id": "onnx-full50-01",
+      "data_path": "results/optimization/opt2/opt2-gguf-20261109-01/onnx-full50-01/evaluations/eval-20261109T063021Z-2oj9aut1",
+      "source_commit": "065c174554ac1f791f5bd577b70b97b108e1242c",
+      "execution_status": "completed",
+      "worker_status": "completed",
+      "source_dirty": false,
+      "limits_verified": true,
+      "operational_valid": true,
+      "config_sha256": "afeb8898f3f078cd5d2c4dbbb1e1edd7c739a5c60d5c146be677cbdbbf33bb9c",
+      "input_manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+      "overall": {
+        "planned": 50,
+        "successful": 50,
+        "failed": 0,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": true,
+        "reference_character_coverage": 1.0,
+        "cer": {
+          "value": 0.03571428571428571,
+          "reference_characters": 756,
+          "errors": 27,
+          "substitutions": 24,
+          "deletions": 3,
+          "insertions": 0,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.7218258859922688,
+        "total_audio_s": 164.919,
+        "total_inference_wall_s": 119.04280329195899,
+        "mean_process_cpu_percent": 196.27792301895732,
+        "file_processing_s": {
+          "n": 50,
+          "mean": 2.38085606583918,
+          "p50": 2.360031196993077,
+          "p95": 3.820983044017339,
+          "max": 3.94660674300394
+        },
+        "file_rtf": {
+          "n": 50,
+          "mean": 0.7450232396124785,
+          "p50": 0.7254828233229907,
+          "p95": 0.9788626156221371,
+          "max": 1.0411515430325988
+        },
+        "rss_observed_max_mib": 1775.1875
+      },
+      "model_load_s": 5.520932982995873,
+      "rss_observed_max_all_phases_mib": 1775.1875,
+      "first_inference_s": {
+        "n": 0,
+        "mean": null,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "warmup_s": {
+        "n": 0,
+        "mean": null,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "temperature_c": {
+        "initial": 79.85,
+        "max": 85.9,
+        "final": 78.2
+      },
+      "current_limits": [
+        0,
+        6,
+        8
+      ],
+      "history_limits_before_after": [
+        14,
+        14
+      ],
+      "cpu0_freq_khz": {
+        "min": 2400000,
+        "max": 2400000
+      },
+      "fan_rpm": {
+        "min": 9671,
+        "max": 9727
+      },
+      "arm_clock_hz": {
+        "min": 1500012800,
+        "max": 2400037120,
+        "missing_count": 0
+      },
+      "thermal_sample_count": 133,
+      "policy": {
+        "admission_mc": null,
+        "admission_consecutive": 0,
+        "stop_mc": null,
+        "interval_s": 1,
+        "timeout_s": 600,
+        "address_space_bytes": 4294967296,
+        "scope": "운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
+        "name": "operational",
+        "warn_mc": 80000,
+        "allow_thermal_limits": true,
+        "firmware_thermal_protection": "unchanged",
+        "temperature_admission": "observe_only"
+      }
+    },
+    {
+      "id": "gguf-full50-01",
+      "data_path": "results/optimization/opt2/opt2-gguf-20261109-01/gguf-full50-01/evaluations/eval-20261109T063236Z-1ewhakxx",
+      "source_commit": "065c174554ac1f791f5bd577b70b97b108e1242c",
+      "execution_status": "completed",
+      "worker_status": "completed",
+      "source_dirty": false,
+      "limits_verified": true,
+      "operational_valid": true,
+      "config_sha256": "b08a1652a390b3b633cd517f6e5076ba34b0f6ae028b8f178ca5def9f5882793",
+      "input_manifest_sha256": "b802258e629e51e0df90f11c3814dc75240b6a7a6b168fba8520419a78786d1c",
+      "overall": {
+        "planned": 50,
+        "successful": 50,
+        "failed": 0,
+        "not_attempted": 0,
+        "interrupted": 0,
+        "complete": true,
+        "reference_character_coverage": 1.0,
+        "cer": {
+          "value": 0.026455026455026454,
+          "reference_characters": 756,
+          "errors": 20,
+          "substitutions": 18,
+          "deletions": 2,
+          "insertions": 0,
+          "scope": "successful_nonempty_references",
+          "empty_reference_samples": 0,
+          "empty_reference_nonempty_hypotheses": 0
+        },
+        "rtf": 0.8025433284820448,
+        "total_audio_s": 164.919,
+        "total_inference_wall_s": 132.35464318993036,
+        "mean_process_cpu_percent": 199.23635827085386,
+        "file_processing_s": {
+          "n": 50,
+          "mean": 2.647092863798607,
+          "p50": 2.6887829689949285,
+          "p95": 4.0320602919964585,
+          "max": 4.267448226019042
+        },
+        "file_rtf": {
+          "n": 50,
+          "mean": 0.825280870829528,
+          "p50": 0.8131957936294681,
+          "p95": 0.963513133894458,
+          "max": 1.1451730779578013
+        },
+        "rss_observed_max_mib": 1673.703125
+      },
+      "model_load_s": 1.3789323459786829,
+      "rss_observed_max_all_phases_mib": 1673.703125,
+      "first_inference_s": {
+        "n": 0,
+        "mean": null,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "warmup_s": {
+        "n": 0,
+        "mean": null,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "temperature_c": {
+        "initial": 79.3,
+        "max": 85.35,
+        "final": 81.5
+      },
+      "current_limits": [
+        0,
+        6,
+        8
+      ],
+      "history_limits_before_after": [
+        14,
+        14
+      ],
+      "cpu0_freq_khz": {
+        "min": 2400000,
+        "max": 2400000
+      },
+      "fan_rpm": {
+        "min": 9718,
+        "max": 9756
+      },
+      "arm_clock_hz": {
+        "min": 1500009472,
+        "max": 2400033792,
+        "missing_count": 0
+      },
+      "thermal_sample_count": 142,
+      "policy": {
+        "admission_mc": null,
+        "admission_consecutive": 0,
+        "stop_mc": null,
+        "interval_s": 1,
+        "timeout_s": 600,
+        "address_space_bytes": 4294967296,
+        "scope": "운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
+        "name": "operational",
+        "warn_mc": 80000,
+        "allow_thermal_limits": true,
+        "firmware_thermal_protection": "unchanged",
+        "temperature_admission": "observe_only"
+      },
+      "internal_stage_s": {
+        "kv_reset_s": {
+          "n": 50,
+          "mean": 0.0071503668199999985,
+          "p50": 0.007033482,
+          "p95": 0.00836801,
+          "max": 0.008427178
+        },
+        "preprocess_s": {
+          "n": 50,
+          "mean": 0.0005796129399999998,
+          "p50": 0.000574208,
+          "p95": 0.000794117,
+          "max": 0.000993433
+        },
+        "audio_and_prefill_s": {
+          "n": 50,
+          "mean": 1.6886248125399999,
+          "p50": 1.736497562,
+          "p95": 2.525305178,
+          "max": 2.551168399
+        },
+        "token_decode_s": {
+          "n": 50,
+          "mean": 0.9392336649000004,
+          "p50": 0.9612190469999999,
+          "p95": 1.492562123,
+          "max": 1.6896732840000004
+        },
+        "sampling_s": {
+          "n": 50,
+          "mean": 0.01100577714,
+          "p50": 0.011005921000000002,
+          "p95": 0.016245702000000004,
+          "max": 0.018225436999999997
+        },
+        "first_generated_token_s": {
+          "n": 50,
+          "mean": 1.6970719186599998,
+          "p50": 1.745027627,
+          "p95": 2.535349813,
+          "max": 2.559731337
+        },
+        "native_elapsed_s": {
+          "n": 50,
+          "mean": 2.6466711389,
+          "p50": 2.688314261,
+          "p95": 4.031648769,
+          "max": 4.267047056
+        }
+      },
+      "runtime_configuration": {
+        "audio_sample_rate": 16000,
+        "cache_type_k": "f16",
+        "cache_type_v": "f16",
+        "context": 512,
+        "flash_attention_setting": -1,
+        "llama_version": "0.9.0-dev",
+        "n_batch": 512,
+        "n_ubatch": 512,
+        "system_info": "CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | ",
+        "threads": 2,
+        "threads_batch": 2
+      }
+    }
+  ],
+  "unmeasured": {
+    "visible_ttft_s": null,
+    "partial_caption_latency_s": null,
+    "long_run_stability": null
+  },
+  "comparison_scope": "engine_assets_frontend_composition; sequential operational observation, not controlled engine isolation",
+  "pilot_comparison": {
+    "improved": 0,
+    "tied": 30,
+    "worsened": 0,
+    "not_both_successful": 0,
+    "raw_different": 0,
+    "normalized_different": 0,
+    "changed_error_counts": []
+  },
+  "onnx_pilot_repeat_stability": {
+    "unique_inputs": 6,
+    "raw_text_consistent": true,
+    "returned_tokens_consistent": true
+  },
+  "gguf_pilot_repeat_stability": {
+    "unique_inputs": 6,
+    "raw_text_consistent": true,
+    "returned_tokens_consistent": true
+  },
+  "full50_comparison": {
+    "improved": 6,
+    "tied": 41,
+    "worsened": 3,
+    "not_both_successful": 0,
+    "raw_different": 12,
+    "normalized_different": 10,
+    "changed_error_counts": [
+      {
+        "id": "kss-train-01001",
+        "onnx_errors": 1,
+        "gguf_errors": 0,
+        "reference_characters": 20
+      },
+      {
+        "id": "kss-train-01006",
+        "onnx_errors": 0,
+        "gguf_errors": 1,
+        "reference_characters": 18
+      },
+      {
+        "id": "kss-train-01008",
+        "onnx_errors": 3,
+        "gguf_errors": 0,
+        "reference_characters": 17
+      },
+      {
+        "id": "kss-train-01009",
+        "onnx_errors": 4,
+        "gguf_errors": 2,
+        "reference_characters": 11
+      },
+      {
+        "id": "kss-train-01016",
+        "onnx_errors": 1,
+        "gguf_errors": 3,
+        "reference_characters": 18
+      },
+      {
+        "id": "kss-train-01021",
+        "onnx_errors": 1,
+        "gguf_errors": 0,
+        "reference_characters": 15
+      },
+      {
+        "id": "kss-train-01024",
+        "onnx_errors": 3,
+        "gguf_errors": 0,
+        "reference_characters": 22
+      },
+      {
+        "id": "kss-train-01029",
+        "onnx_errors": 3,
+        "gguf_errors": 2,
+        "reference_characters": 12
+      },
+      {
+        "id": "kss-train-01042",
+        "onnx_errors": 0,
+        "gguf_errors": 1,
+        "reference_characters": 15
+      }
+    ]
+  },
+  "acceptance_gate": {
+    "additional_failures": 0,
+    "gguf_complete": true,
+    "gguf_reference_character_coverage": 1.0,
+    "extra_edit_errors": -7,
+    "passed": true,
+    "rtf_change_fraction": 0.11182397868540894,
+    "rss_change_fraction": -0.05716825687427385
+  },
+  "diagnostics": {
+    "onnx": [
+      {
+        "id": "tail-first",
+        "status": "failed",
+        "elapsed_s": 5.223356077010976,
+        "frames": 896,
+        "input_sha256": "208c757bc8d0337940efcc46d3c1a19b613428b18858f091f95e5ce75e01383c",
+        "returned_token_count": 1,
+        "termination": null,
+        "output_character_count": 1,
+        "output_sha256": "228794e2524374dc86372a1d00dcd4b21fb6889d822d272539682a5c89e8dd49",
+        "error": {
+          "type": "RuntimeError",
+          "message": "Qwen 출력 잘림/반복 경고 또는 token 상한 도달. raw 결과를 보존합니다."
+        },
+        "internal_first_generated_token_s": null
+      },
+      {
+        "id": "tail-repeat",
+        "status": "failed",
+        "elapsed_s": 5.134403465985088,
+        "frames": 896,
+        "input_sha256": "208c757bc8d0337940efcc46d3c1a19b613428b18858f091f95e5ce75e01383c",
+        "returned_token_count": 1,
+        "termination": null,
+        "output_character_count": 1,
+        "output_sha256": "228794e2524374dc86372a1d00dcd4b21fb6889d822d272539682a5c89e8dd49",
+        "error": {
+          "type": "RuntimeError",
+          "message": "Qwen 출력 잘림/반복 경고 또는 token 상한 도달. raw 결과를 보존합니다."
+        },
+        "internal_first_generated_token_s": null
+      },
+      {
+        "id": "preceding-5s",
+        "status": "success",
+        "elapsed_s": 3.7217951730126515,
+        "frames": 80000,
+        "input_sha256": "abf362ff631d1fcbd0cddbc8d4e16ac6351eab8bfe2b26b70967c189e87daff3",
+        "returned_token_count": 26,
+        "termination": null,
+        "output_character_count": 39,
+        "output_sha256": "79498179c7ed5685ec7f58ba0ef54b19fc7f1cb23d10e7eecec9527a71599030",
+        "error": null,
+        "internal_first_generated_token_s": null
+      },
+      {
+        "id": "tail-after-prefix",
+        "status": "failed",
+        "elapsed_s": 5.21599307001452,
+        "frames": 896,
+        "input_sha256": "208c757bc8d0337940efcc46d3c1a19b613428b18858f091f95e5ce75e01383c",
+        "returned_token_count": 1,
+        "termination": null,
+        "output_character_count": 1,
+        "output_sha256": "228794e2524374dc86372a1d00dcd4b21fb6889d822d272539682a5c89e8dd49",
+        "error": {
+          "type": "RuntimeError",
+          "message": "Qwen 출력 잘림/반복 경고 또는 token 상한 도달. raw 결과를 보존합니다."
+        },
+        "internal_first_generated_token_s": null
+      },
+      {
+        "id": "tail-context200ms",
+        "status": "success",
+        "elapsed_s": 0.6510665990062989,
+        "frames": 4096,
+        "input_sha256": "89543921fe9468cad7ccbcf88013fe850c47076c2b2e24c8b9a6f59d319aa114",
+        "returned_token_count": 2,
+        "termination": null,
+        "output_character_count": 4,
+        "output_sha256": "ae7765ec0b5b6b89cef1582ef79fe70065a90263b604223dfc4540bc9fa8b913",
+        "error": null,
+        "internal_first_generated_token_s": null
+      },
+      {
+        "id": "tail-context500ms",
+        "status": "success",
+        "elapsed_s": 0.7012834569904953,
+        "frames": 8896,
+        "input_sha256": "1ed475456ffe886693aaefe50f947b7528a3f23513c1cd38c2c7a0b6d95687a6",
+        "returned_token_count": 2,
+        "termination": null,
+        "output_character_count": 4,
+        "output_sha256": "16b971e64fc68e8a945f30becbe95b4f60e061eff9fc3b4b40f7b60068fc2b71",
+        "error": null,
+        "internal_first_generated_token_s": null
+      },
+      {
+        "id": "tail-context1000ms",
+        "status": "success",
+        "elapsed_s": 0.8442436039913446,
+        "frames": 16896,
+        "input_sha256": "e058963c79910222867fd3acef525bfc0e262932a65731e3bcc7094cd79589e9",
+        "returned_token_count": 2,
+        "termination": null,
+        "output_character_count": 2,
+        "output_sha256": "b27045dc03b825266d991682e293005a0802174c22d621afbc5a86025d89cb1e",
+        "error": null,
+        "internal_first_generated_token_s": null
+      },
+      {
+        "id": "full-utterance",
+        "status": "success",
+        "elapsed_s": 4.446301738003967,
+        "frames": 119040,
+        "input_sha256": "c2380fc0d4ad4221f4b688715635909712b6e10fb296839c7cf96adf5b194c45",
+        "returned_token_count": 25,
+        "termination": null,
+        "output_character_count": 38,
+        "output_sha256": "5a66dfb308555fa4529091010b23c24498b9bab03a8ccfbd3c08ff205329f790",
+        "error": null,
+        "internal_first_generated_token_s": null
+      }
+    ],
+    "gguf": [
+      {
+        "id": "tail-first",
+        "status": "success",
+        "elapsed_s": 0.6568322360108141,
+        "frames": 896,
+        "input_sha256": "208c757bc8d0337940efcc46d3c1a19b613428b18858f091f95e5ce75e01383c",
+        "returned_token_count": 2,
+        "termination": "eog",
+        "output_character_count": 2,
+        "output_sha256": "16365cdc485128fa10e64943f389a73f05c871ac4a813ab1b6c4803f4ef61c8d",
+        "error": null,
+        "internal_first_generated_token_s": 0.541076101
+      },
+      {
+        "id": "tail-repeat",
+        "status": "success",
+        "elapsed_s": 0.655341353995027,
+        "frames": 896,
+        "input_sha256": "208c757bc8d0337940efcc46d3c1a19b613428b18858f091f95e5ce75e01383c",
+        "returned_token_count": 2,
+        "termination": "eog",
+        "output_character_count": 2,
+        "output_sha256": "16365cdc485128fa10e64943f389a73f05c871ac4a813ab1b6c4803f4ef61c8d",
+        "error": null,
+        "internal_first_generated_token_s": 0.540178834
+      },
+      {
+        "id": "preceding-5s",
+        "status": "success",
+        "elapsed_s": 3.8815608540026005,
+        "frames": 80000,
+        "input_sha256": "abf362ff631d1fcbd0cddbc8d4e16ac6351eab8bfe2b26b70967c189e87daff3",
+        "returned_token_count": 26,
+        "termination": "eog",
+        "output_character_count": 39,
+        "output_sha256": "79498179c7ed5685ec7f58ba0ef54b19fc7f1cb23d10e7eecec9527a71599030",
+        "error": null,
+        "internal_first_generated_token_s": 2.254899488
+      },
+      {
+        "id": "tail-after-prefix",
+        "status": "success",
+        "elapsed_s": 0.6687422190152574,
+        "frames": 896,
+        "input_sha256": "208c757bc8d0337940efcc46d3c1a19b613428b18858f091f95e5ce75e01383c",
+        "returned_token_count": 2,
+        "termination": "eog",
+        "output_character_count": 2,
+        "output_sha256": "16365cdc485128fa10e64943f389a73f05c871ac4a813ab1b6c4803f4ef61c8d",
+        "error": null,
+        "internal_first_generated_token_s": 0.552215559
+      },
+      {
+        "id": "tail-context200ms",
+        "status": "success",
+        "elapsed_s": 0.6646512419974897,
+        "frames": 4096,
+        "input_sha256": "89543921fe9468cad7ccbcf88013fe850c47076c2b2e24c8b9a6f59d319aa114",
+        "returned_token_count": 2,
+        "termination": "eog",
+        "output_character_count": 2,
+        "output_sha256": "8445741d7d6a831276e8794b874cebee94940ba0e963d4f109bf72f437426789",
+        "error": null,
+        "internal_first_generated_token_s": 0.546364994
+      },
+      {
+        "id": "tail-context500ms",
+        "status": "success",
+        "elapsed_s": 0.6118429180060048,
+        "frames": 8896,
+        "input_sha256": "1ed475456ffe886693aaefe50f947b7528a3f23513c1cd38c2c7a0b6d95687a6",
+        "returned_token_count": 1,
+        "termination": "eog",
+        "output_character_count": 1,
+        "output_sha256": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+        "error": null,
+        "internal_first_generated_token_s": 0.549962782
+      },
+      {
+        "id": "tail-context1000ms",
+        "status": "success",
+        "elapsed_s": 0.9475243619817775,
+        "frames": 16896,
+        "input_sha256": "e058963c79910222867fd3acef525bfc0e262932a65731e3bcc7094cd79589e9",
+        "returned_token_count": 1,
+        "termination": "eog",
+        "output_character_count": 1,
+        "output_sha256": "0a8fef4b99a88b476a89dfff7c7b33c2c628981d192ffbc41b1ddef52a7ae90b",
+        "error": null,
+        "internal_first_generated_token_s": 0.8862626
+      },
+      {
+        "id": "full-utterance",
+        "status": "success",
+        "elapsed_s": 4.672974150016671,
+        "frames": 119040,
+        "input_sha256": "c2380fc0d4ad4221f4b688715635909712b6e10fb296839c7cf96adf5b194c45",
+        "returned_token_count": 25,
+        "termination": "eog",
+        "output_character_count": 38,
+        "output_sha256": "5a66dfb308555fa4529091010b23c24498b9bab03a8ccfbd3c08ff205329f790",
+        "error": null,
+        "internal_first_generated_token_s": 3.020959713
+      }
+    ]
+  },
+  "failure_penalized_cer": {
+    "onnx-full50-01": {
+      "errors": 27,
+      "reference_characters": 756,
+      "value": 0.03571428571428571,
+      "failure_policy": "empty_hypothesis_for_every_non_successful_input"
+    },
+    "gguf-full50-01": {
+      "errors": 20,
+      "reference_characters": 756,
+      "value": 0.026455026455026454,
+      "failure_policy": "empty_hypothesis_for_every_non_successful_input"
+    }
+  },
+  "setup_failure": {
+    "id": "gguf-smoke-01",
+    "status": "failed_or_unverified",
+    "reason": "input manifest copy destination not created; failed before model load, preserved separately"
+  },
+  "raw_files": {
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-diagnostic-01/console.log": "8a2658815849c89ee2c36edb5f4a39bd3baa7a10861701b2214f8e4e3b90e87a",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-diagnostic-01/execution.json": "0469bd462a0dbafed9e6b7a7f68b0b62d7dcce78241df2d092b5193dcfcfd6ea",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-diagnostic-01/measurements.jsonl": "76706ef9ed3909bd9b040add8f694ff2cd707504253c7cabc064188a959ea862",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-diagnostic-01/predictions.jsonl": "61adef122d9c6f0e37145d554b01ba8efecfea14595399dc3d2161d2d56e0b04",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-diagnostic-01/scores.jsonl": "dd9d32c15088ff6bf525089e4e60e0554451e29ccd5ec2f68b4086dbdb246811",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-diagnostic-01/summary.json": "db1812fc975443a66b9c5065287bf9d3cd5984c7576c1c9bf6fb08c0bf2597c2",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-diagnostic-01/summary.md": "61106e3229ee4474381ceb4e95cfc62401f0ff4efd5b895afdc89a6104e5dd14",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-diagnostic-01/thermal.jsonl": "f6e3adb965c40feac9ebde85bf7cb89316ca1895815122d8c6a3c96db06a0704",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-diagnostic-01/threads.jsonl": "b613275ca6bd1b3b6b990e3aa643234a2c8343f6983aa101310f3f97f8d62eec",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-diagnostic-01/warnings.jsonl": "f381f2884a4e1dfe80db96df82489af97c3d1d74f78d15895549078c7bab7d86",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-diagnostic-01/worker.json": "000f5998d09473d7ff042c2286e577c862129ac855f4c2f7b5d4457d7235a6a0",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-full50-01/console.log": "256cb31fa0590fb8bc66a227245305e4275a1ff96a000e6ecd67c4fda6663d02",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-full50-01/evaluations/eval-20261109T063236Z-1ewhakxx/environment.json": "83b10caf3c888daccfdddff68aa5f43fb2f9992eb7f4de6fae6247cad658849a",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-full50-01/evaluations/eval-20261109T063236Z-1ewhakxx/manifest.json": "b5978f69291acedd6d466d36ea56b5592188aa0eefa46a250cece2f21579a624",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-full50-01/evaluations/eval-20261109T063236Z-1ewhakxx/predictions.jsonl": "6fb6abe2f406dc8e2939faf41e1d3ce1e7f7766215c5073b856d46d77598b711",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-full50-01/evaluations/eval-20261109T063236Z-1ewhakxx/progress.jsonl": "6fb6abe2f406dc8e2939faf41e1d3ce1e7f7766215c5073b856d46d77598b711",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-full50-01/evaluations/eval-20261109T063236Z-1ewhakxx/scores.jsonl": "c7fb1605adaeeb016287da3f0584ebd11155f3dfa00ddd0159539f2df03b42a7",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-full50-01/evaluations/eval-20261109T063236Z-1ewhakxx/summary.json": "3f72aa7220f3772c63b55b2cc3502fbc649ddc4924c4080a776a181e8f395b49",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-full50-01/evaluations/eval-20261109T063236Z-1ewhakxx/summary.md": "97a5df3f199ddfe0f90aeaf9ab3265ce33d53647a9e8cb3367cdfddf78ca4e50",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-full50-01/execution.json": "d1e01db42c05db6018dd0cb46853c4a2b24a2460891cd55d521576997b4926d8",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-full50-01/thermal.jsonl": "7e94cd0ce3ab4bb531b2d56014aa1bb3253d391cc335c0a601e613dd60b66bf6",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-full50-01/threads.jsonl": "5b17c613f5f13b4cfefdf60ef1d3e7b8ce80f37b7a84ce2de2b70df34c0ec499",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-full50-01/warnings.jsonl": "52b92b79415fe5bed4985bab5c51e0e3d54e22e7d9472c09d6163c68b10f7def",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-pilot-01/console.log": "8abd9e7c948cc4f0d5cc7cec98678caf312d1479dad01765fc6d3bc55b1de61c",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-pilot-01/execution.json": "507540f505387190ba04b9488ed3abefec86bb29eab053ae0e7e38746a2ac56f",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-pilot-01/measurements.jsonl": "e3c124102f4006a227e091a94d1671fda7790585edab2cfabbe7f02eba6f7db4",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-pilot-01/predictions.jsonl": "41857b3fa78199a31ee1d34c5163b4a32b54558f482a9ca36a2df6c6a692829c",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-pilot-01/scores.jsonl": "be776efb384ae1b5e040e0ff43a64bd75bda57ad30fc1b8dd837c8ade182f75b",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-pilot-01/summary.json": "a185a061920d34350227bc88d800600e66e92a2cff3d80eec422bdf4703137f1",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-pilot-01/summary.md": "08562c4be5dce0176e67d0de11537e0df31c5619831237825a52ed300d5549b8",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-pilot-01/thermal.jsonl": "3a94ac4059d99b17573e71c10a68b787c05610c54a8d7296b8a680eed733f2b7",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-pilot-01/threads.jsonl": "b83a52629314422846ca62c1f67f768aa633ab797f200abb26957345606bb6cd",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-pilot-01/warnings.jsonl": "b01e7640430041c2025b189e1fd284ccd0e422d8fa0fc3c26f3af9f86add5630",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-pilot-01/worker.json": "fc0c45975f0527531591cd52733f310683f5b6022491ae64d80b0f877d274675",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-smoke-01/console.log": "14f62682e7b3672f364606178df50530a443f36e83c0b254e23dca03cf7d6f2c",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-smoke-01/execution.json": "8f1f3716ea9970bbc3759e1becc60f6760848533e4b33f220b1a8a6c56b0881a",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-smoke-01/thermal.jsonl": "552cdb7a08abeec984dae05fb80dc7192943d35130ca54162cff6392c94046bf",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-smoke-01/threads.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-smoke-01/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-smoke-02/console.log": "f3247513c9b357c70370a99f46509f55c4be88e54ec68bc761afdaf554486f5f",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-smoke-02/execution.json": "b2502a186676938d20b0f7568be7613f3eb34422f7a09e49abc3bc97e20e3428",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-smoke-02/measurements.jsonl": "fe41dcc57b07ac9c870bdb65597f74c963377712826ea52f0509e6a18142fba9",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-smoke-02/predictions.jsonl": "8333ef3331e7d63422ad03667ac4d57b31d415c6e1ddc4c6ff77b96769f6e6b3",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-smoke-02/scores.jsonl": "69c0d57394ba1f45010c1053b596838f2c6af838c35958172cf3ebd55ac5f197",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-smoke-02/summary.json": "adafbdc973412f9c78e398359f0685ecfa03a7339dafb29b393499df5de2b155",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-smoke-02/summary.md": "20d4be8084e64f1d18380500e9d4c17cc4fcb846ff41fd437d37185a804067e3",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-smoke-02/thermal.jsonl": "3e4df4ad23a89098b7b38fc399df70305649a63da3230640ae735083f4790b5f",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-smoke-02/threads.jsonl": "1ad99a3b5c2fb0708e06b90d18a62b969a48a7aa42d56536e15efc73a95d3da3",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-smoke-02/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/optimization/opt2/opt2-gguf-20261109-01/gguf-smoke-02/worker.json": "ff7780e89e266c774ab3663c50cfef3b1a42a01cfa7da68b9ea466027ee2f57f",
+    "results/optimization/opt2/opt2-gguf-20261109-01/inputs/baseline.jsonl": "ef6860fb9283a726718f69d8a3cb6bab84460738c4264fb3b10f86f8a64ff744",
+    "results/optimization/opt2/opt2-gguf-20261109-01/inputs/reproduction.jsonl": "7c446adfc48194909701d6029976537f323d124a263e5e4e4c3ae0df341db81e",
+    "results/optimization/opt2/opt2-gguf-20261109-01/inputs/smoke.jsonl": "0062d7312c0579cb8b818f8136c0bbba780b110a6acd9aea2e4bb144462c4b11",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-diagnostic-01/console.log": "52472564d58c3ccd61a41f5c5fa65904e8827f3327513e7af05aa14464c22314",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-diagnostic-01/execution.json": "453e6bbd61e186c83f632864dae5a889737a7eea932bfbcdb296184c0aff2c75",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-diagnostic-01/measurements.jsonl": "f67536d481a75e8cf893675984a465f78167b30a743016203c8a39b285022ed9",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-diagnostic-01/predictions.jsonl": "46e4406365109940b49ff20fd12c710fb86d22fff05c04ab868bcfe9a02fdb61",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-diagnostic-01/scores.jsonl": "9a70bbe11d362aaff23a589b3e7358a02b3601bd1c70772cb252867229a02231",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-diagnostic-01/summary.json": "caf6d4ac9d48d75631440c5f0c9f66ad0912bcdf2cce72461f9d53531030f70d",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-diagnostic-01/summary.md": "4c572c41aba83f2f08cd0c8247f76021ce20bcfafd9e2f01a3f991ab69dec7fa",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-diagnostic-01/thermal.jsonl": "20850ebc57c910b8407cf4a78f43d9f815893595604e22f1bcd97f055d85c7ce",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-diagnostic-01/threads.jsonl": "53ae0edd1b03faed32b19c988a697116140ac78db04750472b5b62fb4b0af162",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-diagnostic-01/warnings.jsonl": "87f66f334ade95ec6eb234d8098f4efe3be0ad2a13362d32b0b8052eb8afe2b2",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-diagnostic-01/worker.json": "4cab197203d7feec66d9978ba3072a57f56f1cfd349bcb2bf1dc6e7b26bed30e",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-full50-01/console.log": "0ad00ece58fa54a1726f6fbcf00db69c94ae56f2b1c6d302f34f387d7c7e7daf",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-full50-01/evaluations/eval-20261109T063021Z-2oj9aut1/environment.json": "cc1b4f2515e606515ac0e2951216f7f26c1d71998d8214690d84e12a5b855ea3",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-full50-01/evaluations/eval-20261109T063021Z-2oj9aut1/manifest.json": "bea67c4a57a780d2ced54d54e05d1f5c7cb8fd4ad8f00fbc6e3ef78a8718e10a",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-full50-01/evaluations/eval-20261109T063021Z-2oj9aut1/predictions.jsonl": "f5ebb41639ebb4233616ef9833d27fef1b4d80b3e37bfc19195dc1609af49e66",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-full50-01/evaluations/eval-20261109T063021Z-2oj9aut1/progress.jsonl": "f5ebb41639ebb4233616ef9833d27fef1b4d80b3e37bfc19195dc1609af49e66",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-full50-01/evaluations/eval-20261109T063021Z-2oj9aut1/scores.jsonl": "67bc6603de6d35f8094566828200d8f1354d24a153a71aa4d396a49862f616eb",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-full50-01/evaluations/eval-20261109T063021Z-2oj9aut1/summary.json": "b870c73679807539753ad78a48d6a2bab1d27678859d782fbc2fc41e2822dc25",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-full50-01/evaluations/eval-20261109T063021Z-2oj9aut1/summary.md": "e40865fc8ea86acd36855b6273c99148f9cba605fd7f2a7567bfca3c4d572b8c",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-full50-01/execution.json": "dfd3addb531ebb4fd5fc187f3f4c30041d57a06a9c4beae3e8f679d4dce8f1ac",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-full50-01/thermal.jsonl": "6f68618062603e12fcee85ffbaca7ff003ae9a5444d0b65a9813099ca3b149e8",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-full50-01/threads.jsonl": "f208aa083b2b0d77336d60bca802379856493ea69544f99879e980db55fe9e70",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-full50-01/warnings.jsonl": "cc692eaa8553ae4714795ce6b781a5f9c711a2ead7a6e9b9f98b70f784dcb523",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-pilot-01/console.log": "318c4e1846f9904d72cd50165cfc7cf1617099b2873efe6d4732ede4c22a4021",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-pilot-01/execution.json": "a46e846d27de376afc1091d9c011e3090e9306a2b17eaec9e7286e78dae88fbe",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-pilot-01/measurements.jsonl": "487d3ec474deca7bf94d8c55a79091b577a611108a695ae554094ce8b5aec22e",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-pilot-01/predictions.jsonl": "7cf1fa36661677b3ee85f4c47279d767e74f2ef2c90e4bcc76a43de780c52180",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-pilot-01/scores.jsonl": "eb97e991274a7394086401bc5146bd2797e62bc1765cf6501c28caa2fe618ca0",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-pilot-01/summary.json": "9f8f87c02ec12b078fc7af172dabe98c7dad52aec6d197fccec6269b8c86a86b",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-pilot-01/summary.md": "0606146cd63abcb66c83e29b8e28c4d0860ac4a9fefed58e582549d69a067e9e",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-pilot-01/thermal.jsonl": "92ad2858af9395e31650cb9bb8f9b833776dab7f852ae7b1af3f77f157e2a769",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-pilot-01/threads.jsonl": "297de648ff6f0d6596fc64335ad0985e23a02f1f653b29bc98e42a87f69dee60",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-pilot-01/warnings.jsonl": "1a530fae0181cf057554cfcef44cea2fc71bc15dbba3eabd194b40c6136be157",
+    "results/optimization/opt2/opt2-gguf-20261109-01/onnx-pilot-01/worker.json": "58fa4209653035bc9e26b03d38fb2ad3c0881dc256cce1dbe8bbd08c55ce53d6"
+  },
+  "assets": {
+    "repository": "ggml-org/Qwen3-ASR-0.6B-GGUF",
+    "revision": "928ab958557df9aa2ef1c93e0e83c7ad0933fae2",
+    "files": {
+      "Qwen3-ASR-0.6B-Q8_0.gguf": {
+        "bytes": 804749248,
+        "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971",
+        "url": "https://huggingface.co/ggml-org/Qwen3-ASR-0.6B-GGUF/resolve/928ab958557df9aa2ef1c93e0e83c7ad0933fae2/Qwen3-ASR-0.6B-Q8_0.gguf"
+      },
+      "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+        "bytes": 214392480,
+        "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d",
+        "url": "https://huggingface.co/ggml-org/Qwen3-ASR-0.6B-GGUF/resolve/928ab958557df9aa2ef1c93e0e83c7ad0933fae2/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf"
+      }
+    }
+  },
+  "runtime_build": {
+    "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+    "machine": "aarch64",
+    "command": [
+      "g++",
+      "-std=c++17",
+      "-O2",
+      "-fPIC",
+      "-shared",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/vendor/nlohmann",
+      "/home/deepet/projects/edge-asr/experiments/qwen3_optimization/gguf/bridge.cpp",
+      "-L",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+      "-Wl,-rpath,/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+      "-lllama",
+      "-lmtmd",
+      "-lggml",
+      "-lggml-base",
+      "-pthread",
+      "-o",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so"
+    ],
+    "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "bridge_source_sha256": "5a3482b3fb9731bef59b860e7e4b5a8fa90017239d5964590f15dd804e0b6f19",
+    "cmake_cache_sha256": "2d21bf15406912c839456d69ef66f7edcbdfbdc1d3b02d4f5f03b0a09b139b24",
+    "engine_libraries": {
+      "libmtmd.so": "ba8bbb528c24a7cc5721b5cdf520d7ab159f5efb214548628ae5ce240f581296",
+      "libggml.so": "9391d0da5efb090d836eb9f1050270045ae9f215ad8e41368a44d9cd73de82c1",
+      "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+      "libllama.so": "3981f9752c48c595e4fd2ef766e70e6051edc6f54e85e4e0044615e0ddba0999",
+      "libggml-cpu.so": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+      "libllama-common.so": "61278407f85381989b98522229bb57379af9988b301a704f8c55a6619d14bafd"
+    },
+    "library_sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model"
+  },
+  "verification": {
+    "verified_files": 101,
+    "raw_files": 87,
+    "analysis_byte_identical": true,
+    "engine_build_receipt_matches_artifacts": true,
+    "host_tests": 340,
+    "rp5_tests": 340
+  },
+  "preservation": {
+    "host": {
+      "protected_files": 16499,
+      "missing": [],
+      "changed": [],
+      "commit": "065c174554ac1f791f5bd577b70b97b108e1242c",
+      "scope_note": "기존16496개와 이미 다운로드되어 최초 감사에 포함된 새 GGUF 자산3개"
+    },
+    "rp5": {
+      "protected_files": 14018,
+      "missing": [],
+      "changed": [],
+      "commit": "065c174554ac1f791f5bd577b70b97b108e1242c"
+    }
+  }
+}

@@ -33,7 +33,7 @@
 | `prepare-public-review`, `materialize-review`, `prepare-annotations`, `review-annotations` | 공개 음성·검수/불확실 주석 관리 |
 | `compare`, `probe-*` | RP5 모델/전처리/VAD/구간/동시 부하 측정 |
 | `profile-qwen3` | [기존 ORT의 호출 경계 계측](../research/opt1_profiling.md), 별도 preload·on/off/abba |
-| `opt0-baseline` | [Qwen 단독 반복·고정 PCM 재현](../research/opt0_pilot.md), 첫 추론/워밍업/반복 구분 |
+| `opt0-baseline`, `benchmark-qwen3` | [Qwen 단독 반복·고정 PCM 재현](../research/opt0_pilot.md), 첫 추론/워밍업/반복 구분. [OPT-2](../research/opt2_gguf.md)의 ONNX/GGUF도 같은 실행기 사용 |
 | `probe-qwen3`, `compare-qwen3` | [Qwen 별도 환경의 첫 실행·세 모델 KSS 단회 탐색](../archive/model-comparison/qwen3_batch.md) |
 | `compare-qwen3-realtime` | [Qwen VAD 구간·Zip 동시 실행](../archive/model-comparison/qwen3_realtime.md), 사전 고정 순서·실패 보존 |
 | `prepare-validation`, `validate-files` | [새 문장 30개와 30분 연속 입력](../archive/model-comparison/file_validation.md), 별도 워밍업·원본 보존·고정 순서 |

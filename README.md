@@ -4,7 +4,7 @@
 
 Qwen3-ASR-0.6B를 Raspberry Pi 5에서 실행하며 **한국어 정확도를 유지하면서 실제 음성 인식 지연을 줄이는** 프로젝트입니다. 추론 시간뿐 아니라 실패·메모리·발열·연속 입력의 안정성을 함께 평가합니다. Host에서 개발·모의 테스트한 뒤 main에 반영하고 RP5에서 실제 추론을 검증합니다.
 
-현재 Qwen의 sherpa-onnx INT8 batch 어댑터와 공통 평가기가 구현되어 있습니다. 첫 OPT-0 소규모 운영 기준선과 56ms 오류 재현을 완료했습니다. OPT-1 호출 경계 계측에서 LLM prefill·token decode 비중 약 71%를 확인했습니다. [병목 실측](results/summaries/optimization/opt1-profile-20261109.md). GGUF 엔진 비교와 Qwen 단독 부분 자막은 후속 작업입니다. [첫 결과](results/summaries/optimization/opt0-pilot-20261109.md). 이전 Zipformer/SenseVoice/Qwen 비교와 Zip+Refine 자막은 `legacy`로 구분해 보존합니다. 이전 실측을 새 최적화 성과로 표시하지 않습니다.
+현재 sherpa-onnx INT8과 별도 llama.cpp/libmtmd Q8_0 batch 어댑터·공통 평가기가 구현되어 있습니다. OPT-0 기준선·56ms 재현과 [OPT-1 병목 실측](results/summaries/optimization/opt1-profile-20261109.md)을 완료했습니다. [OPT-2 첫 비교](results/summaries/optimization/opt2-gguf-20261109.md)의 같은 KSS 개발50개에서 GGUF CER 2.65%·RTF 0.8025, ONNX CER 3.57%·RTF 0.7218이었습니다. 둘 다 50/50 성공했고 GGUF는 메모리가 약6% 적었으나 속도 이득은 없었습니다. 열 제한을 포함한 운영 관측이며 독립 정확도·실시간 부분 자막은 후속 검증입니다. 이전 모델 비교와 Zip+Refine 자막은 `legacy`로 구분해 보존합니다.
 
 - [현재 상태와 다음 작업](docs/status.md)
 - [OPT-0~4 연구 계획](docs/research/qwen3_optimization.md)
@@ -16,11 +16,11 @@ Qwen3-ASR-0.6B를 Raspberry Pi 5에서 실행하며 **한국어 정확도를 유
 
 ```text
 src/edge_asr/
-├── adapters/                 # Qwen ONNX와 비교 기준 모델 어댑터
+├── adapters/                 # Qwen ONNX·GGUF와 비교 기준 모델 어댑터
 ├── evaluation.py, scoring.py # 공통 평가·정규화·재채점
 ├── streaming.py, vad*.py     # 재사용 가능한 입력·VAD·계측 기반
 ├── tools/
-│   ├── optimization/        # Qwen smoke·기준선·재현·ORT 호출 계측
+│   ├── optimization/        # Qwen smoke·ONNX/GGUF 반복·재현·ORT 계측
 │   ├── data/                # 공통 평가 데이터 준비
 │   ├── probes/, reports/    # 공통 부하·열 검사와 냉각 보고
 │   └── maintenance/         # 자산 보존·유지보수
@@ -36,7 +36,7 @@ results/optimization/        # 새 OPT 원시, Git 제외
 results/summaries/optimization/ # 새 OPT 요약
 ```
 
-기존 `results/` 실행 ID·요약 파일, `.venv*`, `models/`, `data/`, M1 원본은 같은 위치에 보존합니다. 향후 외부 엔진 소스·빌드는 `runtimes/`에서 별도로 관리합니다.
+기존 `results/` 실행 ID·요약 파일, `.venv*`, `models/`, `data/`, M1 원본은 같은 위치에 보존합니다. 외부 엔진 소스·빌드는 `runtimes/`에서 별도로 관리합니다.
 
 ## 시작하기
 

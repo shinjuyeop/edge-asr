@@ -14,7 +14,7 @@
 | OPT-3 연속 음성 | Qwen 단독 VAD·청크·중간 결과·종료 판단·큐 처리 | 말하는 중 첫/부분 결과, 고정 음향 기준 지연, 수정/확정·손실·백로그 검증 |
 | OPT-4 실보드 최종 | 새 한국어 holdout·장시간 연속 입력 | 정확도·실패·드롭·지연·RSS 추세·열 제한을 포함한 최종 구성 판정 |
 
-처음부터 추상 엔진 계층이나 복잡한 서비스 구조를 만들지 않습니다. 현재 `tools/optimization/qwen3.py`는 기존 단독 smoke이고 `baseline.py`는 첫 추론·워밍업·회전 반복·고정 PCM 재현 도구입니다. [첫 OPT-0 결과](../../results/summaries/optimization/opt0-pilot-20261109.md)를 확보했고 [OPT-1 호출 경계 실측](../../results/summaries/optimization/opt1-profile-20261109.md)으로 Python·ORT Run 범위를 분리했습니다. 실제 TTFT·operator별·단독 KV 비용은 후속 계측입니다. GGUF 어댑터는 실제 로딩·전사 검증 이후 추가합니다.
+처음부터 추상 엔진 계층이나 복잡한 서비스 구조를 만들지 않습니다. 현재 `tools/optimization/qwen3.py`는 기존 단독 smoke이고 `baseline.py`는 첫 추론·워밍업·회전 반복·고정 PCM 재현 도구입니다. [첫 OPT-0 결과](../../results/summaries/optimization/opt0-pilot-20261109.md)를 확보했고 [OPT-1 호출 경계 실측](../../results/summaries/optimization/opt1-profile-20261109.md)으로 Python·ORT Run 범위를 분리했습니다. [OPT-2 프로토콜](opt2_gguf.md)에 GGUF 경로·고정 자산·비교 판정 기준을 정했습니다. 실제 사용자 TTFT·operator별·단독 KV 비용은 후속 계측입니다.
 
 ## OPT-0에서 고정할 계약
 

@@ -25,6 +25,8 @@ RP5에서 이미 검증한 `.venv-qwen3-vad-20261106-01` 또는 해당 모델 �
   --output-dir results/optimization/opt0/<고유-실행ID>/evaluations
 ```
 
-`evaluate`는 상위 경로 아래 새 실행 폴더를 생성합니다. 단독 smoke의 `--output`은 새 경로여야 하며 4GiB 주소 공간 제한을 검사하므로 `thermal-run` 안에서 실행합니다. 기존 온도·시간·메모리 보호 기본값을 임의로 완화하지 않습니다.
+`evaluate`는 상위 경로 아래 새 실행 폴더를 생성합니다. 단독 smoke의 `--output`은 새 경로여야 하며 4GiB 주소 공간 제한을 검사하므로 `thermal-run` 안에서 실행합니다. 기존 온도·시간·메모리 보호 기본값을 임의로 완화하지 않습니다. 이번 사용자는 온도 대기 없이 진행하도록 지정했으며 해당 실행에만 `--temperature-policy operational --skip-temperature-admission`을 명시하고 온도·클럭·제한 플래그를 기록합니다.
+
+GGUF Q8_0은 [빌드 안내](../../experiments/qwen3_optimization/gguf/README.md)와 [OPT-2 프로토콜](../research/opt2_gguf.md)을 따릅니다. 기존 `.venv`의 표준 라이브러리 ctypes로 별도 C ABI를 호출하므로 Python 환경을 수정하지 않습니다. `configs/optimization/opt2_gguf_q8_2t.toml`을 공통 `evaluate` 또는 `tools benchmark-qwen3`에 전달합니다. 후자는 기존 `opt0-baseline`과 같은 반복 실행기이며 ONNX/GGUF 둘 다 지원합니다.
 
 설정/환경/모델/입력 해시와 원시 결과를 보관한 뒤 요약만 `results/summaries/optimization/`에 추가합니다. 이전 실측과 새 OPT 실행을 합쳐 성능을 주장하지 않습니다. 성공한 입력만 CER로 보고하지 말고 실패·커버리지도 표시합니다. [공통 평가·재채점](evaluation.md), [측정 계약](../reference/benchmark_design.md)을 따릅니다.

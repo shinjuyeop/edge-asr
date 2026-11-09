@@ -5,7 +5,7 @@
 | 영역 | 책임 |
 | --- | --- |
 | `cli.py`, `tools/cli.py` | 기존 공개 명령, 선택한 구현의 지연 import |
-| `adapters/` | Qwen ONNX·Zipformer·SenseVoice의 로딩/발화 상태/전사 계약 |
+| `adapters/` | Qwen ONNX·GGUF·Zipformer·SenseVoice의 로딩/발화 상태/전사 계약 |
 | `dataset.py`, `config.py`, `audio_policy.py` | manifest·PCM·해시·설정/입력 검증 |
 | `evaluation.py`, `scoring.py`, `metrics.py` | 공통 평가·실패 보존·CER/RTF·재채점 |
 | `streaming.py`, `segmentation.py`, `vad*.py`, `textgrid.py` | 독립 1배속 입력·큐·구간/문맥·VAD·주석 |
@@ -35,7 +35,7 @@ flowchart TD
 
 공통 코드와 OPT 도구는 legacy를 import하지 않습니다. CLI dispatch만 이전 명령을 연결합니다. 모델/VAD 런타임은 실제 실행 함수 안에서만 import합니다. 보고서는 probe를 import하지 않으며 `legacy/realtime/`은 병합 실험에 의존하지 않습니다. native 런타임 없이 모든 도구의 `--help`와 저장 원시 집계를 사용할 수 있어야 합니다.
 
-어댑터 계약은 `model_files`, `load()`, `transcribe(Audio) -> str`, `close()`입니다. Qwen/SenseVoice는 현재 batch이고 Zipformer는 `start_stream/accept_chunk/finish_stream`도 제공합니다. GGUF·토큰 스트리밍을 위한 미구현 인터페이스는 선제적으로 추가하지 않습니다.
+어댑터 계약은 `model_files`, `load()`, `transcribe(Audio) -> str`, `close()`입니다. Qwen/SenseVoice는 현재 batch이고 Zipformer는 `start_stream/accept_chunk/finish_stream`도 제공합니다. GGUF는 별도 `libllama/libmtmd` 빌드에 작은 [C ABI](../../experiments/qwen3_optimization/gguf/README.md)를 연결하고 표준 라이브러리 ctypes로 같은 PCM을 전달합니다. 토큰 스트리밍·청크 간 KV 재사용 인터페이스는 아직 없습니다.
 
 기존 `RefineChannel`의 유한 큐·자식/reader 회수와 자막 JSONL 계약을 유지합니다. 이전 파이프라인의 자세한 사용법은 [legacy 자막](../guides/legacy/live_captions.md)에 있습니다. 이를 새 Qwen 단독 파이프라인으로 간주하지 않습니다.
 
