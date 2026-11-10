@@ -1,6 +1,6 @@
 # Qwen 최적화 실행 안내
 
-현재 기준은 [고정100개 ONNX/GGUF 실측](../../results/summaries/optimization/fixed100-baseline-20261109.md)입니다. ONNX INT8 2T는 프로젝트 출발 참조이고 이후 GGUF 변경은 이번 GGUF Q8_0 2T 결과와 비교합니다. 조건·실패 처리·온도 정책·재시도 범위는 [기준선 프로토콜](../research/fixed100_baseline.md)에 있습니다.
+주 기준은 [Qwen 단독1배속 연속 입력](../research/qwen_realtime.md)입니다. 기존 ONNX INT8 2T에서 시작해 같은 파이프라인의 GGUF와 비교합니다. [파일별 batch 실측](../../results/summaries/optimization/fixed100-baseline-20261109.md)은 모델 정확도·처리 비용 진단용 보조 참조이며 [당시 프로토콜](../research/fixed100_baseline.md)과 함께 보존합니다.
 
 ## 환경과 설정
 
@@ -53,7 +53,7 @@ ONNX 측정은 guard와 자식 명령 모두 표의 ONNX Python·설정을 사�
 
 ## Qwen 단독 1배속 연속 입력
 
-[연속 입력 프로토콜](../research/qwen_realtime.md)은 같은 GGUF·VAD 자산과 기존 Python 환경을 사용합니다. `<manifest>`는 해시가 있는 입력 목록이며 전체를 연결해 파일 경계로 초기화하지 않습니다. `<새ID>`는 새 경로로 지정합니다.
+[연속 입력 프로토콜](../research/qwen_realtime.md)은 기존 Qwen·VAD 자산과 Python 환경을 사용합니다. `<manifest>`는 해시가 있는 입력 목록이며 전체를 연결해 파일 경계로 초기화하지 않습니다. `<새ID>`는 새 경로로 지정합니다. 아래는 짧은 GGUF 파일럿의 기본 호출이며 주 평가 조건은 뒤의 ONNX 예시처럼 명시합니다.
 
 ```bash
 .venv/bin/python scripts/edge_asr.py tools thermal-run \
@@ -65,6 +65,22 @@ ONNX 측정은 guard와 자식 명령 모두 표의 ONNX Python·설정을 사�
 ```
 
 입력은100ms·1배속이며2초부터1초 간격으로 부분 전사를 요청하고5초 또는 VAD 끝에서 확정합니다. 첫 자막·부분/확정 원문은 stdout과 `jobs.jsonl`, 입력 드롭·backlog는 `stream/`, 전체 조건·점수·자원은 `worker.json`에 남습니다. 전체100개는 음성만 약15분이므로 외부 제한도 입력 길이·종료 배출을 포함하도록 별도로 지정합니다. 기본600초 예시는 짧은 파일럿용입니다.
+
+**주 평가의 ONNX 출발 구성**도 동일 실행기를 사용합니다. RP5 기존 `.venv`에는 ONNX 어댑터가 요구하는 sherpa-onnx2.0.1과 같은 native 라이브러리·numpy, 공통 VAD용 Python ONNX Runtime이 함께 준비되어 있어 패키지 변경 없이 사용합니다. 기존 ONNX 전용 환경과 모델은 보존합니다.
+
+```bash
+.venv/bin/python scripts/edge_asr.py tools thermal-run \
+  --output "results/optimization/opt3/<새ID>/onnx-2t" \
+  --timeout-s 1800 --temperature-policy operational --skip-temperature-admission \
+  -- .venv/bin/python scripts/edge_asr.py tools replay-qwen3 \
+  --config configs/onnx.toml --manifest "<동일순서-manifest.jsonl>" \
+  --output "results/optimization/opt3/<새ID>/onnx-2t" \
+  --gap-s 0 --vad-threshold 0.3 --silence-policy skip-zero \
+  --partial-after-s 1 --partial-interval-s 2 --max-segment-s 5 \
+  --drain-timeout-s 30 --queue-capacity 4
+```
+
+100개 주 평가에는 파일 사이 **추가 무음0초**를 사용합니다. 원음의 무음은 제거하지 않습니다. 이후 GGUF는 같은 명령에서 설정을 `configs/gguf.toml`로 바꾸고 새 출력 경로를 사용합니다. 기존 추가 무음1초 Q8 기록은 별도 조건이며 새 ONNX와 직접 우열을 정하지 않습니다.
 
 대조는 같은 명령에 `--no-partials`를 추가해 구간/PCM은 유지하고 부분 호출만 끕니다. 현재 기본 `--silence-policy skip-zero`는 완전히0인 PCM의 ASR 호출을 생략하고 구간·해시·이유를 따로 기록합니다. 낮은 진폭 음성을 임계값으로 제거하지 않습니다. 이전 동작은 `--silence-policy preserve`로 재현합니다.
 

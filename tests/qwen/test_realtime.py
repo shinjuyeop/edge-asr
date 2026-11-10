@@ -153,8 +153,10 @@ class RealtimeTests(unittest.TestCase):
                 return "전사"
 
         root = Path(__file__).resolve().parents[2]
-        for fail in (False, True):
-            with self.subTest(fail=fail), tempfile.TemporaryDirectory() as temporary:
+        for config, fail in (
+            (config, fail) for config in ("onnx", "gguf") for fail in (False, True)
+        ):
+            with self.subTest(config=config, fail=fail), tempfile.TemporaryDirectory() as temporary:
                 directory = Path(temporary)
                 wav = directory / "one.wav"
                 write_wav(wav, [1000] * 12800 + [0] * 8000)
@@ -176,7 +178,7 @@ class RealtimeTests(unittest.TestCase):
                 with patch("edge_asr.qwen.realtime.replay.limits_verified", return_value=True):
                     info = run(
                         root,
-                        root / "configs/gguf.toml",
+                        root / f"configs/{config}.toml",
                         manifest,
                         output,
                         vad_model,
@@ -187,6 +189,10 @@ class RealtimeTests(unittest.TestCase):
                         partial_interval_s=0.2,
                     )
                     self.assertEqual(info["status"], "failed" if fail else "completed")
+                    self.assertEqual(
+                        info["config"]["model"]["family"],
+                        "qwen3_asr" if config == "onnx" else "qwen3_gguf",
+                    )
                     self.assertTrue(info["telemetry"]["complete"])
                     self.assertTrue(adapter.closed)
                     self.assertIsNone(info["engine_ttft_s"])
@@ -195,7 +201,7 @@ class RealtimeTests(unittest.TestCase):
                     self.assertTrue((output / "jobs.jsonl").exists())
                     before = digest(output / "worker.json")
                     with self.assertRaises(FileExistsError):
-                        run(root, root / "configs/gguf.toml", manifest, output, vad_model)
+                        run(root, root / f"configs/{config}.toml", manifest, output, vad_model)
                     self.assertEqual(before, digest(output / "worker.json"))
 
     def test_one_inflight_latest_partial_and_finals_first(self):

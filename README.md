@@ -4,20 +4,22 @@
 
 Qwen3-ASR-0.6B를 Raspberry Pi 5의 ARM64 CPU에서 실행하며, **한국어 정확도와 처리 완료율을 유지하면서 인식 지연·메모리·발열을 줄이는** 프로젝트입니다.
 
-[현재 상태·다음 작업](docs/status.md) · [평가 기준](docs/research/fixed100_baseline.md) · [실시간 결과](results/summaries/optimization/realtime100-q8-20261110.md) · [실행 안내](docs/guides/qwen3_optimization.md)
+[현재 상태·다음 작업](docs/status.md) · [연속 입력 평가 기준](docs/research/qwen_realtime.md) · [실시간 결과](results/summaries/optimization/realtime100-q8-20261110.md) · [실행 안내](docs/guides/qwen3_optimization.md)
 
 ## 현재 진행 상태
 
 - **구현·검증:** ONNX INT8 / GGUF Q8_0 batch 추론, 고정100개 평가, ONNX 호출 경계 프로파일링, CPU·RSS·온도·클럭 계측
-- **진행 방향:** 기존 ONNX를 출발 참조로 두고, GGUF 2T 기준선 대비 실행 설정과 추론 경로 최적화
-- **현재 과제:** Q8 연속100개에서 드러난 VAD 누락·분할 경계·확정 지연 개선. [실측 결과](results/summaries/optimization/realtime100-q8-20261110.md)
+- **진행 방향:** Qwen 단독·1배속 연속 입력을 주 평가로 사용. ONNX INT8 2T에서 출발해 같은 파이프라인의 GGUF·실행 설정과 비교
+- **현재 과제:** 추가 무음 없는100개 ONNX 연속 기준선 확보. 기존 Q8 연속 평가의 VAD 누락·분할 경계·확정 지연도 보존·분석. [기존 실측](results/summaries/optimization/realtime100-q8-20261110.md)
 - **후속 구현·검증:** engine TTFT·청크 간 KV 재사용, 마이크 입력, 최종 장시간 안정성
 
 현재는 WAV 파일로 검증합니다. 이전 Zip+VAD+Refine 자막은 `legacy/`에 보존합니다.
 
 [최신 1배속 실측](results/summaries/optimization/realtime100-q8-20261110.md): **고정100개·16분31초 입력**을 실패·드롭 없이 완료했습니다. 연결 CER14.06%(같은 순서 기존 batch7.64%)·확정p95 6.19초로 정확도·지연 개선이 필요합니다. VAD 누락2개와 파일 경계를 넘는 최종 구간3개가 관측됐습니다. 아래 표는 기존 batch 기준값입니다.
 
-## 현재 GGUF 기준값
+연속 입력 중에도 추론과 다음 음성 수신이 함께 진행되어야 합니다. 새 주 기준은 **파일 사이 추가 무음0초·파일 경계 초기화 없음**이며, 기존 Q8의 추가 무음1초 결과와 구분합니다. ONNX/GGUF batch 값은 모델 자체 정확도·처리 비용을 확인하는 보조 참조입니다.
+
+## 기존 GGUF batch 참조값
 
 RP5 · Qwen3-ASR-0.6B Q8_0 · CPU 2스레드 · **2026-11-09 실측**입니다.
 
@@ -25,7 +27,7 @@ RP5 · Qwen3-ASR-0.6B Q8_0 · CPU 2스레드 · **2026-11-09 실측**입니다.
 | ---: | ---: | ---: | ---: |
 | 100/100 | 7.67% | 0.6225 | 1772.7 MiB |
 
-입력은 Zeroth60개·FLEURS40개, 총14분51.145초이며 [출처·선정 방법](docs/research/fixed100.md)을 고정했습니다. 이후 GGUF 최적화는 이 구성과 같은 입력으로 비교합니다.
+입력은 Zeroth60개·FLEURS40개, 총14분51.145초이며 [출처·선정 방법](docs/research/fixed100.md)을 고정했습니다. 이후 최적화의 주 비교에는 같은 원음·순서의 연속 입력과 공통 파이프라인을 사용합니다.
 
 이 값은 batch 처리 지표이며 실제 자막 반환 지연·TTFT와 구분합니다. ONNX 참조는 기존 context 검사 거부1건으로99/100 성공했습니다. 같은 성공 부분집합 비교와 온도·재부팅 조건, 실패 원시는 [실측 보고서](results/summaries/optimization/fixed100-baseline-20261109.md)에 있습니다.
 

@@ -31,8 +31,8 @@ def run(
     **settings,
 ):
     config = load_evaluation_config(config_path)
-    if config["model"]["family"] != "qwen3_gguf":
-        raise ValueError("첫 Qwen 단독 연속 경로는 검증한 GGUF 설정을 사용합니다.")
+    if config["model"]["family"] not in ("qwen3_asr", "qwen3_gguf"):
+        raise ValueError("Qwen 단독 연속 경로는 ONNX 또는 GGUF 설정이 필요합니다.")
     limits = Path("/proc/self/limits").read_text()
     if not limits_verified(limits):
         raise RuntimeError("thermal-run의 4GiB 주소 공간 제한이 필요합니다.")
