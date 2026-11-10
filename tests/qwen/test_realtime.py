@@ -185,6 +185,7 @@ class RealtimeTests(unittest.TestCase):
                         adapter_factory=lambda *_: adapter,
                         vad_factory=lambda _: BoundedProbabilityVad(Probability()),
                         gap_s=0,
+                        vad_max_speech_s=30,
                         partial_after_s=0.2,
                         partial_interval_s=0.2,
                     )

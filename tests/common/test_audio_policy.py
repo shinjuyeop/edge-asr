@@ -9,6 +9,19 @@ from edge_asr.thermal import rejection
 
 
 class AudioPolicyTests(unittest.TestCase):
+    def test_vad_rms_variant_recovers_quiet_level_and_remains_causal(self):
+        quiet = array("f", (0.0002 * math.sin(i / 15) for i in range(3200)))
+        unchanged, _ = preprocess(quiet, "identity")
+        old, _ = preprocess(quiet, "rms26")
+        boosted, meta = preprocess(quiet, "rms26-floor80")
+        with_future, _ = preprocess(quiet + array("f", [0.9] * 1600), "rms26-floor80")
+        self.assertEqual(unchanged, old)
+        self.assertGreater(max(boosted), max(unchanged))
+        self.assertEqual(boosted, with_future[: len(boosted)])
+        self.assertTrue(all(1 <= r["gain"] <= 10 ** (24 / 20) for r in meta["gain_trace"]))
+        silence, _ = preprocess(array("f", [0] * 1733), "rms26-floor80")
+        self.assertFalse(any(silence))
+
     def test_block_state_matches_frozen_m30_golden_outputs(self):
         rng = random.Random(730)
         audio = array(

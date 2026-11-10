@@ -57,6 +57,39 @@ class FakeNumpy:
 
 
 class ProbabilityTests(unittest.TestCase):
+    def test_lower_threshold_recovers_weak_sustained_activity(self):
+        for threshold in (0.1, 0.2, 0.3):
+            vad = BoundedProbabilityVad(Probability(0.25), threshold=threshold)
+            for _ in range(20):
+                vad.accept_waveform([0.001] * 512)
+            self.assertEqual(vad.is_speech_detected(), threshold < 0.3)
+        with self.assertRaises(ValueError):
+            BoundedProbabilityVad(Probability(), max_speech_s=0)
+
+    def test_vad_soft_limit_preserves_audio_with_independent_asr_hard_limit(self):
+        coverage = {}
+        for soft_limit in (5, 30):
+            rows = []
+            vad = BoundedProbabilityVad(Probability(0.7), threshold=0.3, max_speech_s=soft_limit)
+            pipeline = SegmentPipeline(
+                vad,
+                "identity",
+                5,
+                lambda row, pcm: rows.append(dict(row)),
+                context_frames=0,
+                native_budget_frames=None,
+            )
+            for index in range(200):
+                pipeline.accept(array("f", [0.03] * 1600), final=index == 199)
+            pipeline.finish()
+            coverage[soft_limit] = sum(r["owned_end_frame"] - r["owned_start_frame"] for r in rows)
+            self.assertTrue(all(r["payload_frames"] <= 5 * 16000 for r in rows))
+            self.assertLessEqual(pipeline.ring.peak, 6 * 16000)
+            self.assertEqual(vad.metadata()["retained_audio_frames"], 0)
+            self.assertEqual(vad.probability.resets, 2)
+        self.assertEqual(coverage[30], 20 * 16000)
+        self.assertGreater(coverage[30], coverage[5])
+
     def test_lower_onset_threshold_keeps_low_confidence_activity(self):
         for threshold in (0.5, 0.3):
             vad = BoundedProbabilityVad(Probability(0.4), threshold=threshold)

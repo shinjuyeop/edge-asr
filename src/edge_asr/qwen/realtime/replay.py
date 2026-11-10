@@ -9,6 +9,7 @@ from threading import Lock
 
 from edge_asr.adapters import create_adapter
 from edge_asr.artifacts import digest, write_event, write_json
+from edge_asr.audio_policy import VAD_POLICIES
 from edge_asr.config import load_evaluation_config
 from edge_asr.dataset import load_audio, load_manifest, prepare_track
 from edge_asr.metrics import character_errors, distribution
@@ -76,6 +77,7 @@ def run(
                 lambda p: BoundedProbabilityVad(
                     K2SileroProbability(p),
                     threshold=settings.get("vad_threshold", 0.5),
+                    max_speech_s=settings.get("vad_max_speech_s", 5),
                 )
             )
         )(vad_model)
@@ -111,7 +113,9 @@ def run(
                     )
 
         session_settings = {
-            k: v for k, v in settings.items() if k not in ("gap_s", "vad_threshold")
+            k: v
+            for k, v in settings.items()
+            if k not in ("gap_s", "vad_threshold", "vad_max_speech_s")
         }
         session = CaptionSession(
             adapter, vad, len(audio.samples), emit, info["telemetry"], **session_settings
@@ -206,11 +210,24 @@ def main():
     )
     parser.add_argument("--gap-s", type=float, default=1, choices=(0, 0.5, 1, 2))
     parser.add_argument(
+        "--vad-preprocess",
+        choices=tuple(VAD_POLICIES),
+        default="identity",
+        help="VAD 입력만 인과적 보정. ASR에는 identity 원음 유지",
+    )
+    parser.add_argument(
         "--vad-threshold",
         type=float,
         default=0.5,
-        choices=(0.3, 0.5),
+        choices=(0.1, 0.2, 0.3, 0.5),
         help="VAD 시작 임계값 후보. 기본0.5 보존",
+    )
+    parser.add_argument(
+        "--vad-max-speech-s",
+        type=int,
+        default=5,
+        choices=(5, 15, 30),
+        help="VAD가 판정을 강화하는 활성 길이. ASR 구간 상한과 독립; 기본5초 보존",
     )
     parser.add_argument("--partial-after-s", type=float, default=2, choices=(1, 2, 3))
     parser.add_argument("--partial-interval-s", type=float, default=1, choices=(0.5, 1, 2))

@@ -18,6 +18,10 @@ POLICIES = {
     },
 }
 BLOCK_FRAMES = 1600
+VAD_POLICIES = {
+    "identity": POLICIES["identity"],
+    "rms26-floor80": {**POLICIES["rms26"], "floor_dbfs": -80.0},
+}
 
 
 def rms_dbfs(samples):
@@ -31,10 +35,11 @@ class AudioPreprocessor:
     """16kHz/100ms 블록 상태. reset은 명시적 세션 경계에서만 호출한다."""
 
     def __init__(self, policy):
-        if policy not in POLICIES:
+        settings = POLICIES.get(policy) or VAD_POLICIES.get(policy)
+        if settings is None:
             raise ValueError("알려진 정책이 필요합니다.")
         self.policy = policy
-        self.settings = dict(POLICIES[policy])
+        self.settings = dict(settings)
         self.reset()
 
     def reset(self):
@@ -57,7 +62,7 @@ class AudioPreprocessor:
         gain = 1.0
         if self.policy == "gain12":
             gain = 10 ** (settings["gain_db"] / 20)
-        elif self.policy == "rms26":
+        elif settings["kind"] == "causal_rms":
             rolling = math.sqrt(sum(p for p, _ in self.powers) / sum(n for _, n in self.powers))
             floor = 10 ** (settings["floor_dbfs"] / 20)
             if rolling > floor:

@@ -61,6 +61,7 @@ class SegmentPipeline:
         native_budget_frames=30 * RATE,
         clock=time.perf_counter,
         progress=None,
+        vad_policy=None,
     ):
         if type(max_segment_s) is not int or max_segment_s not in (3, 5, 8):
             raise ValueError("소유 구간 상한은 3/5/8초여야 합니다.")
@@ -80,6 +81,15 @@ class SegmentPipeline:
         self.vad, self.emit, self.convert = vad, emit, convert
         self.progress = progress
         self.processor = AudioPreprocessor(policy)
+        self.vad_processor = (
+            AudioPreprocessor(vad_policy)
+            if vad_policy is not None and vad_policy != policy
+            else None
+        )
+        self.vad_pending = array("h")
+        self.vad_pcm_digest = hashlib.sha256()
+        self.vad_clipped = 0
+        self.vad_gain_peak = 1.0
         self.maximum = max_segment_s * RATE
         self.context = context_frames
         self.context_selection = context_selection
@@ -109,11 +119,26 @@ class SegmentPipeline:
         self.pcm_digest.update(pcm_bytes(pcm))
         self.clipped += trace["newly_clipped_samples"]
         self.pending.extend(pcm)
+        if self.vad_processor is not None:
+            vad_pcm, vad_trace = self.vad_processor.process_block(samples, final=final)
+            if (vad_trace["start_frame"], vad_trace["end_frame"]) != (
+                trace["start_frame"],
+                trace["end_frame"],
+            ):
+                raise RuntimeError("VAD/ASR 전처리 시간축이 다릅니다.")
+            self.vad_pending.extend(vad_pcm)
+            self.vad_pcm_digest.update(pcm_bytes(vad_pcm))
+            self.vad_clipped += vad_trace["newly_clipped_samples"]
+            self.vad_gain_peak = max(self.vad_gain_peak, vad_trace["gain"])
         self.pending_peak = max(self.pending_peak, len(self.pending))
         while len(self.pending) >= WINDOW:
             block = self.pending[:WINDOW]
             del self.pending[:WINDOW]
-            self._window(block)
+            vad_block = None
+            if self.vad_processor is not None:
+                vad_block = self.vad_pending[:WINDOW]
+                del self.vad_pending[:WINDOW]
+            self._window(block, vad_block)
 
     def _emit(self, start, end, reason):
         native_end = end
@@ -178,7 +203,7 @@ class SegmentPipeline:
             self.span_id += 1
             self.continuation = False
 
-    def _window(self, block):
+    def _window(self, block, vad_block=None):
         if (
             self.native_budget is not None
             and self.native_start is not None
@@ -188,7 +213,8 @@ class SegmentPipeline:
             raise RuntimeError(
                 "native_active_budget_exhausted: 활성 VAD 30초 예산; reset/재입력 없이 중단"
             )
-        self.vad.accept_waveform(self.convert(array("f", (x / 32768 for x in block))))
+        signal = block if vad_block is None else vad_block
+        self.vad.accept_waveform(self.convert(array("f", (x / 32768 for x in signal))))
         self.fed += WINDOW
         self._drain("vad_end")
         if self.vad.is_speech_detected():
@@ -217,7 +243,12 @@ class SegmentPipeline:
             block = self.pending
             self.pending = array("h")
             block.extend([0] * (WINDOW - len(block)))
-            self._window(block)
+            vad_block = None
+            if self.vad_processor is not None:
+                vad_block = self.vad_pending
+                self.vad_pending = array("h")
+                vad_block.extend([0] * (WINDOW - len(vad_block)))
+            self._window(block, vad_block)
         self.vad.flush()
         self._drain("eof")
         self.closed = True
@@ -247,6 +278,13 @@ class SegmentPipeline:
         }
         if self.context_selection != "all":
             result["context_selection"] = self.context_selection
+        if self.vad_processor is not None:
+            result.update(
+                vad_preprocess=self.vad_processor.policy,
+                vad_processed_pcm_sha256=self.vad_pcm_digest.hexdigest(),
+                vad_newly_clipped_samples=self.vad_clipped,
+                vad_gain_peak=self.vad_gain_peak,
+            )
         return result
 
 

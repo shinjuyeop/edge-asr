@@ -100,10 +100,13 @@ class BoundedProbabilityVad:
 
     max_audio_buffer_frames = 0
 
-    def __init__(self, probability, *, threshold=0.5):
-        if threshold not in (0.3, 0.5):
-            raise ValueError("VAD 시작 임계값은 0.3/0.5여야 합니다.")
+    def __init__(self, probability, *, threshold=0.5, max_speech_s=5):
+        if threshold not in (0.1, 0.2, 0.3, 0.5):
+            raise ValueError("VAD 시작 임계값은 0.1/0.2/0.3/0.5여야 합니다.")
+        if type(max_speech_s) is not int or max_speech_s not in (5, 15, 30):
+            raise ValueError("VAD 판정 전환은 5/15/30초여야 합니다.")
         self.threshold = threshold
+        self.max_speech_s = max_speech_s
         self.probability = probability
         self.reset()
 
@@ -150,7 +153,7 @@ class BoundedProbabilityVad:
         if not math.isfinite(value) or not 0 <= value <= 1:
             raise ValueError("유한한 0~1 확률이 필요합니다.")
         # 이전 wrapper처럼 다음 창 수신 전의 가상 버퍼 길이로 soft limit을 판단한다.
-        long_active = self.fed - self.head > 5 * RATE
+        long_active = self.fed - self.head > self.max_speech_s * RATE
         threshold, silence = (0.9, 1600) if long_active else (self.threshold, 4800)
         self.fed += WINDOW
         speech = self._classify(value, threshold, silence)
@@ -210,6 +213,7 @@ class BoundedProbabilityVad:
         return {
             "backend": "bounded_probability_experimental",
             "threshold": self.threshold,
+            "max_speech_s": self.max_speech_s,
             "retained_audio_frames": 0,
             "queue_capacity": 1,
             "queue_peak": self.queue_peak,

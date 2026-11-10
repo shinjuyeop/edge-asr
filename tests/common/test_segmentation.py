@@ -81,6 +81,36 @@ def run(samples, maximum=3, policy="identity", vad=None):
 
 
 class SegmentTests(unittest.TestCase):
+    def test_separate_vad_level_keeps_original_asr_pcm_and_partial_eof(self):
+        class Meter(Vad):
+            def reset(self):
+                super().reset()
+                self.received = []
+
+            def accept_waveform(self, block):
+                self.received.extend(block)
+                super().accept_waveform(block)
+
+        samples = array("f", ((7 if i % 2 else -7) / 32768 for i in range(1733)))
+        vad = Meter()
+        payloads = []
+        pipeline = SegmentPipeline(
+            vad,
+            "identity",
+            3,
+            lambda row, pcm: payloads.extend(pcm),
+            context_frames=0,
+            vad_policy="rms26-floor80",
+        )
+        pipeline.accept(samples[:1600])
+        pipeline.accept(samples[1600:], final=True)
+        pipeline.finish()
+        original, _ = preprocess(samples, "identity")
+        self.assertEqual(list(original), payloads)
+        self.assertGreater(max(abs(x) for x in vad.received), max(abs(x) for x in samples))
+        self.assertEqual(pipeline.metadata()["vad_newly_clipped_samples"], 0)
+        self.assertFalse(pipeline.vad_pending)
+
     def test_invalid_context_selection_is_rejected_before_vad_reset(self):
         vad = Vad()
         resets = vad.resets
