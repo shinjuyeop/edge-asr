@@ -1,6 +1,6 @@
 # 현재 상태 — Qwen3-ASR 최적화
 
-2026-11-09 기준. 목표는 **RP5에서 Qwen3-ASR-0.6B의 한국어 정확도·완료율을 유지하면서 실제 인식 지연을 줄이는 것**입니다. [연구 계획·OPT-0~4](research/qwen3_optimization.md).
+2026-11-10 기준. 목표는 **RP5에서 Qwen3-ASR-0.6B의 한국어 정확도·완료율을 유지하면서 실제 인식 지연을 줄이는 것**입니다. [연구 계획·OPT-0~4](research/qwen3_optimization.md).
 
 ## 현재 구현
 
@@ -9,7 +9,7 @@
 | ONNX INT8 / GGUF Q8_0 | RP5 CPU 어댑터·단독 batch 평가 구현 |
 | 공통 평가 | 해시·실패 보존·`ko_cer_v1`·재채점·CPU/RSS·온도/실제 클럭 계측 |
 | 입력 | 고정 Zeroth60·FLEURS40, 총891.1448125초·정답3,848자. [출처·한계](research/fixed100.md) |
-| 코드 정리 | 공통 계측/native 경고 수집 통합, 초기 smoke·1T 시작 설정 제거. [검증 기록](../results/summaries/optimization/refactor-core-20261109.md) |
+| 구조 | Qwen Python은 `qwen/`, C++는 `native/`, 설정은 `configs/{onnx,gguf}.toml`로 통합. [검증 기록](../results/summaries/optimization/layout-cleanup-20261110.md) |
 | 미완료 | Qwen 발화 중 부분 자막·사용자 TTFT·독립 holdout·최종 장시간 검증. 마이크 없음 |
 
 이전 Zip+VAD+Refine 자막은 `legacy/`에 보존하며 자동 교체는 보류 상태입니다. [이전 연구](archive/model-comparison/README.md).
@@ -27,7 +27,7 @@ ONNX의23.04초1개는 보수적 context 검사에서 거부됐습니다. 전체
 
 ONNX 최고87.55°C·실제1.5~2.4GHz·열 제한, 재부팅 후 GGUF 최고75.45°C·약2.4GHz·현재 제한0을 기록했습니다. 첫 GGUF 미완료 원시는 보존하고 새 실행에서 전체100개를 처음부터 평가했습니다. 네트워크 단절 중 로컬 기록은 계속됐으나 이전 부팅 로그가 없어 단절 원인은 미확정입니다.
 
-이번 코드 정리는 Host/RP5 각347개 테스트, 이전 공통 집계47개, 실제 회귀9건을 통과했습니다. **기준선 수치를 새로 측정한 작업은 아닙니다.**
+이번 구조 정리는 Host/RP5 각347개 테스트, 이전 공통 집계50개, 실제 회귀9건을 통과했습니다. **기준선 수치를 새로 측정한 작업은 아닙니다.**
 
 ## 다음 작업
 

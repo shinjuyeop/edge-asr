@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "run_id": "layout-cleanup-20261110-01",
+  "source_commit": "89e4a8bb359a617333fc14b9293fa4d5ee123ddb",
+  "scope": "behavior regression only, no speed or accuracy improvement claim",
+  "compared_scored_records": 9,
+  "cases": [
+    {
+      "id": "onnx",
+      "source_commit": "89e4a8bb359a617333fc14b9293fa4d5ee123ddb",
+      "scored_count": 4,
+      "successful": 3,
+      "failed": 1,
+      "matches_previous": true,
+      "repetition_warning_count": 0,
+      "timed_calls": 8,
+      "execution_status": "failed_or_unverified",
+      "worker_status": "completed_with_model_failures",
+      "temperature_max_c": 65.55,
+      "current_limits": [
+        0
+      ],
+      "limits_verified": true
+    },
+    {
+      "id": "gguf",
+      "source_commit": "89e4a8bb359a617333fc14b9293fa4d5ee123ddb",
+      "scored_count": 4,
+      "successful": 4,
+      "failed": 0,
+      "matches_previous": true,
+      "repetition_warning_count": 0,
+      "timed_calls": 8,
+      "execution_status": "completed",
+      "worker_status": "completed",
+      "temperature_max_c": 69.4,
+      "current_limits": [
+        0
+      ],
+      "limits_verified": true
+    },
+    {
+      "id": "onnx-warning",
+      "source_commit": "89e4a8bb359a617333fc14b9293fa4d5ee123ddb",
+      "scored_count": 1,
+      "successful": 0,
+      "failed": 1,
+      "matches_previous": true,
+      "repetition_warning_count": 1,
+      "timed_calls": 1,
+      "execution_status": "completed",
+      "worker_status": "completed_with_model_failures",
+      "temperature_max_c": 64.45,
+      "current_limits": [
+        0
+      ],
+      "limits_verified": true
+    }
+  ],
+  "shared_scorer_matches_saved_new_summaries": true,
+  "unmeasured": {
+    "full100_cer": null,
+    "speed_improvement": null,
+    "visible_ttft_s": null
+  },
+  "kind": "qwen_native_data_layout_cleanup",
+  "before_commit": "9957094f49526a8f1d98200bb9f81f847f2aa6bd",
+  "moves": {
+    "src/edge_asr/adapters/qwen3.py": "src/edge_asr/qwen/onnx.py",
+    "src/edge_asr/adapters/qwen3_gguf.py": "src/edge_asr/qwen/gguf.py",
+    "src/edge_asr/tools/optimization/baseline.py": "src/edge_asr/qwen/benchmark.py",
+    "src/edge_asr/tools/optimization/profiling.py": "src/edge_asr/qwen/profiling.py",
+    "src/edge_asr/tools/optimization/__init__.py": "src/edge_asr/qwen/__init__.py",
+    "experiments/qwen3_optimization/gguf/bridge.cpp": "native/gguf/bridge.cpp",
+    "experiments/qwen3_optimization/gguf/build_bridge.py": "native/gguf/build.py",
+    "experiments/qwen3_optimization/profiling/ort_trace.cc": "native/ort_trace/ort_trace.cc",
+    "experiments/qwen3_optimization/profiling/ort_trace.map": "native/ort_trace/ort_trace.map",
+    "experiments/qwen3_optimization/profiling/build_trace.py": "native/ort_trace/build.py",
+    "experiments/qwen3_optimization/prepare_fixed100.py": "src/edge_asr/tools/data/fixed100.py",
+    "experiments/qwen3_optimization/prepare_baseline100.py": "src/edge_asr/tools/data/baseline100.py",
+    "experiments/qwen3_optimization/prepare_opt0.py": "src/edge_asr/tools/data/opt0.py",
+    "configs/optimization/fixed100_onnx_2t.toml": "configs/onnx.toml",
+    "configs/optimization/fixed100_gguf_q8_2t.toml": "configs/gguf.toml"
+  },
+  "duplicate_configs_removed": [
+    "configs/optimization/opt0_onnx_2t.toml",
+    "configs/optimization/opt2_gguf_q8_2t.toml"
+  ],
+  "cli_added": [
+    "prepare-fixed100",
+    "prepare-baseline100",
+    "prepare-opt0"
+  ],
+  "input_verification": {
+    "count": 100,
+    "total_audio_s": 891.1448125,
+    "evaluation_manifest_sha256": "75ba1226dddfa0defb97f6fdbba89c31a762b541beb41299cdb0ac8490c45a06",
+    "source_manifest_sha256": "f693163f3d0d11a09873d3d5dbbd8a68aea6ebd1897cc051fd99dd076f8b76ab",
+    "configs": {
+      "configs/onnx.toml": "c00ad9dbe154cecca8bd690e976c4694124e69246616800c9ca1928e8801780e",
+      "configs/gguf.toml": "91f519bedc7b575cc99788a0eb810abe80c4ccc47f61fffb3b3d51529afb1dd6"
+    }
+  },
+  "verification": {
+    "host_tests": 347,
+    "rp5_tests": 347,
+    "historical_common_summaries": 50,
+    "historical_custom_extensions_recomputed": false,
+    "actual_regression_records_matched": 9,
+    "raw_and_verification_files_sha256_matched": 43,
+    "analysis_host_rp5_byte_identical": true,
+    "analysis_sha256": "e5fd244391bfe64550ac45b1dc31963b7b6d1ded10afb68ea6571d216b60fee5",
+    "host_protected_files": 17525,
+    "rp5_protected_files": 14466,
+    "protected_missing": 0,
+    "protected_changed": 0,
+    "runtime_files_unchanged": 9,
+    "model_files_unchanged": 10,
+    "native_source_and_current_config_bytes_unchanged": true,
+    "scorer_unchanged": true,
+    "current_input_membership_order_audio_and_config_hashes_unchanged": true
+  },
+  "raw_base": "results/optimization/opt2/layout-cleanup-20261110-01",
+  "maintenance_base": "results/maintenance/layout-cleanup-20261110-01"
+}
