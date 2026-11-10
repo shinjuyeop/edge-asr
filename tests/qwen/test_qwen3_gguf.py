@@ -145,6 +145,54 @@ class GGUFTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 load_evaluation_config(path)
 
+    def test_quantized_manifest_selects_assets_and_rejects_wrong_provenance(self):
+        audio_name = "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf"
+        for quant in ("q6_k", "q5_k_m", "q4_k_m"):
+            text = self.root / "model" / (quant + ".gguf")
+            text.write_bytes(b"fixture quantized weights")
+            assets = {
+                "schema_version": 1,
+                "quantization": quant,
+                "source_sha256": gguf.BF16_SHA256,
+                "llama_commit": gguf.LLAMA_COMMIT,
+                "text": {
+                    "path": text.name,
+                    "sha256": hashlib.sha256(text.read_bytes()).hexdigest(),
+                },
+                "audio": {"path": audio_name, "sha256": self.expected[audio_name]},
+            }
+            path = self.root / "model/assets.json"
+            path.write_text(json.dumps(assets))
+            self.model.update(quantization=quant, asset_manifest="assets.json")
+            adapter = self.load()
+            self.assertEqual(adapter.metadata["quantization"], quant)
+            self.assertEqual(self.library.edge_gguf_create.call_args.args[0], str(text).encode())
+            self.assertEqual(adapter.model_files["asset_manifest"], path)
+            for field, value in (
+                ("source_sha256", "0" * 64),
+                ("quantization", "q8_0"),
+                ("llama_commit", "other"),
+            ):
+                changed = {**assets, field: value}
+                path.write_text(json.dumps(changed))
+                with self.assertRaises(ValueError):
+                    create_adapter(self.model, 16000, self.root)
+            path.write_text(json.dumps(assets))
+            text.write_bytes(b"tampered")
+            with self.assertRaises(ValueError):
+                create_adapter(self.model, 16000, self.root)
+
+    def test_lower_quantization_requires_manifest_in_config(self):
+        original = (ROOT / "configs/gguf.toml").read_text()
+        for quant in ("q6_k", "q5_k_m", "q4_k_m"):
+            path = self.root / "quant.toml"
+            text = original.replace('quantization = "q8_0"', f'quantization = "{quant}"')
+            path.write_text(text)
+            with self.assertRaises(ValueError):
+                load_evaluation_config(path)
+            path.write_text(text.replace("[audio]", 'asset_manifest = "assets.json"\n\n[audio]'))
+            self.assertEqual(load_evaluation_config(path)["model"]["quantization"], quant)
+
 
 @unittest.skipUnless(
     os.environ.get("EDGE_ASR_LLAMA_SOURCE") and shutil.which("g++"),

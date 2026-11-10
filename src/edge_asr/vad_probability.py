@@ -15,7 +15,10 @@ WINDOW = 512
 class K2SileroProbability:
     """기존 SHA의 16kHz k2 v4만 지원. 모델 1회 로딩, 창마다 h/c 상태를 이어간다."""
 
-    def __init__(self, model):
+    def __init__(self, model, *, input_gain_db=0):
+        if input_gain_db not in (0, 12):
+            raise ValueError("VAD 입력 이득은 검증 후보 0/12dB만 지원합니다.")
+        self.input_gain_db = input_gain_db
         model = Path(model)
         if digest(model) != MODEL_SHA:
             raise ValueError("기존 검증한 k2 Silero 가중치만 지원합니다.")
@@ -51,6 +54,9 @@ class K2SileroProbability:
     def __call__(self, samples):
         if len(samples) != WINDOW or any(not math.isfinite(x) or not -1 <= x <= 1 for x in samples):
             raise ValueError("유한한 512프레임 float PCM이 필요합니다.")
+        if self.input_gain_db:
+            gain = 10 ** (self.input_gain_db / 20)
+            samples = [max(-1, min(1, x * gain)) for x in samples]
         x = self.np.asarray(samples, dtype=self.np.float32).reshape(1, WINDOW)
         prob, h, c = self.session.run(
             ["prob", "new_h", "new_c"], {"x": x, "h": self.h, "c": self.c}
@@ -72,6 +78,7 @@ class K2SileroProbability:
             "python_onnxruntime_version": self.version,
             "model_sha256": MODEL_SHA,
             "num_threads": 1,
+            "input_gain_db": self.input_gain_db,
             "providers": self.session.get_providers(),
             "recurrent_state_bytes": self.h.nbytes + self.c.nbytes,
             "reset_count": self.reset_count,

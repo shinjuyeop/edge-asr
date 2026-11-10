@@ -1,11 +1,12 @@
 # 실행 설정
 
-현재 Qwen 설정은 두 개입니다. 상대 자산 경로는 저장소 루트 기준입니다.
+현재 Qwen 기준 설정은 두 개이며 양자화 후보는 하위 폴더로 구분합니다. 상대 자산 경로는 저장소 루트 기준이고 `asset_manifest`는 모델 폴더 기준입니다.
 
 | 파일 | 용도 |
 | --- | --- |
 | [onnx.toml](onnx.toml) | ONNX INT8 2T 출발 참조 |
 | [gguf.toml](gguf.toml) | GGUF Q8_0 2T 최적화 기준선 |
+| [quantization/](quantization/) | text Q6_K·Q5_K_M·Q4_K_M 후보. 오디오 mmproj Q8·기존 런타임 유지 |
 | [eval_manifest.example.jsonl](eval_manifest.example.jsonl) | 목록 형식 예시2줄. 실제 평가100개가 아님 |
 | [legacy/](legacy/README.md) | 이전 세 모델·Zip 1배속·M1 재현 설정 |
 

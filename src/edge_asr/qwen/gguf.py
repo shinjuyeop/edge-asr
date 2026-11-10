@@ -1,4 +1,4 @@
-"""고정 GGUF Q8_0 자산과 별도 llama.cpp CPU C ABI를 사용하는 batch 어댑터."""
+"""해시로 고정한 GGUF 자산과 별도 llama.cpp CPU C ABI를 사용하는 어댑터."""
 
 import ctypes
 import json
@@ -9,6 +9,8 @@ from edge_asr.dataset import Audio, resolve_path
 from edge_asr.runtime import capture_native_stderr
 
 LLAMA_COMMIT = "7d7f0287530bc8981690f361d8c1627dbae1c99a"
+BF16_SHA256 = "12b2894d9a7c98cd8f26670f5a47ab738f42bcc98df21e109be493870c71ba50"
+QUANTIZATIONS = ("q8_0", "q6_k", "q5_k_m", "q4_k_m")
 MODEL_FILES = {
     "Qwen3-ASR-0.6B-Q8_0.gguf": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971",
     "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d",
@@ -19,14 +21,50 @@ class Qwen3GGUFAdapter:
     def __init__(self, model, sample_rate_hz, root):
         if sample_rate_hz != 16000 or model.get("language") != "ko":
             raise ValueError("GGUF 비교 경로는 한국어 ko·16000Hz 고정입니다.")
+        if model.get("quantization") not in QUANTIZATIONS:
+            raise ValueError("지원하는 GGUF 양자화가 아닙니다.")
         self.model = model
         self.directory = resolve_path(model["path"], root)
         self.library_path = resolve_path(model["runtime_library"], root)
         self.manifest_path = resolve_path(model["runtime_manifest"], root)
-        self.model_files = {name: self.directory / name for name in MODEL_FILES}
+        expected = dict(MODEL_FILES)
+        self.assets = None
+        if model.get("asset_manifest"):
+            assets_path = resolve_path(model["asset_manifest"], self.directory)
+            self.assets = json.loads(assets_path.read_text())
+            a = self.assets
+            if (
+                a.get("schema_version") != 1
+                or a.get("quantization") != model["quantization"]
+                or a.get("source_sha256") != BF16_SHA256
+                or a.get("llama_commit") != LLAMA_COMMIT
+                or a.get("audio", {}).get("sha256")
+                != MODEL_FILES["mmproj-Qwen3-ASR-0.6B-Q8_0.gguf"]
+            ):
+                raise ValueError("GGUF 자산 명세의 양자화·원본·오디오·도구 커밋이 다릅니다.")
+            for role in ("text", "audio"):
+                row = a.get(role, {})
+                if (
+                    not isinstance(row.get("path"), str)
+                    or not row["path"].strip()
+                    or not isinstance(row.get("sha256"), str)
+                    or len(row["sha256"]) != 64
+                ):
+                    raise ValueError("GGUF text/audio 경로와 SHA-256이 필요합니다.")
+            self.model_files = {
+                role: resolve_path(a[role]["path"], self.directory) for role in ("text", "audio")
+            }
+            expected = {role: a[role]["sha256"] for role in ("text", "audio")}
+        else:
+            if model["quantization"] != "q8_0":
+                raise ValueError("새 양자화에는 asset_manifest가 필요합니다.")
+            self.model_files = {name: self.directory / name for name in MODEL_FILES}
+        self.text_path, self.audio_path = self.model_files.values()
         for name, path in self.model_files.items():
-            if digest(path) != MODEL_FILES[name]:
+            if digest(path) != expected[name]:
                 raise ValueError(f"확인한 GGUF 자산과 SHA-256이 다릅니다: {name}")
+        if self.assets is not None:
+            self.model_files["asset_manifest"] = assets_path
         self.build = json.loads(self.manifest_path.read_text())
         if self.build.get("llama_commit") != LLAMA_COMMIT or self.build.get(
             "library_sha256"
@@ -46,9 +84,14 @@ class Qwen3GGUFAdapter:
             "llama_commit": LLAMA_COMMIT,
             "language": "ko",
             "stream_language": "Korean",
-            "quantization": "q8_0",
-            "quantization_evidence": "official_GGUF_asset_names_and_bound_sha256",
-            "quantization_scope": "텍스트 모델과 오디오 mmproj 모두 Q8_0 배포본. 일부 tensor 혼합 dtype 가능. ONNX INT8과 동일 양자화 방식 아님.",
+            "quantization": self.model["quantization"],
+            "quantization_evidence": "local_BF16_conversion_and_bound_sha256"
+            if self.assets
+            else "official_GGUF_asset_names_and_bound_sha256",
+            "quantization_scope": "text만 양자화 변경·audio mmproj Q8_0 유지. tensor 혼합 dtype은 자산 명세에 기록."
+            if self.assets
+            else "텍스트 모델과 오디오 mmproj 모두 Q8_0 배포본. 일부 tensor 혼합 dtype 가능. ONNX INT8과 동일 양자화 방식 아님.",
+            "assets": self.assets,
             "max_total_len": self.model["max_total_len"],
             "max_new_tokens": self.model["max_new_tokens"],
             "prompt_policy": "empty_system_audio_user_forced_assistant_language_Korean_asr_text_v1",
@@ -87,10 +130,9 @@ class Qwen3GGUFAdapter:
         lib.edge_gguf_destroy.restype = None
         if lib.edge_gguf_abi() != 1 or lib.edge_gguf_commit().decode() != LLAMA_COMMIT:
             raise ValueError("GGUF C ABI/커밋 불일치")
-        names = list(MODEL_FILES)
         self.handle = lib.edge_gguf_create(
-            str(self.model_files[names[0]]).encode(),
-            str(self.model_files[names[1]]).encode(),
+            str(self.text_path).encode(),
+            str(self.audio_path).encode(),
             self.model["num_threads"],
             self.model["max_total_len"],
             self.model["max_new_tokens"],

@@ -70,6 +70,10 @@ edge-asr/
 ├── benchmarks/                                            # manifest 명세
 ├── configs/                                               # 현재 설정·이전 재현 설정
 │   ├── legacy/                                            # 이전 비교·자막 설정
+│   ├── quantization/                                      # text Q6·Q5·Q4 후보
+│   │   ├── q4_k_m.toml
+│   │   ├── q5_k_m.toml
+│   │   └── q6_k.toml
 │   ├── eval_manifest.example.jsonl
 │   ├── gguf.toml
 │   └── onnx.toml
@@ -93,7 +97,8 @@ edge-asr/
 ├── native/
 │   ├── gguf/                                              # GGUF C ABI·빌드
 │   │   ├── bridge.cpp
-│   │   └── build.py
+│   │   ├── build.py
+│   │   └── quantize.py
 │   └── ort_trace/                                         # ORT 호출 계측·빌드
 │       ├── build.py
 │       ├── ort_trace.cc

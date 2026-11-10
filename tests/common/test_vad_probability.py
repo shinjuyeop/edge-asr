@@ -120,6 +120,14 @@ class ProbabilityTests(unittest.TestCase):
                 model([0] * 511)
             with self.assertRaises(ValueError):
                 model([float("nan")] * 512)
+            gain = K2SileroProbability(Path(directory) / "mock.onnx", input_gain_db=12)
+            pcm = [0.5, -0.5, 0.01] + [0] * 509
+            before = list(pcm)
+            gain(pcm)
+            self.assertEqual(pcm, before)
+            self.assertEqual(session.feed["x"].values[:2], [1, -1])
+            self.assertAlmostEqual(session.feed["x"].values[2], 0.01 * 10**0.6)
+            self.assertEqual(gain.metadata()["input_gain_db"], 12)
             session.get_inputs = lambda: []
             with self.assertRaises(ValueError):
                 K2SileroProbability(Path(directory) / "mock.onnx")

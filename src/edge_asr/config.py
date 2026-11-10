@@ -79,7 +79,7 @@ def load_evaluation_config(path: str | Path) -> dict:
             "max_new_tokens",
         }
     if family == "qwen3_gguf":
-        model_keys |= {"runtime_library", "runtime_manifest"}
+        model_keys |= {"runtime_library", "runtime_manifest", "asset_manifest"}
     allowed = {
         "model": model_keys,
         "audio": {"sample_rate_hz"},
@@ -149,9 +149,18 @@ def load_evaluation_config(path: str | Path) -> dict:
     else:
         if config["model"].get("language") != "ko" or config["audio"]["sample_rate_hz"] != 16000:
             raise ValueError("현재 Qwen 평가는 한국어 ko·16000Hz를 사용합니다.")
-        expected_quantization = "q8_0" if family == "qwen3_gguf" else "int8"
-        if config["model"]["quantization"] != expected_quantization:
-            raise ValueError(f"현재 Qwen 경로의 양자화는 {expected_quantization}입니다.")
+        if family == "qwen3_gguf":
+            from edge_asr.qwen.gguf import QUANTIZATIONS
+
+            if config["model"]["quantization"] not in QUANTIZATIONS:
+                raise ValueError(f"GGUF 양자화는 {QUANTIZATIONS}입니다.")
+            asset = config["model"].get("asset_manifest")
+            if asset is not None and (not isinstance(asset, str) or not asset.strip()):
+                raise ValueError("asset_manifest는 파일 경로여야 합니다.")
+            if config["model"]["quantization"] != "q8_0" and not asset:
+                raise ValueError("새 GGUF 양자화에는 asset_manifest가 필요합니다.")
+        elif config["model"]["quantization"] != "int8":
+            raise ValueError("현재 ONNX Qwen 양자화는 int8입니다.")
         if family == "qwen3_gguf":
             for key in ("runtime_library", "runtime_manifest"):
                 if (

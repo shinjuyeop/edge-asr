@@ -70,7 +70,14 @@ def run(
         info.update(sources=sources, input_manifest_sha256=manifest_sha, audio=audio.metadata())
         samples, _ = load_manifest(manifest, root)
         warmup = load_audio(samples[0].audio_path, 16000)
-        vad = (vad_factory or (lambda p: BoundedProbabilityVad(K2SileroProbability(p))))(vad_model)
+        vad = (
+            vad_factory
+            or (
+                lambda p: BoundedProbabilityVad(
+                    K2SileroProbability(p, input_gain_db=settings.get("vad_gain_db", 0))
+                )
+            )
+        )(vad_model)
         info["vad_model_sha256"] = digest(vad_model)
         adapter = (adapter_factory or create_adapter)(config["model"], 16000, root)
         info["model_files"] = {
@@ -102,7 +109,7 @@ def run(
                         flush=True,
                     )
 
-        session_settings = {k: v for k, v in settings.items() if k != "gap_s"}
+        session_settings = {k: v for k, v in settings.items() if k not in ("gap_s", "vad_gain_db")}
         session = CaptionSession(
             adapter, vad, len(audio.samples), emit, info["telemetry"], **session_settings
         )
@@ -125,6 +132,9 @@ def run(
             hypothesis=hypothesis,
             pipeline=session.pipeline.metadata(),
             vad=vad.metadata(),
+            vad_probability=vad.probability.metadata()
+            if hasattr(vad.probability, "metadata")
+            else None,
             segments=session.segments,
             results=session.results,
             inference_queue_peak=session.worker.queue_peak,
@@ -192,6 +202,13 @@ def main():
         "--vad-model", type=Path, default=Path("models/silero-vad-k2-20261029/silero_vad.onnx")
     )
     parser.add_argument("--gap-s", type=float, default=1, choices=(0, 0.5, 1, 2))
+    parser.add_argument(
+        "--vad-gain-db",
+        type=int,
+        default=0,
+        choices=(0, 12),
+        help="VAD 확률 입력만 증폭. Qwen PCM은 원음 그대로",
+    )
     parser.add_argument("--partial-after-s", type=float, default=2, choices=(1, 2, 3))
     parser.add_argument("--partial-interval-s", type=float, default=1, choices=(0.5, 1, 2))
     parser.add_argument("--max-segment-s", type=int, default=5, choices=(3, 5, 8))
