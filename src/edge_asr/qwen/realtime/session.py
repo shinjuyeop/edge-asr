@@ -25,7 +25,7 @@ class CaptionSession:
         drain_timeout_s=30,
         queue_capacity=4,
         partials=True,
-        silence_policy="preserve",
+        silence_policy="skip-zero",
     ):
         if partial_after_s <= 0 or partial_interval_s <= 0:
             raise ValueError("부분 전사 시작·갱신 간격은 양수여야 합니다.")

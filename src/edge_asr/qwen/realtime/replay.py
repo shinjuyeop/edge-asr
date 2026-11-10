@@ -74,7 +74,7 @@ def run(
             vad_factory
             or (
                 lambda p: BoundedProbabilityVad(
-                    K2SileroProbability(p, input_gain_db=settings.get("vad_gain_db", 0)),
+                    K2SileroProbability(p),
                     threshold=settings.get("vad_threshold", 0.5),
                 )
             )
@@ -111,7 +111,7 @@ def run(
                     )
 
         session_settings = {
-            k: v for k, v in settings.items() if k not in ("gap_s", "vad_gain_db", "vad_threshold")
+            k: v for k, v in settings.items() if k not in ("gap_s", "vad_threshold")
         }
         session = CaptionSession(
             adapter, vad, len(audio.samples), emit, info["telemetry"], **session_settings
@@ -212,13 +212,6 @@ def main():
         choices=(0.3, 0.5),
         help="VAD 시작 임계값 후보. 기본0.5 보존",
     )
-    parser.add_argument(
-        "--vad-gain-db",
-        type=int,
-        default=0,
-        choices=(0, 12),
-        help="VAD 확률 입력만 증폭. Qwen PCM은 원음 그대로",
-    )
     parser.add_argument("--partial-after-s", type=float, default=2, choices=(1, 2, 3))
     parser.add_argument("--partial-interval-s", type=float, default=1, choices=(0.5, 1, 2))
     parser.add_argument("--max-segment-s", type=int, default=5, choices=(3, 5, 8))
@@ -233,7 +226,7 @@ def main():
     parser.add_argument(
         "--silence-policy",
         choices=("preserve", "skip-zero"),
-        default="preserve",
+        default="skip-zero",
         help="완전0 PCM만 별도 기록하고 ASR 호출 생략. 조용한 음성 임계값 필터 아님",
     )
     args = vars(parser.parse_args())
