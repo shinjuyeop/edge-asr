@@ -1,6 +1,6 @@
 # Qwen 최적화 실행 안내
 
-주 기준은 [Qwen 단독1배속 연속 입력](../research/qwen_realtime.md)입니다. 기존 ONNX INT8 2T에서 시작해 같은 파이프라인의 GGUF를 비교했고 [동일 조건 실측](../../results/summaries/optimization/realtime100-backends-20261110.md)에 정확도·실패·지연을 기록했습니다. [파일별 batch 실측](../../results/summaries/optimization/fixed100-baseline-20261109.md)은 모델 정확도·처리 비용 진단용 보조 참조이며 [당시 프로토콜](../research/fixed100_baseline.md)과 함께 보존합니다.
+주 기준은 [Qwen 단독1배속 연속 입력](../research/qwen_realtime.md)입니다. [ONNX/GGUF 비교](../../results/summaries/optimization/realtime100-backends-20261110.md)에 이어 [VAD 보정·구간 길이 대조](../../results/summaries/optimization/realtime-accuracy-20261110.md)를 완료했습니다. 다음 개발 기준은 Q8·VAD 보정·5초 구간입니다. [파일별 batch 실측](../../results/summaries/optimization/fixed100-baseline-20261109.md)은 모델 정확도·처리 비용 진단용 보조 참조이며 [당시 프로토콜](../research/fixed100_baseline.md)과 함께 보존합니다.
 
 ## 환경과 설정
 
@@ -84,11 +84,19 @@ ONNX 측정은 guard와 자식 명령 모두 표의 ONNX Python·설정을 사�
 
 [ONNX 출발 실측](../../results/summaries/optimization/realtime100-onnx-20261110.md)은 전체 입력 완료·전사1회 실패·VAD 누락1개를 포함한 기록입니다. 모델·조건을 자동 변경하지 않고 실패까지 채점했으며 실사용 통과 구성으로 취급하지 않습니다. 이후 엔진 비교에서 최종 구간 좌표·PCM 해시·첫 자막 커버리지를 함께 확인합니다.
 
-정확도 진단 후보는 `--vad-preprocess rms26-floor80`로 **VAD 입력만** 보정합니다. ASR에는 원음을 전달하며 기본값은 `identity`입니다. `--vad-max-speech-s 30`은 VAD가 판정을 강화하는 시점만 바꾸고 `--max-segment-s 5`의 ASR 상한은 유지합니다. 기존 기본값은5초입니다. 두 옵션과 구간8초 대조는 [사전 조건](../research/qwen_realtime.md)의 순서로 검사하며 검증 전 기본 프로필에 적용하지 않습니다.
+다음 개발 구성은 위 명령에서 `--config configs/gguf.toml`과 새 출력 경로를 사용하고 아래 조건을 명시합니다. `--vad-preprocess rms26-floor80`은 **VAD 입력만** 보정하며 ASR에는 원음을 전달합니다. CLI 기본값은 여전히 `identity`입니다.
+
+```bash
+--gap-s 0 --vad-threshold 0.3 --silence-policy skip-zero \
+--vad-preprocess rms26-floor80 --vad-max-speech-s 5 --max-segment-s 5 \
+--partial-after-s 1 --partial-interval-s 2 --drain-timeout-s 30 --queue-capacity 4
+```
+
+이 구성은 같은100개에서 CER13.23→11.12%·미출력1→0으로 개선됐으나 첫 자막 중앙값은6.16→6.81초로 늘었습니다. 첫 자막 p95는10.92→9.84초입니다. 저지연 실사용 채택은 보류합니다. `--vad-max-speech-s 30`은 VAD 판정 강화 시점만 바꾸며 ASR 상한과는 독립입니다. 보정·판정30초·구간8초 구성은 CER8.26%였지만 첫 자막 p95가15.09초로 늘어 정확도 참고로 보존합니다. [조건·전체 결과](../../results/summaries/optimization/realtime-accuracy-20261110.md).
 
 대조는 같은 명령에 `--no-partials`를 추가해 구간/PCM은 유지하고 부분 호출만 끕니다. 현재 기본 `--silence-policy skip-zero`는 완전히0인 PCM의 ASR 호출을 생략하고 구간·해시·이유를 따로 기록합니다. 낮은 진폭 음성을 임계값으로 제거하지 않습니다. 이전 동작은 `--silence-policy preserve`로 재현합니다.
 
-100개에서 측정한 후보 조건은 `--silence-policy skip-zero --vad-threshold 0.3 --partial-after-s 1 --partial-interval-s 2`입니다. 100개 입력은 완료했으나 정확도 악화로 채택을 보류하고 입력 분할을 개선 중입니다. 전체100개 입력에는 외부 `--timeout-s 1800`을 사용하며 실제 조건은 [실측 보고서](../../results/summaries/optimization/realtime100-q8-20261110.md)에 있습니다. VAD 입력 증폭은 정확도 악화로 현재 코드에서 제거했습니다. 당시 실험은 소스 `be32cda`에 보존합니다. 양자화 후보는 `--config configs/quantization/q6_k.toml` 등으로 선택하며 대응하는 GGUF·자산 명세가 별도로 준비되어 있어야 합니다. VAD·부분 전사 조건은 비교 모델 사이에서 동일하게 지정합니다.
+전체100개 입력에는 외부 `--timeout-s 1800`을 사용합니다. 이전 추가 무음1초 조건은 [별도 실측 보고서](../../results/summaries/optimization/realtime100-q8-20261110.md)에 보존합니다. 당시 고정12dB 증폭은 오류 증가로 폐기했고 소스 `be32cda`로 재현합니다. 현재 RMS 보정과 구분합니다. 양자화 후보는 `--config configs/quantization/q6_k.toml` 등으로 선택하며 대응하는 GGUF·자산 명세가 별도로 준비되어 있어야 합니다. VAD·부분 전사 조건은 비교 모델 사이에서 동일하게 지정합니다.
 
 ## 이전 실험 재현
 

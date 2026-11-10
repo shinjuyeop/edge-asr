@@ -4,33 +4,33 @@
 
 Qwen3-ASR-0.6B를 Raspberry Pi 5의 ARM64 CPU에서 실행하며, **한국어 정확도와 처리 완료율을 유지하면서 인식 지연·메모리·발열을 줄이는** 프로젝트입니다.
 
-[현재 상태·다음 작업](docs/status.md) · [연속 입력 평가 기준](docs/research/qwen_realtime.md) · [ONNX/GGUF 비교 결과](results/summaries/optimization/realtime100-backends-20261110.md) · [실행 안내](docs/guides/qwen3_optimization.md)
+[현재 상태·다음 작업](docs/status.md) · [연속 입력 평가 기준](docs/research/qwen_realtime.md) · [정확도 개선 결과](results/summaries/optimization/realtime-accuracy-20261110.md) · [실행 안내](docs/guides/qwen3_optimization.md)
 
 ## 현재 진행 상태
 
-- **구현·검증:** ONNX INT8 / GGUF Q8_0 단독 연속 입력100개 비교, 공통 채점·CPU/RSS·온도·클럭 계측
+- **구현·검증:** ONNX/GGUF 단독 연속 입력100개 비교, Q8 고정 VAD 보정·구간 길이 대조, 공통 채점·자원 계측
 - **진행 방향:** Qwen 단독·1배속 연속 입력을 주 평가로 사용. ONNX INT8 2T에서 출발해 같은 파이프라인의 GGUF·실행 설정과 비교
-- **현재 과제:** GGUF Q8을 주 후보로 VAD 누락·분할/문맥 손실과 첫 자막·확정 대기 개선
+- **현재 과제:** Q8·VAD 보정·5초 구간을 개발 기준으로 첫 자막 중앙값·분할/문맥 손실·중복 추론·큐 대기 개선
 - **후속 구현·검증:** engine TTFT·청크 간 KV 재사용, 마이크 입력, 최종 장시간 안정성
 
 현재는 WAV 파일로 검증합니다. 이전 Zip+VAD+Refine 자막은 `legacy/`에 보존합니다.
 
-## 현재 연속 입력 비교
+## 현재 연속 입력 결과
 
-RP5·Qwen3-ASR-0.6B·2T·2026-11-10 실측입니다. Zeroth60개·FLEURS40개를 같은 순서로 **14분51초·1배속·추가 무음0초** 공급했고, 모든 최종214구간의 입력 PCM이 같았습니다. 추론 중에도 다음 음성 수신을 계속했습니다.
+RP5·Qwen3-ASR-0.6B GGUF Q8_0·2T·2026-11-10 실측입니다. 같은 Zeroth60개·FLEURS40개를 **14분51초·1배속·추가 무음0초** 공급하며 추론 중에도 다음 음성을 계속 받았습니다. 모델은 고정하고 VAD 입력 보정과 분할을 대조했습니다. ASR 파형은 원음을 유지합니다.
 
-| 지표 | ONNX INT8 | GGUF Q8_0 |
-| --- | ---: | ---: |
-| 연결 CER ↓ | 15.98% | **13.23%** |
-| 전사 호출 실패 / 입력 드롭 | 1 /0 | **0 /0** |
-| 첫 자막 p50 / p95 — 같은99개 ↓ | **5.43** /12.25초 | 6.16 /**10.92초** |
-| 성공 구간 확정 p50 / p95 — 같은213구간 ↓ | **5.31** /7.74초 | 5.62 /**7.57초** |
-| 관측 최대 RSS ↓ | 2096.09MiB | **1830.53MiB** |
-| 관측 최고 온도 | 85.90°C | 85.90°C |
+| 지표 | 기존 Q8·5초 | VAD 보정·5초 | 보정·판정30초·구간8초 |
+| --- | ---: | ---: | ---: |
+| 연결 CER ↓ | 13.23% | **11.12%** | 8.26% |
+| 자막 없는 원음 | 1 | **0** | 0 |
+| 호출 실패 / 입력 드롭 | 0 /0 | 0 /0 | 0 /0 |
+| 첫 자막 p50 / p95 — 공통99개 | 6.16 /10.92초 | 6.81 /9.84초 | 8.97 /15.09초 |
+| 파일 끝 기준 반환 p95 — 공통99개 | 6.59초 | 6.16초 | 10.35초 |
+| 관측 최대 RSS | 1830.53MiB | 1831.22MiB | 1832.03MiB |
 
-**GGUF는 정확도·실패·메모리에 유리하지만 중앙값 반응은 ONNX보다 느립니다.** 지연 p95는 GGUF가 짧았습니다. 양쪽 모두 VAD 누락1개·열 제한이 있어 현재 파이프라인의 실사용 채택은 보류합니다. [조건·대응 구간·해석](results/summaries/optimization/realtime100-backends-20261110.md).
+**다음 개발 기준은 VAD 보정만 적용한5초 구성입니다.** 오류81개·2.10%p를 줄이고 첫 자막 p95도 짧아졌지만, 첫 자막 중앙값은 약0.64초 늘었습니다.8초 복합 구성은 정확도 참고로 보존합니다. 파일 끝 기준 반환은 원음 입력 끝부터 마지막으로 겹치는 최종 호출 반환까지이며 음향 단어 끝 기준은 아닙니다. 세 구성 모두 열 제한을 관측했고 저지연 실사용 채택은 보류합니다. [조건·진단·해석](results/summaries/optimization/realtime-accuracy-20261110.md).
 
-평가 자료는 [고정100개 출처·선정 방법](docs/research/fixed100.md)을 따릅니다. [ONNX 출발 기록·첫 중단](results/summaries/optimization/realtime100-onnx-20261110.md), [기존 batch 참조](results/summaries/optimization/fixed100-baseline-20261109.md), [추가 무음1초 Q8](results/summaries/optimization/realtime100-q8-20261110.md)은 별도 조건으로 보존합니다. batch RTF는 실제 자막 반환 지연을 대신하지 않습니다.
+평가 자료는 [고정100개 출처·선정 방법](docs/research/fixed100.md)을 따릅니다. [ONNX/GGUF 비교](results/summaries/optimization/realtime100-backends-20261110.md), [ONNX 출발 기록·첫 중단](results/summaries/optimization/realtime100-onnx-20261110.md), [기존 batch 참조](results/summaries/optimization/fixed100-baseline-20261109.md), [추가 무음1초 Q8](results/summaries/optimization/realtime100-q8-20261110.md)은 보존합니다. batch RTF는 실제 자막 반환 지연을 대신하지 않습니다.
 
 ## 빠른 확인
 
@@ -55,6 +55,7 @@ GGUF 실행 흐름은 **평가 실행기 → Python 어댑터 → C++ bridge →
 | --- | --- |
 | 모델 로딩·첫 추론·워밍업·반복 평가 | [qwen/benchmark.py](src/edge_asr/qwen/benchmark.py) |
 | 1배속 연속 입력·부분 자막·실제 반환 지연 | [qwen/realtime/](src/edge_asr/qwen/realtime/) |
+| VAD 신호 보정·원음 보존 / 구간 분할 | [audio_policy.py](src/edge_asr/audio_policy.py) / [segmentation.py](src/edge_asr/segmentation.py), [vad_probability.py](src/edge_asr/vad_probability.py) |
 | GGUF 연결·음성 전달·출력 검사 | [qwen/gguf.py](src/edge_asr/qwen/gguf.py) |
 | KV 초기화·오디오/prefill·토큰 생성 제어 | [native/gguf/bridge.cpp](native/gguf/bridge.cpp) |
 | ONNX 참조·context 검사 / 호출 경계 계측 | [qwen/onnx.py](src/edge_asr/qwen/onnx.py) / [qwen/profiling.py](src/edge_asr/qwen/profiling.py) |
@@ -146,6 +147,7 @@ edge-asr/
 │       │   ├── reports/                                   # 저장 기록 분석
 │       │   └── cli.py
 │       ├── artifacts.py
+│       ├── audio_policy.py
 │       ├── cli.py
 │       ├── config.py
 │       ├── dataset.py
@@ -154,8 +156,9 @@ edge-asr/
 │       ├── resources.py
 │       ├── runtime.py
 │       ├── scoring.py
+│       ├── segmentation.py
 │       ├── thermal.py
-│       └── vad_probability.py                             # 후속 연속 음성을 위한 VAD 기반
+│       └── vad_probability.py                             # 연속 음성 구간 판정
 ├── tests/                                                 # 공통·legacy·Qwen 회귀 검사
 │   ├── common/
 │   ├── legacy/
