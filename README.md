@@ -10,12 +10,12 @@ Qwen3-ASR-0.6B를 Raspberry Pi 5의 ARM64 CPU에서 실행하며, **한국어 �
 
 - **구현·검증:** ONNX INT8 / GGUF Q8_0 batch 추론, 고정100개 평가, ONNX 호출 경계 프로파일링, CPU·RSS·온도·클럭 계측
 - **진행 방향:** 기존 ONNX를 출발 참조로 두고, GGUF 2T 기준선 대비 실행 설정과 추론 경로 최적화
-- **우선 검증:** [Qwen 단독1배속·부분 자막](docs/research/qwen_realtime.md), 이후 같은 연속 입력에서 text Q8→Q6→Q5→Q4 비교
+- **현재 개발 후보:** Q8·2T·VAD0.3·첫1초/이후2초 부분 갱신. [실측·양자화 비교](results/summaries/optimization/realtime-controls-quant-20261110.md)
 - **후속 구현·검증:** engine TTFT·청크 간 KV 재사용, 마이크 입력, 최종 장시간 안정성
 
 현재는 WAV 파일로 검증합니다. 이전 Zip+VAD+Refine 자막은 `legacy/`에 보존합니다.
 
-[첫 Qwen 단독 연속 입력 파일럿](results/summaries/optimization/realtime-pilot-20261110.md)은 입력 드롭 없이 완료했지만 첫 자막5.30초·확정p95 5.98초와 추가 인식 오류가 관측돼 개선 중입니다. 아래 표는 기존 batch 기준값입니다.
+[최신 1배속 실측](results/summaries/optimization/realtime-controls-quant-20261110.md): **고정3개·약39초 파일럿**에서 Q8·첫1초/이후2초 갱신은 첫 자막3.36초·확정p95 4.95초를 기록했습니다. Q6/Q5/Q4도 비교했으며 Q8을 주 후보로 유지합니다. 전체100개 연속 평가·장시간 검증은 후속이고 아래 표는 기존 batch 기준값입니다.
 
 ## 현재 GGUF 기준값
 

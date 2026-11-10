@@ -1,0 +1,4184 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-10",
+  "kind": "qwen3_realtime_controls_quantization_pilot",
+  "input_manifest_sha256": "8327d642d007bfccf7f180f595ae989f66409b82e68d1aba302bff93a3bbc543",
+  "audio_duration_s": 38.7835625,
+  "reference_characters": 172,
+  "scope": "동일 고정3개·원음35.7835625초+무음3초. 전체100개·holdout·장시간 결과 아님.",
+  "control_cases": {
+    "q8-on-preserve": {
+      "source_commit": "1afb798b0ec8a38da935345e2fcd2583030d5303",
+      "settings": {
+        "gap_s": 1,
+        "partial_after_s": 2,
+        "partial_interval_s": 1,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "partials": true,
+        "silence_policy": "preserve"
+      },
+      "status": "completed",
+      "error": null,
+      "model_metadata": {
+        "backend": "llama_cpp_mtmd",
+        "provider": "cpu",
+        "supported_modes": [
+          "batch"
+        ],
+        "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+        "language": "ko",
+        "stream_language": "Korean",
+        "quantization": "q8_0",
+        "quantization_evidence": "official_GGUF_asset_names_and_bound_sha256",
+        "quantization_scope": "텍스트 모델과 오디오 mmproj 모두 Q8_0 배포본. 일부 tensor 혼합 dtype 가능. ONNX INT8과 동일 양자화 방식 아님.",
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "prompt_policy": "empty_system_audio_user_forced_assistant_language_Korean_asr_text_v1",
+        "output_policy": "gguf_raw_utf8_until_eog_v1",
+        "sampling": "greedy",
+        "repetition_policy": "last64_token_ids_at_most3_distinct_failure",
+        "use_itn": null,
+        "context_policy": "mtmd_positions_plus_reserved_output_no_truncation_v1",
+        "input_policy": "동일 float32 PCM을 직접 전달. file codec/resampling 없음",
+        "runtime_build": {
+          "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+          "machine": "aarch64",
+          "command": [
+            "g++",
+            "-std=c++17",
+            "-O2",
+            "-fPIC",
+            "-shared",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/vendor/nlohmann",
+            "/home/deepet/projects/edge-asr/experiments/qwen3_optimization/gguf/bridge.cpp",
+            "-L",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+            "-Wl,-rpath,/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+            "-lllama",
+            "-lmtmd",
+            "-lggml",
+            "-lggml-base",
+            "-pthread",
+            "-o",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so"
+          ],
+          "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "bridge_source_sha256": "5a3482b3fb9731bef59b860e7e4b5a8fa90017239d5964590f15dd804e0b6f19",
+          "cmake_cache_sha256": "2d21bf15406912c839456d69ef66f7edcbdfbdc1d3b02d4f5f03b0a09b139b24",
+          "engine_libraries": {
+            "libmtmd.so": "ba8bbb528c24a7cc5721b5cdf520d7ab159f5efb214548628ae5ce240f581296",
+            "libggml.so": "9391d0da5efb090d836eb9f1050270045ae9f215ad8e41368a44d9cd73de82c1",
+            "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+            "libllama.so": "3981f9752c48c595e4fd2ef766e70e6051edc6f54e85e4e0044615e0ddba0999",
+            "libggml-cpu.so": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+            "libllama-common.so": "61278407f85381989b98522229bb57379af9988b301a704f8c55a6619d14bafd"
+          },
+          "library_sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c",
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "",
+          "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model"
+        }
+      },
+      "model_files": {
+        "Qwen3-ASR-0.6B-Q8_0.gguf": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+        },
+        "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+        },
+        "runtime_library": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so",
+          "sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c"
+        },
+        "runtime_manifest": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/build.json",
+          "sha256": "76a60f809e3b3bdb89317debf1258e9622ebc6277b29a8895f45f0b0f545f539"
+        }
+      },
+      "config_sha256": "91f519bedc7b575cc99788a0eb810abe80c4ccc47f61fffb3b3d51529afb1dd6",
+      "input_manifest_sha256": "8327d642d007bfccf7f180f595ae989f66409b82e68d1aba302bff93a3bbc543",
+      "first_caption_from_track_start_s": 5.264763102008146,
+      "first_partial_from_track_start_s": 5.264763102008146,
+      "final_from_owned_end_s": {
+        "n": 9,
+        "mean": 3.8626327774456257,
+        "p50": 3.992103623006609,
+        "p95": 5.849960383004857,
+        "max": 5.849960383004857
+      },
+      "inference_queue_wait_s": {
+        "n": 14,
+        "mean": 1.1545916132870064,
+        "p50": 0.950581715995213,
+        "p95": 4.245499386001029,
+        "max": 4.245499386001029
+      },
+      "inference_queue_peak": 2,
+      "submitted_requests": 18,
+      "coalesced_partial_requests": 4,
+      "partial_count": 5,
+      "final_count": 9,
+      "failed_calls": 0,
+      "skipped_silence": [],
+      "final_transcript_score": {
+        "normalization": "ko_cer_v1",
+        "normalized_reference": "수소이온은전자가벗겨져나간양성자이다수소원자는양성자하나와전자하나로구성되므로구체적인행동은하지않더라도일종의시늉이나속임수만으로도일정정도의효과는있다고보시는군요그린란드는드문드문정착했다노르웨이모험담에서그들은erikthered가살인죄로아이슬란드에서추방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+        "normalized_hypothesis": "수소이온은전자가벗겨져나간양성자이다체적인행동은하지않더라도일종의신용이나속임수만으로도일정정도의효과는있다고보시는군요이보험담에서그들은에릭더웨드가살인죄로아이슬란드에서추방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여우린란드라고이름지었다이",
+        "reference_characters": 172,
+        "substitutions": 9,
+        "deletions": 43,
+        "insertions": 1,
+        "errors": 53,
+        "cer": 0.3081395348837209
+      },
+      "raw_path": "results/optimization/opt3/realtime-controls-20261110-01/q8-on-preserve",
+      "guard_status": "completed",
+      "operational_valid": true,
+      "limits_verified": true,
+      "input_complete": true,
+      "dropped_chunks": 0,
+      "finalization_from_track_end_s": 0.6623602869999985,
+      "input_backlog": {
+        "sample_interval_s": 0.1,
+        "sampling": "실제 큐 이벤트의 100ms 격자 재구성 및 오디오 끝/반환 경계",
+        "event_max_audio_s": 0.1,
+        "event_max_chunks": 1,
+        "event_max_oldest_wait_s": 0.001995441000000042,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0
+      },
+      "geometry": [
+        [
+          15296,
+          58176,
+          "e376283813c438b7bedc55bca5047c11392c04101302a237b8a40996e8574059"
+        ],
+        [
+          98240,
+          178240,
+          "8516855be9410a1f06f0cffe1b19bc558fbca5cf1aedeabee53c2144ba4ae7ad"
+        ],
+        [
+          178240,
+          197056,
+          "829549f5fb64ac1d0e3e3ab396994538fa6e5e696eb404a70f6f7198eaf88159"
+        ],
+        [
+          332736,
+          350016,
+          "58f2d087fe6101ee6eebb058598210e8af142a7f8086048e3dc3879b84e39675"
+        ],
+        [
+          361408,
+          433472,
+          "df5732b89c6c36e448d4d089fffb757dd6554df7c0d01c9c89708c2a9197c204"
+        ],
+        [
+          449984,
+          487232,
+          "75114ef665f42e904d22207c493373942484c13f294bdbeb5f64ebc9900e40ca"
+        ],
+        [
+          496576,
+          518976,
+          "3756705b08e435f49dafc50787fc44b8d6c4d9faf17a580ca15cffe4c1ff8e75"
+        ],
+        [
+          527296,
+          557888,
+          "a8517dbcc5b263cb4c39dd3e863e00f3d06f3a868bf55c46f665c7d61a7f1dc2"
+        ],
+        [
+          605632,
+          620537,
+          "0f700da8fb54f998c766fe81ffaaa5cea87469df27521a572ec428e9ca17c8be"
+        ]
+      ],
+      "final_signature": [
+        [
+          15296,
+          58176,
+          "115c4c376c947598d67549fbf13c5d52c21d2596086ebc22bb281b898f1669f3",
+          "수소 이온은 전자가 벗겨져 나간 양성자이다."
+        ],
+        [
+          98240,
+          178240,
+          "9b28b9722eda5888ca0c5c0da091460ac743a34d73edc8323bb565c000b89a4a",
+          "체적인 행동은 하지 않더라도 일종의 신용이나 속임수만으로도 일정 정도의 효과는."
+        ],
+        [
+          178240,
+          197056,
+          "65ea5f2efd73ff66916f9338c131168ecd24ccbfa0659c2bac893d759d14c739",
+          "있다고 보시는군요."
+        ],
+        [
+          332736,
+          350016,
+          "ce5358eb59eaf8c95239bdd75581acb603387717f4f62bb99e32b62ddbf43f67",
+          "이 보험담에서"
+        ],
+        [
+          361408,
+          433472,
+          "1b80cbb83c515d3e6cee7bea0bfeda71a942d089786ab2f80118fb2a1b1fb4d8",
+          "그들은 에릭 더 웨드가 살인죄로 아이슬란드에서 추방당했다고 말한다."
+        ],
+        [
+          449984,
+          487232,
+          "89afedacd02d2ca83c03d5fe21339d0962912b6bdac9aa068c85a768b2e8997d",
+          "그리고 서쪽으로 더 멀리 항해할 때."
+        ],
+        [
+          496576,
+          518976,
+          "10416690e8691c8ed84783dbaf73da6109a2ff127debc443718b9a2235476e68",
+          "그린란드를 발견하여."
+        ],
+        [
+          527296,
+          557888,
+          "06c451140475c069f25045eeae45c1180b9343715dbe66b122333dfb577dee90",
+          "우린란드라고 이름 지었다."
+        ],
+        [
+          605632,
+          620537,
+          "cc484f9b2c243780dfc05aa06a29ea2c36acdaabd69b3dbb82d2d73659b96062",
+          "이."
+        ]
+      ],
+      "per_source_file_anchors": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_caption_from_file_start_s": 5.264763102008146,
+          "before_file_end": false
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_caption_from_file_start_s": 4.890971159996115,
+          "before_file_end": true
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_caption_from_file_start_s": 8.635040775996284,
+          "before_file_end": true
+        }
+      ],
+      "rss_observed_max_mib": 1722.6875,
+      "serial_inference_wall_s": {
+        "partial": 11.402068763010902,
+        "final": 18.051212118996773
+      },
+      "thermal": {
+        "start_mc": 49050,
+        "maximum_mc": 66650,
+        "end_mc": 59500,
+        "current_limits": [
+          0
+        ]
+      },
+      "zero_only_segments": [
+        8
+      ]
+    },
+    "q8-off-preserve": {
+      "source_commit": "1afb798b0ec8a38da935345e2fcd2583030d5303",
+      "settings": {
+        "gap_s": 1,
+        "partial_after_s": 2,
+        "partial_interval_s": 1,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "partials": false,
+        "silence_policy": "preserve"
+      },
+      "status": "completed",
+      "error": null,
+      "model_metadata": {
+        "backend": "llama_cpp_mtmd",
+        "provider": "cpu",
+        "supported_modes": [
+          "batch"
+        ],
+        "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+        "language": "ko",
+        "stream_language": "Korean",
+        "quantization": "q8_0",
+        "quantization_evidence": "official_GGUF_asset_names_and_bound_sha256",
+        "quantization_scope": "텍스트 모델과 오디오 mmproj 모두 Q8_0 배포본. 일부 tensor 혼합 dtype 가능. ONNX INT8과 동일 양자화 방식 아님.",
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "prompt_policy": "empty_system_audio_user_forced_assistant_language_Korean_asr_text_v1",
+        "output_policy": "gguf_raw_utf8_until_eog_v1",
+        "sampling": "greedy",
+        "repetition_policy": "last64_token_ids_at_most3_distinct_failure",
+        "use_itn": null,
+        "context_policy": "mtmd_positions_plus_reserved_output_no_truncation_v1",
+        "input_policy": "동일 float32 PCM을 직접 전달. file codec/resampling 없음",
+        "runtime_build": {
+          "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+          "machine": "aarch64",
+          "command": [
+            "g++",
+            "-std=c++17",
+            "-O2",
+            "-fPIC",
+            "-shared",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/vendor/nlohmann",
+            "/home/deepet/projects/edge-asr/experiments/qwen3_optimization/gguf/bridge.cpp",
+            "-L",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+            "-Wl,-rpath,/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+            "-lllama",
+            "-lmtmd",
+            "-lggml",
+            "-lggml-base",
+            "-pthread",
+            "-o",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so"
+          ],
+          "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "bridge_source_sha256": "5a3482b3fb9731bef59b860e7e4b5a8fa90017239d5964590f15dd804e0b6f19",
+          "cmake_cache_sha256": "2d21bf15406912c839456d69ef66f7edcbdfbdc1d3b02d4f5f03b0a09b139b24",
+          "engine_libraries": {
+            "libmtmd.so": "ba8bbb528c24a7cc5721b5cdf520d7ab159f5efb214548628ae5ce240f581296",
+            "libggml.so": "9391d0da5efb090d836eb9f1050270045ae9f215ad8e41368a44d9cd73de82c1",
+            "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+            "libllama.so": "3981f9752c48c595e4fd2ef766e70e6051edc6f54e85e4e0044615e0ddba0999",
+            "libggml-cpu.so": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+            "libllama-common.so": "61278407f85381989b98522229bb57379af9988b301a704f8c55a6619d14bafd"
+          },
+          "library_sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c",
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "",
+          "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model"
+        }
+      },
+      "model_files": {
+        "Qwen3-ASR-0.6B-Q8_0.gguf": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+        },
+        "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+        },
+        "runtime_library": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so",
+          "sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c"
+        },
+        "runtime_manifest": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/build.json",
+          "sha256": "76a60f809e3b3bdb89317debf1258e9622ebc6277b29a8895f45f0b0f545f539"
+        }
+      },
+      "config_sha256": "91f519bedc7b575cc99788a0eb810abe80c4ccc47f61fffb3b3d51529afb1dd6",
+      "input_manifest_sha256": "8327d642d007bfccf7f180f595ae989f66409b82e68d1aba302bff93a3bbc543",
+      "first_caption_from_track_start_s": 6.385219761999906,
+      "first_partial_from_track_start_s": null,
+      "final_from_owned_end_s": {
+        "n": 9,
+        "mean": 2.63410283421637,
+        "p50": 2.662755244998376,
+        "p95": 4.321634945000172,
+        "max": 4.321634945000172
+      },
+      "inference_queue_wait_s": {
+        "n": 9,
+        "mean": 0.35870260422072736,
+        "p50": 0.0007052270084386691,
+        "p95": 2.726609176999773,
+        "max": 2.726609176999773
+      },
+      "inference_queue_peak": 1,
+      "submitted_requests": 9,
+      "coalesced_partial_requests": 0,
+      "partial_count": 0,
+      "final_count": 9,
+      "failed_calls": 0,
+      "skipped_silence": [],
+      "final_transcript_score": {
+        "normalization": "ko_cer_v1",
+        "normalized_reference": "수소이온은전자가벗겨져나간양성자이다수소원자는양성자하나와전자하나로구성되므로구체적인행동은하지않더라도일종의시늉이나속임수만으로도일정정도의효과는있다고보시는군요그린란드는드문드문정착했다노르웨이모험담에서그들은erikthered가살인죄로아이슬란드에서추방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+        "normalized_hypothesis": "수소이온은전자가벗겨져나간양성자이다체적인행동은하지않더라도일종의신용이나속임수만으로도일정정도의효과는있다고보시는군요이보험담에서그들은에릭더웨드가살인죄로아이슬란드에서추방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여우린란드라고이름지었다이",
+        "reference_characters": 172,
+        "substitutions": 9,
+        "deletions": 43,
+        "insertions": 1,
+        "errors": 53,
+        "cer": 0.3081395348837209
+      },
+      "raw_path": "results/optimization/opt3/realtime-controls-20261110-01/q8-off-preserve",
+      "guard_status": "completed",
+      "operational_valid": true,
+      "limits_verified": true,
+      "input_complete": true,
+      "dropped_chunks": 0,
+      "finalization_from_track_end_s": 0.6620590859999993,
+      "input_backlog": {
+        "sample_interval_s": 0.1,
+        "sampling": "실제 큐 이벤트의 100ms 격자 재구성 및 오디오 끝/반환 경계",
+        "event_max_audio_s": 0.1,
+        "event_max_chunks": 1,
+        "event_max_oldest_wait_s": 0.0019130700000005163,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0
+      },
+      "geometry": [
+        [
+          15296,
+          58176,
+          "e376283813c438b7bedc55bca5047c11392c04101302a237b8a40996e8574059"
+        ],
+        [
+          98240,
+          178240,
+          "8516855be9410a1f06f0cffe1b19bc558fbca5cf1aedeabee53c2144ba4ae7ad"
+        ],
+        [
+          178240,
+          197056,
+          "829549f5fb64ac1d0e3e3ab396994538fa6e5e696eb404a70f6f7198eaf88159"
+        ],
+        [
+          332736,
+          350016,
+          "58f2d087fe6101ee6eebb058598210e8af142a7f8086048e3dc3879b84e39675"
+        ],
+        [
+          361408,
+          433472,
+          "df5732b89c6c36e448d4d089fffb757dd6554df7c0d01c9c89708c2a9197c204"
+        ],
+        [
+          449984,
+          487232,
+          "75114ef665f42e904d22207c493373942484c13f294bdbeb5f64ebc9900e40ca"
+        ],
+        [
+          496576,
+          518976,
+          "3756705b08e435f49dafc50787fc44b8d6c4d9faf17a580ca15cffe4c1ff8e75"
+        ],
+        [
+          527296,
+          557888,
+          "a8517dbcc5b263cb4c39dd3e863e00f3d06f3a868bf55c46f665c7d61a7f1dc2"
+        ],
+        [
+          605632,
+          620537,
+          "0f700da8fb54f998c766fe81ffaaa5cea87469df27521a572ec428e9ca17c8be"
+        ]
+      ],
+      "final_signature": [
+        [
+          15296,
+          58176,
+          "115c4c376c947598d67549fbf13c5d52c21d2596086ebc22bb281b898f1669f3",
+          "수소 이온은 전자가 벗겨져 나간 양성자이다."
+        ],
+        [
+          98240,
+          178240,
+          "9b28b9722eda5888ca0c5c0da091460ac743a34d73edc8323bb565c000b89a4a",
+          "체적인 행동은 하지 않더라도 일종의 신용이나 속임수만으로도 일정 정도의 효과는."
+        ],
+        [
+          178240,
+          197056,
+          "65ea5f2efd73ff66916f9338c131168ecd24ccbfa0659c2bac893d759d14c739",
+          "있다고 보시는군요."
+        ],
+        [
+          332736,
+          350016,
+          "ce5358eb59eaf8c95239bdd75581acb603387717f4f62bb99e32b62ddbf43f67",
+          "이 보험담에서"
+        ],
+        [
+          361408,
+          433472,
+          "1b80cbb83c515d3e6cee7bea0bfeda71a942d089786ab2f80118fb2a1b1fb4d8",
+          "그들은 에릭 더 웨드가 살인죄로 아이슬란드에서 추방당했다고 말한다."
+        ],
+        [
+          449984,
+          487232,
+          "89afedacd02d2ca83c03d5fe21339d0962912b6bdac9aa068c85a768b2e8997d",
+          "그리고 서쪽으로 더 멀리 항해할 때."
+        ],
+        [
+          496576,
+          518976,
+          "10416690e8691c8ed84783dbaf73da6109a2ff127debc443718b9a2235476e68",
+          "그린란드를 발견하여."
+        ],
+        [
+          527296,
+          557888,
+          "06c451140475c069f25045eeae45c1180b9343715dbe66b122333dfb577dee90",
+          "우린란드라고 이름 지었다."
+        ],
+        [
+          605632,
+          620537,
+          "cc484f9b2c243780dfc05aa06a29ea2c36acdaabd69b3dbb82d2d73659b96062",
+          "이."
+        ]
+      ],
+      "per_source_file_anchors": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_caption_from_file_start_s": 6.385219761999906,
+          "before_file_end": false
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_caption_from_file_start_s": 10.032958762993804,
+          "before_file_end": false
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_caption_from_file_start_s": 8.659857411992387,
+          "before_file_end": true
+        }
+      ],
+      "rss_observed_max_mib": 1722.71875,
+      "serial_inference_wall_s": {
+        "partial": 0,
+        "final": 18.086211847985396
+      },
+      "thermal": {
+        "start_mc": 59500,
+        "maximum_mc": 68300,
+        "end_mc": 58950,
+        "current_limits": [
+          0
+        ]
+      },
+      "zero_only_segments": [
+        8
+      ]
+    },
+    "q8-on-zero": {
+      "source_commit": "1afb798b0ec8a38da935345e2fcd2583030d5303",
+      "settings": {
+        "gap_s": 1,
+        "partial_after_s": 2,
+        "partial_interval_s": 1,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "status": "completed",
+      "error": null,
+      "model_metadata": {
+        "backend": "llama_cpp_mtmd",
+        "provider": "cpu",
+        "supported_modes": [
+          "batch"
+        ],
+        "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+        "language": "ko",
+        "stream_language": "Korean",
+        "quantization": "q8_0",
+        "quantization_evidence": "official_GGUF_asset_names_and_bound_sha256",
+        "quantization_scope": "텍스트 모델과 오디오 mmproj 모두 Q8_0 배포본. 일부 tensor 혼합 dtype 가능. ONNX INT8과 동일 양자화 방식 아님.",
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "prompt_policy": "empty_system_audio_user_forced_assistant_language_Korean_asr_text_v1",
+        "output_policy": "gguf_raw_utf8_until_eog_v1",
+        "sampling": "greedy",
+        "repetition_policy": "last64_token_ids_at_most3_distinct_failure",
+        "use_itn": null,
+        "context_policy": "mtmd_positions_plus_reserved_output_no_truncation_v1",
+        "input_policy": "동일 float32 PCM을 직접 전달. file codec/resampling 없음",
+        "runtime_build": {
+          "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+          "machine": "aarch64",
+          "command": [
+            "g++",
+            "-std=c++17",
+            "-O2",
+            "-fPIC",
+            "-shared",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/vendor/nlohmann",
+            "/home/deepet/projects/edge-asr/experiments/qwen3_optimization/gguf/bridge.cpp",
+            "-L",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+            "-Wl,-rpath,/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+            "-lllama",
+            "-lmtmd",
+            "-lggml",
+            "-lggml-base",
+            "-pthread",
+            "-o",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so"
+          ],
+          "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "bridge_source_sha256": "5a3482b3fb9731bef59b860e7e4b5a8fa90017239d5964590f15dd804e0b6f19",
+          "cmake_cache_sha256": "2d21bf15406912c839456d69ef66f7edcbdfbdc1d3b02d4f5f03b0a09b139b24",
+          "engine_libraries": {
+            "libmtmd.so": "ba8bbb528c24a7cc5721b5cdf520d7ab159f5efb214548628ae5ce240f581296",
+            "libggml.so": "9391d0da5efb090d836eb9f1050270045ae9f215ad8e41368a44d9cd73de82c1",
+            "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+            "libllama.so": "3981f9752c48c595e4fd2ef766e70e6051edc6f54e85e4e0044615e0ddba0999",
+            "libggml-cpu.so": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+            "libllama-common.so": "61278407f85381989b98522229bb57379af9988b301a704f8c55a6619d14bafd"
+          },
+          "library_sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c",
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "",
+          "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model"
+        }
+      },
+      "model_files": {
+        "Qwen3-ASR-0.6B-Q8_0.gguf": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+        },
+        "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+        },
+        "runtime_library": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so",
+          "sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c"
+        },
+        "runtime_manifest": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/build.json",
+          "sha256": "76a60f809e3b3bdb89317debf1258e9622ebc6277b29a8895f45f0b0f545f539"
+        }
+      },
+      "config_sha256": "91f519bedc7b575cc99788a0eb810abe80c4ccc47f61fffb3b3d51529afb1dd6",
+      "input_manifest_sha256": "8327d642d007bfccf7f180f595ae989f66409b82e68d1aba302bff93a3bbc543",
+      "first_caption_from_track_start_s": 5.2330322039924795,
+      "first_partial_from_track_start_s": 5.2330322039924795,
+      "final_from_owned_end_s": {
+        "n": 8,
+        "mean": 4.2152414522468895,
+        "p50": 3.9740163529918062,
+        "p95": 5.793208071997272,
+        "max": 5.793208071997272
+      },
+      "inference_queue_wait_s": {
+        "n": 13,
+        "mean": 1.2130783246908463,
+        "p50": 1.0629966180131305,
+        "p95": 4.197805577990948,
+        "max": 4.197805577990948
+      },
+      "inference_queue_peak": 2,
+      "submitted_requests": 17,
+      "coalesced_partial_requests": 4,
+      "partial_count": 5,
+      "final_count": 8,
+      "failed_calls": 0,
+      "skipped_silence": [
+        {
+          "type": "skipped_silence",
+          "kind": "final",
+          "segment_id": 8,
+          "start_frame": 605632,
+          "end_frame": 620537,
+          "available_frame": 620537,
+          "pcm16_sha256": "0f700da8fb54f998c766fe81ffaaa5cea87469df27521a572ec428e9ca17c8be",
+          "reason": "exact_zero_pcm",
+          "at_monotonic_s": 73523.347125821
+        }
+      ],
+      "final_transcript_score": {
+        "normalization": "ko_cer_v1",
+        "normalized_reference": "수소이온은전자가벗겨져나간양성자이다수소원자는양성자하나와전자하나로구성되므로구체적인행동은하지않더라도일종의시늉이나속임수만으로도일정정도의효과는있다고보시는군요그린란드는드문드문정착했다노르웨이모험담에서그들은erikthered가살인죄로아이슬란드에서추방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+        "normalized_hypothesis": "수소이온은전자가벗겨져나간양성자이다체적인행동은하지않더라도일종의신용이나속임수만으로도일정정도의효과는있다고보시는군요이보험담에서그들은에릭더웨드가살인죄로아이슬란드에서추방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여우린란드라고이름지었다",
+        "reference_characters": 172,
+        "substitutions": 9,
+        "deletions": 43,
+        "insertions": 0,
+        "errors": 52,
+        "cer": 0.3023255813953488
+      },
+      "raw_path": "results/optimization/opt3/realtime-controls-20261110-01/q8-on-zero",
+      "guard_status": "completed",
+      "operational_valid": true,
+      "limits_verified": true,
+      "input_complete": true,
+      "dropped_chunks": 0,
+      "finalization_from_track_end_s": 0.004851946999998802,
+      "input_backlog": {
+        "sample_interval_s": 0.1,
+        "sampling": "실제 큐 이벤트의 100ms 격자 재구성 및 오디오 끝/반환 경계",
+        "event_max_audio_s": 0.1,
+        "event_max_chunks": 1,
+        "event_max_oldest_wait_s": 0.0032026350000000647,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0
+      },
+      "geometry": [
+        [
+          15296,
+          58176,
+          "e376283813c438b7bedc55bca5047c11392c04101302a237b8a40996e8574059"
+        ],
+        [
+          98240,
+          178240,
+          "8516855be9410a1f06f0cffe1b19bc558fbca5cf1aedeabee53c2144ba4ae7ad"
+        ],
+        [
+          178240,
+          197056,
+          "829549f5fb64ac1d0e3e3ab396994538fa6e5e696eb404a70f6f7198eaf88159"
+        ],
+        [
+          332736,
+          350016,
+          "58f2d087fe6101ee6eebb058598210e8af142a7f8086048e3dc3879b84e39675"
+        ],
+        [
+          361408,
+          433472,
+          "df5732b89c6c36e448d4d089fffb757dd6554df7c0d01c9c89708c2a9197c204"
+        ],
+        [
+          449984,
+          487232,
+          "75114ef665f42e904d22207c493373942484c13f294bdbeb5f64ebc9900e40ca"
+        ],
+        [
+          496576,
+          518976,
+          "3756705b08e435f49dafc50787fc44b8d6c4d9faf17a580ca15cffe4c1ff8e75"
+        ],
+        [
+          527296,
+          557888,
+          "a8517dbcc5b263cb4c39dd3e863e00f3d06f3a868bf55c46f665c7d61a7f1dc2"
+        ],
+        [
+          605632,
+          620537,
+          "0f700da8fb54f998c766fe81ffaaa5cea87469df27521a572ec428e9ca17c8be"
+        ]
+      ],
+      "final_signature": [
+        [
+          15296,
+          58176,
+          "115c4c376c947598d67549fbf13c5d52c21d2596086ebc22bb281b898f1669f3",
+          "수소 이온은 전자가 벗겨져 나간 양성자이다."
+        ],
+        [
+          98240,
+          178240,
+          "9b28b9722eda5888ca0c5c0da091460ac743a34d73edc8323bb565c000b89a4a",
+          "체적인 행동은 하지 않더라도 일종의 신용이나 속임수만으로도 일정 정도의 효과는."
+        ],
+        [
+          178240,
+          197056,
+          "65ea5f2efd73ff66916f9338c131168ecd24ccbfa0659c2bac893d759d14c739",
+          "있다고 보시는군요."
+        ],
+        [
+          332736,
+          350016,
+          "ce5358eb59eaf8c95239bdd75581acb603387717f4f62bb99e32b62ddbf43f67",
+          "이 보험담에서"
+        ],
+        [
+          361408,
+          433472,
+          "1b80cbb83c515d3e6cee7bea0bfeda71a942d089786ab2f80118fb2a1b1fb4d8",
+          "그들은 에릭 더 웨드가 살인죄로 아이슬란드에서 추방당했다고 말한다."
+        ],
+        [
+          449984,
+          487232,
+          "89afedacd02d2ca83c03d5fe21339d0962912b6bdac9aa068c85a768b2e8997d",
+          "그리고 서쪽으로 더 멀리 항해할 때."
+        ],
+        [
+          496576,
+          518976,
+          "10416690e8691c8ed84783dbaf73da6109a2ff127debc443718b9a2235476e68",
+          "그린란드를 발견하여."
+        ],
+        [
+          527296,
+          557888,
+          "06c451140475c069f25045eeae45c1180b9343715dbe66b122333dfb577dee90",
+          "우린란드라고 이름 지었다."
+        ]
+      ],
+      "per_source_file_anchors": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_caption_from_file_start_s": 5.2330322039924795,
+          "before_file_end": false
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_caption_from_file_start_s": 4.877450765995309,
+          "before_file_end": true
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_caption_from_file_start_s": 8.66473357199703,
+          "before_file_end": true
+        }
+      ],
+      "rss_observed_max_mib": 1722.734375,
+      "serial_inference_wall_s": {
+        "partial": 11.30034220899688,
+        "final": 17.369666842001607
+      },
+      "thermal": {
+        "start_mc": 57850,
+        "maximum_mc": 69400,
+        "end_mc": 62800,
+        "current_limits": [
+          0
+        ]
+      },
+      "zero_only_segments": [
+        8
+      ]
+    },
+    "q8-on-zero-gain12": {
+      "source_commit": "be32cdaa3c94ff232a79c5b28c48c2624db9a454",
+      "settings": {
+        "gap_s": 1,
+        "vad_gain_db": 12,
+        "partial_after_s": 2,
+        "partial_interval_s": 1,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "status": "completed",
+      "error": null,
+      "model_metadata": {
+        "backend": "llama_cpp_mtmd",
+        "provider": "cpu",
+        "supported_modes": [
+          "batch"
+        ],
+        "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+        "language": "ko",
+        "stream_language": "Korean",
+        "quantization": "q8_0",
+        "quantization_evidence": "official_GGUF_asset_names_and_bound_sha256",
+        "quantization_scope": "텍스트 모델과 오디오 mmproj 모두 Q8_0 배포본. 일부 tensor 혼합 dtype 가능. ONNX INT8과 동일 양자화 방식 아님.",
+        "assets": null,
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "prompt_policy": "empty_system_audio_user_forced_assistant_language_Korean_asr_text_v1",
+        "output_policy": "gguf_raw_utf8_until_eog_v1",
+        "sampling": "greedy",
+        "repetition_policy": "last64_token_ids_at_most3_distinct_failure",
+        "use_itn": null,
+        "context_policy": "mtmd_positions_plus_reserved_output_no_truncation_v1",
+        "input_policy": "동일 float32 PCM을 직접 전달. file codec/resampling 없음",
+        "runtime_build": {
+          "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+          "machine": "aarch64",
+          "command": [
+            "g++",
+            "-std=c++17",
+            "-O2",
+            "-fPIC",
+            "-shared",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/vendor/nlohmann",
+            "/home/deepet/projects/edge-asr/experiments/qwen3_optimization/gguf/bridge.cpp",
+            "-L",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+            "-Wl,-rpath,/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+            "-lllama",
+            "-lmtmd",
+            "-lggml",
+            "-lggml-base",
+            "-pthread",
+            "-o",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so"
+          ],
+          "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "bridge_source_sha256": "5a3482b3fb9731bef59b860e7e4b5a8fa90017239d5964590f15dd804e0b6f19",
+          "cmake_cache_sha256": "2d21bf15406912c839456d69ef66f7edcbdfbdc1d3b02d4f5f03b0a09b139b24",
+          "engine_libraries": {
+            "libmtmd.so": "ba8bbb528c24a7cc5721b5cdf520d7ab159f5efb214548628ae5ce240f581296",
+            "libggml.so": "9391d0da5efb090d836eb9f1050270045ae9f215ad8e41368a44d9cd73de82c1",
+            "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+            "libllama.so": "3981f9752c48c595e4fd2ef766e70e6051edc6f54e85e4e0044615e0ddba0999",
+            "libggml-cpu.so": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+            "libllama-common.so": "61278407f85381989b98522229bb57379af9988b301a704f8c55a6619d14bafd"
+          },
+          "library_sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c",
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "",
+          "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model"
+        }
+      },
+      "model_files": {
+        "Qwen3-ASR-0.6B-Q8_0.gguf": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+        },
+        "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+        },
+        "runtime_library": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so",
+          "sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c"
+        },
+        "runtime_manifest": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/build.json",
+          "sha256": "76a60f809e3b3bdb89317debf1258e9622ebc6277b29a8895f45f0b0f545f539"
+        }
+      },
+      "config_sha256": "91f519bedc7b575cc99788a0eb810abe80c4ccc47f61fffb3b3d51529afb1dd6",
+      "input_manifest_sha256": "8327d642d007bfccf7f180f595ae989f66409b82e68d1aba302bff93a3bbc543",
+      "first_caption_from_track_start_s": 5.322601448991918,
+      "first_partial_from_track_start_s": 5.322601448991918,
+      "final_from_owned_end_s": {
+        "n": 7,
+        "mean": 4.393615639854105,
+        "p50": 3.9750285519941246,
+        "p95": 6.0504545939973315,
+        "max": 6.0504545939973315
+      },
+      "inference_queue_wait_s": {
+        "n": 12,
+        "mean": 1.2291224754141392,
+        "p50": 1.0239644700050121,
+        "p95": 4.424015393000445,
+        "max": 4.424015393000445
+      },
+      "inference_queue_peak": 2,
+      "submitted_requests": 15,
+      "coalesced_partial_requests": 3,
+      "partial_count": 5,
+      "final_count": 7,
+      "failed_calls": 0,
+      "skipped_silence": [],
+      "final_transcript_score": {
+        "normalization": "ko_cer_v1",
+        "normalized_reference": "수소이온은전자가벗겨져나간양성자이다수소원자는양성자하나와전자하나로구성되므로구체적인행동은하지않더라도일종의시늉이나속임수만으로도일정정도의효과는있다고보시는군요그린란드는드문드문정착했다노르웨이모험담에서그들은erikthered가살인죄로아이슬란드에서추방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+        "normalized_hypothesis": "수소이온은전자가벗겨져나간양성자이다체적인행동은하지않더라도일종의신용이나속임수만으로도일정정도의효과는있다고보시는군요제로아이슬란드에서치방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여이른랜드라고이름지었다",
+        "reference_characters": 172,
+        "substitutions": 7,
+        "deletions": 60,
+        "insertions": 0,
+        "errors": 67,
+        "cer": 0.38953488372093026
+      },
+      "raw_path": "results/optimization/opt3/realtime-controls-20261110-01/q8-on-zero-gain12",
+      "guard_status": "completed",
+      "operational_valid": true,
+      "limits_verified": true,
+      "input_complete": true,
+      "dropped_chunks": 0,
+      "finalization_from_track_end_s": 0.004424651999997309,
+      "input_backlog": {
+        "sample_interval_s": 0.1,
+        "sampling": "실제 큐 이벤트의 100ms 격자 재구성 및 오디오 끝/반환 경계",
+        "event_max_audio_s": 0.1,
+        "event_max_chunks": 1,
+        "event_max_oldest_wait_s": 0.0020356430000010306,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0
+      },
+      "geometry": [
+        [
+          15296,
+          60224,
+          "f8df08f7442237e3f4041c2ac6d655a4bfd00fd746252c5d9528a89ed5d10a97"
+        ],
+        [
+          97728,
+          177728,
+          "eda5decfd180f93d1249a20f33ac3033bc9ad6835f7afea1632136eb5c13c145"
+        ],
+        [
+          177728,
+          197056,
+          "dd712c58f65b97687cfa7de8966b0f7b94cab14084591094efed3a77d57708c8"
+        ],
+        [
+          390080,
+          430400,
+          "b8df891f3fbfe3843950bb1898bb76556728b00d912d9dd7b47ccd3a8bee282b"
+        ],
+        [
+          449984,
+          488256,
+          "6240c9fdc1382ebd9cbda78691594b367d7d6a4ea2b41e9ca7070cdb53237bf0"
+        ],
+        [
+          496576,
+          519488,
+          "8bd8dd38749ea0b4f71b929248d776cd32c8ee6f91ad14e7319edcf886e712eb"
+        ],
+        [
+          527808,
+          557888,
+          "58d8200093cd83c2a89ebec138e1857560b19a4e5e8952e6b87e2006908babf7"
+        ]
+      ],
+      "final_signature": [
+        [
+          15296,
+          60224,
+          "feff9351a3f2e17f9dbe0caf30033c9879d65b1d0853cdfb1e93868aa7793af2",
+          "수소 이온은 전자가 벗겨져 나간 양성자이다."
+        ],
+        [
+          97728,
+          177728,
+          "d66ab734aa19ee6b4b8aeb093c78b14856e12927d9a3ddfd46be79a89c990cca",
+          "체적인 행동은 하지 않더라도 일종의 신용이나 속임수만으로도 일정 정도의 효과는."
+        ],
+        [
+          177728,
+          197056,
+          "b6a31b7ec9947c3d3cad8357bdda294dffc70734453d450511f252649b1e29ab",
+          "있다고 보시는군요."
+        ],
+        [
+          390080,
+          430400,
+          "519cfc0da7d6016b6a6620781b57ded7974600d452ff6ff258346b76073075a2",
+          "제로 아이슬란드에서 치방당했다고 말한다."
+        ],
+        [
+          449984,
+          488256,
+          "3c3c046554815158c0363d8851de9d6e4350ca4d94927c73182e8624373b0bd8",
+          "그리고 서쪽으로 더 멀리 항해할 때."
+        ],
+        [
+          496576,
+          519488,
+          "aa618261eb6084d18d6453e1ffd72cb8fddca3a0d3d3686e4ad6da5f7fad396e",
+          "그린란드를 발견하여."
+        ],
+        [
+          527808,
+          557888,
+          "14d9652d96bd4029cf7c3cd057471ed1954624e313e8181aae6c4ee8ae4cdd1e",
+          "이른 랜드라고 이름 지었다."
+        ]
+      ],
+      "per_source_file_anchors": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_caption_from_file_start_s": 5.322601448991918,
+          "before_file_end": false
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_caption_from_file_start_s": 4.882218436000403,
+          "before_file_end": true
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_caption_from_file_start_s": 13.706801105996245,
+          "before_file_end": true
+        }
+      ],
+      "rss_observed_max_mib": 1723.21875,
+      "serial_inference_wall_s": {
+        "partial": 11.087907318025827,
+        "final": 15.209823191005853
+      },
+      "thermal": {
+        "start_mc": 51800,
+        "maximum_mc": 68850,
+        "end_mc": 60600,
+        "current_limits": [
+          0
+        ]
+      },
+      "zero_only_segments": []
+    },
+    "q8-on-zero-threshold03": {
+      "source_commit": "cc0f902fb3ca02bf69a1d79f2a839ed24e0c4ca4",
+      "settings": {
+        "gap_s": 1,
+        "vad_threshold": 0.3,
+        "vad_gain_db": 0,
+        "partial_after_s": 2,
+        "partial_interval_s": 1,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "status": "completed",
+      "error": null,
+      "model_metadata": {
+        "backend": "llama_cpp_mtmd",
+        "provider": "cpu",
+        "supported_modes": [
+          "batch"
+        ],
+        "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+        "language": "ko",
+        "stream_language": "Korean",
+        "quantization": "q8_0",
+        "quantization_evidence": "official_GGUF_asset_names_and_bound_sha256",
+        "quantization_scope": "텍스트 모델과 오디오 mmproj 모두 Q8_0 배포본. 일부 tensor 혼합 dtype 가능. ONNX INT8과 동일 양자화 방식 아님.",
+        "assets": null,
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "prompt_policy": "empty_system_audio_user_forced_assistant_language_Korean_asr_text_v1",
+        "output_policy": "gguf_raw_utf8_until_eog_v1",
+        "sampling": "greedy",
+        "repetition_policy": "last64_token_ids_at_most3_distinct_failure",
+        "use_itn": null,
+        "context_policy": "mtmd_positions_plus_reserved_output_no_truncation_v1",
+        "input_policy": "동일 float32 PCM을 직접 전달. file codec/resampling 없음",
+        "runtime_build": {
+          "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+          "machine": "aarch64",
+          "command": [
+            "g++",
+            "-std=c++17",
+            "-O2",
+            "-fPIC",
+            "-shared",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/vendor/nlohmann",
+            "/home/deepet/projects/edge-asr/experiments/qwen3_optimization/gguf/bridge.cpp",
+            "-L",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+            "-Wl,-rpath,/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+            "-lllama",
+            "-lmtmd",
+            "-lggml",
+            "-lggml-base",
+            "-pthread",
+            "-o",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so"
+          ],
+          "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "bridge_source_sha256": "5a3482b3fb9731bef59b860e7e4b5a8fa90017239d5964590f15dd804e0b6f19",
+          "cmake_cache_sha256": "2d21bf15406912c839456d69ef66f7edcbdfbdc1d3b02d4f5f03b0a09b139b24",
+          "engine_libraries": {
+            "libmtmd.so": "ba8bbb528c24a7cc5721b5cdf520d7ab159f5efb214548628ae5ce240f581296",
+            "libggml.so": "9391d0da5efb090d836eb9f1050270045ae9f215ad8e41368a44d9cd73de82c1",
+            "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+            "libllama.so": "3981f9752c48c595e4fd2ef766e70e6051edc6f54e85e4e0044615e0ddba0999",
+            "libggml-cpu.so": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+            "libllama-common.so": "61278407f85381989b98522229bb57379af9988b301a704f8c55a6619d14bafd"
+          },
+          "library_sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c",
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "",
+          "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model"
+        }
+      },
+      "model_files": {
+        "Qwen3-ASR-0.6B-Q8_0.gguf": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+        },
+        "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+        },
+        "runtime_library": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so",
+          "sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c"
+        },
+        "runtime_manifest": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/build.json",
+          "sha256": "76a60f809e3b3bdb89317debf1258e9622ebc6277b29a8895f45f0b0f545f539"
+        }
+      },
+      "config_sha256": "91f519bedc7b575cc99788a0eb810abe80c4ccc47f61fffb3b3d51529afb1dd6",
+      "input_manifest_sha256": "8327d642d007bfccf7f180f595ae989f66409b82e68d1aba302bff93a3bbc543",
+      "first_caption_from_track_start_s": 5.182313980010804,
+      "first_partial_from_track_start_s": 5.182313980010804,
+      "final_from_owned_end_s": {
+        "n": 9,
+        "mean": 4.1711451860045905,
+        "p50": 3.9316791190013767,
+        "p95": 5.760843899005325,
+        "max": 5.760843899005325
+      },
+      "inference_queue_wait_s": {
+        "n": 15,
+        "mean": 1.144995530602561,
+        "p50": 0.8815893590071937,
+        "p95": 4.160221213009208,
+        "max": 4.160221213009208
+      },
+      "inference_queue_peak": 2,
+      "submitted_requests": 19,
+      "coalesced_partial_requests": 4,
+      "partial_count": 6,
+      "final_count": 9,
+      "failed_calls": 0,
+      "skipped_silence": [
+        {
+          "type": "skipped_silence",
+          "kind": "final",
+          "segment_id": 3,
+          "start_frame": 220608,
+          "end_frame": 226624,
+          "available_frame": 232000,
+          "pcm16_sha256": "12a42cfe372b164bdba3fcaf9084fc39b2032c8aec11bdf0c2acb46a6b614fb7",
+          "reason": "exact_zero_pcm",
+          "at_monotonic_s": 74200.819610847
+        },
+        {
+          "type": "skipped_silence",
+          "kind": "final",
+          "segment_id": 10,
+          "start_frame": 605120,
+          "end_frame": 620537,
+          "available_frame": 620537,
+          "pcm16_sha256": "4dff60da6cf5feb63821caf6f823dea9ce04e6216c4f42a230abe2a3dd0dab58",
+          "reason": "exact_zero_pcm",
+          "at_monotonic_s": 74225.102348942
+        }
+      ],
+      "final_transcript_score": {
+        "normalization": "ko_cer_v1",
+        "normalized_reference": "수소이온은전자가벗겨져나간양성자이다수소원자는양성자하나와전자하나로구성되므로구체적인행동은하지않더라도일종의시늉이나속임수만으로도일정정도의효과는있다고보시는군요그린란드는드문드문정착했다노르웨이모험담에서그들은erikthered가살인죄로아이슬란드에서추방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+        "normalized_hypothesis": "수소이온은전자가벗겨져나간양성자이다체적인행동은하지않더라도일종의신용이나속임수만으로도일정정도의효과는있다고보시는군요민란드는드문드문정착됐다노르웨이보험담에서그들은에릭더웨드가살인죄로아이슬란드에서처방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+        "reference_characters": 172,
+        "substitutions": 11,
+        "deletions": 28,
+        "insertions": 0,
+        "errors": 39,
+        "cer": 0.22674418604651161
+      },
+      "raw_path": "results/optimization/opt3/realtime-controls-20261110-01/q8-on-zero-threshold03",
+      "guard_status": "completed",
+      "operational_valid": true,
+      "limits_verified": true,
+      "input_complete": true,
+      "dropped_chunks": 0,
+      "finalization_from_track_end_s": 0.003953570999996714,
+      "input_backlog": {
+        "sample_interval_s": 0.1,
+        "sampling": "실제 큐 이벤트의 100ms 격자 재구성 및 오디오 끝/반환 경계",
+        "event_max_audio_s": 0.1,
+        "event_max_chunks": 1,
+        "event_max_oldest_wait_s": 0.0020214580000015303,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0
+      },
+      "geometry": [
+        [
+          14784,
+          58688,
+          "3333cca1bc040e65a0dc2db3c465b820dfb349c42cf678117921fdde8c21d1f5"
+        ],
+        [
+          97728,
+          177728,
+          "eda5decfd180f93d1249a20f33ac3033bc9ad6835f7afea1632136eb5c13c145"
+        ],
+        [
+          177728,
+          197056,
+          "dd712c58f65b97687cfa7de8966b0f7b94cab14084591094efed3a77d57708c8"
+        ],
+        [
+          220608,
+          226624,
+          "12a42cfe372b164bdba3fcaf9084fc39b2032c8aec11bdf0c2acb46a6b614fb7"
+        ],
+        [
+          276416,
+          307008,
+          "d45869d9dd7eb47acca4b68fd98f4983da1486ff0b6729175efd61aaa67a51af"
+        ],
+        [
+          327104,
+          351040,
+          "ef96c2a5ffb50ff15cde2f85e8bb40a05ac0922109bd97fff62a31b8459355b8"
+        ],
+        [
+          359360,
+          433984,
+          "78922f83d13821319003d068e9d6027fd50bb796973514d694bad2d39ba6a642"
+        ],
+        [
+          448960,
+          489280,
+          "be76b3426eb2489eab5ef0c780010c5525fede723e280dd554db6dcfabf8b4c9"
+        ],
+        [
+          496576,
+          519488,
+          "8bd8dd38749ea0b4f71b929248d776cd32c8ee6f91ad14e7319edcf886e712eb"
+        ],
+        [
+          526784,
+          558400,
+          "e2d532cf7ce80263f48391783d862e816a19a7f7e9bfa7010c7ebd84ca801061"
+        ],
+        [
+          605120,
+          620537,
+          "4dff60da6cf5feb63821caf6f823dea9ce04e6216c4f42a230abe2a3dd0dab58"
+        ]
+      ],
+      "final_signature": [
+        [
+          14784,
+          58688,
+          "a6bdc5774fe9219fe27030af46a05c57ac8e9af33509d90c05d06ad4695e590d",
+          "수소 이온은 전자가 벗겨져 나간 양성자이다."
+        ],
+        [
+          97728,
+          177728,
+          "d66ab734aa19ee6b4b8aeb093c78b14856e12927d9a3ddfd46be79a89c990cca",
+          "체적인 행동은 하지 않더라도 일종의 신용이나 속임수만으로도 일정 정도의 효과는."
+        ],
+        [
+          177728,
+          197056,
+          "b6a31b7ec9947c3d3cad8357bdda294dffc70734453d450511f252649b1e29ab",
+          "있다고 보시는군요."
+        ],
+        [
+          276416,
+          307008,
+          "18b00e6918ce1d9b4d5273fdae1deab27701fb07fba86e3430b17200d450b871",
+          "민란드는 드문 드문 정착됐다."
+        ],
+        [
+          327104,
+          351040,
+          "30cf2ed5d609b3522e6c39539478cc71fa0c1c0d6f662c7f0787cb968659ad8a",
+          "노르웨이 보험담에서"
+        ],
+        [
+          359360,
+          433984,
+          "5b2c0d8fdc7a06958552d99ba404af8a861e28b3b0af4632747861bcdb77bdeb",
+          "그들은 에릭더 웨드가 살인죄로 아이슬란드에서 처방당했다고 말한다."
+        ],
+        [
+          448960,
+          489280,
+          "e2192d6eff671042a9dfc4fcd0a9b75aefbc507e4d8008040ea2d95e67b73c39",
+          "그리고 서쪽으로 더 멀리 항해할 때."
+        ],
+        [
+          496576,
+          519488,
+          "aa618261eb6084d18d6453e1ffd72cb8fddca3a0d3d3686e4ad6da5f7fad396e",
+          "그린란드를 발견하여."
+        ],
+        [
+          526784,
+          558400,
+          "fc1b8357cd50f26cc82f41a468cc98234ec91045d1e8903ee47d9ca51df92fa3",
+          "그린란드라고 이름 지었다."
+        ]
+      ],
+      "per_source_file_anchors": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_caption_from_file_start_s": 5.182313980010804,
+          "before_file_end": false
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_caption_from_file_start_s": 4.819755466011702,
+          "before_file_end": true
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_caption_from_file_start_s": 6.61389511000726,
+          "before_file_end": true
+        }
+      ],
+      "rss_observed_max_mib": 1722.234375,
+      "serial_inference_wall_s": {
+        "partial": 13.248270994983613,
+        "final": 19.28805303896661
+      },
+      "thermal": {
+        "start_mc": 52900,
+        "maximum_mc": 69950,
+        "end_mc": 61700,
+        "current_limits": [
+          0
+        ]
+      },
+      "zero_only_segments": [
+        3,
+        10
+      ]
+    }
+  },
+  "quantization_plan": {
+    "vad_threshold": 0.3,
+    "vad_gain_db": 0,
+    "silence_policy": "skip-zero",
+    "partials": true,
+    "manifest": "results/optimization/opt3/realtime-20261110-01/inputs/pilot3.jsonl",
+    "reason": "오류52개보다 줄고 실패0일 때만0.3 채택, 아니면0.5 유지",
+    "threshold_trial_status": "completed",
+    "threshold_trial_errors": 39,
+    "cases": [
+      {
+        "quantization": "q8_0",
+        "exit_code": 0
+      },
+      {
+        "quantization": "q6_k",
+        "exit_code": 0
+      },
+      {
+        "quantization": "q5_k_m",
+        "exit_code": 0
+      },
+      {
+        "quantization": "q4_k_m",
+        "exit_code": 0
+      }
+    ]
+  },
+  "quantization_cases": {
+    "q8_0": {
+      "source_commit": "cc0f902fb3ca02bf69a1d79f2a839ed24e0c4ca4",
+      "settings": {
+        "gap_s": 1,
+        "vad_threshold": 0.3,
+        "vad_gain_db": 0,
+        "partial_after_s": 2,
+        "partial_interval_s": 1,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "status": "completed",
+      "error": null,
+      "model_metadata": {
+        "backend": "llama_cpp_mtmd",
+        "provider": "cpu",
+        "supported_modes": [
+          "batch"
+        ],
+        "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+        "language": "ko",
+        "stream_language": "Korean",
+        "quantization": "q8_0",
+        "quantization_evidence": "official_GGUF_asset_names_and_bound_sha256",
+        "quantization_scope": "텍스트 모델과 오디오 mmproj 모두 Q8_0 배포본. 일부 tensor 혼합 dtype 가능. ONNX INT8과 동일 양자화 방식 아님.",
+        "assets": null,
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "prompt_policy": "empty_system_audio_user_forced_assistant_language_Korean_asr_text_v1",
+        "output_policy": "gguf_raw_utf8_until_eog_v1",
+        "sampling": "greedy",
+        "repetition_policy": "last64_token_ids_at_most3_distinct_failure",
+        "use_itn": null,
+        "context_policy": "mtmd_positions_plus_reserved_output_no_truncation_v1",
+        "input_policy": "동일 float32 PCM을 직접 전달. file codec/resampling 없음",
+        "runtime_build": {
+          "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+          "machine": "aarch64",
+          "command": [
+            "g++",
+            "-std=c++17",
+            "-O2",
+            "-fPIC",
+            "-shared",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/vendor/nlohmann",
+            "/home/deepet/projects/edge-asr/experiments/qwen3_optimization/gguf/bridge.cpp",
+            "-L",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+            "-Wl,-rpath,/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+            "-lllama",
+            "-lmtmd",
+            "-lggml",
+            "-lggml-base",
+            "-pthread",
+            "-o",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so"
+          ],
+          "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "bridge_source_sha256": "5a3482b3fb9731bef59b860e7e4b5a8fa90017239d5964590f15dd804e0b6f19",
+          "cmake_cache_sha256": "2d21bf15406912c839456d69ef66f7edcbdfbdc1d3b02d4f5f03b0a09b139b24",
+          "engine_libraries": {
+            "libmtmd.so": "ba8bbb528c24a7cc5721b5cdf520d7ab159f5efb214548628ae5ce240f581296",
+            "libggml.so": "9391d0da5efb090d836eb9f1050270045ae9f215ad8e41368a44d9cd73de82c1",
+            "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+            "libllama.so": "3981f9752c48c595e4fd2ef766e70e6051edc6f54e85e4e0044615e0ddba0999",
+            "libggml-cpu.so": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+            "libllama-common.so": "61278407f85381989b98522229bb57379af9988b301a704f8c55a6619d14bafd"
+          },
+          "library_sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c",
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "",
+          "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model"
+        }
+      },
+      "model_files": {
+        "Qwen3-ASR-0.6B-Q8_0.gguf": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+        },
+        "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+        },
+        "runtime_library": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so",
+          "sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c"
+        },
+        "runtime_manifest": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/build.json",
+          "sha256": "76a60f809e3b3bdb89317debf1258e9622ebc6277b29a8895f45f0b0f545f539"
+        }
+      },
+      "config_sha256": "91f519bedc7b575cc99788a0eb810abe80c4ccc47f61fffb3b3d51529afb1dd6",
+      "input_manifest_sha256": "8327d642d007bfccf7f180f595ae989f66409b82e68d1aba302bff93a3bbc543",
+      "first_caption_from_track_start_s": 5.199744440003997,
+      "first_partial_from_track_start_s": 5.199744440003997,
+      "final_from_owned_end_s": {
+        "n": 9,
+        "mean": 4.196377217339675,
+        "p50": 3.9488807180115266,
+        "p95": 5.776211512004723,
+        "max": 5.776211512004723
+      },
+      "inference_queue_wait_s": {
+        "n": 15,
+        "mean": 1.1573853676653623,
+        "p50": 0.9164207510038977,
+        "p95": 4.175638777000131,
+        "max": 4.175638777000131
+      },
+      "inference_queue_peak": 2,
+      "submitted_requests": 19,
+      "coalesced_partial_requests": 4,
+      "partial_count": 6,
+      "final_count": 9,
+      "failed_calls": 0,
+      "skipped_silence": [
+        {
+          "type": "skipped_silence",
+          "kind": "final",
+          "segment_id": 3,
+          "start_frame": 220608,
+          "end_frame": 226624,
+          "available_frame": 232000,
+          "pcm16_sha256": "12a42cfe372b164bdba3fcaf9084fc39b2032c8aec11bdf0c2acb46a6b614fb7",
+          "reason": "exact_zero_pcm",
+          "at_monotonic_s": 74256.179660597
+        },
+        {
+          "type": "skipped_silence",
+          "kind": "final",
+          "segment_id": 10,
+          "start_frame": 605120,
+          "end_frame": 620537,
+          "available_frame": 620537,
+          "pcm16_sha256": "4dff60da6cf5feb63821caf6f823dea9ce04e6216c4f42a230abe2a3dd0dab58",
+          "reason": "exact_zero_pcm",
+          "at_monotonic_s": 74280.463293513
+        }
+      ],
+      "final_transcript_score": {
+        "normalization": "ko_cer_v1",
+        "normalized_reference": "수소이온은전자가벗겨져나간양성자이다수소원자는양성자하나와전자하나로구성되므로구체적인행동은하지않더라도일종의시늉이나속임수만으로도일정정도의효과는있다고보시는군요그린란드는드문드문정착했다노르웨이모험담에서그들은erikthered가살인죄로아이슬란드에서추방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+        "normalized_hypothesis": "수소이온은전자가벗겨져나간양성자이다체적인행동은하지않더라도일종의신용이나속임수만으로도일정정도의효과는있다고보시는군요민란드는드문드문정착됐다노르웨이보험담에서그들은에릭더웨드가살인죄로아이슬란드에서처방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+        "reference_characters": 172,
+        "substitutions": 11,
+        "deletions": 28,
+        "insertions": 0,
+        "errors": 39,
+        "cer": 0.22674418604651161
+      },
+      "raw_path": "results/optimization/opt3/realtime-quant-20261110-01/q8_0",
+      "guard_status": "completed",
+      "operational_valid": true,
+      "limits_verified": true,
+      "input_complete": true,
+      "dropped_chunks": 0,
+      "finalization_from_track_end_s": 0.004687835999995116,
+      "input_backlog": {
+        "sample_interval_s": 0.1,
+        "sampling": "실제 큐 이벤트의 100ms 격자 재구성 및 오디오 끝/반환 경계",
+        "event_max_audio_s": 0.1,
+        "event_max_chunks": 1,
+        "event_max_oldest_wait_s": 0.001987791999997768,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0
+      },
+      "geometry": [
+        [
+          14784,
+          58688,
+          "3333cca1bc040e65a0dc2db3c465b820dfb349c42cf678117921fdde8c21d1f5"
+        ],
+        [
+          97728,
+          177728,
+          "eda5decfd180f93d1249a20f33ac3033bc9ad6835f7afea1632136eb5c13c145"
+        ],
+        [
+          177728,
+          197056,
+          "dd712c58f65b97687cfa7de8966b0f7b94cab14084591094efed3a77d57708c8"
+        ],
+        [
+          220608,
+          226624,
+          "12a42cfe372b164bdba3fcaf9084fc39b2032c8aec11bdf0c2acb46a6b614fb7"
+        ],
+        [
+          276416,
+          307008,
+          "d45869d9dd7eb47acca4b68fd98f4983da1486ff0b6729175efd61aaa67a51af"
+        ],
+        [
+          327104,
+          351040,
+          "ef96c2a5ffb50ff15cde2f85e8bb40a05ac0922109bd97fff62a31b8459355b8"
+        ],
+        [
+          359360,
+          433984,
+          "78922f83d13821319003d068e9d6027fd50bb796973514d694bad2d39ba6a642"
+        ],
+        [
+          448960,
+          489280,
+          "be76b3426eb2489eab5ef0c780010c5525fede723e280dd554db6dcfabf8b4c9"
+        ],
+        [
+          496576,
+          519488,
+          "8bd8dd38749ea0b4f71b929248d776cd32c8ee6f91ad14e7319edcf886e712eb"
+        ],
+        [
+          526784,
+          558400,
+          "e2d532cf7ce80263f48391783d862e816a19a7f7e9bfa7010c7ebd84ca801061"
+        ],
+        [
+          605120,
+          620537,
+          "4dff60da6cf5feb63821caf6f823dea9ce04e6216c4f42a230abe2a3dd0dab58"
+        ]
+      ],
+      "final_signature": [
+        [
+          14784,
+          58688,
+          "a6bdc5774fe9219fe27030af46a05c57ac8e9af33509d90c05d06ad4695e590d",
+          "수소 이온은 전자가 벗겨져 나간 양성자이다."
+        ],
+        [
+          97728,
+          177728,
+          "d66ab734aa19ee6b4b8aeb093c78b14856e12927d9a3ddfd46be79a89c990cca",
+          "체적인 행동은 하지 않더라도 일종의 신용이나 속임수만으로도 일정 정도의 효과는."
+        ],
+        [
+          177728,
+          197056,
+          "b6a31b7ec9947c3d3cad8357bdda294dffc70734453d450511f252649b1e29ab",
+          "있다고 보시는군요."
+        ],
+        [
+          276416,
+          307008,
+          "18b00e6918ce1d9b4d5273fdae1deab27701fb07fba86e3430b17200d450b871",
+          "민란드는 드문 드문 정착됐다."
+        ],
+        [
+          327104,
+          351040,
+          "30cf2ed5d609b3522e6c39539478cc71fa0c1c0d6f662c7f0787cb968659ad8a",
+          "노르웨이 보험담에서"
+        ],
+        [
+          359360,
+          433984,
+          "5b2c0d8fdc7a06958552d99ba404af8a861e28b3b0af4632747861bcdb77bdeb",
+          "그들은 에릭더 웨드가 살인죄로 아이슬란드에서 처방당했다고 말한다."
+        ],
+        [
+          448960,
+          489280,
+          "e2192d6eff671042a9dfc4fcd0a9b75aefbc507e4d8008040ea2d95e67b73c39",
+          "그리고 서쪽으로 더 멀리 항해할 때."
+        ],
+        [
+          496576,
+          519488,
+          "aa618261eb6084d18d6453e1ffd72cb8fddca3a0d3d3686e4ad6da5f7fad396e",
+          "그린란드를 발견하여."
+        ],
+        [
+          526784,
+          558400,
+          "fc1b8357cd50f26cc82f41a468cc98234ec91045d1e8903ee47d9ca51df92fa3",
+          "그린란드라고 이름 지었다."
+        ]
+      ],
+      "per_source_file_anchors": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_caption_from_file_start_s": 5.199744440003997,
+          "before_file_end": false
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_caption_from_file_start_s": 4.824529029004043,
+          "before_file_end": true
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_caption_from_file_start_s": 6.623826009999728,
+          "before_file_end": true
+        }
+      ],
+      "rss_observed_max_mib": 1722.421875,
+      "serial_inference_wall_s": {
+        "partial": 13.295428687008098,
+        "final": 19.34801558997424
+      },
+      "thermal": {
+        "start_mc": 62800,
+        "maximum_mc": 71600,
+        "end_mc": 63900,
+        "current_limits": [
+          0
+        ]
+      },
+      "zero_only_segments": [
+        3,
+        10
+      ],
+      "same_quant_input_geometry_and_pcm": true,
+      "pilot_quality_gate": true
+    },
+    "q6_k": {
+      "source_commit": "cc0f902fb3ca02bf69a1d79f2a839ed24e0c4ca4",
+      "settings": {
+        "gap_s": 1,
+        "vad_threshold": 0.3,
+        "vad_gain_db": 0,
+        "partial_after_s": 2,
+        "partial_interval_s": 1,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "status": "completed",
+      "error": null,
+      "model_metadata": {
+        "backend": "llama_cpp_mtmd",
+        "provider": "cpu",
+        "supported_modes": [
+          "batch"
+        ],
+        "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+        "language": "ko",
+        "stream_language": "Korean",
+        "quantization": "q6_k",
+        "quantization_evidence": "local_BF16_conversion_and_bound_sha256",
+        "quantization_scope": "text만 양자화 변경·audio mmproj Q8_0 유지. tensor 혼합 dtype은 자산 명세에 기록.",
+        "assets": {
+          "schema_version": 1,
+          "quantization": "q6_k",
+          "source_sha256": "12b2894d9a7c98cd8f26670f5a47ab738f42bcc98df21e109be493870c71ba50",
+          "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+          "text": {
+            "path": "Qwen3-ASR-0.6B-Q6_K.gguf",
+            "sha256": "720af11c80034db25c38e7e2ecb57a19aa49257f9ee85a1f6d2fd56d0017099f",
+            "bytes": 622729152
+          },
+          "audio": {
+            "path": "../../gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d",
+            "quantization": "q8_0"
+          },
+          "conversion": {
+            "command": [
+              "/d/shin/edge-asr/runtimes/qwen3-opt/quantize-20261110-01/build/bin/llama-quantize",
+              "/d/shin/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/Qwen3-ASR-0.6B-bf16.gguf",
+              "/d/shin/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/derived/Qwen3-ASR-0.6B-Q6_K.gguf",
+              "Q6_K",
+              "2"
+            ],
+            "tool_sha256": "57e33c7a125b6d6541d83234a700c01e4b723e253c0673396d1f94acc07ebc7d",
+            "source": "/d/shin/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/Qwen3-ASR-0.6B-bf16.gguf",
+            "script_sha256": "ac97217f55af9364cd20c6774a6588ab298644a066da2b4f6c9dece488ed93da",
+            "elapsed_s": 16.161753742024302,
+            "file_type": 18,
+            "tensor_type_counts": {
+              "Q6_K": 198,
+              "F32": 113
+            },
+            "tensor_type_bytes": {
+              "Q6_K": 616519680,
+              "F32": 262144
+            }
+          }
+        },
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "prompt_policy": "empty_system_audio_user_forced_assistant_language_Korean_asr_text_v1",
+        "output_policy": "gguf_raw_utf8_until_eog_v1",
+        "sampling": "greedy",
+        "repetition_policy": "last64_token_ids_at_most3_distinct_failure",
+        "use_itn": null,
+        "context_policy": "mtmd_positions_plus_reserved_output_no_truncation_v1",
+        "input_policy": "동일 float32 PCM을 직접 전달. file codec/resampling 없음",
+        "runtime_build": {
+          "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+          "machine": "aarch64",
+          "command": [
+            "g++",
+            "-std=c++17",
+            "-O2",
+            "-fPIC",
+            "-shared",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/vendor/nlohmann",
+            "/home/deepet/projects/edge-asr/experiments/qwen3_optimization/gguf/bridge.cpp",
+            "-L",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+            "-Wl,-rpath,/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+            "-lllama",
+            "-lmtmd",
+            "-lggml",
+            "-lggml-base",
+            "-pthread",
+            "-o",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so"
+          ],
+          "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "bridge_source_sha256": "5a3482b3fb9731bef59b860e7e4b5a8fa90017239d5964590f15dd804e0b6f19",
+          "cmake_cache_sha256": "2d21bf15406912c839456d69ef66f7edcbdfbdc1d3b02d4f5f03b0a09b139b24",
+          "engine_libraries": {
+            "libmtmd.so": "ba8bbb528c24a7cc5721b5cdf520d7ab159f5efb214548628ae5ce240f581296",
+            "libggml.so": "9391d0da5efb090d836eb9f1050270045ae9f215ad8e41368a44d9cd73de82c1",
+            "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+            "libllama.so": "3981f9752c48c595e4fd2ef766e70e6051edc6f54e85e4e0044615e0ddba0999",
+            "libggml-cpu.so": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+            "libllama-common.so": "61278407f85381989b98522229bb57379af9988b301a704f8c55a6619d14bafd"
+          },
+          "library_sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c",
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "",
+          "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model"
+        }
+      },
+      "model_files": {
+        "text": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/derived/Qwen3-ASR-0.6B-Q6_K.gguf",
+          "sha256": "720af11c80034db25c38e7e2ecb57a19aa49257f9ee85a1f6d2fd56d0017099f"
+        },
+        "audio": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+        },
+        "asset_manifest": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/derived/q6_k.json",
+          "sha256": "f7d7d8284264c1611b20dffd87f215c14caf6def5b4396caa2ab12b22ce234f5"
+        },
+        "runtime_library": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so",
+          "sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c"
+        },
+        "runtime_manifest": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/build.json",
+          "sha256": "76a60f809e3b3bdb89317debf1258e9622ebc6277b29a8895f45f0b0f545f539"
+        }
+      },
+      "config_sha256": "6f259caadd1c954593dac3166b6302364225ef1b13a6c8b51532e7c9f28648ef",
+      "input_manifest_sha256": "8327d642d007bfccf7f180f595ae989f66409b82e68d1aba302bff93a3bbc543",
+      "first_caption_from_track_start_s": 5.413317904007272,
+      "first_partial_from_track_start_s": 5.413317904007272,
+      "final_from_owned_end_s": {
+        "n": 9,
+        "mean": 5.086142904223926,
+        "p50": 5.5235466990059905,
+        "p95": 7.341723113006795,
+        "max": 7.341723113006795
+      },
+      "inference_queue_wait_s": {
+        "n": 14,
+        "mean": 1.5867164549282669,
+        "p50": 0.14715692000754643,
+        "p95": 5.585867101995973,
+        "max": 5.585867101995973
+      },
+      "inference_queue_peak": 2,
+      "submitted_requests": 19,
+      "coalesced_partial_requests": 5,
+      "partial_count": 5,
+      "final_count": 9,
+      "failed_calls": 0,
+      "skipped_silence": [
+        {
+          "type": "skipped_silence",
+          "kind": "final",
+          "segment_id": 3,
+          "start_frame": 220608,
+          "end_frame": 226624,
+          "available_frame": 232000,
+          "pcm16_sha256": "12a42cfe372b164bdba3fcaf9084fc39b2032c8aec11bdf0c2acb46a6b614fb7",
+          "reason": "exact_zero_pcm",
+          "at_monotonic_s": 74312.821992601
+        },
+        {
+          "type": "skipped_silence",
+          "kind": "final",
+          "segment_id": 10,
+          "start_frame": 605120,
+          "end_frame": 620537,
+          "available_frame": 620537,
+          "pcm16_sha256": "4dff60da6cf5feb63821caf6f823dea9ce04e6216c4f42a230abe2a3dd0dab58",
+          "reason": "exact_zero_pcm",
+          "at_monotonic_s": 74337.10546619
+        }
+      ],
+      "final_transcript_score": {
+        "normalization": "ko_cer_v1",
+        "normalized_reference": "수소이온은전자가벗겨져나간양성자이다수소원자는양성자하나와전자하나로구성되므로구체적인행동은하지않더라도일종의시늉이나속임수만으로도일정정도의효과는있다고보시는군요그린란드는드문드문정착했다노르웨이모험담에서그들은erikthered가살인죄로아이슬란드에서추방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+        "normalized_hypothesis": "수소이온은전자가벗겨져나간양성자이다체적인행동은하지않더라도일종의신용이나속임수만으로도일정정도의효과는있다고보시는군요민란드는드문드문정착했다노르웨이보험담에서그들은에릭더웨드가살인죄로아이슬란드에서처방당했다고말한다그리고서쪽으로더멀리향이할때그린란드를발견하여그린란드라고이름지었다",
+        "reference_characters": 172,
+        "substitutions": 12,
+        "deletions": 28,
+        "insertions": 0,
+        "errors": 40,
+        "cer": 0.23255813953488372
+      },
+      "raw_path": "results/optimization/opt3/realtime-quant-20261110-01/q6_k",
+      "guard_status": "completed",
+      "operational_valid": true,
+      "limits_verified": true,
+      "input_complete": true,
+      "dropped_chunks": 0,
+      "finalization_from_track_end_s": 0.8148379450000007,
+      "input_backlog": {
+        "sample_interval_s": 0.1,
+        "sampling": "실제 큐 이벤트의 100ms 격자 재구성 및 오디오 끝/반환 경계",
+        "event_max_audio_s": 0.1,
+        "event_max_chunks": 1,
+        "event_max_oldest_wait_s": 0.0015210660000022358,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0
+      },
+      "geometry": [
+        [
+          14784,
+          58688,
+          "3333cca1bc040e65a0dc2db3c465b820dfb349c42cf678117921fdde8c21d1f5"
+        ],
+        [
+          97728,
+          177728,
+          "eda5decfd180f93d1249a20f33ac3033bc9ad6835f7afea1632136eb5c13c145"
+        ],
+        [
+          177728,
+          197056,
+          "dd712c58f65b97687cfa7de8966b0f7b94cab14084591094efed3a77d57708c8"
+        ],
+        [
+          220608,
+          226624,
+          "12a42cfe372b164bdba3fcaf9084fc39b2032c8aec11bdf0c2acb46a6b614fb7"
+        ],
+        [
+          276416,
+          307008,
+          "d45869d9dd7eb47acca4b68fd98f4983da1486ff0b6729175efd61aaa67a51af"
+        ],
+        [
+          327104,
+          351040,
+          "ef96c2a5ffb50ff15cde2f85e8bb40a05ac0922109bd97fff62a31b8459355b8"
+        ],
+        [
+          359360,
+          433984,
+          "78922f83d13821319003d068e9d6027fd50bb796973514d694bad2d39ba6a642"
+        ],
+        [
+          448960,
+          489280,
+          "be76b3426eb2489eab5ef0c780010c5525fede723e280dd554db6dcfabf8b4c9"
+        ],
+        [
+          496576,
+          519488,
+          "8bd8dd38749ea0b4f71b929248d776cd32c8ee6f91ad14e7319edcf886e712eb"
+        ],
+        [
+          526784,
+          558400,
+          "e2d532cf7ce80263f48391783d862e816a19a7f7e9bfa7010c7ebd84ca801061"
+        ],
+        [
+          605120,
+          620537,
+          "4dff60da6cf5feb63821caf6f823dea9ce04e6216c4f42a230abe2a3dd0dab58"
+        ]
+      ],
+      "final_signature": [
+        [
+          14784,
+          58688,
+          "a6bdc5774fe9219fe27030af46a05c57ac8e9af33509d90c05d06ad4695e590d",
+          "수소 이온은 전자가 벗겨져 나간 양성자이다."
+        ],
+        [
+          97728,
+          177728,
+          "d66ab734aa19ee6b4b8aeb093c78b14856e12927d9a3ddfd46be79a89c990cca",
+          "체적인 행동은 하지 않더라도 일종의 신용이나 속임수만으로도 일정 정도의 효과는."
+        ],
+        [
+          177728,
+          197056,
+          "b6a31b7ec9947c3d3cad8357bdda294dffc70734453d450511f252649b1e29ab",
+          "있다고 보시는군요."
+        ],
+        [
+          276416,
+          307008,
+          "18b00e6918ce1d9b4d5273fdae1deab27701fb07fba86e3430b17200d450b871",
+          "민란드는 드문 드문 정착했다."
+        ],
+        [
+          327104,
+          351040,
+          "30cf2ed5d609b3522e6c39539478cc71fa0c1c0d6f662c7f0787cb968659ad8a",
+          "노르웨이 보험담에서"
+        ],
+        [
+          359360,
+          433984,
+          "5b2c0d8fdc7a06958552d99ba404af8a861e28b3b0af4632747861bcdb77bdeb",
+          "그들은 에릭 더 웨드가 살인죄로 아이슬란드에서 처방당했다고 말한다."
+        ],
+        [
+          448960,
+          489280,
+          "e2192d6eff671042a9dfc4fcd0a9b75aefbc507e4d8008040ea2d95e67b73c39",
+          "그리고 서쪽으로 더 멀리 향이 할 때."
+        ],
+        [
+          496576,
+          519488,
+          "aa618261eb6084d18d6453e1ffd72cb8fddca3a0d3d3686e4ad6da5f7fad396e",
+          "그린란드를 발견하여."
+        ],
+        [
+          526784,
+          558400,
+          "fc1b8357cd50f26cc82f41a468cc98234ec91045d1e8903ee47d9ca51df92fa3",
+          "그린란드라고 이름 지었다."
+        ]
+      ],
+      "per_source_file_anchors": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_caption_from_file_start_s": 5.413317904007272,
+          "before_file_end": false
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_caption_from_file_start_s": 5.056266424999921,
+          "before_file_end": true
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_caption_from_file_start_s": 6.739623984008912,
+          "before_file_end": true
+        }
+      ],
+      "rss_observed_max_mib": 1447.671875,
+      "serial_inference_wall_s": {
+        "partial": 13.818313928015414,
+        "final": 20.937820332008414
+      },
+      "thermal": {
+        "start_mc": 64450,
+        "maximum_mc": 73800,
+        "end_mc": 67200,
+        "current_limits": [
+          0
+        ]
+      },
+      "zero_only_segments": [
+        3,
+        10
+      ],
+      "same_quant_input_geometry_and_pcm": true,
+      "pilot_quality_gate": false
+    },
+    "q5_k_m": {
+      "source_commit": "cc0f902fb3ca02bf69a1d79f2a839ed24e0c4ca4",
+      "settings": {
+        "gap_s": 1,
+        "vad_threshold": 0.3,
+        "vad_gain_db": 0,
+        "partial_after_s": 2,
+        "partial_interval_s": 1,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "status": "completed",
+      "error": null,
+      "model_metadata": {
+        "backend": "llama_cpp_mtmd",
+        "provider": "cpu",
+        "supported_modes": [
+          "batch"
+        ],
+        "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+        "language": "ko",
+        "stream_language": "Korean",
+        "quantization": "q5_k_m",
+        "quantization_evidence": "local_BF16_conversion_and_bound_sha256",
+        "quantization_scope": "text만 양자화 변경·audio mmproj Q8_0 유지. tensor 혼합 dtype은 자산 명세에 기록.",
+        "assets": {
+          "schema_version": 1,
+          "quantization": "q5_k_m",
+          "source_sha256": "12b2894d9a7c98cd8f26670f5a47ab738f42bcc98df21e109be493870c71ba50",
+          "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+          "text": {
+            "path": "Qwen3-ASR-0.6B-Q5_K_M.gguf",
+            "sha256": "9ab62548eb5b391747e2ee4afebecfb0c11115ec2fbdb635a0133fb85da3e572",
+            "bytes": 551373760
+          },
+          "audio": {
+            "path": "../../gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d",
+            "quantization": "q8_0"
+          },
+          "conversion": {
+            "command": [
+              "/d/shin/edge-asr/runtimes/qwen3-opt/quantize-20261110-01/build/bin/llama-quantize",
+              "/d/shin/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/Qwen3-ASR-0.6B-bf16.gguf",
+              "/d/shin/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/derived/Qwen3-ASR-0.6B-Q5_K_M.gguf",
+              "Q5_K_M",
+              "2"
+            ],
+            "tool_sha256": "57e33c7a125b6d6541d83234a700c01e4b723e253c0673396d1f94acc07ebc7d",
+            "source": "/d/shin/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/Qwen3-ASR-0.6B-bf16.gguf",
+            "script_sha256": "ac97217f55af9364cd20c6774a6588ab298644a066da2b4f6c9dece488ed93da",
+            "elapsed_s": 24.60869941394776,
+            "file_type": 17,
+            "tensor_type_counts": {
+              "Q6_K": 29,
+              "F32": 113,
+              "Q5_K": 169
+            },
+            "tensor_type_bytes": {
+              "Q5_K": 369369088,
+              "Q6_K": 175795200,
+              "F32": 262144
+            }
+          }
+        },
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "prompt_policy": "empty_system_audio_user_forced_assistant_language_Korean_asr_text_v1",
+        "output_policy": "gguf_raw_utf8_until_eog_v1",
+        "sampling": "greedy",
+        "repetition_policy": "last64_token_ids_at_most3_distinct_failure",
+        "use_itn": null,
+        "context_policy": "mtmd_positions_plus_reserved_output_no_truncation_v1",
+        "input_policy": "동일 float32 PCM을 직접 전달. file codec/resampling 없음",
+        "runtime_build": {
+          "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+          "machine": "aarch64",
+          "command": [
+            "g++",
+            "-std=c++17",
+            "-O2",
+            "-fPIC",
+            "-shared",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/vendor/nlohmann",
+            "/home/deepet/projects/edge-asr/experiments/qwen3_optimization/gguf/bridge.cpp",
+            "-L",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+            "-Wl,-rpath,/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+            "-lllama",
+            "-lmtmd",
+            "-lggml",
+            "-lggml-base",
+            "-pthread",
+            "-o",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so"
+          ],
+          "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "bridge_source_sha256": "5a3482b3fb9731bef59b860e7e4b5a8fa90017239d5964590f15dd804e0b6f19",
+          "cmake_cache_sha256": "2d21bf15406912c839456d69ef66f7edcbdfbdc1d3b02d4f5f03b0a09b139b24",
+          "engine_libraries": {
+            "libmtmd.so": "ba8bbb528c24a7cc5721b5cdf520d7ab159f5efb214548628ae5ce240f581296",
+            "libggml.so": "9391d0da5efb090d836eb9f1050270045ae9f215ad8e41368a44d9cd73de82c1",
+            "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+            "libllama.so": "3981f9752c48c595e4fd2ef766e70e6051edc6f54e85e4e0044615e0ddba0999",
+            "libggml-cpu.so": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+            "libllama-common.so": "61278407f85381989b98522229bb57379af9988b301a704f8c55a6619d14bafd"
+          },
+          "library_sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c",
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "",
+          "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model"
+        }
+      },
+      "model_files": {
+        "text": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/derived/Qwen3-ASR-0.6B-Q5_K_M.gguf",
+          "sha256": "9ab62548eb5b391747e2ee4afebecfb0c11115ec2fbdb635a0133fb85da3e572"
+        },
+        "audio": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+        },
+        "asset_manifest": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/derived/q5_k_m.json",
+          "sha256": "4f6cc40d4476ab759f70cc845171618bc43845a8fd0274795f33fd91c6ba5f95"
+        },
+        "runtime_library": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so",
+          "sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c"
+        },
+        "runtime_manifest": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/build.json",
+          "sha256": "76a60f809e3b3bdb89317debf1258e9622ebc6277b29a8895f45f0b0f545f539"
+        }
+      },
+      "config_sha256": "957741726cbc3ee61b27d7807b25409d0d1e55f3485b8f056db71e5d0278d494",
+      "input_manifest_sha256": "8327d642d007bfccf7f180f595ae989f66409b82e68d1aba302bff93a3bbc543",
+      "first_caption_from_track_start_s": 5.189718395005912,
+      "first_partial_from_track_start_s": 5.189718395005912,
+      "final_from_owned_end_s": {
+        "n": 9,
+        "mean": 5.116770521335174,
+        "p50": 5.428198771995838,
+        "p95": 7.008310925997446,
+        "max": 7.008310925997446
+      },
+      "inference_queue_wait_s": {
+        "n": 15,
+        "mean": 1.630547449668908,
+        "p50": 1.1790394249983365,
+        "p95": 4.629601729000569,
+        "max": 4.629601729000569
+      },
+      "inference_queue_peak": 2,
+      "submitted_requests": 19,
+      "coalesced_partial_requests": 4,
+      "partial_count": 6,
+      "final_count": 9,
+      "failed_calls": 0,
+      "skipped_silence": [
+        {
+          "type": "skipped_silence",
+          "kind": "final",
+          "segment_id": 3,
+          "start_frame": 220608,
+          "end_frame": 226624,
+          "available_frame": 232000,
+          "pcm16_sha256": "12a42cfe372b164bdba3fcaf9084fc39b2032c8aec11bdf0c2acb46a6b614fb7",
+          "reason": "exact_zero_pcm",
+          "at_monotonic_s": 74369.162238013
+        },
+        {
+          "type": "skipped_silence",
+          "kind": "final",
+          "segment_id": 10,
+          "start_frame": 605120,
+          "end_frame": 620537,
+          "available_frame": 620537,
+          "pcm16_sha256": "4dff60da6cf5feb63821caf6f823dea9ce04e6216c4f42a230abe2a3dd0dab58",
+          "reason": "exact_zero_pcm",
+          "at_monotonic_s": 74393.446567588
+        }
+      ],
+      "final_transcript_score": {
+        "normalization": "ko_cer_v1",
+        "normalized_reference": "수소이온은전자가벗겨져나간양성자이다수소원자는양성자하나와전자하나로구성되므로구체적인행동은하지않더라도일종의시늉이나속임수만으로도일정정도의효과는있다고보시는군요그린란드는드문드문정착했다노르웨이모험담에서그들은erikthered가살인죄로아이슬란드에서추방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+        "normalized_hypothesis": "수소이온은전자가벗겨져나간양성자이다체적인행동은하지않더라도일종의신용이나속임수만으로도일정정도의효과는있다고보시는군요민란드는드문드문정착했다노르웨이보험담에서그들은에릭더웨드가살인죄로아이슬란드에서처방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+        "reference_characters": 172,
+        "substitutions": 10,
+        "deletions": 28,
+        "insertions": 0,
+        "errors": 38,
+        "cer": 0.22093023255813954
+      },
+      "raw_path": "results/optimization/opt3/realtime-quant-20261110-01/q5_k_m",
+      "guard_status": "completed",
+      "operational_valid": true,
+      "limits_verified": true,
+      "input_complete": true,
+      "dropped_chunks": 0,
+      "finalization_from_track_end_s": 0.6555761209999957,
+      "input_backlog": {
+        "sample_interval_s": 0.1,
+        "sampling": "실제 큐 이벤트의 100ms 격자 재구성 및 오디오 끝/반환 경계",
+        "event_max_audio_s": 0.1,
+        "event_max_chunks": 1,
+        "event_max_oldest_wait_s": 0.002127143999999692,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0
+      },
+      "geometry": [
+        [
+          14784,
+          58688,
+          "3333cca1bc040e65a0dc2db3c465b820dfb349c42cf678117921fdde8c21d1f5"
+        ],
+        [
+          97728,
+          177728,
+          "eda5decfd180f93d1249a20f33ac3033bc9ad6835f7afea1632136eb5c13c145"
+        ],
+        [
+          177728,
+          197056,
+          "dd712c58f65b97687cfa7de8966b0f7b94cab14084591094efed3a77d57708c8"
+        ],
+        [
+          220608,
+          226624,
+          "12a42cfe372b164bdba3fcaf9084fc39b2032c8aec11bdf0c2acb46a6b614fb7"
+        ],
+        [
+          276416,
+          307008,
+          "d45869d9dd7eb47acca4b68fd98f4983da1486ff0b6729175efd61aaa67a51af"
+        ],
+        [
+          327104,
+          351040,
+          "ef96c2a5ffb50ff15cde2f85e8bb40a05ac0922109bd97fff62a31b8459355b8"
+        ],
+        [
+          359360,
+          433984,
+          "78922f83d13821319003d068e9d6027fd50bb796973514d694bad2d39ba6a642"
+        ],
+        [
+          448960,
+          489280,
+          "be76b3426eb2489eab5ef0c780010c5525fede723e280dd554db6dcfabf8b4c9"
+        ],
+        [
+          496576,
+          519488,
+          "8bd8dd38749ea0b4f71b929248d776cd32c8ee6f91ad14e7319edcf886e712eb"
+        ],
+        [
+          526784,
+          558400,
+          "e2d532cf7ce80263f48391783d862e816a19a7f7e9bfa7010c7ebd84ca801061"
+        ],
+        [
+          605120,
+          620537,
+          "4dff60da6cf5feb63821caf6f823dea9ce04e6216c4f42a230abe2a3dd0dab58"
+        ]
+      ],
+      "final_signature": [
+        [
+          14784,
+          58688,
+          "a6bdc5774fe9219fe27030af46a05c57ac8e9af33509d90c05d06ad4695e590d",
+          "수소 이온은 전자가 벗겨져 나간 양성자이다."
+        ],
+        [
+          97728,
+          177728,
+          "d66ab734aa19ee6b4b8aeb093c78b14856e12927d9a3ddfd46be79a89c990cca",
+          "체적인 행동은 하지 않더라도 일종의 신용이나 속임수만으로도 일정 정도의 효과는."
+        ],
+        [
+          177728,
+          197056,
+          "b6a31b7ec9947c3d3cad8357bdda294dffc70734453d450511f252649b1e29ab",
+          "있다고 보시는군요."
+        ],
+        [
+          276416,
+          307008,
+          "18b00e6918ce1d9b4d5273fdae1deab27701fb07fba86e3430b17200d450b871",
+          "민란드는 드문 드문 정착했다."
+        ],
+        [
+          327104,
+          351040,
+          "30cf2ed5d609b3522e6c39539478cc71fa0c1c0d6f662c7f0787cb968659ad8a",
+          "노르웨이 보험담에서"
+        ],
+        [
+          359360,
+          433984,
+          "5b2c0d8fdc7a06958552d99ba404af8a861e28b3b0af4632747861bcdb77bdeb",
+          "그들은 에릭더 웨드가 살인죄로 아이슬란드에서 처방당했다고 말한다."
+        ],
+        [
+          448960,
+          489280,
+          "e2192d6eff671042a9dfc4fcd0a9b75aefbc507e4d8008040ea2d95e67b73c39",
+          "그리고 서쪽으로 더 멀리 항해할 때."
+        ],
+        [
+          496576,
+          519488,
+          "aa618261eb6084d18d6453e1ffd72cb8fddca3a0d3d3686e4ad6da5f7fad396e",
+          "그린란드를 발견하여."
+        ],
+        [
+          526784,
+          558400,
+          "fc1b8357cd50f26cc82f41a468cc98234ec91045d1e8903ee47d9ca51df92fa3",
+          "그린란드라고 이름 지었다."
+        ]
+      ],
+      "per_source_file_anchors": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_caption_from_file_start_s": 5.189718395005912,
+          "before_file_end": false
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_caption_from_file_start_s": 5.0052024690055985,
+          "before_file_end": true
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_caption_from_file_start_s": 6.74983859199693,
+          "before_file_end": true
+        }
+      ],
+      "rss_observed_max_mib": 1332.21875,
+      "serial_inference_wall_s": {
+        "partial": 14.78511035599513,
+        "final": 20.410428351999144
+      },
+      "thermal": {
+        "start_mc": 69400,
+        "maximum_mc": 74350,
+        "end_mc": 68850,
+        "current_limits": [
+          0
+        ]
+      },
+      "zero_only_segments": [
+        3,
+        10
+      ],
+      "same_quant_input_geometry_and_pcm": true,
+      "pilot_quality_gate": true
+    },
+    "q4_k_m": {
+      "source_commit": "cc0f902fb3ca02bf69a1d79f2a839ed24e0c4ca4",
+      "settings": {
+        "gap_s": 1,
+        "vad_threshold": 0.3,
+        "vad_gain_db": 0,
+        "partial_after_s": 2,
+        "partial_interval_s": 1,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "status": "completed",
+      "error": null,
+      "model_metadata": {
+        "backend": "llama_cpp_mtmd",
+        "provider": "cpu",
+        "supported_modes": [
+          "batch"
+        ],
+        "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+        "language": "ko",
+        "stream_language": "Korean",
+        "quantization": "q4_k_m",
+        "quantization_evidence": "local_BF16_conversion_and_bound_sha256",
+        "quantization_scope": "text만 양자화 변경·audio mmproj Q8_0 유지. tensor 혼합 dtype은 자산 명세에 기록.",
+        "assets": {
+          "schema_version": 1,
+          "quantization": "q4_k_m",
+          "source_sha256": "12b2894d9a7c98cd8f26670f5a47ab738f42bcc98df21e109be493870c71ba50",
+          "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+          "text": {
+            "path": "Qwen3-ASR-0.6B-Q4_K_M.gguf",
+            "sha256": "3f711631ac7b81f223e08471838f8129b9716e4fe9935ebf99c58e320fc18633",
+            "bytes": 484215744
+          },
+          "audio": {
+            "path": "../../gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d",
+            "quantization": "q8_0"
+          },
+          "conversion": {
+            "command": [
+              "/d/shin/edge-asr/runtimes/qwen3-opt/quantize-20261110-01/build/bin/llama-quantize",
+              "/d/shin/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/Qwen3-ASR-0.6B-bf16.gguf",
+              "/d/shin/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/derived/Qwen3-ASR-0.6B-Q4_K_M.gguf",
+              "Q4_K_M",
+              "2"
+            ],
+            "tool_sha256": "57e33c7a125b6d6541d83234a700c01e4b723e253c0673396d1f94acc07ebc7d",
+            "source": "/d/shin/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/Qwen3-ASR-0.6B-bf16.gguf",
+            "script_sha256": "ac97217f55af9364cd20c6774a6588ab298644a066da2b4f6c9dece488ed93da",
+            "elapsed_s": 27.56187342107296,
+            "file_type": 15,
+            "tensor_type_counts": {
+              "Q6_K": 29,
+              "F32": 113,
+              "Q4_K": 169
+            },
+            "tensor_type_bytes": {
+              "Q6_K": 175795200,
+              "F32": 262144,
+              "Q4_K": 302211072
+            }
+          }
+        },
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "prompt_policy": "empty_system_audio_user_forced_assistant_language_Korean_asr_text_v1",
+        "output_policy": "gguf_raw_utf8_until_eog_v1",
+        "sampling": "greedy",
+        "repetition_policy": "last64_token_ids_at_most3_distinct_failure",
+        "use_itn": null,
+        "context_policy": "mtmd_positions_plus_reserved_output_no_truncation_v1",
+        "input_policy": "동일 float32 PCM을 직접 전달. file codec/resampling 없음",
+        "runtime_build": {
+          "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+          "machine": "aarch64",
+          "command": [
+            "g++",
+            "-std=c++17",
+            "-O2",
+            "-fPIC",
+            "-shared",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+            "-I",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/vendor/nlohmann",
+            "/home/deepet/projects/edge-asr/experiments/qwen3_optimization/gguf/bridge.cpp",
+            "-L",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+            "-Wl,-rpath,/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+            "-lllama",
+            "-lmtmd",
+            "-lggml",
+            "-lggml-base",
+            "-pthread",
+            "-o",
+            "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so"
+          ],
+          "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "bridge_source_sha256": "5a3482b3fb9731bef59b860e7e4b5a8fa90017239d5964590f15dd804e0b6f19",
+          "cmake_cache_sha256": "2d21bf15406912c839456d69ef66f7edcbdfbdc1d3b02d4f5f03b0a09b139b24",
+          "engine_libraries": {
+            "libmtmd.so": "ba8bbb528c24a7cc5721b5cdf520d7ab159f5efb214548628ae5ce240f581296",
+            "libggml.so": "9391d0da5efb090d836eb9f1050270045ae9f215ad8e41368a44d9cd73de82c1",
+            "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+            "libllama.so": "3981f9752c48c595e4fd2ef766e70e6051edc6f54e85e4e0044615e0ddba0999",
+            "libggml-cpu.so": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+            "libllama-common.so": "61278407f85381989b98522229bb57379af9988b301a704f8c55a6619d14bafd"
+          },
+          "library_sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c",
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "",
+          "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model"
+        }
+      },
+      "model_files": {
+        "text": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/derived/Qwen3-ASR-0.6B-Q4_K_M.gguf",
+          "sha256": "3f711631ac7b81f223e08471838f8129b9716e4fe9935ebf99c58e320fc18633"
+        },
+        "audio": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+        },
+        "asset_manifest": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/derived/q4_k_m.json",
+          "sha256": "5095e47c584be7daa2a82fae223df9f29f0e3baf8c90af2c63098b067364eea6"
+        },
+        "runtime_library": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so",
+          "sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c"
+        },
+        "runtime_manifest": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/build.json",
+          "sha256": "76a60f809e3b3bdb89317debf1258e9622ebc6277b29a8895f45f0b0f545f539"
+        }
+      },
+      "config_sha256": "c5ea57c21866b1c2353eed2a2a7140363dd44ee10acd329c8c8f74b1e05e00c4",
+      "input_manifest_sha256": "8327d642d007bfccf7f180f595ae989f66409b82e68d1aba302bff93a3bbc543",
+      "first_caption_from_track_start_s": 5.05552927700046,
+      "first_partial_from_track_start_s": 5.05552927700046,
+      "final_from_owned_end_s": {
+        "n": 9,
+        "mean": 3.823498890108002,
+        "p50": 3.5790020329969714,
+        "p95": 5.378667921998188,
+        "max": 5.378667921998188
+      },
+      "inference_queue_wait_s": {
+        "n": 15,
+        "mean": 1.0035826476019187,
+        "p50": 0.8413900480081793,
+        "p95": 3.8346342310105683,
+        "max": 3.8346342310105683
+      },
+      "inference_queue_peak": 2,
+      "submitted_requests": 19,
+      "coalesced_partial_requests": 4,
+      "partial_count": 6,
+      "final_count": 9,
+      "failed_calls": 0,
+      "skipped_silence": [
+        {
+          "type": "skipped_silence",
+          "kind": "final",
+          "segment_id": 3,
+          "start_frame": 220608,
+          "end_frame": 226624,
+          "available_frame": 232000,
+          "pcm16_sha256": "12a42cfe372b164bdba3fcaf9084fc39b2032c8aec11bdf0c2acb46a6b614fb7",
+          "reason": "exact_zero_pcm",
+          "at_monotonic_s": 74424.598658607
+        },
+        {
+          "type": "skipped_silence",
+          "kind": "final",
+          "segment_id": 10,
+          "start_frame": 605120,
+          "end_frame": 620537,
+          "available_frame": 620537,
+          "pcm16_sha256": "4dff60da6cf5feb63821caf6f823dea9ce04e6216c4f42a230abe2a3dd0dab58",
+          "reason": "exact_zero_pcm",
+          "at_monotonic_s": 74448.882107371
+        }
+      ],
+      "final_transcript_score": {
+        "normalization": "ko_cer_v1",
+        "normalized_reference": "수소이온은전자가벗겨져나간양성자이다수소원자는양성자하나와전자하나로구성되므로구체적인행동은하지않더라도일종의시늉이나속임수만으로도일정정도의효과는있다고보시는군요그린란드는드문드문정착했다노르웨이모험담에서그들은erikthered가살인죄로아이슬란드에서추방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+        "normalized_hypothesis": "수소이온은전자가벗겨져나간양성자이다체적인행동은하지않더라도일종의신용이나속임수만으로도일정정도의효과는있다고보시는군요민란드는드문드문정착했다노래를부어뜸다면서그들은에릭더웨드가살인죄로아이슬란드에서처방당했다고말한다그리고서쪽으로더멀리항이할때그린란드를발견하여그린란드라고이름지었다",
+        "reference_characters": 172,
+        "substitutions": 17,
+        "deletions": 28,
+        "insertions": 0,
+        "errors": 45,
+        "cer": 0.2616279069767442
+      },
+      "raw_path": "results/optimization/opt3/realtime-quant-20261110-01/q4_k_m",
+      "guard_status": "completed",
+      "operational_valid": true,
+      "limits_verified": true,
+      "input_complete": true,
+      "dropped_chunks": 0,
+      "finalization_from_track_end_s": 0.004582289999994771,
+      "input_backlog": {
+        "sample_interval_s": 0.1,
+        "sampling": "실제 큐 이벤트의 100ms 격자 재구성 및 오디오 끝/반환 경계",
+        "event_max_audio_s": 0.1,
+        "event_max_chunks": 1,
+        "event_max_oldest_wait_s": 0.0019131430000030036,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0
+      },
+      "geometry": [
+        [
+          14784,
+          58688,
+          "3333cca1bc040e65a0dc2db3c465b820dfb349c42cf678117921fdde8c21d1f5"
+        ],
+        [
+          97728,
+          177728,
+          "eda5decfd180f93d1249a20f33ac3033bc9ad6835f7afea1632136eb5c13c145"
+        ],
+        [
+          177728,
+          197056,
+          "dd712c58f65b97687cfa7de8966b0f7b94cab14084591094efed3a77d57708c8"
+        ],
+        [
+          220608,
+          226624,
+          "12a42cfe372b164bdba3fcaf9084fc39b2032c8aec11bdf0c2acb46a6b614fb7"
+        ],
+        [
+          276416,
+          307008,
+          "d45869d9dd7eb47acca4b68fd98f4983da1486ff0b6729175efd61aaa67a51af"
+        ],
+        [
+          327104,
+          351040,
+          "ef96c2a5ffb50ff15cde2f85e8bb40a05ac0922109bd97fff62a31b8459355b8"
+        ],
+        [
+          359360,
+          433984,
+          "78922f83d13821319003d068e9d6027fd50bb796973514d694bad2d39ba6a642"
+        ],
+        [
+          448960,
+          489280,
+          "be76b3426eb2489eab5ef0c780010c5525fede723e280dd554db6dcfabf8b4c9"
+        ],
+        [
+          496576,
+          519488,
+          "8bd8dd38749ea0b4f71b929248d776cd32c8ee6f91ad14e7319edcf886e712eb"
+        ],
+        [
+          526784,
+          558400,
+          "e2d532cf7ce80263f48391783d862e816a19a7f7e9bfa7010c7ebd84ca801061"
+        ],
+        [
+          605120,
+          620537,
+          "4dff60da6cf5feb63821caf6f823dea9ce04e6216c4f42a230abe2a3dd0dab58"
+        ]
+      ],
+      "final_signature": [
+        [
+          14784,
+          58688,
+          "a6bdc5774fe9219fe27030af46a05c57ac8e9af33509d90c05d06ad4695e590d",
+          "수소 이온은 전자가 벗겨져 나간 양성자이다."
+        ],
+        [
+          97728,
+          177728,
+          "d66ab734aa19ee6b4b8aeb093c78b14856e12927d9a3ddfd46be79a89c990cca",
+          "체적인 행동은 하지 않더라도 일종의 신용이나 속임수만으로도 일정 정도의 효과는."
+        ],
+        [
+          177728,
+          197056,
+          "b6a31b7ec9947c3d3cad8357bdda294dffc70734453d450511f252649b1e29ab",
+          "있다고 보시는군요."
+        ],
+        [
+          276416,
+          307008,
+          "18b00e6918ce1d9b4d5273fdae1deab27701fb07fba86e3430b17200d450b871",
+          "민란드는 드문드문 정착했다."
+        ],
+        [
+          327104,
+          351040,
+          "30cf2ed5d609b3522e6c39539478cc71fa0c1c0d6f662c7f0787cb968659ad8a",
+          "노래를 부어 뜸다면서."
+        ],
+        [
+          359360,
+          433984,
+          "5b2c0d8fdc7a06958552d99ba404af8a861e28b3b0af4632747861bcdb77bdeb",
+          "그들은 에릭더 웨드가 살인죄로 아이슬란드에서 처방당했다고 말한다."
+        ],
+        [
+          448960,
+          489280,
+          "e2192d6eff671042a9dfc4fcd0a9b75aefbc507e4d8008040ea2d95e67b73c39",
+          "그리고 서쪽으로 더 멀리 항이할 때."
+        ],
+        [
+          496576,
+          519488,
+          "aa618261eb6084d18d6453e1ffd72cb8fddca3a0d3d3686e4ad6da5f7fad396e",
+          "그린란드를 발견하여."
+        ],
+        [
+          526784,
+          558400,
+          "fc1b8357cd50f26cc82f41a468cc98234ec91045d1e8903ee47d9ca51df92fa3",
+          "그린란드라고 이름 지었다."
+        ]
+      ],
+      "per_source_file_anchors": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_caption_from_file_start_s": 5.05552927700046,
+          "before_file_end": false
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_caption_from_file_start_s": 4.81622311999381,
+          "before_file_end": true
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_caption_from_file_start_s": 6.510080528001534,
+          "before_file_end": true
+        }
+      ],
+      "rss_observed_max_mib": 1221.203125,
+      "serial_inference_wall_s": {
+        "partial": 12.84893314501096,
+        "final": 18.297148134020972
+      },
+      "thermal": {
+        "start_mc": 69400,
+        "maximum_mc": 73250,
+        "end_mc": 66100,
+        "current_limits": [
+          0
+        ]
+      },
+      "zero_only_segments": [
+        3,
+        10
+      ],
+      "same_quant_input_geometry_and_pcm": true,
+      "pilot_quality_gate": false
+    }
+  },
+  "quantization_assets": {
+    "q4_k_m": {
+      "schema_version": 1,
+      "quantization": "q4_k_m",
+      "source_sha256": "12b2894d9a7c98cd8f26670f5a47ab738f42bcc98df21e109be493870c71ba50",
+      "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+      "text": {
+        "path": "Qwen3-ASR-0.6B-Q4_K_M.gguf",
+        "sha256": "3f711631ac7b81f223e08471838f8129b9716e4fe9935ebf99c58e320fc18633",
+        "bytes": 484215744
+      },
+      "audio": {
+        "path": "../../gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+        "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d",
+        "quantization": "q8_0"
+      },
+      "conversion": {
+        "command": [
+          "/d/shin/edge-asr/runtimes/qwen3-opt/quantize-20261110-01/build/bin/llama-quantize",
+          "/d/shin/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/Qwen3-ASR-0.6B-bf16.gguf",
+          "/d/shin/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/derived/Qwen3-ASR-0.6B-Q4_K_M.gguf",
+          "Q4_K_M",
+          "2"
+        ],
+        "tool_sha256": "57e33c7a125b6d6541d83234a700c01e4b723e253c0673396d1f94acc07ebc7d",
+        "source": "/d/shin/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/Qwen3-ASR-0.6B-bf16.gguf",
+        "script_sha256": "ac97217f55af9364cd20c6774a6588ab298644a066da2b4f6c9dece488ed93da",
+        "elapsed_s": 27.56187342107296,
+        "file_type": 15,
+        "tensor_type_counts": {
+          "Q6_K": 29,
+          "F32": 113,
+          "Q4_K": 169
+        },
+        "tensor_type_bytes": {
+          "Q6_K": 175795200,
+          "F32": 262144,
+          "Q4_K": 302211072
+        }
+      }
+    },
+    "q5_k_m": {
+      "schema_version": 1,
+      "quantization": "q5_k_m",
+      "source_sha256": "12b2894d9a7c98cd8f26670f5a47ab738f42bcc98df21e109be493870c71ba50",
+      "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+      "text": {
+        "path": "Qwen3-ASR-0.6B-Q5_K_M.gguf",
+        "sha256": "9ab62548eb5b391747e2ee4afebecfb0c11115ec2fbdb635a0133fb85da3e572",
+        "bytes": 551373760
+      },
+      "audio": {
+        "path": "../../gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+        "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d",
+        "quantization": "q8_0"
+      },
+      "conversion": {
+        "command": [
+          "/d/shin/edge-asr/runtimes/qwen3-opt/quantize-20261110-01/build/bin/llama-quantize",
+          "/d/shin/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/Qwen3-ASR-0.6B-bf16.gguf",
+          "/d/shin/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/derived/Qwen3-ASR-0.6B-Q5_K_M.gguf",
+          "Q5_K_M",
+          "2"
+        ],
+        "tool_sha256": "57e33c7a125b6d6541d83234a700c01e4b723e253c0673396d1f94acc07ebc7d",
+        "source": "/d/shin/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/Qwen3-ASR-0.6B-bf16.gguf",
+        "script_sha256": "ac97217f55af9364cd20c6774a6588ab298644a066da2b4f6c9dece488ed93da",
+        "elapsed_s": 24.60869941394776,
+        "file_type": 17,
+        "tensor_type_counts": {
+          "Q6_K": 29,
+          "F32": 113,
+          "Q5_K": 169
+        },
+        "tensor_type_bytes": {
+          "Q5_K": 369369088,
+          "Q6_K": 175795200,
+          "F32": 262144
+        }
+      }
+    },
+    "q6_k": {
+      "schema_version": 1,
+      "quantization": "q6_k",
+      "source_sha256": "12b2894d9a7c98cd8f26670f5a47ab738f42bcc98df21e109be493870c71ba50",
+      "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+      "text": {
+        "path": "Qwen3-ASR-0.6B-Q6_K.gguf",
+        "sha256": "720af11c80034db25c38e7e2ecb57a19aa49257f9ee85a1f6d2fd56d0017099f",
+        "bytes": 622729152
+      },
+      "audio": {
+        "path": "../../gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+        "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d",
+        "quantization": "q8_0"
+      },
+      "conversion": {
+        "command": [
+          "/d/shin/edge-asr/runtimes/qwen3-opt/quantize-20261110-01/build/bin/llama-quantize",
+          "/d/shin/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/Qwen3-ASR-0.6B-bf16.gguf",
+          "/d/shin/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/derived/Qwen3-ASR-0.6B-Q6_K.gguf",
+          "Q6_K",
+          "2"
+        ],
+        "tool_sha256": "57e33c7a125b6d6541d83234a700c01e4b723e253c0673396d1f94acc07ebc7d",
+        "source": "/d/shin/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/Qwen3-ASR-0.6B-bf16.gguf",
+        "script_sha256": "ac97217f55af9364cd20c6774a6588ab298644a066da2b4f6c9dece488ed93da",
+        "elapsed_s": 16.161753742024302,
+        "file_type": 18,
+        "tensor_type_counts": {
+          "Q6_K": 198,
+          "F32": 113
+        },
+        "tensor_type_bytes": {
+          "Q6_K": 616519680,
+          "F32": 262144
+        }
+      }
+    }
+  },
+  "vad_diagnostic": {
+    "source_commit": "1afb798b0ec8a38da935345e2fcd2583030d5303",
+    "same_boundaries_and_pcm": true,
+    "source_probability_profiles": [
+      {
+        "id": "fleurs-14945311428794587488",
+        "windows": 132,
+        "above_0_5": 82,
+        "above_0_3": 83,
+        "leading_6s_above_0_5": 82,
+        "leading_6s_above_0_3": 83,
+        "leading_6s_peak": 0.4012451171875
+      },
+      {
+        "id": "zeroth-121_003_2904",
+        "windows": 267,
+        "above_0_5": 193,
+        "above_0_3": 198,
+        "leading_6s_above_0_5": 159,
+        "leading_6s_above_0_3": 161,
+        "leading_6s_peak": 0.260833740234375
+      },
+      {
+        "id": "fleurs-14941719265693149665",
+        "windows": 720,
+        "above_0_5": 295,
+        "above_0_3": 372,
+        "leading_6s_above_0_5": 6,
+        "leading_6s_above_0_3": 34,
+        "leading_6s_peak": 0.012176513671875
+      }
+    ],
+    "probability_runtime": {
+      "backend": "python_onnxruntime_k2_v4_experimental",
+      "python_onnxruntime_version": "1.31.1",
+      "model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+      "num_threads": 1,
+      "providers": [
+        "CPUExecutionProvider"
+      ],
+      "recurrent_state_bytes": 1024,
+      "reset_count": 3,
+      "windows_since_reset": 1212,
+      "scope": "가중치 동일. sherpa 네이티브 ORT와 동등성/성능은 별도 검증 필요."
+    }
+  },
+  "on_off_final_pcm_and_text_equal": true,
+  "unmeasured": {
+    "full100_continuous_cer": null,
+    "holdout_cer": null,
+    "microphone_latency_s": null,
+    "engine_ttft_s": null,
+    "acoustic_word_latency_s": null
+  },
+  "post_cleanup_verification": {
+    "source_commit": "be0b853d77923d65252aed69e6ccfec73531d1e3",
+    "settings": {
+      "gap_s": 1,
+      "vad_threshold": 0.3,
+      "partial_after_s": 2,
+      "partial_interval_s": 1,
+      "max_segment_s": 5,
+      "drain_timeout_s": 30,
+      "queue_capacity": 4,
+      "partials": true,
+      "silence_policy": "skip-zero"
+    },
+    "status": "completed",
+    "error": null,
+    "model_metadata": {
+      "backend": "llama_cpp_mtmd",
+      "provider": "cpu",
+      "supported_modes": [
+        "batch"
+      ],
+      "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+      "language": "ko",
+      "stream_language": "Korean",
+      "quantization": "q8_0",
+      "quantization_evidence": "official_GGUF_asset_names_and_bound_sha256",
+      "quantization_scope": "텍스트 모델과 오디오 mmproj 모두 Q8_0 배포본. 일부 tensor 혼합 dtype 가능. ONNX INT8과 동일 양자화 방식 아님.",
+      "assets": null,
+      "max_total_len": 512,
+      "max_new_tokens": 128,
+      "prompt_policy": "empty_system_audio_user_forced_assistant_language_Korean_asr_text_v1",
+      "output_policy": "gguf_raw_utf8_until_eog_v1",
+      "sampling": "greedy",
+      "repetition_policy": "last64_token_ids_at_most3_distinct_failure",
+      "use_itn": null,
+      "context_policy": "mtmd_positions_plus_reserved_output_no_truncation_v1",
+      "input_policy": "동일 float32 PCM을 직접 전달. file codec/resampling 없음",
+      "runtime_build": {
+        "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+        "machine": "aarch64",
+        "command": [
+          "g++",
+          "-std=c++17",
+          "-O2",
+          "-fPIC",
+          "-shared",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-I",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+          "-I",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+          "-I",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+          "-I",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/vendor/nlohmann",
+          "/home/deepet/projects/edge-asr/experiments/qwen3_optimization/gguf/bridge.cpp",
+          "-L",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+          "-Wl,-rpath,/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+          "-lllama",
+          "-lmtmd",
+          "-lggml",
+          "-lggml-base",
+          "-pthread",
+          "-o",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so"
+        ],
+        "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+        "bridge_source_sha256": "5a3482b3fb9731bef59b860e7e4b5a8fa90017239d5964590f15dd804e0b6f19",
+        "cmake_cache_sha256": "2d21bf15406912c839456d69ef66f7edcbdfbdc1d3b02d4f5f03b0a09b139b24",
+        "engine_libraries": {
+          "libmtmd.so": "ba8bbb528c24a7cc5721b5cdf520d7ab159f5efb214548628ae5ce240f581296",
+          "libggml.so": "9391d0da5efb090d836eb9f1050270045ae9f215ad8e41368a44d9cd73de82c1",
+          "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+          "libllama.so": "3981f9752c48c595e4fd2ef766e70e6051edc6f54e85e4e0044615e0ddba0999",
+          "libggml-cpu.so": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+          "libllama-common.so": "61278407f85381989b98522229bb57379af9988b301a704f8c55a6619d14bafd"
+        },
+        "library_sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c",
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "",
+        "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model"
+      }
+    },
+    "model_files": {
+      "Qwen3-ASR-0.6B-Q8_0.gguf": {
+        "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+        "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+      },
+      "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+        "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+        "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+      },
+      "runtime_library": {
+        "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so",
+        "sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c"
+      },
+      "runtime_manifest": {
+        "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/build.json",
+        "sha256": "76a60f809e3b3bdb89317debf1258e9622ebc6277b29a8895f45f0b0f545f539"
+      }
+    },
+    "config_sha256": "91f519bedc7b575cc99788a0eb810abe80c4ccc47f61fffb3b3d51529afb1dd6",
+    "input_manifest_sha256": "8327d642d007bfccf7f180f595ae989f66409b82e68d1aba302bff93a3bbc543",
+    "first_caption_from_track_start_s": 5.1912368509947555,
+    "first_partial_from_track_start_s": 5.1912368509947555,
+    "final_from_owned_end_s": {
+      "n": 9,
+      "mean": 4.18993620321932,
+      "p50": 3.95802745899174,
+      "p95": 5.769869328991975,
+      "max": 5.769869328991975
+    },
+    "inference_queue_wait_s": {
+      "n": 15,
+      "mean": 1.155140499402963,
+      "p50": 0.9019911850045901,
+      "p95": 4.169267596007558,
+      "max": 4.169267596007558
+    },
+    "inference_queue_peak": 2,
+    "submitted_requests": 19,
+    "coalesced_partial_requests": 4,
+    "partial_count": 6,
+    "final_count": 9,
+    "failed_calls": 0,
+    "skipped_silence": [
+      {
+        "type": "skipped_silence",
+        "kind": "final",
+        "segment_id": 3,
+        "start_frame": 220608,
+        "end_frame": 226624,
+        "available_frame": 232000,
+        "pcm16_sha256": "12a42cfe372b164bdba3fcaf9084fc39b2032c8aec11bdf0c2acb46a6b614fb7",
+        "reason": "exact_zero_pcm",
+        "at_monotonic_s": 74841.171769975
+      },
+      {
+        "type": "skipped_silence",
+        "kind": "final",
+        "segment_id": 10,
+        "start_frame": 605120,
+        "end_frame": 620537,
+        "available_frame": 620537,
+        "pcm16_sha256": "4dff60da6cf5feb63821caf6f823dea9ce04e6216c4f42a230abe2a3dd0dab58",
+        "reason": "exact_zero_pcm",
+        "at_monotonic_s": 74865.45517777
+      }
+    ],
+    "final_transcript_score": {
+      "normalization": "ko_cer_v1",
+      "normalized_reference": "수소이온은전자가벗겨져나간양성자이다수소원자는양성자하나와전자하나로구성되므로구체적인행동은하지않더라도일종의시늉이나속임수만으로도일정정도의효과는있다고보시는군요그린란드는드문드문정착했다노르웨이모험담에서그들은erikthered가살인죄로아이슬란드에서추방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+      "normalized_hypothesis": "수소이온은전자가벗겨져나간양성자이다체적인행동은하지않더라도일종의신용이나속임수만으로도일정정도의효과는있다고보시는군요민란드는드문드문정착됐다노르웨이보험담에서그들은에릭더웨드가살인죄로아이슬란드에서처방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+      "reference_characters": 172,
+      "substitutions": 11,
+      "deletions": 28,
+      "insertions": 0,
+      "errors": 39,
+      "cer": 0.22674418604651161
+    },
+    "raw_path": "results/optimization/opt3/realtime-verification-20261110-01",
+    "guard_status": "completed",
+    "operational_valid": true,
+    "limits_verified": true,
+    "input_complete": true,
+    "dropped_chunks": 0,
+    "finalization_from_track_end_s": 0.004008753000000809,
+    "input_backlog": {
+      "sample_interval_s": 0.1,
+      "sampling": "실제 큐 이벤트의 100ms 격자 재구성 및 오디오 끝/반환 경계",
+      "event_max_audio_s": 0.1,
+      "event_max_chunks": 1,
+      "event_max_oldest_wait_s": 0.00245392500000019,
+      "at_audio_end_s": 0.0,
+      "end_audio_s": 0.0
+    },
+    "geometry": [
+      [
+        14784,
+        58688,
+        "3333cca1bc040e65a0dc2db3c465b820dfb349c42cf678117921fdde8c21d1f5"
+      ],
+      [
+        97728,
+        177728,
+        "eda5decfd180f93d1249a20f33ac3033bc9ad6835f7afea1632136eb5c13c145"
+      ],
+      [
+        177728,
+        197056,
+        "dd712c58f65b97687cfa7de8966b0f7b94cab14084591094efed3a77d57708c8"
+      ],
+      [
+        220608,
+        226624,
+        "12a42cfe372b164bdba3fcaf9084fc39b2032c8aec11bdf0c2acb46a6b614fb7"
+      ],
+      [
+        276416,
+        307008,
+        "d45869d9dd7eb47acca4b68fd98f4983da1486ff0b6729175efd61aaa67a51af"
+      ],
+      [
+        327104,
+        351040,
+        "ef96c2a5ffb50ff15cde2f85e8bb40a05ac0922109bd97fff62a31b8459355b8"
+      ],
+      [
+        359360,
+        433984,
+        "78922f83d13821319003d068e9d6027fd50bb796973514d694bad2d39ba6a642"
+      ],
+      [
+        448960,
+        489280,
+        "be76b3426eb2489eab5ef0c780010c5525fede723e280dd554db6dcfabf8b4c9"
+      ],
+      [
+        496576,
+        519488,
+        "8bd8dd38749ea0b4f71b929248d776cd32c8ee6f91ad14e7319edcf886e712eb"
+      ],
+      [
+        526784,
+        558400,
+        "e2d532cf7ce80263f48391783d862e816a19a7f7e9bfa7010c7ebd84ca801061"
+      ],
+      [
+        605120,
+        620537,
+        "4dff60da6cf5feb63821caf6f823dea9ce04e6216c4f42a230abe2a3dd0dab58"
+      ]
+    ],
+    "final_signature": [
+      [
+        14784,
+        58688,
+        "a6bdc5774fe9219fe27030af46a05c57ac8e9af33509d90c05d06ad4695e590d",
+        "수소 이온은 전자가 벗겨져 나간 양성자이다."
+      ],
+      [
+        97728,
+        177728,
+        "d66ab734aa19ee6b4b8aeb093c78b14856e12927d9a3ddfd46be79a89c990cca",
+        "체적인 행동은 하지 않더라도 일종의 신용이나 속임수만으로도 일정 정도의 효과는."
+      ],
+      [
+        177728,
+        197056,
+        "b6a31b7ec9947c3d3cad8357bdda294dffc70734453d450511f252649b1e29ab",
+        "있다고 보시는군요."
+      ],
+      [
+        276416,
+        307008,
+        "18b00e6918ce1d9b4d5273fdae1deab27701fb07fba86e3430b17200d450b871",
+        "민란드는 드문 드문 정착됐다."
+      ],
+      [
+        327104,
+        351040,
+        "30cf2ed5d609b3522e6c39539478cc71fa0c1c0d6f662c7f0787cb968659ad8a",
+        "노르웨이 보험담에서"
+      ],
+      [
+        359360,
+        433984,
+        "5b2c0d8fdc7a06958552d99ba404af8a861e28b3b0af4632747861bcdb77bdeb",
+        "그들은 에릭더 웨드가 살인죄로 아이슬란드에서 처방당했다고 말한다."
+      ],
+      [
+        448960,
+        489280,
+        "e2192d6eff671042a9dfc4fcd0a9b75aefbc507e4d8008040ea2d95e67b73c39",
+        "그리고 서쪽으로 더 멀리 항해할 때."
+      ],
+      [
+        496576,
+        519488,
+        "aa618261eb6084d18d6453e1ffd72cb8fddca3a0d3d3686e4ad6da5f7fad396e",
+        "그린란드를 발견하여."
+      ],
+      [
+        526784,
+        558400,
+        "fc1b8357cd50f26cc82f41a468cc98234ec91045d1e8903ee47d9ca51df92fa3",
+        "그린란드라고 이름 지었다."
+      ]
+    ],
+    "per_source_file_anchors": [
+      {
+        "id": "fleurs-14945311428794587488",
+        "first_caption_from_file_start_s": 5.1912368509947555,
+        "before_file_end": false
+      },
+      {
+        "id": "zeroth-121_003_2904",
+        "first_caption_from_file_start_s": 4.8212083579972385,
+        "before_file_end": true
+      },
+      {
+        "id": "fleurs-14941719265693149665",
+        "first_caption_from_file_start_s": 6.638480454995996,
+        "before_file_end": true
+      }
+    ],
+    "rss_observed_max_mib": 1723.125,
+    "serial_inference_wall_s": {
+      "partial": 13.300009864993626,
+      "final": 19.317828679995728
+    },
+    "thermal": {
+      "start_mc": 55100,
+      "maximum_mc": 69400,
+      "end_mc": 62250,
+      "current_limits": [
+        0
+      ]
+    },
+    "zero_only_segments": [
+      3,
+      10
+    ]
+  },
+  "partial_after_1s_case": {
+    "source_commit": "be0b853d77923d65252aed69e6ccfec73531d1e3",
+    "settings": {
+      "gap_s": 1,
+      "vad_threshold": 0.3,
+      "partial_after_s": 1.0,
+      "partial_interval_s": 1,
+      "max_segment_s": 5,
+      "drain_timeout_s": 30,
+      "queue_capacity": 4,
+      "partials": true,
+      "silence_policy": "skip-zero"
+    },
+    "status": "completed",
+    "error": null,
+    "model_metadata": {
+      "backend": "llama_cpp_mtmd",
+      "provider": "cpu",
+      "supported_modes": [
+        "batch"
+      ],
+      "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+      "language": "ko",
+      "stream_language": "Korean",
+      "quantization": "q8_0",
+      "quantization_evidence": "official_GGUF_asset_names_and_bound_sha256",
+      "quantization_scope": "텍스트 모델과 오디오 mmproj 모두 Q8_0 배포본. 일부 tensor 혼합 dtype 가능. ONNX INT8과 동일 양자화 방식 아님.",
+      "assets": null,
+      "max_total_len": 512,
+      "max_new_tokens": 128,
+      "prompt_policy": "empty_system_audio_user_forced_assistant_language_Korean_asr_text_v1",
+      "output_policy": "gguf_raw_utf8_until_eog_v1",
+      "sampling": "greedy",
+      "repetition_policy": "last64_token_ids_at_most3_distinct_failure",
+      "use_itn": null,
+      "context_policy": "mtmd_positions_plus_reserved_output_no_truncation_v1",
+      "input_policy": "동일 float32 PCM을 직접 전달. file codec/resampling 없음",
+      "runtime_build": {
+        "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+        "machine": "aarch64",
+        "command": [
+          "g++",
+          "-std=c++17",
+          "-O2",
+          "-fPIC",
+          "-shared",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-I",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+          "-I",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+          "-I",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+          "-I",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/vendor/nlohmann",
+          "/home/deepet/projects/edge-asr/experiments/qwen3_optimization/gguf/bridge.cpp",
+          "-L",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+          "-Wl,-rpath,/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+          "-lllama",
+          "-lmtmd",
+          "-lggml",
+          "-lggml-base",
+          "-pthread",
+          "-o",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so"
+        ],
+        "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+        "bridge_source_sha256": "5a3482b3fb9731bef59b860e7e4b5a8fa90017239d5964590f15dd804e0b6f19",
+        "cmake_cache_sha256": "2d21bf15406912c839456d69ef66f7edcbdfbdc1d3b02d4f5f03b0a09b139b24",
+        "engine_libraries": {
+          "libmtmd.so": "ba8bbb528c24a7cc5721b5cdf520d7ab159f5efb214548628ae5ce240f581296",
+          "libggml.so": "9391d0da5efb090d836eb9f1050270045ae9f215ad8e41368a44d9cd73de82c1",
+          "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+          "libllama.so": "3981f9752c48c595e4fd2ef766e70e6051edc6f54e85e4e0044615e0ddba0999",
+          "libggml-cpu.so": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+          "libllama-common.so": "61278407f85381989b98522229bb57379af9988b301a704f8c55a6619d14bafd"
+        },
+        "library_sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c",
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "",
+        "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model"
+      }
+    },
+    "model_files": {
+      "Qwen3-ASR-0.6B-Q8_0.gguf": {
+        "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+        "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+      },
+      "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+        "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+        "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+      },
+      "runtime_library": {
+        "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so",
+        "sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c"
+      },
+      "runtime_manifest": {
+        "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/build.json",
+        "sha256": "76a60f809e3b3bdb89317debf1258e9622ebc6277b29a8895f45f0b0f545f539"
+      }
+    },
+    "config_sha256": "91f519bedc7b575cc99788a0eb810abe80c4ccc47f61fffb3b3d51529afb1dd6",
+    "input_manifest_sha256": "8327d642d007bfccf7f180f595ae989f66409b82e68d1aba302bff93a3bbc543",
+    "first_caption_from_track_start_s": 3.36488741300127,
+    "first_partial_from_track_start_s": 3.36488741300127,
+    "final_from_owned_end_s": {
+      "n": 9,
+      "mean": 4.633391801560659,
+      "p50": 4.902250036997604,
+      "p95": 7.257242033006857,
+      "max": 7.257242033006857
+    },
+    "inference_queue_wait_s": {
+      "n": 18,
+      "mean": 1.2771672349440957,
+      "p50": 0.7205935569945723,
+      "p95": 3.68785255299008,
+      "max": 3.68785255299008
+    },
+    "inference_queue_peak": 3,
+    "submitted_requests": 28,
+    "coalesced_partial_requests": 10,
+    "partial_count": 9,
+    "final_count": 9,
+    "failed_calls": 0,
+    "skipped_silence": [
+      {
+        "type": "skipped_silence",
+        "kind": "final",
+        "segment_id": 3,
+        "start_frame": 220608,
+        "end_frame": 226624,
+        "available_frame": 232000,
+        "pcm16_sha256": "12a42cfe372b164bdba3fcaf9084fc39b2032c8aec11bdf0c2acb46a6b614fb7",
+        "reason": "exact_zero_pcm",
+        "at_monotonic_s": 74954.668292469
+      },
+      {
+        "type": "skipped_silence",
+        "kind": "final",
+        "segment_id": 10,
+        "start_frame": 605120,
+        "end_frame": 620537,
+        "available_frame": 620537,
+        "pcm16_sha256": "4dff60da6cf5feb63821caf6f823dea9ce04e6216c4f42a230abe2a3dd0dab58",
+        "reason": "exact_zero_pcm",
+        "at_monotonic_s": 74978.956721828
+      }
+    ],
+    "final_transcript_score": {
+      "normalization": "ko_cer_v1",
+      "normalized_reference": "수소이온은전자가벗겨져나간양성자이다수소원자는양성자하나와전자하나로구성되므로구체적인행동은하지않더라도일종의시늉이나속임수만으로도일정정도의효과는있다고보시는군요그린란드는드문드문정착했다노르웨이모험담에서그들은erikthered가살인죄로아이슬란드에서추방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+      "normalized_hypothesis": "수소이온은전자가벗겨져나간양성자이다체적인행동은하지않더라도일종의신용이나속임수만으로도일정정도의효과는있다고보시는군요민란드는드문드문정착됐다노르웨이보험담에서그들은에릭더웨드가살인죄로아이슬란드에서처방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+      "reference_characters": 172,
+      "substitutions": 11,
+      "deletions": 28,
+      "insertions": 0,
+      "errors": 39,
+      "cer": 0.22674418604651161
+    },
+    "raw_path": "results/optimization/opt3/realtime-partial1-20261110-01/q8",
+    "guard_status": "completed",
+    "operational_valid": true,
+    "limits_verified": true,
+    "input_complete": true,
+    "dropped_chunks": 0,
+    "finalization_from_track_end_s": 0.46304088499999807,
+    "input_backlog": {
+      "sample_interval_s": 0.1,
+      "sampling": "실제 큐 이벤트의 100ms 격자 재구성 및 오디오 끝/반환 경계",
+      "event_max_audio_s": 0.1,
+      "event_max_chunks": 1,
+      "event_max_oldest_wait_s": 0.0018534209999998552,
+      "at_audio_end_s": 0.0,
+      "end_audio_s": 0.0
+    },
+    "geometry": [
+      [
+        14784,
+        58688,
+        "3333cca1bc040e65a0dc2db3c465b820dfb349c42cf678117921fdde8c21d1f5"
+      ],
+      [
+        97728,
+        177728,
+        "eda5decfd180f93d1249a20f33ac3033bc9ad6835f7afea1632136eb5c13c145"
+      ],
+      [
+        177728,
+        197056,
+        "dd712c58f65b97687cfa7de8966b0f7b94cab14084591094efed3a77d57708c8"
+      ],
+      [
+        220608,
+        226624,
+        "12a42cfe372b164bdba3fcaf9084fc39b2032c8aec11bdf0c2acb46a6b614fb7"
+      ],
+      [
+        276416,
+        307008,
+        "d45869d9dd7eb47acca4b68fd98f4983da1486ff0b6729175efd61aaa67a51af"
+      ],
+      [
+        327104,
+        351040,
+        "ef96c2a5ffb50ff15cde2f85e8bb40a05ac0922109bd97fff62a31b8459355b8"
+      ],
+      [
+        359360,
+        433984,
+        "78922f83d13821319003d068e9d6027fd50bb796973514d694bad2d39ba6a642"
+      ],
+      [
+        448960,
+        489280,
+        "be76b3426eb2489eab5ef0c780010c5525fede723e280dd554db6dcfabf8b4c9"
+      ],
+      [
+        496576,
+        519488,
+        "8bd8dd38749ea0b4f71b929248d776cd32c8ee6f91ad14e7319edcf886e712eb"
+      ],
+      [
+        526784,
+        558400,
+        "e2d532cf7ce80263f48391783d862e816a19a7f7e9bfa7010c7ebd84ca801061"
+      ],
+      [
+        605120,
+        620537,
+        "4dff60da6cf5feb63821caf6f823dea9ce04e6216c4f42a230abe2a3dd0dab58"
+      ]
+    ],
+    "final_signature": [
+      [
+        14784,
+        58688,
+        "a6bdc5774fe9219fe27030af46a05c57ac8e9af33509d90c05d06ad4695e590d",
+        "수소 이온은 전자가 벗겨져 나간 양성자이다."
+      ],
+      [
+        97728,
+        177728,
+        "d66ab734aa19ee6b4b8aeb093c78b14856e12927d9a3ddfd46be79a89c990cca",
+        "체적인 행동은 하지 않더라도 일종의 신용이나 속임수만으로도 일정 정도의 효과는."
+      ],
+      [
+        177728,
+        197056,
+        "b6a31b7ec9947c3d3cad8357bdda294dffc70734453d450511f252649b1e29ab",
+        "있다고 보시는군요."
+      ],
+      [
+        276416,
+        307008,
+        "18b00e6918ce1d9b4d5273fdae1deab27701fb07fba86e3430b17200d450b871",
+        "민란드는 드문 드문 정착됐다."
+      ],
+      [
+        327104,
+        351040,
+        "30cf2ed5d609b3522e6c39539478cc71fa0c1c0d6f662c7f0787cb968659ad8a",
+        "노르웨이 보험담에서"
+      ],
+      [
+        359360,
+        433984,
+        "5b2c0d8fdc7a06958552d99ba404af8a861e28b3b0af4632747861bcdb77bdeb",
+        "그들은 에릭더 웨드가 살인죄로 아이슬란드에서 처방당했다고 말한다."
+      ],
+      [
+        448960,
+        489280,
+        "e2192d6eff671042a9dfc4fcd0a9b75aefbc507e4d8008040ea2d95e67b73c39",
+        "그리고 서쪽으로 더 멀리 항해할 때."
+      ],
+      [
+        496576,
+        519488,
+        "aa618261eb6084d18d6453e1ffd72cb8fddca3a0d3d3686e4ad6da5f7fad396e",
+        "그린란드를 발견하여."
+      ],
+      [
+        526784,
+        558400,
+        "fc1b8357cd50f26cc82f41a468cc98234ec91045d1e8903ee47d9ca51df92fa3",
+        "그린란드라고 이름 지었다."
+      ]
+    ],
+    "per_source_file_anchors": [
+      {
+        "id": "fleurs-14945311428794587488",
+        "first_caption_from_file_start_s": 3.36488741300127,
+        "before_file_end": true
+      },
+      {
+        "id": "zeroth-121_003_2904",
+        "first_caption_from_file_start_s": 4.164205582009163,
+        "before_file_end": true
+      },
+      {
+        "id": "fleurs-14941719265693149665",
+        "first_caption_from_file_start_s": 5.009125825999771,
+        "before_file_end": true
+      }
+    ],
+    "rss_observed_max_mib": 1722.8125,
+    "serial_inference_wall_s": {
+      "partial": 16.94867841899395,
+      "final": 19.301778717999696
+    },
+    "thermal": {
+      "start_mc": 56750,
+      "maximum_mc": 70500,
+      "end_mc": 65000,
+      "current_limits": [
+        0
+      ]
+    },
+    "zero_only_segments": [
+      3,
+      10
+    ],
+    "pilot_quality_gate": true
+  },
+  "partial_first1_interval2_case": {
+    "source_commit": "4c5b505355de64095243d5b70ae9c87464fd7261",
+    "settings": {
+      "gap_s": 1,
+      "vad_threshold": 0.3,
+      "partial_after_s": 1.0,
+      "partial_interval_s": 2.0,
+      "max_segment_s": 5,
+      "drain_timeout_s": 30,
+      "queue_capacity": 4,
+      "partials": true,
+      "silence_policy": "skip-zero"
+    },
+    "status": "completed",
+    "error": null,
+    "model_metadata": {
+      "backend": "llama_cpp_mtmd",
+      "provider": "cpu",
+      "supported_modes": [
+        "batch"
+      ],
+      "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+      "language": "ko",
+      "stream_language": "Korean",
+      "quantization": "q8_0",
+      "quantization_evidence": "official_GGUF_asset_names_and_bound_sha256",
+      "quantization_scope": "텍스트 모델과 오디오 mmproj 모두 Q8_0 배포본. 일부 tensor 혼합 dtype 가능. ONNX INT8과 동일 양자화 방식 아님.",
+      "assets": null,
+      "max_total_len": 512,
+      "max_new_tokens": 128,
+      "prompt_policy": "empty_system_audio_user_forced_assistant_language_Korean_asr_text_v1",
+      "output_policy": "gguf_raw_utf8_until_eog_v1",
+      "sampling": "greedy",
+      "repetition_policy": "last64_token_ids_at_most3_distinct_failure",
+      "use_itn": null,
+      "context_policy": "mtmd_positions_plus_reserved_output_no_truncation_v1",
+      "input_policy": "동일 float32 PCM을 직접 전달. file codec/resampling 없음",
+      "runtime_build": {
+        "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+        "machine": "aarch64",
+        "command": [
+          "g++",
+          "-std=c++17",
+          "-O2",
+          "-fPIC",
+          "-shared",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-I",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+          "-I",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+          "-I",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+          "-I",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/vendor/nlohmann",
+          "/home/deepet/projects/edge-asr/experiments/qwen3_optimization/gguf/bridge.cpp",
+          "-L",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+          "-Wl,-rpath,/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+          "-lllama",
+          "-lmtmd",
+          "-lggml",
+          "-lggml-base",
+          "-pthread",
+          "-o",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so"
+        ],
+        "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+        "bridge_source_sha256": "5a3482b3fb9731bef59b860e7e4b5a8fa90017239d5964590f15dd804e0b6f19",
+        "cmake_cache_sha256": "2d21bf15406912c839456d69ef66f7edcbdfbdc1d3b02d4f5f03b0a09b139b24",
+        "engine_libraries": {
+          "libmtmd.so": "ba8bbb528c24a7cc5721b5cdf520d7ab159f5efb214548628ae5ce240f581296",
+          "libggml.so": "9391d0da5efb090d836eb9f1050270045ae9f215ad8e41368a44d9cd73de82c1",
+          "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+          "libllama.so": "3981f9752c48c595e4fd2ef766e70e6051edc6f54e85e4e0044615e0ddba0999",
+          "libggml-cpu.so": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+          "libllama-common.so": "61278407f85381989b98522229bb57379af9988b301a704f8c55a6619d14bafd"
+        },
+        "library_sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c",
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "",
+        "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model"
+      }
+    },
+    "model_files": {
+      "Qwen3-ASR-0.6B-Q8_0.gguf": {
+        "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+        "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+      },
+      "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+        "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+        "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+      },
+      "runtime_library": {
+        "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so",
+        "sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c"
+      },
+      "runtime_manifest": {
+        "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/build.json",
+        "sha256": "76a60f809e3b3bdb89317debf1258e9622ebc6277b29a8895f45f0b0f545f539"
+      }
+    },
+    "config_sha256": "91f519bedc7b575cc99788a0eb810abe80c4ccc47f61fffb3b3d51529afb1dd6",
+    "input_manifest_sha256": "8327d642d007bfccf7f180f595ae989f66409b82e68d1aba302bff93a3bbc543",
+    "first_caption_from_track_start_s": 3.3551553129946114,
+    "first_partial_from_track_start_s": 3.3551553129946114,
+    "final_from_owned_end_s": {
+      "n": 9,
+      "mean": 3.282306753776579,
+      "p50": 2.8076215429981204,
+      "p95": 4.948533969995681,
+      "max": 4.948533969995681
+    },
+    "inference_queue_wait_s": {
+      "n": 16,
+      "mean": 0.5060547247485374,
+      "p50": 0.059479693009052426,
+      "p95": 3.350848322006641,
+      "max": 3.350848322006641
+    },
+    "inference_queue_peak": 1,
+    "submitted_requests": 20,
+    "coalesced_partial_requests": 4,
+    "partial_count": 7,
+    "final_count": 9,
+    "failed_calls": 0,
+    "skipped_silence": [
+      {
+        "type": "skipped_silence",
+        "kind": "final",
+        "segment_id": 3,
+        "start_frame": 220608,
+        "end_frame": 226624,
+        "available_frame": 232000,
+        "pcm16_sha256": "12a42cfe372b164bdba3fcaf9084fc39b2032c8aec11bdf0c2acb46a6b614fb7",
+        "reason": "exact_zero_pcm",
+        "at_monotonic_s": 75229.094902993
+      },
+      {
+        "type": "skipped_silence",
+        "kind": "final",
+        "segment_id": 10,
+        "start_frame": 605120,
+        "end_frame": 620537,
+        "available_frame": 620537,
+        "pcm16_sha256": "4dff60da6cf5feb63821caf6f823dea9ce04e6216c4f42a230abe2a3dd0dab58",
+        "reason": "exact_zero_pcm",
+        "at_monotonic_s": 75253.376615154
+      }
+    ],
+    "final_transcript_score": {
+      "normalization": "ko_cer_v1",
+      "normalized_reference": "수소이온은전자가벗겨져나간양성자이다수소원자는양성자하나와전자하나로구성되므로구체적인행동은하지않더라도일종의시늉이나속임수만으로도일정정도의효과는있다고보시는군요그린란드는드문드문정착했다노르웨이모험담에서그들은erikthered가살인죄로아이슬란드에서추방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+      "normalized_hypothesis": "수소이온은전자가벗겨져나간양성자이다체적인행동은하지않더라도일종의신용이나속임수만으로도일정정도의효과는있다고보시는군요민란드는드문드문정착됐다노르웨이보험담에서그들은에릭더웨드가살인죄로아이슬란드에서처방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+      "reference_characters": 172,
+      "substitutions": 11,
+      "deletions": 28,
+      "insertions": 0,
+      "errors": 39,
+      "cer": 0.22674418604651161
+    },
+    "raw_path": "results/optimization/opt3/realtime-partial12-20261110-01/q8",
+    "guard_status": "completed",
+    "operational_valid": true,
+    "limits_verified": true,
+    "input_complete": true,
+    "dropped_chunks": 0,
+    "finalization_from_track_end_s": 0.00476485000000082,
+    "input_backlog": {
+      "sample_interval_s": 0.1,
+      "sampling": "실제 큐 이벤트의 100ms 격자 재구성 및 오디오 끝/반환 경계",
+      "event_max_audio_s": 0.1,
+      "event_max_chunks": 1,
+      "event_max_oldest_wait_s": 0.002409611000000922,
+      "at_audio_end_s": 0.0,
+      "end_audio_s": 0.0
+    },
+    "geometry": [
+      [
+        14784,
+        58688,
+        "3333cca1bc040e65a0dc2db3c465b820dfb349c42cf678117921fdde8c21d1f5"
+      ],
+      [
+        97728,
+        177728,
+        "eda5decfd180f93d1249a20f33ac3033bc9ad6835f7afea1632136eb5c13c145"
+      ],
+      [
+        177728,
+        197056,
+        "dd712c58f65b97687cfa7de8966b0f7b94cab14084591094efed3a77d57708c8"
+      ],
+      [
+        220608,
+        226624,
+        "12a42cfe372b164bdba3fcaf9084fc39b2032c8aec11bdf0c2acb46a6b614fb7"
+      ],
+      [
+        276416,
+        307008,
+        "d45869d9dd7eb47acca4b68fd98f4983da1486ff0b6729175efd61aaa67a51af"
+      ],
+      [
+        327104,
+        351040,
+        "ef96c2a5ffb50ff15cde2f85e8bb40a05ac0922109bd97fff62a31b8459355b8"
+      ],
+      [
+        359360,
+        433984,
+        "78922f83d13821319003d068e9d6027fd50bb796973514d694bad2d39ba6a642"
+      ],
+      [
+        448960,
+        489280,
+        "be76b3426eb2489eab5ef0c780010c5525fede723e280dd554db6dcfabf8b4c9"
+      ],
+      [
+        496576,
+        519488,
+        "8bd8dd38749ea0b4f71b929248d776cd32c8ee6f91ad14e7319edcf886e712eb"
+      ],
+      [
+        526784,
+        558400,
+        "e2d532cf7ce80263f48391783d862e816a19a7f7e9bfa7010c7ebd84ca801061"
+      ],
+      [
+        605120,
+        620537,
+        "4dff60da6cf5feb63821caf6f823dea9ce04e6216c4f42a230abe2a3dd0dab58"
+      ]
+    ],
+    "final_signature": [
+      [
+        14784,
+        58688,
+        "a6bdc5774fe9219fe27030af46a05c57ac8e9af33509d90c05d06ad4695e590d",
+        "수소 이온은 전자가 벗겨져 나간 양성자이다."
+      ],
+      [
+        97728,
+        177728,
+        "d66ab734aa19ee6b4b8aeb093c78b14856e12927d9a3ddfd46be79a89c990cca",
+        "체적인 행동은 하지 않더라도 일종의 신용이나 속임수만으로도 일정 정도의 효과는."
+      ],
+      [
+        177728,
+        197056,
+        "b6a31b7ec9947c3d3cad8357bdda294dffc70734453d450511f252649b1e29ab",
+        "있다고 보시는군요."
+      ],
+      [
+        276416,
+        307008,
+        "18b00e6918ce1d9b4d5273fdae1deab27701fb07fba86e3430b17200d450b871",
+        "민란드는 드문 드문 정착됐다."
+      ],
+      [
+        327104,
+        351040,
+        "30cf2ed5d609b3522e6c39539478cc71fa0c1c0d6f662c7f0787cb968659ad8a",
+        "노르웨이 보험담에서"
+      ],
+      [
+        359360,
+        433984,
+        "5b2c0d8fdc7a06958552d99ba404af8a861e28b3b0af4632747861bcdb77bdeb",
+        "그들은 에릭더 웨드가 살인죄로 아이슬란드에서 처방당했다고 말한다."
+      ],
+      [
+        448960,
+        489280,
+        "e2192d6eff671042a9dfc4fcd0a9b75aefbc507e4d8008040ea2d95e67b73c39",
+        "그리고 서쪽으로 더 멀리 항해할 때."
+      ],
+      [
+        496576,
+        519488,
+        "aa618261eb6084d18d6453e1ffd72cb8fddca3a0d3d3686e4ad6da5f7fad396e",
+        "그린란드를 발견하여."
+      ],
+      [
+        526784,
+        558400,
+        "fc1b8357cd50f26cc82f41a468cc98234ec91045d1e8903ee47d9ca51df92fa3",
+        "그린란드라고 이름 지었다."
+      ]
+    ],
+    "per_source_file_anchors": [
+      {
+        "id": "fleurs-14945311428794587488",
+        "first_caption_from_file_start_s": 3.3551553129946114,
+        "before_file_end": true
+      },
+      {
+        "id": "zeroth-121_003_2904",
+        "first_caption_from_file_start_s": 3.4133232319989473,
+        "before_file_end": true
+      },
+      {
+        "id": "fleurs-14941719265693149665",
+        "first_caption_from_file_start_s": 5.010414573007264,
+        "before_file_end": true
+      }
+    ],
+    "rss_observed_max_mib": 1722.375,
+    "serial_inference_wall_s": {
+      "partial": 11.861341186988284,
+      "final": 19.327542361992528
+    },
+    "thermal": {
+      "start_mc": 52350,
+      "maximum_mc": 69400,
+      "end_mc": 61150,
+      "current_limits": [
+        0
+      ]
+    },
+    "zero_only_segments": [
+      3,
+      10
+    ],
+    "pilot_quality_gate": true
+  },
+  "first_partial_call_profile": {
+    "preprocess_s": 0.000451096,
+    "audio_and_prefill_s": 1.233580325,
+    "first_generated_token_s": 1.242079551,
+    "token_decode_s": 0.9380885110000001,
+    "native_elapsed_s": 2.19100484,
+    "token_decode_calls": 16,
+    "note": "native 내부 시각. 외부 token callback·사용자 첫 토큰 지연 아님."
+  },
+  "recommendation": {
+    "primary_quantization": "q8_0",
+    "memory_candidate": "q5_k_m",
+    "rejected_quants": [
+      "q6_k",
+      "q4_k_m"
+    ],
+    "scope": "소규모 선별. 전체100개·독립 데이터·장시간 채택 아님."
+  },
+  "development_profile": {
+    "config": "configs/gguf.toml",
+    "vad_threshold": 0.3,
+    "silence_policy": "skip-zero",
+    "partial_after_s": 1,
+    "partial_interval_s": 2,
+    "scope": "고정3개 개발용 후보. 전체100개·최종 채택 미검증."
+  },
+  "verification": {
+    "raw_file_count": 144,
+    "raw_hash_ledger": "results/maintenance/realtime-controls-20261110-01/artifact-hashes-final.json",
+    "all_raw_host_rp5_hashes_match": true,
+    "quantization_final_geometry_and_pcm_equal": true,
+    "on_off_final_pcm_and_text_equal": true,
+    "sparse_partial_final_pcm_and_text_equal": true,
+    "post_cleanup_q8_final_pcm_and_text_equal": true,
+    "host_tests": {
+      "total": 359,
+      "passed": 357,
+      "skipped": 2,
+      "elapsed_s": 50.665
+    },
+    "rp5_tests": {
+      "total": 359,
+      "passed": 357,
+      "skipped": 2,
+      "elapsed_s": 77.721
+    },
+    "assets": {
+      "verified_current_unique_assets": 10,
+      "original_q8_model_runtime_hashes_unchanged": true
+    }
+  }
+}
