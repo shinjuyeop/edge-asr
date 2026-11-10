@@ -1,0 +1,225 @@
+{
+  "source_commit": "2515285eaa6395226ded92d429cd1bcce70c2370",
+  "config_sha256": "91f519bedc7b575cc99788a0eb810abe80c4ccc47f61fffb3b3d51529afb1dd6",
+  "input_manifest_sha256": "8327d642d007bfccf7f180f595ae989f66409b82e68d1aba302bff93a3bbc543",
+  "model_files": {
+    "Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+    },
+    "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+    },
+    "runtime_library": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so",
+      "sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c"
+    },
+    "runtime_manifest": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/build.json",
+      "sha256": "76a60f809e3b3bdb89317debf1258e9622ebc6277b29a8895f45f0b0f545f539"
+    }
+  },
+  "first_caption_from_track_start_s": 5.296622455003671,
+  "first_partial_from_track_start_s": 5.296622455003671,
+  "final_from_owned_end_s": {
+    "n": 9,
+    "mean": 4.004885604562186,
+    "p50": 4.155766706013004,
+    "p95": 5.976983428005596,
+    "max": 5.976983428005596
+  },
+  "inference_queue_wait_s": {
+    "n": 14,
+    "mean": 1.2271596624268568,
+    "p50": 0.9818007879948709,
+    "p95": 4.339587506998214,
+    "max": 4.339587506998214
+  },
+  "inference_queue_peak": 2,
+  "submitted_requests": 18,
+  "coalesced_partial_requests": 4,
+  "partial_count": 5,
+  "final_count": 9,
+  "failed_calls": 0,
+  "final_transcript_score": {
+    "normalization": "ko_cer_v1",
+    "normalized_reference": "수소이온은전자가벗겨져나간양성자이다수소원자는양성자하나와전자하나로구성되므로구체적인행동은하지않더라도일종의시늉이나속임수만으로도일정정도의효과는있다고보시는군요그린란드는드문드문정착했다노르웨이모험담에서그들은erikthered가살인죄로아이슬란드에서추방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+    "normalized_hypothesis": "수소이온은전자가벗겨져나간양성자이다체적인행동은하지않더라도일종의신용이나속임수만으로도일정정도의효과는있다고보시는군요이보험담에서그들은에릭더웨드가살인죄로아이슬란드에서추방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여우린란드라고이름지었다이",
+    "reference_characters": 172,
+    "substitutions": 9,
+    "deletions": 43,
+    "insertions": 1,
+    "errors": 53,
+    "cer": 0.3081395348837209
+  },
+  "schema_version": 1,
+  "date": "2026-11-10",
+  "kind": "qwen3_paced_partial_pilot",
+  "run_id": "realtime-20261110-01",
+  "raw_path": "results/optimization/opt3/realtime-20261110-01",
+  "selection": {
+    "selection": "고정100개를 (프레임,ID) 정렬 후 0/50/99번째. ASR 결과를 보기 전에 고정.",
+    "source_manifest_sha256": "f693163f3d0d11a09873d3d5dbbd8a68aea6ebd1897cc051fd99dd076f8b76ab",
+    "manifest_sha256": "8327d642d007bfccf7f180f595ae989f66409b82e68d1aba302bff93a3bbc543",
+    "sources": [
+      {
+        "id": "fleurs-14945311428794587488",
+        "frames": 67200,
+        "duration_s": 4.2
+      },
+      {
+        "id": "zeroth-121_003_2904",
+        "frames": 136697,
+        "duration_s": 8.5435625
+      },
+      {
+        "id": "fleurs-14941719265693149665",
+        "frames": 368640,
+        "duration_s": 23.04
+      }
+    ],
+    "gap_after_each_s": 1,
+    "track_duration_s": 38.7835625
+  },
+  "runtime_guard": {
+    "status": "completed",
+    "exit_code": 0,
+    "operational_valid": true,
+    "control_valid": false,
+    "limit_verified": true,
+    "policy": {
+      "admission_mc": null,
+      "admission_consecutive": 0,
+      "stop_mc": null,
+      "interval_s": 1,
+      "timeout_s": 600,
+      "address_space_bytes": 4294967296,
+      "scope": "운영 검사: 80°C 이상 경고, 온도/감속만으로 중단하지 않음. 기본 열 보호 유지. 저전압/새 저전압 이력/결측/timeout/실행 실패는 중단. 통제 비교 아님.",
+      "name": "operational",
+      "warn_mc": 80000,
+      "allow_thermal_limits": true,
+      "firmware_thermal_protection": "unchanged",
+      "temperature_admission": "observe_only"
+    },
+    "command": [
+      ".venv/bin/python",
+      "scripts/edge_asr.py",
+      "tools",
+      "replay-qwen3",
+      "--config",
+      "configs/gguf.toml",
+      "--manifest",
+      "/home/deepet/projects/edge-asr/results/optimization/opt3/realtime-20261110-01/inputs/pilot3.jsonl",
+      "--output",
+      "/home/deepet/projects/edge-asr/results/optimization/opt3/realtime-20261110-01/q8-2t"
+    ]
+  },
+  "per_source_file_anchors": [
+    {
+      "id": "fleurs-14945311428794587488",
+      "start_s": 0.0,
+      "end_s": 4.2,
+      "first_caption_from_source_start_s": 5.296622455003671,
+      "first_caption_before_source_input_end": false
+    },
+    {
+      "id": "zeroth-121_003_2904",
+      "start_s": 5.2,
+      "end_s": 13.7435625,
+      "first_caption_from_source_start_s": 4.910778156013111,
+      "first_caption_before_source_input_end": true
+    },
+    {
+      "id": "fleurs-14941719265693149665",
+      "start_s": 14.7435625,
+      "end_s": 37.7835625,
+      "first_caption_from_source_start_s": 8.654546976009268,
+      "first_caption_before_source_input_end": true
+    }
+  ],
+  "finalization_from_track_end_s": 0.6751451039999949,
+  "input_backlog": {
+    "sample_interval_s": 0.1,
+    "sampling": "실제 큐 이벤트의 100ms 격자 재구성 및 오디오 끝/반환 경계",
+    "event_max_audio_s": 0.1,
+    "event_max_chunks": 1,
+    "event_max_oldest_wait_s": 0.0035379149999998916,
+    "at_audio_end_s": 0.0,
+    "end_audio_s": 0.0
+  },
+  "input_dropped_chunks": 0,
+  "input_drop_audio_s": 0.0,
+  "serial_inference_wall_s": {
+    "partial": 11.626077512992197,
+    "final": 18.36132037702191
+  },
+  "historical_same3_batch_accuracy": {
+    "source_path": "results/optimization/opt2/fixed100-baseline-recovery-20261109-01/operational-gguf-01",
+    "scope": "2026-11-09 기존 batch 가설의 동일3개 재채점. 새 속도 측정이나 전체100개 CER 비교 아님.",
+    "score": {
+      "normalization": "ko_cer_v1",
+      "normalized_reference": "수소이온은전자가벗겨져나간양성자이다수소원자는양성자하나와전자하나로구성되므로구체적인행동은하지않더라도일종의시늉이나속임수만으로도일정정도의효과는있다고보시는군요그린란드는드문드문정착했다노르웨이모험담에서그들은erikthered가살인죄로아이슬란드에서추방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+      "normalized_hypothesis": "수소이온은전자가벗겨져나간양성자이다구체적인행동은하지않더라도일종의신용이나속임수만으로도일정정도의효과는있다고보시는군요그린란드는드문드문정착했다노르웨이보험담에서그들은에릭더웨드가살인죄로아이슬란드에서처방당했다고말한다그리고서쪽으로더멀리항해할때그린란드를발견하여그린란드라고이름지었다",
+      "reference_characters": 172,
+      "substitutions": 9,
+      "deletions": 26,
+      "insertions": 0,
+      "errors": 35,
+      "cer": 0.20348837209302326
+    }
+  },
+  "silent_payload_final_segment_ids": [
+    8
+  ],
+  "main_rss_observed_max_mib": 1722.953125,
+  "main_process_cpu_s": 64.18942156099999,
+  "resource_measurement_wall_s": 39.61220971700095,
+  "thermal": {
+    "start_mc": 51800,
+    "maximum_mc": 66100,
+    "end_mc": 61700,
+    "current_limit_flags": [
+      0
+    ],
+    "arm_clock_hz_min": 1600013696,
+    "arm_clock_hz_max": 2400033792
+  },
+  "acceptance": {
+    "input_and_inference_completed": true,
+    "low_latency_quality_candidate_accepted": false,
+    "reason": "동일3개 기존 batch보다 오류18개 증가, 첫 자막·확정 지연과 무음 오인식. 파이프라인 관측용 파일럿으로만 보존."
+  },
+  "unmeasured": {
+    "engine_ttft_s": null,
+    "acoustic_word_latency_s": null,
+    "full100_continuous_cer": null,
+    "microphone_performance": null,
+    "lower_bit_quantization_performance": null
+  },
+  "verification": {
+    "verified_raw_file_count": 13,
+    "raw_sha256_ledger": "results/maintenance/qwen-realtime-20261110-01/artifact-hashes.json",
+    "causal_request_ranges_verified": true,
+    "all_requests_accounted_for": true,
+    "rp5_current_asset_hashes_verified": 4,
+    "model_and_runtime_assets_equal_previous_baseline": true,
+    "host_full_tests": {
+      "total": 353,
+      "passed": 351,
+      "skipped": 2,
+      "elapsed_s": 50.673
+    },
+    "rp5_full_tests": {
+      "total": 353,
+      "passed": 351,
+      "skipped": 2,
+      "elapsed_s": 78.343
+    },
+    "skipped_reason": "선택적 ORT mock 헤더·GGUF native 문법 검사 환경 미지정. 이번 C++ 변경 없음.",
+    "host_focused_after_metadata_update": {
+      "realtime": 6,
+      "project_structure": 6
+    }
+  }
+}

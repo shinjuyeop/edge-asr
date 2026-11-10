@@ -15,6 +15,8 @@ Qwen3-ASR-0.6B를 Raspberry Pi 5의 ARM64 CPU에서 실행하며, **한국어 �
 
 현재는 WAV 파일로 검증합니다. 이전 Zip+VAD+Refine 자막은 `legacy/`에 보존합니다.
 
+[첫 Qwen 단독 연속 입력 파일럿](results/summaries/optimization/realtime-pilot-20261110.md)은 입력 드롭 없이 완료했지만 첫 자막5.30초·확정p95 5.98초와 추가 인식 오류가 관측돼 개선 중입니다. 아래 표는 기존 batch 기준값입니다.
+
 ## 현재 GGUF 기준값
 
 RP5 · Qwen3-ASR-0.6B Q8_0 · CPU 2스레드 · **2026-11-09 실측**입니다.
@@ -101,7 +103,8 @@ edge-asr/
 │   ├── optimization/                                      # 원시 측정값
 │   │   ├── opt0/
 │   │   ├── opt1/
-│   │   └── opt2/
+│   │   ├── opt2/
+│   │   └── opt3/
 │   └── summaries/
 │       └── optimization/                                  # Git에 보관하는 OPT 요약
 ├── runtimes/
