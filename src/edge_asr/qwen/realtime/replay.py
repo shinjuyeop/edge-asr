@@ -74,7 +74,8 @@ def run(
             vad_factory
             or (
                 lambda p: BoundedProbabilityVad(
-                    K2SileroProbability(p, input_gain_db=settings.get("vad_gain_db", 0))
+                    K2SileroProbability(p, input_gain_db=settings.get("vad_gain_db", 0)),
+                    threshold=settings.get("vad_threshold", 0.5),
                 )
             )
         )(vad_model)
@@ -109,7 +110,9 @@ def run(
                         flush=True,
                     )
 
-        session_settings = {k: v for k, v in settings.items() if k not in ("gap_s", "vad_gain_db")}
+        session_settings = {
+            k: v for k, v in settings.items() if k not in ("gap_s", "vad_gain_db", "vad_threshold")
+        }
         session = CaptionSession(
             adapter, vad, len(audio.samples), emit, info["telemetry"], **session_settings
         )
@@ -202,6 +205,13 @@ def main():
         "--vad-model", type=Path, default=Path("models/silero-vad-k2-20261029/silero_vad.onnx")
     )
     parser.add_argument("--gap-s", type=float, default=1, choices=(0, 0.5, 1, 2))
+    parser.add_argument(
+        "--vad-threshold",
+        type=float,
+        default=0.5,
+        choices=(0.3, 0.5),
+        help="VAD 시작 임계값 후보. 기본0.5 보존",
+    )
     parser.add_argument(
         "--vad-gain-db",
         type=int,

@@ -57,6 +57,16 @@ class FakeNumpy:
 
 
 class ProbabilityTests(unittest.TestCase):
+    def test_lower_onset_threshold_keeps_low_confidence_activity(self):
+        for threshold in (0.5, 0.3):
+            vad = BoundedProbabilityVad(Probability(0.4), threshold=threshold)
+            for _ in range(10):
+                vad.accept_waveform([0.01] * 512)
+            self.assertEqual(vad.is_speech_detected(), threshold == 0.3)
+            self.assertEqual(vad.metadata()["retained_audio_frames"], 0)
+        with self.assertRaises(ValueError):
+            BoundedProbabilityVad(Probability(), threshold=0)
+
     def test_model_factory_signature_state_carry_and_reset(self):
         class Session:
             def get_inputs(self):
