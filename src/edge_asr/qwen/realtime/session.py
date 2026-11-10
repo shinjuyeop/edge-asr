@@ -109,7 +109,9 @@ class CaptionSession:
             return
         if self.partial_start != start:
             self.partial_start, self.last_partial_end = start, start
-        if end - start >= self.minimum and end - self.last_partial_end >= self.interval:
+        if end - start >= self.minimum and (
+            self.last_partial_end == start or end - self.last_partial_end >= self.interval
+        ):
             self._offer("partial", self.pipeline.segment_id, start, end, read(start, end))
             self.last_partial_end = end
 

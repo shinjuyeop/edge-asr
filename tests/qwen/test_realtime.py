@@ -42,6 +42,32 @@ class Adapter:
 
 
 class RealtimeTests(unittest.TestCase):
+    def test_first_partial_delay_is_independent_of_later_update_interval(self):
+        adapter, events = Adapter(), []
+        adapter.release.set()
+        session = CaptionSession(
+            adapter,
+            BoundedProbabilityVad(Probability()),
+            16000,
+            events.append,
+            {"t0_monotonic_ns": time.perf_counter_ns()},
+            partial_after_s=0.2,
+            partial_interval_s=0.4,
+        )
+        try:
+            for start in range(0, 16000, 1600):
+                session.accept_at(session, array("f", [0.25] * 1600), start, start + 1600)
+            session.finish_stream(session)
+            submitted = [e for e in events if e["type"] == "submitted" and e["kind"] == "partial"]
+            self.assertTrue(submitted)
+            first = submitted[0]
+            self.assertGreaterEqual((first["end_frame"] - first["start_frame"]) / 16000, 0.2)
+            self.assertLess((first["end_frame"] - first["start_frame"]) / 16000, 0.3)
+            for a, b in zip(submitted, submitted[1:]):
+                self.assertGreaterEqual((b["end_frame"] - a["end_frame"]) / 16000, 0.4)
+        finally:
+            session.close()
+
     def test_partial_control_preserves_final_pcm_and_segmentation(self):
         payloads, segments = [], []
         for partials in (True, False):
