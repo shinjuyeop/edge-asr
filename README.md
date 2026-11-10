@@ -59,17 +59,99 @@ GGUF 실행 흐름은 **평가 실행기 → Python 어댑터 → C++ bridge →
 
 ## 폴더 구조
 
+탐색기 기본 정렬처럼 **각 계층에서 폴더 우선·이름순**으로 표시했습니다. 자주 쓰는 하위 폴더와 핵심 파일만 펼쳤으며, 숨김 파일·생성물(`build/`, `dist/`)·캐시·과거 실험의 상세 목록은 생략했습니다. 로컬 자산 폴더는 자료가 준비된 작업 환경 기준입니다.
+
 ```text
-src/edge_asr/
-├── qwen/             # Qwen 추론·기준선 실행·프로파일링
-├── tools/            # 데이터 준비·열/자원 제한·CLI 도구
-├── legacy/           # 이전 비교·자막·병합 재현
-└── *.py              # 공통 입력·설정·평가·채점·계측
-native/               # C++ bridge·ORT 계측·빌드 도구
-configs/              # 현재 ONNX/GGUF 설정과 legacy 설정
-tests/                # qwen/ · common/ · legacy/
-docs/                 # 현재 계획·실행 안내·구조·보관 문서
-results/summaries/    # Git에 보관하는 실측·검증 요약
+edge-asr/
+├── benchmarks/                                            # manifest 명세
+├── configs/                                               # 현재 설정·이전 재현 설정
+│   ├── legacy/                                            # 이전 비교·자막 설정
+│   ├── eval_manifest.example.jsonl
+│   ├── gguf.toml
+│   └── onnx.toml
+├── data/                                                  # 로컬 음성·정답
+│   ├── evaluation/
+│   │   └── edge100-20261109-01/                           # 현재 고정100개
+│   │       ├── metadata/
+│   │       ├── original/
+│   │       ├── wav/
+│   │       └── manifest.jsonl
+│   └── sources/                                           # 원본 코퍼스·출처 캐시
+├── docs/                                                  # 프로젝트 문서
+│   ├── archive/                                           # 이전 연구
+│   ├── guides/                                            # 실행·데이터 안내
+│   ├── reference/                                         # 구조·계측 계약
+│   ├── research/                                          # 현재 연구·평가 프로토콜
+│   └── status.md                                          # 현재 상태·다음 작업
+├── experiments/
+│   └── m1_zipformer/                                      # M1 원본 보관
+├── models/                                                # 로컬 가중치
+├── native/
+│   ├── gguf/                                              # GGUF C ABI·빌드
+│   │   ├── bridge.cpp
+│   │   └── build.py
+│   └── ort_trace/                                         # ORT 호출 계측·빌드
+│       ├── build.py
+│       ├── ort_trace.cc
+│       └── ort_trace.map
+├── results/
+│   ├── maintenance/                                       # 테스트·자산 보존·전송 검증
+│   ├── optimization/                                      # 원시 측정값
+│   │   ├── opt0/
+│   │   ├── opt1/
+│   │   └── opt2/
+│   └── summaries/
+│       └── optimization/                                  # Git에 보관하는 OPT 요약
+├── runtimes/
+│   └── qwen3-opt/                                         # 로컬 외부 엔진·헤더·빌드·라이브러리
+├── scripts/
+│   ├── benchmark_zipformer.py
+│   ├── deploy_rp5.sh
+│   └── edge_asr.py
+├── src/
+│   └── edge_asr/
+│       ├── adapters/                                      # 공통 factory·이전 비교 모델
+│       ├── legacy/                                        # 이전 자막·병합 재현
+│       ├── qwen/                                          # 현재 Qwen 실행 경로
+│       │   ├── benchmark.py
+│       │   ├── gguf.py
+│       │   ├── onnx.py
+│       │   └── profiling.py
+│       ├── tools/
+│       │   ├── data/                                      # 준비·검증·평가 순서 생성
+│       │   │   ├── baseline100.py
+│       │   │   ├── fixed100.py
+│       │   │   └── opt0.py
+│       │   ├── maintenance/
+│       │   ├── probes/                                    # 실행 제한·부하 검사
+│       │   │   ├── load.py
+│       │   │   └── thermal.py
+│       │   ├── reports/                                   # 저장 기록 분석
+│       │   └── cli.py
+│       ├── artifacts.py
+│       ├── cli.py
+│       ├── config.py
+│       ├── dataset.py
+│       ├── evaluation.py
+│       ├── metrics.py
+│       ├── resources.py
+│       ├── runtime.py
+│       ├── scoring.py
+│       ├── thermal.py
+│       └── vad_probability.py                             # 후속 연속 음성을 위한 VAD 기반
+├── tests/                                                 # 공통·legacy·Qwen 회귀 검사
+│   ├── common/
+│   ├── legacy/
+│   └── qwen/
+│       ├── fixtures/
+│       ├── test_baseline.py
+│       ├── test_fixed100.py
+│       ├── test_profiling.py
+│       ├── test_qwen3.py
+│       └── test_qwen3_gguf.py
+├── AGENTS.md                                              # 코드 재사용·폴더 분리·작업 원칙
+├── pyproject.toml
+└── README.md
 ```
 
 음성·정답은 `data/`, 가중치는 `models/`, 외부 엔진·빌드는 `runtimes/`, 원시 측정·검증 로그는 `results/optimization/`·`results/maintenance/`에 보관합니다. 이 로컬 자산들은 GitHub에 포함하지 않습니다. [예시 JSONL](configs/eval_manifest.example.jsonl)은 목록 형식만 보여 주며 실제 평가 자료는 아닙니다.
@@ -77,5 +159,7 @@ results/summaries/    # Git에 보관하는 실측·검증 요약
 ## 개발·평가 흐름
 
 **Host 개발·모의 테스트 → main commit/push → RP5 소스 동기화·실측 → 결과 회수·재채점** 순서로 진행합니다. 새 실험은 별도 설정·실행 ID를 사용하고 기존 환경·모델·원음·결과를 보존합니다. Host 테스트와 RP5 실제 추론을 구분하며, 미측정 값은 추정으로 채우지 않습니다.
+
+코드를 추가하기 전 기존 입력·채점·계측·평가 흐름을 먼저 재사용합니다. 실험 차이는 설정으로 표현하고, 관련 기능의 책임이 커지면 역할별 하위 폴더로 분리합니다. 실험마다 전체 코드를 복제하거나 빈 폴더·추상 계층을 미리 만들지 않습니다. 이후 작업도 [코드 재사용·폴더 분리 원칙](AGENTS.md)을 따릅니다.
 
 [전체 문서](docs/README.md) · [연구 로드맵](docs/research/qwen3_optimization.md) · [테스트 안내](tests/README.md) · [전체 OPT 기록](results/summaries/optimization/README.md) · [이전 연구](docs/archive/model-comparison/README.md) · [경로 이행표](docs/reference/structure_migration.md)
