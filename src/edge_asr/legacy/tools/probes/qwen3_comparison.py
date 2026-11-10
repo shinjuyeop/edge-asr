@@ -7,10 +7,10 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-from edge_asr.adapters.qwen3 import context_budget
 from edge_asr.artifacts import digest, write_json
 from edge_asr.config import load_evaluation_config
 from edge_asr.dataset import load_audio, load_manifest
+from edge_asr.qwen.onnx import context_budget
 from edge_asr.tools.probes.thermal import run
 
 CONFIGS = {

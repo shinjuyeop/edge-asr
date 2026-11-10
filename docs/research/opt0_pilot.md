@@ -1,6 +1,6 @@
 # OPT-0 첫 단독 반복·실패 재현 프로토콜 — 2026-11-09
 
-이 계획은 RP5 신규 추론 전에 고정합니다. 실행 ID는 `opt0-pilot-20261109-01`, 현재 기준 구성은 [ONNX 2T 설정](../../configs/optimization/opt0_onnx_2t.toml)입니다. 재사용하는 모델은 기존 INT8 혼합 그래프이며 비양자화 원본 가중치가 아닙니다. [전체 OPT 계획](qwen3_optimization.md).
+이 계획은 RP5 신규 추론 전에 고정합니다. 실행 ID는 `opt0-pilot-20261109-01`, 현재 기준 구성은 [ONNX 2T 설정](https://github.com/shinjuyeop/edge-asr/blob/9957094/configs/optimization/opt0_onnx_2t.toml)입니다. 재사용하는 모델은 기존 INT8 혼합 그래프이며 비양자화 원본 가중치가 아닙니다. [전체 OPT 계획](qwen3_optimization.md).
 
 ## 실행 경로 분석
 
@@ -16,7 +16,7 @@ flowchart LR
   Decode --> Check[텍스트·토큰·native 경고 검사]
 ```
 
-Python [어댑터](../../src/edge_asr/adapters/qwen3.py)는 `create_stream → set_option(Korean) → accept_waveform → decode_stream → result` 순서로 호출합니다. 준비된 PCM 이후 전체 호출을 측정하며 WAV 읽기·해시·float 변환은 제외합니다. 모델 로딩에는 선택 런타임 import와 인식기 초기화가 포함되지만 앞서 자산을 해시하므로 cold-storage 실험은 아닙니다.
+Python [어댑터](../../src/edge_asr/qwen/onnx.py)는 `create_stream → set_option(Korean) → accept_waveform → decode_stream → result` 순서로 호출합니다. 준비된 PCM 이후 전체 호출을 측정하며 WAV 읽기·해시·float 변환은 제외합니다. 모델 로딩에는 선택 런타임 import와 인식기 초기화가 포함되지만 앞서 자산을 해시하므로 cold-storage 실험은 아닙니다.
 
 공식 sherpa-onnx v2.0.1의 [OfflineStream](https://github.com/k2-fsa/sherpa-onnx/blob/v2.0.1/sherpa-onnx/csrc/offline-stream.cc)은 입력에서 특징을 만들고, [Qwen 구현](https://github.com/k2-fsa/sherpa-onnx/blob/v2.0.1/sherpa-onnx/csrc/offline-recognizer-qwen3-asr-impl.cc)의 `Decode`가 Conv frontend·Encoder·GenerateText를 호출합니다. `GenerateText`는 매 전사에 빈 KV cache를 만들고 prefill 후 토큰 단계마다 갱신합니다. 한 전사 내부의 KV 재사용과 다음 음성 청크로 상태를 넘기는 변경은 구분합니다.
 
@@ -93,3 +93,5 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv/bin/python \
 신규 실행은 `--temperature-policy operational --skip-temperature-admission`을 명시합니다. 시작 온도 대기와 온도/열 감속에 의한 중단을 생략하고 온도·클럭·제한 플래그를 관측합니다. 기본 펌웨어 열 보호, 4GiB 주소 공간, 외부 300초, 저전압·필수 센서 결측 검사는 유지합니다. 이 옵션은 operational에서만 허용하고 기존 기본 정책은 그대로입니다.
 
 이 운영 조건에서 최초 계획과 같은 모델 1회 로딩·첫 추론 1회·워밍업 3회·6파일×5라운드의 단일 연속 기준선을 실행합니다. 이어 별도 모델 프로세스로 고정 재현 8개를 모두 실행합니다. 전사 회귀 기준·입력·디코딩·순서 정책은 같습니다. 열 상태가 고정되지 않은 **운영 관측 기준선**으로 보고하고 통제된 엔진 비교나 개선 효과로 해석하지 않습니다. 실제 열 감속 여부와 실행 중 온도 추세를 함께 남깁니다.
+
+2026-11-10 경로 정리: 위 당시 실행 명령·조건은 기록으로 유지합니다. 현재 소스·설정·준비 CLI는 [구조 이행표](../reference/structure_migration.md)와 [실행 안내](../guides/qwen3_optimization.md)를 따릅니다.

@@ -14,7 +14,7 @@
 | OPT-3 연속 음성 | Qwen 단독 VAD·청크·중간 결과·종료 판단·큐 처리 | 말하는 중 첫/부분 결과, 고정 음향 기준 지연, 수정/확정·손실·백로그 검증 |
 | OPT-4 실보드 최종 | 새 한국어 holdout·장시간 연속 입력 | 정확도·실패·드롭·지연·RSS 추세·열 제한을 포함한 최종 구성 판정 |
 
-처음부터 추상 엔진 계층이나 복잡한 서비스 구조를 만들지 않습니다. 현재 첫 추론·워밍업·회전 반복·고정 PCM 재현은 `tools/optimization/baseline.py`로 통합합니다. [첫 OPT-0 결과](../../results/summaries/optimization/opt0-pilot-20261109.md)를 확보했고 [OPT-1 호출 경계 실측](../../results/summaries/optimization/opt1-profile-20261109.md)으로 Python·ORT Run 범위를 분리했습니다. [OPT-2 프로토콜](opt2_gguf.md)에 GGUF 경로·고정 자산·비교 판정 기준을 정했습니다. 실제 사용자 TTFT·operator별·단독 KV 비용은 후속 계측입니다.
+처음부터 추상 엔진 계층이나 복잡한 서비스 구조를 만들지 않습니다. 현재 첫 추론·워밍업·회전 반복·고정 PCM 재현은 `qwen/benchmark.py`로 통합합니다. [첫 OPT-0 결과](../../results/summaries/optimization/opt0-pilot-20261109.md)를 확보했고 [OPT-1 호출 경계 실측](../../results/summaries/optimization/opt1-profile-20261109.md)으로 Python·ORT Run 범위를 분리했습니다. [OPT-2 프로토콜](opt2_gguf.md)에 GGUF 경로·고정 자산·비교 판정 기준을 정했습니다. 실제 사용자 TTFT·operator별·단독 KV 비용은 후속 계측입니다.
 
 ## OPT-0에서 고정할 계약
 
@@ -68,6 +68,6 @@ Batch RTF는 준비된 전체 음성의 처리 비용입니다. 실시간 발화
 
 ## 보존과 경로
 
-설정은 `configs/optimization/`, 재사용 도구는 `src/edge_asr/tools/optimization/`, 연구 메모는 `experiments/qwen3_optimization/`에 둡니다. 새 결과는 `results/optimization/<단계>/<실행ID>/`, 검토 요약은 `results/summaries/optimization/`입니다. 모델은 `models/qwen3-opt/<자산ID>/`, 외부 엔진 소스·빌드는 `runtimes/qwen3-opt/<엔진ID>/`, 새 Python 환경은 `.venv-qwen3-opt-<실행ID>`를 사용할 수 있습니다. 기존 자산은 경로 그대로 읽어 재사용해도 됩니다.
+설정은 `configs/onnx.toml`·`configs/gguf.toml`, Qwen 실행은 `src/edge_asr/qwen/`, C++/빌드는 `native/`, 연구 메모는 `docs/research/`에 둡니다. 새 결과는 `results/optimization/<단계>/<실행ID>/`, 검토 요약은 `results/summaries/optimization/`입니다. 모델은 `models/qwen3-opt/<자산ID>/`, 외부 엔진 소스·빌드는 `runtimes/qwen3-opt/<엔진ID>/`, 새 Python 환경은 `.venv-qwen3-opt-<실행ID>`를 사용할 수 있습니다. 기존 자산은 경로 그대로 읽어 재사용해도 됩니다.
 
 [공통 측정 계약](../reference/benchmark_design.md), [실행 안내](../guides/qwen3_optimization.md), [현재 상태](../status.md)를 함께 따릅니다. 과거 기록·실패·미실행은 수정하지 않고 새로운 실행으로 추가합니다.

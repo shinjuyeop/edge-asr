@@ -66,3 +66,5 @@ Host 개발·모의 검사 → main commit/push → RP5 pull·입력 해시 대�
 OS 설정을 변경하지 않고 현재 커널 로그를 SSH로 Host에도 저장합니다. SSH 단절 시 이 수집도 끊길 수 있고 panic/네트워크 원인 포착을 보장하지 않습니다. 새 실행까지 인프라 중단으로 완료되지 않으면 반복을 자동 확대하지 않고 미완료와 원시를 보고합니다. 완료 시 첫 ONNX와 재시도 GGUF를 각각의 실행 ID·부팅 조건과 함께 보고하고, 공통 재채점·해시·모의 테스트·자산 보존을 다시 대조합니다.
 
 이번 입력의 실제 초기값과 재부팅 중단·재시도 결과는 [고정100개 기준선 보고서](../../results/summaries/optimization/fixed100-baseline-20261109.md)에 분리해 기록했습니다.
+
+2026-11-10 경로 정리: 위 당시 실행 명령·조건은 기록으로 유지합니다. 현재 소스·설정·준비 CLI는 [구조 이행표](../reference/structure_migration.md)와 [실행 안내](../guides/qwen3_optimization.md)를 따릅니다.

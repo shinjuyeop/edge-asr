@@ -12,10 +12,11 @@ from array import array
 from pathlib import Path
 from unittest.mock import Mock, patch
 
-from edge_asr.adapters import create_adapter, qwen3
+from edge_asr.adapters import create_adapter
 from edge_asr.config import load_evaluation_config
 from edge_asr.dataset import Audio
 from edge_asr.evaluation import evaluate, rescore
+from edge_asr.qwen import onnx as qwen3
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -37,7 +38,7 @@ class QwenAdapterTests(unittest.TestCase):
         self.addCleanup(hashes.stop)
         self.config = self.root / "config.toml"
         self.config.write_text(
-            (ROOT / "configs/optimization/fixed100_onnx_2t.toml")
+            (ROOT / "configs/onnx.toml")
             .read_text()
             .replace("models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25", "model")
         )

@@ -231,7 +231,7 @@ runtime.K2SileroProbability=Probability
             summarize(self.root / "run", self.root / "bad.json")
 
     def test_qwen_config_uses_qwen_child_and_preserves_native_metadata(self):
-        from edge_asr.adapters.qwen3 import MODEL_FILES
+        from edge_asr.qwen.onnx import MODEL_FILES
 
         config = self.root / "configs/legacy/qwen3_eval.toml"
         config.write_bytes((fixtures.ROOT / "configs/legacy/qwen3_eval.toml").read_bytes())
@@ -243,7 +243,7 @@ runtime.K2SileroProbability=Probability
         site = self.root / "modules/sitecustomize.py"
         with site.open("a") as f:
             f.write("""
-import edge_asr.adapters.qwen3 as qwen
+import edge_asr.qwen.onnx as qwen
 import sherpa_onnx,time
 qwen.MODEL_FILES={name:hashlib.sha256(b'fixture-qwen').hexdigest() for name in qwen.MODEL_FILES}
 sherpa_onnx.__version__='2.0.1'

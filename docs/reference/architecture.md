@@ -1,43 +1,32 @@
-# 코드 구조와 확장 경계
+# 코드 구조
 
-공통 평가 기반 위에 Qwen 최적화 도구와 이전 모델 비교 실험을 분리합니다. 세부 경로 변경과 호환 범위는 [구조 이행 안내](structure_migration.md)에 있습니다.
+현재 작업은 `qwen/`의 Python 실행 경로와 `native/`의 C++ 연결에 모읍니다.
 
-| 영역 | 책임 |
+| 위치 | 역할 |
 | --- | --- |
-| `cli.py`, `tools/cli.py` | 기존 공개 명령, 선택한 구현의 지연 import |
-| `adapters/` | Qwen ONNX·GGUF·Zipformer·SenseVoice의 로딩/발화 상태/전사 계약 |
-| `dataset.py`, `config.py`, `audio_policy.py` | manifest·PCM·해시·설정/입력 검증 |
-| `evaluation.py`, `scoring.py`, `metrics.py` | 공통 평가·실패 보존·CER/RTF·재채점 |
-| `streaming.py`, `segmentation.py`, `vad*.py`, `textgrid.py` | 독립 1배속 입력·큐·구간/문맥·VAD·주석 |
-| `artifacts.py`, `resources.py`, `runtime.py`, `diagnostics.py` | 원자적 기록·공통 호출 계측·런타임/제한 진단·native stderr 수집 |
-| `thermal.py`, `cooling.py`, `tools/probes/{thermal,load}.py` | 공통 센서·열/시간/메모리 제한·부하 검사 |
-| `tools/data/`, `tools/reports/cooling.py`, `tools/maintenance/` | 공통 데이터 준비·냉각 보고·유지보수 |
-| `tools/optimization/profiling.py` | 별도 C API 계측·Python stream proxy·세션 순서/시계 검증. 원본 adapter/런타임 재사용 |
-| `tools/optimization/baseline.py` | 모델 1회 로딩·첫 추론·워밍업·회전 반복·고정 PCM 재현, 공통 scorer 재사용 |
-| `legacy/realtime/` | 이전 연속 Zip·VAD·Refine IPC·WAV 자막 |
-| `legacy/tools/` | 이전 비교/VAD/병합/자막 실행과 저장 원시 집계 |
-| `legacy/*.py` | 과거 병합·토큰 정렬·VAD 진단 실험 |
-| `benchmark.py` | 초기 Zip 반복 프로브 호환 경로 |
-
-## 의존 방향
+| `scripts/edge_asr.py` → `cli.py`, `tools/cli.py` | 공개 명령·선택 구현의 지연 import |
+| `qwen/onnx.py`, `qwen/gguf.py` | 모델 로딩·발화 상태·전사·출력 검사 |
+| `qwen/benchmark.py` | 모델1회 로딩·첫 추론·워밍업·반복·고정 PCM 재현 |
+| `qwen/profiling.py` | ONNX Python/ORT 호출 경계·세션/시계 검증 |
+| `native/gguf/`, `native/ort_trace/` | C ABI·ORT 계측과 빌드. [안내](../../native/README.md) |
+| `tools/data/` | 데이터 준비·검증·평가 순서 생성 |
+| `dataset.py`, `config.py`, `audio_policy.py` | manifest·PCM·해시·설정 검사 |
+| `evaluation.py`, `scoring.py`, `metrics.py` | 일반 평가·실패 보존·CER/RTF·재채점 |
+| `artifacts.py`, `resources.py`, `runtime.py`, `diagnostics.py` | 원자적 기록·공통 계측·native 경고·런타임 진단 |
+| `tools/probes/`, `thermal.py`, `cooling.py` | 열·시간·메모리 제한과 냉각 점검 |
+| `streaming.py`, `segmentation.py`, `vad*.py`, `textgrid.py` | 재사용 입력·큐·구간/VAD·주석 기반 |
+| `adapters/`, `legacy/` | 공통 factory·이전 비교 모델과 자막/병합 재현 |
 
 ```mermaid
-flowchart TD
-  CLI[공개 CLI] --> OPT[Qwen 최적화 도구]
-  CLI --> OLD[legacy 비교·자막 도구]
-  OPT --> CORE[공통 입력·평가·계측·어댑터]
-  OLD --> CORE
-  OLD --> RT[legacy realtime·병합 실험]
-  RT --> CORE
-  CORE --> RUNTIME[선택 런타임·표준 라이브러리]
+flowchart LR
+  CLI[CLI] --> Q[Qwen 실행기]
+  Q --> A[ONNX / GGUF]
+  A --> N[native / 외부 런타임]
+  Q --> C[공통 입력·채점·계측]
+  CLI --> L[legacy 재현]
+  L --> C
 ```
 
-공통 코드와 OPT 도구는 legacy를 import하지 않습니다. CLI dispatch만 이전 명령을 연결합니다. 모델/VAD 런타임은 실제 실행 함수 안에서만 import합니다. 보고서는 probe를 import하지 않으며 `legacy/realtime/`은 병합 실험에 의존하지 않습니다. native 런타임 없이 모든 도구의 `--help`와 저장 원시 집계를 사용할 수 있어야 합니다.
+어댑터 계약은 `model_files`, `load()`, `transcribe(Audio) -> str`, `close()`입니다. 공통 factory는 선택 모델만 import합니다. GGUF는 ctypes로 별도 C ABI에 같은 float PCM을 전달하며 토큰 스트리밍·청크 간 KV 재사용은 아직 없습니다.
 
-어댑터 계약은 `model_files`, `load()`, `transcribe(Audio) -> str`, `close()`입니다. Qwen/SenseVoice는 현재 batch이고 Zipformer는 `start_stream/accept_chunk/finish_stream`도 제공합니다. GGUF는 별도 `libllama/libmtmd` 빌드에 작은 [C ABI](../../experiments/qwen3_optimization/gguf/README.md)를 연결하고 표준 라이브러리 ctypes로 같은 PCM을 전달합니다. 토큰 스트리밍·청크 간 KV 재사용 인터페이스는 아직 없습니다.
-
-기존 `RefineChannel`의 유한 큐·자식/reader 회수와 자막 JSONL 계약을 유지합니다. 이전 파이프라인의 자세한 사용법은 [legacy 자막](../guides/legacy/live_captions.md)에 있습니다. 이를 새 Qwen 단독 파이프라인으로 간주하지 않습니다.
-
-`artifacts.write_json`은 비유한 값을 거부하는 원자적 체크포인트입니다. 새 실행 경로 확보는 호출자 책임이고 `write_event`는 행마다 flush합니다. strict `read_jsonl`과 강제 종료의 마지막 잘린 행을 허용하는 `streaming.read_events`는 구분합니다. 원시 스키마와 `ko_cer_v1`은 이번 개편에서 바꾸지 않습니다.
-
-기존 `benchmark.digest/write_json/distribution/process_sample`, `evaluation.RssSampler`, `segmentation.pcm_bytes` 호환 경로는 유지합니다. RP5의 `scripts/edge_asr.py`는 현재 체크아웃을 사용하므로 폴더 개편 때문에 환경을 재설치하지 않습니다.
+공통 코드와 Qwen은 `legacy`를 import하지 않습니다. CLI dispatch는 예외이며 보고서는 실행 probe에 의존하지 않습니다. `write_json`은 원자적 체크포인트, JSONL 이벤트는 행별 보존입니다. 입력·출력/실패·`ko_cer_v1` 계약을 유지하며 Host 모의 검사와 RP5 실제 추론을 구분합니다. [테스트](../../tests/README.md), [경로 이행](structure_migration.md).

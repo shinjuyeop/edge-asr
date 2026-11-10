@@ -10,7 +10,7 @@ from pathlib import Path
 
 from edge_asr.dataset import write_wav
 from edge_asr.metrics import normalize
-from experiments.qwen3_optimization import prepare_fixed100 as prepare
+from edge_asr.tools.data import fixed100 as prepare
 
 
 class Fixed100Tests(unittest.TestCase):

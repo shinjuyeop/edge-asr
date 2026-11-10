@@ -8,7 +8,7 @@ RP5의 기존 `_sherpa_onnx`는 ORT 1.28.2 공유 라이브러리의 `OrtGetApiB
 
 공식 [ORT 1.28.2 C API](https://github.com/microsoft/onnxruntime/blob/v1.28.2/include/onnxruntime/core/session/onnxruntime_c_api.h)의 ABI 28을 사용하며, 헤더 SHA-256과 실제 runtime 버전을 검사합니다. 공식 [profiling 안내](https://onnxruntime.ai/docs/performance/tune-performance/profiling-tools.html)의 노드별 ORT 내장 profiler와는 다른, API 호출 경계의 가벼운 계측입니다. 원본 [sherpa CPU 모델 구현](https://github.com/k2-fsa/sherpa-onnx/blob/v2.0.1/sherpa-onnx/csrc/offline-qwen3-asr-model.cc)에서 Conv·Encoder와 매 LLM 단계가 해당 세션의 Run을 호출하는 것을 확인했습니다.
 
-계측 코드는 [ort_trace.cc](../../experiments/qwen3_optimization/profiling/ort_trace.cc), Python 경계/검증은 [profiling.py](../../src/edge_asr/tools/optimization/profiling.py)에 있습니다. 모델 로딩은 기존 어댑터를 사용하고 stream/recognizer proxy는 동일 인자를 전달하며 경계만 기록합니다. native warning과 실패 정책도 기존 어댑터가 담당합니다.
+계측 코드는 [ort_trace.cc](../../native/ort_trace/ort_trace.cc), Python 경계/검증은 [profiling.py](../../src/edge_asr/qwen/profiling.py)에 있습니다. 모델 로딩은 기존 어댑터를 사용하고 stream/recognizer proxy는 동일 인자를 전달하며 경계만 기록합니다. native warning과 실패 정책도 기존 어댑터가 담당합니다.
 
 | 기록 | 경계·해석 |
 | --- | --- |
@@ -44,6 +44,8 @@ ABBA on/off의 파일별 처리 중앙값 차이와 wrapper 추가 시간(외부
 
 ## 별도 빌드와 재현
 
-[빌드 안내](../../experiments/qwen3_optimization/profiling/README.md)에 따라 공식 헤더는 `runtimes/qwen3-opt/ort-trace-20261109-01/include/`, 라이브러리/영수증은 장비별 새 디렉터리에 둡니다. 원본 ORT 라이브러리 경로는 `EDGE_ASR_ORT_LIBRARY`, 새 계측 라이브러리는 해당 자식 프로세스의 `LD_PRELOAD`로만 지정합니다. 기존 환경을 재설치하지 않습니다.
+[빌드 안내](../../native/README.md)에 따라 공식 헤더는 `runtimes/qwen3-opt/ort-trace-20261109-01/include/`, 라이브러리/영수증은 장비별 새 디렉터리에 둡니다. 원본 ORT 라이브러리 경로는 `EDGE_ASR_ORT_LIBRARY`, 새 계측 라이브러리는 해당 자식 프로세스의 `LD_PRELOAD`로만 지정합니다. 기존 환경을 재설치하지 않습니다.
 
 Host/RP5의 native mock 검사는 실제 ASR와 구분합니다. fake C API에 대한 전달·출력·오류 보존, 전사별 reset, 비활성 동작, overflow, 세션 해제를 검증한 다음 RP5 실제 hook과 추론을 확인합니다. 원시·event는 `results/optimization/opt1/opt1-profile-20261109-01/`, 테스트·보존·분석은 대응 maintenance 아래에 기록합니다.
+
+2026-11-10 경로 정리: 위 당시 실행 명령·조건은 기록으로 유지합니다. 현재 소스·설정·준비 CLI는 [구조 이행표](../reference/structure_migration.md)와 [실행 안내](../guides/qwen3_optimization.md)를 따릅니다.

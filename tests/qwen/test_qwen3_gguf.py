@@ -13,9 +13,9 @@ from pathlib import Path
 from unittest.mock import Mock, patch
 
 from edge_asr.adapters import create_adapter
-from edge_asr.adapters import qwen3_gguf as gguf
 from edge_asr.config import load_evaluation_config
 from edge_asr.dataset import Audio
+from edge_asr.qwen import gguf
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -25,9 +25,7 @@ class GGUFTests(unittest.TestCase):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         self.root = Path(temporary.name)
-        self.model = load_evaluation_config(ROOT / "configs/optimization/opt2_gguf_q8_2t.toml")[
-            "model"
-        ]
+        self.model = load_evaluation_config(ROOT / "configs/gguf.toml")["model"]
         self.model.update(path="model", runtime_library="runtime.so", runtime_manifest="build.json")
         directory = self.root / "model"
         directory.mkdir()
@@ -136,7 +134,7 @@ class GGUFTests(unittest.TestCase):
             adapter.load()
 
     def test_unsupported_modes_and_incomplete_runtime_config_are_rejected(self):
-        text = (ROOT / "configs/optimization/opt2_gguf_q8_2t.toml").read_text()
+        text = (ROOT / "configs/gguf.toml").read_text()
         for value in (
             text.replace('mode = "batch"', 'mode = "paced_stream"'),
             text.replace("runtime_library = ", "wrong_runtime = "),
@@ -158,7 +156,7 @@ class GGUFNativeSyntaxTests(unittest.TestCase):
         command = ["g++", "-std=c++17", "-fsyntax-only", "-Wall", "-Wextra", "-Werror"]
         for path in ("include", "ggml/include", "tools/mtmd", "vendor/nlohmann"):
             command += ["-I", str(source / path)]
-        command.append(str(ROOT / "experiments/qwen3_optimization/gguf/bridge.cpp"))
+        command.append(str(ROOT / "native/gguf/bridge.cpp"))
         result = subprocess.run(command, capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
 

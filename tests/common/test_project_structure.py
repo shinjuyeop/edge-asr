@@ -124,6 +124,7 @@ assert 'edge_asr.evaluation' not in sys.modules
             "experiments",
             "results/summaries",
             "runtimes",
+            "native",
         ):
             markdown.extend((ROOT / name).rglob("*.md"))
         for path in markdown:

@@ -10,7 +10,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import Mock, patch
 
-from edge_asr.tools.optimization import profiling
+from edge_asr.qwen import profiling
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -88,13 +88,13 @@ class ProfilingTests(unittest.TestCase):
 class NativeTraceTests(unittest.TestCase):
     def test_native_api_is_forwarded_and_scopes_reset_without_models(self):
         headers = Path(os.environ["EDGE_ASR_ORT_HEADERS"]).resolve()
-        fixture = ROOT / "tests/optimization/fixtures/fake_ort.cc"
+        fixture = ROOT / "tests/qwen/fixtures/fake_ort.cc"
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             build = subprocess.run(
                 [
                     sys.executable,
-                    str(ROOT / "experiments/qwen3_optimization/profiling/build_trace.py"),
+                    str(ROOT / "native/ort_trace/build.py"),
                     "--headers",
                     str(headers),
                     "--output",

@@ -7,7 +7,7 @@ import subprocess
 from pathlib import Path
 
 from edge_asr.artifacts import digest, write_json, write_jsonl
-from experiments.qwen3_optimization.prepare_fixed100 import verify
+from edge_asr.tools.data.fixed100 import verify
 
 SEED = "edge-asr-fixed100-baseline-20261109-v1"
 MANIFEST_SHA256 = "f693163f3d0d11a09873d3d5dbbd8a68aea6ebd1897cc051fd99dd076f8b76ab"
@@ -52,8 +52,8 @@ def prepare(root, output):
         "configs": {
             name: digest(root / name)
             for name in (
-                "configs/optimization/fixed100_onnx_2t.toml",
-                "configs/optimization/fixed100_gguf_q8_2t.toml",
+                "configs/onnx.toml",
+                "configs/gguf.toml",
             )
         },
     }

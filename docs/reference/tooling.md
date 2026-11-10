@@ -22,7 +22,9 @@
 
 ## 도구의 현재 소속
 
-새 Qwen 작업은 `tools/optimization/baseline.py`의 `benchmark-qwen3`로 첫 추론·워밍업·기준선을 측정합니다. `thermal-run`, `probe-load`, 데이터 준비·냉각 검사·유지보수는 공통 도구입니다. `live`, 모델 비교·VAD·병합 실행/보고서는 `legacy/tools/`에 있으며 기존 명령 이름은 유지합니다. `tools list`에서 실제 모듈 위치를 확인할 수 있습니다. [새 OPT 실행 안내](../guides/qwen3_optimization.md).
+새 Qwen 작업은 `qwen/benchmark.py`의 `benchmark-qwen3`로 첫 추론·워밍업·기준선을 측정합니다. `thermal-run`, `probe-load`, 데이터 준비·냉각 검사·유지보수는 공통 도구입니다. `live`, 모델 비교·VAD·병합 실행/보고서는 `legacy/tools/`에 있으며 기존 명령 이름은 유지합니다. `tools list`에서 실제 모듈 위치를 확인할 수 있습니다. [새 OPT 실행 안내](../guides/qwen3_optimization.md).
+
+현재 입력 준비는 `prepare-fixed100 --verify-only`, `prepare-baseline100 --output <새경로>`를 사용합니다. `prepare-opt0`는 이전 KSS/56ms 진단 입력의 재현 도구입니다.
 
 ## 기존 연구·자료 명령
 

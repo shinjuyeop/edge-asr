@@ -1,6 +1,5 @@
-# 실험 자료
+# 이전 실험 원본
 
-- [Qwen 최적화](qwen3_optimization/README.md): 새 OPT 연구의 실행·보존 규칙. 재사용 가능한 구현은 `src/edge_asr/tools/optimization/`에 둡니다.
-- [M1 Zipformer 원본](m1_zipformer/README.md): 이전 탐색 프로브·참조 코드·작은 요약·체크섬을 원래 경로에 보존합니다. 초기 원시 로그 3개는 `archive-initial-zipformer-20261028` 태그에 있습니다.
+[M1 Zipformer 원본](m1_zipformer/README.md)의 프로브·참조 코드·요약·체크섬을 원래 경로에 보존합니다. 초기 원시 로그는 `archive-initial-zipformer-20261028` 태그에 있습니다.
 
-이전 M2/M3의 구현은 `src/edge_asr/legacy/`, 계획은 [보관 문서](../docs/archive/model-comparison/README.md)입니다. 단순히 폴더를 채우려고 미구현 profiler/backend/quantization 스크립트를 만들지 않습니다. 실제 검증한 일회성 코드만 목적과 출처를 적어 추가합니다.
+현재 Qwen 작업은 [Python 실행 코드](../src/edge_asr/qwen/), [C++/빌드](../native/README.md), [데이터 준비 도구](../src/edge_asr/tools/data/)에서 진행합니다. 새 원시와 요약은 [results](../results/README.md)에 보관합니다. 이전 M2/M3 구현은 `src/edge_asr/legacy/`, 계획은 [보관 문서](../docs/archive/model-comparison/README.md)에 있습니다.

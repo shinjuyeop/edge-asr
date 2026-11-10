@@ -118,9 +118,9 @@ class CaptionTests(unittest.TestCase):
 
     def test_model_selection_requires_only_selected_assets_and_reaches_guard(self):
         from edge_asr.adapters import create_adapter
-        from edge_asr.adapters.qwen3 import MODEL_FILES
         from edge_asr.artifacts import digest
         from edge_asr.config import load_evaluation_config
+        from edge_asr.qwen.onnx import MODEL_FILES
 
         repository = Path(__file__).resolve().parents[2]
         for model in ("sensevoice", "qwen3"):
@@ -149,7 +149,7 @@ class CaptionTests(unittest.TestCase):
                     patch.object(live.sys, "platform", "linux"),
                     patch("edge_asr.vad.MODEL_SHA", digest(vad)),
                     patch(
-                        "edge_asr.adapters.qwen3.MODEL_FILES",
+                        "edge_asr.qwen.onnx.MODEL_FILES",
                         {
                             name: hashlib.sha256(b"fixture model; never loaded").hexdigest()
                             for name in MODEL_FILES

@@ -9,7 +9,7 @@ from unittest.mock import patch
 
 from edge_asr.artifacts import digest, write_jsonl
 from edge_asr.dataset import write_wav
-from edge_asr.tools.optimization import baseline
+from edge_asr.qwen import benchmark as baseline
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -45,7 +45,7 @@ class BaselineTests(unittest.TestCase):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         self.root = Path(temporary.name)
-        self.config = ROOT / "configs/optimization/opt0_onnx_2t.toml"
+        self.config = ROOT / "configs/onnx.toml"
         self.manifest = self.root / "input.jsonl"
         self.output = self.root / "run"
         self.rows = []

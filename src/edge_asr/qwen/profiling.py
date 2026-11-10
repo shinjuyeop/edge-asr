@@ -7,9 +7,9 @@ import time
 from copy import deepcopy
 from pathlib import Path
 
-from edge_asr.adapters.qwen3 import Qwen3Adapter
 from edge_asr.artifacts import digest
-from edge_asr.tools.optimization.baseline import run
+from edge_asr.qwen.benchmark import run
+from edge_asr.qwen.onnx import Qwen3Adapter
 
 
 class Event(ctypes.Structure):

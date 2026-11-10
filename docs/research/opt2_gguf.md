@@ -30,3 +30,5 @@ ONNX INT8과 GGUF text/mmproj Q8_0은 가중치 양자화·프런트엔드·출�
 로드/첫 추론/steady 처리시간·RTF·CPU·100ms PID RSS·시작/최고 온도·클럭/제한 플래그를 기록합니다. 자산 해시 검사 후 로딩이므로 cold-storage 성능이 아닙니다. 엔진 순서·열 상태를 통제하지 않은 운영 비교이고 통계적 우월성이나 장기 안정성을 주장하지 않습니다. GGUF 내부 첫 non-EOG 토큰 선택 시각은 별도로 기록하지만 외부에 텍스트를 스트리밍하지 않으므로 사용자 TTFT/부분 자막 지연을 대신하지 않습니다.
 
 사용자 지정 `thermal-run --temperature-policy operational --skip-temperature-admission`, 작업별 600초·4GiB 주소 공간·저전압/센서 검사를 사용합니다. 온도로 기다리거나 중단하지 않고 관측치를 보존합니다. 모든 실패 실행은 유지하고 수정 후 새 실행 경로로만 재시도합니다. 공통 재채점·Host/RP5 해시 대조·기존 자산 보존 감사 후 요약을 작성합니다.
+
+2026-11-10 경로 정리: 위 당시 실행 명령·조건은 기록으로 유지합니다. 현재 소스·설정·준비 CLI는 [구조 이행표](../reference/structure_migration.md)와 [실행 안내](../guides/qwen3_optimization.md)를 따릅니다.

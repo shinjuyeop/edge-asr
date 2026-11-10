@@ -1,32 +1,30 @@
-# Qwen 최적화 중심 구조 이행 — 2026-11-09
+# 파일·폴더 경로 이행
 
-이 개편은 기존 동작을 보존하며 연구 단계를 구분합니다. 기존 `main` 이력을 유지하고 이전 소스 기준은 `4e5dbed`입니다. 과거 영수증의 명령·소스 커밋·해시는 당시 기록으로 남깁니다.
+## 현재 구조 정리 — 2026-11-10
 
-| 이전 위치 | 현재 위치·역할 |
+정리 전 main은 `9957094`입니다. 현재 Qwen 작업에 쓰는 Python·C++·데이터 준비를 역할별로 모았습니다. Python 내부 import 경로는 새 위치로 바뀌며 이전 경로의 중복 파일이나 wrapper는 두지 않습니다.
+
+| 이전 위치 | 현재 위치 |
 | --- | --- |
-| `src/edge_asr/realtime/` | `src/edge_asr/legacy/realtime/` — Zip+VAD+Refine·자막 |
-| `merging.py`, `segment_merge.py`, `token_alignment.py`, `token_splice.py`, `vad_probe.py` | `src/edge_asr/legacy/` — 과거 병합·진단 |
-| `tools/live.py`, 비교/VAD probe·보고서·전용 데이터 준비 | `src/edge_asr/legacy/tools/` |
-| `tools/probes/qwen3.py` | 당시 `tools/optimization/qwen3.py`로 이동. 후속 정리에서 첫 추론 검사를 `baseline.py`로 통합 |
-| `configs/*_eval.toml`, `zipformer_paced.toml` | `configs/legacy/` — 파일 내용 그대로 유지 |
-| 신규 Qwen 설정 | 현재 `configs/optimization/fixed100_{onnx,gguf_q8}_2t.toml`. 전환 당시1T 시작 설정은 후속 정리에서 폐기 |
-| `docs/research/`의 이전 계획 | `docs/archive/model-comparison/` |
-| 이전 `docs/status.md` | `docs/archive/model-comparison/status-20261106.md` — 전환 전 상태 |
-| 자막/Zip 1배속 가이드 | `docs/guides/legacy/` |
-| flat 테스트 | `tests/common/`, `tests/optimization/`, `tests/legacy/` |
+| `src/edge_asr/adapters/qwen3.py` | `src/edge_asr/qwen/onnx.py` |
+| `src/edge_asr/adapters/qwen3_gguf.py` | `src/edge_asr/qwen/gguf.py` |
+| `src/edge_asr/tools/optimization/baseline.py` | `src/edge_asr/qwen/benchmark.py` |
+| `src/edge_asr/tools/optimization/profiling.py` | `src/edge_asr/qwen/profiling.py` |
+| `experiments/qwen3_optimization/gguf/` | `native/gguf/` — `bridge.cpp`, `build.py` |
+| `experiments/qwen3_optimization/profiling/` | `native/ort_trace/` — 계측 C++·빌드 |
+| `experiments/qwen3_optimization/prepare_*.py` | `src/edge_asr/tools/data/` — CLI 준비 도구 |
+| `configs/optimization/fixed100_*_2t.toml` | `configs/onnx.toml`, `configs/gguf.toml` — 내용·SHA 유지 |
+| `configs/optimization/opt0_onnx_2t.toml`, `opt2_gguf_q8_2t.toml` | 현재 두 설정에 통합. 당시 파일은 정리 전 commit에 보존 |
+| `tests/optimization/` | `tests/qwen/` |
 
-공통 어댑터·PCM·평가·채점·계측·VAD·열 관리와 데이터 준비는 기존 공통 위치에서 재사용합니다. `benchmark.py`와 `scripts/benchmark_zipformer.py`는 초기 반복 프로브 호환을 위해 유지합니다. Qwen ONNX 어댑터를 이전 모델 비교와 OPT가 함께 사용하며 복제하지 않습니다.
+`benchmark-qwen3`, `profile-qwen3`, `opt0-baseline`의 인자는 유지합니다. 준비 명령은 `tools prepare-fixed100`, `tools prepare-baseline100`, `tools prepare-opt0`로 통합했습니다. [실행 안내](../guides/qwen3_optimization.md). OPT-0의 옛 기본 출력 폴더는 달랐으므로 재현에는 당시 commit 또는 명시적인 새 `--output`을 사용합니다.
 
-## 기존 실행의 호환 범위
+과거 영수증·원시/요약 JSON의 명령·설정 경로·소스 해시를 소급 변경하지 않습니다. 과거 Markdown의 이동 파일 링크만 현재 위치 또는 당시 Git 파일로 연결합니다. 정확한 옛 명령·import를 재현하려면 해당 기록의 소스 commit을 사용합니다.
 
-`edge-asr`와 `scripts/edge_asr.py`의 명령 이름·인자·기본 모델은 유지합니다. `live`는 이전 Zip+Refine 실행이고 Qwen 단독 스트리밍을 뜻하지 않습니다. 도구 이름은 유지하되 dispatch와 내부 Python import 경로가 바뀝니다. 개별 Python 모듈을 직접 import한 외부 코드는 위 경로에 맞춰 수정해야 합니다.
+기존 `.venv*`, 패키지·모델·원음·원시 결과·외부 엔진/빌드·`experiments/m1_zipformer/` 원본은 이동하거나 재설치하지 않습니다. 빌드 결과는 계속 `runtimes/`의 별도 ID에 둡니다.
 
-설정을 직접 지정한 명령은 예를 들어 `--config configs/qwen3_eval.toml`을 `--config configs/legacy/qwen3_eval.toml`로 바꿉니다. 신규 OPT는 [현재 기준 설정](../../configs/README.md)을 명시합니다. 후속 정리에서 초기 `probe-qwen3`와1T 시작 설정을 폐기했으며 원본은 정리 전 commit `f88b33f`에 있습니다. 이전 명령을 바이트 단위로 재현하려면 당시 Git 커밋을 사용합니다.
+## 이전 이행
 
-`.venv*`, 패키지, 모델, 원본 데이터, 기존 원시·요약 JSON, `experiments/m1_zipformer/` 원본은 이동·재설치·덮어쓰지 않습니다. 이전 결과는 기존 링크와 실행 ID를 유지하고 새 요약만 `results/summaries/optimization/`로 구분합니다.
+2026-11-09의 모델 비교·자막 코드는 `legacy/`, 설정은 `configs/legacy/`, 연구 문서는 `docs/archive/model-comparison/`에 분리했습니다. 초기 `probe-qwen3`와1T 시작 설정은 이후 공통 코드 정리에서 폐기했으며 원본은 commit `f88b33f`에 있습니다. [당시 구조 검증](../../results/summaries/optimization/restructure-20261109.md), [공통 코드 정리](../../results/summaries/optimization/refactor-core-20261109.md).
 
-## 개발 경계
-
-공통 코드와 새 최적화 도구는 `legacy` 구현에 의존하지 않습니다. CLI의 이전 명령 분기만 예외입니다. `legacy`는 공통 기반을 재사용하며 보고서는 실행 probe에 의존하지 않습니다. 기존 자막의 입력/반환 코드도 병합 실험 모듈을 역으로 import하지 않습니다. 테스트로 이 경계를 확인합니다.
-
-[아키텍처](architecture.md), [테스트](../../tests/README.md), [활성 연구](../research/qwen3_optimization.md)를 참고하세요.
+현재 의존 방향은 [아키텍처](architecture.md), 최신 진행은 [status](../status.md), 전체 문서는 [문서 색인](../README.md)에서 확인합니다.
