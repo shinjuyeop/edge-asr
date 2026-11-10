@@ -7,6 +7,7 @@
 | 새 프로젝트 방향·단계 | [OPT-0~4](research/qwen3_optimization.md), [현재 연구 색인](research/README.md) |
 | 실행 준비 | [Qwen 최적화 시작](guides/qwen3_optimization.md), [설치](guides/setup.md), [배포](guides/deployment.md) |
 | 현재 평가 조건·결과 | [고정100개 기준선](research/fixed100_baseline.md), [최신 ONNX/GGUF 실측](../results/summaries/optimization/fixed100-baseline-20261109.md) |
+| 현재 우선 검증 | [Qwen 단독1배속·부분 자막·양자화 계획](research/qwen_realtime.md) |
 | 평가 기반 | [고정100개 입력](research/fixed100.md), [데이터](guides/datasets.md), [공통 평가](guides/evaluation.md), [manifest](../benchmarks/manifest.md) |
 | 코드·경로 | [아키텍처](reference/architecture.md), [이번 구조 이행](reference/structure_migration.md), [도구](reference/tooling.md), [테스트](../tests/README.md) |
 | 계측 정의 | [측정 계약](reference/benchmark_design.md) |

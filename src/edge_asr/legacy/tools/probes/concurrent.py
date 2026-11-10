@@ -13,9 +13,9 @@ from pathlib import Path
 from edge_asr.adapters import create_adapter
 from edge_asr.artifacts import digest, write_json, write_jsonl
 from edge_asr.config import load_evaluation_config
-from edge_asr.dataset import Audio, float_digest, load_audio
+from edge_asr.dataset import Audio, float_digest, load_audio, prepare_track
 from edge_asr.legacy.realtime.refine import RefineChannel
-from edge_asr.legacy.realtime.replay import RATE, WINDOW, ConcurrentReplay, prepare_track
+from edge_asr.legacy.realtime.replay import RATE, WINDOW, ConcurrentReplay
 from edge_asr.legacy.realtime.vad import POLICIES, OnlineVadReplay, TimedProbability
 from edge_asr.resources import ProcessSampler, RssSampler
 from edge_asr.runtime import environment, limits_verified

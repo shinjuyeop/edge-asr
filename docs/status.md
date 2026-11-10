@@ -10,7 +10,8 @@
 | 공통 평가 | 해시·실패 보존·`ko_cer_v1`·재채점·CPU/RSS·온도/실제 클럭 계측 |
 | 입력 | 고정 Zeroth60·FLEURS40, 총891.1448125초·정답3,848자. [출처·한계](research/fixed100.md) |
 | 구조 | Qwen Python은 `qwen/`, C++는 `native/`, 설정은 `configs/{onnx,gguf}.toml`로 통합. [검증 기록](../results/summaries/optimization/layout-cleanup-20261110.md) |
-| 미완료 | Qwen 발화 중 부분 자막·사용자 TTFT·독립 holdout·최종 장시간 검증. 마이크 없음 |
+| 연속 입력 | Qwen 단독1배속·VAD·누적 부분 재전사 경로 추가. [조건·측정 범위](research/qwen_realtime.md). RP5 파일럿 결과는 별도 기록 |
+| 미완료 | engine TTFT·토큰 즉시 배포·청크 간 KV 재사용·독립 holdout·최종 장시간 검증. 마이크 없음 |
 
 이전 Zip+VAD+Refine 자막은 `legacy/`에 보존하며 자동 교체는 보류 상태입니다. [이전 연구](archive/model-comparison/README.md).
 
@@ -31,10 +32,10 @@ ONNX 최고87.55°C·실제1.5~2.4GHz·열 제한, 재부팅 후 GGUF 최고75.4
 
 ## 다음 작업
 
-1. ONNX의 실제 prompt/context 예산을 검증하고 긴 파일 거부를 별도 변경으로 다룹니다. 기존 입력·실패 기록은 보존합니다.
-2. 같은100개와 GGUF2T 기준으로 스레드·ARM CPU 빌드 등을 한 항목씩 바꿉니다. 추가 오류·실패·빈 출력 없이 처리 비용이 줄었는지와 열 상태·재현성을 확인합니다.
-3. 필요하면 KV·메모리 병목을 추가 계측합니다. 관측한 ONNX Run 바깥1%만으로 전체 KV 비용을 단정하지 않습니다.
-4. Qwen 단독 VAD·연속 입력·부분 결과와 실제 TTFT·백로그·드롭은 OPT-3에서 검증합니다. 네트워크 장애는 모델 실패와 구분해 추적합니다.
+1. **Qwen 단독1배속 연속 입력을 우선 검증**합니다. 첫/부분 자막·종료 지연·재전사 부하·백로그·드롭·실패·정확도를 측정합니다. 이전 batch 값을 실시간 지연으로 옮기지 않습니다.
+2. 같은 입력·분할·2T에서 text Q8→Q6→Q5→Q4를 비교하고 오디오 mmproj Q8은 유지합니다. 이후 스레드·ARM CPU 빌드 등을 한 항목씩 비교합니다. [연속 입력·양자화 계획](research/qwen_realtime.md).
+3. 필요하면 KV·메모리 병목을 추가 계측합니다. 관측한 ONNX Run 바깥1%만으로 전체 KV 비용을 단정하지 않습니다. engine TTFT·음향 단어 지연은 별도 계측합니다.
+4. ONNX의 실제 prompt/context 예산과 긴 파일 거부는 별도 변경으로 다룹니다. 기존 실패 원시는 보존하며 GGUF 연속 입력 검증의 선행 조건으로 두지 않습니다. 네트워크 장애는 모델 실패와 구분합니다.
 
 ## 이전 단계의 근거
 

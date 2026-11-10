@@ -26,6 +26,7 @@ COMMANDS = {
     "probe-load": "probes.load",
     "profile-qwen3": "edge_asr.qwen.profiling",
     "benchmark-qwen3": "edge_asr.qwen.benchmark",
+    "replay-qwen3": "edge_asr.qwen.realtime.replay",
     "opt0-baseline": "edge_asr.qwen.benchmark",
     "compare-qwen3": "edge_asr.legacy.tools.probes.qwen3_comparison",
     "compare-qwen3-realtime": "edge_asr.legacy.tools.probes.qwen3_realtime",

@@ -10,7 +10,8 @@ Qwen3-ASR-0.6B를 Raspberry Pi 5의 ARM64 CPU에서 실행하며, **한국어 �
 
 - **구현·검증:** ONNX INT8 / GGUF Q8_0 batch 추론, 고정100개 평가, ONNX 호출 경계 프로파일링, CPU·RSS·온도·클럭 계측
 - **진행 방향:** 기존 ONNX를 출발 참조로 두고, GGUF 2T 기준선 대비 실행 설정과 추론 경로 최적화
-- **후속 구현·검증:** 발화 중 부분 자막, 사용자 TTFT, 마이크 입력, 최종 장시간 안정성
+- **우선 검증:** [Qwen 단독1배속·부분 자막](docs/research/qwen_realtime.md), 이후 같은 연속 입력에서 text Q8→Q6→Q5→Q4 비교
+- **후속 구현·검증:** engine TTFT·청크 간 KV 재사용, 마이크 입력, 최종 장시간 안정성
 
 현재는 WAV 파일로 검증합니다. 이전 Zip+VAD+Refine 자막은 `legacy/`에 보존합니다.
 
@@ -48,6 +49,7 @@ GGUF 실행 흐름은 **평가 실행기 → Python 어댑터 → C++ bridge →
 | 목적 | 먼저 볼 파일 |
 | --- | --- |
 | 모델 로딩·첫 추론·워밍업·반복 평가 | [qwen/benchmark.py](src/edge_asr/qwen/benchmark.py) |
+| 1배속 연속 입력·부분 자막·실제 반환 지연 | [qwen/realtime/](src/edge_asr/qwen/realtime/) |
 | GGUF 연결·음성 전달·출력 검사 | [qwen/gguf.py](src/edge_asr/qwen/gguf.py) |
 | KV 초기화·오디오/prefill·토큰 생성 제어 | [native/gguf/bridge.cpp](native/gguf/bridge.cpp) |
 | ONNX 참조·context 검사 / 호출 경계 계측 | [qwen/onnx.py](src/edge_asr/qwen/onnx.py) / [qwen/profiling.py](src/edge_asr/qwen/profiling.py) |
@@ -113,6 +115,10 @@ edge-asr/
 │       ├── adapters/                                      # 공통 factory·이전 비교 모델
 │       ├── legacy/                                        # 이전 자막·병합 재현
 │       ├── qwen/                                          # 현재 Qwen 실행 경로
+│       │   ├── realtime/                                  # 1배속·VAD·부분/확정 전사
+│       │   │   ├── replay.py
+│       │   │   ├── session.py
+│       │   │   └── worker.py
 │       │   ├── benchmark.py
 │       │   ├── gguf.py
 │       │   ├── onnx.py
@@ -148,7 +154,8 @@ edge-asr/
 │       ├── test_fixed100.py
 │       ├── test_profiling.py
 │       ├── test_qwen3.py
-│       └── test_qwen3_gguf.py
+│       ├── test_qwen3_gguf.py
+│       └── test_realtime.py
 ├── AGENTS.md                                              # 코드 재사용·폴더 분리·작업 원칙
 ├── pyproject.toml
 └── README.md

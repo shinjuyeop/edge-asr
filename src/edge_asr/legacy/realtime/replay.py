@@ -4,30 +4,9 @@ import time
 from array import array
 
 from edge_asr.artifacts import write_event
-from edge_asr.dataset import Audio, float_digest, load_audio, load_manifest
+from edge_asr.dataset import float_digest
 
 RATE, WINDOW = 16000, 80000
-
-
-def prepare_track(root, manifest):
-    sources, frames = [], array("f")
-    samples, manifest_sha = load_manifest(manifest, root)
-    for sample in samples:
-        audio = load_audio(sample.audio_path, RATE)
-        if sample.audio_sha256 is None or audio.sha256 != sample.audio_sha256:
-            raise ValueError("모든 원본 WAV 해시가 일치해야 합니다.")
-        start = len(frames)
-        frames.extend(audio.samples)
-        sources.append(
-            {
-                "id": sample.id,
-                "reference": sample.reference,
-                "audio_sha256": audio.sha256,
-                "start": start,
-                "end": len(frames),
-            }
-        )
-    return Audio(frames, RATE, float_digest(frames)), sources, manifest_sha
 
 
 class ConcurrentReplay:

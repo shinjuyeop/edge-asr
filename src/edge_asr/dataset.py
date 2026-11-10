@@ -134,3 +134,28 @@ def float_digest(samples):
     if sys.byteorder != "little":
         pcm.byteswap()
     return hashlib.sha256(pcm.tobytes()).hexdigest()
+
+
+def prepare_track(root, manifest, *, gap_s=0):
+    """해시가 고정된 WAV를 연결한다. 원본 좌표를 보존하고 선택적으로 뒤 무음을 넣는다."""
+    if type(gap_s) not in (int, float) or not 0 <= gap_s <= 5:
+        raise ValueError("연결 무음은 0~5초여야 합니다.")
+    sources, frames = [], array("f")
+    samples, manifest_sha = load_manifest(manifest, root)
+    for sample in samples:
+        audio = load_audio(sample.audio_path, 16000)
+        if sample.audio_sha256 is None or audio.sha256 != sample.audio_sha256:
+            raise ValueError("모든 원본 WAV 해시가 일치해야 합니다.")
+        start = len(frames)
+        frames.extend(audio.samples)
+        sources.append(
+            {
+                "id": sample.id,
+                "reference": sample.reference,
+                "audio_sha256": audio.sha256,
+                "start": start,
+                "end": len(frames),
+            }
+        )
+        frames.extend(array("f", [0]) * round(gap_s * 16000))
+    return Audio(frames, 16000, float_digest(frames)), sources, manifest_sha
