@@ -1,0 +1,509 @@
+{
+  "schema_version": 1,
+  "run_id": "realtime100-q8-20261110-01",
+  "date": "2026-11-10",
+  "source_commit": "aa1034b6e00c06c00fd21c646719e97ae0ab2422",
+  "source_dirty": false,
+  "raw_path": "results/optimization/opt3/realtime100-q8-20261110-01/q8-2t",
+  "worker_sha256": "12ad74919c385ab9ce7f665e4a9117cba36a5d972b5b17da0c6dbe2755948f8e",
+  "input_manifest_sha256": "75ba1226dddfa0defb97f6fdbba89c31a762b541beb41299cdb0ac8490c45a06",
+  "planned_sources": 100,
+  "unique_source_audio_s": 891.1448125,
+  "capture_audio_s": 991.1448125,
+  "settings": {
+    "gap_s": 1.0,
+    "vad_threshold": 0.3,
+    "partial_after_s": 1.0,
+    "partial_interval_s": 2.0,
+    "max_segment_s": 5,
+    "drain_timeout_s": 30,
+    "queue_capacity": 4,
+    "partials": true,
+    "silence_policy": "skip-zero"
+  },
+  "model_config": {
+    "num_threads": 2,
+    "quantization": "q8_0",
+    "max_total_len": 512,
+    "max_new_tokens": 128,
+    "family": "qwen3_gguf",
+    "path": "models/qwen3-opt/gguf-q8-20261109-01",
+    "runtime_library": "runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so",
+    "runtime_manifest": "runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/build.json",
+    "language": "ko"
+  },
+  "model_files": {
+    "Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+    },
+    "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+    },
+    "runtime_library": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/libedge_asr_gguf.so",
+      "sha256": "272bbef5894a71feb750f2e60a3e05ef96a592686e4dabd3a2252e35946eee1c"
+    },
+    "runtime_manifest": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/bridge-rp5-01/build.json",
+      "sha256": "76a60f809e3b3bdb89317debf1258e9622ebc6277b29a8895f45f0b0f545f539"
+    }
+  },
+  "guard_status": "completed",
+  "operational_valid": true,
+  "limits_verified": true,
+  "worker_status": "completed",
+  "error": null,
+  "complete_input": true,
+  "supplied_frames": 15858317,
+  "processed_frames": 15858317,
+  "dropped_chunks": 0,
+  "dropped_audio_s": 0.0,
+  "asr_calls": 401,
+  "final_calls": 213,
+  "partial_calls": 188,
+  "failed_calls": [],
+  "submitted_requests": 514,
+  "coalesced_partials": 113,
+  "skipped_silence": 50,
+  "joined_score": {
+    "normalization": "ko_cer_v1",
+    "reference_characters": 3848,
+    "substitutions": 209,
+    "deletions": 233,
+    "insertions": 99,
+    "errors": 541,
+    "cer": 0.1405925155925156
+  },
+  "per_source_corpus": null,
+  "per_source_mapping_unique": false,
+  "ambiguous_finals": [
+    {
+      "job_id": 183,
+      "segment_id": 93,
+      "sources": [
+        "fleurs-5814359066651083642",
+        "zeroth-105_003_1490"
+      ],
+      "status": "success"
+    },
+    {
+      "job_id": 342,
+      "segment_id": 174,
+      "sources": [
+        "zeroth-118_003_1029",
+        "fleurs-16212391279578882998"
+      ],
+      "status": "success"
+    },
+    {
+      "job_id": 426,
+      "segment_id": 214,
+      "sources": [
+        "zeroth-118_003_2737",
+        "zeroth-149_003_2650"
+      ],
+      "status": "success"
+    }
+  ],
+  "unassigned_finals": [],
+  "baseline": {
+    "source_predictions": "results/optimization/opt2/fixed100-baseline-recovery-20261109-01/operational-gguf-01/predictions.jsonl",
+    "source_predictions_sha256": "65e0925d85385edf5f5aa2af1e620ddbe5b31ca55e5cc8b29b75fc07ec6e2c97",
+    "evaluation_manifest_sha256": "75ba1226dddfa0defb97f6fdbba89c31a762b541beb41299cdb0ac8490c45a06",
+    "count": 100,
+    "reference_characters": 3848,
+    "per_file_corpus": {
+      "errors": 295,
+      "reference_characters": 3848,
+      "cer": 0.07666320166320166
+    },
+    "joined_score": {
+      "normalization": "ko_cer_v1",
+      "reference_characters": 3848,
+      "substitutions": 132,
+      "deletions": 147,
+      "insertions": 15,
+      "errors": 294,
+      "cer": 0.07640332640332641
+    },
+    "scope": "2026-11-09 기존 가설 재채점. 이번 새 batch 추론·속도 측정이 아님."
+  },
+  "first_caption_from_track_start_s": 3.3161893310025334,
+  "files_with_any_overlap_caption": 98,
+  "files_with_only_ambiguous_caption": [
+    "zeroth-149_003_2650"
+  ],
+  "files_with_no_overlap_caption": [
+    "zeroth-118_003_1157",
+    "fleurs-14278025439467391857"
+  ],
+  "files_with_caption": 97,
+  "files_with_partial": 96,
+  "files_caption_before_input_end": 91,
+  "per_file_first_caption_s": {
+    "n": 97,
+    "mean": 4.287007190758779,
+    "p50": 3.9010777320132775,
+    "p95": 7.096634265011517,
+    "max": 10.61791883600597
+  },
+  "final_from_owned_end_s": {
+    "n": 213,
+    "mean": 4.816200817175318,
+    "p50": 4.855032264003853,
+    "p95": 6.186040670000018,
+    "max": 7.361639981012445
+  },
+  "inference_queue_wait_s": {
+    "n": 401,
+    "mean": 1.2880388961421159,
+    "p50": 0.8272027689963579,
+    "p95": 4.319829123007366,
+    "max": 6.507328402003623
+  },
+  "inference_queue_peak": 3,
+  "latency_by_120s": [
+    {
+      "audio_start_s": 0,
+      "final_calls": 27,
+      "latency_s": {
+        "n": 27,
+        "mean": 4.907843914450971,
+        "p50": 4.805620605002858,
+        "p95": 6.186040670000018,
+        "max": 6.196341763009549
+      },
+      "queue_wait_s": {
+        "n": 27,
+        "mean": 2.332962537259812,
+        "p50": 2.2465091600024607,
+        "p95": 5.003891981992638,
+        "max": 5.390271618991392
+      }
+    },
+    {
+      "audio_start_s": 120,
+      "final_calls": 24,
+      "latency_s": {
+        "n": 24,
+        "mean": 4.401019864464719,
+        "p50": 4.449542236004362,
+        "p95": 5.2705792020109925,
+        "max": 5.741775658008294
+      },
+      "queue_wait_s": {
+        "n": 24,
+        "mean": 1.8350794953342604,
+        "p50": 1.4871816730010323,
+        "p95": 3.4182195640023565,
+        "max": 4.459480539007927
+      }
+    },
+    {
+      "audio_start_s": 240,
+      "final_calls": 24,
+      "latency_s": {
+        "n": 24,
+        "mean": 4.84029567867336,
+        "p50": 4.567994902006603,
+        "p95": 6.739693760001785,
+        "max": 7.361639981012445
+      },
+      "queue_wait_s": {
+        "n": 24,
+        "mean": 1.9138176480858722,
+        "p50": 1.5301845240028342,
+        "p95": 3.7244668309867848,
+        "max": 6.507328402003623
+      }
+    },
+    {
+      "audio_start_s": 360,
+      "final_calls": 28,
+      "latency_s": {
+        "n": 28,
+        "mean": 4.916951604185324,
+        "p50": 4.839816366010211,
+        "p95": 6.71831014400118,
+        "max": 7.341101399007357
+      },
+      "queue_wait_s": {
+        "n": 28,
+        "mean": 2.150078965822883,
+        "p50": 2.1196218769910047,
+        "p95": 4.445287918992108,
+        "max": 6.4939150210120715
+      }
+    },
+    {
+      "audio_start_s": 480,
+      "final_calls": 30,
+      "latency_s": {
+        "n": 30,
+        "mean": 4.578722068972545,
+        "p50": 4.731877008002812,
+        "p95": 5.800682087010841,
+        "max": 5.9157654630008665
+      },
+      "queue_wait_s": {
+        "n": 30,
+        "mean": 1.983879984167288,
+        "p50": 1.3574100400001043,
+        "p95": 4.963095210012398,
+        "max": 5.113063951997901
+      }
+    },
+    {
+      "audio_start_s": 600,
+      "final_calls": 24,
+      "latency_s": {
+        "n": 24,
+        "mean": 5.04550239063047,
+        "p50": 5.219675883008335,
+        "p95": 6.076319274008142,
+        "max": 6.344266546005315
+      },
+      "queue_wait_s": {
+        "n": 24,
+        "mean": 2.0778093411239147,
+        "p50": 1.4421011359954719,
+        "p95": 5.201836666004965,
+        "max": 5.307006437011296
+      }
+    },
+    {
+      "audio_start_s": 720,
+      "final_calls": 26,
+      "latency_s": {
+        "n": 26,
+        "mean": 5.026551353775421,
+        "p50": 5.004112039011943,
+        "p95": 6.4955844610108215,
+        "max": 6.6962975190044745
+      },
+      "queue_wait_s": {
+        "n": 26,
+        "mean": 2.1777906321143607,
+        "p50": 1.5652953079988947,
+        "p95": 4.777222699005506,
+        "max": 5.7270283960097
+      }
+    },
+    {
+      "audio_start_s": 840,
+      "final_calls": 24,
+      "latency_s": {
+        "n": 24,
+        "mean": 4.808283601007275,
+        "p50": 5.072487448011543,
+        "p95": 5.820192734007605,
+        "max": 6.310324095008468
+      },
+      "queue_wait_s": {
+        "n": 24,
+        "mean": 2.054772146124378,
+        "p50": 1.3416797629906796,
+        "p95": 4.554555770009756,
+        "max": 4.862498443995719
+      }
+    },
+    {
+      "audio_start_s": 960,
+      "final_calls": 6,
+      "latency_s": {
+        "n": 6,
+        "mean": 4.888318224836762,
+        "p50": 4.729374810002241,
+        "p95": 5.82425426000259,
+        "max": 5.82425426000259
+      },
+      "queue_wait_s": {
+        "n": 6,
+        "mean": 1.9737813649965876,
+        "p50": 1.628004868995049,
+        "p95": 3.166270137997344,
+        "max": 3.166270137997344
+      }
+    }
+  ],
+  "input_backlog": {
+    "sample_interval_s": 0.1,
+    "sampling": "실제 큐 이벤트의 100ms 격자 재구성 및 오디오 끝/반환 경계",
+    "event_max_audio_s": 0.1,
+    "event_max_chunks": 1,
+    "event_max_oldest_wait_s": 0.007858842999894478,
+    "at_audio_end_s": 0.0,
+    "end_audio_s": 0.0
+  },
+  "finalization_from_track_end_s": 3.3798133000000234,
+  "main_rss_observed_max_mib": 1840.671875,
+  "rss_by_120s": [
+    {
+      "replay_start_s": 0,
+      "samples": 1192,
+      "rss_mib": {
+        "n": 1192,
+        "mean": 1820.4578308515102,
+        "p50": 1820.171875,
+        "p95": 1821.671875,
+        "max": 1821.671875
+      }
+    },
+    {
+      "replay_start_s": 120,
+      "samples": 1192,
+      "rss_mib": {
+        "n": 1192,
+        "mean": 1822.053586409396,
+        "p50": 1822.171875,
+        "p95": 1822.671875,
+        "max": 1822.671875
+      }
+    },
+    {
+      "replay_start_s": 240,
+      "samples": 1191,
+      "rss_mib": {
+        "n": 1191,
+        "mean": 1823.2088187447523,
+        "p50": 1823.171875,
+        "p95": 1823.671875,
+        "max": 1823.671875
+      }
+    },
+    {
+      "replay_start_s": 360,
+      "samples": 1191,
+      "rss_mib": {
+        "n": 1191,
+        "mean": 1824.4980714735516,
+        "p50": 1824.671875,
+        "p95": 1825.171875,
+        "max": 1825.171875
+      }
+    },
+    {
+      "replay_start_s": 480,
+      "samples": 1191,
+      "rss_mib": {
+        "n": 1191,
+        "mean": 1826.1349312552477,
+        "p50": 1826.171875,
+        "p95": 1827.171875,
+        "max": 1827.171875
+      }
+    },
+    {
+      "replay_start_s": 600,
+      "samples": 1191,
+      "rss_mib": {
+        "n": 1191,
+        "mean": 1827.5341755877414,
+        "p50": 1827.671875,
+        "p95": 1828.171875,
+        "max": 1828.171875
+      }
+    },
+    {
+      "replay_start_s": 720,
+      "samples": 1191,
+      "rss_mib": {
+        "n": 1191,
+        "mean": 1828.5736382241814,
+        "p50": 1828.671875,
+        "p95": 1829.171875,
+        "max": 1829.171875
+      }
+    },
+    {
+      "replay_start_s": 840,
+      "samples": 1190,
+      "rss_mib": {
+        "n": 1190,
+        "mean": 1829.6983455882353,
+        "p50": 1829.671875,
+        "p95": 1830.671875,
+        "max": 1830.671875
+      }
+    },
+    {
+      "replay_start_s": 960,
+      "samples": 346,
+      "rss_mib": {
+        "n": 346,
+        "mean": 1830.7230852601156,
+        "p50": 1830.671875,
+        "p95": 1830.671875,
+        "max": 1840.671875
+      }
+    }
+  ],
+  "asr_serial_wall_s": 918.9323442949681,
+  "replay_process_cpu_s": 1960.728086086,
+  "thermal": {
+    "start_mc": 49600,
+    "max_mc": 76000,
+    "end_mc": 66650,
+    "current_limits": [
+      0
+    ],
+    "arm_clock_hz_min": 1500019456,
+    "arm_clock_hz_max": 2400037120
+  },
+  "unmeasured": {
+    "engine_ttft_s": null,
+    "word_acoustic_latency_s": null,
+    "microphone_latency_s": null
+  },
+  "scoring_scope": "per-source는 최종 구간이 원음 한 개와만 겹칠 때 전체100개 합산. 연결CER도 동일 순서의 기존 batch 가설과 비교. 파일 시각은 음향 단어 정답 시각이 아님.",
+  "acceptance": {
+    "transport_complete": true,
+    "no_input_drop": true,
+    "no_asr_call_failure": true,
+    "accuracy_gate": false,
+    "profile_adopted": false,
+    "reason": "동일 연결 CER로 사전 기준 확인. 추가 오류가 있으면 채택 보류."
+  },
+  "verification": {
+    "verified_raw_files": 14,
+    "raw_hash_ledger": "results/maintenance/realtime100-q8-20261110-01/artifact-hashes-rp5.json",
+    "host_rp5_raw_equal": true,
+    "input_manifest_same_as_batch": true,
+    "model_runtime_assets_verified": 4,
+    "original_model_runtime_unchanged": true,
+    "all_15858317_frames_captured_and_processed": true,
+    "causal_job_ranges_verified": true,
+    "request_accounting": {
+      "submitted": 514,
+      "returned": 401,
+      "coalesced": 113
+    },
+    "analysis_script": "results/maintenance/realtime100-q8-20261110-01/analyze.py",
+    "analysis_script_sha256": "faec3c728799898153898e52b4843a89579f76d6942b4deda68aa91cd2a6f6b1",
+    "source_code_changed": false
+  },
+  "missing_caption_diagnostics": [
+    {
+      "id": "zeroth-118_003_1157",
+      "duration_s": 6.8274375,
+      "peak": 0.090911865234375,
+      "rms": 0.01204176689256323,
+      "vad_segments": 0,
+      "asr_calls": 0,
+      "old_batch_errors": 4,
+      "reference_characters": 41
+    },
+    {
+      "id": "fleurs-14278025439467391857",
+      "duration_s": 7.14,
+      "peak": 0.00408935546875,
+      "rms": 0.0005293360278970841,
+      "vad_segments": 0,
+      "asr_calls": 0,
+      "old_batch_errors": 1,
+      "reference_characters": 31
+    }
+  ]
+}

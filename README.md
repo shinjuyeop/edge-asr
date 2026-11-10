@@ -4,18 +4,18 @@
 
 Qwen3-ASR-0.6B를 Raspberry Pi 5의 ARM64 CPU에서 실행하며, **한국어 정확도와 처리 완료율을 유지하면서 인식 지연·메모리·발열을 줄이는** 프로젝트입니다.
 
-[현재 상태·다음 작업](docs/status.md) · [평가 기준](docs/research/fixed100_baseline.md) · [실측 결과](results/summaries/optimization/fixed100-baseline-20261109.md) · [실행 안내](docs/guides/qwen3_optimization.md)
+[현재 상태·다음 작업](docs/status.md) · [평가 기준](docs/research/fixed100_baseline.md) · [실시간 결과](results/summaries/optimization/realtime100-q8-20261110.md) · [실행 안내](docs/guides/qwen3_optimization.md)
 
 ## 현재 진행 상태
 
 - **구현·검증:** ONNX INT8 / GGUF Q8_0 batch 추론, 고정100개 평가, ONNX 호출 경계 프로파일링, CPU·RSS·온도·클럭 계측
 - **진행 방향:** 기존 ONNX를 출발 참조로 두고, GGUF 2T 기준선 대비 실행 설정과 추론 경로 최적화
-- **현재 개발 후보:** Q8·2T·VAD0.3·첫1초/이후2초 부분 갱신. [실측·양자화 비교](results/summaries/optimization/realtime-controls-quant-20261110.md)
+- **현재 과제:** Q8 연속100개에서 드러난 VAD 누락·분할 경계·확정 지연 개선. [실측 결과](results/summaries/optimization/realtime100-q8-20261110.md)
 - **후속 구현·검증:** engine TTFT·청크 간 KV 재사용, 마이크 입력, 최종 장시간 안정성
 
 현재는 WAV 파일로 검증합니다. 이전 Zip+VAD+Refine 자막은 `legacy/`에 보존합니다.
 
-[최신 1배속 실측](results/summaries/optimization/realtime-controls-quant-20261110.md): **고정3개·약39초 파일럿**에서 Q8·첫1초/이후2초 갱신은 첫 자막3.36초·확정p95 4.95초를 기록했습니다. Q6/Q5/Q4도 비교했으며 Q8을 주 후보로 유지합니다. 전체100개 연속 평가·장시간 검증은 후속이고 아래 표는 기존 batch 기준값입니다.
+[최신 1배속 실측](results/summaries/optimization/realtime100-q8-20261110.md): **고정100개·16분31초 입력**을 실패·드롭 없이 완료했습니다. 연결 CER14.06%(같은 순서 기존 batch7.64%)·확정p95 6.19초로 정확도·지연 개선이 필요합니다. VAD 누락2개와 파일 경계를 넘는 최종 구간3개가 관측됐습니다. 아래 표는 기존 batch 기준값입니다.
 
 ## 현재 GGUF 기준값
 
