@@ -1,6 +1,6 @@
 # Qwen 최적화 실행 안내
 
-주 기준은 [Qwen 단독1배속 연속 입력](../research/qwen_realtime.md)입니다. 기존 ONNX INT8 2T에서 시작해 같은 파이프라인의 GGUF와 비교합니다. [파일별 batch 실측](../../results/summaries/optimization/fixed100-baseline-20261109.md)은 모델 정확도·처리 비용 진단용 보조 참조이며 [당시 프로토콜](../research/fixed100_baseline.md)과 함께 보존합니다.
+주 기준은 [Qwen 단독1배속 연속 입력](../research/qwen_realtime.md)입니다. 기존 ONNX INT8 2T에서 시작해 같은 파이프라인의 GGUF를 비교했고 [동일 조건 실측](../../results/summaries/optimization/realtime100-backends-20261110.md)에 정확도·실패·지연을 기록했습니다. [파일별 batch 실측](../../results/summaries/optimization/fixed100-baseline-20261109.md)은 모델 정확도·처리 비용 진단용 보조 참조이며 [당시 프로토콜](../research/fixed100_baseline.md)과 함께 보존합니다.
 
 ## 환경과 설정
 

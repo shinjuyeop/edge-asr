@@ -4,34 +4,33 @@
 
 Qwen3-ASR-0.6B를 Raspberry Pi 5의 ARM64 CPU에서 실행하며, **한국어 정확도와 처리 완료율을 유지하면서 인식 지연·메모리·발열을 줄이는** 프로젝트입니다.
 
-[현재 상태·다음 작업](docs/status.md) · [연속 입력 평가 기준](docs/research/qwen_realtime.md) · [ONNX 시작 측정](results/summaries/optimization/realtime100-onnx-20261110.md) · [실행 안내](docs/guides/qwen3_optimization.md)
+[현재 상태·다음 작업](docs/status.md) · [연속 입력 평가 기준](docs/research/qwen_realtime.md) · [ONNX/GGUF 비교 결과](results/summaries/optimization/realtime100-backends-20261110.md) · [실행 안내](docs/guides/qwen3_optimization.md)
 
 ## 현재 진행 상태
 
-- **구현·검증:** ONNX INT8 / GGUF Q8_0 batch 추론, 고정100개 평가, ONNX 호출 경계 프로파일링, CPU·RSS·온도·클럭 계측
+- **구현·검증:** ONNX INT8 / GGUF Q8_0 단독 연속 입력100개 비교, 공통 채점·CPU/RSS·온도·클럭 계측
 - **진행 방향:** Qwen 단독·1배속 연속 입력을 주 평가로 사용. ONNX INT8 2T에서 출발해 같은 파이프라인의 GGUF·실행 설정과 비교
-- **현재 과제:** 확보한 ONNX 연속 출발값과 같은 추가 무음0초 조건의 GGUF Q8 비교. [ONNX 실측·첫 중단 보존](results/summaries/optimization/realtime100-onnx-20261110.md)
+- **현재 과제:** GGUF Q8을 주 후보로 VAD 누락·분할/문맥 손실과 첫 자막·확정 대기 개선
 - **후속 구현·검증:** engine TTFT·청크 간 KV 재사용, 마이크 입력, 최종 장시간 안정성
 
 현재는 WAV 파일로 검증합니다. 이전 Zip+VAD+Refine 자막은 `legacy/`에 보존합니다.
 
-[ONNX 연속 출발 실측](results/summaries/optimization/realtime100-onnx-20261110.md): **100개·14분51초 입력 완료**, 연결 CER15.98%·전사361회 중1회 실패·입력 드롭0입니다. 첫 자막p95 12.25초(99개), 성공 구간 확정p95 7.74초(213구간)이며 VAD 누락1개가 있습니다. 측정 기준은 확보했지만 실사용 채택은 보류합니다. 첫 시도의 예기치 않은 재시작과 원시도 보존했습니다.
+## 현재 연속 입력 비교
 
-[이전 Q8 1배속 실측](results/summaries/optimization/realtime100-q8-20261110.md): 추가 무음1초 조건에서 고정100개·16분31초 입력을 실패·드롭 없이 완료했습니다. 연결 CER14.06%(같은 순서 기존 batch7.64%)·확정p95 6.19초, VAD 누락2개·파일 경계를 넘는 최종 구간3개가 관측됐습니다. 아래 표는 기존 batch 참조값입니다.
+RP5·Qwen3-ASR-0.6B·2T·2026-11-10 실측입니다. Zeroth60개·FLEURS40개를 같은 순서로 **14분51초·1배속·추가 무음0초** 공급했고, 모든 최종214구간의 입력 PCM이 같았습니다. 추론 중에도 다음 음성 수신을 계속했습니다.
 
-연속 입력 중에도 추론과 다음 음성 수신이 함께 진행되어야 합니다. 새 주 기준은 **파일 사이 추가 무음0초·파일 경계 초기화 없음**이며, 기존 Q8의 추가 무음1초 결과와 구분합니다. ONNX/GGUF batch 값은 모델 자체 정확도·처리 비용을 확인하는 보조 참조입니다.
+| 지표 | ONNX INT8 | GGUF Q8_0 |
+| --- | ---: | ---: |
+| 연결 CER ↓ | 15.98% | **13.23%** |
+| 전사 호출 실패 / 입력 드롭 | 1 /0 | **0 /0** |
+| 첫 자막 p50 / p95 — 같은99개 ↓ | **5.43** /12.25초 | 6.16 /**10.92초** |
+| 성공 구간 확정 p50 / p95 — 같은213구간 ↓ | **5.31** /7.74초 | 5.62 /**7.57초** |
+| 관측 최대 RSS ↓ | 2096.09MiB | **1830.53MiB** |
+| 관측 최고 온도 | 85.90°C | 85.90°C |
 
-## 기존 GGUF batch 참조값
+**GGUF는 정확도·실패·메모리에 유리하지만 중앙값 반응은 ONNX보다 느립니다.** 지연 p95는 GGUF가 짧았습니다. 양쪽 모두 VAD 누락1개·열 제한이 있어 현재 파이프라인의 실사용 채택은 보류합니다. [조건·대응 구간·해석](results/summaries/optimization/realtime100-backends-20261110.md).
 
-RP5 · Qwen3-ASR-0.6B Q8_0 · CPU 2스레드 · **2026-11-09 실측**입니다.
-
-| 처리 성공 | 문자 오류율 CER ↓ | 처리 시간 비율 RTF ↓ | 관측 최대 RSS |
-| ---: | ---: | ---: | ---: |
-| 100/100 | 7.67% | 0.6225 | 1772.7 MiB |
-
-입력은 Zeroth60개·FLEURS40개, 총14분51.145초이며 [출처·선정 방법](docs/research/fixed100.md)을 고정했습니다. 이후 최적화의 주 비교에는 같은 원음·순서의 연속 입력과 공통 파이프라인을 사용합니다.
-
-이 값은 batch 처리 지표이며 실제 자막 반환 지연·TTFT와 구분합니다. ONNX 참조는 기존 context 검사 거부1건으로99/100 성공했습니다. 같은 성공 부분집합 비교와 온도·재부팅 조건, 실패 원시는 [실측 보고서](results/summaries/optimization/fixed100-baseline-20261109.md)에 있습니다.
+평가 자료는 [고정100개 출처·선정 방법](docs/research/fixed100.md)을 따릅니다. [ONNX 출발 기록·첫 중단](results/summaries/optimization/realtime100-onnx-20261110.md), [기존 batch 참조](results/summaries/optimization/fixed100-baseline-20261109.md), [추가 무음1초 Q8](results/summaries/optimization/realtime100-q8-20261110.md)은 별도 조건으로 보존합니다. batch RTF는 실제 자막 반환 지연을 대신하지 않습니다.
 
 ## 빠른 확인
 
