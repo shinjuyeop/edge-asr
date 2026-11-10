@@ -27,7 +27,7 @@ GGUF는 기존 Python의 ctypes로 별도 llama.cpp/libmtmd C ABI를 호출합�
 
 1. Host에서 변경·[모의 테스트](../../tests/README.md)를 마치고 main에 commit/push합니다. RP5는 같은 소스를 pull합니다.
 2. [고정100개](../research/fixed100.md)의 원본·WAV·해시를 확인합니다. [`tools prepare-baseline100`](../../src/edge_asr/tools/data/baseline100.py)로 원본을 보존한 채 **새 실행 경로**에 고정 순서 manifest를 준비합니다. 비교 구성의 순서·워밍업 입력은 같습니다.
-3. RP5에서 다른 실제 추론과 겹치지 않게 실행합니다. `tools benchmark-qwen3 --repetitions 1`은 모델1회 로딩 → 첫 추론1회 → 추가 워밍업3회 →100개 각1회이며 `thermal-run`의 외부 시간·4GiB 주소 공간 제한 안에서 사용합니다.
+3. RP5에서 다른 실제 추론과 겹치지 않게 실행합니다. 주 평가는 아래 `tools replay-qwen3`로 모델1회 로딩 → 첫 추론1회 → 추가 워밍업3회 →1배속 연속 입력이며 `thermal-run`의 외부 시간·4GiB 주소 공간 제한 안에서 사용합니다. 보조 batch 참조를 새로 측정할 때는 `tools benchmark-qwen3 --repetitions 1`로100개를 각1회 전사합니다.
 4. 원시·해시를 Host에 회수하고 공통 재채점·실패/커버리지·열 상태를 검토한 뒤 [요약 폴더](../../results/summaries/optimization/README.md)와 [현재 상태](../status.md)를 갱신합니다.
 
 고정 순서 목록은 다음 CLI로 준비합니다. output은 새 경로를 사용합니다.
@@ -37,7 +37,7 @@ GGUF는 기존 Python의 ctypes로 별도 llama.cpp/libmtmd C ABI를 호출합�
   --output "results/optimization/opt2/<고유ID>/inputs"
 ```
 
-다음은 **GGUF 운영 측정의 호출 형식**입니다. `<...>`를 준비한 동일 순서 manifest와 새 실행 경로로 바꿉니다. 기존 사용자가 허용한 온도 대기 없는 운영 조건을 명시하며 온도·실제 클럭·제한 플래그를 기록합니다. 통제 비교의53°C 시작·75°C 경고/80°C 중단 조건과 전체 비교 순서는 기준선 프로토콜에서 구분합니다.
+다음은 **보조 GGUF batch 운영 측정의 호출 형식**입니다. `<...>`를 준비한 동일 순서 manifest와 새 실행 경로로 바꿉니다. 기존 사용자가 허용한 온도 대기 없는 운영 조건을 명시하며 온도·실제 클럭·제한 플래그를 기록합니다. 통제 비교의53°C 시작·75°C 경고/80°C 중단 조건과 전체 비교 순서는 기준선 프로토콜에서 구분합니다.
 
 ```bash
 .venv/bin/python scripts/edge_asr.py tools thermal-run \
@@ -81,6 +81,8 @@ ONNX 측정은 guard와 자식 명령 모두 표의 ONNX Python·설정을 사�
 ```
 
 100개 주 평가에는 파일 사이 **추가 무음0초**를 사용합니다. 원음의 무음은 제거하지 않습니다. 이후 GGUF는 같은 명령에서 설정을 `configs/gguf.toml`로 바꾸고 새 출력 경로를 사용합니다. 기존 추가 무음1초 Q8 기록은 별도 조건이며 새 ONNX와 직접 우열을 정하지 않습니다.
+
+[ONNX 출발 실측](../../results/summaries/optimization/realtime100-onnx-20261110.md)은 전체 입력 완료·전사1회 실패·VAD 누락1개를 포함한 기록입니다. 모델·조건을 자동 변경하지 않고 실패까지 채점했으며 실사용 통과 구성으로 취급하지 않습니다. 이후 엔진 비교에서 최종 구간 좌표·PCM 해시·첫 자막 커버리지를 함께 확인합니다.
 
 대조는 같은 명령에 `--no-partials`를 추가해 구간/PCM은 유지하고 부분 호출만 끕니다. 현재 기본 `--silence-policy skip-zero`는 완전히0인 PCM의 ASR 호출을 생략하고 구간·해시·이유를 따로 기록합니다. 낮은 진폭 음성을 임계값으로 제거하지 않습니다. 이전 동작은 `--silence-policy preserve`로 재현합니다.
 

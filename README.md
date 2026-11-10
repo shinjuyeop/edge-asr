@@ -4,18 +4,20 @@
 
 Qwen3-ASR-0.6B를 Raspberry Pi 5의 ARM64 CPU에서 실행하며, **한국어 정확도와 처리 완료율을 유지하면서 인식 지연·메모리·발열을 줄이는** 프로젝트입니다.
 
-[현재 상태·다음 작업](docs/status.md) · [연속 입력 평가 기준](docs/research/qwen_realtime.md) · [실시간 결과](results/summaries/optimization/realtime100-q8-20261110.md) · [실행 안내](docs/guides/qwen3_optimization.md)
+[현재 상태·다음 작업](docs/status.md) · [연속 입력 평가 기준](docs/research/qwen_realtime.md) · [ONNX 시작 측정](results/summaries/optimization/realtime100-onnx-20261110.md) · [실행 안내](docs/guides/qwen3_optimization.md)
 
 ## 현재 진행 상태
 
 - **구현·검증:** ONNX INT8 / GGUF Q8_0 batch 추론, 고정100개 평가, ONNX 호출 경계 프로파일링, CPU·RSS·온도·클럭 계측
 - **진행 방향:** Qwen 단독·1배속 연속 입력을 주 평가로 사용. ONNX INT8 2T에서 출발해 같은 파이프라인의 GGUF·실행 설정과 비교
-- **현재 과제:** 추가 무음 없는100개 ONNX 연속 기준선 확보. 기존 Q8 연속 평가의 VAD 누락·분할 경계·확정 지연도 보존·분석. [기존 실측](results/summaries/optimization/realtime100-q8-20261110.md)
+- **현재 과제:** 확보한 ONNX 연속 출발값과 같은 추가 무음0초 조건의 GGUF Q8 비교. [ONNX 실측·첫 중단 보존](results/summaries/optimization/realtime100-onnx-20261110.md)
 - **후속 구현·검증:** engine TTFT·청크 간 KV 재사용, 마이크 입력, 최종 장시간 안정성
 
 현재는 WAV 파일로 검증합니다. 이전 Zip+VAD+Refine 자막은 `legacy/`에 보존합니다.
 
-[최신 1배속 실측](results/summaries/optimization/realtime100-q8-20261110.md): **고정100개·16분31초 입력**을 실패·드롭 없이 완료했습니다. 연결 CER14.06%(같은 순서 기존 batch7.64%)·확정p95 6.19초로 정확도·지연 개선이 필요합니다. VAD 누락2개와 파일 경계를 넘는 최종 구간3개가 관측됐습니다. 아래 표는 기존 batch 기준값입니다.
+[ONNX 연속 출발 실측](results/summaries/optimization/realtime100-onnx-20261110.md): **100개·14분51초 입력 완료**, 연결 CER15.98%·전사361회 중1회 실패·입력 드롭0입니다. 첫 자막p95 12.25초(99개), 성공 구간 확정p95 7.74초(213구간)이며 VAD 누락1개가 있습니다. 측정 기준은 확보했지만 실사용 채택은 보류합니다. 첫 시도의 예기치 않은 재시작과 원시도 보존했습니다.
+
+[이전 Q8 1배속 실측](results/summaries/optimization/realtime100-q8-20261110.md): 추가 무음1초 조건에서 고정100개·16분31초 입력을 실패·드롭 없이 완료했습니다. 연결 CER14.06%(같은 순서 기존 batch7.64%)·확정p95 6.19초, VAD 누락2개·파일 경계를 넘는 최종 구간3개가 관측됐습니다. 아래 표는 기존 batch 참조값입니다.
 
 연속 입력 중에도 추론과 다음 음성 수신이 함께 진행되어야 합니다. 새 주 기준은 **파일 사이 추가 무음0초·파일 경계 초기화 없음**이며, 기존 Q8의 추가 무음1초 결과와 구분합니다. ONNX/GGUF batch 값은 모델 자체 정확도·처리 비용을 확인하는 보조 참조입니다.
 
@@ -38,7 +40,7 @@ Python3.11 이상이 필요합니다. 아래 명령은 저장소 루트의 **기
 ```bash
 # 설정과 평가 명령 확인
 .venv/bin/python scripts/edge_asr.py check-config --evaluation configs/gguf.toml
-.venv/bin/python scripts/edge_asr.py tools benchmark-qwen3 --help
+.venv/bin/python scripts/edge_asr.py tools replay-qwen3 --help
 
 # Host 모의 테스트
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v

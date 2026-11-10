@@ -1,0 +1,596 @@
+{
+  "schema_version": 1,
+  "run_id": "realtime100-onnx-20261110-02",
+  "date": "2026-11-10",
+  "source_commit": "a123d9d5051529671b8e577867f86a04099a8365",
+  "source_dirty": false,
+  "raw_path": "results/optimization/opt3/realtime100-onnx-20261110-02/onnx-2t",
+  "worker_sha256": "4e60ae359bc251921baa320ee36fbe2c1b637143cbba6e8c8e02b0af779680f4",
+  "input_manifest_sha256": "75ba1226dddfa0defb97f6fdbba89c31a762b541beb41299cdb0ac8490c45a06",
+  "planned_sources": 100,
+  "unique_source_audio_s": 891.1448125,
+  "capture_audio_s": 891.1448125,
+  "settings": {
+    "gap_s": 0.0,
+    "vad_threshold": 0.3,
+    "partial_after_s": 1.0,
+    "partial_interval_s": 2.0,
+    "max_segment_s": 5,
+    "drain_timeout_s": 30,
+    "queue_capacity": 4,
+    "partials": true,
+    "silence_policy": "skip-zero"
+  },
+  "model_config": {
+    "num_threads": 2,
+    "quantization": "int8",
+    "max_total_len": 512,
+    "max_new_tokens": 128,
+    "family": "qwen3_asr",
+    "path": "models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25",
+    "language": "ko"
+  },
+  "model_files": {
+    "conv_frontend.onnx": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/conv_frontend.onnx",
+      "sha256": "d22dc4423e0940e49884e903d2ea2f7e5567c14fc1aed97e4e26d6b8f208ef9e"
+    },
+    "encoder.int8.onnx": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/encoder.int8.onnx",
+      "sha256": "60748d3e6744a57c9c91e1b17424a6c2990567e8adceb0783940c03ed98fa9d9"
+    },
+    "decoder.int8.onnx": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/decoder.int8.onnx",
+      "sha256": "4f6885be5959ae26af3089d38ee7972c5fafbeeb1cf8d5e76eab6d8b61ca5771"
+    },
+    "tokenizer/vocab.json": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/tokenizer/vocab.json",
+      "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    },
+    "tokenizer/merges.txt": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/tokenizer/merges.txt",
+      "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+    },
+    "tokenizer/tokenizer_config.json": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/tokenizer/tokenizer_config.json",
+      "sha256": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c"
+    }
+  },
+  "guard_status": "failed_or_unverified",
+  "operational_valid": false,
+  "limits_verified": true,
+  "worker_status": "failed",
+  "error": null,
+  "complete_input": true,
+  "supplied_frames": 14258317,
+  "processed_frames": 14258317,
+  "dropped_chunks": 0,
+  "dropped_audio_s": 0.0,
+  "asr_calls": 361,
+  "final_calls": 214,
+  "partial_calls": 147,
+  "failed_calls": [
+    {
+      "job_id": 309,
+      "kind": "final",
+      "error": {
+        "type": "RuntimeError",
+        "message": "Qwen 출력 잘림/반복 경고 또는 token 상한 도달. raw 결과를 보존합니다."
+      },
+      "native_termination": null
+    }
+  ],
+  "submitted_requests": 505,
+  "coalesced_partials": 144,
+  "skipped_silence": 0,
+  "joined_score": {
+    "normalization": "ko_cer_v1",
+    "reference_characters": 3848,
+    "substitutions": 283,
+    "deletions": 213,
+    "insertions": 119,
+    "errors": 615,
+    "cer": 0.1598232848232848
+  },
+  "per_source_corpus": null,
+  "per_source_mapping_unique": false,
+  "ambiguous_finals": [
+    {
+      "job_id": 17,
+      "segment_id": 7,
+      "sources": [
+        "fleurs-1697468201207743342",
+        "zeroth-104_003_1119"
+      ],
+      "status": "success"
+    },
+    {
+      "job_id": 155,
+      "segment_id": 66,
+      "sources": [
+        "fleurs-14753933788031702263",
+        "zeroth-147_003_1814"
+      ],
+      "status": "success"
+    },
+    {
+      "job_id": 182,
+      "segment_id": 76,
+      "sources": [
+        "fleurs-5814359066651083642",
+        "zeroth-105_003_1490"
+      ],
+      "status": "success"
+    },
+    {
+      "job_id": 229,
+      "segment_id": 95,
+      "sources": [
+        "fleurs-9406104450793293120",
+        "fleurs-375683238417481119"
+      ],
+      "status": "success"
+    },
+    {
+      "job_id": 315,
+      "segment_id": 133,
+      "sources": [
+        "zeroth-112_003_0335",
+        "zeroth-147_003_2509"
+      ],
+      "status": "success"
+    },
+    {
+      "job_id": 446,
+      "segment_id": 188,
+      "sources": [
+        "fleurs-7635705610811012181",
+        "fleurs-5826890473690715465"
+      ],
+      "status": "success"
+    }
+  ],
+  "unassigned_finals": [],
+  "first_caption_from_track_start_s": 3.234771711999997,
+  "files_with_any_overlap_caption": 99,
+  "files_with_only_ambiguous_caption": [],
+  "files_with_no_overlap_caption": [
+    "fleurs-14278025439467391857"
+  ],
+  "files_with_caption": 99,
+  "files_with_partial": 88,
+  "files_caption_before_input_end": 80,
+  "per_file_first_caption_s": {
+    "n": 99,
+    "mean": 6.186574584999992,
+    "p50": 5.425725043,
+    "p95": 12.251862733999985,
+    "max": 17.810182214000065
+  },
+  "final_from_owned_end_s": {
+    "n": 214,
+    "mean": 5.542839329481314,
+    "p50": 5.314328416999956,
+    "p95": 7.867421499000102,
+    "max": 15.381496384999991
+  },
+  "inference_queue_wait_s": {
+    "n": 361,
+    "mean": 1.8910695193047107,
+    "p50": 1.2869910770000388,
+    "p95": 5.572440972999971,
+    "max": 12.013985474000037
+  },
+  "inference_queue_peak": 4,
+  "latency_by_120s": [
+    {
+      "audio_start_s": 0,
+      "final_calls": 31,
+      "latency_s": {
+        "n": 31,
+        "mean": 5.16697402425805,
+        "p50": 4.972669824999969,
+        "p95": 6.908794812999979,
+        "max": 7.328762958000013
+      },
+      "queue_wait_s": {
+        "n": 31,
+        "mean": 2.6630400048387095,
+        "p50": 2.2987445159999993,
+        "p95": 6.074025887999994,
+        "max": 6.669298798999989
+      }
+    },
+    {
+      "audio_start_s": 120,
+      "final_calls": 29,
+      "latency_s": {
+        "n": 29,
+        "mean": 4.931356561517228,
+        "p50": 4.918437180999945,
+        "p95": 6.70282753799998,
+        "max": 6.799425764000006
+      },
+      "queue_wait_s": {
+        "n": 29,
+        "mean": 2.3121680484827607,
+        "p50": 2.1294031940000195,
+        "p95": 4.985444900999994,
+        "max": 5.202792908999982
+      }
+    },
+    {
+      "audio_start_s": 240,
+      "final_calls": 25,
+      "latency_s": {
+        "n": 25,
+        "mean": 5.060705750879989,
+        "p50": 5.016067342000042,
+        "p95": 7.46294152400003,
+        "max": 9.317950510000003
+      },
+      "queue_wait_s": {
+        "n": 25,
+        "mean": 1.9735814192399947,
+        "p50": 1.3891873079999186,
+        "p95": 4.150821705000112,
+        "max": 7.230403819999992
+      }
+    },
+    {
+      "audio_start_s": 360,
+      "final_calls": 31,
+      "latency_s": {
+        "n": 31,
+        "mean": 5.516727207258062,
+        "p50": 5.3175546339999755,
+        "p95": 7.888224653999998,
+        "max": 8.368160965000015
+      },
+      "queue_wait_s": {
+        "n": 31,
+        "mean": 2.761398344967743,
+        "p50": 2.8377844479999794,
+        "p95": 6.2533524619999525,
+        "max": 7.671174577999977
+      }
+    },
+    {
+      "audio_start_s": 480,
+      "final_calls": 31,
+      "latency_s": {
+        "n": 31,
+        "mean": 7.211170036387095,
+        "p50": 6.172872428000005,
+        "p95": 12.968419851999897,
+        "max": 15.381496384999991
+      },
+      "queue_wait_s": {
+        "n": 31,
+        "mean": 4.098356657709679,
+        "p50": 3.6248496680000244,
+        "p95": 9.964771509999991,
+        "max": 12.013985474000037
+      }
+    },
+    {
+      "audio_start_s": 600,
+      "final_calls": 26,
+      "latency_s": {
+        "n": 26,
+        "mean": 5.408275333846155,
+        "p50": 5.690147207999985,
+        "p95": 7.587167012999998,
+        "max": 7.867421499000102
+      },
+      "queue_wait_s": {
+        "n": 26,
+        "mean": 2.3782421671923193,
+        "p50": 1.4153548179999689,
+        "p95": 5.622604727000066,
+        "max": 6.81941942200001
+      }
+    },
+    {
+      "audio_start_s": 720,
+      "final_calls": 29,
+      "latency_s": {
+        "n": 29,
+        "mean": 5.229231530379385,
+        "p50": 5.342847793000146,
+        "p95": 6.644251201999964,
+        "max": 6.8080560189999915
+      },
+      "queue_wait_s": {
+        "n": 29,
+        "mean": 2.4008303416207095,
+        "p50": 1.891144893000046,
+        "p95": 5.345996610999919,
+        "max": 5.413773246999881
+      }
+    },
+    {
+      "audio_start_s": 840,
+      "final_calls": 12,
+      "latency_s": {
+        "n": 12,
+        "mean": 5.803062507250037,
+        "p50": 5.5266136930000584,
+        "p95": 7.741043959000081,
+        "max": 7.741043959000081
+      },
+      "queue_wait_s": {
+        "n": 12,
+        "mean": 2.994561346583301,
+        "p50": 2.4589606629999707,
+        "p95": 6.038108182999849,
+        "max": 6.038108182999849
+      }
+    }
+  ],
+  "input_backlog": {
+    "sample_interval_s": 0.1,
+    "sampling": "실제 큐 이벤트의 100ms 격자 재구성 및 오디오 끝/반환 경계",
+    "event_max_audio_s": 0.1,
+    "event_max_chunks": 1,
+    "event_max_oldest_wait_s": 0.006217776000028152,
+    "at_audio_end_s": 0.0,
+    "end_audio_s": 0.0
+  },
+  "finalization_from_track_end_s": 6.192640994000044,
+  "main_rss_observed_max_mib": 2096.09375,
+  "rss_by_120s": [
+    {
+      "replay_start_s": 0,
+      "samples": 1191,
+      "rss_mib": {
+        "n": 1191,
+        "mean": 2049.246090470193,
+        "p50": 2045.40625,
+        "p95": 2064.90625,
+        "max": 2065.40625
+      }
+    },
+    {
+      "replay_start_s": 120,
+      "samples": 1191,
+      "rss_mib": {
+        "n": 1191,
+        "mean": 2068.085511125105,
+        "p50": 2067.40625,
+        "p95": 2070.90625,
+        "max": 2074.40625
+      }
+    },
+    {
+      "replay_start_s": 240,
+      "samples": 1191,
+      "rss_mib": {
+        "n": 1191,
+        "mean": 2079.276946893367,
+        "p50": 2080.40625,
+        "p95": 2080.40625,
+        "max": 2080.40625
+      }
+    },
+    {
+      "replay_start_s": 360,
+      "samples": 1191,
+      "rss_mib": {
+        "n": 1191,
+        "mean": 2081.586770570949,
+        "p50": 2081.84375,
+        "p95": 2081.84375,
+        "max": 2083.40625
+      }
+    },
+    {
+      "replay_start_s": 480,
+      "samples": 1190,
+      "rss_mib": {
+        "n": 1190,
+        "mean": 2083.2380777310923,
+        "p50": 2083.59375,
+        "p95": 2084.09375,
+        "max": 2084.59375
+      }
+    },
+    {
+      "replay_start_s": 600,
+      "samples": 1191,
+      "rss_mib": {
+        "n": 1191,
+        "mean": 2084.905252938707,
+        "p50": 2084.59375,
+        "p95": 2085.59375,
+        "max": 2085.59375
+      }
+    },
+    {
+      "replay_start_s": 720,
+      "samples": 1190,
+      "rss_mib": {
+        "n": 1190,
+        "mean": 2086.0050945378152,
+        "p50": 2086.09375,
+        "p95": 2087.09375,
+        "max": 2087.09375
+      }
+    },
+    {
+      "replay_start_s": 840,
+      "samples": 573,
+      "rss_mib": {
+        "n": 573,
+        "mean": 2087.118837260035,
+        "p50": 2087.09375,
+        "p95": 2087.09375,
+        "max": 2096.09375
+      }
+    }
+  ],
+  "asr_serial_wall_s": 864.9548978459999,
+  "replay_process_cpu_s": 1835.134456972,
+  "thermal": {
+    "start_mc": 54550,
+    "max_mc": 85900,
+    "end_mc": 71600,
+    "current_limits": [
+      0,
+      6,
+      8
+    ],
+    "arm_clock_hz_min": 1500012800,
+    "arm_clock_hz_max": 2400040192
+  },
+  "unmeasured": {
+    "engine_ttft_s": null,
+    "word_acoustic_latency_s": null,
+    "microphone_latency_s": null
+  },
+  "scoring_scope": "전체 입력 완료 때 연결CER를 주 값으로 기록. 원음별 corpus CER는 모든 최종 구간이 유일 귀속될 때만 계산. 첫 자막의 원음 시각은 음향 단어 주석이 아니며 귀속 불가·누락을 제외한 표본 수를 명시.",
+  "acceptance": {
+    "transport_complete": true,
+    "no_input_drop": true,
+    "no_asr_call_failure": false,
+    "initial_baseline_recorded": true,
+    "optimization_improvement": null,
+    "reason": "추가 무음0초 ONNX 출발 측정. 실패·누락을 포함해 기록하며 개선/최종 채택 판정과 구분. 같은 조건 GGUF는 미측정."
+  },
+  "kind": "qwen3_onnx_standalone_continuous_baseline",
+  "batch_diagnostic_reference": {
+    "source_predictions": "results/optimization/opt2/fixed100-baseline-20261109-01/operational-onnx-01/predictions.jsonl",
+    "source_predictions_sha256": "d0fe689ec512668d44d56e34dbce08f9688f4c3e2f0dd8145c6dcd3f27e1e006",
+    "evaluation_manifest_sha256": "75ba1226dddfa0defb97f6fdbba89c31a762b541beb41299cdb0ac8490c45a06",
+    "count": 100,
+    "successful_sources": 99,
+    "failed_sources": [
+      "fleurs-14941719265693149665"
+    ],
+    "primary_full100_cer": null,
+    "joined_score": {
+      "normalization": "ko_cer_v1",
+      "reference_characters": 3848,
+      "substitutions": 201,
+      "deletions": 239,
+      "insertions": 10,
+      "errors": 450,
+      "cer": 0.11694386694386695
+    },
+    "scope": "동일 ONNX의2026-11-09 batch 저장 가설을 같은 순서로 재채점. 실패1개를 빈 가설로 둔 보조 연결 CER이며 전체100개 성공의 batch 기준선·새 추론·연속 입력 지연이 아님."
+  },
+  "analysis_provenance": {
+    "wrapper_sha256": "32e3d4866d729d273a0c2f7598f911aeb4f879fbd071abd17e6089b107ae61ce",
+    "reused_script": "results/maintenance/realtime100-q8-20261110-01/analyze.py",
+    "reused_script_sha256": "faec3c728799898153898e52b4843a89579f76d6942b4deda68aa91cd2a6f6b1"
+  },
+  "pilot": {
+    "run_id": "realtime-onnx-20261110-01",
+    "sources": 3,
+    "capture_audio_s": 35.7835625,
+    "asr_calls": 17,
+    "failed_calls": 0,
+    "dropped_chunks": 0,
+    "joined_score": {
+      "normalization": "ko_cer_v1",
+      "reference_characters": 172,
+      "substitutions": 11,
+      "deletions": 29,
+      "insertions": 0,
+      "errors": 40,
+      "cer": 0.23255813953488372
+    },
+    "first_caption_from_track_start_s": 3.244049860004452,
+    "final_from_owned_end_s": {
+      "n": 9,
+      "mean": 3.3427107440024195,
+      "p50": 2.801570917994133,
+      "p95": 4.742482980997535,
+      "max": 4.742482980997535
+    },
+    "worker_sha256": "61619859abac7c80d2da83aa77b8dacc3c5f11c24ce858b234960034f4b46b8b"
+  },
+  "interrupted_attempts": [
+    {
+      "run_id": "realtime100-onnx-20261110-01",
+      "status": "infrastructure_interrupted",
+      "raw_worker_status": "replaying",
+      "process_disappeared_after_boot_reset": true,
+      "input_s_last_observed": 26.7,
+      "returned_calls_last_observed": 10,
+      "max_temperature_mc_last_observed": 68300,
+      "cause": null,
+      "manual_reboot_before_first_boot_reset": false,
+      "later_user_report": "이후 화면·키보드·마우스가 멈춰 사용자가 추가로 수동 재부팅함.",
+      "worker_sha256": "3b1ca308a8fb4e44a90ed4cd9d1bda4308c27ebb767f5ee419c4f10818bc4c8a",
+      "full100_score": null
+    }
+  ],
+  "measurement_status": "completed_with_asr_failures",
+  "full100_baseline_complete": true,
+  "successful_final_from_owned_end_s": {
+    "n": 213,
+    "mean": 5.496648451286391,
+    "p50": 5.314328416999956,
+    "p95": 7.741043959000081,
+    "max": 12.968419851999897
+  },
+  "failed_call_diagnostics": [
+    {
+      "job_id": 309,
+      "kind": "final",
+      "audio_s": 1.496,
+      "sources": [
+        "fleurs-14941719265693149665"
+      ],
+      "context_budget": {
+        "feature_frames": 149,
+        "audio_tokens_upper_bound": 20,
+        "prompt_tokens_upper_bound": 133,
+        "context_tokens_upper_bound": 153,
+        "reserved_output_tokens": 129,
+        "max_total_len": 512,
+        "fits": true
+      },
+      "returned_token_count": 128,
+      "native_stderr": "/project/sherpa-onnx/csrc/offline-recognizer-qwen3-asr-impl.cc:GenerateText:1034 Result is truncated. max_new_tokens 128 is too small for this audio input. Please either use a shorter audio or use a larger max_new_tokens\n",
+      "inference_s": 13.228321958000038,
+      "error": {
+        "type": "RuntimeError",
+        "message": "Qwen 출력 잘림/반복 경고 또는 token 상한 도달. raw 결과를 보존합니다."
+      }
+    }
+  ],
+  "system_diagnostics": {
+    "previous_boot_journal_available": false,
+    "pstore_empty_after_manual_reboot": true,
+    "current_boot_usb_device_setup_errors_observed": true,
+    "usb_error_code": -71,
+    "root_filesystem": "nvme0n1p2 ext4 rw",
+    "small_readback_probe_passed": true,
+    "freeze_cause": null,
+    "scope": "새 부팅의 관측이며 이전 멈춤 원인으로 단정하지 않음."
+  },
+  "comparison_scope": "출발 ONNX와 같은 추가 무음0초 GGUF는 미측정. 기존 추가 무음1초 GGUF와 직접 엔진 순위를 매기지 않음.",
+  "verification": {
+    "raw_files_verified": 40,
+    "all_raw_hashes_match": true,
+    "host_tests": {
+      "total": 359,
+      "passed": 357,
+      "skipped": 2,
+      "elapsed_s": 52.278
+    },
+    "rp5_tests": {
+      "total": 359,
+      "passed": 357,
+      "skipped": 2,
+      "elapsed_s": 80.626
+    },
+    "native_libraries_identical_between_existing_envs": true,
+    "sherpa_onnx": "2.0.1",
+    "sherpa_native_ort": "1.28.2",
+    "vad_python_ort": "1.31.1",
+    "existing_packages_changed": false
+  }
+}
