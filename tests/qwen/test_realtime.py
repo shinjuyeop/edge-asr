@@ -42,6 +42,69 @@ class Adapter:
 
 
 class RealtimeTests(unittest.TestCase):
+    def test_partial_control_preserves_final_pcm_and_segmentation(self):
+        payloads, segments = [], []
+        for partials in (True, False):
+            adapter, events = Adapter(), []
+            adapter.release.set()
+            session = CaptionSession(
+                adapter,
+                BoundedProbabilityVad(Probability()),
+                16000,
+                events.append,
+                {"t0_monotonic_ns": time.perf_counter_ns()},
+                partial_after_s=0.2,
+                partial_interval_s=0.2,
+                partials=partials,
+            )
+            try:
+                for start in range(0, 16000, 1600):
+                    session.accept_at(session, array("f", [0.25] * 1600), start, start + 1600)
+                session.finish_stream(session)
+                finals = [e for e in events if e["type"] == "submitted" and e["kind"] == "final"]
+                payloads.append([e["payload_float32_sha256"] for e in finals])
+                segments.append(
+                    [(s["owned_start_frame"], s["owned_end_frame"]) for s in session.segments]
+                )
+                if not partials:
+                    self.assertFalse(any(e.get("kind") == "partial" for e in events))
+            finally:
+                session.close()
+        self.assertEqual(payloads[0], payloads[1])
+        self.assertEqual(segments[0], segments[1])
+
+    def test_zero_policy_records_silence_and_keeps_one_lsb_audio(self):
+        class AlwaysSpeech(Probability):
+            def __call__(self, samples):
+                return 1.0
+
+        for value in (0.0, 1 / 32768):
+            adapter, events = Adapter(), []
+            adapter.release.set()
+            session = CaptionSession(
+                adapter,
+                BoundedProbabilityVad(AlwaysSpeech()),
+                16000,
+                events.append,
+                {"t0_monotonic_ns": time.perf_counter_ns()},
+                partials=False,
+                silence_policy="skip-zero",
+            )
+            try:
+                for start in range(0, 16000, 1600):
+                    session.accept_at(session, array("f", [value] * 1600), start, start + 1600)
+                text = session.finish_stream(session)
+                self.assertEqual(bool(session.skipped), value == 0)
+                self.assertEqual(bool(adapter.calls), value != 0)
+                self.assertEqual(text, "" if value == 0 else "전사")
+                if value == 0:
+                    self.assertEqual(session.skipped[0]["reason"], "exact_zero_pcm")
+                    self.assertFalse(session.results)
+                with self.assertRaises(ValueError):
+                    session._offer("final", 99, 16000, 17600, array("h", [0] * 1600))
+            finally:
+                session.close()
+
     def test_runner_preserves_failed_calls_and_refuses_existing_output(self):
         class Loaded(Adapter):
             model_files = {}

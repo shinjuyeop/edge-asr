@@ -38,6 +38,12 @@ Host에서는 가짜 VAD/ASR와 실제 입력 프로세스로 동시 수신·인
 
 ## 이후 비교
 
+### 2026-11-10 후속 대조 — 결과 확인 전 고정
+
+`realtime-controls-20261110-01`에서 첫 파일럿과 같은 manifest·38.7835625초 입력·Q8·2T·VAD·5초·워밍업·온도 운영 정책을 사용합니다. 순서는 새 부분 on → `--no-partials` off 대조이며 완전 무음도 그대로 처리합니다. 두 실행의 최종 PCM 해시·경계·전사와 지연을 비교합니다. 다음에 `--silence-policy skip-zero`만 바꾼 부분 on 실행으로 EOF 무음 오인식을 확인합니다. 완전0 PCM 생략은 `skipped_silence`로 남기며 입력 손실이나 성공한 ASR 호출로 세지 않습니다. 기존 기본값은 `preserve`입니다.
+
+별도 VAD 진단은 같은100ms PCM에서 기존 native VAD와 현재 bounded VAD의 구간/PCM 해시를 대조하고512프레임별 확률·신호 크기를 보존합니다. ASR 성능 실행과 겹치지 않게 수행합니다. 앞부분 손실의 원인을 확인한 뒤 필요한 VAD 변경만 별도 실행으로 비교합니다. 원음·정답·이전 결과는 유지합니다.
+
 연속 입력 경로를 확인한 뒤 같은100개 순서·분할·업데이트 간격·2T에서 **텍스트 모델 Q8_0→Q6_K→Q5_K_M→Q4_K_M**을 비교합니다. 오디오 mmproj는 우선 같은 Q8_0 파일을 유지합니다. 낮은 비트가 RP5에서 더 빠르거나 한국어 정확도를 유지하는지는 실측으로 판단합니다. 스레드·빌드·KV 설정은 동시에 바꾸지 않습니다.
 
 고정한 ggml-org 배포 revision에는 text/mmproj의 Q8_0·BF16 파일이 있습니다. 낮은 비트는 같은 BF16 원본에서 각각 독립 생성하고 변환 도구·명령·tensor dtype·SHA를 기록합니다. Q8을Q6으로, 그 결과를 다시Q4로 누적 재양자화하지 않습니다. [llama.cpp 양자화 문서](https://github.com/ggml-org/llama.cpp/blob/7d7f0287530bc8981690f361d8c1627dbae1c99a/tools/quantize/README.md), [고정 자산·런타임](opt2_gguf.md).

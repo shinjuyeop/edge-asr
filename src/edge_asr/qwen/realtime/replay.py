@@ -149,6 +149,7 @@ def run(
             failed_calls=sum(r["status"] != "success" for r in session.results),
             final_count=len(finals),
             partial_count=len(partials),
+            skipped_silence=session.skipped,
         )
         reference = " ".join(s["reference"] for s in sources)
         info["final_transcript_score"] = (
@@ -158,7 +159,9 @@ def run(
         )
         info["status"] = (
             "completed"
-            if not info["failed_calls"] and len(finals) == len(session.segments)
+            if not info["failed_calls"]
+            and len(finals) + sum(r["kind"] == "final" for r in session.skipped)
+            == len(session.segments)
             else "failed"
         )
     except Exception as error:
@@ -170,6 +173,7 @@ def run(
                 results=session.results,
                 segments=session.segments,
                 pipeline=session.pipeline.metadata(),
+                skipped_silence=session.skipped,
             )
         if adapter is not None and (session is None or not session.worker.thread.is_alive()):
             adapter.close()
@@ -193,6 +197,18 @@ def main():
     parser.add_argument("--max-segment-s", type=int, default=5, choices=(3, 5, 8))
     parser.add_argument("--drain-timeout-s", type=int, default=30, choices=(10, 30, 60))
     parser.add_argument("--queue-capacity", type=int, default=4, choices=(2, 4, 8))
+    parser.add_argument(
+        "--no-partials",
+        dest="partials",
+        action="store_false",
+        help="VAD/구간은 유지하고 부분 재전사만 끄는 대조",
+    )
+    parser.add_argument(
+        "--silence-policy",
+        choices=("preserve", "skip-zero"),
+        default="preserve",
+        help="완전0 PCM만 별도 기록하고 ASR 호출 생략. 조용한 음성 임계값 필터 아님",
+    )
     args = vars(parser.parse_args())
     root = Path(__file__).resolve().parents[4]
     result = run(
