@@ -125,6 +125,8 @@ RP5의 `realtime-token-20261111-01`에 새 bridge와 실험 TOML을 준비했습
 
 이후 토큰 표시는 `hold_replayed_prefix_v1`을 사용합니다. 같은 구간의 이미 보인 원문 접두부를 새 호출이 다시 생성하는 동안 이전 문자열을 유지하고, 확장되거나 내용이 달라지면 표시합니다. 옵션을 추가하지 않고 기존 `--token-stream` 안의 표시 동작만 보완합니다. `worker.json`의 `token_display_policy`·`caption_stability`, 원시 토큰의 `prefix_replay_suppressed`로 확인합니다. 문자 철회는 정규화 공통 접두부 뒤 제거된 문자수이고 편집 거리나 부분 CER가 아닙니다. 4자 보존 시각도 자기 최종 전사를 기준으로 한 후향 평가입니다. [고정 검증 조건](../research/qwen_realtime.md).
 
+[접두부 보류 검증](../../results/summaries/optimization/realtime-stability-20261111.md)에서 같은 로그의 철회 문자577→161자·첫 표시/최종 결과 동일을 확인했고, 새 RP5 100개에서도 재표시 철회0·전체163자·CER11.12%·실패/드롭0이었습니다. 실제 내용 변경과 실패 처리는 유지합니다. 새 대조 실행을 추가하지 않아 과거와의 시간 차이를 엔진 가속으로 해석하지 않습니다.
+
 ## 이전 실험 재현
 
 KSS 등 이전 실험 설정은 [설정 색인](../../configs/README.md)에 보존합니다. 소규모 반복·56ms 진단은 [OPT-0](../research/opt0_pilot.md), 별도 C API/ORT 호출 계측은 [OPT-1](../research/opt1_profiling.md), 최초 GGUF/KSS 비교는 [OPT-2](../research/opt2_gguf.md)를 따릅니다. `opt0-baseline`은 현재 `benchmark-qwen3`와 같은 실행기 이름입니다. 프로파일 계측 실행과 일반 성능 측정은 구분합니다.

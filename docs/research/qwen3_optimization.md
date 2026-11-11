@@ -4,7 +4,7 @@
 
 목표는 Qwen3-ASR-0.6B의 한국어 정확도와 처리 완료율을 유지하면서 RP5 CPU에서 실제 음성 인식 지연을 줄이는 것입니다. 추론 시간, 메모리, 발열, 장시간 안정성을 함께 판단합니다. 기존 모델 비교 결과는 출발 자료이며 새 최적화 기준선은 OPT-0에서 고정합니다.
 
-2026-11-11 우선순위: [Qwen 단독1배속·부분 자막](qwen_realtime.md)의100개 입력과 [VAD 보정](../../results/summaries/optimization/realtime-accuracy-20261110.md)·[갱신 간격](../../results/summaries/optimization/realtime-schedule-20261111.md)·[생성 중 표시](../../results/summaries/optimization/realtime-token-20261111.md)를 검증했습니다. **Q8·VAD 보정·구간5초·첫1초/이후4초**를 유지하며 토큰 표시를 선택 개발 구성에 포함합니다. 임시 자막 품질·남은 음성 처리/prefill·decode·안전한 캐시 재사용을 검토합니다. 정확도·지연을 함께 안정화한 뒤 같은 파이프라인에서 text Q8→Q6→Q5→Q4를 비교하며 오디오 mmproj Q8·2T를 우선 유지합니다. ONNX 긴 파일 검사는 별도 과제로 보존합니다.
+2026-11-11 우선순위: [Qwen 단독1배속·부분 자막](qwen_realtime.md)의100개 입력과 [VAD 보정](../../results/summaries/optimization/realtime-accuracy-20261110.md)·[갱신 간격](../../results/summaries/optimization/realtime-schedule-20261111.md)·[생성 중 표시](../../results/summaries/optimization/realtime-token-20261111.md)·[접두부 재표시 보류](../../results/summaries/optimization/realtime-stability-20261111.md)를 검증했습니다. **Q8·VAD 보정·구간5초·첫1초/이후4초**를 유지하며 토큰 표시를 선택 개발 구성에 포함합니다. 남은 음성 처리/prefill·decode·안전한 캐시 재사용과 부분 정답 정확도를 검토합니다. 정확도·지연을 함께 안정화한 뒤 같은 파이프라인에서 text Q8→Q6→Q5→Q4를 비교하며 오디오 mmproj Q8·2T를 우선 유지합니다. ONNX 긴 파일 검사는 별도 과제로 보존합니다.
 
 ## 단계와 완료 조건
 
