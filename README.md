@@ -57,6 +57,7 @@ GGUF 실행 흐름은 **평가 실행기 → Python 어댑터 → C++ bridge →
 | --- | --- |
 | 모델 로딩·첫 추론·워밍업·반복 평가 | [qwen/benchmark.py](src/edge_asr/qwen/benchmark.py) |
 | 1배속 연속 입력·부분/생성 중 자막·실제 반환 지연 | [qwen/realtime/](src/edge_asr/qwen/realtime/) |
+| 자막 접두부 재표시 판정·문자 철회·최종 가설 일치 | [qwen/realtime/stability.py](src/edge_asr/qwen/realtime/stability.py) |
 | VAD 신호 보정·원음 보존 / 구간 분할 | [audio_policy.py](src/edge_asr/audio_policy.py) / [segmentation.py](src/edge_asr/segmentation.py), [vad_probability.py](src/edge_asr/vad_probability.py) |
 | GGUF 연결·음성 전달·출력 검사 | [qwen/gguf.py](src/edge_asr/qwen/gguf.py) |
 | KV 초기화·오디오/prefill·토큰 생성 제어 | [native/gguf/bridge.cpp](native/gguf/bridge.cpp) |
@@ -132,6 +133,7 @@ edge-asr/
 │       │   ├── realtime/                                  # 1배속·VAD·부분/확정 전사
 │       │   │   ├── replay.py
 │       │   │   ├── session.py
+│       │   │   ├── stability.py
 │       │   │   └── worker.py
 │       │   ├── benchmark.py
 │       │   ├── gguf.py
@@ -167,6 +169,7 @@ edge-asr/
 │   └── qwen/
 │       ├── fixtures/
 │       ├── test_baseline.py
+│       ├── test_caption_stability.py
 │       ├── test_fixed100.py
 │       ├── test_profiling.py
 │       ├── test_qwen3.py

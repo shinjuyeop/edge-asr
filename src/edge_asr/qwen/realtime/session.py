@@ -6,6 +6,7 @@ from array import array
 from threading import RLock
 
 from edge_asr.dataset import pcm_bytes
+from edge_asr.qwen.realtime.stability import replays_prefix
 from edge_asr.qwen.realtime.worker import DecodeWorker
 from edge_asr.segmentation import SegmentPipeline
 
@@ -108,10 +109,12 @@ class CaptionSession:
             )
             timing["token_events"] += 1
             text = event["hypothesis"]
+            event["prefix_replay_suppressed"] = replays_prefix(self.partial, event)
             event["displayed"] = (
                 bool(text.strip())
                 and len(text) > timing["visible_characters"]
                 and event["segment_id"] not in self.finalized
+                and not event["prefix_replay_suppressed"]
             )
             if event["displayed"]:
                 if timing["first_visible_published_s"] is None:

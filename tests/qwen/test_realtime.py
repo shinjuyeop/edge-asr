@@ -42,6 +42,79 @@ class Adapter:
 
 
 class RealtimeTests(unittest.TestCase):
+    def test_prefix_replay_keeps_caption_until_correction_and_terminal_failure_clears_it(self):
+        class Streaming(Adapter):
+            supports_token_stream = True
+
+            def __init__(self, fail):
+                super().__init__()
+                self.fail, self.count = fail, 0
+                self.corrected, self.finish = Event(), Event()
+
+            def transcribe_stream(self, audio, emit):
+                self.count += 1
+
+                def token(text, index):
+                    emit({"hypothesis": text, "token_index": index, "native_elapsed_s": index})
+
+                if self.count == 1:
+                    token("가나다라", 1)
+                    return "가나다라"
+                token("가", 1)
+                self.entered.set()
+                if not self.release.wait(3):
+                    raise TimeoutError("fixture prefix hold")
+                token("가나마", 2)
+                self.corrected.set()
+                if not self.finish.wait(3):
+                    raise TimeoutError("fixture correction")
+                if self.fail:
+                    raise ValueError("fixture failed final")
+                token("가나마바", 3)
+                return "가나마바"
+
+        for fail in (False, True):
+            with self.subTest(fail=fail):
+                adapter, events, partial_done = Streaming(fail), [], Event()
+
+                def record(row):
+                    events.append(row)
+                    if row["type"] == "result" and row["kind"] == "partial":
+                        partial_done.set()
+
+                session = CaptionSession(
+                    adapter,
+                    BoundedProbabilityVad(Probability()),
+                    16000,
+                    record,
+                    {"t0_monotonic_ns": time.perf_counter_ns()},
+                    token_stream=True,
+                )
+                try:
+                    pcm = array("f", [0.25] * 3200)
+                    session.accept_at(session, pcm[:1600], 0, 1600)
+                    session.accept_at(session, pcm[1600:], 1600, 3200)
+                    session._offer("partial", 0, 0, 1600, pcm[:1600])
+                    self.assertTrue(partial_done.wait(2))
+                    session._offer("final", 0, 0, 3200, pcm)
+                    self.assertTrue(adapter.entered.wait(2))
+                    self.assertEqual(session.text(), "가나다라")
+                    held = [r for r in events if r.get("prefix_replay_suppressed")]
+                    self.assertEqual(len(held), 1)
+                    self.assertFalse(held[0]["displayed"])
+                    adapter.release.set()
+                    self.assertTrue(adapter.corrected.wait(2))
+                    self.assertEqual(session.text(), "가나마")
+                    adapter.finish.set()
+                    session.worker.finish(3)
+                    self.assertEqual(session.text(final_only=True), "" if fail else "가나마바")
+                    self.assertIsNone(session.partial)
+                    self.assertEqual(session.results[-1]["status"], "failed" if fail else "success")
+                finally:
+                    adapter.release.set()
+                    adapter.finish.set()
+                    session.close()
+
     def test_first_partial_delay_is_independent_of_later_update_interval(self):
         adapter, events = Adapter(), []
         adapter.release.set()

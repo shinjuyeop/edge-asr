@@ -14,6 +14,7 @@ from edge_asr.config import load_evaluation_config
 from edge_asr.dataset import load_audio, load_manifest, prepare_track
 from edge_asr.metrics import character_errors, distribution
 from edge_asr.qwen.realtime.session import CaptionSession
+from edge_asr.qwen.realtime.stability import summarize as summarize_stability
 from edge_asr.resources import measure_process
 from edge_asr.runtime import environment, limits_verified
 from edge_asr.streaming import read_events, run_paced
@@ -156,6 +157,7 @@ def run(
         finals = [r for r in session.results if r["kind"] == "final"]
         events = read_events(output / "jobs.jsonl")
         info.update(
+            caption_stability=summarize_stability(events),
             submitted_requests=sum(e["type"] == "submitted" for e in events),
             coalesced_partial_requests=sum(e["type"] == "coalesced" for e in events),
             first_caption_from_track_start_s=min(
@@ -191,6 +193,9 @@ def run(
                 [r["published_s"] for r in successes] + first_visible, default=None
             ),
             token_timings=token_timings,
+            token_display_policy="hold_replayed_prefix_v1"
+            if settings.get("token_stream")
+            else "completed_result",
             token_output_scope="토큰은 UTF-8 접두 문자열의 임시 표시. 이후 실패도 원시/종료 result에 보존하며 임시 가설은 최종 CER에 더하지 않음.",
         )
         reference = " ".join(s["reference"] for s in sources)

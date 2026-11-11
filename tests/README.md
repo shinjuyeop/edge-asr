@@ -16,7 +16,7 @@ bash -n scripts/deploy_rp5.sh
 | --- | --- | --- |
 | 평가·어댑터 | `test_evaluation*.py`, `test_sensevoice.py`, `test_qwen3*.py`, `test_cli.py` | 모델1회 로딩·발화별 상태·미지원 모드·정규화/CER·재채점·실패 보존·Qwen 입력 예산/자산 고정/잘림 거부 |
 | 입력·동시 실행 | `test_streaming.py`, `test_concurrent_probe.py`, `test_online_vad.py` | 독립1배속 입력·유한 큐·실제 드롭·PCM/원본 좌표·결과 수신·자식 회수 |
-| Qwen 단독 부분 전사 | `qwen/test_realtime.py` | 추론 중 입력 지속·도착 프레임만 사용·최신 부분 요청 교체·최종 큐 초과·실패 포함 CER·기존 원시 덮어쓰기 거부 |
+| Qwen 단독 부분 전사 | `qwen/test_realtime.py`, `qwen/test_caption_stability.py` | 추론 중 입력 지속·도착 프레임만 사용·최신 부분 요청 교체·최종 큐 초과·실패 포함 CER·접두부 재표시 보류/실제 수정 허용·문자 철회와 정답 정확도 구분·기존 원시 덮어쓰기 거부 |
 | 자막 | `test_captions.py` | 원문 분리·늦은 반환·중복/해시 오류·stdout 실패·저장 원시 재집계 |
 | 병합 연구 | `test_merging.py`, `test_segment_merge.py`, `test_token_alignment.py`, `test_token_splice.py` | 정답 비의존·문자/음성 소유권·후보 보류·앵커/접두부 오류·복사 보존 |
 | VAD·구간 | `test_segmentation.py`, `test_segmented_accuracy.py`, `test_vad*.py` | 문맥/구간 상한·연속 확률·실패·주석/미확정 정답·모델 없는 채점 |
