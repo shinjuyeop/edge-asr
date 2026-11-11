@@ -141,6 +141,8 @@ num_threads_batch = 3
 
 Python 어댑터는 생성/prefill의 native getter 값과 mtmd 초기화 전달값 `audio_threads`가 요청과 같은지 확인합니다. 불일치·기능/심볼 누락은 실패로 기록하며 기존 값으로 조용히 대체하지 않습니다. 입력·분할·토큰 표시·KV 초기화는 유지합니다.
 
+[분리 검토 결과](../../results/summaries/optimization/realtime-split-20261111.md): 기존 ABI와 분리 인자 전달은 정상이고, 같은6개 반복에서 decode 합계는 줄었습니다. 최종 처리 합계 개선이 앞control 대비3.88%·2.82%여서 두 반복 모두3% 이상이라는 조건에 미달했습니다. 신규100개는 실행하지 않았고 현재 권장은 위의 기존3T TOML입니다. 이 절의2/3 값과 새 bridge는 실험 재현용으로 남깁니다.
+
 ## 이전 실험 재현
 
 KSS 등 이전 실험 설정은 [설정 색인](../../configs/README.md)에 보존합니다. 소규모 반복·56ms 진단은 [OPT-0](../research/opt0_pilot.md), 별도 C API/ORT 호출 계측은 [OPT-1](../research/opt1_profiling.md), 최초 GGUF/KSS 비교는 [OPT-2](../research/opt2_gguf.md)를 따릅니다. `opt0-baseline`은 현재 `benchmark-qwen3`와 같은 실행기 이름입니다. 프로파일 계측 실행과 일반 성능 측정은 구분합니다.

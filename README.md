@@ -4,7 +4,7 @@
 
 Qwen3-ASR-0.6B를 Raspberry Pi 5의 ARM64 CPU에서 실행하며, **한국어 정확도와 처리 완료율을 유지하면서 인식 지연·메모리·발열을 줄이는** 프로젝트입니다.
 
-[현재 상태·다음 작업](docs/status.md) · [연속 입력 평가 기준](docs/research/qwen_realtime.md) · [최신 스레드 비교 결과](results/summaries/optimization/realtime-threads-20261111.md) · [갱신 간격 비교 영상](results/summaries/optimization/realtime-video-20261111.md) · [실행 안내](docs/guides/qwen3_optimization.md)
+[현재 상태·다음 작업](docs/status.md) · [연속 입력 평가 기준](docs/research/qwen_realtime.md) · [최근 스레드 분리 검토](results/summaries/optimization/realtime-split-20261111.md) · [갱신 간격 비교 영상](results/summaries/optimization/realtime-video-20261111.md) · [실행 안내](docs/guides/qwen3_optimization.md)
 
 ## 현재 진행 상태
 
@@ -31,6 +31,8 @@ RP5·Qwen3-ASR-0.6B GGUF Q8_0·2026-11-11 실측입니다. 같은 Zeroth60개·F
 | 최고 온도 | 85.90°C | 87.55°C |
 
 **다음 개발 권장은 Q8·3T입니다.** 최종210구간 PCM·전사·토큰 ID를 유지하면서 최종 호출 합계8.9%·전체 추론 합계8.3%가 줄었습니다. 음성 처리/prefill은 빨라지고 decode는 느려지는 절충이 있으며 양쪽 열 제한도 관측했습니다. 기존2T 기본 설정은 보존하고3T는 별도 TOML로 지정합니다. 단일 운영 대조이며 저지연 실사용 채택은 보류합니다. [조건·비용·개발 설정](results/summaries/optimization/realtime-threads-20261111.md).
+
+추가로 **생성2T·음성/prefill3T** 분리 기능을 구현하고 같은6개를 반복했습니다. decode 합계는 줄었지만 최종 처리 합계 개선이3.88%·2.82%여서 두 반복 모두3% 이상이라는 사전 조건에 미달했습니다. 신규100개는 실행하지 않고 위의 기존3T 권장을 유지합니다. [분리 구현·반복 판정](results/summaries/optimization/realtime-split-20261111.md).
 
 첫 표시는 원음 시작→텍스트 이벤트 발행이며 실제 화면 시각은 아닙니다. 파일 끝 기준 반환은 원음 입력 끝→마지막으로 겹치는 최종 호출 반환이고 음향 단어 끝과 다릅니다. 생성 중 자막은 임시 가설이며 접두부 재표시 철회는 양쪽0입니다. [표시 안정성 검증](results/summaries/optimization/realtime-stability-20261111.md).
 
