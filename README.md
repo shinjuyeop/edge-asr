@@ -4,34 +4,35 @@
 
 Qwen3-ASR-0.6B를 Raspberry Pi 5의 ARM64 CPU에서 실행하며, **한국어 정확도와 처리 완료율을 유지하면서 인식 지연·메모리·발열을 줄이는** 프로젝트입니다.
 
-[현재 상태·다음 작업](docs/status.md) · [연속 입력 평가 기준](docs/research/qwen_realtime.md) · [최신 지연 개선 결과](results/summaries/optimization/realtime-schedule-20261111.md) · [실행 영상](results/summaries/optimization/realtime-video-20261111.md) · [실행 안내](docs/guides/qwen3_optimization.md)
+[현재 상태·다음 작업](docs/status.md) · [연속 입력 평가 기준](docs/research/qwen_realtime.md) · [최신 생성 중 표시 결과](results/summaries/optimization/realtime-token-20261111.md) · [갱신 간격 비교 영상](results/summaries/optimization/realtime-video-20261111.md) · [실행 안내](docs/guides/qwen3_optimization.md)
 
 ## 현재 진행 상태
 
-- **구현·검증:** ONNX/GGUF·VAD 보정·부분 갱신 간격을100개 단독 연속 입력에서 비교, 공통 채점·자원 계측
+- **구현·검증:** ONNX/GGUF·VAD 보정·부분 갱신 간격·생성 중 표시를 100개 단독 연속 입력에서 비교, 공통 채점·TTFT·자원 계측
 - **진행 방향:** Qwen 단독·1배속 연속 입력을 주 평가로 사용. ONNX INT8 2T에서 출발해 같은 파이프라인의 GGUF·실행 설정과 비교
-- **현재 과제:** Q8·VAD 보정·구간5초·첫1초/이후4초를 개발 기준으로 남은 첫 표시 지연·분할/문맥 손실 개선
-- **후속 구현·검증:** engine TTFT·청크 간 KV 재사용, 마이크 입력, 최종 장시간 안정성
+- **현재 과제:** Q8·VAD 보정·구간5초·첫1초/이후4초에 선택적 토큰 표시를 연결하고 임시 자막 품질·남은 연산 지연 개선
+- **후속 구현·검증:** 음성 처리/prefill·decode 최적화와 안전한 캐시 재사용, 마이크 입력, 최종 장시간 안정성
 
 현재는 WAV 파일로 검증합니다. 이전 Zip+VAD+Refine 자막은 `legacy/`에 보존합니다.
 
 ## 현재 연속 입력 결과
 
-RP5·Qwen3-ASR-0.6B GGUF Q8_0·2T·2026-11-11 실측입니다. 같은 Zeroth60개·FLEURS40개를 **14분51초·1배속·추가 무음0초** 공급하며 추론 중에도 다음 음성을 계속 받았습니다. VAD 보정·구간5초·첫 요청1초를 유지하고 이후 부분 갱신 간격만2초→4초로 바꿨습니다.
+RP5·Qwen3-ASR-0.6B GGUF Q8_0·2T·2026-11-11 실측입니다. 같은 Zeroth60개·FLEURS40개를 **14분51초·1배속·추가 무음0초** 공급하며 추론 중에도 다음 음성을 계속 받았습니다. VAD 보정·구간5초·첫1초/이후4초를 고정하고 같은 새 bridge에서 생성 중 토큰 전달만 끔/켬으로 비교했습니다.
 
-| 지표 | 갱신2초 — 새control | 갱신4초 |
+| 지표 | 토큰 전달 끔 — 새control | 켬 |
 | --- | ---: | ---: |
 | 연결 CER | 11.12% | **동일** |
 | 자막 없는 원음 / 호출 실패 / 입력 드롭 | 0 /0 /0 | 0 /0 /0 |
-| 첫 자막 p50 / p95 — 공통100개 | 6.92 /9.34초 | **4.01 /5.49초** |
-| 파일 끝 기준 반환 p95 — 공통100개 | 6.01초 | **4.13초** |
-| 입력 끝 전 첫 자막이 나온 원음 | 84개 | **100개** |
-| 부분 호출 / 부분 추론 시간 합계 | 132회 /307.34초 | **113회 /149.83초** |
-| 관측 최대 RSS | 1831.72MiB | 1831.20MiB |
+| 첫 표시 p50 / p95 — 공통100개 | 3.94 /5.49초 | **3.73 /5.19초** |
+| 4자 이상 첫 표시 p95 — 공통100개 | 8.82초 | **7.82초** |
+| 완성 문자열 첫 반환 p95 — 공통100개 | 5.49초 | 5.56초 |
+| 파일 끝 기준 최종 반환 p95 — 공통100개 | 4.07초 | 4.16초 |
+| 전체 추론 시간 합계 — 부분 재전사 포함 | 700.89초 | 716.28초 |
+| 관측 최대 RSS | 1829.23MiB | 1832.33MiB |
 
-**다음 개발 기준은 Q8·VAD 보정·구간5초·첫1초/이후4초입니다.** 최종210개 구간의 PCM·전사가 같고 부분 재전사 부담을 줄였습니다. 부분 표시 갱신은 줄어드는 절충이 있습니다. 파일 끝 기준 반환은 원음 입력 끝부터 마지막으로 겹치는 최종 호출 반환까지이며 음향 단어 끝 기준은 아닙니다. 양쪽 모두 열 제한을 관측했고 저지연 실사용 채택은 보류합니다. [조건·갱신 빈도·해석](results/summaries/optimization/realtime-schedule-20261111.md).
+**생성 중 표시는 선택 가능한 개발 구성으로 검증했습니다.** 최종210개 구간의 PCM·전사·토큰 ID는 같고 첫 텍스트 발행이 조금 빨라졌습니다. 전체 추론 시간은2.2% 늘어 추론 가속과 구분합니다. 생성 중 자막은 임시 가설이며 실제 화면·음향 단어 지연은 미측정입니다. 파일 끝 기준 반환은 원음 입력 끝부터 마지막으로 겹치는 최종 호출 반환까지입니다. 양쪽 모두 열 제한을 관측했고 저지연 실사용 채택은 보류합니다. [조건·TTFT·한계](results/summaries/optimization/realtime-token-20261111.md).
 
-평가 자료는 [고정100개 출처·선정 방법](docs/research/fixed100.md)을 따릅니다. [VAD 정확도 회복·8초 대조](results/summaries/optimization/realtime-accuracy-20261110.md), [ONNX/GGUF 비교](results/summaries/optimization/realtime100-backends-20261110.md), [ONNX 출발 기록·첫 중단](results/summaries/optimization/realtime100-onnx-20261110.md), [기존 batch 참조](results/summaries/optimization/fixed100-baseline-20261109.md)은 보존합니다. batch RTF는 실제 자막 반환 지연을 대신하지 않습니다.
+평가 자료는 [고정100개 출처·선정 방법](docs/research/fixed100.md)을 따릅니다. [갱신2초/4초 대조](results/summaries/optimization/realtime-schedule-20261111.md), [VAD 정확도 회복·8초 대조](results/summaries/optimization/realtime-accuracy-20261110.md), [ONNX/GGUF 비교](results/summaries/optimization/realtime100-backends-20261110.md), [ONNX 출발 기록·첫 중단](results/summaries/optimization/realtime100-onnx-20261110.md), [기존 batch 참조](results/summaries/optimization/fixed100-baseline-20261109.md)은 보존합니다. batch RTF는 실제 자막 반환 지연을 대신하지 않습니다.
 
 ## 빠른 확인
 
@@ -55,7 +56,7 @@ GGUF 실행 흐름은 **평가 실행기 → Python 어댑터 → C++ bridge →
 | 목적 | 먼저 볼 파일 |
 | --- | --- |
 | 모델 로딩·첫 추론·워밍업·반복 평가 | [qwen/benchmark.py](src/edge_asr/qwen/benchmark.py) |
-| 1배속 연속 입력·부분 자막·실제 반환 지연 | [qwen/realtime/](src/edge_asr/qwen/realtime/) |
+| 1배속 연속 입력·부분/생성 중 자막·실제 반환 지연 | [qwen/realtime/](src/edge_asr/qwen/realtime/) |
 | VAD 신호 보정·원음 보존 / 구간 분할 | [audio_policy.py](src/edge_asr/audio_policy.py) / [segmentation.py](src/edge_asr/segmentation.py), [vad_probability.py](src/edge_asr/vad_probability.py) |
 | GGUF 연결·음성 전달·출력 검사 | [qwen/gguf.py](src/edge_asr/qwen/gguf.py) |
 | KV 초기화·오디오/prefill·토큰 생성 제어 | [native/gguf/bridge.cpp](native/gguf/bridge.cpp) |

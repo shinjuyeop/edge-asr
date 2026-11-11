@@ -1,6 +1,6 @@
 # Qwen 최적화 실행 안내
 
-주 기준은 [Qwen 단독1배속 연속 입력](../research/qwen_realtime.md)입니다. [ONNX/GGUF](../../results/summaries/optimization/realtime100-backends-20261110.md)·[VAD 보정](../../results/summaries/optimization/realtime-accuracy-20261110.md)에 이어 [부분 갱신2초/4초 대조](../../results/summaries/optimization/realtime-schedule-20261111.md)를 완료했습니다. 다음 개발 기준은 **Q8·VAD 보정·구간5초·첫1초/이후4초**입니다. [파일별 batch 실측](../../results/summaries/optimization/fixed100-baseline-20261109.md)은 모델 정확도·처리 비용 진단용 보조 참조이며 [당시 프로토콜](../research/fixed100_baseline.md)과 함께 보존합니다.
+주 기준은 [Qwen 단독1배속 연속 입력](../research/qwen_realtime.md)입니다. [ONNX/GGUF](../../results/summaries/optimization/realtime100-backends-20261110.md)·[VAD 보정](../../results/summaries/optimization/realtime-accuracy-20261110.md)·[갱신2초/4초](../../results/summaries/optimization/realtime-schedule-20261111.md)·[생성 중 표시](../../results/summaries/optimization/realtime-token-20261111.md)를 비교했습니다. 개발 기준은 **Q8·VAD 보정·구간5초·첫1초/이후4초**이며 별도 bridge의 토큰 표시는 선택 옵션입니다. [파일별 batch 실측](../../results/summaries/optimization/fixed100-baseline-20261109.md)은 정확도·처리 비용 진단용 참조이며 [당시 프로토콜](../research/fixed100_baseline.md)과 함께 보존합니다.
 
 ## 환경과 설정
 
@@ -100,11 +100,28 @@ ONNX 측정은 guard와 자식 명령 모두 표의 ONNX Python·설정을 사�
 
 전체100개 입력에는 외부 `--timeout-s 1800`을 사용합니다. 이전 추가 무음1초 조건은 [별도 실측 보고서](../../results/summaries/optimization/realtime100-q8-20261110.md)에 보존합니다. 당시 고정12dB 증폭은 오류 증가로 폐기했고 소스 `be32cda`로 재현합니다. 현재 RMS 보정과 구분합니다. 양자화 후보는 `--config configs/quantization/q6_k.toml` 등으로 선택하며 대응하는 GGUF·자산 명세가 별도로 준비되어 있어야 합니다. VAD·부분 전사 조건은 비교 모델 사이에서 동일하게 지정합니다.
 
-## 생성 중 텍스트 배포 실험
+## 생성 중 텍스트 배포
 
 `--token-stream`은 `token_callback_v1`이 기록된 **별도 GGUF bridge 빌드**가 필요합니다. 기존 `configs/gguf.toml`은 예전 라이브러리를 유지하므로 새 실험 TOML의 `runtime_library`·`runtime_manifest`를 새 빌드 경로로 지정합니다. [빌드 안내](../../native/README.md), [검증 전 고정 조건](../research/qwen_realtime.md).
 
 같은1배속 명령에서 새 TOML·새 실행 ID를 사용하고 `--token-stream`을 추가하면 생성 중 UTF-8 문자열이 `생성중 partial/final`로 표시됩니다. 생성 중 final도 임시 가설이며 실제 확정은 종료 `result`입니다. 기존 `first_caption_from_track_start_s`는 완성 문자열 반환 지표로 유지하고, `first_visible_caption_from_track_start_s`·`token_timings`·`engine_ttft_s`를 구분해 확인합니다. engine TTFT는 native 호출 시작→첫 비EOG 생성 토큰이고 음성 처리/prefill을 포함하며 큐·Python 표시 시각과 다릅니다. 임시 가설은 최종 CER에 더하지 않고 이후 실패도 보존합니다.
+
+RP5의 `realtime-token-20261111-01`에 새 bridge와 실험 TOML을 준비했습니다. 아래는 같은 개발 조건으로 **새 실행 경로**에 실행하는 형식입니다. 다른 환경에서는 위 빌드 안내대로 새 bridge를 만들고 TOML의 library/manifest 경로를 맞춥니다. 기존 기본 설정은 유지합니다.
+
+```bash
+.venv/bin/python scripts/edge_asr.py tools thermal-run \
+  --output "results/optimization/opt3/<새ID>" \
+  --timeout-s 1800 --temperature-policy operational --skip-temperature-admission \
+  -- .venv/bin/python scripts/edge_asr.py tools replay-qwen3 \
+  --config results/optimization/opt3/realtime-token-20261111-01/gguf-token.toml \
+  --manifest "<동일순서-manifest.jsonl>" --output "results/optimization/opt3/<새ID>" \
+  --gap-s 0 --vad-threshold 0.3 --silence-policy skip-zero \
+  --vad-preprocess rms26-floor80 --vad-max-speech-s 5 --max-segment-s 5 \
+  --partial-after-s 1 --partial-interval-s 4 --drain-timeout-s 30 --queue-capacity 4 \
+  --token-stream
+```
+
+[같은100개 대조](../../results/summaries/optimization/realtime-token-20261111.md)에서 첫 표시 p50/p95는3.94/5.49→3.73/5.19초·CER11.12% 동일이었습니다. 전체 추론 시간은2.2% 늘고 최종 반환 p95도4.07→4.16초로 늘었습니다. 표시 개선으로 해석하며 임시 자막 품질·마이크·장시간 운영은 후속입니다.
 
 ## 이전 실험 재현
 

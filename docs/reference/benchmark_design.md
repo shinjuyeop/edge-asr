@@ -6,7 +6,7 @@
 
 ## 신규 OPT 적용
 
-Qwen OPT에서도 아래 공통 계약을 유지합니다. 엔진 TTFT(요청 수락→첫 출력 토큰), 첫 오디오→첫 비어 있지 않은 자막, 고정된 정답 음향 끝→최초/안정된 전사를 구분합니다. 현재 완성 전사만 반환하는 API에서 TTFT는 미계측이며 batch 시간이나 기존 Refine 반환 p95로 대신하지 않습니다. 구간 분할을 바꾸는 비교에는 고정 음향 앵커를 사용합니다. [OPT 계획](../research/qwen3_optimization.md).
+Qwen OPT에서도 아래 공통 계약을 유지합니다. 요청 수락→첫 토큰과 **native 호출 시작→첫 비EOG 토큰(engine TTFT)**의 범위를 구분하고 큐 대기를 별도로 기록합니다. 첫 오디오→첫 텍스트 발행, 고정 음향 정답 끝→최초/안정된 전사, 실제 화면 표시도 서로 다른 지표입니다. 최신 별도 GGUF bridge는 native TTFT와 생성 중 UTF-8 발행을 계측합니다. 기존 미계측 경로는null로 남기며 batch 시간이나 기존 Refine 반환 p95로 대신하지 않습니다. 구간 분할을 바꾸는 비교에는 고정 앵커를 사용합니다. [OPT 계획](../research/qwen3_optimization.md), [토큰 계측·범위](../../results/summaries/optimization/realtime-token-20261111.md).
 
 ## 시간 기준과 모드
 
