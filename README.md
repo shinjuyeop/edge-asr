@@ -4,33 +4,34 @@
 
 Qwen3-ASR-0.6B를 Raspberry Pi 5의 ARM64 CPU에서 실행하며, **한국어 정확도와 처리 완료율을 유지하면서 인식 지연·메모리·발열을 줄이는** 프로젝트입니다.
 
-[현재 상태·다음 작업](docs/status.md) · [연속 입력 평가 기준](docs/research/qwen_realtime.md) · [정확도 개선 결과](results/summaries/optimization/realtime-accuracy-20261110.md) · [실행 안내](docs/guides/qwen3_optimization.md)
+[현재 상태·다음 작업](docs/status.md) · [연속 입력 평가 기준](docs/research/qwen_realtime.md) · [최신 지연 개선 결과](results/summaries/optimization/realtime-schedule-20261111.md) · [실행 안내](docs/guides/qwen3_optimization.md)
 
 ## 현재 진행 상태
 
-- **구현·검증:** ONNX/GGUF 단독 연속 입력100개 비교, Q8 고정 VAD 보정·구간 길이 대조, 공통 채점·자원 계측
+- **구현·검증:** ONNX/GGUF·VAD 보정·부분 갱신 간격을100개 단독 연속 입력에서 비교, 공통 채점·자원 계측
 - **진행 방향:** Qwen 단독·1배속 연속 입력을 주 평가로 사용. ONNX INT8 2T에서 출발해 같은 파이프라인의 GGUF·실행 설정과 비교
-- **현재 과제:** Q8·VAD 보정·5초 구간을 개발 기준으로 첫 자막 중앙값·분할/문맥 손실·중복 추론·큐 대기 개선
+- **현재 과제:** Q8·VAD 보정·구간5초·첫1초/이후4초를 개발 기준으로 남은 첫 표시 지연·분할/문맥 손실 개선
 - **후속 구현·검증:** engine TTFT·청크 간 KV 재사용, 마이크 입력, 최종 장시간 안정성
 
 현재는 WAV 파일로 검증합니다. 이전 Zip+VAD+Refine 자막은 `legacy/`에 보존합니다.
 
 ## 현재 연속 입력 결과
 
-RP5·Qwen3-ASR-0.6B GGUF Q8_0·2T·2026-11-10 실측입니다. 같은 Zeroth60개·FLEURS40개를 **14분51초·1배속·추가 무음0초** 공급하며 추론 중에도 다음 음성을 계속 받았습니다. 모델은 고정하고 VAD 입력 보정과 분할을 대조했습니다. ASR 파형은 원음을 유지합니다.
+RP5·Qwen3-ASR-0.6B GGUF Q8_0·2T·2026-11-11 실측입니다. 같은 Zeroth60개·FLEURS40개를 **14분51초·1배속·추가 무음0초** 공급하며 추론 중에도 다음 음성을 계속 받았습니다. VAD 보정·구간5초·첫 요청1초를 유지하고 이후 부분 갱신 간격만2초→4초로 바꿨습니다.
 
-| 지표 | 기존 Q8·5초 | VAD 보정·5초 | 보정·판정30초·구간8초 |
-| --- | ---: | ---: | ---: |
-| 연결 CER ↓ | 13.23% | **11.12%** | 8.26% |
-| 자막 없는 원음 | 1 | **0** | 0 |
-| 호출 실패 / 입력 드롭 | 0 /0 | 0 /0 | 0 /0 |
-| 첫 자막 p50 / p95 — 공통99개 | 6.16 /10.92초 | 6.81 /9.84초 | 8.97 /15.09초 |
-| 파일 끝 기준 반환 p95 — 공통99개 | 6.59초 | 6.16초 | 10.35초 |
-| 관측 최대 RSS | 1830.53MiB | 1831.22MiB | 1832.03MiB |
+| 지표 | 갱신2초 — 새control | 갱신4초 |
+| --- | ---: | ---: |
+| 연결 CER | 11.12% | **동일** |
+| 자막 없는 원음 / 호출 실패 / 입력 드롭 | 0 /0 /0 | 0 /0 /0 |
+| 첫 자막 p50 / p95 — 공통100개 | 6.92 /9.34초 | **4.01 /5.49초** |
+| 파일 끝 기준 반환 p95 — 공통100개 | 6.01초 | **4.13초** |
+| 입력 끝 전 첫 자막이 나온 원음 | 84개 | **100개** |
+| 부분 호출 / 부분 추론 시간 합계 | 132회 /307.34초 | **113회 /149.83초** |
+| 관측 최대 RSS | 1831.72MiB | 1831.20MiB |
 
-**다음 개발 기준은 VAD 보정만 적용한5초 구성입니다.** 오류81개·2.10%p를 줄이고 첫 자막 p95도 짧아졌지만, 첫 자막 중앙값은 약0.64초 늘었습니다.8초 복합 구성은 정확도 참고로 보존합니다. 파일 끝 기준 반환은 원음 입력 끝부터 마지막으로 겹치는 최종 호출 반환까지이며 음향 단어 끝 기준은 아닙니다. 세 구성 모두 열 제한을 관측했고 저지연 실사용 채택은 보류합니다. [조건·진단·해석](results/summaries/optimization/realtime-accuracy-20261110.md).
+**다음 개발 기준은 Q8·VAD 보정·구간5초·첫1초/이후4초입니다.** 최종210개 구간의 PCM·전사가 같고 부분 재전사 부담을 줄였습니다. 부분 표시 갱신은 줄어드는 절충이 있습니다. 파일 끝 기준 반환은 원음 입력 끝부터 마지막으로 겹치는 최종 호출 반환까지이며 음향 단어 끝 기준은 아닙니다. 양쪽 모두 열 제한을 관측했고 저지연 실사용 채택은 보류합니다. [조건·갱신 빈도·해석](results/summaries/optimization/realtime-schedule-20261111.md).
 
-평가 자료는 [고정100개 출처·선정 방법](docs/research/fixed100.md)을 따릅니다. [ONNX/GGUF 비교](results/summaries/optimization/realtime100-backends-20261110.md), [ONNX 출발 기록·첫 중단](results/summaries/optimization/realtime100-onnx-20261110.md), [기존 batch 참조](results/summaries/optimization/fixed100-baseline-20261109.md), [추가 무음1초 Q8](results/summaries/optimization/realtime100-q8-20261110.md)은 보존합니다. batch RTF는 실제 자막 반환 지연을 대신하지 않습니다.
+평가 자료는 [고정100개 출처·선정 방법](docs/research/fixed100.md)을 따릅니다. [VAD 정확도 회복·8초 대조](results/summaries/optimization/realtime-accuracy-20261110.md), [ONNX/GGUF 비교](results/summaries/optimization/realtime100-backends-20261110.md), [ONNX 출발 기록·첫 중단](results/summaries/optimization/realtime100-onnx-20261110.md), [기존 batch 참조](results/summaries/optimization/fixed100-baseline-20261109.md)은 보존합니다. batch RTF는 실제 자막 반환 지연을 대신하지 않습니다.
 
 ## 빠른 확인
 

@@ -1,6 +1,6 @@
 # Qwen 최적화 실행 안내
 
-주 기준은 [Qwen 단독1배속 연속 입력](../research/qwen_realtime.md)입니다. [ONNX/GGUF 비교](../../results/summaries/optimization/realtime100-backends-20261110.md)에 이어 [VAD 보정·구간 길이 대조](../../results/summaries/optimization/realtime-accuracy-20261110.md)를 완료했습니다. 다음 개발 기준은 Q8·VAD 보정·5초 구간입니다. [파일별 batch 실측](../../results/summaries/optimization/fixed100-baseline-20261109.md)은 모델 정확도·처리 비용 진단용 보조 참조이며 [당시 프로토콜](../research/fixed100_baseline.md)과 함께 보존합니다.
+주 기준은 [Qwen 단독1배속 연속 입력](../research/qwen_realtime.md)입니다. [ONNX/GGUF](../../results/summaries/optimization/realtime100-backends-20261110.md)·[VAD 보정](../../results/summaries/optimization/realtime-accuracy-20261110.md)에 이어 [부분 갱신2초/4초 대조](../../results/summaries/optimization/realtime-schedule-20261111.md)를 완료했습니다. 다음 개발 기준은 **Q8·VAD 보정·구간5초·첫1초/이후4초**입니다. [파일별 batch 실측](../../results/summaries/optimization/fixed100-baseline-20261109.md)은 모델 정확도·처리 비용 진단용 보조 참조이며 [당시 프로토콜](../research/fixed100_baseline.md)과 함께 보존합니다.
 
 ## 환경과 설정
 
@@ -89,10 +89,12 @@ ONNX 측정은 guard와 자식 명령 모두 표의 ONNX Python·설정을 사�
 ```bash
 --gap-s 0 --vad-threshold 0.3 --silence-policy skip-zero \
 --vad-preprocess rms26-floor80 --vad-max-speech-s 5 --max-segment-s 5 \
---partial-after-s 1 --partial-interval-s 2 --drain-timeout-s 30 --queue-capacity 4
+--partial-after-s 1 --partial-interval-s 4 --drain-timeout-s 30 --queue-capacity 4
 ```
 
-이 구성은 같은100개에서 CER13.23→11.12%·미출력1→0으로 개선됐으나 첫 자막 중앙값은6.16→6.81초로 늘었습니다. 첫 자막 p95는10.92→9.84초입니다. 저지연 실사용 채택은 보류합니다. `--vad-max-speech-s 30`은 VAD 판정 강화 시점만 바꾸며 ASR 상한과는 독립입니다. 보정·판정30초·구간8초 구성은 CER8.26%였지만 첫 자막 p95가15.09초로 늘어 정확도 참고로 보존합니다. [조건·전체 결과](../../results/summaries/optimization/realtime-accuracy-20261110.md).
+2026-11-11 같은100개 새 대조에서2초→4초 갱신은 최종 전사·CER11.12%를 유지하며 첫 자막 p50/p95를6.92/9.34→4.01/5.49초로 줄였습니다. 부분 자막 갱신은 줄어드는 절충이 있으며 CLI 기본값은 유지합니다. [조건·지연·갱신 빈도](../../results/summaries/optimization/realtime-schedule-20261111.md). 저지연 실사용 채택은 보류합니다.
+
+이전 보정 대조의 CER13.23→11.12%와 구간8초 복합 구성의8.26%는 [정확도 회복 기록](../../results/summaries/optimization/realtime-accuracy-20261110.md)에 보존합니다. `--vad-max-speech-s 30`은 VAD 판정 강화 시점만 바꾸며 ASR 상한과는 독립입니다.8초 복합 구성은 첫 자막 p95가15.09초로 늘어 정확도 참고로 둡니다.
 
 대조는 같은 명령에 `--no-partials`를 추가해 구간/PCM은 유지하고 부분 호출만 끕니다. 현재 기본 `--silence-policy skip-zero`는 완전히0인 PCM의 ASR 호출을 생략하고 구간·해시·이유를 따로 기록합니다. 낮은 진폭 음성을 임계값으로 제거하지 않습니다. 이전 동작은 `--silence-policy preserve`로 재현합니다.
 
