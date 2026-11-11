@@ -230,7 +230,7 @@ def main():
         help="VAD가 판정을 강화하는 활성 길이. ASR 구간 상한과 독립; 기본5초 보존",
     )
     parser.add_argument("--partial-after-s", type=float, default=2, choices=(1, 2, 3))
-    parser.add_argument("--partial-interval-s", type=float, default=1, choices=(0.5, 1, 2))
+    parser.add_argument("--partial-interval-s", type=float, default=1, choices=(0.5, 1, 2, 4))
     parser.add_argument("--max-segment-s", type=int, default=5, choices=(3, 5, 8))
     parser.add_argument("--drain-timeout-s", type=int, default=30, choices=(10, 30, 60))
     parser.add_argument("--queue-capacity", type=int, default=4, choices=(2, 4, 8))
