@@ -1,0 +1,980 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-11",
+  "kind": "qwen3_cpu_thread_comparison",
+  "source_commit": "306f4a633f5f43b75820cc0c71591f524022779c",
+  "raw_path": "results/optimization/opt3/realtime-threads-20261111-01",
+  "model_without_threads": {
+    "quantization": "q8_0",
+    "max_total_len": 512,
+    "max_new_tokens": 128,
+    "family": "qwen3_gguf",
+    "path": "models/qwen3-opt/gguf-q8-20261109-01",
+    "runtime_library": "runtimes/qwen3-opt/token-20261111-01/bridge/libedge_asr_gguf.so",
+    "runtime_manifest": "runtimes/qwen3-opt/token-20261111-01/bridge/build.json",
+    "language": "ko"
+  },
+  "pilot_cases": {
+    "2t-before": {
+      "raw_path": "results/optimization/opt3/realtime-threads-20261111-01/pilot/2t-before",
+      "source_commit": "306f4a633f5f43b75820cc0c71591f524022779c",
+      "worker_sha256": "ee056454fbd6238da8d9e06902281061f193868987200cf949c2a998ac525d01",
+      "threads": 2,
+      "complete": true,
+      "operational_valid": true,
+      "limit_verified": true,
+      "source_count": 6,
+      "frames": 969980,
+      "manifest_sha256": "b9dabb0e87600d49c6b9d07184eee5170497db7dd1f15fe6a52f186583444b80",
+      "failed_calls": 0,
+      "input_drops": 0,
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 17,
+        "deletions": 29,
+        "insertions": 4,
+        "errors": 50,
+        "cer": 0.17857142857142858
+      },
+      "final_calls": 15,
+      "partial_calls": 9,
+      "first_visible_s": {
+        "n": 6,
+        "mean": 3.1797859239961834,
+        "p50": 3.3537217649929225,
+        "p95": 4.442367026995633,
+        "max": 4.442367026995633
+      },
+      "missing_first_visible": 0,
+      "file_end_s": {
+        "n": 6,
+        "mean": 1.9085852821687777,
+        "p50": 2.056406168004031,
+        "p95": 2.835154844003963,
+        "max": 2.835154844003963
+      },
+      "final_serial_s": 35.22110396504286,
+      "total_serial_s": 46.70150452705275,
+      "engine_ttft_s": {
+        "n": 24,
+        "mean": 1.2148116239583333,
+        "p50": 0.882427975,
+        "p95": 2.276933609,
+        "max": 2.315410975
+      },
+      "final_engine_ttft_s": {
+        "n": 15,
+        "mean": 1.4177394424666665,
+        "p50": 1.222705831,
+        "p95": 2.315410975,
+        "max": 2.315410975
+      },
+      "rss_max_mib": 1723.921875,
+      "caption_stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 261,
+        "normalized_revisions": 1,
+        "retracted_suffix_characters": 1,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 52,
+        "segments_with_display": 15,
+        "revised_segments": 1,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 9,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 9,
+          "whole_partial_is_final_prefix": 8,
+          "partial_characters": 58,
+          "retained_prefix_characters": 57,
+          "retained_prefix_fraction": 0.9827586206896551
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "thermal": {
+        "start_mc": 61150,
+        "max_mc": 79300,
+        "end_mc": 72150,
+        "current_limits": [
+          0
+        ],
+        "min_arm_clock_hz": 1700021120,
+        "max_arm_clock_hz": 2400037120
+      },
+      "runtime_configuration": {
+        "audio_sample_rate": 16000,
+        "cache_type_k": "f16",
+        "cache_type_v": "f16",
+        "context": 512,
+        "flash_attention_setting": -1,
+        "llama_version": "0.9.0-dev",
+        "n_batch": 512,
+        "n_ubatch": 512,
+        "system_info": "CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | ",
+        "threads": 2,
+        "threads_batch": 2
+      },
+      "final_signature_sha256": "183e5e593e3af95b29b15585d853740753c9ce5399543c9def8f86eb791a73ab",
+      "first_completed_s": {
+        "n": 6,
+        "mean": 3.579749773831514,
+        "p50": 3.64346285399294,
+        "p95": 4.969508974003837,
+        "max": 4.969508974003837
+      },
+      "first4_alnum_s": {
+        "n": 6,
+        "mean": 3.912648234662134,
+        "p50": 3.5281426219946006,
+        "p95": 5.758574099992984,
+        "max": 5.758574099992984
+      },
+      "serial_by_kind": {
+        "partial": {
+          "calls": 9,
+          "inference_s": 11.48040056200989,
+          "audio_and_prefill_s": 7.819374342,
+          "token_decode_s": 3.5285102769999996,
+          "kv_reset_s": 0.06153271600000001
+        },
+        "final": {
+          "calls": 15,
+          "inference_s": 35.22110396504286,
+          "audio_and_prefill_s": 21.145292389000005,
+          "token_decode_s": 13.610228374000002,
+          "kv_reset_s": 0.1028032
+        }
+      }
+    },
+    "3t": {
+      "raw_path": "results/optimization/opt3/realtime-threads-20261111-01/pilot/3t",
+      "source_commit": "306f4a633f5f43b75820cc0c71591f524022779c",
+      "worker_sha256": "b0c5682c18ee5358bbac5d8deb1e49c71ccba944d3a1fc397e408cbe0a71679b",
+      "threads": 3,
+      "complete": true,
+      "operational_valid": true,
+      "limit_verified": true,
+      "source_count": 6,
+      "frames": 969980,
+      "manifest_sha256": "b9dabb0e87600d49c6b9d07184eee5170497db7dd1f15fe6a52f186583444b80",
+      "failed_calls": 0,
+      "input_drops": 0,
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 17,
+        "deletions": 29,
+        "insertions": 4,
+        "errors": 50,
+        "cer": 0.17857142857142858
+      },
+      "final_calls": 15,
+      "partial_calls": 9,
+      "first_visible_s": {
+        "n": 6,
+        "mean": 2.802482327992271,
+        "p50": 2.793392175989691,
+        "p95": 4.247265788994262,
+        "max": 4.247265788994262
+      },
+      "missing_first_visible": 0,
+      "file_end_s": {
+        "n": 6,
+        "mean": 1.4187676868266035,
+        "p50": 1.3544563379971066,
+        "p95": 2.348041363998899,
+        "max": 2.348041363998899
+      },
+      "final_serial_s": 31.844962000992382,
+      "total_serial_s": 42.44628989700868,
+      "engine_ttft_s": {
+        "n": 24,
+        "mean": 0.9335606142916667,
+        "p50": 0.714397816,
+        "p95": 1.659768577,
+        "max": 1.662238578
+      },
+      "final_engine_ttft_s": {
+        "n": 15,
+        "mean": 1.0798069355333333,
+        "p50": 0.971014315,
+        "p95": 1.662238578,
+        "max": 1.662238578
+      },
+      "rss_max_mib": 1723.4375,
+      "caption_stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 263,
+        "normalized_revisions": 2,
+        "retracted_suffix_characters": 2,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 53,
+        "segments_with_display": 15,
+        "revised_segments": 2,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 9,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 9,
+          "whole_partial_is_final_prefix": 7,
+          "partial_characters": 60,
+          "retained_prefix_characters": 58,
+          "retained_prefix_fraction": 0.9666666666666667
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "thermal": {
+        "start_mc": 73250,
+        "max_mc": 84250,
+        "end_mc": 76550,
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "min_arm_clock_hz": 1900016256,
+        "max_arm_clock_hz": 2400037120
+      },
+      "runtime_configuration": {
+        "audio_sample_rate": 16000,
+        "cache_type_k": "f16",
+        "cache_type_v": "f16",
+        "context": 512,
+        "flash_attention_setting": -1,
+        "llama_version": "0.9.0-dev",
+        "n_batch": 512,
+        "n_ubatch": 512,
+        "system_info": "CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | ",
+        "threads": 3,
+        "threads_batch": 3
+      },
+      "final_signature_sha256": "183e5e593e3af95b29b15585d853740753c9ce5399543c9def8f86eb791a73ab",
+      "first_completed_s": {
+        "n": 6,
+        "mean": 3.264142885993584,
+        "p50": 3.1283458969912026,
+        "p95": 4.844567772996378,
+        "max": 4.844567772996378
+      },
+      "first4_alnum_s": {
+        "n": 6,
+        "mean": 3.524934578328238,
+        "p50": 3.075307239993708,
+        "p95": 5.38406396699429,
+        "max": 5.38406396699429
+      },
+      "serial_by_kind": {
+        "partial": {
+          "calls": 9,
+          "inference_s": 10.6013278960163,
+          "audio_and_prefill_s": 6.135859531,
+          "token_decode_s": 4.289294203,
+          "kv_reset_s": 0.06390884000000001
+        },
+        "final": {
+          "calls": 15,
+          "inference_s": 31.844962000992382,
+          "audio_and_prefill_s": 16.070962419999997,
+          "token_decode_s": 15.362500675999998,
+          "kv_reset_s": 0.10768719599999999
+        }
+      }
+    },
+    "4t": {
+      "raw_path": "results/optimization/opt3/realtime-threads-20261111-01/pilot/4t",
+      "source_commit": "306f4a633f5f43b75820cc0c71591f524022779c",
+      "worker_sha256": "6f8aa41522042c258e87229cdb84e15e490d400bc87b13639f6ce7ff4301219a",
+      "threads": 4,
+      "complete": true,
+      "operational_valid": true,
+      "limit_verified": true,
+      "source_count": 6,
+      "frames": 969980,
+      "manifest_sha256": "b9dabb0e87600d49c6b9d07184eee5170497db7dd1f15fe6a52f186583444b80",
+      "failed_calls": 0,
+      "input_drops": 0,
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 17,
+        "deletions": 29,
+        "insertions": 4,
+        "errors": 50,
+        "cer": 0.17857142857142858
+      },
+      "final_calls": 15,
+      "partial_calls": 9,
+      "first_visible_s": {
+        "n": 6,
+        "mean": 2.888469726827306,
+        "p50": 3.018255774991121,
+        "p95": 4.211895484992418,
+        "max": 4.211895484992418
+      },
+      "missing_first_visible": 0,
+      "file_end_s": {
+        "n": 6,
+        "mean": 1.581295438331571,
+        "p50": 1.466513831996707,
+        "p95": 2.5665991979984106,
+        "max": 2.5665991979984106
+      },
+      "final_serial_s": 33.24312708199432,
+      "total_serial_s": 44.12073385399708,
+      "engine_ttft_s": {
+        "n": 24,
+        "mean": 0.910290277625,
+        "p50": 0.734806201,
+        "p95": 1.570496089,
+        "max": 1.580909913
+      },
+      "final_engine_ttft_s": {
+        "n": 15,
+        "mean": 1.042136889666667,
+        "p50": 0.95583745,
+        "p95": 1.580909913,
+        "max": 1.580909913
+      },
+      "rss_max_mib": 1723.765625,
+      "caption_stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 261,
+        "normalized_revisions": 1,
+        "retracted_suffix_characters": 1,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 52,
+        "segments_with_display": 15,
+        "revised_segments": 1,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 9,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 9,
+          "whole_partial_is_final_prefix": 8,
+          "partial_characters": 58,
+          "retained_prefix_characters": 57,
+          "retained_prefix_fraction": 0.9827586206896551
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "thermal": {
+        "start_mc": 74900,
+        "max_mc": 85350,
+        "end_mc": 77100,
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "min_arm_clock_hz": 1500009472,
+        "max_arm_clock_hz": 2400037120
+      },
+      "runtime_configuration": {
+        "audio_sample_rate": 16000,
+        "cache_type_k": "f16",
+        "cache_type_v": "f16",
+        "context": 512,
+        "flash_attention_setting": -1,
+        "llama_version": "0.9.0-dev",
+        "n_batch": 512,
+        "n_ubatch": 512,
+        "system_info": "CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | ",
+        "threads": 4,
+        "threads_batch": 4
+      },
+      "final_signature_sha256": "183e5e593e3af95b29b15585d853740753c9ce5399543c9def8f86eb791a73ab",
+      "first_completed_s": {
+        "n": 6,
+        "mean": 3.408809459164564,
+        "p50": 3.4722860859975917,
+        "p95": 4.86538881798915,
+        "max": 4.86538881798915
+      },
+      "first4_alnum_s": {
+        "n": 6,
+        "mean": 3.618284433493429,
+        "p50": 3.3141811449960805,
+        "p95": 5.286713198991492,
+        "max": 5.286713198991492
+      },
+      "serial_by_kind": {
+        "partial": {
+          "calls": 9,
+          "inference_s": 10.877606772002764,
+          "audio_and_prefill_s": 6.142211916,
+          "token_decode_s": 4.5850897989999995,
+          "kv_reset_s": 0.0637306
+        },
+        "final": {
+          "calls": 15,
+          "inference_s": 33.24312708199432,
+          "audio_and_prefill_s": 15.504574743000004,
+          "token_decode_s": 17.336449177,
+          "kv_reset_s": 0.108796292
+        }
+      }
+    },
+    "2t-after": {
+      "raw_path": "results/optimization/opt3/realtime-threads-20261111-01/pilot/2t-after",
+      "source_commit": "306f4a633f5f43b75820cc0c71591f524022779c",
+      "worker_sha256": "faefcaa5d2627e929ee06d0e797c7647509525ce3950d51615f0520ad75c8d04",
+      "threads": 2,
+      "complete": true,
+      "operational_valid": true,
+      "limit_verified": true,
+      "source_count": 6,
+      "frames": 969980,
+      "manifest_sha256": "b9dabb0e87600d49c6b9d07184eee5170497db7dd1f15fe6a52f186583444b80",
+      "failed_calls": 0,
+      "input_drops": 0,
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 17,
+        "deletions": 29,
+        "insertions": 4,
+        "errors": 50,
+        "cer": 0.17857142857142858
+      },
+      "final_calls": 15,
+      "partial_calls": 9,
+      "first_visible_s": {
+        "n": 6,
+        "mean": 3.234368124993964,
+        "p50": 3.4454282349877756,
+        "p95": 4.4479390099935685,
+        "max": 4.4479390099935685
+      },
+      "missing_first_visible": 0,
+      "file_end_s": {
+        "n": 6,
+        "mean": 2.002569995495568,
+        "p50": 2.052802510994951,
+        "p95": 2.9324728559948277,
+        "max": 2.9324728559948277
+      },
+      "final_serial_s": 35.75965029298095,
+      "total_serial_s": 47.46919093198085,
+      "engine_ttft_s": {
+        "n": 24,
+        "mean": 1.2262679978333335,
+        "p50": 0.902886484,
+        "p95": 2.295675616,
+        "max": 2.298966271
+      },
+      "final_engine_ttft_s": {
+        "n": 15,
+        "mean": 1.4300738458666666,
+        "p50": 1.248513668,
+        "p95": 2.298966271,
+        "max": 2.298966271
+      },
+      "rss_max_mib": 1723.875,
+      "caption_stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 261,
+        "normalized_revisions": 1,
+        "retracted_suffix_characters": 1,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 52,
+        "segments_with_display": 15,
+        "revised_segments": 1,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 9,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 9,
+          "whole_partial_is_final_prefix": 8,
+          "partial_characters": 58,
+          "retained_prefix_characters": 57,
+          "retained_prefix_fraction": 0.9827586206896551
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "thermal": {
+        "start_mc": 76550,
+        "max_mc": 84250,
+        "end_mc": 76550,
+        "current_limits": [
+          0,
+          8
+        ],
+        "min_arm_clock_hz": 1500016128,
+        "max_arm_clock_hz": 2400037120
+      },
+      "runtime_configuration": {
+        "audio_sample_rate": 16000,
+        "cache_type_k": "f16",
+        "cache_type_v": "f16",
+        "context": 512,
+        "flash_attention_setting": -1,
+        "llama_version": "0.9.0-dev",
+        "n_batch": 512,
+        "n_ubatch": 512,
+        "system_info": "CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | ",
+        "threads": 2,
+        "threads_batch": 2
+      },
+      "final_signature_sha256": "183e5e593e3af95b29b15585d853740753c9ce5399543c9def8f86eb791a73ab",
+      "first_completed_s": {
+        "n": 6,
+        "mean": 3.6498052524938633,
+        "p50": 3.813259116991656,
+        "p95": 4.992138110994709,
+        "max": 4.992138110994709
+      },
+      "first4_alnum_s": {
+        "n": 6,
+        "mean": 3.9720303328288136,
+        "p50": 3.6870589499950874,
+        "p95": 5.759028929998749,
+        "max": 5.759028929998749
+      },
+      "serial_by_kind": {
+        "partial": {
+          "calls": 9,
+          "inference_s": 11.709540638999897,
+          "audio_and_prefill_s": 7.907460089,
+          "token_decode_s": 3.6641680289999994,
+          "kv_reset_s": 0.063276206
+        },
+        "final": {
+          "calls": 15,
+          "inference_s": 35.75965029298095,
+          "audio_and_prefill_s": 21.324127499000003,
+          "token_decode_s": 13.994572934,
+          "kv_reset_s": 0.108771715
+        }
+      }
+    }
+  },
+  "pilot_checks": {
+    "3t": {
+      "2t-before": {
+        "input_and_guard_complete": true,
+        "no_failure_drop_missing": true,
+        "same_final_pcm_text_token_ids": true,
+        "same_score": true,
+        "same_model_and_input": true,
+        "no_prefix_replay_revision": true,
+        "final_compute_at_least5pct_faster": true,
+        "total_compute_not_slower": true,
+        "first_p50_not_worse": true,
+        "first_p95_not_worse": true,
+        "file_end_p95_within_tolerance": true
+      },
+      "2t-after": {
+        "input_and_guard_complete": true,
+        "no_failure_drop_missing": true,
+        "same_final_pcm_text_token_ids": true,
+        "same_score": true,
+        "same_model_and_input": true,
+        "no_prefix_replay_revision": true,
+        "final_compute_at_least5pct_faster": true,
+        "total_compute_not_slower": true,
+        "first_p50_not_worse": true,
+        "first_p95_not_worse": true,
+        "file_end_p95_within_tolerance": true
+      }
+    },
+    "4t": {
+      "2t-before": {
+        "input_and_guard_complete": true,
+        "no_failure_drop_missing": true,
+        "same_final_pcm_text_token_ids": true,
+        "same_score": true,
+        "same_model_and_input": true,
+        "no_prefix_replay_revision": true,
+        "final_compute_at_least5pct_faster": true,
+        "total_compute_not_slower": true,
+        "first_p50_not_worse": true,
+        "first_p95_not_worse": true,
+        "file_end_p95_within_tolerance": true
+      },
+      "2t-after": {
+        "input_and_guard_complete": true,
+        "no_failure_drop_missing": true,
+        "same_final_pcm_text_token_ids": true,
+        "same_score": true,
+        "same_model_and_input": true,
+        "no_prefix_replay_revision": true,
+        "final_compute_at_least5pct_faster": true,
+        "total_compute_not_slower": true,
+        "first_p50_not_worse": true,
+        "first_p95_not_worse": true,
+        "file_end_p95_within_tolerance": true
+      }
+    }
+  },
+  "selected_pilot_threads": 3,
+  "full100_cases": {
+    "2t": {
+      "raw_path": "results/optimization/opt3/realtime-threads-20261111-01/full100/2t",
+      "source_commit": "306f4a633f5f43b75820cc0c71591f524022779c",
+      "worker_sha256": "46b492709e9361e11d72c6ce5f96fb9909ae37219e427bbbeff546138d047bb8",
+      "threads": 2,
+      "complete": true,
+      "operational_valid": true,
+      "limit_verified": true,
+      "source_count": 100,
+      "frames": 14258317,
+      "manifest_sha256": "75ba1226dddfa0defb97f6fdbba89c31a762b541beb41299cdb0ac8490c45a06",
+      "failed_calls": 0,
+      "input_drops": 0,
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 3848,
+        "substitutions": 195,
+        "deletions": 157,
+        "insertions": 76,
+        "errors": 428,
+        "cer": 0.11122661122661123
+      },
+      "final_calls": 210,
+      "partial_calls": 112,
+      "first_visible_s": {
+        "n": 100,
+        "mean": 3.8146150238574617,
+        "p50": 3.759547861998385,
+        "p95": 5.201236108991679,
+        "max": 5.673457238003607
+      },
+      "missing_first_visible": 0,
+      "file_end_s": {
+        "n": 100,
+        "mean": 2.7289157711174727,
+        "p50": 2.765270485003839,
+        "p95": 4.217143357998111,
+        "max": 4.6893011830030105
+      },
+      "final_serial_s": 570.261853780903,
+      "total_serial_s": 722.8947314639518,
+      "engine_ttft_s": {
+        "n": 322,
+        "mean": 1.390249478322982,
+        "p50": 1.004915627,
+        "p95": 2.489301546,
+        "max": 2.643626838
+      },
+      "final_engine_ttft_s": {
+        "n": 210,
+        "mean": 1.6186039357190474,
+        "p50": 1.691511131,
+        "p95": 2.513104032,
+        "max": 2.643626838
+      },
+      "rss_max_mib": 1831.28125,
+      "caption_stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 4048,
+        "normalized_revisions": 43,
+        "retracted_suffix_characters": 159,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 461,
+        "segments_with_display": 210,
+        "revised_segments": 43,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 98,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 112,
+          "whole_partial_is_final_prefix": 72,
+          "partial_characters": 678,
+          "retained_prefix_characters": 527,
+          "retained_prefix_fraction": 0.7772861356932154
+        },
+        "finals_shorter_than4": 30,
+        "first4_to_final_consistent4_s": {
+          "n": 180,
+          "mean": 0.505110172955675,
+          "p50": 0.0,
+          "p95": 4.292037286999403,
+          "max": 5.41953028300486
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "thermal": {
+        "start_mc": 77650,
+        "max_mc": 85900,
+        "end_mc": 74350,
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "min_arm_clock_hz": 1500012800,
+        "max_arm_clock_hz": 2400037120
+      },
+      "runtime_configuration": {
+        "audio_sample_rate": 16000,
+        "cache_type_k": "f16",
+        "cache_type_v": "f16",
+        "context": 512,
+        "flash_attention_setting": -1,
+        "llama_version": "0.9.0-dev",
+        "n_batch": 512,
+        "n_ubatch": 512,
+        "system_info": "CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | ",
+        "threads": 2,
+        "threads_batch": 2
+      },
+      "final_signature_sha256": "8c5209c0281fd328bd34a5d8c0f98739fa01c1a8720b3239d720833e787702fa",
+      "first_completed_s": {
+        "n": 100,
+        "mean": 4.201658786417813,
+        "p50": 4.143692144992656,
+        "p95": 5.605951275001985,
+        "max": 6.030482273004168
+      },
+      "first4_alnum_s": {
+        "n": 100,
+        "mean": 4.382981390587941,
+        "p50": 3.974505934001293,
+        "p95": 7.922343549995219,
+        "max": 8.322898285996757
+      },
+      "serial_by_kind": {
+        "partial": {
+          "calls": 112,
+          "inference_s": 152.63287768304872,
+          "audio_and_prefill_s": 106.83831905900007,
+          "token_decode_s": 43.93995171200001,
+          "kv_reset_s": 0.8008058509999998
+        },
+        "final": {
+          "calls": 210,
+          "inference_s": 570.261853780903,
+          "audio_and_prefill_s": 338.13544440899983,
+          "token_decode_s": 226.141134251,
+          "kv_reset_s": 1.501511782
+        }
+      }
+    },
+    "3t": {
+      "raw_path": "results/optimization/opt3/realtime-threads-20261111-01/full100/3t",
+      "source_commit": "306f4a633f5f43b75820cc0c71591f524022779c",
+      "worker_sha256": "6c0baaa53ed7e6ac228e9b47d264edfa823fbdc6959da76abb5000ef12011189",
+      "threads": 3,
+      "complete": true,
+      "operational_valid": true,
+      "limit_verified": true,
+      "source_count": 100,
+      "frames": 14258317,
+      "manifest_sha256": "75ba1226dddfa0defb97f6fdbba89c31a762b541beb41299cdb0ac8490c45a06",
+      "failed_calls": 0,
+      "input_drops": 0,
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 3848,
+        "substitutions": 195,
+        "deletions": 157,
+        "insertions": 76,
+        "errors": 428,
+        "cer": 0.11122661122661123
+      },
+      "final_calls": 210,
+      "partial_calls": 118,
+      "first_visible_s": {
+        "n": 100,
+        "mean": 3.3046402798071925,
+        "p50": 3.2463170020110965,
+        "p95": 4.557438265999963,
+        "max": 4.9921752530106005
+      },
+      "missing_first_visible": 0,
+      "file_end_s": {
+        "n": 100,
+        "mean": 2.252634539927103,
+        "p50": 2.3200564810065316,
+        "p95": 3.721683930011693,
+        "max": 4.171646656008079
+      },
+      "final_serial_s": 519.4179501350736,
+      "total_serial_s": 663.1913763171469,
+      "engine_ttft_s": {
+        "n": 328,
+        "mean": 1.0799015664573173,
+        "p50": 0.800336074,
+        "p95": 1.874628326,
+        "max": 2.05804517
+      },
+      "final_engine_ttft_s": {
+        "n": 210,
+        "mean": 1.2535587550095237,
+        "p50": 1.298441044,
+        "p95": 1.882780463,
+        "max": 2.05804517
+      },
+      "rss_max_mib": 1832.234375,
+      "caption_stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 4061,
+        "normalized_revisions": 46,
+        "retracted_suffix_characters": 164,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 490,
+        "segments_with_display": 210,
+        "revised_segments": 46,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 103,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 118,
+          "whole_partial_is_final_prefix": 75,
+          "partial_characters": 712,
+          "retained_prefix_characters": 556,
+          "retained_prefix_fraction": 0.7808988764044944
+        },
+        "finals_shorter_than4": 30,
+        "first4_to_final_consistent4_s": {
+          "n": 180,
+          "mean": 0.5007370535724072,
+          "p50": 0.0,
+          "p95": 4.188915150996763,
+          "max": 5.066225134010892
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "thermal": {
+        "start_mc": 72700,
+        "max_mc": 87550,
+        "end_mc": 74900,
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "min_arm_clock_hz": 1500009472,
+        "max_arm_clock_hz": 2400037120
+      },
+      "runtime_configuration": {
+        "audio_sample_rate": 16000,
+        "cache_type_k": "f16",
+        "cache_type_v": "f16",
+        "context": 512,
+        "flash_attention_setting": -1,
+        "llama_version": "0.9.0-dev",
+        "n_batch": 512,
+        "n_ubatch": 512,
+        "system_info": "CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | ",
+        "threads": 3,
+        "threads_batch": 3
+      },
+      "final_signature_sha256": "8c5209c0281fd328bd34a5d8c0f98739fa01c1a8720b3239d720833e787702fa",
+      "first_completed_s": {
+        "n": 100,
+        "mean": 3.736637031657431,
+        "p50": 3.6607150600090392,
+        "p95": 5.1060452240027985,
+        "max": 5.390515234009513
+      },
+      "first4_alnum_s": {
+        "n": 100,
+        "mean": 3.9051454538265364,
+        "p50": 3.5115300080015004,
+        "p95": 7.358753729007901,
+        "max": 7.724702597005432
+      },
+      "serial_by_kind": {
+        "partial": {
+          "calls": 118,
+          "inference_s": 143.7734261820733,
+          "audio_and_prefill_s": 89.98018015899997,
+          "token_decode_s": 51.70856633200001,
+          "kv_reset_s": 0.8587807559999998
+        },
+        "final": {
+          "calls": 210,
+          "inference_s": 519.4179501350736,
+          "audio_and_prefill_s": 261.4397653950001,
+          "token_decode_s": 251.44867787600012,
+          "kv_reset_s": 1.5342514300000003
+        }
+      }
+    }
+  },
+  "full100_checks": {
+    "input_and_guard_complete": true,
+    "no_failure_drop_missing": true,
+    "same_final_pcm_text_token_ids": true,
+    "same_score": true,
+    "same_model_and_input": true,
+    "no_prefix_replay_revision": true,
+    "final_compute_at_least5pct_faster": true,
+    "total_compute_not_slower": true,
+    "first_p50_not_worse": true,
+    "first_p95_not_worse": true,
+    "file_end_p95_within_tolerance": true,
+    "rss_within32mib": true,
+    "some_user_latency_improves": true
+  },
+  "development_candidate_passed": true,
+  "production_profile_adopted": false,
+  "recommended_development_threads": 3,
+  "verification": {
+    "new_files_verified": 80,
+    "old_files_verified": 94,
+    "protected_assets": 10,
+    "doc_cli_tests_each_platform": 6,
+    "configuration_checks_each_platform": 3,
+    "boot_id": "db0f2e44-3c3f-4b8a-8472-e5618db2aeae"
+  },
+  "analysis_provenance": {
+    "script_sha256": "bd5a79011ed84e5ff8e5c43840470d37d0824973981d0c60fb7015ea81eaa26b",
+    "experiment_sha256": "242a7771509db484984f011a695a1f1ab01e175663c82670b44d2a036e34029f",
+    "reused_token_analysis_sha256": "6ffa79a8dee174f51c696e95dc38a3964c0bd7e1f2fc29b1d7a7105d1bbb86f4",
+    "source_llama_header_sha256": "a806cb05ff2f218945acefc0d5e49681f41d76af5d7ef7613d954fc18c81fe2a"
+  },
+  "unmeasured": {
+    "word_acoustic_latency_s": null,
+    "gui_latency_s": null,
+    "microphone_latency_s": null,
+    "independent_accuracy": null
+  },
+  "scope": "기존num_threads만 변경. 생성/prefill/audio는같은스레드수. Q8·KV초기화·VAD·부분표시 유지.6개 선별과100개 전체를 구분. 양 끝2T로 열·순서 효과를 완전히 제거한 통계로 해석하지 않음. 실패·원본·환경·자산 보존."
+}

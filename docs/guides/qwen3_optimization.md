@@ -1,6 +1,6 @@
 # Qwen 최적화 실행 안내
 
-주 기준은 [Qwen 단독1배속 연속 입력](../research/qwen_realtime.md)입니다. [ONNX/GGUF](../../results/summaries/optimization/realtime100-backends-20261110.md)·[VAD 보정](../../results/summaries/optimization/realtime-accuracy-20261110.md)·[갱신2초/4초](../../results/summaries/optimization/realtime-schedule-20261111.md)·[생성 중 표시](../../results/summaries/optimization/realtime-token-20261111.md)를 비교했습니다. 개발 기준은 **Q8·VAD 보정·구간5초·첫1초/이후4초**이며 별도 bridge의 토큰 표시는 선택 옵션입니다. [파일별 batch 실측](../../results/summaries/optimization/fixed100-baseline-20261109.md)은 정확도·처리 비용 진단용 참조이며 [당시 프로토콜](../research/fixed100_baseline.md)과 함께 보존합니다.
+주 기준은 [Qwen 단독1배속 연속 입력](../research/qwen_realtime.md)입니다. [ONNX/GGUF](../../results/summaries/optimization/realtime100-backends-20261110.md)·[VAD 보정](../../results/summaries/optimization/realtime-accuracy-20261110.md)·[갱신2초/4초](../../results/summaries/optimization/realtime-schedule-20261111.md)·[생성 중 표시](../../results/summaries/optimization/realtime-token-20261111.md)·[CPU 스레드](../../results/summaries/optimization/realtime-threads-20261111.md)를 비교했습니다. 개발 권장은 **Q8·3T·VAD 보정·구간5초·첫1초/이후4초·토큰 표시/접두부 보류**입니다. 기존 기본 설정2T는 보존하며 아래 새 TOML로3T를 명시합니다. [파일별 batch 실측](../../results/summaries/optimization/fixed100-baseline-20261109.md)은 진단용 참조로 보존합니다.
 
 ## 환경과 설정
 
@@ -10,7 +10,7 @@
 | --- | --- | --- |
 | Host 설정 검사·모의 테스트 | `.venv/bin/python` | 아래 두 설정 모두 검사 가능. ARM 실제 추론은 RP5에서 수행 |
 | RP5 ONNX 실제 추론 | `.venv-qwen3-onnx-20261106-01/bin/python` | [onnx.toml](../../configs/onnx.toml) |
-| RP5 GGUF 실제 추론 | `.venv/bin/python` | [gguf.toml](../../configs/gguf.toml) |
+| RP5 GGUF 실제 추론 | `.venv/bin/python` | [gguf.toml](../../configs/gguf.toml)은2T 보존, 현재3T TOML은 아래 생성 중 표시 예시 |
 
 GGUF는 기존 Python의 ctypes로 별도 llama.cpp/libmtmd C ABI를 호출합니다. 소스·빌드·바이너리는 `runtimes/qwen3-opt/llama-q8-20261109-01/`, 가중치는 `models/qwen3-opt/gguf-q8-20261109-01/`에 있습니다. [연결·빌드 안내](../../native/README.md)를 따르며 기존 환경에 패키지를 갱신하지 않습니다.
 
@@ -84,7 +84,7 @@ ONNX 측정은 guard와 자식 명령 모두 표의 ONNX Python·설정을 사�
 
 [ONNX 출발 실측](../../results/summaries/optimization/realtime100-onnx-20261110.md)은 전체 입력 완료·전사1회 실패·VAD 누락1개를 포함한 기록입니다. 모델·조건을 자동 변경하지 않고 실패까지 채점했으며 실사용 통과 구성으로 취급하지 않습니다. 이후 엔진 비교에서 최종 구간 좌표·PCM 해시·첫 자막 커버리지를 함께 확인합니다.
 
-다음 개발 구성은 위 명령에서 `--config configs/gguf.toml`과 새 출력 경로를 사용하고 아래 조건을 명시합니다. `--vad-preprocess rms26-floor80`은 **VAD 입력만** 보정하며 ASR에는 원음을 전달합니다. CLI 기본값은 여전히 `identity`입니다.
+기본2T 재현은 위 명령에서 `--config configs/gguf.toml`과 새 출력 경로를 사용하고 아래 조건을 명시합니다. 현재3T 개발 구성은 뒤 생성 중 표시 예시의 새 TOML을 사용합니다. `--vad-preprocess rms26-floor80`은 **VAD 입력만** 보정하며 ASR에는 원음을 전달합니다. CLI 기본값은 여전히 `identity`입니다.
 
 ```bash
 --gap-s 0 --vad-threshold 0.3 --silence-policy skip-zero \
@@ -106,14 +106,14 @@ ONNX 측정은 guard와 자식 명령 모두 표의 ONNX Python·설정을 사�
 
 같은1배속 명령에서 새 TOML·새 실행 ID를 사용하고 `--token-stream`을 추가하면 생성 중 UTF-8 문자열이 `생성중 partial/final`로 표시됩니다. 생성 중 final도 임시 가설이며 실제 확정은 종료 `result`입니다. 기존 `first_caption_from_track_start_s`는 완성 문자열 반환 지표로 유지하고, `first_visible_caption_from_track_start_s`·`token_timings`·`engine_ttft_s`를 구분해 확인합니다. engine TTFT는 native 호출 시작→첫 비EOG 생성 토큰이고 음성 처리/prefill을 포함하며 큐·Python 표시 시각과 다릅니다. 임시 가설은 최종 CER에 더하지 않고 이후 실패도 보존합니다.
 
-RP5의 `realtime-token-20261111-01`에 새 bridge와 실험 TOML을 준비했습니다. 아래는 같은 개발 조건으로 **새 실행 경로**에 실행하는 형식입니다. 다른 환경에서는 위 빌드 안내대로 새 bridge를 만들고 TOML의 library/manifest 경로를 맞춥니다. 기존 기본 설정은 유지합니다.
+RP5의 `realtime-token-20261111-01`에 별도 bridge와2T TOML을 준비했고 스레드 대조에서는 같은 bridge를 참조하는 `realtime-threads-20261111-01/configs/gguf-3t.toml`을 준비했습니다. 아래는 현재3T 조건으로 **새 실행 경로**에 실행하는 형식입니다. 다른 환경에서는 위 빌드 안내대로 bridge를 만들고 TOML의 library/manifest 경로를 맞춥니다. 기존 기본 설정은 유지합니다.
 
 ```bash
 .venv/bin/python scripts/edge_asr.py tools thermal-run \
   --output "results/optimization/opt3/<새ID>" \
   --timeout-s 1800 --temperature-policy operational --skip-temperature-admission \
   -- .venv/bin/python scripts/edge_asr.py tools replay-qwen3 \
-  --config results/optimization/opt3/realtime-token-20261111-01/gguf-token.toml \
+  --config results/optimization/opt3/realtime-threads-20261111-01/configs/gguf-3t.toml \
   --manifest "<동일순서-manifest.jsonl>" --output "results/optimization/opt3/<새ID>" \
   --gap-s 0 --vad-threshold 0.3 --silence-policy skip-zero \
   --vad-preprocess rms26-floor80 --vad-max-speech-s 5 --max-segment-s 5 \
@@ -126,6 +126,8 @@ RP5의 `realtime-token-20261111-01`에 새 bridge와 실험 TOML을 준비했습
 이후 토큰 표시는 `hold_replayed_prefix_v1`을 사용합니다. 같은 구간의 이미 보인 원문 접두부를 새 호출이 다시 생성하는 동안 이전 문자열을 유지하고, 확장되거나 내용이 달라지면 표시합니다. 옵션을 추가하지 않고 기존 `--token-stream` 안의 표시 동작만 보완합니다. `worker.json`의 `token_display_policy`·`caption_stability`, 원시 토큰의 `prefix_replay_suppressed`로 확인합니다. 문자 철회는 정규화 공통 접두부 뒤 제거된 문자수이고 편집 거리나 부분 CER가 아닙니다. 4자 보존 시각도 자기 최종 전사를 기준으로 한 후향 평가입니다. [고정 검증 조건](../research/qwen_realtime.md).
 
 [접두부 보류 검증](../../results/summaries/optimization/realtime-stability-20261111.md)에서 같은 로그의 철회 문자577→161자·첫 표시/최종 결과 동일을 확인했고, 새 RP5 100개에서도 재표시 철회0·전체163자·CER11.12%·실패/드롭0이었습니다. 실제 내용 변경과 실패 처리는 유지합니다. 새 대조 실행을 추가하지 않아 과거와의 시간 차이를 엔진 가속으로 해석하지 않습니다.
+
+[스레드 대조](../../results/summaries/optimization/realtime-threads-20261111.md)는 같은 소스의100개 새2T→3T를 비교했습니다. 최종210구간 PCM·전사·토큰 ID·CER11.12%를 유지하며 최종 추론 합계8.9%·전체 합계8.3%가 줄었습니다. 첫 표시 p95는5.20→4.56초·고정 파일 끝 반환 p95는4.22→3.72초였습니다. 권장은3T이지만 decode 비용과 최고 온도는 늘었습니다. 이전2T 설정·결과는 그대로입니다.
 
 ## 이전 실험 재현
 

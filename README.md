@@ -4,37 +4,37 @@
 
 Qwen3-ASR-0.6B를 Raspberry Pi 5의 ARM64 CPU에서 실행하며, **한국어 정확도와 처리 완료율을 유지하면서 인식 지연·메모리·발열을 줄이는** 프로젝트입니다.
 
-[현재 상태·다음 작업](docs/status.md) · [연속 입력 평가 기준](docs/research/qwen_realtime.md) · [최신 자막 안정성 결과](results/summaries/optimization/realtime-stability-20261111.md) · [갱신 간격 비교 영상](results/summaries/optimization/realtime-video-20261111.md) · [실행 안내](docs/guides/qwen3_optimization.md)
+[현재 상태·다음 작업](docs/status.md) · [연속 입력 평가 기준](docs/research/qwen_realtime.md) · [최신 스레드 비교 결과](results/summaries/optimization/realtime-threads-20261111.md) · [갱신 간격 비교 영상](results/summaries/optimization/realtime-video-20261111.md) · [실행 안내](docs/guides/qwen3_optimization.md)
 
 ## 현재 진행 상태
 
-- **구현·검증:** ONNX/GGUF·VAD 보정·부분 갱신 간격·생성 중 표시·접두부 재표시 보류를100개 단독 연속 입력에서 검증, 공통 채점·TTFT·자원 계측
+- **구현·검증:** ONNX/GGUF·VAD 보정·부분 갱신 간격·생성 중 표시·접두부 재표시 보류·스레드를100개 단독 연속 입력에서 검증, 공통 채점·TTFT·자원 계측
 - **진행 방향:** Qwen 단독·1배속 연속 입력을 주 평가로 사용. ONNX INT8 2T에서 출발해 같은 파이프라인의 GGUF·실행 설정과 비교
-- **현재 과제:** Q8·VAD 보정·구간5초·첫1초/이후4초·토큰 표시를 유지하며 남은 연산 지연·분할/문맥 손실 개선
+- **현재 과제:** Q8·권장3T·VAD 보정·구간5초·첫1초/이후4초·토큰 표시를 유지하며 남은 연산 지연·분할/문맥 손실 개선
 - **후속 구현·검증:** 음성 처리/prefill·decode 최적화와 안전한 캐시 재사용, 마이크 입력, 최종 장시간 안정성
 
 현재는 WAV 파일로 검증합니다. 이전 Zip+VAD+Refine 자막은 `legacy/`에 보존합니다.
 
 ## 연속 입력 대조 결과
 
-RP5·Qwen3-ASR-0.6B GGUF Q8_0·2T·2026-11-11 실측입니다. 같은 Zeroth60개·FLEURS40개를 **14분51초·1배속·추가 무음0초** 공급하며 추론 중에도 다음 음성을 계속 받았습니다. 아래는 생성 중 표시 도입 당시 VAD 보정·구간5초·첫1초/이후4초와 같은 소스를 고정한 토큰 전달 끔/켬 대조입니다.
+RP5·Qwen3-ASR-0.6B GGUF Q8_0·2026-11-11 실측입니다. 같은 Zeroth60개·FLEURS40개를 **14분51초·1배속·추가 무음0초** 공급하며 추론 중에도 다음 음성을 받았습니다. 같은 모델·bridge·VAD 보정·5초·첫1초/이후4초·토큰 표시를 유지하고 스레드 수만 바꿨습니다.6개2T→3T→4T→2T 선별 후,100개 새2T→3T를 비교했습니다.
 
-| 지표 | 토큰 전달 끔 — 새control | 켬 |
+| 지표 | 새2T control | 3T |
 | --- | ---: | ---: |
-| 연결 CER | 11.12% | **동일** |
+| 연결 CER | 11.12% —428/3848 | **동일** |
 | 자막 없는 원음 / 호출 실패 / 입력 드롭 | 0 /0 /0 | 0 /0 /0 |
-| 첫 표시 p50 / p95 — 공통100개 | 3.94 /5.49초 | **3.73 /5.19초** |
-| 4자 이상 첫 표시 p95 — 공통100개 | 8.82초 | **7.82초** |
-| 완성 문자열 첫 반환 p95 — 공통100개 | 5.49초 | 5.56초 |
-| 파일 끝 기준 최종 반환 p95 — 공통100개 | 4.07초 | 4.16초 |
-| 전체 추론 시간 합계 — 부분 재전사 포함 | 700.89초 | 716.28초 |
-| 관측 최대 RSS | 1829.23MiB | 1832.33MiB |
+| 같은210개 최종 추론 합계 | 570.26초 | **519.42초** |
+| 전체 추론 합계 —부분 재전사 포함 | 722.89초 | **663.19초** |
+| 첫 표시 p50 /p95 —100개 | 3.76 /5.20초 | **3.25 /4.56초** |
+| 파일 끝 기준 최종 반환 p95 —100개 | 4.22초 | **3.72초** |
+| 관측 최대 RSS | 1831.28MiB | 1832.23MiB |
+| 최고 온도 | 85.90°C | 87.55°C |
 
-**생성 중 표시는 선택 가능한 개발 구성으로 검증했습니다.** 최종210개 구간의 PCM·전사·토큰 ID는 같고 첫 텍스트 발행이 조금 빨라졌습니다. 전체 추론 시간은2.2% 늘어 추론 가속과 구분합니다. 생성 중 자막은 임시 가설이며 실제 화면·음향 단어 지연은 미측정입니다. 파일 끝 기준 반환은 원음 입력 끝부터 마지막으로 겹치는 최종 호출 반환까지입니다. 양쪽 모두 열 제한을 관측했고 저지연 실사용 채택은 보류합니다. [조건·TTFT·한계](results/summaries/optimization/realtime-token-20261111.md).
+**다음 개발 권장은 Q8·3T입니다.** 최종210구간 PCM·전사·토큰 ID를 유지하면서 최종 호출 합계8.9%·전체 추론 합계8.3%가 줄었습니다. 음성 처리/prefill은 빨라지고 decode는 느려지는 절충이 있으며 양쪽 열 제한도 관측했습니다. 기존2T 기본 설정은 보존하고3T는 별도 TOML로 지정합니다. 단일 운영 대조이며 저지연 실사용 채택은 보류합니다. [조건·비용·개발 설정](results/summaries/optimization/realtime-threads-20261111.md).
 
-이후 **같은 구간의 이미 보인 접두부는 새 호출이 다시 생성해도 자막을 짧게 되돌리지 않도록** 보완했습니다. 같은 로그의 표시 모의 분석에서 철회 문자는577→161자였고 구간 첫 표시 시각·최종 결과는 같았습니다. 새 RP5 100개에서도 재표시 철회0·전체 철회163자·CER11.12%·실패/드롭0을 확인했습니다. 실제 내용 변경은 허용하며 엔진 가속과 구분합니다. [안정성·실측 상세](results/summaries/optimization/realtime-stability-20261111.md).
+첫 표시는 원음 시작→텍스트 이벤트 발행이며 실제 화면 시각은 아닙니다. 파일 끝 기준 반환은 원음 입력 끝→마지막으로 겹치는 최종 호출 반환이고 음향 단어 끝과 다릅니다. 생성 중 자막은 임시 가설이며 접두부 재표시 철회는 양쪽0입니다. [표시 안정성 검증](results/summaries/optimization/realtime-stability-20261111.md).
 
-평가 자료는 [고정100개 출처·선정 방법](docs/research/fixed100.md)을 따릅니다. [갱신2초/4초 대조](results/summaries/optimization/realtime-schedule-20261111.md), [VAD 정확도 회복·8초 대조](results/summaries/optimization/realtime-accuracy-20261110.md), [ONNX/GGUF 비교](results/summaries/optimization/realtime100-backends-20261110.md), [ONNX 출발 기록·첫 중단](results/summaries/optimization/realtime100-onnx-20261110.md), [기존 batch 참조](results/summaries/optimization/fixed100-baseline-20261109.md)은 보존합니다. batch RTF는 실제 자막 반환 지연을 대신하지 않습니다.
+평가 자료는 [고정100개 출처·선정 방법](docs/research/fixed100.md)을 따릅니다. [토큰 전달 끔/켬](results/summaries/optimization/realtime-token-20261111.md), [갱신2초/4초](results/summaries/optimization/realtime-schedule-20261111.md), [VAD 보정·8초 대조](results/summaries/optimization/realtime-accuracy-20261110.md), [ONNX/GGUF 연속 비교](results/summaries/optimization/realtime100-backends-20261110.md), [ONNX 출발·첫 중단](results/summaries/optimization/realtime100-onnx-20261110.md), [batch 참조](results/summaries/optimization/fixed100-baseline-20261109.md)는 보존합니다. batch RTF는 자막 반환 지연을 대신하지 않습니다.
 
 ## 빠른 확인
 
