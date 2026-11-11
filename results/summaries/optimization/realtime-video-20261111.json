@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-11",
+  "kind": "rp5_measured_caption_video_replay",
+  "new_model_inference": false,
+  "live_screen_recording": false,
+  "video": {
+    "path": "results/optimization/opt3/realtime-video-20261111-01/qwen3-rp5-latency.mp4",
+    "sha256": "0e60e57abc3ce195298233fc95903fca15ffe0f1730b84599e9d5b295bc5ed42",
+    "bytes": 1223932,
+    "duration_s": 66,
+    "width": 1280,
+    "height": 720,
+    "fps": 25,
+    "video_codec": "h264",
+    "audio_codec": "aac"
+  },
+  "player": {
+    "path": "results/optimization/opt3/realtime-video-20261111-01/player.html",
+    "sha256": "ecd3078bc57d7e4ab495f7e079d1e4ca58d08fee063264f7ab59d3bf0073b48e",
+    "chrome_metadata_loaded": true
+  },
+  "input": {
+    "unique_sources": 6,
+    "audio_duration_s": 60.62375,
+    "manifest_sha256": "b9dabb0e87600d49c6b9d07184eee5170497db7dd1f15fe6a52f186583444b80",
+    "float32_sha256": "532ab9a6a56f91e3d2a0ebd9b953ad4fce07dbbe197324580a057c537d02b779",
+    "pcm16_sha256": "2e7f0ea806e71ec7eeac210cd73f1a8311aa89ff9ef6d957e5f413317159ce2f"
+  },
+  "runs": [
+    {
+      "worker_path": "results/optimization/opt3/realtime-schedule-20261111-01/pilot/interval2/worker.json",
+      "worker_sha256": "987433d3c10b3147805f8e01b5361518c51647f9dfe7fbeb79203e9e3a3cabbc",
+      "jobs_sha256": "251f676135af4bc6ee923ae4c34d4c18808f86ffe875cbcb78dc266998df48fd",
+      "model_source_commit": "8e65b55f11bc2b010ce9a8faede419aa5f71a92a",
+      "settings": {
+        "gap_s": 0.0,
+        "vad_preprocess": "rms26-floor80",
+        "vad_threshold": 0.3,
+        "vad_max_speech_s": 5,
+        "partial_after_s": 1.0,
+        "partial_interval_s": 2.0,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      }
+    },
+    {
+      "worker_path": "results/optimization/opt3/realtime-schedule-20261111-01/pilot/interval4/worker.json",
+      "worker_sha256": "f5a513fc00184e0d96ae6eb9476ca55a49b774e8e9cde11d8d419288f8a7edfc",
+      "jobs_sha256": "6784356fb2404efd6d532ffe6748d422c11b364dc8b24ee69f4ad96f1c1ed6b1",
+      "model_source_commit": "8e65b55f11bc2b010ce9a8faede419aa5f71a92a",
+      "settings": {
+        "gap_s": 0.0,
+        "vad_preprocess": "rms26-floor80",
+        "vad_threshold": 0.3,
+        "vad_max_speech_s": 5,
+        "partial_after_s": 1.0,
+        "partial_interval_s": 4.0,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      }
+    }
+  ],
+  "verification": {
+    "pcm_before_encoding_identical_to_rp5_input": true,
+    "aac_audio_offsets": [
+      {
+        "reference_start_s": 0.7,
+        "offset_samples": 0,
+        "audio_gain_fit": 0.999537788186172
+      },
+      {
+        "reference_start_s": 54.0,
+        "offset_samples": 0,
+        "audio_gain_fit": 0.9985610243378971
+      }
+    ],
+    "video_audio_start_s": 0,
+    "video_duration_s": 66,
+    "video_fps": 25,
+    "caption_rounding_bound_s": 0.05,
+    "native_inference_performed": false
+  },
+  "render_receipt_sha256": "03bfc77470bd07978c6e3296626e8c376c0d9200b3b4011a17f5ed5ae7ef1ec2",
+  "renderer_sha256": "7d51c9c55caf4022e2e1a7876966b299b0d455a9a18fc050987c1a26dd936fc7",
+  "scope": "이미 완료한 RP5 고유6개 실측의 원음·발행 시각을 그대로 시각화. 새 추론·화면 녹화·100개 지연 통계와 구분. 영상·원음은 로컬에 보관."
+}
