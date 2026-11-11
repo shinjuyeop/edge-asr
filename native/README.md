@@ -4,7 +4,7 @@ Python 실행 코드는 [src/edge_asr/qwen/](../src/edge_asr/qwen/), C++ 소스�
 
 | 위치 | 역할 |
 | --- | --- |
-| [gguf/bridge.cpp](gguf/bridge.cpp) | llama.cpp/libmtmd batch C ABI. 모델 상주·KV 초기화·오디오/prefill·토큰 decode |
+| [gguf/bridge.cpp](gguf/bridge.cpp) | llama.cpp/libmtmd batch 입력 C ABI. 모델 상주·KV 초기화·오디오/prefill·토큰 decode·선택적 토큰 callback |
 | [gguf/build.py](gguf/build.py) | 고정 CPU 엔진에 bridge 연결, `build.json`에 소스/바이너리 해시 기록 |
 | [gguf/quantize.py](gguf/quantize.py) | 고정 BF16→Q6/Q5/Q4 독립 변환·자산 명세. 별도 변환 환경·빌드 사용 |
 | [ort_trace/ort_trace.cc](ort_trace/ort_trace.cc), [빌드 도구](ort_trace/build.py) | 기존 ORT1.28.2/API28의 Session.Run 호출 계측 |
@@ -20,7 +20,9 @@ Python 실행 코드는 [src/edge_asr/qwen/](../src/edge_asr/qwen/), C++ 소스�
   --output "runtimes/qwen3-opt/<새빌드ID>/bridge"
 ```
 
-현재 검증 구성은 CPU native·GPU OFF·KleidiAI OFF입니다. 모델1회 로딩·발화별 KV 초기화 방식이고 토큰 callback·청크 간 cache 재사용은 미구현입니다. [Python 어댑터](../src/edge_asr/qwen/gguf.py)는 가중치와 연결 라이브러리의 해시를 확인합니다.
+현재 검증 구성은 CPU native·GPU OFF·KleidiAI OFF입니다. 모델1회 로딩·호출별 KV 초기화를 유지하며 청크 간 cache 재사용은 미구현입니다. [Python 어댑터](../src/edge_asr/qwen/gguf.py)는 가중치와 연결 라이브러리의 해시를 확인합니다.
+
+새 bridge는 기존 ABI1 batch 호출을 유지하고 `edge_gguf_transcribe_tokens`를 추가합니다. `build.json`의 `features`에 `token_callback_v1`이 기록된 별도 빌드에서만 `replay-qwen3 --token-stream`을 사용할 수 있습니다. callback의 토큰 바이트는 완결된 UTF-8 접두부가 될 때까지 Python에서 보류하며 최종 EOG 결과와 일치하는지 확인합니다. 기존 라이브러리·`configs/gguf.toml`은 보존하고 새 실험 TOML에서 새 library/manifest 경로를 지정합니다. [실측 전 고정 조건](../docs/research/qwen_realtime.md).
 
 양자화 준비는 별도 환경에서 upstream `gguf-py`의 numpy·pyyaml·tqdm·requests 의존성을 준비하고, 고정 llama.cpp 소스의 `llama-quantize`를 새 빌드 경로에 만듭니다. 기존 추론 환경·엔진은 변경하지 않습니다. `quantize.py --help`의 source/tool/llama-source/audio-model/output을 지정하며 output은 새 폴더여야 합니다. 모델별 명세는 원본·도구·GGUF type·tensor dtype·SHA를 보존하고 Q8 오디오 파일은 기존 경로를 참조합니다. [실험 조건](../docs/research/qwen_realtime.md).
 

@@ -61,7 +61,7 @@ def run(
         "warmup": [],
         "engine_ttft_s": None,
         "acoustic_word_latency_s": None,
-        "scope": "1배속 입력과 추론 동시 진행. 도착한 VAD 구간의 접두 PCM을 매번 재전사하고 KV 초기화. 토큰 배포·마이크·음향 단어 시각은 미구현.",
+        "scope": "1배속 입력과 추론 동시 진행. 접두 PCM 재전사·호출별 KV 초기화. 선택적 GGUF 토큰 배포는 임시 가설이며 encoder 증분 실행·마이크·음향 단어 시각은 미구현.",
     }
     receipt = output / "worker.json"
     write_json(receipt, info)
@@ -83,6 +83,10 @@ def run(
         )(vad_model)
         info["vad_model_sha256"] = digest(vad_model)
         adapter = (adapter_factory or create_adapter)(config["model"], 16000, root)
+        if settings.get("token_stream", False) and (
+            getattr(adapter, "supports_token_stream", False) is not True
+        ):
+            raise ValueError("--token-stream에는 token_callback_v1 별도 GGUF 빌드가 필요합니다.")
         info["model_files"] = {
             name: {"path": str(p), "sha256": digest(p)} for name, p in adapter.model_files.items()
         }
@@ -106,9 +110,10 @@ def run(
         def emit(event):
             with lock:
                 write_event(log, event)
-                if event["type"] == "result" and event["displayed"]:
+                if event["type"] in ("token", "result") and event["displayed"]:
+                    label = "생성중 " if event["type"] == "token" else ""
                     print(
-                        f"{event['published_s']:.3f}s {event['kind']} {event['segment_id']} {event.get('hypothesis') or event.get('error')}",
+                        f"{event['published_s']:.3f}s {label}{event['kind']} {event['segment_id']} {event.get('hypothesis') or event.get('error')}",
                         flush=True,
                     )
 
@@ -168,6 +173,26 @@ def run(
             partial_count=len(partials),
             skipped_silence=session.skipped,
         )
+        native_ttft = []
+        for result in session.results:
+            native = (result.get("adapter_result") or {}).get("native_result") or {}
+            if native.get("first_generated_token_s") is not None:
+                native_ttft.append(native["first_generated_token_s"])
+        token_timings = list(session.token_timings.values())
+        first_visible = [
+            r["first_visible_published_s"]
+            for r in token_timings
+            if r["first_visible_published_s"] is not None
+        ]
+        info.update(
+            engine_ttft_s=distribution(native_ttft) if native_ttft else None,
+            engine_ttft_scope="native 호출 시작→첫 비EOG 생성 토큰. 음성 처리/prefill 포함, 큐·Python 표시는 제외. 전체 시도 범위.",
+            first_visible_caption_from_track_start_s=min(
+                [r["published_s"] for r in successes] + first_visible, default=None
+            ),
+            token_timings=token_timings,
+            token_output_scope="토큰은 UTF-8 접두 문자열의 임시 표시. 이후 실패도 원시/종료 result에 보존하며 임시 가설은 최종 CER에 더하지 않음.",
+        )
         reference = " ".join(s["reference"] for s in sources)
         info["final_transcript_score"] = (
             character_errors(reference, hypothesis)
@@ -191,6 +216,7 @@ def run(
                 segments=session.segments,
                 pipeline=session.pipeline.metadata(),
                 skipped_silence=session.skipped,
+                token_timings=list(session.token_timings.values()),
             )
         if adapter is not None and (session is None or not session.worker.thread.is_alive()):
             adapter.close()
@@ -234,6 +260,11 @@ def main():
     parser.add_argument("--max-segment-s", type=int, default=5, choices=(3, 5, 8))
     parser.add_argument("--drain-timeout-s", type=int, default=30, choices=(10, 30, 60))
     parser.add_argument("--queue-capacity", type=int, default=4, choices=(2, 4, 8))
+    parser.add_argument(
+        "--token-stream",
+        action="store_true",
+        help="별도 token_callback_v1 GGUF 빌드에서 생성 중 UTF-8 텍스트를 임시 표시",
+    )
     parser.add_argument(
         "--no-partials",
         dest="partials",

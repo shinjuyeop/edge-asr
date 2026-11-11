@@ -27,6 +27,7 @@ class CaptionSession:
         partials=True,
         silence_policy="skip-zero",
         vad_preprocess="identity",
+        token_stream=False,
     ):
         if partial_after_s <= 0 or partial_interval_s <= 0:
             raise ValueError("부분 전사 시작·갱신 간격은 양수여야 합니다.")
@@ -45,6 +46,7 @@ class CaptionSession:
         self.results, self.segments, self.finals = [], [], {}
         self.skipped, self.finalized = [], set()
         self.partial = None
+        self.token_timings = {}
         self.pipeline = SegmentPipeline(
             vad,
             "identity",
@@ -55,9 +57,13 @@ class CaptionSession:
             progress=self._progress,
             vad_policy=vad_preprocess,
         )
-        self.worker = DecodeWorker(adapter, self._event, capacity=queue_capacity)
+        self.worker = DecodeWorker(
+            adapter, self._event, capacity=queue_capacity, token_stream=token_stream
+        )
 
     def _event(self, event):
+        if event["type"] == "token":
+            self._token(event)
         if event["type"] == "result":
             t0 = self.telemetry["t0_monotonic_ns"] / 1e9
             with self.lock:
@@ -78,6 +84,44 @@ class CaptionSession:
                 elif event["segment_id"] not in self.finalized:
                     self.partial = event
         self.emit(event)
+
+    def _token(self, event):
+        t0 = self.telemetry["t0_monotonic_ns"] / 1e9
+        with self.lock:
+            event["published_s"] = time.perf_counter() - t0
+            timing = self.token_timings.setdefault(
+                event["job_id"],
+                {
+                    key: event[key]
+                    for key in ("job_id", "kind", "segment_id", "start_frame", "end_frame")
+                }
+                | {
+                    "first_received_from_call_start_s": event["received_monotonic_s"]
+                    - event["started_monotonic_s"],
+                    "first_native_elapsed_s": event["native_elapsed_s"],
+                    "first_visible_published_s": None,
+                    "first_visible_from_call_start_s": None,
+                    "token_events": 0,
+                    "visible_events": 0,
+                    "visible_characters": 0,
+                },
+            )
+            timing["token_events"] += 1
+            text = event["hypothesis"]
+            event["displayed"] = (
+                bool(text.strip())
+                and len(text) > timing["visible_characters"]
+                and event["segment_id"] not in self.finalized
+            )
+            if event["displayed"]:
+                if timing["first_visible_published_s"] is None:
+                    timing["first_visible_published_s"] = event["published_s"]
+                    timing["first_visible_from_call_start_s"] = (
+                        event["published_s"] + t0 - event["started_monotonic_s"]
+                    )
+                timing["visible_events"] += 1
+                timing["visible_characters"] = len(text)
+                self.partial = event
 
     def _offer(self, kind, segment_id, start, end, pcm):
         if not 0 <= start < end <= self.position or end - start != len(pcm):
@@ -145,7 +189,11 @@ class CaptionSession:
     def text(self, *, final_only=False):
         with self.lock:
             parts = [row["hypothesis"] or "" for _, row in sorted(self.finals.items())]
-            if not final_only and self.partial and self.partial["status"] == "success":
+            if (
+                not final_only
+                and self.partial
+                and self.partial["status"] in ("success", "provisional")
+            ):
                 parts.append(self.partial["hypothesis"])
             return " ".join(part for part in parts if part)
 

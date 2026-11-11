@@ -95,6 +95,93 @@ class GGUFTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             adapter.transcribe(self.audio)
 
+    def enable_tokens(self):
+        self.build["features"] = ["token_callback_v1"]
+        (self.root / "build.json").write_text(json.dumps(self.build))
+
+    def test_token_bytes_wait_for_complete_utf8_and_preserve_final_output(self):
+        self.enable_tokens()
+        adapter, updates = self.load(), []
+        raw = "한 글!".encode()
+        pieces = [raw[:1], raw[1:2], raw[2:3], raw[3:]]
+
+        def generate(_handle, _pcm, _count, callback, user):
+            for index, value in enumerate(pieces, 1):
+                buffer = ctypes.create_string_buffer(value)
+                self.assertEqual(
+                    callback(user, ctypes.addressof(buffer), len(value), index, index / 10), 0
+                )
+            return self.result(ids=[1, 2, 3, 4])
+
+        self.library.edge_gguf_transcribe_tokens.side_effect = generate
+        self.assertEqual(adapter.transcribe_stream(self.audio, updates.append), "한 글!")
+        self.assertEqual([u["hypothesis"] for u in updates], ["", "", "한", "한 글!"])
+        self.assertEqual(b"".join(bytes.fromhex(u["piece_hex"]) for u in updates), raw)
+        self.assertTrue(adapter.metadata["token_output_callback"])
+
+    def test_token_callback_copies_counted_bytes_including_nul(self):
+        self.enable_tokens()
+        adapter, updates = self.load(), []
+        raw = "한\0글".encode()
+
+        def generate(_handle, _pcm, _count, callback, user):
+            buffer = ctypes.create_string_buffer(raw)
+            self.assertEqual(callback(user, ctypes.addressof(buffer), len(raw), 1, 0.1), 0)
+            return self.result(text="한\0글", ids=[1])
+
+        self.library.edge_gguf_transcribe_tokens.side_effect = generate
+        self.assertEqual(adapter.transcribe_stream(self.audio, updates.append), "한\0글")
+        self.assertEqual(updates[0]["piece_hex"], raw.hex())
+
+    def test_token_callback_failure_does_not_cross_ffi_or_erase_raw_output(self):
+        self.enable_tokens()
+        adapter = self.load()
+
+        def generate(_handle, _pcm, _count, callback, user):
+            raw = "한".encode()
+            buffer = ctypes.create_string_buffer(raw)
+            self.assertEqual(callback(user, ctypes.addressof(buffer), len(raw), 1, 0.1), 1)
+            return self.result(text="한", ids=[1], status="failed", termination="callback_error")
+
+        def broken(_update):
+            raise OSError("fixture display failure")
+
+        self.library.edge_gguf_transcribe_tokens.side_effect = generate
+        with self.assertRaisesRegex(RuntimeError, "수신/표시"):
+            adapter.transcribe_stream(self.audio, broken)
+        self.assertEqual(adapter.last_result_metadata["raw_text"], "한")
+        self.assertEqual(
+            adapter.last_result_metadata["native_result"]["termination"], "callback_error"
+        )
+        self.library.edge_gguf_transcribe.return_value = self.result()
+        self.assertEqual(adapter.transcribe(self.audio), "한 글!")
+
+    def test_token_stream_rejects_missing_capability_and_result_mismatch(self):
+        adapter = self.load()
+        with self.assertRaises(ValueError):
+            adapter.transcribe_stream(self.audio, lambda _: None)
+        self.library.edge_gguf_transcribe_tokens.assert_not_called()
+        self.enable_tokens()
+        adapter = self.load()
+
+        def generate(_handle, _pcm, _count, callback, user):
+            raw = "한".encode()
+            buffer = ctypes.create_string_buffer(raw)
+            callback(user, ctypes.addressof(buffer), len(raw), 1, 0.1)
+            return self.result(text="다른", ids=[1])
+
+        self.library.edge_gguf_transcribe_tokens.side_effect = generate
+        with self.assertRaisesRegex(ValueError, "최종 전사"):
+            adapter.transcribe_stream(self.audio, lambda _: None)
+        self.assertEqual(adapter.last_result_metadata["raw_text"], "다른")
+
+    def test_token_receipt_without_exported_symbol_is_rejected(self):
+        self.enable_tokens()
+        del self.library.edge_gguf_transcribe_tokens
+        with self.assertRaisesRegex(ValueError, "심볼"):
+            self.load()
+        self.library.edge_gguf_create.assert_not_called()
+
     def test_invalid_utf8_and_wrong_input_length_are_not_success(self):
         adapter = self.load()
         report = json.loads(self.result())

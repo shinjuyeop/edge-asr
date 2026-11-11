@@ -135,6 +135,7 @@ class RealtimeTests(unittest.TestCase):
         class Loaded(Adapter):
             model_files = {}
             metadata = {"backend": "mock"}
+            supports_token_stream = True
 
             def __init__(self, fail):
                 super().__init__()
@@ -152,9 +153,23 @@ class RealtimeTests(unittest.TestCase):
                     raise ValueError("fixture replay failure")
                 return "전사"
 
+            def transcribe_stream(self, audio, emit):
+                emit(
+                    {
+                        "hypothesis": "전",
+                        "token_index": 1,
+                        "native_elapsed_s": 0.01,
+                        "piece_hex": "전".encode().hex(),
+                    }
+                )
+                return self.transcribe(audio)
+
         root = Path(__file__).resolve().parents[2]
-        for config, fail in (
-            (config, fail) for config in ("onnx", "gguf") for fail in (False, True)
+        for config, fail, tokens in (
+            (config, fail, tokens)
+            for config in ("onnx", "gguf")
+            for fail in (False, True)
+            for tokens in ((False, True) if config == "gguf" else (False,))
         ):
             with self.subTest(config=config, fail=fail), tempfile.TemporaryDirectory() as temporary:
                 directory = Path(temporary)
@@ -188,6 +203,7 @@ class RealtimeTests(unittest.TestCase):
                         vad_max_speech_s=30,
                         partial_after_s=0.2,
                         partial_interval_s=0.2,
+                        token_stream=tokens,
                     )
                     self.assertEqual(info["status"], "failed" if fail else "completed")
                     self.assertEqual(
@@ -200,10 +216,68 @@ class RealtimeTests(unittest.TestCase):
                     self.assertEqual(info["final_transcript_score"]["cer"], 1.0 if fail else 0.0)
                     self.assertEqual(info["failed_calls"] > 0, fail)
                     self.assertTrue((output / "jobs.jsonl").exists())
+                    self.assertEqual(bool(info["token_timings"]), tokens)
+                    if tokens:
+                        self.assertLessEqual(
+                            info["first_visible_caption_from_track_start_s"],
+                            info["first_caption_from_track_start_s"] or float("inf"),
+                        )
                     before = digest(output / "worker.json")
                     with self.assertRaises(FileExistsError):
                         run(root, root / f"configs/{config}.toml", manifest, output, vad_model)
                     self.assertEqual(before, digest(output / "worker.json"))
+
+    def test_generating_final_remains_provisional_and_is_cleared_on_failure(self):
+        class Streaming(Adapter):
+            supports_token_stream = True
+
+            def transcribe_stream(self, audio, emit):
+                emit(
+                    {
+                        "hypothesis": "한",
+                        "token_index": 1,
+                        "native_elapsed_s": 0.01,
+                        "piece_hex": "한".encode().hex(),
+                    }
+                )
+                self.entered.set()
+                if not self.release.wait(3):
+                    raise TimeoutError("fixture token wait")
+                if self.fail:
+                    raise ValueError("fixture terminal failure")
+                return "한 글"
+
+        for fail in (False, True):
+            adapter, events = Streaming(), []
+            adapter.fail = fail
+            session = CaptionSession(
+                adapter,
+                BoundedProbabilityVad(Probability()),
+                20800,
+                events.append,
+                {"t0_monotonic_ns": time.perf_counter_ns()},
+                partials=False,
+                token_stream=True,
+            )
+            try:
+                for start in range(0, 20800, 1600):
+                    value = 0.25 if start < 12800 else 0.0
+                    session.accept_at(session, array("f", [value] * 1600), start, start + 1600)
+                self.assertTrue(adapter.entered.wait(2))
+                self.assertEqual(session.position, 20800)
+                self.assertEqual(session.text(), "한")
+                self.assertEqual(session.text(final_only=True), "")
+                adapter.release.set()
+                text = session.finish_stream(session)
+                self.assertEqual(text, "" if fail else "한 글")
+                self.assertIsNone(session.partial)
+                self.assertEqual(session.results[0]["status"], "failed" if fail else "success")
+                self.assertEqual(
+                    [e["status"] for e in events if e["type"] == "token"], ["provisional"]
+                )
+            finally:
+                adapter.release.set()
+                session.close()
 
     def test_one_inflight_latest_partial_and_finals_first(self):
         adapter, events = Adapter(), []

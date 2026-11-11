@@ -86,12 +86,15 @@ __attribute__((visibility("default"))) void* edge_gguf_create(const char* model,
         return s.release();
     } catch (const std::exception& e) { error=e.what(); return nullptr; }
 }
-__attribute__((visibility("default"))) const char* edge_gguf_transcribe(void* handle,const float* samples,size_t count) {
+// 입력은 같은 batch PCM이다. callback은 토큰 바이트 전달만 하며 0 외 반환은 호출 실패로 남긴다.
+typedef int (*edge_token_callback)(void*,const void*,size_t,int,double);
+__attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(void* handle,const float* samples,size_t count,edge_token_callback callback,void* user) {
     auto* s=static_cast<State*>(handle); if (!s) return nullptr;
     json out={{"schema_version",1},{"status","failed"},{"input_samples",count},{"token_ids",json::array()},
               {"text_utf8_hex",""},{"termination","error"},{"first_generated_token_s",nullptr},{"first_visible_text_s",nullptr}};
     out["runtime_configuration"]=s->configuration;
     std::vector<llama_token> ids; std::string text;
+    double callback_s=0;
     const auto began=Clock::now();
     try {
         if (!samples || count<320) throw std::runtime_error("at least 2 feature frames required");
@@ -128,7 +131,13 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe(void* ha
             stage=Clock::now();llama_token token=llama_sampler_sample(s->sampler,s->ctx,-1);llama_sampler_accept(s->sampler,token);sample_s+=since(stage);
             if(llama_vocab_is_eog(vocab,token)) { out["termination"]="eog";out["termination_token_id"]=token;break; }
             if(ids.empty()) out["first_generated_token_s"]=since(began);
-            ids.push_back(token);text+=piece(vocab,token);
+            ids.push_back(token);const auto bytes=piece(vocab,token);text+=bytes;
+            if(callback) {
+                stage=Clock::now();
+                const int status=callback(user,bytes.data(),bytes.size(),int(ids.size()),since(began));
+                callback_s+=since(stage);
+                if(status!=0) { out["termination"]="callback_error";throw std::runtime_error("token callback failed"); }
+            }
             if(i>0 && repetition(ids)) { out["termination"]="repetition";break; }
             if(i+1==s->max_new) { out["termination"]="token_limit";break; }
             if(past>=int(llama_n_ctx(s->ctx))) { out["termination"]="context_limit";break; }
@@ -144,7 +153,11 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe(void* ha
         else out["error"]="generation did not terminate with eog";
     } catch (const std::exception& e) { out["error"]=e.what(); }
     out["token_ids"]=ids;out["text_utf8_hex"]=hex(text);out["native_elapsed_s"]=since(began);
+    out["token_callback_enabled"]=callback!=nullptr;out["token_callback_s"]=callback_s;
     s->result=out.dump();return s->result.c_str();
+}
+__attribute__((visibility("default"))) const char* edge_gguf_transcribe(void* handle,const float* samples,size_t count) {
+    return edge_gguf_transcribe_tokens(handle,samples,count,nullptr,nullptr);
 }
 __attribute__((visibility("default"))) void edge_gguf_destroy(void* handle) { delete static_cast<State*>(handle); }
 }

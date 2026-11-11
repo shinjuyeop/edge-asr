@@ -9,9 +9,14 @@ from edge_asr.dataset import Audio, float_digest
 
 
 class DecodeWorker:
-    def __init__(self, adapter, emit, *, capacity=4):
+    def __init__(self, adapter, emit, *, capacity=4, token_stream=False):
         if type(capacity) is not int or capacity < 1:
             raise ValueError("최종 구간 큐 용량은 양의 정수여야 합니다.")
+        if type(token_stream) is not bool or (
+            token_stream and getattr(adapter, "supports_token_stream", False) is not True
+        ):
+            raise ValueError("토큰 배포에는 지원하는 GGUF adapter가 필요합니다.")
+        self.token_stream = token_stream
         self.adapter, self.emit, self.capacity = adapter, emit, capacity
         self.condition = Condition()
         self.finals, self.partial = deque(), None
@@ -70,8 +75,24 @@ class DecodeWorker:
                 self.emit({"type": "started", **job, "started_monotonic_s": started})
                 result = {"type": "result", **job, "status": "failed", "hypothesis": None}
                 try:
-                    text = self.adapter.transcribe(
-                        Audio(samples, 16000, job["payload_float32_sha256"])
+                    audio = Audio(samples, 16000, job["payload_float32_sha256"])
+
+                    def token(update):
+                        self.emit(
+                            {
+                                "type": "token",
+                                **job,
+                                "status": "provisional",
+                                "started_monotonic_s": started,
+                                "received_monotonic_s": time.perf_counter(),
+                                **update,
+                            }
+                        )
+
+                    text = (
+                        self.adapter.transcribe_stream(audio, token)
+                        if self.token_stream
+                        else self.adapter.transcribe(audio)
                     )
                     if not isinstance(text, str) or not text.strip():
                         raise ValueError("음성 구간에서 비어 있지 않은 문자열이 필요합니다.")

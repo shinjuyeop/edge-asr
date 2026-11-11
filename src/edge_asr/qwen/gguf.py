@@ -1,7 +1,9 @@
 """해시로 고정한 GGUF 자산과 별도 llama.cpp CPU C ABI를 사용하는 어댑터."""
 
+import codecs
 import ctypes
 import json
+import math
 from array import array
 
 from edge_asr.artifacts import digest
@@ -15,6 +17,9 @@ MODEL_FILES = {
     "Qwen3-ASR-0.6B-Q8_0.gguf": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971",
     "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d",
 }
+TOKEN_CALLBACK = ctypes.CFUNCTYPE(
+    ctypes.c_int, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_size_t, ctypes.c_int, ctypes.c_double
+)
 
 
 class Qwen3GGUFAdapter:
@@ -76,11 +81,16 @@ class Qwen3GGUFAdapter:
         self.handle, self.library, self.last_result_metadata = None, None, None
 
     @property
+    def supports_token_stream(self):
+        return "token_callback_v1" in self.build.get("features", [])
+
+    @property
     def metadata(self):
         return {
             "backend": "llama_cpp_mtmd",
             "provider": "cpu",
             "supported_modes": ["batch"],
+            "token_output_callback": self.supports_token_stream,
             "llama_commit": LLAMA_COMMIT,
             "language": "ko",
             "stream_language": "Korean",
@@ -126,6 +136,18 @@ class Qwen3GGUFAdapter:
             ctypes.c_size_t,
         ]
         lib.edge_gguf_transcribe.restype = ctypes.c_char_p
+        if self.supports_token_stream:
+            try:
+                lib.edge_gguf_transcribe_tokens.argtypes = [
+                    ctypes.c_void_p,
+                    ctypes.POINTER(ctypes.c_float),
+                    ctypes.c_size_t,
+                    TOKEN_CALLBACK,
+                    ctypes.c_void_p,
+                ]
+                lib.edge_gguf_transcribe_tokens.restype = ctypes.c_char_p
+            except AttributeError as error:
+                raise ValueError("명세에 기록된 token callback 심볼이 없습니다.") from error
         lib.edge_gguf_destroy.argtypes = [ctypes.c_void_p]
         lib.edge_gguf_destroy.restype = None
         if lib.edge_gguf_abi() != 1 or lib.edge_gguf_commit().decode() != LLAMA_COMMIT:
@@ -143,6 +165,14 @@ class Qwen3GGUFAdapter:
             )
 
     def transcribe(self, audio):
+        return self._transcribe(audio)
+
+    def transcribe_stream(self, audio, on_text):
+        if not self.supports_token_stream or not callable(on_text):
+            raise ValueError("token_callback_v1 빌드와 텍스트 수신 함수가 필요합니다.")
+        return self._transcribe(audio, on_text)
+
+    def _transcribe(self, audio, on_text=None):
         self.last_result_metadata = None
         if self.handle is None:
             raise RuntimeError("모델을 먼저 로드해야 합니다.")
@@ -156,8 +186,39 @@ class Qwen3GGUFAdapter:
             raise ValueError("16000Hz·최소 320프레임 입력이 필요합니다.")
         pcm = (ctypes.c_float * len(audio.samples)).from_buffer(audio.samples)
         self.last_result_metadata = {"output_policy": "gguf_raw_utf8_until_eog_v1"}
+        decoder = codecs.getincrementaldecoder("utf-8")("strict")
+        prefix, callback_errors = "", []
+        token_index, last_elapsed = 0, 0.0
+
+        def receive(_user, pointer, length, index, elapsed):
+            nonlocal prefix, token_index, last_elapsed
+            try:
+                if index != token_index + 1 or not math.isfinite(elapsed) or elapsed < last_elapsed:
+                    raise ValueError("토큰 순서·시각 오류")
+                token_index, last_elapsed = index, elapsed
+                piece = ctypes.string_at(pointer, length)
+                prefix += decoder.decode(piece, final=False)
+                on_text(
+                    {
+                        "hypothesis": prefix,
+                        "token_index": index,
+                        "native_elapsed_s": elapsed,
+                        "piece_hex": piece.hex(),
+                    }
+                )
+                return 0
+            except BaseException as error:
+                callback_errors.append(error)
+                return 1  # ctypes 경계를 통해 예외를 던지지 않는다.
+
+        callback = TOKEN_CALLBACK(receive) if on_text is not None else None
         with capture_native_stderr(self.last_result_metadata):
-            blob = self.library.edge_gguf_transcribe(self.handle, pcm, len(audio.samples))
+            if callback is None:
+                blob = self.library.edge_gguf_transcribe(self.handle, pcm, len(audio.samples))
+            else:
+                blob = self.library.edge_gguf_transcribe_tokens(
+                    self.handle, pcm, len(audio.samples), callback, None
+                )
         if not blob:
             raise RuntimeError("GGUF C ABI가 결과를 반환하지 않았습니다.")
         result = json.loads(blob)
@@ -174,6 +235,8 @@ class Qwen3GGUFAdapter:
         self.last_result_metadata.update(
             raw_text=text, token_ids=tokens, returned_token_count=len(tokens)
         )
+        if callback_errors:
+            raise RuntimeError("토큰 수신/표시 실패") from callback_errors[0]
         if (
             result.get("status") != "success"
             or result.get("termination") != "eog"
@@ -182,6 +245,10 @@ class Qwen3GGUFAdapter:
             raise RuntimeError(
                 f"GGUF 전사 실패/잘림: {result.get('termination')}: {result.get('error')}"
             )
+        if callback is not None and (
+            prefix + decoder.decode(b"", final=True) != text or token_index != len(tokens)
+        ):
+            raise ValueError("토큰 전달 결과와 최종 전사가 다릅니다.")
         return text
 
     def close(self):
