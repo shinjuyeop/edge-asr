@@ -1,6 +1,6 @@
 # Qwen 최적화 실행 안내
 
-주 기준은 [Qwen 단독1배속 연속 입력](../research/qwen_realtime.md)입니다. [ONNX/GGUF](../../results/summaries/optimization/realtime100-backends-20261110.md)·[VAD 보정](../../results/summaries/optimization/realtime-accuracy-20261110.md)·[갱신2초/4초](../../results/summaries/optimization/realtime-schedule-20261111.md)·[생성 중 표시](../../results/summaries/optimization/realtime-token-20261111.md)·[CPU 스레드](../../results/summaries/optimization/realtime-threads-20261111.md)를 비교했습니다. 개발 권장은 **Q8·3T·VAD 보정·구간5초·첫1초/이후4초·토큰 표시/접두부 보류**입니다. 기존 기본 설정2T는 보존하며 아래 새 TOML로3T를 명시합니다. [파일별 batch 실측](../../results/summaries/optimization/fixed100-baseline-20261109.md)은 진단용 참조로 보존합니다.
+주 기준은 [Qwen 단독1배속 연속 입력](../research/qwen_realtime.md)입니다. [ONNX/GGUF](../../results/summaries/optimization/realtime100-backends-20261110.md)·[VAD 보정](../../results/summaries/optimization/realtime-accuracy-20261110.md)·[갱신2초/4초](../../results/summaries/optimization/realtime-schedule-20261111.md)·[생성 중 표시](../../results/summaries/optimization/realtime-token-20261111.md)·[CPU 스레드](../../results/summaries/optimization/realtime-threads-20261111.md)·[스레드 분리100개](../../results/summaries/optimization/realtime-split100-20261111.md)를 비교했습니다. 개발 권장은 **Q8·생성2T/음성·prefill3T·VAD 보정·구간5초·첫1초/이후4초·토큰 표시/접두부 보류**입니다. 기존 기본 설정과 모두3T는 보존하며 아래 별도 TOML을 사용합니다. [파일별 batch 실측](../../results/summaries/optimization/fixed100-baseline-20261109.md)은 진단용 참조입니다.
 
 ## 환경과 설정
 
@@ -106,14 +106,14 @@ ONNX 측정은 guard와 자식 명령 모두 표의 ONNX Python·설정을 사�
 
 같은1배속 명령에서 새 TOML·새 실행 ID를 사용하고 `--token-stream`을 추가하면 생성 중 UTF-8 문자열이 `생성중 partial/final`로 표시됩니다. 생성 중 final도 임시 가설이며 실제 확정은 종료 `result`입니다. 기존 `first_caption_from_track_start_s`는 완성 문자열 반환 지표로 유지하고, `first_visible_caption_from_track_start_s`·`token_timings`·`engine_ttft_s`를 구분해 확인합니다. engine TTFT는 native 호출 시작→첫 비EOG 생성 토큰이고 음성 처리/prefill을 포함하며 큐·Python 표시 시각과 다릅니다. 임시 가설은 최종 CER에 더하지 않고 이후 실패도 보존합니다.
 
-RP5의 `realtime-token-20261111-01`에 별도 bridge와2T TOML을 준비했고 스레드 대조에서는 같은 bridge를 참조하는 `realtime-threads-20261111-01/configs/gguf-3t.toml`을 준비했습니다. 아래는 현재3T 조건으로 **새 실행 경로**에 실행하는 형식입니다. 다른 환경에서는 위 빌드 안내대로 bridge를 만들고 TOML의 library/manifest 경로를 맞춥니다. 기존 기본 설정은 유지합니다.
+RP5에는 기존 토큰 bridge와 스레드 분리를 지원하는 별도 split bridge가 있습니다. 아래는 현재 생성2T·음성/prefill3T 설정으로 **새 실행 경로**에 실행하는 형식입니다. 다른 환경에서는 빌드 안내대로 두 기능을 지원하는 bridge를 만들고 TOML의 library/manifest 경로를 맞춥니다. 기존 기본 설정은 유지합니다.
 
 ```bash
 .venv/bin/python scripts/edge_asr.py tools thermal-run \
   --output "results/optimization/opt3/<새ID>" \
   --timeout-s 1800 --temperature-policy operational --skip-temperature-admission \
   -- .venv/bin/python scripts/edge_asr.py tools replay-qwen3 \
-  --config results/optimization/opt3/realtime-threads-20261111-01/configs/gguf-3t.toml \
+  --config results/optimization/opt3/realtime-split100-20261111-01/configs/split-2-3.toml \
   --manifest "<동일순서-manifest.jsonl>" --output "results/optimization/opt3/<새ID>" \
   --gap-s 0 --vad-threshold 0.3 --silence-policy skip-zero \
   --vad-preprocess rms26-floor80 --vad-max-speech-s 5 --max-segment-s 5 \
@@ -127,7 +127,7 @@ RP5의 `realtime-token-20261111-01`에 별도 bridge와2T TOML을 준비했고 �
 
 [접두부 보류 검증](../../results/summaries/optimization/realtime-stability-20261111.md)에서 같은 로그의 철회 문자577→161자·첫 표시/최종 결과 동일을 확인했고, 새 RP5 100개에서도 재표시 철회0·전체163자·CER11.12%·실패/드롭0이었습니다. 실제 내용 변경과 실패 처리는 유지합니다. 새 대조 실행을 추가하지 않아 과거와의 시간 차이를 엔진 가속으로 해석하지 않습니다.
 
-[스레드 대조](../../results/summaries/optimization/realtime-threads-20261111.md)는 같은 소스의100개 새2T→3T를 비교했습니다. 최종210구간 PCM·전사·토큰 ID·CER11.12%를 유지하며 최종 추론 합계8.9%·전체 합계8.3%가 줄었습니다. 첫 표시 p95는5.20→4.56초·고정 파일 끝 반환 p95는4.22→3.72초였습니다. 권장은3T이지만 decode 비용과 최고 온도는 늘었습니다. 이전2T 설정·결과는 그대로입니다.
+[이전 스레드 대조](../../results/summaries/optimization/realtime-threads-20261111.md)는 같은 소스의100개 새2T→3T를 비교했습니다. 최종210구간 PCM·전사·토큰 ID·CER11.12%를 유지하며 최종 추론 합계8.9%·전체 합계8.3%가 줄었습니다. 첫 표시 p95는5.20→4.56초·고정 파일 끝 반환 p95는4.22→3.72초였습니다. 당시 모두3T를 선택했지만 decode 비용과 최고 온도는 늘었습니다. 이전 설정·결과는 그대로입니다.
 
 ## 생성·음성 처리 스레드 분리 실험
 
@@ -141,7 +141,7 @@ num_threads_batch = 3
 
 Python 어댑터는 생성/prefill의 native getter 값과 mtmd 초기화 전달값 `audio_threads`가 요청과 같은지 확인합니다. 불일치·기능/심볼 누락은 실패로 기록하며 기존 값으로 조용히 대체하지 않습니다. 입력·분할·토큰 표시·KV 초기화는 유지합니다.
 
-[분리 검토 결과](../../results/summaries/optimization/realtime-split-20261111.md): 기존 ABI와 분리 인자 전달은 정상이고, 같은6개 반복에서 decode 합계는 줄었습니다. 최종 처리 합계 개선이 앞control 대비3.88%·2.82%여서 두 반복 모두3% 이상이라는 조건에 미달했습니다. 신규100개는 실행하지 않았고 현재 권장은 위의 기존3T TOML입니다. 이 절의2/3 값과 새 bridge는 실험 재현용으로 남깁니다.
+[6개 분리 검토](../../results/summaries/optimization/realtime-split-20261111.md)는 최종 처리 합계 개선3.88%·2.82%로 반복3% 선별 조건에 미달해 해당 실행은100개 없이 종료했습니다. 이 판정은 보존합니다. 이후 [별도100개 추가 대조](../../results/summaries/optimization/realtime-split100-20261111.md)에서 새3/3→2/3은 최종 합계3.68%·decode7.76% 감소·CER11.12% 동일·실패/드롭/미출력0으로 사전 조건16개를 통과했습니다. 현재 개발 권장은 위의2/3 TOML이며 순차1쌍·열 제한을 포함한 운영 관측입니다. 통계적 유의성·실사용 채택과 구분합니다.
 
 ## 이전 실험 재현
 
