@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-11",
+  "kind": "rp5_measured_caption_video_with_reference",
+  "new_model_inference": false,
+  "live_screen_recording": false,
+  "previous_summary": "results/summaries/optimization/realtime-video-20261111.json",
+  "video": {
+    "path": "results/optimization/opt3/realtime-video-20261111-02/qwen3-rp5-latency.mp4",
+    "sha256": "f3b07d316caefbe98fb30a02442eafbabd236dbcf0933454297a9fe350527cf8",
+    "bytes": 1398909,
+    "duration_s": 66,
+    "width": 1280,
+    "height": 960,
+    "fps": 25,
+    "video_codec": "h264",
+    "audio_codec": "aac"
+  },
+  "player": {
+    "path": "results/optimization/opt3/realtime-video-20261111-02/player.html",
+    "sha256": "e59230e2fad6caaf0d7b43dea48dd62d50a33a07984859fe39b2d0d3a66e47f5",
+    "chrome_metadata_loaded": true
+  },
+  "input": {
+    "unique_sources": 6,
+    "audio_duration_s": 60.62375,
+    "manifest_sha256": "b9dabb0e87600d49c6b9d07184eee5170497db7dd1f15fe6a52f186583444b80",
+    "float32_sha256": "532ab9a6a56f91e3d2a0ebd9b953ad4fce07dbbe197324580a057c537d02b779",
+    "pcm16_sha256": "2e7f0ea806e71ec7eeac210cd73f1a8311aa89ff9ef6d957e5f413317159ce2f"
+  },
+  "runs": [
+    {
+      "worker_path": "results/optimization/opt3/realtime-schedule-20261111-01/pilot/interval2/worker.json",
+      "worker_sha256": "987433d3c10b3147805f8e01b5361518c51647f9dfe7fbeb79203e9e3a3cabbc",
+      "jobs_sha256": "251f676135af4bc6ee923ae4c34d4c18808f86ffe875cbcb78dc266998df48fd",
+      "model_source_commit": "8e65b55f11bc2b010ce9a8faede419aa5f71a92a",
+      "settings": {
+        "gap_s": 0.0,
+        "vad_preprocess": "rms26-floor80",
+        "vad_threshold": 0.3,
+        "vad_max_speech_s": 5,
+        "partial_after_s": 1.0,
+        "partial_interval_s": 2.0,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      }
+    },
+    {
+      "worker_path": "results/optimization/opt3/realtime-schedule-20261111-01/pilot/interval4/worker.json",
+      "worker_sha256": "f5a513fc00184e0d96ae6eb9476ca55a49b774e8e9cde11d8d419288f8a7edfc",
+      "jobs_sha256": "6784356fb2404efd6d532ffe6748d422c11b364dc8b24ee69f4ad96f1c1ed6b1",
+      "model_source_commit": "8e65b55f11bc2b010ce9a8faede419aa5f71a92a",
+      "settings": {
+        "gap_s": 0.0,
+        "vad_preprocess": "rms26-floor80",
+        "vad_threshold": 0.3,
+        "vad_max_speech_s": 5,
+        "partial_after_s": 1.0,
+        "partial_interval_s": 4.0,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      }
+    }
+  ],
+  "reference_displayed": true,
+  "reference_used_for_inference": false,
+  "reference_scope": "각 전사 구간과 겹치는 원음의 전체 정답. 부분 구간 정답 또는 단어 시각 정렬이 아님.",
+  "verification": {
+    "original_video_preserved": true,
+    "original_renderer_preserved": true,
+    "audio_wav_identical": true,
+    "decoded_aac_audio_identical": true,
+    "decoded_audio_hash": "SHA256=f392177e6d202bc394e1674de24a1a90868cd9a19312c28b8e33210d2b80d93c",
+    "caption_events_identical": true,
+    "reference_mappings_verified": 51,
+    "reference_used_for_inference": false,
+    "new_inference": false
+  },
+  "render_receipt_sha256": "f13ac581ba26f3faa08638e6756a3caa4f1a93c4a8cf0f8024b2c5cab4875a87",
+  "renderer_sha256": "ae39291e4b29efbf1b4f78d29b93a7332c1a0f8741b42c3ee72d9c57096ac746",
+  "scope": "기존 RP5 실측 영상에 정답만 표시. 원음·모델 출력·발행 시각·이전 영상 보존. 영상과 원문은 로컬에 보관."
+}
