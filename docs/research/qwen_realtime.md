@@ -127,6 +127,18 @@ Host 검사→main 반영→RP5 동기화 후 같은 고유6개·60.62375초의 
 
 [실측 결과](../../results/summaries/optimization/realtime-threads-20261111.md): 두 파일럿 후보가 양쪽2T 대비 선별 조건을 통과했고 최종 호출 합계가 더 작은3T를 선택했습니다.100개 새2T→3T도 사전13조건을 모두 통과했습니다. 최종210구간 PCM/전사/토큰 ID·CER428/3848 동일·실패/드롭/미출력0이며 최종 호출 합계570.26→519.42초·전체 합계722.89→663.19초, 첫 표시 p95 5.20→4.56초·파일 끝 반환 p95 4.22→3.72초였습니다. 음성 처리/prefill은 줄고 decode·최고 온도는 늘었습니다. 다음 개발 권장은 별도 TOML의3T이며 기본2T는 보존합니다.
 
+## 생성·음성 처리 스레드 분리 — 2026-11-11 사전 조건
+
+`realtime-split-20261111-01`은 같은 Q8에서 **생성3T/음성·prefill3T(control)**와 **생성2T/음성·prefill3T(candidate)**를 비교합니다. 기존 bridge를 확장해 `split_threads_v1` 기능과6인자 `edge_gguf_create_threads`를 제공하고5인자 ABI1 호출도 보존합니다. 새 `num_threads_batch`는 여러 토큰 prefill용 `cp.n_threads_batch`와 오디오용 `ap.n_threads`에 전달하고 `num_threads`는 생성용 `cp.n_threads`에 전달합니다. [공식 llama API](https://raw.githubusercontent.com/ggml-org/llama.cpp/7d7f0287530bc8981690f361d8c1627dbae1c99a/include/llama.h), [mtmd API](https://raw.githubusercontent.com/ggml-org/llama.cpp/7d7f0287530bc8981690f361d8c1627dbae1c99a/tools/mtmd/mtmd.h)를 확인하고 실제 반환 설정을 검사합니다.
+
+기존 엔진·가중치·환경은 보존하며 bridge만 `runtimes/qwen3-opt/split-20261111-01/bridge/`에 별도 빌드합니다. 먼저 같은 고유6개·60.62375초에서 새 bridge의 기존5인자 경로(3T·선택 항목 생략)를 실행해 이전3T의 최종15구간 PCM/전사/토큰 ID·50/280오류와 대조합니다. 이후 같은 새 bridge의 명시적3/3 control A1→2/3 candidate B1→2/3 candidate B2→3/3 control A2 순으로 실행합니다. 새 bridge·선택 항목 명시 여부·생성 스레드를 구분하며 비교 A/B는 모두6인자 API를 사용합니다.
+
+각 후보 반복이 **양쪽control 각각에 대해** 입력 완료·실패/드롭/미출력0·최종15구간 PCM/전사/토큰 ID·50/280오류 동일·재표시 철회0을 충족해야 합니다. 같은 최종15호출 합계가3% 이상, 그 호출의 native decode 합계는5% 이상 작고 전체 추론 합계는 늘지 않아야 합니다. 첫 표시 p50/p95와 파일 끝 반환 p95는 각각control+0.10초 이내로 둡니다. 소폭 추가 최적화의 선별 기준을 실측 전에 고정하며 소표본 지연은 독립 성능으로 일반화하지 않습니다. 두 후보 반복이 모두 통과할 때만100개로 진행합니다.
+
+전체100개는 같은 소스에서 **새3/3 control→2/3 candidate**를 모두 새로 전사합니다.891.1448125초·정답3848자·고정 순서·추가 무음0초·1배속·VAD 보정/5초·첫1초/이후4초·토큰 표시/접두부 보류·큐·워밍업·EOF·4GiB·온도 대기 없는 조건은 유지하고 외부 제한만1800초입니다. 입력 완료·실패/드롭/미출력0·최종210구간 PCM/전사/토큰 ID·CER428/3848 동일·재표시 철회0을 확인합니다. 같은 최종 호출 합계3%·native decode 합계5% 이상 감소, 전체 추론 합계 증가 없음, 공통100개 첫 표시 p50/p95·파일 끝 반환 p95 모두control 이하, 적어도 한 지연 감소, 관측 RSS 증가32MiB 이내가 개발 후보 조건입니다. 파일럿을 통과하지 못하면3T를 유지하고100개를 재실행하지 않습니다.
+
+native `threads`·`threads_batch`는 llama getter 값이고 `audio_threads`는 mtmd 초기화에 전달한 값입니다. 스레드 분리는 encoder 증분 실행·KV 재사용이 아닙니다. 실측 시각·열/클럭·부분 호출 수·정확도·문자 철회·실패를 함께 보고하고 과거 기록을 새control로 대신하지 않습니다. 모델·원음·환경·기본 설정·기존 라이브러리와 결과는 보존합니다.
+
 ## 이전 GGUF 평가 이력
 
 [추가 무음1초 Q8 고정100개 결과](../../results/summaries/optimization/realtime100-q8-20261110.md): 전체 입력 완료·실패/드롭0, 연결 CER14.06%로 batch7.64%보다 악화되어 현재 프로필 채택은 보류합니다. 아래3개 파일럿·사전 조건은 이력입니다.

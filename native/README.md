@@ -26,6 +26,8 @@ Python 실행 코드는 [src/edge_asr/qwen/](../src/edge_asr/qwen/), C++ 소스�
 
 `runtimes/qwen3-opt/token-20261111-01/bridge/`는 같은 기존 엔진6개에 연결한 RP5 별도 빌드입니다. [100개 끔/켬 대조](../results/summaries/optimization/realtime-token-20261111.md)에서 최종 PCM·전사·토큰 ID와 CER를 유지하며 첫 표시가 소폭 빨라졌습니다. 기존 기본 설정은 유지하고 [실행 안내](../docs/guides/qwen3_optimization.md)의 새 TOML·선택 옵션으로 사용합니다.
 
+선택 기능 `split_threads_v1`은 기존 `edge_gguf_create`를 보존하고 `edge_gguf_create_threads`에 생성용/음성·prefill용 스레드를 따로 전달합니다. 새 TOML에 `num_threads_batch`를 명시할 때만6인자 함수를 사용합니다. 생략하면 기존5인자 ABI를 사용하며 기존 라이브러리도 유지합니다. 분리 비교 빌드는 `runtimes/qwen3-opt/split-20261111-01/bridge/`처럼 새 경로에 만듭니다. [고정 검증 조건](../docs/research/qwen_realtime.md).
+
 양자화 준비는 별도 환경에서 upstream `gguf-py`의 numpy·pyyaml·tqdm·requests 의존성을 준비하고, 고정 llama.cpp 소스의 `llama-quantize`를 새 빌드 경로에 만듭니다. 기존 추론 환경·엔진은 변경하지 않습니다. `quantize.py --help`의 source/tool/llama-source/audio-model/output을 지정하며 output은 새 폴더여야 합니다. 모델별 명세는 원본·도구·GGUF type·tensor dtype·SHA를 보존하고 Q8 오디오 파일은 기존 경로를 참조합니다. [실험 조건](../docs/research/qwen_realtime.md).
 
 ## ORT 계측

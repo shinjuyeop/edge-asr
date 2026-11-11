@@ -99,6 +99,82 @@ class GGUFTests(unittest.TestCase):
         self.build["features"] = ["token_callback_v1"]
         (self.root / "build.json").write_text(json.dumps(self.build))
 
+    def enable_split_threads(self):
+        self.build["features"] = ["split_threads_v1"]
+        (self.root / "build.json").write_text(json.dumps(self.build))
+        self.library.edge_gguf_create_threads.return_value = 1234
+
+    def test_split_threads_forwarded_and_absent_option_keeps_legacy_abi(self):
+        self.enable_split_threads()
+        adapter = self.load()
+        self.library.edge_gguf_create.assert_called_once()
+        self.library.edge_gguf_create_threads.assert_not_called()
+        self.assertEqual(adapter.metadata["thread_configuration"]["audio_threads"], 2)
+        self.library.edge_gguf_create.reset_mock()
+        for generation, batch in ((3, 3), (2, 3)):
+            with self.subTest(generation=generation, batch=batch):
+                self.model.update(num_threads=generation, num_threads_batch=batch)
+                adapter = self.load()
+                self.assertEqual(
+                    self.library.edge_gguf_create_threads.call_args.args[2:],
+                    (generation, batch, 512, 128),
+                )
+                self.assertEqual(adapter.metadata["thread_configuration"]["audio_threads"], batch)
+        self.library.edge_gguf_create.assert_not_called()
+
+    def test_split_threads_require_capability_and_export_before_creation(self):
+        self.model["num_threads_batch"] = 3
+        with self.assertRaisesRegex(ValueError, "split_threads_v1"):
+            create_adapter(self.model, 16000, self.root)
+        self.enable_split_threads()
+        del self.library.edge_gguf_create_threads
+        with self.assertRaisesRegex(ValueError, "심볼"):
+            self.load()
+        self.library.edge_gguf_create.assert_not_called()
+
+    def test_runtime_thread_mismatch_preserves_raw_result(self):
+        self.enable_split_threads()
+        self.model["num_threads_batch"] = 3
+        adapter = self.load()
+        row = json.loads(self.result())
+        row["runtime_configuration"] = {"threads": 2, "threads_batch": 3, "audio_threads": 3}
+        self.library.edge_gguf_transcribe.return_value = json.dumps(row).encode()
+        self.assertEqual(adapter.transcribe(self.audio), "한 글!")
+        for actual in ({}, {"threads": 3}, {"threads": 2, "threads_batch": 3, "audio_threads": 2}):
+            with self.subTest(actual=actual):
+                row["runtime_configuration"] = actual
+                self.library.edge_gguf_transcribe.return_value = json.dumps(row).encode()
+                with self.assertRaisesRegex(ValueError, "실제 스레드"):
+                    adapter.transcribe(self.audio)
+                self.assertEqual(adapter.last_result_metadata["raw_text"], "한 글!")
+                self.assertEqual(adapter.last_result_metadata["native_result"], row)
+
+    def test_optional_batch_threads_are_positive_and_gguf_only(self):
+        source = (ROOT / "configs/gguf.toml").read_text()
+        self.assertNotIn(
+            "num_threads_batch", load_evaluation_config(ROOT / "configs/gguf.toml")["model"]
+        )
+        path = self.root / "threads.toml"
+        for value in ("3", "0", "-1", "true", "2.5", '"3"'):
+            with self.subTest(value=value):
+                path.write_text(
+                    source.replace(
+                        "num_threads = 2", f"num_threads = 2\nnum_threads_batch = {value}"
+                    )
+                )
+                if value == "3":
+                    self.assertEqual(load_evaluation_config(path)["model"]["num_threads_batch"], 3)
+                else:
+                    with self.assertRaises(ValueError):
+                        load_evaluation_config(path)
+        onnx = (ROOT / "configs/onnx.toml").read_text()
+        path.write_text(onnx.replace("num_threads = 2", "num_threads = 2\nnum_threads_batch = 3"))
+        with self.assertRaisesRegex(ValueError, "알 수 없는"):
+            load_evaluation_config(path)
+        self.model["num_threads_batch"] = True
+        with self.assertRaises(ValueError):
+            create_adapter(self.model, 16000, self.root)
+
     def test_token_bytes_wait_for_complete_utf8_and_preserve_final_output(self):
         self.enable_tokens()
         adapter, updates = self.load(), []

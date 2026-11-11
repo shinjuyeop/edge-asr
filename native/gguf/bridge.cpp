@@ -59,32 +59,35 @@ extern "C" {
 __attribute__((visibility("default"))) int edge_gguf_abi() { return 1; }
 __attribute__((visibility("default"))) const char* edge_gguf_commit() { return commit; }
 __attribute__((visibility("default"))) const char* edge_gguf_error() { return error.c_str(); }
-__attribute__((visibility("default"))) void* edge_gguf_create(const char* model,const char* mmproj,int threads,int context,int max_new) {
+__attribute__((visibility("default"))) void* edge_gguf_create_threads(const char* model,const char* mmproj,int threads,int batch_threads,int context,int max_new) {
     try {
         error.clear();
-        if (threads<1 || context!=512 || max_new<1 || max_new>256) throw std::runtime_error("invalid fixed CPU configuration");
+        if (threads<1 || batch_threads<1 || context!=512 || max_new<1 || max_new>256) throw std::runtime_error("invalid fixed CPU configuration");
         std::call_once(backend, []{ ggml_backend_load_all(); llama_backend_init(); });
         auto s=std::make_unique<State>(); s->max_new=max_new;
         auto mp=llama_model_default_params(); mp.n_gpu_layers=0;
         s->model=llama_model_load_from_file(model,mp);
         if (!s->model) throw std::runtime_error("model load failed");
         auto cp=llama_context_default_params(); cp.n_ctx=context; cp.n_batch=context; cp.n_ubatch=context;
-        cp.n_threads=threads; cp.n_threads_batch=threads; cp.no_perf=false;
+        cp.n_threads=threads; cp.n_threads_batch=batch_threads; cp.no_perf=false;
         s->ctx=llama_init_from_model(s->model,cp);
         if (!s->ctx) throw std::runtime_error("context creation failed");
-        auto ap=mtmd_context_params_default(); ap.use_gpu=false; ap.n_threads=threads; ap.warmup=false; ap.print_timings=false;
+        auto ap=mtmd_context_params_default(); ap.use_gpu=false; ap.n_threads=batch_threads; ap.warmup=false; ap.print_timings=false;
         s->audio=mtmd_init_from_file(mmproj,s->model,ap);
         if (!s->audio || !mtmd_support_audio(s->audio) || mtmd_get_audio_sample_rate(s->audio)!=16000)
             throw std::runtime_error("expected 16000Hz audio projector");
         s->sampler=llama_sampler_init_greedy(); s->batch=llama_batch_ext_init(s->ctx);
         if (!s->sampler || !s->batch) throw std::runtime_error("sampler/batch creation failed");
         s->configuration={{"context",llama_n_ctx(s->ctx)},{"n_batch",llama_n_batch(s->ctx)},{"n_ubatch",llama_n_ubatch(s->ctx)},
-                          {"threads",llama_n_threads(s->ctx)},{"threads_batch",llama_n_threads_batch(s->ctx)},
+                          {"threads",llama_n_threads(s->ctx)},{"threads_batch",llama_n_threads_batch(s->ctx)},{"audio_threads",ap.n_threads},
                           {"cache_type_k",ggml_type_name(cp.type_k)},{"cache_type_v",ggml_type_name(cp.type_v)},
                           {"flash_attention_setting",int(cp.flash_attn_type)},{"audio_sample_rate",mtmd_get_audio_sample_rate(s->audio)},
                           {"system_info",llama_print_system_info()},{"llama_version",llama_version()}};
         return s.release();
     } catch (const std::exception& e) { error=e.what(); return nullptr; }
+}
+__attribute__((visibility("default"))) void* edge_gguf_create(const char* model,const char* mmproj,int threads,int context,int max_new) {
+    return edge_gguf_create_threads(model,mmproj,threads,threads,context,max_new);
 }
 // 입력은 같은 batch PCM이다. callback은 토큰 바이트 전달만 하며 0 외 반환은 호출 실패로 남긴다.
 typedef int (*edge_token_callback)(void*,const void*,size_t,int,double);

@@ -28,7 +28,15 @@ class Qwen3GGUFAdapter:
             raise ValueError("GGUF 비교 경로는 한국어 ko·16000Hz 고정입니다.")
         if model.get("quantization") not in QUANTIZATIONS:
             raise ValueError("지원하는 GGUF 양자화가 아닙니다.")
+        batch_threads = model.get("num_threads_batch", model["num_threads"])
+        if type(batch_threads) is not int or batch_threads < 1:
+            raise ValueError("num_threads_batch는 1 이상의 정수여야 합니다.")
         self.model = model
+        self.thread_configuration = {
+            "threads": model["num_threads"],
+            "threads_batch": batch_threads,
+            "audio_threads": batch_threads,
+        }
         self.directory = resolve_path(model["path"], root)
         self.library_path = resolve_path(model["runtime_library"], root)
         self.manifest_path = resolve_path(model["runtime_manifest"], root)
@@ -75,6 +83,10 @@ class Qwen3GGUFAdapter:
             "library_sha256"
         ) != digest(self.library_path):
             raise ValueError("GGUF 실행 라이브러리의 커밋/빌드 해시가 다릅니다.")
+        if "num_threads_batch" in model and "split_threads_v1" not in self.build.get(
+            "features", []
+        ):
+            raise ValueError("num_threads_batch에는 split_threads_v1 별도 GGUF 빌드가 필요합니다.")
         self.model_files.update(
             runtime_library=self.library_path, runtime_manifest=self.manifest_path
         )
@@ -91,6 +103,7 @@ class Qwen3GGUFAdapter:
             "provider": "cpu",
             "supported_modes": ["batch"],
             "token_output_callback": self.supports_token_stream,
+            "thread_configuration": self.thread_configuration,
             "llama_commit": LLAMA_COMMIT,
             "language": "ko",
             "stream_language": "Korean",
@@ -130,6 +143,19 @@ class Qwen3GGUFAdapter:
             ctypes.c_int,
         ]
         lib.edge_gguf_create.restype = ctypes.c_void_p
+        if "split_threads_v1" in self.build.get("features", []):
+            try:
+                lib.edge_gguf_create_threads.argtypes = [
+                    ctypes.c_char_p,
+                    ctypes.c_char_p,
+                    ctypes.c_int,
+                    ctypes.c_int,
+                    ctypes.c_int,
+                    ctypes.c_int,
+                ]
+                lib.edge_gguf_create_threads.restype = ctypes.c_void_p
+            except AttributeError as error:
+                raise ValueError("명세에 기록된 스레드 분리 심볼이 없습니다.") from error
         lib.edge_gguf_transcribe.argtypes = [
             ctypes.c_void_p,
             ctypes.POINTER(ctypes.c_float),
@@ -152,13 +178,16 @@ class Qwen3GGUFAdapter:
         lib.edge_gguf_destroy.restype = None
         if lib.edge_gguf_abi() != 1 or lib.edge_gguf_commit().decode() != LLAMA_COMMIT:
             raise ValueError("GGUF C ABI/커밋 불일치")
-        self.handle = lib.edge_gguf_create(
+        args = [
             str(self.text_path).encode(),
             str(self.audio_path).encode(),
             self.model["num_threads"],
-            self.model["max_total_len"],
-            self.model["max_new_tokens"],
-        )
+        ]
+        create = lib.edge_gguf_create
+        if "num_threads_batch" in self.model:
+            args.append(self.model["num_threads_batch"])
+            create = lib.edge_gguf_create_threads
+        self.handle = create(*args, self.model["max_total_len"], self.model["max_new_tokens"])
         if not self.handle:
             raise RuntimeError(
                 "GGUF 모델 로딩 실패: " + lib.edge_gguf_error().decode(errors="replace")
@@ -235,6 +264,10 @@ class Qwen3GGUFAdapter:
         self.last_result_metadata.update(
             raw_text=text, token_ids=tokens, returned_token_count=len(tokens)
         )
+        if "num_threads_batch" in self.model:
+            actual = result.get("runtime_configuration", {})
+            if any(actual.get(k) != value for k, value in self.thread_configuration.items()):
+                raise ValueError("GGUF 실제 스레드 설정이 요청과 다릅니다.")
         if callback_errors:
             raise RuntimeError("토큰 수신/표시 실패") from callback_errors[0]
         if (

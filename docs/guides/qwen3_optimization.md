@@ -129,6 +129,18 @@ RP5의 `realtime-token-20261111-01`에 별도 bridge와2T TOML을 준비했고 �
 
 [스레드 대조](../../results/summaries/optimization/realtime-threads-20261111.md)는 같은 소스의100개 새2T→3T를 비교했습니다. 최종210구간 PCM·전사·토큰 ID·CER11.12%를 유지하며 최종 추론 합계8.9%·전체 합계8.3%가 줄었습니다. 첫 표시 p95는5.20→4.56초·고정 파일 끝 반환 p95는4.22→3.72초였습니다. 권장은3T이지만 decode 비용과 최고 온도는 늘었습니다. 이전2T 설정·결과는 그대로입니다.
 
+## 생성·음성 처리 스레드 분리 실험
+
+GGUF의 선택 항목 `model.num_threads_batch`는 여러 토큰 prefill과 오디오 인코딩에 적용됩니다. `num_threads`는 토큰 생성용이며 `num_threads_batch`를 생략하면 기존처럼 모두 같은 값을 씁니다. 명시할 때는 `split_threads_v1`이 기록된 별도 bridge와 새 TOML이 필요합니다. 기존2T·3T 파일과 토큰 bridge는 그대로 보존합니다. [빌드 안내](../../native/README.md), [실측 전 조건](../research/qwen_realtime.md).
+
+```toml
+# 새 실험 TOML의 [model] 안에 지정. 나머지 Q8·자산·새 bridge 경로 유지.
+num_threads = 2
+num_threads_batch = 3
+```
+
+Python 어댑터는 생성/prefill의 native getter 값과 mtmd 초기화 전달값 `audio_threads`가 요청과 같은지 확인합니다. 불일치·기능/심볼 누락은 실패로 기록하며 기존 값으로 조용히 대체하지 않습니다. 입력·분할·토큰 표시·KV 초기화는 유지합니다.
+
 ## 이전 실험 재현
 
 KSS 등 이전 실험 설정은 [설정 색인](../../configs/README.md)에 보존합니다. 소규모 반복·56ms 진단은 [OPT-0](../research/opt0_pilot.md), 별도 C API/ORT 호출 계측은 [OPT-1](../research/opt1_profiling.md), 최초 GGUF/KSS 비교는 [OPT-2](../research/opt2_gguf.md)를 따릅니다. `opt0-baseline`은 현재 `benchmark-qwen3`와 같은 실행기 이름입니다. 프로파일 계측 실행과 일반 성능 측정은 구분합니다.

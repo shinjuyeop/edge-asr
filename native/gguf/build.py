@@ -69,7 +69,7 @@ def build(source, engine_build, output):
         "command": command,
         "compiler": subprocess.check_output(["g++", "--version"], text=True),
         "bridge_source_sha256": sha(cpp),
-        "features": ["token_callback_v1"],
+        "features": ["token_callback_v1", "split_threads_v1"],
         "cmake_cache_sha256": sha(engine_build / "CMakeCache.txt"),
         "engine_libraries": {p.name: sha(p) for p in (engine_build / "bin").glob("*.so")},
         "library_sha256": sha(library) if result.returncode == 0 else None,
