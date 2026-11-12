@@ -151,6 +151,12 @@ Python 어댑터는 생성/prefill의 native getter 값과 mtmd 초기화 전달
 
 [반복 처리·캐시 분석](../../results/summaries/optimization/realtime-cache-audit-20261112.md)은 기존2/3 로그를 재집계한 결과로 새 추론·캐시 옵션이 아닙니다. 한 호출 안의 decode KV는 이미 사용하며, 입력이 늘어나는 호출 사이의 음성 KV 재사용은 미구현입니다. KV 초기화 비중은0.37%이고 고정 text prefix 재사용은 다음 검증 후보입니다. 현재 대표 명령과 공유 설정은 그대로 사용합니다.
 
+## 고정 text prefix KV 선택 실험
+
+현재 공유 개발 설정은 기존2/3·캐시 항목 생략 상태를 유지합니다. 별도 `text_prefix_cache_v1` 빌드를 준비한 실험 TOML에서 `cache_text_prefix = false/true`를 명시하면 끔/켬을 비교할 수 있습니다. 명시한 항목이 기존 빌드에서 지원되지 않으면 오류로 기록합니다. 새 빌드 경로·방법은 [native 안내](../../native/README.md), 입력·판정은 [사전 조건](../research/qwen_realtime.md#고정-text-prefix-kv-대조--2026-11-12-사전-조건)을 따릅니다.
+
+같은 대표 연속 명령에서 실험 TOML과 새 출력 경로만 지정합니다. `worker.json`의 첫 추론/워밍업·호출별 `native_result.prefix_cache`, `prefix_eval_s`·`suffix_eval_s`·`audio_encode_s`·`audio_embedding_eval_s`를 확인합니다. 전체 음성·음성 뒤 text·이전 생성 토큰은 새로 계산하며 오디오 encoder 증분 실행이 아닙니다. 실측 전에는 속도·정확도 개선으로 표시하지 않습니다.
+
 ## 이전 실험 재현
 
 KSS 등 이전 실험 설정은 [설정 색인](../../configs/README.md)에 보존합니다. 소규모 반복·56ms 진단은 [OPT-0](../research/opt0_pilot.md), 별도 C API/ORT 호출 계측은 [OPT-1](../research/opt1_profiling.md), 최초 GGUF/KSS 비교는 [OPT-2](../research/opt2_gguf.md)를 따릅니다. `opt0-baseline`은 현재 `benchmark-qwen3`와 같은 실행기 이름입니다. 프로파일 계측 실행과 일반 성능 측정은 구분합니다.

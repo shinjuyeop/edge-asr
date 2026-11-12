@@ -104,6 +104,124 @@ class GGUFTests(unittest.TestCase):
         (self.root / "build.json").write_text(json.dumps(self.build))
         self.library.edge_gguf_create_threads.return_value = 1234
 
+    def enable_prefix_cache(self):
+        self.build["features"] = ["text_prefix_cache_v1"]
+        (self.root / "build.json").write_text(json.dumps(self.build))
+        self.library.edge_gguf_set_prefix_cache.return_value = 0
+
+    def prefix_result(self, *, hit=False):
+        row = json.loads(self.result())
+        row.update(
+            runtime_configuration={"cache_text_prefix": True},
+            prefix_cache={
+                "enabled": True,
+                "hit": hit,
+                "prefix_tokens": 3,
+                "token_ids": [7, 8, 9],
+                "reused_tokens": 3 if hit else 0,
+                "miss_reason": None if hit else "cold",
+                "valid_after_call": True,
+            },
+            prefix_eval_s=0 if hit else 0.1,
+            suffix_eval_s=0.2,
+            audio_encode_s=0.3,
+            audio_embedding_eval_s=0.4,
+            audio_and_prefill_s=1,
+        )
+        return row
+
+    def test_prefix_cache_bool_is_optional_and_gguf_only(self):
+        original = (ROOT / "configs/gguf.toml").read_text()
+        self.assertNotIn("cache_text_prefix", self.model)
+        path = self.root / "prefix.toml"
+        for value in ("true", "false", "1", '"true"'):
+            path.write_text(original.replace("[audio]", f"cache_text_prefix = {value}\n\n[audio]"))
+            if value in ("true", "false"):
+                self.assertIs(
+                    load_evaluation_config(path)["model"]["cache_text_prefix"], value == "true"
+                )
+            else:
+                with self.assertRaises(ValueError):
+                    load_evaluation_config(path)
+        onnx = (ROOT / "configs/onnx.toml").read_text()
+        path.write_text(onnx.replace("[audio]", "cache_text_prefix = true\n\n[audio]"))
+        with self.assertRaisesRegex(ValueError, "알 수 없는"):
+            load_evaluation_config(path)
+        self.model["cache_text_prefix"] = 1
+        with self.assertRaises(ValueError):
+            create_adapter(self.model, 16000, self.root)
+
+    def test_prefix_capability_symbol_and_explicit_mode_are_required(self):
+        for mode in (False, True):
+            self.model["cache_text_prefix"] = mode
+            with self.assertRaisesRegex(ValueError, "text_prefix_cache_v1"):
+                create_adapter(self.model, 16000, self.root)
+        self.enable_prefix_cache()
+        self.model.pop("cache_text_prefix")
+        self.load()
+        self.library.edge_gguf_set_prefix_cache.assert_not_called()
+        for mode in (False, True):
+            self.model["cache_text_prefix"] = mode
+            adapter = self.load()
+            self.library.edge_gguf_set_prefix_cache.assert_called_with(1234, int(mode))
+            self.assertIs(adapter.metadata["cache_text_prefix"], mode)
+            row = self.prefix_result()
+            row["runtime_configuration"]["cache_text_prefix"] = mode
+            row["prefix_cache"].update(
+                enabled=mode, valid_after_call=mode, miss_reason="cold" if mode else "disabled"
+            )
+            self.library.edge_gguf_transcribe.return_value = json.dumps(row).encode()
+            self.assertEqual(adapter.transcribe(self.audio), "한 글!")
+        del self.library.edge_gguf_set_prefix_cache
+        with self.assertRaisesRegex(ValueError, "심볼"):
+            self.load()
+
+    def test_prefix_setup_failure_closes_handle(self):
+        self.enable_prefix_cache()
+        self.model["cache_text_prefix"] = True
+        self.library.edge_gguf_set_prefix_cache.return_value = -1
+        with self.assertRaisesRegex(RuntimeError, "설정 실패"):
+            self.load()
+        self.library.edge_gguf_destroy.assert_called_once_with(1234)
+
+    def test_prefix_profile_is_checked_and_failure_invalidates_without_erasing_raw(self):
+        self.enable_prefix_cache()
+        self.model["cache_text_prefix"] = True
+        adapter = self.load()
+        for hit in (False, True):
+            row = self.prefix_result(hit=hit)
+            self.library.edge_gguf_transcribe.return_value = json.dumps(row).encode()
+            self.assertEqual(adapter.transcribe(self.audio), "한 글!")
+        bad = [self.prefix_result(hit=True) for _ in range(5)]
+        bad[0]["runtime_configuration"]["cache_text_prefix"] = False
+        bad[1]["prefix_cache"]["reused_tokens"] = 0
+        bad[2]["prefix_eval_s"] = 0.1
+        bad[3]["audio_encode_s"] = -1
+        bad[4]["prefix_cache"]["token_ids"] = []
+        for row in bad:
+            with self.subTest(row=row):
+                before = self.library.edge_gguf_set_prefix_cache.call_count
+                self.library.edge_gguf_transcribe.return_value = json.dumps(row).encode()
+                with self.assertRaises(ValueError):
+                    adapter.transcribe(self.audio)
+                self.assertEqual(self.library.edge_gguf_set_prefix_cache.call_count, before + 1)
+                self.assertEqual(adapter.last_result_metadata["raw_text"], "한 글!")
+                self.assertEqual(adapter.last_result_metadata["native_result"], row)
+
+    def test_prefix_reset_failure_closes_model_and_keeps_failure_evidence(self):
+        self.enable_prefix_cache()
+        self.model["cache_text_prefix"] = True
+        adapter = self.load()
+        self.library.edge_gguf_set_prefix_cache.return_value = -1
+        self.library.edge_gguf_transcribe.return_value = self.result(
+            status="failed", termination="callback_error"
+        )
+        with self.assertRaises(RuntimeError) as caught:
+            adapter.transcribe(self.audio)
+        self.assertIsNone(adapter.handle)
+        self.assertEqual(adapter.last_result_metadata["raw_text"], "한 글!")
+        self.assertIn("복구 실패", caught.exception.__notes__[0])
+
     def test_split_threads_forwarded_and_absent_option_keeps_legacy_abi(self):
         self.enable_split_threads()
         adapter = self.load()
@@ -355,6 +473,76 @@ class GGUFTests(unittest.TestCase):
                 load_evaluation_config(path)
             path.write_text(text.replace("[audio]", 'asset_manifest = "assets.json"\n\n[audio]'))
             self.assertEqual(load_evaluation_config(path)["model"]["quantization"], quant)
+
+
+@unittest.skipUnless(shutil.which("g++"), "text prefix KV 상태 검사는 g++가 필요합니다.")
+class PrefixCachePolicyTests(unittest.TestCase):
+    def test_only_matching_prefix_survives_and_all_failure_paths_clear_state(self):
+        code = r"""
+#include "prefix_cache.h"
+#include <cassert>
+#include <string>
+int main() {
+    TextPrefixCache cache;
+    std::vector<int32_t> prefix{7,8,9}, memory{1,2};
+    int clears=0, trims=0;
+    bool allow_trim=true;
+    auto clear=[&]{ ++clears; memory.clear(); };
+    auto trim=[&](size_t n){
+        ++trims;
+        assert(n==prefix.size());
+        if (!allow_trim) return false;
+        memory.resize(n);
+        return true;
+    };
+    cache.enabled=true;
+    assert(std::string(cache.begin(prefix,clear,trim))=="cold");
+    assert(clears==1 && trims==0 && memory.empty());
+    memory=prefix; memory.push_back(100); memory.push_back(200);
+    cache.complete(prefix,true);
+    assert(cache.begin(prefix,clear,trim)==nullptr);
+    assert(memory==prefix && clears==1 && trims==1);
+    cache.complete(prefix,false); // callback/decoder/EOG 실패
+    assert(!cache.valid());
+    assert(std::string(cache.begin(prefix,clear,trim))=="cold");
+    assert(memory.empty());
+    memory=prefix; cache.complete(prefix,true);
+    assert(std::string(cache.begin({4,5,6},clear,trim))=="prefix_changed");
+    assert(!cache.valid() && memory.empty());
+    memory=prefix; cache.complete(prefix,true); allow_trim=false;
+    assert(std::string(cache.begin(prefix,clear,trim))=="trim_failed");
+    assert(!cache.valid() && memory.empty());
+    memory=prefix; cache.complete(prefix,true);
+    assert(std::string(cache.begin({},clear,trim))=="empty_prefix");
+    assert(!cache.valid() && memory.empty());
+    memory=prefix; cache.complete(prefix,true); cache.enabled=false;
+    assert(std::string(cache.begin(prefix,clear,trim))=="disabled");
+    assert(!cache.valid() && memory.empty() && trims==2);
+}
+"""
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "prefix.cpp"
+            binary = Path(directory) / "prefix"
+            source.write_text(code)
+            result = subprocess.run(
+                [
+                    "g++",
+                    "-std=c++17",
+                    "-Wall",
+                    "-Wextra",
+                    "-Werror",
+                    "-I",
+                    str(ROOT / "native/gguf"),
+                    str(source),
+                    "-o",
+                    str(binary),
+                ],
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            result = subprocess.run([str(binary)], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
 
 
 @unittest.skipUnless(

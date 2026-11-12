@@ -3,6 +3,7 @@
 #include "ggml-backend.h"
 #include "mtmd.h"
 #include "mtmd-helper.h"
+#include "prefix_cache.h"
 #include "json.hpp"
 #include <algorithm>
 #include <chrono>
@@ -29,6 +30,7 @@ struct State {
     int max_new = 128;
     std::string result;
     json configuration;
+    TextPrefixCache prefix_cache;
     ~State() {
         if (batch) llama_batch_ext_free(batch);
         if (sampler) llama_sampler_free(sampler);
@@ -53,6 +55,36 @@ std::string piece(const llama_vocab* vocab,llama_token token) {
     if (n<0) { buffer.resize(-n); n=llama_token_to_piece(vocab,token,buffer.data(),buffer.size(),0,false); }
     if (n<0) throw std::runtime_error("token_to_piece failed");
     return std::string(buffer.data(),n);
+}
+
+// upstream과 같은 chunk 순서·평가 함수를 사용하고 시간만 세분한다.
+llama_pos eval_prompt(State* s, const mtmd_input_chunks* chunks, bool hit, size_t prefix_size, json& out) {
+    llama_pos past=hit ? llama_pos(prefix_size) : 0;
+    for (size_t i=0;i<mtmd_input_chunks_size(chunks);++i) {
+        const auto* chunk=mtmd_input_chunks_get(chunks,i);
+        const auto type=mtmd_input_chunk_get_type(chunk);
+        if (i==0 && hit) continue;
+        auto stage=Clock::now();
+        if (type==MTMD_INPUT_CHUNK_TYPE_TEXT) {
+            const int rc=mtmd_helper_eval_chunk_single(s->audio,s->ctx,chunk,past,0,llama_n_batch(s->ctx),
+                i+1==mtmd_input_chunks_size(chunks),&past);
+            const char* key=i==0 ? "prefix_eval_s" : "suffix_eval_s";
+            out[key]=out[key].get<double>()+since(stage);
+            if (rc!=0) throw std::runtime_error("text prefill failed");
+        } else if (type==MTMD_INPUT_CHUNK_TYPE_AUDIO) {
+            const int encoded=mtmd_encode_chunk(s->audio,chunk);
+            out["audio_encode_s"]=out["audio_encode_s"].get<double>()+since(stage);
+            if (encoded!=0) throw std::runtime_error("audio encoder failed");
+            stage=Clock::now();
+            const int decoded=mtmd_helper_decode_image_chunk(s->audio,s->ctx,chunk,mtmd_get_output_embd(s->audio),
+                past,0,llama_n_batch(s->ctx),&past,nullptr,nullptr);
+            out["audio_embedding_eval_s"]=out["audio_embedding_eval_s"].get<double>()+since(stage);
+            if (decoded!=0) throw std::runtime_error("audio embedding prefill failed");
+        } else {
+            throw std::runtime_error("unexpected non-audio chunk");
+        }
+    }
+    return past;
 }
 }
 extern "C" {
@@ -81,6 +113,7 @@ __attribute__((visibility("default"))) void* edge_gguf_create_threads(const char
         s->configuration={{"context",llama_n_ctx(s->ctx)},{"n_batch",llama_n_batch(s->ctx)},{"n_ubatch",llama_n_ubatch(s->ctx)},
                           {"threads",llama_n_threads(s->ctx)},{"threads_batch",llama_n_threads_batch(s->ctx)},{"audio_threads",ap.n_threads},
                           {"cache_type_k",ggml_type_name(cp.type_k)},{"cache_type_v",ggml_type_name(cp.type_v)},
+                          {"cache_text_prefix",false},
                           {"flash_attention_setting",int(cp.flash_attn_type)},{"audio_sample_rate",mtmd_get_audio_sample_rate(s->audio)},
                           {"system_info",llama_print_system_info()},{"llama_version",llama_version()}};
         return s.release();
@@ -89,6 +122,15 @@ __attribute__((visibility("default"))) void* edge_gguf_create_threads(const char
 __attribute__((visibility("default"))) void* edge_gguf_create(const char* model,const char* mmproj,int threads,int context,int max_new) {
     return edge_gguf_create_threads(model,mmproj,threads,threads,context,max_new);
 }
+__attribute__((visibility("default"))) int edge_gguf_set_prefix_cache(void* handle,int enabled) {
+    auto* s=static_cast<State*>(handle);
+    if (!s || (enabled!=0 && enabled!=1)) { error="invalid prefix cache setting"; return -1; }
+    s->prefix_cache.invalidate();
+    s->prefix_cache.enabled=enabled!=0;
+    llama_memory_clear(llama_get_memory(s->ctx),true);
+    s->configuration["cache_text_prefix"]=s->prefix_cache.enabled;
+    return 0;
+}
 // 입력은 같은 batch PCM이다. callback은 토큰 바이트 전달만 하며 0 외 반환은 호출 실패로 남긴다.
 typedef int (*edge_token_callback)(void*,const void*,size_t,int,double);
 __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(void* handle,const float* samples,size_t count,edge_token_callback callback,void* user) {
@@ -96,15 +138,16 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
     json out={{"schema_version",1},{"status","failed"},{"input_samples",count},{"token_ids",json::array()},
               {"text_utf8_hex",""},{"termination","error"},{"first_generated_token_s",nullptr},{"first_visible_text_s",nullptr}};
     out["runtime_configuration"]=s->configuration;
+    out["prefix_cache"]={{"enabled",s->prefix_cache.enabled},{"hit",false},{"prefix_tokens",0},
+        {"reused_tokens",0},{"miss_reason","not_prepared"},{"valid_after_call",false}};
+    for (const char* key : {"prefix_eval_s","suffix_eval_s","audio_encode_s","audio_embedding_eval_s"}) out[key]=0.0;
+    std::vector<int32_t> prefix;
     std::vector<llama_token> ids; std::string text;
     double callback_s=0;
     const auto began=Clock::now();
     try {
         if (!samples || count<320) throw std::runtime_error("at least 2 feature frames required");
         auto stage=Clock::now();
-        llama_memory_clear(llama_get_memory(s->ctx),true); llama_sampler_reset(s->sampler); llama_perf_context_reset(s->ctx);
-        out["kv_reset_s"]=since(stage);
-        stage=Clock::now();
         std::unique_ptr<mtmd_bitmap,decltype(&mtmd_bitmap_free)> bitmap(mtmd_bitmap_init_from_audio(count,samples),mtmd_bitmap_free);
         std::unique_ptr<mtmd_input_chunks,decltype(&mtmd_input_chunks_free)> chunks(mtmd_input_chunks_init(),mtmd_input_chunks_free);
         if (!bitmap || !chunks) throw std::runtime_error("audio/chunk allocation failed");
@@ -124,10 +167,29 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
         }
         out["audio_tokens"]=audio_tokens; out["preprocess_s"]=since(stage);
         if (positions+s->max_new+1>int(llama_n_ctx(s->ctx))) { out["termination"]="context_limit"; throw std::runtime_error("full input plus output reservation exceeds context; no truncation"); }
-        stage=Clock::now(); llama_pos past=0;
-        if(mtmd_helper_eval_chunks(s->audio,s->ctx,chunks.get(),0,0,llama_n_batch(s->ctx),true,&past)!=0)
-            throw std::runtime_error("audio encoder/prefill failed");
+        const auto* first=mtmd_input_chunks_get(chunks.get(),0);
+        if (first && mtmd_input_chunk_get_type(first)==MTMD_INPUT_CHUNK_TYPE_TEXT && audio_tokens>0) {
+            size_t n=0;
+            const auto* tokens=mtmd_input_chunk_get_tokens_text(first,&n);
+            if (n>0 && mtmd_input_chunk_get_n_pos(first)==llama_pos(n)) prefix.assign(tokens,tokens+n);
+        }
+        if (s->prefix_cache.enabled && prefix.empty()) throw std::runtime_error("no eligible text prefix before audio");
+        out["prefix_cache"]["prefix_tokens"]=prefix.size();
+        out["prefix_cache"]["token_ids"]=prefix;
+        stage=Clock::now();
+        llama_sampler_reset(s->sampler); llama_perf_context_reset(s->ctx);
+        const char* miss=s->prefix_cache.begin(prefix,
+            [&]{ llama_memory_clear(llama_get_memory(s->ctx),true); },
+            [&](size_t n){ return llama_memory_seq_rm(llama_get_memory(s->ctx),0,llama_pos(n),-1); });
+        const bool hit=miss==nullptr;
+        out["kv_reset_s"]=since(stage);
+        out["prefix_cache"]["hit"]=hit;
+        out["prefix_cache"]["reused_tokens"]=hit ? prefix.size() : 0;
+        out["prefix_cache"]["miss_reason"]=miss ? json(miss) : json(nullptr);
+        stage=Clock::now();
+        llama_pos past=eval_prompt(s,chunks.get(),hit,prefix.size(),out);
         out["audio_and_prefill_s"]=since(stage);
+        if (past!=positions) throw std::runtime_error("prompt position mismatch after prefix reuse");
         double decode_s=0,sample_s=0;int decode_calls=0;
         const auto* vocab=llama_model_get_vocab(s->model);
         for(int i=0;i<s->max_new;++i) {
@@ -155,6 +217,8 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
         if(out["termination"]=="eog") out["status"]="success";
         else out["error"]="generation did not terminate with eog";
     } catch (const std::exception& e) { out["error"]=e.what(); }
+    s->prefix_cache.complete(prefix,out["status"]=="success");
+    out["prefix_cache"]["valid_after_call"]=s->prefix_cache.valid();
     out["token_ids"]=ids;out["text_utf8_hex"]=hex(text);out["native_elapsed_s"]=since(began);
     out["token_callback_enabled"]=callback!=nullptr;out["token_callback_s"]=callback_s;
     s->result=out.dump();return s->result.c_str();

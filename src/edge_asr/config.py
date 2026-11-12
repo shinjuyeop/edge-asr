@@ -79,7 +79,13 @@ def load_evaluation_config(path: str | Path) -> dict:
             "max_new_tokens",
         }
     if family == "qwen3_gguf":
-        model_keys |= {"runtime_library", "runtime_manifest", "asset_manifest", "num_threads_batch"}
+        model_keys |= {
+            "runtime_library",
+            "runtime_manifest",
+            "asset_manifest",
+            "num_threads_batch",
+            "cache_text_prefix",
+        }
     allowed = {
         "model": model_keys,
         "audio": {"sample_rate_hz"},
@@ -132,6 +138,11 @@ def load_evaluation_config(path: str | Path) -> dict:
         value = config["model"]["num_threads_batch"]
         if type(value) is not int or value < 1:
             raise ValueError("model.num_threads_batch는 1 이상의 정수여야 합니다.")
+    if (
+        "cache_text_prefix" in config["model"]
+        and type(config["model"]["cache_text_prefix"]) is not bool
+    ):
+        raise ValueError("model.cache_text_prefix는 true/false여야 합니다.")
     if family == "zipformer":
         padding = config["model"]["tail_padding_s"]
         if (

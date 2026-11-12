@@ -31,6 +31,9 @@ class Qwen3GGUFAdapter:
         batch_threads = model.get("num_threads_batch", model["num_threads"])
         if type(batch_threads) is not int or batch_threads < 1:
             raise ValueError("num_threads_batch는 1 이상의 정수여야 합니다.")
+        self.cache_text_prefix = model.get("cache_text_prefix", False)
+        if type(self.cache_text_prefix) is not bool:
+            raise ValueError("cache_text_prefix는 true/false여야 합니다.")
         self.model = model
         self.thread_configuration = {
             "threads": model["num_threads"],
@@ -87,6 +90,12 @@ class Qwen3GGUFAdapter:
             "features", []
         ):
             raise ValueError("num_threads_batch에는 split_threads_v1 별도 GGUF 빌드가 필요합니다.")
+        if "cache_text_prefix" in model and "text_prefix_cache_v1" not in self.build.get(
+            "features", []
+        ):
+            raise ValueError(
+                "cache_text_prefix에는 text_prefix_cache_v1 별도 GGUF 빌드가 필요합니다."
+            )
         self.model_files.update(
             runtime_library=self.library_path, runtime_manifest=self.manifest_path
         )
@@ -104,6 +113,7 @@ class Qwen3GGUFAdapter:
             "supported_modes": ["batch"],
             "token_output_callback": self.supports_token_stream,
             "thread_configuration": self.thread_configuration,
+            "cache_text_prefix": self.cache_text_prefix,
             "llama_commit": LLAMA_COMMIT,
             "language": "ko",
             "stream_language": "Korean",
@@ -156,6 +166,12 @@ class Qwen3GGUFAdapter:
                 lib.edge_gguf_create_threads.restype = ctypes.c_void_p
             except AttributeError as error:
                 raise ValueError("명세에 기록된 스레드 분리 심볼이 없습니다.") from error
+        if "text_prefix_cache_v1" in self.build.get("features", []):
+            try:
+                lib.edge_gguf_set_prefix_cache.argtypes = [ctypes.c_void_p, ctypes.c_int]
+                lib.edge_gguf_set_prefix_cache.restype = ctypes.c_int
+            except AttributeError as error:
+                raise ValueError("명세에 기록된 text prefix 캐시 심볼이 없습니다.") from error
         lib.edge_gguf_transcribe.argtypes = [
             ctypes.c_void_p,
             ctypes.POINTER(ctypes.c_float),
@@ -192,6 +208,10 @@ class Qwen3GGUFAdapter:
             raise RuntimeError(
                 "GGUF 모델 로딩 실패: " + lib.edge_gguf_error().decode(errors="replace")
             )
+        if "cache_text_prefix" in self.model:
+            if lib.edge_gguf_set_prefix_cache(self.handle, int(self.cache_text_prefix)) != 0:
+                self.close()
+                raise RuntimeError("GGUF text prefix 캐시 설정 실패")
 
     def transcribe(self, audio):
         return self._transcribe(audio)
@@ -202,6 +222,26 @@ class Qwen3GGUFAdapter:
         return self._transcribe(audio, on_text)
 
     def _transcribe(self, audio, on_text=None):
+        try:
+            return self._transcribe_once(audio, on_text)
+        except BaseException as error:
+            if self.handle is not None and "cache_text_prefix" in self.model:
+                metadata = self.last_result_metadata
+                try:
+                    if (
+                        self.library.edge_gguf_set_prefix_cache(
+                            self.handle, int(self.cache_text_prefix)
+                        )
+                        != 0
+                    ):
+                        raise RuntimeError("캐시 초기화 실패")
+                except Exception as reset_error:
+                    self.close()
+                    self.last_result_metadata = metadata
+                    error.add_note(f"text prefix 캐시 복구 실패로 모델 닫음: {reset_error}")
+            raise
+
+    def _transcribe_once(self, audio, on_text=None):
         self.last_result_metadata = None
         if self.handle is None:
             raise RuntimeError("모델을 먼저 로드해야 합니다.")
@@ -268,6 +308,8 @@ class Qwen3GGUFAdapter:
             actual = result.get("runtime_configuration", {})
             if any(actual.get(k) != value for k, value in self.thread_configuration.items()):
                 raise ValueError("GGUF 실제 스레드 설정이 요청과 다릅니다.")
+        if "cache_text_prefix" in self.model and result.get("status") == "success":
+            self._check_prefix_profile(result)
         if callback_errors:
             raise RuntimeError("토큰 수신/표시 실패") from callback_errors[0]
         if (
@@ -283,6 +325,39 @@ class Qwen3GGUFAdapter:
         ):
             raise ValueError("토큰 전달 결과와 최종 전사가 다릅니다.")
         return text
+
+    def _check_prefix_profile(self, result):
+        mode = result.get("runtime_configuration", {}).get("cache_text_prefix")
+        cache = result.get("prefix_cache", {})
+        count = cache.get("prefix_tokens")
+        token_ids = cache.get("token_ids")
+        if (
+            type(mode) is not bool
+            or mode != self.cache_text_prefix
+            or type(cache.get("enabled")) is not bool
+            or cache["enabled"] != mode
+            or type(cache.get("hit")) is not bool
+            or type(cache.get("valid_after_call")) is not bool
+            or cache["valid_after_call"] != mode
+            or type(count) is not int
+            or count < 1
+            or not isinstance(token_ids, list)
+            or len(token_ids) != count
+            or any(type(token) is not int for token in token_ids)
+            or type(cache.get("reused_tokens")) is not int
+            or cache["reused_tokens"] != (count if cache["hit"] else 0)
+            or (cache["hit"] and (not mode or cache.get("miss_reason") is not None))
+            or (not cache["hit"] and not isinstance(cache.get("miss_reason"), str))
+        ):
+            raise ValueError("GGUF text prefix 캐시 반환 설정/상태가 일치하지 않습니다.")
+        keys = ("prefix_eval_s", "suffix_eval_s", "audio_encode_s", "audio_embedding_eval_s")
+        values = [result.get(key) for key in (*keys, "audio_and_prefill_s")]
+        if (
+            any(type(v) not in (int, float) or not math.isfinite(v) or v < 0 for v in values)
+            or sum(values[:-1]) > values[-1] + 1e-6
+            or (cache["hit"] and result["prefix_eval_s"] != 0)
+        ):
+            raise ValueError("GGUF text prefix 단계 시간 불일치")
 
     def close(self):
         if self.handle is not None:

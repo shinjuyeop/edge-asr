@@ -1,4 +1,4 @@
-"""Qwen 단독 WAV 1배속·VAD·누적 부분 전사 검사. 실제 마이크나 청크 간 KV 재사용은 아니다."""
+"""Qwen 단독 WAV 1배속·VAD·누적 부분 전사. 오디오 encoder 증분 실행은 아니다."""
 
 import argparse
 import os
@@ -62,7 +62,7 @@ def run(
         "warmup": [],
         "engine_ttft_s": None,
         "acoustic_word_latency_s": None,
-        "scope": "1배속 입력과 추론 동시 진행. 접두 PCM 재전사·호출별 KV 초기화. 선택적 GGUF 토큰 배포는 임시 가설이며 encoder 증분 실행·마이크·음향 단어 시각은 미구현.",
+        "scope": "1배속 입력과 추론 동시 진행. 접두 PCM 재전사·음성 KV 재계산. 선택적 고정 text prefix KV 유지·GGUF 토큰 배포를 지원하며 encoder 증분 실행·마이크·음향 단어 시각은 미구현.",
     }
     receipt = output / "worker.json"
     write_json(receipt, info)
@@ -99,10 +99,13 @@ def run(
             row = {"phase": phase, "status": "failed"}
             info["warmup"].append(row)
             with measure_process(row):
-                text = adapter.transcribe(warmup)
-                if not isinstance(text, str) or not text.strip():
-                    raise ValueError("첫 추론·워밍업 출력 오류")
-                row.update(status="success", hypothesis=text)
+                try:
+                    text = adapter.transcribe(warmup)
+                    if not isinstance(text, str) or not text.strip():
+                        raise ValueError("첫 추론·워밍업 출력 오류")
+                    row.update(status="success", hypothesis=text)
+                finally:
+                    row["adapter_result"] = deepcopy(getattr(adapter, "last_result_metadata", None))
         info["status"] = "replaying"
         write_json(receipt, info)
         lock = Lock()

@@ -28,6 +28,10 @@ Python 실행 코드는 [src/edge_asr/qwen/](../src/edge_asr/qwen/), C++ 소스�
 
 선택 기능 `split_threads_v1`은 기존 `edge_gguf_create`를 보존하고 `edge_gguf_create_threads`에 생성용/음성·prefill용 스레드를 따로 전달합니다. 새 TOML에 `num_threads_batch`를 명시할 때만6인자 함수를 사용합니다. 생략하면 기존5인자 ABI를 사용하며 기존 라이브러리도 유지합니다. 분리 비교 빌드는 `runtimes/qwen3-opt/split-20261111-01/bridge/`처럼 새 경로에 만듭니다. [고정 검증 조건](../docs/research/qwen_realtime.md).
 
+선택 기능 `text_prefix_cache_v1`은 기존 생성 ABI를 유지하고 `edge_gguf_set_prefix_cache(handle, 0/1)`를 추가합니다. 새 GGUF TOML에 `cache_text_prefix = false/true`를 명시할 때 해당 기능·심볼이 필요합니다. 생략하면 기본 끔이며 기존 빌드도 사용합니다. `prefix_cache.h`는 일치한 음성 앞 text만 유지하는 상태 정책을 맡고, 실제 KV 범위 제거는 `bridge.cpp`가 수행합니다. 불일치·제거 실패·호출 실패 시 전체 초기화로 복귀합니다. 음성 embedding·그 뒤 text·이전 생성 결과는 유지하지 않습니다.
+
+새 빌드는 `runtimes/qwen3-opt/prefix-20261112-01/bridge/`처럼 별도 경로를 사용합니다. prefix/suffix text·audio encoder·audio embedding 평가 시간을 native JSON에 분리하며, 기존 `audio_and_prefill_s`도 유지합니다. 캐시 상태·토큰 수·적중·유지 토큰·실패 이유와 첫 추론/워밍업 결과를 기록합니다. 프롬프트 평가를 같은 upstream chunk 순서·함수로 분리했으므로 새 빌드의 캐시 끔 대조도 실제 전사 동등성을 확인합니다. [실측 전 조건](../docs/research/qwen_realtime.md).
+
 양자화 준비는 별도 환경에서 upstream `gguf-py`의 numpy·pyyaml·tqdm·requests 의존성을 준비하고, 고정 llama.cpp 소스의 `llama-quantize`를 새 빌드 경로에 만듭니다. 기존 추론 환경·엔진은 변경하지 않습니다. `quantize.py --help`의 source/tool/llama-source/audio-model/output을 지정하며 output은 새 폴더여야 합니다. 모델별 명세는 원본·도구·GGUF type·tensor dtype·SHA를 보존하고 Q8 오디오 파일은 기존 경로를 참조합니다. [실험 조건](../docs/research/qwen_realtime.md).
 
 ## ORT 계측
