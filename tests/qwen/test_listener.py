@@ -1,6 +1,9 @@
 """실제 모델 없이 청취 시간축·실패·음원 보존·HTTP 경계를 검증한다."""
 
 import json
+import signal
+import subprocess
+import sys
 import tempfile
 import threading
 import time
@@ -8,7 +11,7 @@ import unittest
 from array import array
 from http.server import ThreadingHTTPServer
 from pathlib import Path
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
@@ -161,6 +164,94 @@ class ListenerTests(unittest.TestCase):
         before = digest(self.output / "viewer-start.json")
         self.assertEqual(value, self.library.start(self.run.id))
         self.assertEqual(before, digest(self.output / "viewer-start.json"))
+
+    def test_stop_waits_for_cleanup_is_idempotent_and_preserves_worker(self):
+        self.worker.update(status="ready", telemetry={})
+        write_json(self.output / "worker.json", self.worker)
+        before = digest(self.output / "worker.json")
+        self.library.active_id = self.run.id
+        process = self.library.process = Mock()
+        process.poll.return_value = None
+        process.wait.side_effect = lambda **_: setattr(process.poll, "return_value", 0)
+        self.assertEqual(self.library.stop(self.run.id), {"status": "stopped"})
+        process.send_signal.assert_called_once_with(signal.SIGINT)
+        process.wait.assert_called_once_with(timeout=15)
+        self.assertEqual(self.library.stop(self.run.id), {"status": "stopped"})
+        process.send_signal.assert_called_once()
+        self.assertEqual(digest(self.output / "worker.json"), before)
+        self.assertEqual(self.run.snapshot()["status"], "interrupted")
+        self.assertIsNone(self.run.snapshot()["score"])
+
+    def test_stop_timeout_keeps_run_reserved_and_does_not_interrupt_cleanup_twice(self):
+        self.library.active_id = self.run.id
+        process = self.library.process = Mock()
+        process.poll.return_value = None
+        process.wait.side_effect = subprocess.TimeoutExpired("guard", 15)
+        for _ in range(2):
+            with self.assertRaisesRegex(ValueError, "종료 중"):
+                self.library.stop(self.run.id)
+        process.send_signal.assert_called_once_with(signal.SIGINT)
+        with self.assertRaisesRegex(ValueError, "이미 준비"):
+            self.library.launch("unused", "all")
+        with self.assertRaises(ValueError):
+            self.library.start(self.run.id)
+        process.poll.return_value = 0
+        self.library.stop(self.run.id)
+        self.assertTrue((self.output / "viewer-stop.json").exists())
+
+    def test_stale_stop_does_not_stop_a_newer_run(self):
+        self.library.active_id = "newer"
+        process = self.library.process = Mock()
+        process.poll.return_value = None
+        with self.assertRaises(ValueError):
+            self.library.stop(self.run.id)
+        process.send_signal.assert_not_called()
+
+    def test_launch_lease_survives_only_in_child_and_releases_after_stop_or_error(self):
+        # 실제 모델 대신 준비 완료 표식을 남기고 대기하는 프로세스로 잠금 수명을 검증한다.
+        self.library.profiles["test"] = {
+            "config": "config.toml",
+            "manifest": "manifest.jsonl",
+            "vad_model": "vad.onnx",
+        }
+        other = Library(self.root, [], [], [self.manifest])
+        other.profiles = self.library.profiles
+        popen = subprocess.Popen
+
+        def waiting_child(command, **kwargs):
+            marker = Path(command[command.index("--output") + 1]).with_suffix(".ready")
+            code = (
+                "from pathlib import Path; import sys,time; "
+                "Path(sys.argv[1]).parent.mkdir(parents=True,exist_ok=True); "
+                "Path(sys.argv[1]).touch(); time.sleep(60)"
+            )
+            child = popen([sys.executable, "-c", code, str(marker)], **kwargs)
+            self.addCleanup(lambda: child.poll() is None and (child.kill(), child.wait()))
+            deadline = time.monotonic() + 5
+            while not marker.exists() and time.monotonic() < deadline:
+                time.sleep(0.01)
+            self.assertTrue(marker.exists())
+            return child
+
+        with patch("edge_asr.qwen.viewer.runs.subprocess.Popen", side_effect=waiting_child):
+            first = self.library.launch("test", "a")
+            self.assertEqual(self.library.catalog()["active"]["selection"], "a")
+            with self.assertRaisesRegex(ValueError, "다른 청취 서버"):
+                other.launch("test", "all")
+            self.library.stop(first)
+            self.assertIsNone(self.library.catalog()["active"])
+            second = other.launch("test", "all")
+            self.assertNotEqual(first, second)
+            other.stop(second)
+            with self.assertRaisesRegex(ValueError, "선택한 음원"):
+                self.library.launch("test", "missing")
+            third = other.launch("test", "all")
+            other.stop(third)
+        with patch("edge_asr.qwen.viewer.runs.subprocess.Popen", side_effect=OSError("fixture")):
+            with self.assertRaises(OSError):
+                self.library.launch("test", "all")
+        with patch("edge_asr.qwen.viewer.runs.subprocess.Popen", side_effect=waiting_child):
+            other.stop(other.launch("test", "all"))
 
     def test_http_no_arbitrary_path_and_cross_origin_launch(self):
         server = ThreadingHTTPServer(("127.0.0.1", 0), handler(self.library))

@@ -64,7 +64,7 @@ class Run:
             guard = read(self.path / "execution.json", {})
             complete = bool(w.get("telemetry", {}).get("complete"))
             terminal = w.get("status") in ("completed", "failed") or bool(
-                guard.get("finished_at_utc")
+                guard.get("finished_at_utc") or read(self.path / "viewer-stop.json")
             )
             status = w.get("status", "preparing")
             if terminal and status not in ("completed", "failed"):
@@ -112,7 +112,8 @@ class Library:
         self.runs, self.profiles, self.samples = {}, {}, {}
         self.process = None
         self.active_id = None
-        self.lease = None
+        self.stopping = False
+        self.active = None
         self.lock = threading.RLock()
         self.cache = self.root / "results/listener"
         self.cache.mkdir(parents=True, exist_ok=True)
@@ -161,6 +162,7 @@ class Library:
 
     def catalog(self):
         return {
+            "active": self.active if self.process and self.process.poll() is None else None,
             "runs": [
                 {"id": r.id, "name": str(r.path.relative_to(self.root))} for r in self.runs.values()
             ],
@@ -227,96 +229,118 @@ class Library:
         with self.lock:
             if self.process and self.process.poll() is None:
                 raise ValueError("이미 준비 또는 실행 중인 평가가 있습니다.")
-            if self.lease:
-                self.lease.close()
-            self.lease = (self.cache / "inference.lock").open("a")
-            try:
-                fcntl.flock(self.lease, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            except BlockingIOError:
-                self.lease.close()
-                self.lease = None
-                raise ValueError("다른 청취 서버의 평가가 실행 중입니다.") from None
-            profile = self.profiles[profile_id]
-            samples, _ = load_manifest(self.root / profile["manifest"], self.root)
-            if selection == "six":
-                samples = samples[:6]
-            elif selection != "all":
-                samples = [s for s in samples if s.id == selection]
-            if not samples:
-                raise ValueError("선택한 음원이 없습니다.")
-            identifier = time.strftime("listen-%Y%m%d-%H%M%S-") + uuid.uuid4().hex[:6]
-            inputs = self.cache / "inputs" / identifier
-            inputs.mkdir(parents=True)
-            manifest = inputs / "manifest.jsonl"
-            write_jsonl(
-                manifest,
-                [
-                    {
-                        "id": s.id,
-                        "audio_path": str(s.audio_path),
-                        "reference": s.reference,
-                        "audio_sha256": s.audio_sha256,
-                    }
-                    for s in samples
-                ],
-            )
-            output = self.root / "results/optimization/opt3" / identifier
-            args = self.replay_args(profile, output, manifest)
-            args += ["--start-signal", str(output / "viewer-start.json")]
-            argument_parser().parse_args(args)
-            script = str(self.root / "scripts/edge_asr.py")
-            command = [
-                sys.executable,
-                script,
-                "tools",
-                "thermal-run",
-                "--output",
-                str(output),
-                "--timeout-s",
-                "1800",
-                "--temperature-policy",
-                "operational",
-                "--skip-temperature-admission",
-                "--",
-                sys.executable,
-                script,
-                "tools",
-                "replay-qwen3",
-                *args,
-            ]
-            write_json(
-                inputs / "launch.json",
-                {
-                    "command": command,
-                    "profile": profile,
-                    "scope": "청취 도구 동시 실행. 기존 무관측 벤치마크와 구분.",
-                },
-            )
-            with (inputs / "launcher.log").open("x") as log:
-                self.process = subprocess.Popen(
-                    command,
-                    cwd=self.root,
-                    stdin=subprocess.DEVNULL,
-                    stdout=log,
-                    stderr=subprocess.STDOUT,
-                    start_new_session=True,
-                    pass_fds=(self.lease.fileno(),),
-                    env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1", "OPENBLAS_NUM_THREADS": "1"},
+            # 부모는 생성 직후 닫고 guard만 보유한다. 실패·완료 뒤 잠금이 남지 않는다.
+            with (self.cache / "inference.lock").open("a") as lease:
+                try:
+                    fcntl.flock(lease, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                except BlockingIOError:
+                    raise ValueError("다른 청취 서버의 평가가 실행 중입니다.") from None
+                profile = self.profiles[profile_id]
+                samples, _ = load_manifest(self.root / profile["manifest"], self.root)
+                if selection == "six":
+                    samples = samples[:6]
+                elif selection != "all":
+                    samples = [s for s in samples if s.id == selection]
+                if not samples:
+                    raise ValueError("선택한 음원이 없습니다.")
+                identifier = time.strftime("listen-%Y%m%d-%H%M%S-") + uuid.uuid4().hex[:6]
+                inputs = self.cache / "inputs" / identifier
+                inputs.mkdir(parents=True)
+                manifest = inputs / "manifest.jsonl"
+                write_jsonl(
+                    manifest,
+                    [
+                        {
+                            "id": s.id,
+                            "audio_path": str(s.audio_path),
+                            "reference": s.reference,
+                            "audio_sha256": s.audio_sha256,
+                        }
+                        for s in samples
+                    ],
                 )
-            self.active_id = self.add(output).id
-            return self.active_id
+                output = self.root / "results/optimization/opt3" / identifier
+                args = self.replay_args(profile, output, manifest)
+                args += ["--start-signal", str(output / "viewer-start.json")]
+                argument_parser().parse_args(args)
+                script = str(self.root / "scripts/edge_asr.py")
+                command = [
+                    sys.executable,
+                    script,
+                    "tools",
+                    "thermal-run",
+                    "--output",
+                    str(output),
+                    "--timeout-s",
+                    "1800",
+                    "--temperature-policy",
+                    "operational",
+                    "--skip-temperature-admission",
+                    "--",
+                    sys.executable,
+                    script,
+                    "tools",
+                    "replay-qwen3",
+                    *args,
+                ]
+                write_json(
+                    inputs / "launch.json",
+                    {
+                        "command": command,
+                        "profile": profile,
+                        "scope": "청취 도구 동시 실행. 기존 무관측 벤치마크와 구분.",
+                    },
+                )
+                with (inputs / "launcher.log").open("x") as log:
+                    self.process = subprocess.Popen(
+                        command,
+                        cwd=self.root,
+                        stdin=subprocess.DEVNULL,
+                        stdout=log,
+                        stderr=subprocess.STDOUT,
+                        start_new_session=True,
+                        pass_fds=(lease.fileno(),),
+                        env={
+                            **os.environ,
+                            "PYTHONDONTWRITEBYTECODE": "1",
+                            "OPENBLAS_NUM_THREADS": "1",
+                        },
+                    )
+                self.active_id = self.add(output).id
+                self.stopping = False
+                self.active = {"id": self.active_id, "profile": profile_id, "selection": selection}
+                return self.active_id
 
     def stop(self, run_id):
         with self.lock:
-            if run_id != self.active_id or not self.process or self.process.poll() is not None:
-                raise ValueError("이 서버에서 실행 중인 평가만 중단할 수 있습니다.")
-            # thermal-run의 KeyboardInterrupt 정리가 자기 추론 프로세스 그룹을 배출한다.
-            self.process.send_signal(signal.SIGINT)
-            return {"status": "stopping"}
+            if run_id != self.active_id or not self.process:
+                raise ValueError("이 서버에서 실행한 평가만 중단할 수 있습니다.")
+            if self.process.poll() is None:
+                if not self.stopping:
+                    # guard가 자기 추론 그룹을 정리한다. 정리 중 SIGINT를 반복하지 않는다.
+                    self.process.send_signal(signal.SIGINT)
+                    self.stopping = True
+                try:
+                    self.process.wait(timeout=15)
+                except subprocess.TimeoutExpired:
+                    raise ValueError(
+                        "이전 평가가 아직 종료 중입니다. 잠시 뒤 다시 시도하세요."
+                    ) from None
+            if self.stopping:
+                run = self.runs[run_id]
+                run.path.mkdir(parents=True, exist_ok=True)
+                if not (run.path / "viewer-stop.json").exists():
+                    write_json(run.path / "viewer-stop.json", {"status": "stopped"})
+            return {"status": "stopped"}
 
     def start(self, run_id):
         with self.lock:
-            if run_id != self.active_id or not self.process or self.process.poll() is not None:
+            if (
+                run_id != self.active_id
+                or not self.process
+                or self.process.poll() is not None
+                or self.stopping
+            ):
                 raise ValueError("이 서버에서 준비 중인 평가만 시작할 수 있습니다.")
             run = self.runs[run_id]
             run.refresh()

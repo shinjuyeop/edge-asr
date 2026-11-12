@@ -4,7 +4,7 @@ const clock = value => `${Math.floor(Math.max(0,value)/60).toString().padStart(2
 let catalog, mode='replay', run=null, events=[], cursor=0, epoch=0, loadingAudio=false;
 let context, gain, buffer, node, playing=false, baseContext=0, baseOffset=0, position=0;
 let calibration=null, clockSamples=[], observations=[], lastEventKey='', tableKey='';
-let lastArrival=null, follow=false, currentSource=-1;
+let lastArrival=null, follow=false, currentSource=-1, busy=false;
 
 async function api(path, body) {
   const response=await fetch(path, body ? {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)} : {cache:'no-store'});
@@ -32,14 +32,37 @@ async function synchronize(){
   observations.push({type:'clock',...sample});
 }
 async function calibrate(){for(let i=0;i<4;i++)await synchronize();}
+function updateControls(){
+  for(const id of ['replayTab','liveTab','runSelect','profileSelect','sourceSelect','joinSelect','joinRun'])$(id).disabled=busy;
+  $('loadRun').disabled=busy||!catalog?.runs.length;
+  $('prepare').disabled=busy||!catalog?.profiles.length||Boolean(catalog?.active);
+  $('play').disabled=busy||!buffer||(mode==='live'&&(run?.terminal||!['ready','replaying'].includes(run?.status)));
+  $('stopRun').disabled=busy||mode!=='live'||!run?.can_stop;
+  $('seek').disabled=busy||mode==='live'||!buffer;$('rewind').disabled=$('seek').disabled;
+}
+function clearRun(){
+  stopAudio();epoch++;run=null;events=[];buffer=null;cursor=0;position=0;lastEventKey='';tableKey='';
+  currentSource=-2;loadingAudio=false;follow=false;observations=[];lastArrival=null;calibration=null;clockSamples=[];
+  $('play').textContent=mode==='live'?'시작':'재생';$('runStatus').textContent='실행을 선택하세요';
+  $('conditions').replaceChildren();$('history').replaceChildren();$('network').textContent='관측 기록 없음';
+  renderMetrics();renderTable();renderCaption(0);drawWave();updateControls();
+}
 function changeMode(value){
-  stopAudio();follow=false;mode=value;epoch++;run=null;events=[];buffer=null;cursor=0;position=0;lastEventKey='';
+  mode=value;clearRun();
   $('replaySetup').hidden=value!=='replay';$('liveSetup').hidden=value!=='live';
   for(const name of ['replay','live']){$(`${name}Tab`).classList.toggle('selected',name===value);$(`${name}Tab`).setAttribute('aria-selected',String(name===value));}
   $('modeBadge').textContent=value==='live'?'라이브 · RP5 실제 추론':'기록 재생';
-  $('play').disabled=true;$('seek').disabled=true;$('stopRun').disabled=true;$('rewind').disabled=true;
-  $('play').textContent='재생';renderMetrics();renderTable();renderCaption(0);drawWave();
   notice(value==='live'?'구성과 음원을 선택해 실행을 준비하세요.':'기록을 선택해 원래 발행 시각으로 재생하세요.');
+}
+async function resetSelection(){
+  // 종료가 실패하면 이전 실행을 유지해 재시도할 수 있게 한다.
+  stopAudio();follow=false;epoch++;loadingAudio=false;
+  if(run?.can_stop){
+    notice('이전 평가 종료 중입니다. 종료 확인 후 새 음원을 준비할 수 있습니다.');
+    await api('/api/stop',{id:run.id});
+  }
+  clearRun();await refreshCatalog();
+  notice('선택이 변경되었습니다. RP5 실행 준비를 누르세요. 이전 기록은 보존됩니다.');
 }
 async function refreshCatalog(){
   catalog=await api('/api/catalog');const selected=$('runSelect').value;
@@ -47,7 +70,7 @@ async function refreshCatalog(){
   $('joinSelect').replaceChildren(...catalog.runs.slice().reverse().map(r=>option(r.id,r.name.replace('results/optimization/opt3/',''))));
   if(catalog.runs.some(r=>r.id===selected))$('runSelect').value=selected;
   if(!$('profileSelect').options.length){$('profileSelect').replaceChildren(...catalog.profiles.map(p=>option(p.id,p.title)));profileChanged();}
-  $('loadRun').disabled=!catalog.runs.length;$('prepare').disabled=!catalog.profiles.length;
+  updateControls();
   $('connection').textContent='연결됨';
 }
 function profileChanged(){
@@ -55,8 +78,7 @@ function profileChanged(){
   $('sourceSelect').replaceChildren(option('six','앞 6개 · 빠른 확인'),option('all','전체 목록 · 연속 입력'),...(profile?.sources||[]).map((s,i)=>option(s.id,`${i+1}. ${s.reference.slice(0,36)}`)));
 }
 async function selectRun(id){
-  stopAudio();epoch++;run={id};events=[];cursor=0;buffer=null;position=0;lastEventKey='';tableKey='';currentSource=-2;loadingAudio=false;follow=false;
-  observations=[];lastArrival=null;$('play').disabled=true;$('rewind').disabled=true;
+  clearRun();run={id};
   notice('실행 정보와 원음을 불러오는 중입니다.');await poll();
 }
 async function loadAudio(myEpoch){
@@ -67,7 +89,7 @@ async function loadAudio(myEpoch){
     if(!response.ok)throw Error((await response.json()).error);
     const decoded=await audioContext().decodeAudioData(await response.arrayBuffer());
     if(epoch!==myEpoch)return;
-    buffer=decoded;$('play').disabled=false;$('rewind').disabled=mode==='live';$('seek').disabled=mode==='live';
+    buffer=decoded;updateControls();
     $('seek').max=Math.max(buffer.duration,run.end_s+1);drawWave();
     notice(mode==='live'?'음원 준비 완료. 시작을 누르면 3초 뒤 같은 시간축으로 재생합니다.':'음원·실측 PCM 검증 완료. 재생하거나 아래 원음 행을 선택하세요.');
   }catch(e){if(epoch===myEpoch)notice(e.message,true);}finally{if(epoch===myEpoch)loadingAudio=false;}
@@ -137,7 +159,8 @@ async function poll(){
     events.push(...state.events);cursor=state.cursor;run=state;
     const names={preparing:'모델 준비·워밍업 중',ready:'준비 완료',replaying:'1배속 입력·추론 중',completed:'실행 완료',failed:'실패 기록 있음',interrupted:'중단됨'};
     $('runStatus').textContent=names[run.status]||run.status;$('connection').textContent='연결됨';
-    $('stopRun').disabled=mode!=='live'||!run.can_stop;
+    if(catalog.active?.id===run.id&&!run.can_stop)catalog.active=null;
+    updateControls();
     if(!run.terminal&&['blocked','failed'].includes(run.guard))notice('평가가 중단되었습니다. 실행 기록과 제한 상태를 확인하세요.',true);
     renderConditions();renderMetrics();
     const key=`${run.sources.length}:${Boolean(run.summary)}:${$('sort').value}`;if(key!==tableKey){tableKey=key;renderTable();}
@@ -146,15 +169,15 @@ async function poll(){
   }catch(e){if(epoch===myEpoch){$('connection').textContent='연결 확인 필요';notice(e.message,true);}}
 }
 async function play(){
-  if(!buffer)return;await audioContext().resume();
+  if(!buffer)return;const myEpoch=epoch;await audioContext().resume();if(epoch!==myEpoch)return;
   if(mode==='replay'){
     if(playing){stopAudio();$('play').textContent='이어 듣기';}
     else{const end=Math.max(buffer.duration,run.end_s+1);playAudio(position>=end?0:position);}
     return;
   }
   if(playing){notice('라이브 입력은 계속 진행됩니다. 소리만 끄려면 음량을 0으로 조절하세요.');return;}
-  await calibrate();let start=run.clock?.t0_monotonic_s||run.scheduled?.start_monotonic_s;
-  if(!start){const planned=await api('/api/start',{id:run.id});start=planned.start_monotonic_s;}
+  await calibrate();if(epoch!==myEpoch)return;let start=run.clock?.t0_monotonic_s||run.scheduled?.start_monotonic_s;
+  if(!start){const planned=await api('/api/start',{id:run.id});if(epoch!==myEpoch)return;start=planned.start_monotonic_s;}
   const until=start-(performance.now()/1000+calibration.offset);
   follow=true;playAudio(Math.max(0,-until),Math.max(0,until));
   observations.push({type:'play',server_origin_s:start,offset_s:baseOffset,context_start_s:baseContext,calibration});
@@ -180,18 +203,33 @@ function tick(ms){
   }
   requestAnimationFrame(tick);
 }
-function action(fn){return()=>Promise.resolve().then(fn).catch(e=>notice(e.message,true));}
-$('replayTab').onclick=()=>changeMode('replay');$('liveTab').onclick=action(async()=>{changeMode('live');await refreshCatalog();});$('profileSelect').onchange=profileChanged;
+function action(fn){return async()=>{
+  if(busy)return;busy=true;updateControls();
+  try{await fn();}catch(e){notice(e.message,true);}finally{busy=false;updateControls();}
+};}
+$('replayTab').onclick=action(()=>changeMode('replay'));
+$('liveTab').onclick=action(async()=>{
+  changeMode('live');await refreshCatalog();
+  if(catalog.active){
+    $('profileSelect').value=catalog.active.profile;profileChanged();$('sourceSelect').value=catalog.active.selection;
+    await selectRun(catalog.active.id);
+  }
+});
+$('profileSelect').onchange=action(async()=>{profileChanged();await resetSelection();});
+$('sourceSelect').onchange=action(resetSelection);
 $('loadRun').onclick=action(()=>selectRun($('runSelect').value));$('play').onclick=action(play);
 $('joinRun').onclick=action(async()=>{await selectRun($('joinSelect').value);if(run.terminal){const id=run.id;changeMode('replay');await selectRun(id);}});
 $('prepare').onclick=action(async()=>{const r=await api('/api/launch',{profile:$('profileSelect').value,selection:$('sourceSelect').value});await refreshCatalog();await selectRun(r.id);});
-$('stopRun').onclick=action(async()=>{await api('/api/stop',{id:run.id});stopAudio();follow=false;notice('중단 요청을 전달했습니다. 실패·중단 기록을 보존합니다.');});
+$('stopRun').onclick=action(async()=>{
+  stopAudio();follow=false;epoch++;loadingAudio=false;notice('평가 종료 중입니다.');
+  await api('/api/stop',{id:run.id});await refreshCatalog();await poll();notice('평가가 종료되었습니다. 기록은 보존되며 다시 준비할 수 있습니다.');
+});
 $('rewind').onclick=()=>{stopAudio();position=0;lastEventKey='';renderCaption(0);$('play').textContent='재생';};
 $('seek').oninput=()=>{if(mode!=='replay')return;const was=playing;stopAudio();position=Number($('seek').value);lastEventKey='';if(was)playAudio(position);renderCaption(position);};
 $('volume').oninput=()=>{if(gain)gain.gain.value=Number($('volume').value);};$('sort').onchange=renderTable;
 $('download').onclick=()=>{const blob=new Blob([JSON.stringify({run:run?.id,mode,userAgent:navigator.userAgent,audioOutputLatency:context?.outputLatency??null,scope:'브라우저 수신·재생 추정. 물리 화면/음향 실측 아님.',observations},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`listener-${run?.id||'session'}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);};
 window.addEventListener('resize',drawWave);
 await refreshCatalog().catch(e=>notice(e.message,true));
-setInterval(()=>{if(mode==='live')poll();},300);
+setInterval(()=>{if(mode==='live'&&!busy)poll();},300);
 setInterval(()=>{if(mode==='live'&&playing)synchronize().catch(()=>{});},5000);
 requestAnimationFrame(tick);
