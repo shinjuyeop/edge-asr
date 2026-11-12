@@ -22,6 +22,8 @@ Qwen3-ASR-0.6B를 Raspberry Pi 5의 ARM64 CPU에서 실행하며 **한국어 정
 
 최종 210구간의 PCM·전사·토큰 ID는 같고 실패·입력 드롭·자막 없는 원음은 양쪽 모두 0입니다. 단일 순차 대조로 시작 온도·열 상태·부분 호출 수가 달라 전체 개선을 캐시만의 효과로 단정하지 않습니다. 부분 자막 철회량은 늘었으며 첫 표시는 실제 GUI 시각과 구분합니다. [대조 조건·전체 결과·한계](results/summaries/optimization/realtime-prefix-cache-20261112.md).
 
+후속 [고정4초/보완 가변100개 대조](results/summaries/optimization/realtime-adaptive100-20261112.md)에서도 CER11.12%·완료율을 유지했습니다. 최대 갱신 공백 p50은4.48→4.39초로 조금 줄었지만 실제 후속은2회뿐이어서, 비용 제한 보완을 다음 과제로 남겼습니다.
+
 문제 발견과 선택의 흐름은 [ASR 최적화 과정](docs/research/optimization_history.md), 현재 채택한 구성과 최신 결과는 [현재 상태](docs/status.md)에 정리했습니다. [자막 비교 영상](results/summaries/optimization/realtime-video-20261111.md)은 저장된 로그의 동기 재생 자료입니다.
 
 ## 처음 시작하기
