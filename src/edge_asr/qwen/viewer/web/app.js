@@ -4,7 +4,7 @@ const clock = value => `${Math.floor(Math.max(0,value)/60).toString().padStart(2
 let catalog, mode='replay', run=null, events=[], cursor=0, epoch=0, loadingAudio=false;
 let context, gain, buffer, node, playing=false, baseContext=0, baseOffset=0, position=0;
 let calibration=null, clockSamples=[], observations=[], lastEventKey='', tableKey='';
-let lastArrival=null, follow=false, currentSource=-1, busy=false;
+let lastArrival=null, follow=false, currentSource=-1, busy=false, selectionDirty=false;
 
 async function api(path, body) {
   const response=await fetch(path, body ? {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)} : {cache:'no-store'});
@@ -36,13 +36,14 @@ function updateControls(){
   for(const id of ['replayTab','liveTab','runSelect','profileSelect','sourceSelect','joinSelect','joinRun'])$(id).disabled=busy;
   $('loadRun').disabled=busy||!catalog?.runs.length;
   $('prepare').disabled=busy||!catalog?.profiles.length||Boolean(catalog?.active);
-  $('play').disabled=busy||!buffer||(mode==='live'&&(run?.terminal||!['ready','replaying'].includes(run?.status)));
+  $('play').disabled=busy||selectionDirty||!buffer||(mode==='live'&&(run?.terminal||!['ready','replaying'].includes(run?.status)));
   $('stopRun').disabled=busy||mode!=='live'||!run?.can_stop;
   $('seek').disabled=busy||mode==='live'||!buffer;$('rewind').disabled=$('seek').disabled;
 }
 function clearRun(){
   stopAudio();epoch++;run=null;events=[];buffer=null;cursor=0;position=0;lastEventKey='';tableKey='';
-  currentSource=-2;loadingAudio=false;follow=false;observations=[];lastArrival=null;calibration=null;clockSamples=[];
+  currentSource=-2;loadingAudio=false;follow=false;selectionDirty=false;observations=[];lastArrival=null;calibration=null;clockSamples=[];
+  $('clockText').textContent='00:00 / 00:00';$('seek').value=0;$('seek').max=1;$('sync').textContent='음원 준비 전';
   $('play').textContent=mode==='live'?'시작':'재생';$('runStatus').textContent='실행을 선택하세요';
   $('conditions').replaceChildren();$('history').replaceChildren();$('network').textContent='관측 기록 없음';
   renderMetrics();renderTable();renderCaption(0);drawWave();updateControls();
@@ -56,7 +57,7 @@ function changeMode(value){
 }
 async function resetSelection(){
   // 종료가 실패하면 이전 실행을 유지해 재시도할 수 있게 한다.
-  stopAudio();follow=false;epoch++;loadingAudio=false;
+  stopAudio();follow=false;epoch++;loadingAudio=false;selectionDirty=true;
   if(run?.can_stop){
     notice('이전 평가 종료 중입니다. 종료 확인 후 새 음원을 준비할 수 있습니다.');
     await api('/api/stop',{id:run.id});
@@ -164,7 +165,7 @@ async function poll(){
     if(!run.terminal&&['blocked','failed'].includes(run.guard))notice('평가가 중단되었습니다. 실행 기록과 제한 상태를 확인하세요.',true);
     renderConditions();renderMetrics();
     const key=`${run.sources.length}:${Boolean(run.summary)}:${$('sort').value}`;if(key!==tableKey){tableKey=key;renderTable();}
-    if(run.audio&&!buffer)await loadAudio(myEpoch);
+    if(run.audio&&!buffer&&!selectionDirty)await loadAudio(myEpoch);
     if(mode==='live'&&run.terminal&&follow){follow=false;notice('추론이 종료되었습니다. 원음 종료 뒤 도착한 결과까지 확인하세요. 기록 모드에서 다시 재생할 수 있습니다.');await refreshCatalog();}
   }catch(e){if(epoch===myEpoch){$('connection').textContent='연결 확인 필요';notice(e.message,true);}}
 }
@@ -221,7 +222,7 @@ $('loadRun').onclick=action(()=>selectRun($('runSelect').value));$('play').oncli
 $('joinRun').onclick=action(async()=>{await selectRun($('joinSelect').value);if(run.terminal){const id=run.id;changeMode('replay');await selectRun(id);}});
 $('prepare').onclick=action(async()=>{const r=await api('/api/launch',{profile:$('profileSelect').value,selection:$('sourceSelect').value});await refreshCatalog();await selectRun(r.id);});
 $('stopRun').onclick=action(async()=>{
-  stopAudio();follow=false;epoch++;loadingAudio=false;notice('평가 종료 중입니다.');
+  stopAudio();follow=false;epoch++;loadingAudio=false;selectionDirty=true;notice('평가 종료 중입니다.');
   await api('/api/stop',{id:run.id});await refreshCatalog();await poll();notice('평가가 종료되었습니다. 기록은 보존되며 다시 준비할 수 있습니다.');
 });
 $('rewind').onclick=()=>{stopAudio();position=0;lastEventKey='';renderCaption(0);$('play').textContent='재생';};
