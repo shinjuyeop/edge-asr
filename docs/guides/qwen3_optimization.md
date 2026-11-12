@@ -1,6 +1,6 @@
 # Qwen 최적화 실행 안내
 
-주 기준은 [Qwen 단독1배속 연속 입력](../research/qwen_realtime.md)입니다. [ONNX/GGUF](../../results/summaries/optimization/realtime100-backends-20261110.md)·[VAD 보정](../../results/summaries/optimization/realtime-accuracy-20261110.md)·[갱신2초/4초](../../results/summaries/optimization/realtime-schedule-20261111.md)·[생성 중 표시](../../results/summaries/optimization/realtime-token-20261111.md)·[CPU 스레드](../../results/summaries/optimization/realtime-threads-20261111.md)·[스레드 분리100개](../../results/summaries/optimization/realtime-split100-20261111.md)를 비교했습니다. 개발 권장은 **Q8·생성2T/음성·prefill3T·고정 text prefix KV·VAD 보정·구간5초·첫1초/이후4초·토큰 표시/접두부 보류**입니다. 기존 기본 설정과 모두3T는 보존하며 [공유 개발 설정](../../configs/gguf_realtime.toml)과 [대표 명령](#현재-개발용-대표-명령)을 사용합니다. [파일별 batch 실측](../../results/summaries/optimization/fixed100-baseline-20261109.md)은 진단용 참조입니다.
+주 기준은 [Qwen 단독1배속 연속 입력](../research/qwen_realtime.md)입니다. 모델·스레드·캐시·native 경로는 [공유 개발 설정](../../configs/gguf_realtime.toml), 연속 입력 옵션은 [대표 명령](#현재-개발용-대표-명령)을 사용합니다. 현재 채택 근거와 최신 결과는 [현재 상태](../status.md), 선택이 바뀐 과정은 [ASR 최적화 과정](../research/optimization_history.md)에 정리했습니다. 아래 이전 실험의 설정·판정은 당시 기록입니다.
 
 ## 환경과 설정
 
@@ -10,9 +10,11 @@
 | --- | --- | --- |
 | Host 설정 검사·모의 테스트 | `.venv/bin/python` | 공유 설정과 보존 기준선 모두 검사 가능. ARM 실제 추론은 RP5에서 수행 |
 | RP5 ONNX 실제 추론 | `.venv-qwen3-onnx-20261106-01/bin/python` | [onnx.toml](../../configs/onnx.toml) |
-| RP5 GGUF 실제 추론 | `.venv/bin/python` | [gguf_realtime.toml](../../configs/gguf_realtime.toml)은 현재 2/3 개발용, [gguf.toml](../../configs/gguf.toml)은 2T 보존 |
+| RP5 GGUF 실제 추론 | `.venv/bin/python` | [gguf_realtime.toml](../../configs/gguf_realtime.toml)은 현재 개발용, [gguf.toml](../../configs/gguf.toml)은 2T 보존 기준선 |
 
-GGUF는 기존 Python의 ctypes로 별도 llama.cpp/libmtmd C ABI를 호출합니다. 외부 엔진 소스·빌드는 `runtimes/qwen3-opt/llama-q8-20261109-01/`, 현재 bridge는 `runtimes/qwen3-opt/split-20261111-01/bridge/`, 가중치는 `models/qwen3-opt/gguf-q8-20261109-01/`에 있습니다. [연결·빌드 안내](../../native/README.md)를 따르며 기존 환경에 패키지를 갱신하지 않습니다.
+GGUF는 기존 Python의 ctypes로 별도 llama.cpp/libmtmd C ABI를 호출합니다. 외부 엔진 소스·빌드는 `runtimes/qwen3-opt/llama-q8-20261109-01/`에 있습니다. 현재 공유 설정의 bridge는 `runtimes/qwen3-opt/prefix-20261112-01/bridge/`이며 토큰 표시·스레드 분리·고정 text prefix KV를 지원합니다. 실행할 모델·라이브러리·빌드 명세는 공유 설정의 `model.path`·`model.runtime_library`·`model.runtime_manifest`를 기준으로 확인합니다.
+
+`runtimes/qwen3-opt/split-20261111-01/bridge/`는 이전 스레드 분리 실험용으로 보존합니다. [환경 기록](../reference/environment.md)의 경로·해시는 2026-11-11 확인 당시의 스냅샷입니다. 새 빌드는 [연결·빌드 안내](../../native/README.md)를 따르며 기존 환경에 패키지를 갱신하지 않습니다.
 
 아래 명령은 Host에서도 모델 로딩 없이 확인할 수 있습니다.
 
@@ -85,7 +87,7 @@ ONNX 측정은 guard와 자식 명령 모두 표의 ONNX Python·설정을 사�
 
 [ONNX 출발 실측](../../results/summaries/optimization/realtime100-onnx-20261110.md)은 전체 입력 완료·전사1회 실패·VAD 누락1개를 포함한 기록입니다. 모델·조건을 자동 변경하지 않고 실패까지 채점했으며 실사용 통과 구성으로 취급하지 않습니다. 이후 엔진 비교에서 최종 구간 좌표·PCM 해시·첫 자막 커버리지를 함께 확인합니다.
 
-기본2T 재현은 위 명령에서 `--config configs/gguf.toml`과 새 출력 경로를 사용하고 아래 조건을 명시합니다. 현재 생성2T/음성3T 개발 구성은 [대표 명령](#현재-개발용-대표-명령)의 공유 TOML을 사용합니다. `--vad-preprocess rms26-floor80`은 **VAD 입력만** 보정하며 ASR에는 원음을 전달합니다. CLI 기본값은 여전히 `identity`입니다.
+기본2T 재현은 위 명령에서 `--config configs/gguf.toml`과 새 출력 경로를 사용하고 아래 조건을 명시합니다. 현재 개발 구성은 [대표 명령](#현재-개발용-대표-명령)의 공유 TOML을 사용합니다. `--vad-preprocess rms26-floor80`은 **VAD 입력만** 보정하며 ASR에는 원음을 전달합니다. CLI 기본값은 여전히 `identity`입니다.
 
 ```bash
 --gap-s 0 --vad-threshold 0.3 --silence-policy skip-zero \
@@ -109,7 +111,7 @@ ONNX 측정은 guard와 자식 명령 모두 표의 ONNX Python·설정을 사�
 
 ## 현재 개발용 대표 명령
 
-RP5에는 기존 토큰 bridge와 스레드 분리를 지원하는 별도 split bridge가 있습니다. 아래는 현재 생성2T·음성/prefill3T·고정 text prefix KV 설정으로 **새 실행 경로**에 실행하는 형식입니다. 다른 환경에서는 빌드 안내대로 필요한 선택 기능을 지원하는 bridge를 만들고 새 TOML의 library/manifest 경로를 맞춥니다. 원본 실험 TOML과 공유 설정의 값은 같고 기존 기본 설정은 유지합니다. TOML은 모델·평가 계약만 담으므로 아래 VAD·부분 갱신·토큰 표시 옵션도 함께 지정합니다.
+아래는 [공유 개발 설정](../../configs/gguf_realtime.toml)으로 **새 실행 경로**에 실행하는 형식입니다. RP5의 모델·bridge는 [환경과 설정](#환경과-설정)을 확인합니다. 다른 환경에서는 빌드 안내대로 필요한 선택 기능을 지원하는 bridge를 만들고 별도 TOML의 library/manifest 경로를 맞춥니다. TOML은 모델·평가 계약만 담으므로 아래 VAD·부분 갱신·토큰 표시 옵션도 함께 지정합니다.
 
 ```bash
 .venv/bin/python scripts/edge_asr.py tools thermal-run \
@@ -145,15 +147,15 @@ num_threads_batch = 3
 
 Python 어댑터는 생성/prefill의 native getter 값과 mtmd 초기화 전달값 `audio_threads`가 요청과 같은지 확인합니다. 불일치·기능/심볼 누락은 실패로 기록하며 기존 값으로 조용히 대체하지 않습니다. 입력·분할·토큰 표시·KV 초기화는 유지합니다.
 
-[6개 분리 검토](../../results/summaries/optimization/realtime-split-20261111.md)는 최종 처리 합계 개선3.88%·2.82%로 반복3% 선별 조건에 미달해 해당 실행은100개 없이 종료했습니다. 이 판정은 보존합니다. 이후 [별도100개 추가 대조](../../results/summaries/optimization/realtime-split100-20261111.md)에서 새3/3→2/3은 최종 합계3.68%·decode7.76% 감소·CER11.12% 동일·실패/드롭/미출력0으로 사전 조건16개를 통과했습니다. 현재 개발 권장은 위의2/3 TOML이며 순차1쌍·열 제한을 포함한 운영 관측입니다. 통계적 유의성·실사용 채택과 구분합니다.
+[6개 분리 검토](../../results/summaries/optimization/realtime-split-20261111.md)는 최종 처리 합계 개선3.88%·2.82%로 반복3% 선별 조건에 미달해 해당 실행은100개 없이 종료했습니다. 이 판정은 보존합니다. 이후 [별도100개 추가 대조](../../results/summaries/optimization/realtime-split100-20261111.md)에서 새3/3→2/3은 최종 합계3.68%·decode7.76% 감소·CER11.12% 동일·실패/드롭/미출력0으로 사전 조건16개를 통과했습니다. 당시2/3을 개발 기준으로 선택했으며 순차1쌍·열 제한을 포함한 운영 관측입니다. 통계적 유의성·실사용 채택과 구분합니다.
 
-추가 [음성/prefill3T/4T 대조](../../results/summaries/optimization/realtime-prefill-20261112.md)는 생성2T를 고정하고 같은6개를2/3→2/4→2/3으로 실행했습니다. 전사·실패/드롭/미출력은 같았고, 후보의 음성/prefill·TTFT는 줄었지만 앞control 대비 전체 추론 합계가0.069초(0.17%) 늘었습니다. 현재 공유 설정2/3을 유지하며100개는 실행하지 않았습니다. 운영 변동을 포함한 선별 결과로4T의 효과가 없다고 단정하지 않습니다.
+추가 [음성/prefill3T/4T 대조](../../results/summaries/optimization/realtime-prefill-20261112.md)는 생성2T를 고정하고 같은6개를2/3→2/4→2/3으로 실행했습니다. 전사·실패/드롭/미출력은 같았고, 후보의 음성/prefill·TTFT는 줄었지만 앞control 대비 전체 추론 합계가0.069초(0.17%) 늘었습니다. 당시2/3을 유지하며100개는 실행하지 않았습니다. 운영 변동을 포함한 선별 결과로4T의 효과가 없다고 단정하지 않습니다.
 
-[반복 처리·캐시 분석](../../results/summaries/optimization/realtime-cache-audit-20261112.md)은 기존2/3 로그를 재집계한 결과로 새 추론·캐시 옵션이 아닙니다. 한 호출 안의 decode KV는 이미 사용하며, 입력이 늘어나는 호출 사이의 음성 KV 재사용은 미구현입니다. KV 초기화 비중은0.37%이고 고정 text prefix 재사용은 다음 검증 후보입니다. 현재 대표 명령과 공유 설정은 그대로 사용합니다.
+[반복 처리·캐시 분석](../../results/summaries/optimization/realtime-cache-audit-20261112.md)은 기존2/3 로그를 재집계한 기록입니다. 당시 KV 초기화 비중은0.37%였고 고정 text prefix 재사용을 검증 후보로 정했습니다. 후속 구현·검증은 아래 선택 실험에 연결합니다. 입력이 늘어나는 호출 사이의 음성 KV 재사용은 미구현입니다.
 
 ## 고정 text prefix KV 선택 실험
 
-현재 공유 개발 설정은 검증한2/3·prefix 빌드·`cache_text_prefix=true`를 사용합니다. 별도 실험 TOML의 `cache_text_prefix=false`로 같은 새 빌드의 끔 대조를 재현하며, 기존2/3의 항목 생략 설정과 라이브러리도 보존합니다. 명시한 항목이 기존 빌드에서 지원되지 않으면 오류로 기록합니다. 빌드 방법은 [native 안내](../../native/README.md), 입력·판정은 [사전 조건](../research/qwen_realtime.md#고정-text-prefix-kv-대조--2026-11-12-사전-조건)을 따릅니다.
+선택 항목 `model.cache_text_prefix`의 현재 값과 빌드는 [공유 개발 설정](../../configs/gguf_realtime.toml)을 확인합니다. 별도 실험 TOML에서 `cache_text_prefix=false`/`true`로 같은 빌드의 끔/켬 대조를 재현하며, 기존 항목 생략 설정과 라이브러리도 보존합니다. 명시한 항목이 기존 빌드에서 지원되지 않으면 오류로 기록합니다. 빌드 방법은 [native 안내](../../native/README.md), 입력·판정은 [사전 조건](../research/qwen_realtime.md#고정-text-prefix-kv-대조--2026-11-12-사전-조건)을 따릅니다.
 
 같은 대표 연속 명령에서 TOML과 새 출력 경로를 지정합니다. `worker.json`의 첫 추론/워밍업·호출별 `native_result.prefix_cache`, `prefix_eval_s`·`suffix_eval_s`·`audio_encode_s`·`audio_embedding_eval_s`를 확인합니다. 전체 음성·음성 뒤 text·이전 생성 토큰은 새로 계산하며 오디오 encoder 증분 실행이 아닙니다.
 

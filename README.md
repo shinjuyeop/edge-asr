@@ -4,9 +4,25 @@ Qwen3-ASR-0.6B를 Raspberry Pi 5의 ARM64 CPU에서 실행하며 **한국어 정
 
 [개발 안내](CONTRIBUTING.md) · [현재 환경](docs/reference/environment.md) · [현재 상태·다음 작업](docs/status.md) · [RP5 실행 안내](docs/guides/qwen3_optimization.md)
 
-현재는 WAV를 1배속으로 공급하며 부분·확정 자막을 평가합니다. 개발 기준은 **GGUF Q8·생성2T/음성·prefill3T·고정 text prefix KV**이며 [공유 설정](configs/gguf_realtime.toml)을 사용합니다. VAD·갱신·토큰 표시 조건까지 포함한 [대표 명령](docs/guides/qwen3_optimization.md#현재-개발용-대표-명령)을 함께 확인하세요. 마이크 입력·서비스 자동 실행·최종 장시간 안정성 검증은 후속 작업입니다.
+현재는 WAV를 1배속으로 공급하며 부분·확정 자막을 평가합니다. 개발에는 [공유 설정](configs/gguf_realtime.toml)과 VAD·갱신·토큰 표시 옵션을 포함한 [대표 명령](docs/guides/qwen3_optimization.md#현재-개발용-대표-명령)을 사용합니다. 마이크 입력·서비스 자동 실행·최종 장시간 안정성 검증은 후속 작업입니다.
 
-문제 발견과 개발 방향의 변화는 [ASR 최적화 과정](docs/research/optimization_history.md)에 정리했습니다. 최신 측정값과 판단 근거는 [현재 상태](docs/status.md)와 [실측 요약](results/summaries/optimization/realtime-prefix-cache-20261112.md)에 있습니다. [자막 비교 영상](results/summaries/optimization/realtime-video-20261111.md)은 저장된 로그의 동기 재생 자료입니다.
+## 주요 결과
+
+- **자막 누락:** 낮은 신호의 VAD 입력을 보정하고 ASR에는 원음을 유지해, 고정 100개 평가에서 자막 없는 원음을 없앴습니다.
+- **자막 대기:** 부분 재전사 주기를 조정해 큐 대기를 줄이고, 생성 중 토큰 표시와 접두부 재표시 보류를 추가했습니다.
+- **반복 연산:** 생성·음성 처리 스레드를 분리하고, 호출 사이에 음성 앞 고정 text prefix KV만 재사용했습니다.
+
+대표 대조는 **2026-11-12, RP5·같은 빌드·낭독 WAV 100개·1배속 입력·워밍업 후**의 고정 9토큰 KV 재사용 끔/켬 비교입니다.
+
+| 지표 | 끔 | 켬 |
+| --- | ---: | ---: |
+| 전체 추론 합계 — 부분 재전사 포함 | 623.42초 | **566.28초 — 9.16% 감소** |
+| 첫 자막 이벤트 발행 p95 | 4.41초 | **4.13초** |
+| 연결 CER | 11.12% | 11.12% |
+
+최종 210구간의 PCM·전사·토큰 ID는 같고 실패·입력 드롭·자막 없는 원음은 양쪽 모두 0입니다. 단일 순차 대조로 시작 온도·열 상태·부분 호출 수가 달라 전체 개선을 캐시만의 효과로 단정하지 않습니다. 부분 자막 철회량은 늘었으며 첫 표시는 실제 GUI 시각과 구분합니다. [대조 조건·전체 결과·한계](results/summaries/optimization/realtime-prefix-cache-20261112.md).
+
+문제 발견과 선택의 흐름은 [ASR 최적화 과정](docs/research/optimization_history.md), 현재 채택한 구성과 최신 결과는 [현재 상태](docs/status.md)에 정리했습니다. [자막 비교 영상](results/summaries/optimization/realtime-video-20261111.md)은 저장된 로그의 동기 재생 자료입니다.
 
 ## 처음 시작하기
 
@@ -41,6 +57,9 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv/bin/python -m unittest discover -
 
 ## 폴더 구조
 
+<details>
+<summary>주요 경로 펼치기</summary>
+
 각 계층에서 **폴더 우선·이름순**으로 정렬했습니다. 자주 쓰는 경로만 펼쳤으며 캐시·생성물(`build/`, `dist/`)·대용량 자산·과거 실험의 상세 목록·그 밖의 숨김 파일은 생략했습니다. 자산 폴더는 준비된 로컬 환경 기준입니다.
 
 ```text
@@ -54,7 +73,7 @@ edge-asr/
 │   ├── quantization/                    # Q6·Q5·Q4 후보
 │   ├── eval_manifest.example.jsonl
 │   ├── gguf.toml                        # 보존한 Q8 2T 기준선
-│   ├── gguf_realtime.toml               # 현재 개발용 Q8 생성2T/음성3T
+│   ├── gguf_realtime.toml               # 현재 개발용 GGUF 설정
 │   └── onnx.toml                        # ONNX 출발 참조
 ├── data/                                # 로컬 음원·정답
 │   ├── evaluation/
@@ -133,10 +152,12 @@ edge-asr/
 └── README.md
 ```
 
+</details>
+
 ## 개발과 기록
 
 **Host 개발·검사 → main 반영·push → RP5 동기화·필요한 실제 추론 → 결과 회수** 순서입니다. 개발·검증 기준은 [CONTRIBUTING](CONTRIBUTING.md), 소스 전달은 [RP5 동기화 안내](docs/guides/deployment.md)를 따릅니다.
 
-README는 시작 경로, `docs/research/optimization_history.md`는 판단이 바뀐 과정, `docs/status.md`는 현재 판단과 다음 작업, `results/summaries/`는 실측 근거를 담당합니다. 설정·구조 변경은 관련 문서와 함께 갱신하며, 과거 실행 기록은 그대로 보존합니다.
+README는 프로젝트 소개와 시작 경로, `docs/research/optimization_history.md`는 판단이 바뀐 과정, `docs/status.md`는 현재 판단과 다음 작업, `results/summaries/`는 실측 근거를 담당합니다. 설정·구조 변경은 관련 문서와 함께 갱신하며, 과거 실행 기록은 그대로 보존합니다.
 
 [전체 문서](docs/README.md) · [평가 조건](docs/research/qwen_realtime.md) · [전체 측정 요약](results/summaries/optimization/README.md) · [경로 이행표](docs/reference/structure_migration.md)

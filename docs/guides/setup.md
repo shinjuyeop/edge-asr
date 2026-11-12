@@ -40,8 +40,8 @@ Linux 셸을 기준으로 합니다. 기본 코드와 테스트는 Python 3.11 �
 | 필요한 항목 | 현재 경로·준비 안내 |
 | --- | --- |
 | Python 환경 | 현재 `.venv`의 패키지는 [환경 기록](../reference/environment.md#가상환경별-용도) 참고 |
-| Q8 모델·자산 명세 | `models/qwen3-opt/gguf-q8-20261109-01/`, [GGUF 자산·평가 계약](../research/opt2_gguf.md) |
-| 토큰 표시·스레드 분리 bridge | `runtimes/qwen3-opt/split-20261111-01/bridge/`, [native 빌드](../../native/README.md) |
+| GGUF 모델·자산 명세 | [공유 설정](../../configs/gguf_realtime.toml)의 `model.path`, [GGUF 자산·평가 계약](../research/opt2_gguf.md) |
+| GGUF bridge·빌드 명세 | [공유 설정](../../configs/gguf_realtime.toml)의 `model.runtime_library`·`model.runtime_manifest`, [현재 빌드 안내](qwen3_optimization.md#환경과-설정), [native 빌드](../../native/README.md) |
 | 확률 VAD 모델 | `models/silero-vad-k2-20261029/silero_vad.onnx`, [VAD 준비 기록](../archive/model-comparison/m31_online_vad.md) |
 | 평가 음원·정답 | `data/evaluation/edge100-20261109-01/`, [고정100개 준비·검증](../research/fixed100.md) |
 | 모델 설정·연속 입력 옵션 | [configs/gguf_realtime.toml](../../configs/gguf_realtime.toml), [대표 명령](qwen3_optimization.md#현재-개발용-대표-명령) |
