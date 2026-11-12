@@ -1,6 +1,6 @@
 # Qwen 최적화 실행 안내
 
-주 기준은 [Qwen 단독1배속 연속 입력](../research/qwen_realtime.md)입니다. [ONNX/GGUF](../../results/summaries/optimization/realtime100-backends-20261110.md)·[VAD 보정](../../results/summaries/optimization/realtime-accuracy-20261110.md)·[갱신2초/4초](../../results/summaries/optimization/realtime-schedule-20261111.md)·[생성 중 표시](../../results/summaries/optimization/realtime-token-20261111.md)·[CPU 스레드](../../results/summaries/optimization/realtime-threads-20261111.md)·[스레드 분리100개](../../results/summaries/optimization/realtime-split100-20261111.md)를 비교했습니다. 개발 권장은 **Q8·생성2T/음성·prefill3T·VAD 보정·구간5초·첫1초/이후4초·토큰 표시/접두부 보류**입니다. 기존 기본 설정과 모두3T는 보존하며 [공유 개발 설정](../../configs/gguf_realtime.toml)과 [대표 명령](#현재-개발용-대표-명령)을 사용합니다. [파일별 batch 실측](../../results/summaries/optimization/fixed100-baseline-20261109.md)은 진단용 참조입니다.
+주 기준은 [Qwen 단독1배속 연속 입력](../research/qwen_realtime.md)입니다. [ONNX/GGUF](../../results/summaries/optimization/realtime100-backends-20261110.md)·[VAD 보정](../../results/summaries/optimization/realtime-accuracy-20261110.md)·[갱신2초/4초](../../results/summaries/optimization/realtime-schedule-20261111.md)·[생성 중 표시](../../results/summaries/optimization/realtime-token-20261111.md)·[CPU 스레드](../../results/summaries/optimization/realtime-threads-20261111.md)·[스레드 분리100개](../../results/summaries/optimization/realtime-split100-20261111.md)를 비교했습니다. 개발 권장은 **Q8·생성2T/음성·prefill3T·고정 text prefix KV·VAD 보정·구간5초·첫1초/이후4초·토큰 표시/접두부 보류**입니다. 기존 기본 설정과 모두3T는 보존하며 [공유 개발 설정](../../configs/gguf_realtime.toml)과 [대표 명령](#현재-개발용-대표-명령)을 사용합니다. [파일별 batch 실측](../../results/summaries/optimization/fixed100-baseline-20261109.md)은 진단용 참조입니다.
 
 ## 환경과 설정
 
@@ -109,7 +109,7 @@ ONNX 측정은 guard와 자식 명령 모두 표의 ONNX Python·설정을 사�
 
 ## 현재 개발용 대표 명령
 
-RP5에는 기존 토큰 bridge와 스레드 분리를 지원하는 별도 split bridge가 있습니다. 아래는 현재 생성2T·음성/prefill3T 설정으로 **새 실행 경로**에 실행하는 형식입니다. 다른 환경에서는 빌드 안내대로 두 기능을 지원하는 bridge를 만들고 새 TOML의 library/manifest 경로를 맞춥니다. 원본 실험 TOML과 공유 설정의 값은 같고 기존 기본 설정은 유지합니다. TOML은 모델·평가 계약만 담으므로 아래 VAD·부분 갱신·토큰 표시 옵션도 함께 지정합니다.
+RP5에는 기존 토큰 bridge와 스레드 분리를 지원하는 별도 split bridge가 있습니다. 아래는 현재 생성2T·음성/prefill3T·고정 text prefix KV 설정으로 **새 실행 경로**에 실행하는 형식입니다. 다른 환경에서는 빌드 안내대로 필요한 선택 기능을 지원하는 bridge를 만들고 새 TOML의 library/manifest 경로를 맞춥니다. 원본 실험 TOML과 공유 설정의 값은 같고 기존 기본 설정은 유지합니다. TOML은 모델·평가 계약만 담으므로 아래 VAD·부분 갱신·토큰 표시 옵션도 함께 지정합니다.
 
 ```bash
 .venv/bin/python scripts/edge_asr.py tools thermal-run \
@@ -153,9 +153,11 @@ Python 어댑터는 생성/prefill의 native getter 값과 mtmd 초기화 전달
 
 ## 고정 text prefix KV 선택 실험
 
-현재 공유 개발 설정은 기존2/3·캐시 항목 생략 상태를 유지합니다. 별도 `text_prefix_cache_v1` 빌드를 준비한 실험 TOML에서 `cache_text_prefix = false/true`를 명시하면 끔/켬을 비교할 수 있습니다. 명시한 항목이 기존 빌드에서 지원되지 않으면 오류로 기록합니다. 새 빌드 경로·방법은 [native 안내](../../native/README.md), 입력·판정은 [사전 조건](../research/qwen_realtime.md#고정-text-prefix-kv-대조--2026-11-12-사전-조건)을 따릅니다.
+현재 공유 개발 설정은 검증한2/3·prefix 빌드·`cache_text_prefix=true`를 사용합니다. 별도 실험 TOML의 `cache_text_prefix=false`로 같은 새 빌드의 끔 대조를 재현하며, 기존2/3의 항목 생략 설정과 라이브러리도 보존합니다. 명시한 항목이 기존 빌드에서 지원되지 않으면 오류로 기록합니다. 빌드 방법은 [native 안내](../../native/README.md), 입력·판정은 [사전 조건](../research/qwen_realtime.md#고정-text-prefix-kv-대조--2026-11-12-사전-조건)을 따릅니다.
 
-같은 대표 연속 명령에서 실험 TOML과 새 출력 경로만 지정합니다. `worker.json`의 첫 추론/워밍업·호출별 `native_result.prefix_cache`, `prefix_eval_s`·`suffix_eval_s`·`audio_encode_s`·`audio_embedding_eval_s`를 확인합니다. 전체 음성·음성 뒤 text·이전 생성 토큰은 새로 계산하며 오디오 encoder 증분 실행이 아닙니다. 실측 전에는 속도·정확도 개선으로 표시하지 않습니다.
+같은 대표 연속 명령에서 TOML과 새 출력 경로를 지정합니다. `worker.json`의 첫 추론/워밍업·호출별 `native_result.prefix_cache`, `prefix_eval_s`·`suffix_eval_s`·`audio_encode_s`·`audio_embedding_eval_s`를 확인합니다. 전체 음성·음성 뒤 text·이전 생성 토큰은 새로 계산하며 오디오 encoder 증분 실행이 아닙니다.
+
+[고정100개 실측](../../results/summaries/optimization/realtime-prefix-cache-20261112.md)에서 CER11.12%·최종210구간 PCM/전사/토큰 ID 동일·실패/드롭/미출력0을 유지하며 최종 합계9.06%·전체9.16%가 줄었습니다. 첫 표시 p95는4.410→4.128초·파일 끝 반환 p95는3.378→2.819초였습니다. 모델 첫 추론은 cold miss이고3회 워밍업 뒤 입력에서는9토큰을 재사용합니다. 순차1쌍·시작 온도/열 제한·부분 호출 수와 문자 철회 차이는 상세 보고서에 기록했습니다.
 
 ## 이전 실험 재현
 

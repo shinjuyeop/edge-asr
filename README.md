@@ -4,9 +4,9 @@ Qwen3-ASR-0.6B를 Raspberry Pi 5의 ARM64 CPU에서 실행하며 **한국어 정
 
 [공동 개발 시작](CONTRIBUTING.md) · [현재 환경](docs/reference/environment.md) · [현재 상태·다음 작업](docs/status.md) · [RP5 실행 안내](docs/guides/qwen3_optimization.md)
 
-현재는 WAV를 1배속으로 공급하며 부분·확정 자막을 평가합니다. 개발 기준은 **GGUF Q8·생성2T/음성·prefill3T**이며 [공유 설정](configs/gguf_realtime.toml)을 사용합니다. VAD·갱신·토큰 표시 조건까지 포함한 [대표 명령](docs/guides/qwen3_optimization.md#현재-개발용-대표-명령)을 함께 확인하세요. 마이크 입력·서비스 자동 실행·최종 장시간 안정성 검증은 후속 작업입니다.
+현재는 WAV를 1배속으로 공급하며 부분·확정 자막을 평가합니다. 개발 기준은 **GGUF Q8·생성2T/음성·prefill3T·고정 text prefix KV**이며 [공유 설정](configs/gguf_realtime.toml)을 사용합니다. VAD·갱신·토큰 표시 조건까지 포함한 [대표 명령](docs/guides/qwen3_optimization.md#현재-개발용-대표-명령)을 함께 확인하세요. 마이크 입력·서비스 자동 실행·최종 장시간 안정성 검증은 후속 작업입니다.
 
-최신 측정값과 판단 근거는 [현재 상태](docs/status.md)와 [실측 요약](results/summaries/optimization/realtime-split100-20261111.md)에 있습니다. [자막 비교 영상](results/summaries/optimization/realtime-video-20261111.md)은 저장된 로그의 동기 재생 자료입니다.
+최신 측정값과 판단 근거는 [현재 상태](docs/status.md)와 [실측 요약](results/summaries/optimization/realtime-prefix-cache-20261112.md)에 있습니다. [자막 비교 영상](results/summaries/optimization/realtime-video-20261111.md)은 저장된 로그의 동기 재생 자료입니다.
 
 ## 처음 시작하기
 

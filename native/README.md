@@ -20,7 +20,7 @@ Python 실행 코드는 [src/edge_asr/qwen/](../src/edge_asr/qwen/), C++ 소스�
   --output "runtimes/qwen3-opt/<새빌드ID>/bridge"
 ```
 
-현재 검증 구성은 CPU native·GPU OFF·KleidiAI OFF입니다. 모델1회 로딩·호출별 KV 초기화를 유지하며 청크 간 cache 재사용은 미구현입니다. [Python 어댑터](../src/edge_asr/qwen/gguf.py)는 가중치와 연결 라이브러리의 해시를 확인합니다.
+현재 검증 구성은 CPU native·GPU OFF·KleidiAI OFF입니다. 모델은1회 로딩하며 기본은 호출별 KV 초기화입니다. 현재 공유 개발 설정은 검증한 고정 text prefix KV만 유지하고 음성 KV의 청크 간 재사용은 미구현입니다. [Python 어댑터](../src/edge_asr/qwen/gguf.py)는 가중치와 연결 라이브러리의 해시를 확인합니다.
 
 새 bridge는 기존 ABI1 batch 호출을 유지하고 `edge_gguf_transcribe_tokens`를 추가합니다. `build.json`의 `features`에 `token_callback_v1`이 기록된 별도 빌드에서만 `replay-qwen3 --token-stream`을 사용할 수 있습니다. callback의 토큰 바이트는 완결된 UTF-8 접두부가 될 때까지 Python에서 보류하며 최종 EOG 결과와 일치하는지 확인합니다. 기존 라이브러리·`configs/gguf.toml`은 보존하고 새 실험 TOML에서 새 library/manifest 경로를 지정합니다. [실측 전 고정 조건](../docs/research/qwen_realtime.md).
 
@@ -31,6 +31,8 @@ Python 실행 코드는 [src/edge_asr/qwen/](../src/edge_asr/qwen/), C++ 소스�
 선택 기능 `text_prefix_cache_v1`은 기존 생성 ABI를 유지하고 `edge_gguf_set_prefix_cache(handle, 0/1)`를 추가합니다. 새 GGUF TOML에 `cache_text_prefix = false/true`를 명시할 때 해당 기능·심볼이 필요합니다. 생략하면 기본 끔이며 기존 빌드도 사용합니다. `prefix_cache.h`는 일치한 음성 앞 text만 유지하는 상태 정책을 맡고, 실제 KV 범위 제거는 `bridge.cpp`가 수행합니다. 불일치·제거 실패·호출 실패 시 전체 초기화로 복귀합니다. 음성 embedding·그 뒤 text·이전 생성 결과는 유지하지 않습니다.
 
 새 빌드는 `runtimes/qwen3-opt/prefix-20261112-01/bridge/`처럼 별도 경로를 사용합니다. prefix/suffix text·audio encoder·audio embedding 평가 시간을 native JSON에 분리하며, 기존 `audio_and_prefill_s`도 유지합니다. 캐시 상태·토큰 수·적중·유지 토큰·실패 이유와 첫 추론/워밍업 결과를 기록합니다. 프롬프트 평가를 같은 upstream chunk 순서·함수로 분리했으므로 새 빌드의 캐시 끔 대조도 실제 전사 동등성을 확인합니다. [실측 전 조건](../docs/research/qwen_realtime.md).
+
+[100개 끔/켬 실측](../results/summaries/optimization/realtime-prefix-cache-20261112.md)에서9토큰 유지·전사 동등성·실패 후 복구를 확인했고 사전21조건을 통과했습니다. 공유 개발 설정은 해당 빌드와 `cache_text_prefix=true`를 사용합니다. native 기본값과 기존 빌드/설정은 보존하며 실사용·장시간 채택과 구분합니다.
 
 양자화 준비는 별도 환경에서 upstream `gguf-py`의 numpy·pyyaml·tqdm·requests 의존성을 준비하고, 고정 llama.cpp 소스의 `llama-quantize`를 새 빌드 경로에 만듭니다. 기존 추론 환경·엔진은 변경하지 않습니다. `quantize.py --help`의 source/tool/llama-source/audio-model/output을 지정하며 output은 새 폴더여야 합니다. 모델별 명세는 원본·도구·GGUF type·tensor dtype·SHA를 보존하고 Q8 오디오 파일은 기존 경로를 참조합니다. [실험 조건](../docs/research/qwen_realtime.md).
 
