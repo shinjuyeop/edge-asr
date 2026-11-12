@@ -1,12 +1,12 @@
 # 현재 상태 — Qwen3-ASR 최적화
 
-2026-11-12 기준. 목표는 **RP5에서 Qwen3-ASR-0.6B의 한국어 정확도·완료율을 유지하면서 실제 인식 지연을 줄이는 것**입니다. [연구 계획](research/qwen3_optimization.md), [평가 조건](research/qwen_realtime.md), [최근100개 캐시 대조](../results/summaries/optimization/realtime-prefix-cache-20261112.md).
+2026-11-12 기준. 목표는 **RP5에서 Qwen3-ASR-0.6B의 한국어 정확도·완료율을 유지하면서 실제 인식 지연을 줄이는 것**입니다. [최적화 과정](research/optimization_history.md), [연구 계획](research/qwen3_optimization.md), [평가 조건](research/qwen_realtime.md), [최근100개 캐시 대조](../results/summaries/optimization/realtime-prefix-cache-20261112.md).
 
 ## 유지하는 연속 입력 기준
 
-**Qwen 단독1배속 연속 입력**이 주 평가입니다. 다음 개발 권장은 **GGUF Q8_0·생성2T/음성·prefill3T·VAD 보정·ASR/VAD 판정5초·첫1초/이후4초·토큰 표시/접두부 재표시 보류·고정 text prefix KV**입니다. 공동 개발에는 [configs/gguf_realtime.toml](../configs/gguf_realtime.toml)과 [대표 명령](guides/qwen3_optimization.md#현재-개발용-대표-명령)을 사용합니다. 기존 캐시 끔2/3 원본 `results/optimization/opt3/realtime-split100-20261111-01/configs/split-2-3.toml`은 보존하며, 기존 기본2T·모두3T 설정·모델·환경·bridge는 보존합니다. 실사용 채택은 보류합니다.
+**Qwen 단독1배속 연속 입력**이 주 평가입니다. 다음 개발 권장은 **GGUF Q8_0·생성2T/음성·prefill3T·VAD 보정·ASR/VAD 판정5초·첫1초/이후4초·토큰 표시/접두부 재표시 보류·고정 text prefix KV**입니다. 개발에는 [configs/gguf_realtime.toml](../configs/gguf_realtime.toml)과 [대표 명령](guides/qwen3_optimization.md#현재-개발용-대표-명령)을 사용합니다. 기존 캐시 끔2/3 원본 `results/optimization/opt3/realtime-split100-20261111-01/configs/split-2-3.toml`은 보존하며, 기존 기본2T·모두3T 설정·모델·환경·bridge는 보존합니다. 실사용 채택은 보류합니다.
 
-공동 개발의 시작·검증 절차는 [CONTRIBUTING](../CONTRIBUTING.md), 직접 확인한 Host/RP5 버전과 환경별 용도는 [환경 기록](reference/environment.md)에 정리했습니다. 구조·안내 정리는 아래 실측의 재실행이나 성능 갱신을 뜻하지 않습니다.
+개발·검증 절차는 [CONTRIBUTING](../CONTRIBUTING.md), 직접 확인한 Host/RP5 버전과 환경별 용도는 [환경 기록](reference/environment.md)에 정리했습니다. 구조·안내 정리는 아래 실측의 재실행이나 성능 갱신을 뜻하지 않습니다.
 
 ## 최신100개 대조
 
@@ -48,7 +48,9 @@
 
 아래는 구현 직후까지의 중간 기록이며 최종 검증은 위100개 캐시 대조를 따릅니다.
 
-현재2/3의 보존한100개·329호출을 Host/RP5에서 독립 재집계했습니다. 전체 추론634.318초 중 KV 초기화2.368초(0.37%)·음성/prefill347.376초(54.76%)·토큰 decode278.481초(43.90%)입니다. 같은 전체 PCM 재호출은0개, 부분→최종 반복 좌표는122.264초였습니다. 고정 코드상 특징/embedding은 음성이 늘 때 달라질 수 있어 단순 음성 prefix KV 재사용은 보류합니다. 음성 앞 고정 text prefix가 다음 작은 실험 후보이며, 실제 prefix 시간·캐시 성능은 미측정입니다. 새 추론·런타임 변경은 없습니다. [분석·코드 근거](../results/summaries/optimization/realtime-cache-audit-20261112.md).
+현재2/3의 보존한100개·329호출을 Host/RP5에서 독립 재집계했습니다. 전체 추론634.318초 중 KV 초기화2.368초(0.37%)·음성/prefill347.376초(54.76%)·토큰 decode278.481초(43.90%)입니다. 같은 전체 PCM 재호출은0개, 부분→최종 반복 좌표는122.264초였습니다. 고정 코드상 특징/embedding은 음성이 늘 때 달라질 수 있어 단순 음성 prefix KV 재사용은 보류합니다. 분석 당시 음성 앞 고정 text prefix를 다음 작은 실험 후보로 정리했으며, 실제 prefix 시간·캐시 성능은 미측정입니다. 이 분석은 새 추론·런타임 변경 없이 수행했습니다. [분석·코드 근거](../results/summaries/optimization/realtime-cache-audit-20261112.md).
+
+분석 이후 소스 커밋 `e9656cc`에서 `cache_text_prefix` 선택 구현과 앞/뒤 text·audio encoder·embedding 평가의 분리 계측을 추가했습니다. 기본은 끔이며 공유2/3 설정은 유지합니다. 실제 캐시 끔/켬의 전사 동등성·지연 효과는 검증 전입니다. [구현 구조](reference/architecture.md), [선택 실험 안내](guides/qwen3_optimization.md#고정-text-prefix-kv-선택-실험).
 
 ## 다음 작업
 

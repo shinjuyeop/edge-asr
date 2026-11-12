@@ -4,7 +4,7 @@
 
 목표는 Qwen3-ASR-0.6B의 한국어 정확도와 처리 완료율을 유지하면서 RP5 CPU에서 실제 음성 인식 지연을 줄이는 것입니다. 추론 시간, 메모리, 발열, 장시간 안정성을 함께 판단합니다. 기존 모델 비교 결과는 출발 자료이며 새 최적화 기준선은 OPT-0에서 고정합니다.
 
-2026-11-11 우선순위: [Qwen 단독1배속·부분 자막](qwen_realtime.md)의100개 입력과 [VAD 보정](../../results/summaries/optimization/realtime-accuracy-20261110.md)·[갱신 간격](../../results/summaries/optimization/realtime-schedule-20261111.md)·[생성 중 표시](../../results/summaries/optimization/realtime-token-20261111.md)·[접두부 보류](../../results/summaries/optimization/realtime-stability-20261111.md)·[스레드](../../results/summaries/optimization/realtime-threads-20261111.md)를 검증했습니다. 개발 권장은 **Q8·3T·VAD 보정·5초·첫1초/이후4초·토큰 표시**입니다. [스레드 분리](../../results/summaries/optimization/realtime-split-20261111.md)는6개 반복 선별에서 채택 보류했습니다. 다음은 별도 스레드 조합·반복 대조·안전한 캐시 재사용·부분 정답 정확도입니다. 이후 양자화 비교는 오디오 mmproj Q8과 같은 스레드 조건을 고정하며 기존2T 결과는 보존합니다. ONNX 긴 파일 검사는 별도 과제로 보존합니다.
+현재 개발 구성과 우선순위는 [현재 상태](../status.md), 문제 발견과 선택의 변화는 [ASR 최적화 과정](optimization_history.md)에서 관리합니다. 아래는 연구 단계와 판정 기준입니다. 주 평가는 [Qwen 단독1배속·부분 자막](qwen_realtime.md)으로 두고, 개별 실험의 조건·결과는 각 보고서에 기록합니다.
 
 ## 단계와 완료 조건
 

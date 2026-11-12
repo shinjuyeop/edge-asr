@@ -2,11 +2,11 @@
 
 Qwen3-ASR-0.6B를 Raspberry Pi 5의 ARM64 CPU에서 실행하며 **한국어 정확도·처리 완료율을 유지하면서 인식 지연·메모리·발열을 줄이는** 프로젝트입니다.
 
-[공동 개발 시작](CONTRIBUTING.md) · [현재 환경](docs/reference/environment.md) · [현재 상태·다음 작업](docs/status.md) · [RP5 실행 안내](docs/guides/qwen3_optimization.md)
+[개발 안내](CONTRIBUTING.md) · [현재 환경](docs/reference/environment.md) · [현재 상태·다음 작업](docs/status.md) · [RP5 실행 안내](docs/guides/qwen3_optimization.md)
 
 현재는 WAV를 1배속으로 공급하며 부분·확정 자막을 평가합니다. 개발 기준은 **GGUF Q8·생성2T/음성·prefill3T·고정 text prefix KV**이며 [공유 설정](configs/gguf_realtime.toml)을 사용합니다. VAD·갱신·토큰 표시 조건까지 포함한 [대표 명령](docs/guides/qwen3_optimization.md#현재-개발용-대표-명령)을 함께 확인하세요. 마이크 입력·서비스 자동 실행·최종 장시간 안정성 검증은 후속 작업입니다.
 
-최신 측정값과 판단 근거는 [현재 상태](docs/status.md)와 [실측 요약](results/summaries/optimization/realtime-prefix-cache-20261112.md)에 있습니다. [자막 비교 영상](results/summaries/optimization/realtime-video-20261111.md)은 저장된 로그의 동기 재생 자료입니다.
+문제 발견과 개발 방향의 변화는 [ASR 최적화 과정](docs/research/optimization_history.md)에 정리했습니다. 최신 측정값과 판단 근거는 [현재 상태](docs/status.md)와 [실측 요약](results/summaries/optimization/realtime-prefix-cache-20261112.md)에 있습니다. [자막 비교 영상](results/summaries/optimization/realtime-video-20261111.md)은 저장된 로그의 동기 재생 자료입니다.
 
 ## 처음 시작하기
 
@@ -35,7 +35,7 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv/bin/python -m unittest discover -
 | C++ 연결·빌드 | [native/gguf/](native/gguf/), [native 안내](native/README.md) |
 | 입력·채점·기록·계측 | [아키텍처의 공통 모듈 표](docs/reference/architecture.md) |
 | 데이터 준비·진단·보고서 | [tools/](src/edge_asr/tools/), [명령 안내](docs/reference/tooling.md) |
-| 변경 검증 | [tests/](tests/README.md), [공동 개발 절차](CONTRIBUTING.md) |
+| 변경 검증 | [tests/](tests/README.md), [개발 절차](CONTRIBUTING.md) |
 
 `tools list`는 현재 Qwen·공통 도구를, `tools list --group all`은 과거·유지보수 도구까지 표시합니다. `live`와 `repeat-zipformer`는 과거 재현용입니다. 일반 `evaluate` 명령은 `--config`로 모델을 명시합니다.
 
@@ -68,6 +68,9 @@ edge-asr/
 │   │   ├── environment.md               # 확인한 Host/RP5 환경
 │   │   └── tooling.md
 │   ├── research/                        # 현재 연구·평가 프로토콜
+│   │   ├── optimization_history.md      # 문제 발견·선택·검증의 흐름
+│   │   ├── qwen3_optimization.md         # 연구 계획
+│   │   └── qwen_realtime.md              # 연속 입력 평가 조건
 │   └── status.md                        # 현재 기준·판정·다음 작업
 ├── experiments/
 │   └── m1_zipformer/                    # 초기 원본 보존
@@ -125,15 +128,15 @@ edge-asr/
 │   ├── legacy/
 │   └── qwen/
 ├── AGENTS.md                            # 구현·보존 원칙
-├── CONTRIBUTING.md                      # 합류·리뷰·검증·장비 공유
+├── CONTRIBUTING.md                      # 환경 준비·검증·실행 절차
 ├── pyproject.toml
 └── README.md
 ```
 
 ## 개발과 기록
 
-**Host 개발·검사 → main 반영·push → RP5 동기화·필요한 실제 추론 → 결과 회수** 순서입니다. 협업·검증 기준은 [CONTRIBUTING](CONTRIBUTING.md), 소스 전달은 [RP5 동기화 안내](docs/guides/deployment.md)를 따릅니다.
+**Host 개발·검사 → main 반영·push → RP5 동기화·필요한 실제 추론 → 결과 회수** 순서입니다. 개발·검증 기준은 [CONTRIBUTING](CONTRIBUTING.md), 소스 전달은 [RP5 동기화 안내](docs/guides/deployment.md)를 따릅니다.
 
-README는 시작 경로, `docs/status.md`는 현재 판단과 다음 작업, `results/summaries/`는 실측 근거를 담당합니다. 설정·구조 변경은 관련 문서와 함께 갱신하며, 과거 실행 기록은 그대로 보존합니다.
+README는 시작 경로, `docs/research/optimization_history.md`는 판단이 바뀐 과정, `docs/status.md`는 현재 판단과 다음 작업, `results/summaries/`는 실측 근거를 담당합니다. 설정·구조 변경은 관련 문서와 함께 갱신하며, 과거 실행 기록은 그대로 보존합니다.
 
 [전체 문서](docs/README.md) · [평가 조건](docs/research/qwen_realtime.md) · [전체 측정 요약](results/summaries/optimization/README.md) · [경로 이행표](docs/reference/structure_migration.md)

@@ -99,4 +99,4 @@ cat /etc/os-release
 git rev-parse HEAD
 ```
 
-native ORT 버전 확인이 필요할 때만 `env --probe-runtime`을 사용합니다. native 빌드를 바꾸면 새 `build.json`과 바이너리 해시도 기록합니다. SSH 키·인증 토큰·환경변수 전체는 공유 문서에 넣지 않습니다. 새 개발자의 준비 절차는 [설치 안내](../guides/setup.md)를 따릅니다.
+native ORT 버전 확인이 필요할 때만 `env --probe-runtime`을 사용합니다. native 빌드를 바꾸면 새 `build.json`과 바이너리 해시도 기록합니다. SSH 키·인증 토큰·환경변수 전체는 공유 문서에 넣지 않습니다. 환경 준비 절차는 [설치 안내](../guides/setup.md)를 따릅니다.

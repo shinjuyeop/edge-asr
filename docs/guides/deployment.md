@@ -1,10 +1,10 @@
 # RP5 소스 동기화와 실행
 
-공통 저장소는 [shinjuyeop/edge-asr](https://github.com/shinjuyeop/edge-asr)입니다. 현재는 **Git 소스 동기화 + 장비별 가상환경 + 별도 모델/native 자산**으로 실행합니다. Docker·서비스 자동 등록·마이크 입력 배포는 구현하지 않았습니다. [환경 기록](../reference/environment.md), [공동 개발 절차](../../CONTRIBUTING.md)를 함께 확인합니다.
+공통 저장소는 [shinjuyeop/edge-asr](https://github.com/shinjuyeop/edge-asr)입니다. 현재는 **Git 소스 동기화 + 장비별 가상환경 + 별도 모델/native 자산**으로 실행합니다. Docker·서비스 자동 등록·마이크 입력 배포는 구현하지 않았습니다. [환경 기록](../reference/environment.md), [개발 절차](../../CONTRIBUTING.md)를 함께 확인합니다.
 
 | 장비 | 작업 경로 | 역할 |
 | --- | --- | --- |
-| Host | `/d/shin/edge-asr` | 구현·테스트·리뷰·main 반영·push |
+| Host | `/d/shin/edge-asr` | 구현·테스트·main 반영·push |
 | RP5 | `/home/deepet/projects/edge-asr` | main 동기화·실제 추론·벤치마크 |
 
 모델·음원·가상환경·외부 엔진은 같은 작업 폴더 안에 두되 Git에서 제외합니다. 기존 환경·자산은 그대로 사용합니다. 과거 다중 폴더 통합은 완료했으므로 [일회성 통합 절차](../archive/consolidation.md)를 반복하지 않습니다.
@@ -12,8 +12,8 @@
 ## 업데이트 순서
 
 1. Host에서 작업 브랜치의 변경과 [Host 검사](../../tests/README.md)를 마칩니다.
-2. PR 검토 후 main에 반영·push하고 커밋을 확인합니다.
-3. RP5에서 실행 중인 실험이 없는지 담당자와 확인한 뒤 아래 명령으로 소스만 갱신합니다.
+2. 검사 후 main에 반영·push하고 커밋을 확인합니다.
+3. RP5에서 실행 중인 실험이 없을 때 아래 명령으로 소스만 갱신합니다.
 4. 추론 동작을 바꾼 경우 필요한 실제 추론을 새 실행 ID로 수행합니다. 문서 수정만으로 모델 추론을 반복하지 않습니다.
 
 ```bash
@@ -34,7 +34,7 @@ Host와 RP5의 HEAD가 같아도 OS·패키지·자산·native 빌드가 같은 
 
 ## SSH와 자산·결과 전달
 
-현재 Host는 `rp5` SSH 별칭으로 읽기·원격 실행·결과 회수가 가능합니다. 새 개발자는 자신의 SSH 접속을 별도로 준비합니다. 개인 키·비밀번호·개인 접속 설정은 저장소에 넣지 않습니다.
+현재 Host는 `rp5` SSH 별칭으로 읽기·원격 실행·결과 회수가 가능합니다. SSH 접속 설정은 장비별로 준비합니다. 개인 키·비밀번호·개인 접속 설정은 저장소에 넣지 않습니다.
 
 ```bash
 ssh -o BatchMode=yes -o ConnectTimeout=10 rp5 \

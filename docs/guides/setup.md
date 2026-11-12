@@ -1,6 +1,6 @@
 # 개발 환경 준비
 
-현재 프로젝트는 Docker 없이 **Host 개발용 가상환경과 RP5 추론용 가상환경**을 사용합니다. 직접 확인한 OS·Python·패키지·외부 엔진 버전은 [환경 기록](../reference/environment.md), 협업 절차는 [CONTRIBUTING](../../CONTRIBUTING.md)을 확인합니다.
+현재 프로젝트는 Docker 없이 **Host 개발용 가상환경과 RP5 추론용 가상환경**을 사용합니다. 직접 확인한 OS·Python·패키지·외부 엔진 버전은 [환경 기록](../reference/environment.md), 개발 절차는 [CONTRIBUTING](../../CONTRIBUTING.md)을 확인합니다.
 
 ## 기존 환경에서 시작
 
@@ -31,7 +31,7 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv/bin/python -m unittest discover -
 
 Linux 셸을 기준으로 합니다. 기본 코드와 테스트는 Python 3.11 표준 라이브러리를 사용하고 `dev` extra는 Ruff 0.14.14를 설치합니다. 별도 `ffmpeg`가 있으면 합성 음원 변환 검사도 실행되며, 없으면 해당 검사의 생략 이유를 확인합니다. native 검사에 필요한 선택 헤더와 명령은 [테스트 안내](../../tests/README.md)에 있습니다.
 
-기존 Host에는 Ruff가 사용자 도구로 설치되어 있어 `ruff` 명령을 사용합니다. 기존 `.venv`에 이를 다시 설치할 필요는 없습니다. 모델 다운로드·RP5 접속 없이 이 단계까지 공동 개발을 시작할 수 있습니다.
+기존 Host에는 Ruff가 사용자 도구로 설치되어 있어 `ruff` 명령을 사용합니다. 기존 `.venv`에 이를 다시 설치할 필요는 없습니다. 모델 다운로드·RP5 접속 없이 이 단계까지 개발을 시작할 수 있습니다.
 
 ## RP5 실제 추론 준비
 

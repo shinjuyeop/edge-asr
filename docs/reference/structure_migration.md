@@ -1,6 +1,6 @@
 # 파일·폴더 경로 이행
 
-## 공동 개발 진입 경로 정리 — 2026-11-11
+## 개발 진입 경로 정리 — 2026-11-11
 
 | 이전 위치·동작 | 현재 위치·동작 |
 | --- | --- |
@@ -12,7 +12,7 @@
 
 `scripts/benchmark_zipformer.py`, `tools repeat-zipformer`, `live`, 기존 도구 별칭은 유지합니다. Python 내부의 옛 `edge_asr.benchmark` import는 새 위치로 갱신하며 전달 전용 wrapper는 두지 않습니다. 공통 해시는 계속 `artifacts.py`에서 가져옵니다. 일반 평가의 이전 모델 어댑터와 현재 Qwen 추론 동작은 유지합니다.
 
-환경은 [환경 기록](environment.md), 협업·검사는 [CONTRIBUTING](../../CONTRIBUTING.md), 현재 명령은 [도구 안내](tooling.md)를 따릅니다. 과거 결과 JSON·소스 해시·자산 경로는 소급 변경하지 않습니다.
+환경은 [환경 기록](environment.md), 개발·검사는 [CONTRIBUTING](../../CONTRIBUTING.md), 현재 명령은 [도구 안내](tooling.md)를 따릅니다. 과거 결과 JSON·소스 해시·자산 경로는 소급 변경하지 않습니다.
 
 검증은 Host에서 수행했습니다. Git 추적 대상과 새 소스만 복사하고 임시 Git 커밋을 만든 자산 없는 작업 폴더에서 전체381개 중379개 통과·선택 native 헤더 검사2개 생략을 확인했습니다. Ruff 검사·포맷·M1 원본 해시·공유 설정의 원본 TOML 값 일치도 확인했습니다. 원시 로그는 `results/maintenance/team-cleanup-20261111-01/`에 있습니다. GitHub Actions 원격 실행과 RP5 실제 추론은 이번 검증에 포함하지 않습니다.
 

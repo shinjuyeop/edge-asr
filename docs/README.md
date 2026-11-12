@@ -1,11 +1,12 @@
 # 문서 안내
 
-[공동 개발 안내](../CONTRIBUTING.md)에서 시작하고 [현재 상태](status.md)로 작업 기준을 확인합니다.
+[개발 안내](../CONTRIBUTING.md)에서 시작하고 [현재 상태](status.md)로 작업 기준을 확인합니다.
 
 | 목적 | 문서 |
 | --- | --- |
-| 처음 참여·개발 환경 | [공동 개발](../CONTRIBUTING.md), [확인한 Host/RP5 환경](reference/environment.md), [설치](guides/setup.md) |
+| 시작·개발 환경 | [개발 안내](../CONTRIBUTING.md), [확인한 Host/RP5 환경](reference/environment.md), [설치](guides/setup.md) |
 | 새 프로젝트 방향·단계 | [OPT-0~4](research/qwen3_optimization.md), [현재 연구 색인](research/README.md) |
+| 문제 발견·선택의 흐름 | [ASR 최적화 과정](research/optimization_history.md) |
 | 실행 준비 | [Qwen 최적화 시작](guides/qwen3_optimization.md), [설치](guides/setup.md), [배포](guides/deployment.md) |
 | 현재 평가 조건·결과 | [현재 상태](status.md), [최신 스레드 분리100개](../results/summaries/optimization/realtime-split100-20261111.md), [batch 출발 기준선](research/fixed100_baseline.md) |
 | 현재 우선 검증 | [Qwen 단독1배속·부분 자막·양자화 계획](research/qwen_realtime.md) |
