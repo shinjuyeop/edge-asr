@@ -172,6 +172,57 @@ class RealtimeTests(unittest.TestCase):
         self.assertEqual(payloads[0], payloads[1])
         self.assertEqual(segments[0], segments[1])
 
+    def test_early_followup_resets_each_segment_and_preserves_final_pcm(self):
+        signatures, schedules = [], []
+        for followup in (None, 0.4, 0.2):
+            adapter, events = Adapter(), []
+            adapter.release.set()
+            session = CaptionSession(
+                adapter,
+                BoundedProbabilityVad(Probability()),
+                104000,
+                events.append,
+                {"t0_monotonic_ns": time.perf_counter_ns()},
+                partial_after_s=0.2,
+                partial_interval_s=0.4,
+                partial_followup_s=followup,
+                max_segment_s=3,
+            )
+            try:
+                for start in range(0, 104000, 1600):
+                    session.accept_at(session, array("f", [0.25] * 1600), start, start + 1600)
+                session.finish_stream(session)
+                submitted = [e for e in events if e["type"] == "submitted"]
+                signatures.append(
+                    [
+                        (e["start_frame"], e["end_frame"], e["payload_float32_sha256"])
+                        for e in submitted
+                        if e["kind"] == "final"
+                    ]
+                )
+                partials = [e for e in submitted if e["kind"] == "partial"]
+                schedules.append([(e["start_frame"], e["end_frame"]) for e in partials])
+                for segment in sorted({e["segment_id"] for e in partials})[:2]:
+                    group = [e for e in partials if e["segment_id"] == segment]
+                    first = (group[0]["end_frame"] - group[0]["start_frame"]) / 16000
+                    self.assertTrue(0.2 <= first < 0.3)
+                    for index, (a, b) in enumerate(zip(group, group[1:])):
+                        gap = (b["end_frame"] - a["end_frame"]) / 16000
+                        expected = followup if index == 0 and followup is not None else 0.4
+                        self.assertTrue(expected <= gap < expected + 0.1)
+                    self.assertGreaterEqual(len(group), 3 if followup == 0.2 else 2)
+            finally:
+                session.close()
+        self.assertEqual(signatures[0], signatures[1])
+        self.assertEqual(signatures[0], signatures[2])
+        self.assertEqual(schedules[0], schedules[1])
+        self.assertNotEqual(schedules[0], schedules[2])
+
+    def test_followup_rejects_nonpositive_or_nonfinite_interval(self):
+        for value in (0, -1, float("nan"), float("inf")):
+            with self.subTest(value=value), self.assertRaisesRegex(ValueError, "첫 후속"):
+                CaptionSession(None, None, 1, None, {}, partial_followup_s=value)
+
     def test_zero_policy_records_silence_and_keeps_one_lsb_audio(self):
         class AlwaysSpeech(Probability):
             def __call__(self, samples):

@@ -100,7 +100,7 @@ async function loadAudio(myEpoch){
 }
 function renderConditions(){
   if(!run)return;const m=run.config?.model||{},s=run.settings||{};
-  const fields=[['모델',`${m.family||'준비 중'} · ${m.quantization||'—'}`],['스레드',`${m.num_threads??'—'} / ${m.num_threads_batch??m.num_threads??'—'}`],['고정 KV',m.cache_text_prefix?'사용':'미사용'],['부분 요청',`${s.partial_after_s??'—'}초 / 이후 ${s.partial_interval_s??'—'}초`],['구간',`${s.max_segment_s??'—'}초`],['VAD',`${s.vad_preprocess||'—'} / ${s.vad_threshold??'—'}`],['표시',s.token_stream?'생성 중 토큰':'완성 문자열'],['소스',(run.source_commit||'—').slice(0,8)]];
+  const fields=[['모델',`${m.family||'준비 중'} · ${m.quantization||'—'}`],['스레드',`${m.num_threads??'—'} / ${m.num_threads_batch??m.num_threads??'—'}`],['고정 KV',m.cache_text_prefix?'사용':'미사용'],['부분 요청',`첫 ${s.partial_after_s??'—'}초 / 다음 ${s.partial_followup_s??s.partial_interval_s??'—'}초 뒤 / 이후 ${s.partial_interval_s??'—'}초`],['구간',`${s.max_segment_s??'—'}초`],['VAD',`${s.vad_preprocess||'—'} / ${s.vad_threshold??'—'}`],['표시',s.token_stream?'생성 중 토큰':'완성 문자열'],['소스',(run.source_commit||'—').slice(0,8)]];
   $('conditions').replaceChildren(...fields.flatMap(([k,v])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=k;dd.textContent=v;return[dt,dd];}));
 }
 function renderMetrics(){

@@ -1,6 +1,7 @@
 """공통 VAD·유한 PCM 버퍼에서 도착한 접두 음성만 비동기 전사한다."""
 
 import hashlib
+import math
 import time
 from array import array
 from threading import RLock
@@ -22,6 +23,7 @@ class CaptionSession:
         *,
         partial_after_s=2,
         partial_interval_s=1,
+        partial_followup_s=None,
         max_segment_s=5,
         drain_timeout_s=30,
         queue_capacity=4,
@@ -32,6 +34,10 @@ class CaptionSession:
     ):
         if partial_after_s <= 0 or partial_interval_s <= 0:
             raise ValueError("부분 전사 시작·갱신 간격은 양수여야 합니다.")
+        if partial_followup_s is not None and (
+            not math.isfinite(partial_followup_s) or partial_followup_s <= 0
+        ):
+            raise ValueError("첫 후속 갱신 간격은 유한한 양수여야 합니다.")
         if type(partials) is not bool or silence_policy not in ("preserve", "skip-zero"):
             raise ValueError("부분 전사 bool·무음 preserve/skip-zero 정책이 필요합니다.")
         self.partials, self.silence_policy = partials, silence_policy
@@ -40,6 +46,10 @@ class CaptionSession:
             round(partial_after_s * 16000),
             round(partial_interval_s * 16000),
         )
+        self.followup = (
+            self.interval if partial_followup_s is None else round(partial_followup_s * 16000)
+        )
+        self.partial_requests = 0
         self.timeout = drain_timeout_s
         self.position = 0
         self.partial_start, self.last_partial_end = None, 0
@@ -158,11 +168,14 @@ class CaptionSession:
             return
         if self.partial_start != start:
             self.partial_start, self.last_partial_end = start, start
+            self.partial_requests = 0
+        interval = self.followup if self.partial_requests == 1 else self.interval
         if end - start >= self.minimum and (
-            self.last_partial_end == start or end - self.last_partial_end >= self.interval
+            self.last_partial_end == start or end - self.last_partial_end >= interval
         ):
             self._offer("partial", self.pipeline.segment_id, start, end, read(start, end))
             self.last_partial_end = end
+            self.partial_requests += 1
 
     def _final(self, event, pcm):
         self.segments.append(dict(event))

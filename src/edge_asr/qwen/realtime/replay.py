@@ -293,6 +293,12 @@ def argument_parser():
     )
     parser.add_argument("--partial-after-s", type=float, default=2, choices=(1, 2, 3))
     parser.add_argument("--partial-interval-s", type=float, default=1, choices=(0.5, 1, 2, 4))
+    parser.add_argument(
+        "--partial-followup-s",
+        type=float,
+        choices=(1, 2, 4),
+        help="각 구간의 첫 부분 요청 뒤 한 번만 적용할 갱신 간격. 생략하면 기존 반복 간격 유지",
+    )
     parser.add_argument("--max-segment-s", type=int, default=5, choices=(3, 5, 8))
     parser.add_argument("--drain-timeout-s", type=int, default=30, choices=(10, 30, 60))
     parser.add_argument("--queue-capacity", type=int, default=4, choices=(2, 4, 8))
