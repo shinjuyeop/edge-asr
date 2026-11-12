@@ -320,11 +320,11 @@ class Library:
                 raise ValueError("이 서버에서 준비 중인 평가만 시작할 수 있습니다.")
             run = self.runs[run_id]
             run.refresh()
-            if run.worker.get("status") != "ready":
-                raise ValueError("워밍업·입력 준비가 완료되어야 시작할 수 있습니다.")
             path = run.path / "viewer-start.json"
             if path.exists():
-                raise ValueError("이미 시작 예약된 실행입니다.")
+                return read(path)
+            if run.worker.get("status") != "ready":
+                raise ValueError("워밍업·입력 준비가 완료되어야 시작할 수 있습니다.")
             value = {"start_monotonic_s": time.perf_counter() + 3}
             write_json(path, value)
             return value

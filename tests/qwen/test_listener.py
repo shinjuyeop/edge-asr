@@ -159,8 +159,7 @@ class ListenerTests(unittest.TestCase):
         value = self.library.start(self.run.id)
         self.assertGreater(value["start_monotonic_s"], time.perf_counter())
         before = digest(self.output / "viewer-start.json")
-        with self.assertRaises(ValueError):
-            self.library.start(self.run.id)
+        self.assertEqual(value, self.library.start(self.run.id))
         self.assertEqual(before, digest(self.output / "viewer-start.json"))
 
     def test_http_no_arbitrary_path_and_cross_origin_launch(self):

@@ -5,6 +5,8 @@ import json
 import mimetypes
 import shlex
 import subprocess
+import sys
+import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -117,6 +119,7 @@ def main():
     parser.add_argument("--manifest", type=Path, action="append", default=[])
     parser.add_argument("--ssh", help="개발 PC에서 RP5 서버 실행·localhost 포트 전달")
     parser.add_argument("--remote-root", default="/home/deepet/projects/edge-asr")
+    parser.add_argument("--stdio-lifetime", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args()
     if not 1024 <= args.port <= 65535:
         parser.error("포트는 1024~65535 범위입니다.")
@@ -130,6 +133,7 @@ def main():
             "listen-qwen3",
             "--port",
             str(args.port),
+            "--stdio-lifetime",
         ]
         for key in ("run", "profile", "manifest"):
             for value in getattr(args, key):
@@ -159,6 +163,14 @@ def main():
     )
     server = ThreadingHTTPServer(("127.0.0.1", args.port), handler(library))
     print(f"청취 도구: http://127.0.0.1:{server.server_port} — 종료 Ctrl+C", flush=True)
+    if args.stdio_lifetime:
+
+        def disconnected():
+            while sys.stdin.buffer.read(1):
+                pass
+            server.shutdown()
+
+        threading.Thread(target=disconnected, daemon=True).start()
     try:
         server.serve_forever()
     except KeyboardInterrupt:
