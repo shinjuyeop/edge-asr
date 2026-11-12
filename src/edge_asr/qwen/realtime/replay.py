@@ -298,6 +298,9 @@ def argument_parser():
     parser.add_argument("--partial-mode", choices=("fixed", "adaptive"), default="fixed")
     parser.add_argument("--partial-min-new-s", type=float, default=0.8)
     parser.add_argument("--partial-tail-margin-s", type=float, default=0.2)
+    parser.add_argument("--adaptive-policy", choices=("recent", "budgeted"), default="recent")
+    parser.add_argument("--partial-budget-s", type=float, default=2.5)
+    parser.add_argument("--partial-max-calls", type=int, default=2)
     parser.add_argument(
         "--partial-followup-s",
         type=float,

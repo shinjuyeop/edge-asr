@@ -27,6 +27,9 @@ class CaptionSession:
         partial_mode="fixed",
         partial_min_new_s=0.8,
         partial_tail_margin_s=0.2,
+        adaptive_policy="recent",
+        partial_budget_s=2.5,
+        partial_max_calls=2,
         max_segment_s=5,
         drain_timeout_s=30,
         queue_capacity=4,
@@ -59,9 +62,22 @@ class CaptionSession:
                 "새 음성 최소량은 1프레임 이상, 끝 여유는 유한한 음수가 아닌 값이어야 합니다."
             )
         self.partial_mode = partial_mode
+        if adaptive_policy not in ("recent", "budgeted") or (
+            adaptive_policy == "budgeted" and partial_mode != "adaptive"
+        ):
+            raise ValueError("budgeted 비용 정책은 adaptive 모드에서만 사용합니다.")
+        if (
+            not math.isfinite(partial_budget_s)
+            or partial_budget_s <= 0
+            or type(partial_max_calls) is not int
+            or partial_max_calls < 1
+        ):
+            raise ValueError("부분 비용 예산은 유한한 양수, 요청 상한은 양의 정수여야 합니다.")
+        self.adaptive_policy = adaptive_policy
+        self.partial_budget_s, self.partial_max_calls = partial_budget_s, partial_max_calls
         self.min_new_frames = round(partial_min_new_s * 16000)
         self.tail_margin_s = partial_tail_margin_s
-        self.scheduler_stats = {"mode": partial_mode, "decisions": {}}
+        self.scheduler_stats = {"mode": partial_mode, "policy": adaptive_policy, "decisions": {}}
         self.last_decision = None
         self.partials, self.silence_policy = partials, silence_policy
         self.frames, self.emit, self.telemetry = frames, emit, telemetry
@@ -192,28 +208,61 @@ class CaptionSession:
             only_if_idle=only_if_idle,
         )
 
+    def _request_partial(self, start, end, read, *, only_if_idle):
+        if not self._offer(
+            "partial",
+            self.pipeline.segment_id,
+            start,
+            end,
+            read(start, end),
+            only_if_idle=only_if_idle,
+        ):
+            return False
+        self.last_partial_end = end
+        self.partial_requests += 1
+        return True
+
     def _adaptive_progress(self, start, end, read):
         idle, last_cost = self.worker.availability()
         remaining = (self.pipeline.maximum - (end - start)) / 16000
+        protected = self.adaptive_policy == "budgeted"
+        estimate, final_cost, spent, budget = None, None, 0.0, self.partial_budget_s
+        if protected and self.partial_requests:
+            estimate = self.worker.estimate_cost("partial", end - start)
+            final_cost = self.worker.estimate_cost("final", self.pipeline.maximum)
+            if final_cost is not None:
+                budget = min(budget, max(0, self.pipeline.maximum / 16000 - final_cost))
+            with self.lock:
+                spent = sum(
+                    r["inference_s"]
+                    for r in self.results
+                    if r["kind"] == "partial" and r["segment_id"] == self.pipeline.segment_id
+                )
         if end - start < self.minimum or (
             self.partial_requests and end - self.last_partial_end < self.min_new_frames
         ):
             reason = "minimum_audio"
+        elif protected and not self.partial_requests:
+            # 최초 접두 PCM은 고정 기준과 같이 한 번 대기시킨다. 최종 도착 시 기존 합침 유지.
+            self._request_partial(start, end, read, only_if_idle=False)
+            reason = "first_offered"
         elif not idle:
             reason = "busy"
-        elif remaining <= last_cost + self.tail_margin_s:
+        elif protected and self.partial_requests >= self.partial_max_calls:
+            reason = "call_budget"
+        elif protected and estimate is None:
+            reason = "cost_unavailable"
+        elif protected and spent + estimate > budget:
+            reason = "cost_budget"
+        elif remaining <= (estimate if protected else last_cost) + self.tail_margin_s:
             reason = "near_final"
-        elif self._offer(
-            "partial", self.pipeline.segment_id, start, end, read(start, end), only_if_idle=True
-        ):
+        elif self._request_partial(start, end, read, only_if_idle=True):
             reason = "offered"
-            self.last_partial_end = end
-            self.partial_requests += 1
         else:
             reason = "busy"
         counts = self.scheduler_stats["decisions"]
         counts[reason] = counts.get(reason, 0) + 1
-        if reason != self.last_decision or reason == "offered":
+        if reason != self.last_decision or reason in ("offered", "first_offered"):
             self.emit(
                 {
                     "type": "partial_decision",
@@ -223,6 +272,10 @@ class CaptionSession:
                     "end_frame": end,
                     "available_frame": self.position,
                     "last_inference_s": last_cost,
+                    "estimated_partial_s": estimate,
+                    "estimated_final_s": final_cost,
+                    "partial_spent_s": spent,
+                    "partial_budget_s": budget,
                     "remaining_to_cap_s": remaining,
                     "at_monotonic_s": time.perf_counter(),
                 }
@@ -243,9 +296,7 @@ class CaptionSession:
         if end - start >= self.minimum and (
             self.last_partial_end == start or end - self.last_partial_end >= interval
         ):
-            self._offer("partial", self.pipeline.segment_id, start, end, read(start, end))
-            self.last_partial_end = end
-            self.partial_requests += 1
+            self._request_partial(start, end, read, only_if_idle=False)
 
     def _final(self, event, pcm):
         self.segments.append(dict(event))

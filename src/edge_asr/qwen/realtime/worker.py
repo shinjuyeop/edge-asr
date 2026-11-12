@@ -22,6 +22,7 @@ class DecodeWorker:
         self.finals, self.partial = deque(), None
         self.closing, self.error = False, None
         self.active, self.last_inference_s = False, 0.0
+        self.costs = {kind: deque(maxlen=3) for kind in ("partial", "final")}
         self.index = self.queue_peak = 0
         self.thread = Thread(target=self._run, daemon=True)
         self.thread.start()
@@ -30,6 +31,15 @@ class DecodeWorker:
         with self.condition:
             idle = not (self.active or self.finals or self.partial or self.closing or self.error)
             return idle, self.last_inference_s
+
+    def estimate_cost(self, kind, frames):
+        """같은 종류의 최근 최대 비용을 유지하고 더 긴 입력만 비례 확대한다."""
+        with self.condition:
+            history = self.costs[kind]
+            if not history:
+                return None
+            largest_input = max(samples for samples, _ in history)
+            return max(cost for _, cost in history) * max(1.0, frames / largest_input) * 1.2
 
     def submit(self, kind, segment_id, start, end, samples, available_frame, *, only_if_idle=False):
         with self.condition:
@@ -119,6 +129,7 @@ class DecodeWorker:
                 finally:
                     with self.condition:
                         self.last_inference_s = result["ended_monotonic_s"] - started
+                        self.costs[job["kind"]].append((len(samples), self.last_inference_s))
                         self.active = False
                         self.condition.notify_all()
         except BaseException as error:

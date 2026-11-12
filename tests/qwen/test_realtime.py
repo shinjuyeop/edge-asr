@@ -143,7 +143,12 @@ class RealtimeTests(unittest.TestCase):
 
     def test_partial_control_preserves_final_pcm_and_segmentation(self):
         payloads, segments = [], []
-        for partials, mode in ((True, "fixed"), (False, "fixed"), (True, "adaptive")):
+        for partials, mode, policy in (
+            (True, "fixed", "recent"),
+            (False, "fixed", "recent"),
+            (True, "adaptive", "recent"),
+            (True, "adaptive", "budgeted"),
+        ):
             adapter, events = Adapter(), []
             adapter.release.set()
             session = CaptionSession(
@@ -156,6 +161,7 @@ class RealtimeTests(unittest.TestCase):
                 partial_interval_s=0.2,
                 partials=partials,
                 partial_mode=mode,
+                adaptive_policy=policy,
             )
             try:
                 for start in range(0, 16000, 1600):
@@ -172,8 +178,10 @@ class RealtimeTests(unittest.TestCase):
                 session.close()
         self.assertEqual(payloads[0], payloads[1])
         self.assertEqual(payloads[0], payloads[2])
+        self.assertEqual(payloads[0], payloads[3])
         self.assertEqual(segments[0], segments[1])
         self.assertEqual(segments[0], segments[2])
+        self.assertEqual(segments[0], segments[3])
 
     def test_idle_only_submission_does_not_queue_behind_active_or_final_work(self):
         adapter, events = Adapter(), []
@@ -193,6 +201,17 @@ class RealtimeTests(unittest.TestCase):
                 [(e["job_id"], e["kind"]) for e in results], [(0, "partial"), (1, "final")]
             )
             self.assertGreater(worker.availability()[1], 0)
+            partial_estimate = worker.estimate_cost("partial", 3200)
+            self.assertGreater(partial_estimate, 0)
+            with worker.condition:
+                worker.costs["final"].append((1600, 100))
+            self.assertEqual(worker.estimate_cost("partial", 3200), partial_estimate)
+            self.assertGreater(worker.estimate_cost("final", 3200), partial_estimate)
+            with worker.condition:
+                worker.costs["final"].clear()
+                worker.costs["final"].extend(((80000, 2), (1600, 0.5)))
+            self.assertLess(worker.estimate_cost("final", 80000), 3)
+            self.assertEqual(worker.estimate_cost("partial", 3200), partial_estimate)
         finally:
             adapter.release.set()
             worker.abort()
@@ -257,9 +276,81 @@ class RealtimeTests(unittest.TestCase):
             {"partial_min_new_s": float("nan")},
             {"partial_tail_margin_s": -1},
             {"partial_tail_margin_s": float("inf")},
+            {"adaptive_policy": "unknown"},
+            {"adaptive_policy": "budgeted"},
+            {"partial_budget_s": 0},
+            {"partial_budget_s": float("inf")},
+            {"partial_max_calls": 0},
+            {"partial_max_calls": True},
         ):
             with self.subTest(settings=settings), self.assertRaises(ValueError):
                 CaptionSession(None, None, 1, None, {}, **settings)
+
+    def test_budgeted_first_request_survives_busy_and_large_previous_final_cost(self):
+        adapter, events = Adapter(), []
+        session = CaptionSession(
+            adapter,
+            BoundedProbabilityVad(Probability()),
+            56000,
+            events.append,
+            {"t0_monotonic_ns": time.perf_counter_ns()},
+            partial_after_s=0.2,
+            partial_mode="adaptive",
+            adaptive_policy="budgeted",
+            max_segment_s=3,
+        )
+        try:
+            with session.worker.condition:
+                session.worker.last_inference_s = 100
+            for pos in range(0, 4800, 1600):
+                session.accept_at(session, array("f", [0.25] * 1600), pos, pos + 1600)
+            self.assertTrue(adapter.entered.wait(1))
+            for pos in range(4800, 54400, 1600):
+                session.accept_at(session, array("f", [0.25] * 1600), pos, pos + 1600)
+            submitted = [e for e in events if e["type"] == "submitted" and e["kind"] == "partial"]
+            self.assertEqual([e["segment_id"] for e in submitted], [0, 1])
+            self.assertEqual(session.scheduler_stats["decisions"]["first_offered"], 2)
+            adapter.release.set()
+            session.accept_at(session, array("f", [0.25] * 1600), 54400, 56000)
+            session.finish_stream(session)
+        finally:
+            adapter.release.set()
+            session.close()
+
+    def test_budgeted_followups_respect_cost_and_call_limits(self):
+        for budget, expected in ((2.5, 2), (1e-12, 1)):
+            adapter, events = Adapter(), []
+            adapter.release.set()
+            session = CaptionSession(
+                adapter,
+                BoundedProbabilityVad(Probability()),
+                32000,
+                events.append,
+                {"t0_monotonic_ns": time.perf_counter_ns()},
+                partial_after_s=0.2,
+                partial_mode="adaptive",
+                adaptive_policy="budgeted",
+                partial_min_new_s=0.1,
+                partial_budget_s=budget,
+                partial_max_calls=2,
+                max_segment_s=3,
+            )
+            try:
+                for pos in range(0, 32000, 1600):
+                    session.accept_at(session, array("f", [0.25] * 1600), pos, pos + 1600)
+                    deadline = time.monotonic() + 2
+                    while not session.worker.availability()[0] and time.monotonic() < deadline:
+                        time.sleep(0.001)
+                session.finish_stream(session)
+                partials = [
+                    e for e in events if e["type"] == "submitted" and e["kind"] == "partial"
+                ]
+                self.assertEqual(len(partials), expected)
+                reason = "call_budget" if expected == 2 else "cost_budget"
+                self.assertGreater(session.scheduler_stats["decisions"].get(reason, 0), 0)
+                self.assertTrue(any(e["type"] == "result" and e["kind"] == "final" for e in events))
+            finally:
+                session.close()
 
     def test_early_followup_resets_each_segment_and_preserves_final_pcm(self):
         signatures, schedules = [], []
