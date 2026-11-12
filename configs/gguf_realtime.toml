@@ -1,0 +1,24 @@
+# 현재 연속 입력 개발용: Q8, 생성2T / 음성·prefill3T.
+# 2026-11-11 split-2-3 실험 TOML의 값은 유지하고 공유 경로만 추가했다.
+# 연속 입력은 tools replay-qwen3로 실행한다. 아래 batch는 어댑터 평가 계약이다.
+# VAD·부분 갱신·토큰 표시 옵션은 docs/guides/qwen3_optimization.md의 대표 명령을 따른다.
+[model]
+family = "qwen3_gguf"
+path = "models/qwen3-opt/gguf-q8-20261109-01"
+runtime_library = "runtimes/qwen3-opt/split-20261111-01/bridge/libedge_asr_gguf.so"
+runtime_manifest = "runtimes/qwen3-opt/split-20261111-01/bridge/build.json"
+num_threads = 2
+num_threads_batch = 3
+language = "ko"
+quantization = "q8_0"
+max_total_len = 512
+max_new_tokens = 128
+
+[audio]
+sample_rate_hz = 16000
+
+[evaluation]
+mode = "batch"
+warmup_runs = 3
+normalization = "ko_cer_v1"
+output_dir = "results/optimization/opt2"

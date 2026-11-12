@@ -1,22 +1,23 @@
 # Qwen 최적화 실행 안내
 
-주 기준은 [Qwen 단독1배속 연속 입력](../research/qwen_realtime.md)입니다. [ONNX/GGUF](../../results/summaries/optimization/realtime100-backends-20261110.md)·[VAD 보정](../../results/summaries/optimization/realtime-accuracy-20261110.md)·[갱신2초/4초](../../results/summaries/optimization/realtime-schedule-20261111.md)·[생성 중 표시](../../results/summaries/optimization/realtime-token-20261111.md)·[CPU 스레드](../../results/summaries/optimization/realtime-threads-20261111.md)·[스레드 분리100개](../../results/summaries/optimization/realtime-split100-20261111.md)를 비교했습니다. 개발 권장은 **Q8·생성2T/음성·prefill3T·VAD 보정·구간5초·첫1초/이후4초·토큰 표시/접두부 보류**입니다. 기존 기본 설정과 모두3T는 보존하며 아래 별도 TOML을 사용합니다. [파일별 batch 실측](../../results/summaries/optimization/fixed100-baseline-20261109.md)은 진단용 참조입니다.
+주 기준은 [Qwen 단독1배속 연속 입력](../research/qwen_realtime.md)입니다. [ONNX/GGUF](../../results/summaries/optimization/realtime100-backends-20261110.md)·[VAD 보정](../../results/summaries/optimization/realtime-accuracy-20261110.md)·[갱신2초/4초](../../results/summaries/optimization/realtime-schedule-20261111.md)·[생성 중 표시](../../results/summaries/optimization/realtime-token-20261111.md)·[CPU 스레드](../../results/summaries/optimization/realtime-threads-20261111.md)·[스레드 분리100개](../../results/summaries/optimization/realtime-split100-20261111.md)를 비교했습니다. 개발 권장은 **Q8·생성2T/음성·prefill3T·VAD 보정·구간5초·첫1초/이후4초·토큰 표시/접두부 보류**입니다. 기존 기본 설정과 모두3T는 보존하며 [공유 개발 설정](../../configs/gguf_realtime.toml)과 [대표 명령](#현재-개발용-대표-명령)을 사용합니다. [파일별 batch 실측](../../results/summaries/optimization/fixed100-baseline-20261109.md)은 진단용 참조입니다.
 
 ## 환경과 설정
 
-저장소 루트에서 기존 환경을 사용합니다.
+저장소 루트에서 기존 환경을 사용합니다. 실제 확인한 OS·Python·패키지·native 빌드는 [환경 기록](../reference/environment.md)에 있습니다.
 
 | 실행 위치·역할 | Python | 설정 |
 | --- | --- | --- |
-| Host 설정 검사·모의 테스트 | `.venv/bin/python` | 아래 두 설정 모두 검사 가능. ARM 실제 추론은 RP5에서 수행 |
+| Host 설정 검사·모의 테스트 | `.venv/bin/python` | 공유 설정과 보존 기준선 모두 검사 가능. ARM 실제 추론은 RP5에서 수행 |
 | RP5 ONNX 실제 추론 | `.venv-qwen3-onnx-20261106-01/bin/python` | [onnx.toml](../../configs/onnx.toml) |
-| RP5 GGUF 실제 추론 | `.venv/bin/python` | [gguf.toml](../../configs/gguf.toml)은2T 보존, 현재3T TOML은 아래 생성 중 표시 예시 |
+| RP5 GGUF 실제 추론 | `.venv/bin/python` | [gguf_realtime.toml](../../configs/gguf_realtime.toml)은 현재 2/3 개발용, [gguf.toml](../../configs/gguf.toml)은 2T 보존 |
 
-GGUF는 기존 Python의 ctypes로 별도 llama.cpp/libmtmd C ABI를 호출합니다. 소스·빌드·바이너리는 `runtimes/qwen3-opt/llama-q8-20261109-01/`, 가중치는 `models/qwen3-opt/gguf-q8-20261109-01/`에 있습니다. [연결·빌드 안내](../../native/README.md)를 따르며 기존 환경에 패키지를 갱신하지 않습니다.
+GGUF는 기존 Python의 ctypes로 별도 llama.cpp/libmtmd C ABI를 호출합니다. 외부 엔진 소스·빌드는 `runtimes/qwen3-opt/llama-q8-20261109-01/`, 현재 bridge는 `runtimes/qwen3-opt/split-20261111-01/bridge/`, 가중치는 `models/qwen3-opt/gguf-q8-20261109-01/`에 있습니다. [연결·빌드 안내](../../native/README.md)를 따르며 기존 환경에 패키지를 갱신하지 않습니다.
 
 아래 명령은 Host에서도 모델 로딩 없이 확인할 수 있습니다.
 
 ```bash
+.venv/bin/python scripts/edge_asr.py check-config --evaluation configs/gguf_realtime.toml
 .venv/bin/python scripts/edge_asr.py check-config --evaluation configs/onnx.toml
 .venv/bin/python scripts/edge_asr.py check-config --evaluation configs/gguf.toml
 .venv/bin/python scripts/edge_asr.py tools benchmark-qwen3 --help
@@ -84,7 +85,7 @@ ONNX 측정은 guard와 자식 명령 모두 표의 ONNX Python·설정을 사�
 
 [ONNX 출발 실측](../../results/summaries/optimization/realtime100-onnx-20261110.md)은 전체 입력 완료·전사1회 실패·VAD 누락1개를 포함한 기록입니다. 모델·조건을 자동 변경하지 않고 실패까지 채점했으며 실사용 통과 구성으로 취급하지 않습니다. 이후 엔진 비교에서 최종 구간 좌표·PCM 해시·첫 자막 커버리지를 함께 확인합니다.
 
-기본2T 재현은 위 명령에서 `--config configs/gguf.toml`과 새 출력 경로를 사용하고 아래 조건을 명시합니다. 현재3T 개발 구성은 뒤 생성 중 표시 예시의 새 TOML을 사용합니다. `--vad-preprocess rms26-floor80`은 **VAD 입력만** 보정하며 ASR에는 원음을 전달합니다. CLI 기본값은 여전히 `identity`입니다.
+기본2T 재현은 위 명령에서 `--config configs/gguf.toml`과 새 출력 경로를 사용하고 아래 조건을 명시합니다. 현재 생성2T/음성3T 개발 구성은 [대표 명령](#현재-개발용-대표-명령)의 공유 TOML을 사용합니다. `--vad-preprocess rms26-floor80`은 **VAD 입력만** 보정하며 ASR에는 원음을 전달합니다. CLI 기본값은 여전히 `identity`입니다.
 
 ```bash
 --gap-s 0 --vad-threshold 0.3 --silence-policy skip-zero \
@@ -106,15 +107,18 @@ ONNX 측정은 guard와 자식 명령 모두 표의 ONNX Python·설정을 사�
 
 같은1배속 명령에서 새 TOML·새 실행 ID를 사용하고 `--token-stream`을 추가하면 생성 중 UTF-8 문자열이 `생성중 partial/final`로 표시됩니다. 생성 중 final도 임시 가설이며 실제 확정은 종료 `result`입니다. 기존 `first_caption_from_track_start_s`는 완성 문자열 반환 지표로 유지하고, `first_visible_caption_from_track_start_s`·`token_timings`·`engine_ttft_s`를 구분해 확인합니다. engine TTFT는 native 호출 시작→첫 비EOG 생성 토큰이고 음성 처리/prefill을 포함하며 큐·Python 표시 시각과 다릅니다. 임시 가설은 최종 CER에 더하지 않고 이후 실패도 보존합니다.
 
-RP5에는 기존 토큰 bridge와 스레드 분리를 지원하는 별도 split bridge가 있습니다. 아래는 현재 생성2T·음성/prefill3T 설정으로 **새 실행 경로**에 실행하는 형식입니다. 다른 환경에서는 빌드 안내대로 두 기능을 지원하는 bridge를 만들고 TOML의 library/manifest 경로를 맞춥니다. 기존 기본 설정은 유지합니다.
+## 현재 개발용 대표 명령
+
+RP5에는 기존 토큰 bridge와 스레드 분리를 지원하는 별도 split bridge가 있습니다. 아래는 현재 생성2T·음성/prefill3T 설정으로 **새 실행 경로**에 실행하는 형식입니다. 다른 환경에서는 빌드 안내대로 두 기능을 지원하는 bridge를 만들고 새 TOML의 library/manifest 경로를 맞춥니다. 원본 실험 TOML과 공유 설정의 값은 같고 기존 기본 설정은 유지합니다. TOML은 모델·평가 계약만 담으므로 아래 VAD·부분 갱신·토큰 표시 옵션도 함께 지정합니다.
 
 ```bash
 .venv/bin/python scripts/edge_asr.py tools thermal-run \
   --output "results/optimization/opt3/<새ID>" \
   --timeout-s 1800 --temperature-policy operational --skip-temperature-admission \
   -- .venv/bin/python scripts/edge_asr.py tools replay-qwen3 \
-  --config results/optimization/opt3/realtime-split100-20261111-01/configs/split-2-3.toml \
+  --config configs/gguf_realtime.toml \
   --manifest "<동일순서-manifest.jsonl>" --output "results/optimization/opt3/<새ID>" \
+  --vad-model models/silero-vad-k2-20261029/silero_vad.onnx \
   --gap-s 0 --vad-threshold 0.3 --silence-policy skip-zero \
   --vad-preprocess rms26-floor80 --vad-max-speech-s 5 --max-segment-s 5 \
   --partial-after-s 1 --partial-interval-s 4 --drain-timeout-s 30 --queue-capacity 4 \

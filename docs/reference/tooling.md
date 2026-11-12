@@ -4,17 +4,18 @@
 
 ```bash
 .venv/bin/python scripts/edge_asr.py --help
-.venv/bin/python scripts/edge_asr.py live --help
+.venv/bin/python scripts/edge_asr.py tools replay-qwen3 --help
 .venv/bin/python scripts/edge_asr.py tools list
-.venv/bin/python scripts/edge_asr.py tools probe-concurrent --help
+.venv/bin/python scripts/edge_asr.py tools list --group legacy
+.venv/bin/python scripts/edge_asr.py tools list --group all
 ```
 
 ## 공통 명령
 
 | 명령 | 목적 | 안내 |
 | --- | --- | --- |
-| `live --wav ...` / `live --manifest ...` | Zip 자막·보정 후보 분리 표시 | [WAV MVP](../guides/legacy/live_captions.md) |
-| `evaluate --config ... --manifest ...` | batch/paced_stream 실제 평가 | [평가](../guides/evaluation.md), [1배속](../guides/legacy/streaming_evaluation.md) |
+| `live --wav ...` / `live --manifest ...` | **과거 재현**: Zip 자막·보정 후보 분리 표시 | [WAV MVP](../guides/legacy/live_captions.md) |
+| `evaluate --config ... --manifest ...` | 설정을 명시하는 batch/paced_stream 실제 평가 | [평가](../guides/evaluation.md), [1배속](../guides/legacy/streaming_evaluation.md) |
 | `score --predictions ...` | 모델 없는 재채점 | [평가·재채점](../guides/evaluation.md#재채점) |
 | `env [--probe-runtime]` | 현재 장비·패키지·선택적 native ORT 조회 | [설치](../guides/setup.md) |
 | `check-config --evaluation ...` | TOML/모드 검증 | [설정](../../configs/README.md) |
@@ -22,7 +23,9 @@
 
 ## 도구의 현재 소속
 
-새 Qwen 작업은 `qwen/benchmark.py`의 `benchmark-qwen3`로 첫 추론·워밍업·기준선을 측정합니다. `thermal-run`, `probe-load`, 데이터 준비·냉각 검사·유지보수는 공통 도구입니다. `live`, 모델 비교·VAD·병합 실행/보고서는 `legacy/tools/`에 있으며 기존 명령 이름은 유지합니다. `tools list`에서 실제 모듈 위치를 확인할 수 있습니다. [새 OPT 실행 안내](../guides/qwen3_optimization.md).
+새 Qwen 작업은 `qwen/benchmark.py`의 `benchmark-qwen3`로 첫 추론·워밍업·기준선을 측정합니다. `thermal-run`, `probe-load`, 데이터 준비·냉각 검사·유지보수는 공통 도구입니다. `live`, 모델 비교·VAD·병합 실행/보고서는 `legacy/tools/`에 있으며 기존 명령 이름은 유지합니다. `tools list`는 현재 Qwen·공통 도구만 보여 줍니다. `--group reference`는 이전 Qwen 진단·호환 명령, `--group legacy`는 이전 모델 비교·자막, `--group maintenance`는 일회성 통합, `--group all`은 전체 목록입니다. 목록 구분과 관계없이 기존 명령·별칭은 계속 호출할 수 있습니다. [새 OPT 실행 안내](../guides/qwen3_optimization.md).
+
+일반 `evaluate`는 `--config`가 필수입니다. 이전 기본값을 쓰던 명령에는 `--config configs/legacy/zipformer_eval.toml`을 추가합니다. 현재 Qwen 연속 입력에는 [공유 설정과 대표 명령](../guides/qwen3_optimization.md#현재-개발용-대표-명령)을 사용합니다.
 
 현재 입력 준비는 `prepare-fixed100 --verify-only`, `prepare-baseline100 --output <새경로>`를 사용합니다. `prepare-opt0`는 이전 KSS/56ms 진단 입력의 재현 도구입니다.
 
@@ -42,7 +45,7 @@
 | `thermal-run` | 외부 시간/메모리/열 감시. [통제/운영 정책](../archive/model-comparison/m3_thermal_policy.md) |
 | `summarize-*`, `replay-merge`, `replay-splice` | 저장 원시 대조·모델 없는 집계/정책 재생 |
 | `inspect-cooling` | 센서/기존 열 기록의 읽기 전용 점검 |
-| `repeat-zipformer` | M1 단일 샘플 반복 프로브 |
+| `repeat-zipformer` | `legacy/benchmark_zipformer.py`의 M1 단일 샘플 반복 프로브 |
 | `consolidate` | 과거 다중 RP5 폴더의 일회성 보존 통합 |
 
 구체 옵션과 전체 목록은 CLI help를 기준으로 한다. 실험별 입력·조건·제약은 [연구 색인](../archive/model-comparison/README.md), 실제 수치는 [결과 색인](../../results/summaries/README.md)에 둔다. `probe-concurrent`의 구간 reset 병합·연속 token 진단·자막 표시는 서로 다른 모드이며 동시에 활성화하지 않는다.

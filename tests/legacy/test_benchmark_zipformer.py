@@ -10,7 +10,9 @@ import wave
 from pathlib import Path
 from unittest.mock import patch
 
-from edge_asr import benchmark as bench
+from edge_asr.artifacts import digest
+from edge_asr.legacy import benchmark_zipformer as bench
+from edge_asr.metrics import distribution
 
 SUMMARY = """--- Summary ---
 Audio duration: 1.000s
@@ -69,10 +71,10 @@ class BenchmarkParsingTests(unittest.TestCase):
                 bench.parse_probe(text)
 
     def test_nearest_rank_and_missing_statistics(self):
-        stats = bench.distribution(list(range(1, 21)))
+        stats = distribution(list(range(1, 21)))
         self.assertEqual((stats["p50"], stats["p95"]), (10, 19))
-        self.assertIsNone(bench.distribution([])["mean"])
-        self.assertIsNone(bench.distribution([1.0])["p95"])
+        self.assertIsNone(distribution([])["mean"])
+        self.assertIsNone(distribution([1.0])["p95"])
 
     def test_rotated_schedule(self):
         plan = bench.schedule([1, 2, 4], 3, 30)
@@ -157,7 +159,7 @@ class BenchmarkProcessTests(unittest.TestCase):
             output = root / "outputs"
             output.mkdir()
             (output / "existing.txt").write_text("keep")
-            original_hash = bench.digest(probe)
+            original_hash = digest(probe)
             with patch.object(bench, "target_environment", return_value={"synthetic_test": True}):
                 code = bench.main(
                     [
@@ -187,7 +189,7 @@ class BenchmarkProcessTests(unittest.TestCase):
             self.assertEqual(manifest["status"], "completed")
             self.assertEqual(manifest["python_executable"], sys.executable)
             self.assertEqual((output / "existing.txt").read_text(), "keep")
-            self.assertEqual(bench.digest(probe), original_hash)
+            self.assertEqual(digest(probe), original_hash)
 
     def test_failed_warmup_aborts_with_summary(self):
         with tempfile.TemporaryDirectory() as temp:

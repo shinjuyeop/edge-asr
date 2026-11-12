@@ -33,3 +33,28 @@ class CliTests(unittest.TestCase):
         result = self.run_cli("check-config", str(ROOT / "tests/nonexistent.toml"))
         self.assertEqual(result.returncode, 2)
         self.assertIn("오류:", result.stderr)
+
+    def test_evaluate_requires_an_explicit_model_config(self):
+        result = self.run_cli("evaluate", "--manifest", "missing.jsonl")
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("--config", result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
+    def test_tools_lists_current_and_legacy_commands_separately(self):
+        current = self.run_cli("tools", "list")
+        self.assertEqual(current.returncode, 0, current.stderr)
+        self.assertIn("replay-qwen3", current.stdout)
+        self.assertNotIn("repeat-zipformer", current.stdout)
+        legacy = self.run_cli("tools", "list", "--group", "legacy")
+        self.assertEqual(legacy.returncode, 0, legacy.stderr)
+        self.assertIn("repeat-zipformer", legacy.stdout)
+        self.assertNotIn("replay-qwen3", legacy.stdout)
+        all_tools = self.run_cli("tools", "list", "--group", "all")
+        self.assertEqual(all_tools.returncode, 0, all_tools.stderr)
+        for command in ("replay-qwen3", "repeat-zipformer", "consolidate", "opt0-baseline"):
+            self.assertIn(command, all_tools.stdout)
+
+    def test_old_tool_alias_still_dispatches_without_loading_a_model(self):
+        result = self.run_cli("tools", "prepare_m30_audio", "--help")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("usage:", result.stdout)

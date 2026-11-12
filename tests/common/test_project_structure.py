@@ -116,7 +116,7 @@ assert 'edge_asr.evaluation' not in sys.modules
                         )
 
     def test_local_document_links_resolve(self):
-        markdown = [ROOT / "README.md"]
+        markdown = [ROOT / name for name in ("README.md", "CONTRIBUTING.md", "AGENTS.md")]
         for name in (
             "docs",
             "configs",

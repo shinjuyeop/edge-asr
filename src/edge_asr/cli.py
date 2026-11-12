@@ -40,8 +40,10 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="한국어 ASR 연구용 설정·환경 도구")
     parser.add_argument("--version", action="version", version=__version__)
     commands = parser.add_subparsers(dest="command", required=True)
-    commands.add_parser("tools", help="데이터 준비·RP5 측정·집계·유지보수; tools list로 목록 확인")
-    commands.add_parser("live", help="WAV 1배속 터미널 자막: Zip/보정 후보 분리 표시")
+    commands.add_parser(
+        "tools", help="현재 Qwen·공통 도구: tools list; 전체: tools list --group all"
+    )
+    commands.add_parser("live", help="[과거 재현] Zip 기반 WAV 자막; 현재 Qwen: tools replay-qwen3")
     env = commands.add_parser("env", help="현재 컴퓨터의 환경을 JSON으로 출력")
     env.add_argument(
         "--probe-runtime",
@@ -61,7 +63,7 @@ def main(argv: list[str] | None = None) -> int:
     check.add_argument("path", help="설정 파일 경로")
     check.add_argument("--evaluation", action="store_true", help="공통 파일 평가용 설정 검사")
     evaluate = commands.add_parser("evaluate", help="여러 WAV의 batch 또는 1배속 paced_stream 평가")
-    evaluate.add_argument("--config", type=Path, default=Path("configs/legacy/zipformer_eval.toml"))
+    evaluate.add_argument("--config", type=Path, required=True, help="평가할 모델의 TOML 설정")
     evaluate.add_argument("--manifest", type=Path, required=True, help="오디오·정답 JSONL 목록")
     evaluate.add_argument(
         "--root", type=Path, default=Path.cwd(), help="상대 경로 기준, 기본 작업 폴더"

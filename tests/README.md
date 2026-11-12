@@ -2,6 +2,8 @@
 
 `common/`은 재사용 기반, `qwen/`은 Qwen 어댑터·단독 도구, `legacy/`는 이전 비교·자막·병합을 검사합니다. 세 폴더를 모두 검색하는 기존 명령을 유지합니다.
 
+M1 Zipformer 반복 프로브 검사는 `legacy/test_benchmark_zipformer.py`에 있습니다. [Host CI](../.github/workflows/host.yml)는 새 clone에서 아래 회귀·Ruff·보존 검사와 공유 TOML 검사를 실행합니다. 현재 로컬 환경은 [환경 기록](../docs/reference/environment.md)을 확인합니다.
+
 Host에서 코드 계약을 확인하고 RP5에서 같은 테스트와 필요한 실제 추론을 검증한다. 단위 테스트는 가짜 ASR/VAD·임시 WAV·실제 spawn/큐를 사용한다. 외부 데이터를 다운로드하거나 RP5에 접속하지 않는다. 통과가 실제 모델 정확도·냉각·마이크·UI 성능을 뜻하지 않는다.
 
 ```bash

@@ -1,5 +1,21 @@
 # 파일·폴더 경로 이행
 
+## 공동 개발 진입 경로 정리 — 2026-11-11
+
+| 이전 위치·동작 | 현재 위치·동작 |
+| --- | --- |
+| `src/edge_asr/benchmark.py` | `src/edge_asr/legacy/benchmark_zipformer.py` — M1 전용임을 명시 |
+| `tests/common/test_benchmark.py` | `tests/legacy/test_benchmark_zipformer.py` |
+| 최신 개발 TOML이 로컬 실험 폴더에만 존재 | `configs/gguf_realtime.toml`로 동일 TOML 값을 공유. 원본은 보존 |
+| `tools list`가 모든 과거 명령을 함께 표시 | 기본은 현재 도구. `--group all`은 전체, `--group legacy`는 과거 재현 |
+| `evaluate`가 설정 생략 시 Zipformer 선택 | `--config` 필수. 기존 Zip 평가에는 `--config configs/legacy/zipformer_eval.toml` 명시 |
+
+`scripts/benchmark_zipformer.py`, `tools repeat-zipformer`, `live`, 기존 도구 별칭은 유지합니다. Python 내부의 옛 `edge_asr.benchmark` import는 새 위치로 갱신하며 전달 전용 wrapper는 두지 않습니다. 공통 해시는 계속 `artifacts.py`에서 가져옵니다. 일반 평가의 이전 모델 어댑터와 현재 Qwen 추론 동작은 유지합니다.
+
+환경은 [환경 기록](environment.md), 협업·검사는 [CONTRIBUTING](../../CONTRIBUTING.md), 현재 명령은 [도구 안내](tooling.md)를 따릅니다. 과거 결과 JSON·소스 해시·자산 경로는 소급 변경하지 않습니다.
+
+검증은 Host에서 수행했습니다. Git 추적 대상과 새 소스만 복사하고 임시 Git 커밋을 만든 자산 없는 작업 폴더에서 전체381개 중379개 통과·선택 native 헤더 검사2개 생략을 확인했습니다. Ruff 검사·포맷·M1 원본 해시·공유 설정의 원본 TOML 값 일치도 확인했습니다. 원시 로그는 `results/maintenance/team-cleanup-20261111-01/`에 있습니다. GitHub Actions 원격 실행과 RP5 실제 추론은 이번 검증에 포함하지 않습니다.
+
 ## 현재 구조 정리 — 2026-11-10
 
 정리 전 main은 `9957094`입니다. 현재 Qwen 작업에 쓰는 Python·C++·데이터 준비를 역할별로 모았습니다. Python 내부 import 경로는 새 위치로 바뀌며 이전 경로의 중복 파일이나 wrapper는 두지 않습니다.

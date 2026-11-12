@@ -1,70 +1,60 @@
-# Host와 RP5를 같은 GitHub 저장소로 관리
+# RP5 소스 동기화와 실행
 
-공통 저장소는 [shinjuyeop/edge-asr](https://github.com/shinjuyeop/edge-asr)입니다. Host와 RP5는 서로 다른 컴퓨터의 로컬 복제본이며 각 컴퓨터에서 작업 폴더는 하나만 사용합니다.
+공통 저장소는 [shinjuyeop/edge-asr](https://github.com/shinjuyeop/edge-asr)입니다. 현재는 **Git 소스 동기화 + 장비별 가상환경 + 별도 모델/native 자산**으로 실행합니다. Docker·서비스 자동 등록·마이크 입력 배포는 구현하지 않았습니다. [환경 기록](../reference/environment.md), [공동 개발 절차](../../CONTRIBUTING.md)를 함께 확인합니다.
 
 | 장비 | 작업 경로 | 역할 |
 | --- | --- | --- |
-| Host | `/d/shin/edge-asr` | 구현·테스트·커밋·push |
-| RP5 | `/home/deepet/projects/edge-asr` | pull·실제 추론·벤치마크 |
+| Host | `/d/shin/edge-asr` | 구현·테스트·리뷰·main 반영·push |
+| RP5 | `/home/deepet/projects/edge-asr` | main 동기화·실제 추론·벤치마크 |
 
-## RP5 최종 구조
+모델·음원·가상환경·외부 엔진은 같은 작업 폴더 안에 두되 Git에서 제외합니다. 기존 환경·자산은 그대로 사용합니다. 과거 다중 폴더 통합은 완료했으므로 [일회성 통합 절차](../archive/consolidation.md)를 반복하지 않습니다.
 
-```text
-/home/deepet/projects/edge-asr/
-├── .git/                 # GitHub 소스 이력
-├── .venv/                # 기존 Python 3.11 환경 (Git 제외)
-├── models/               # 기존 모델·테스트 WAV (안내 문서 외 Git 제외)
-├── data/                 # 평가 오디오·정답 (안내 문서 외 Git 제외)
-├── src/edge_asr/
-├── scripts/
-├── configs/
-├── benchmarks/runs/      # 새 원시 실행 결과 (Git 제외)
-├── results/summaries/    # 검토한 작은 요약만 버전 관리
-└── .local-backups/       # 통합 전 소스·과거 결과·Git 메타데이터 보관 (Git 제외)
-```
+## 업데이트 순서
 
-가중치·오디오·가상환경을 Git에 올리지 않는 것과 파일을 다른 프로젝트 폴더에 보관하는 것은 별개입니다. 한 작업 폴더 안에 함께 두고 Git 제외 규칙으로 구분합니다.
-
-과거 세 폴더를 아직 사용하는 장비만 [일회성 통합 절차](../archive/consolidation.md)를 따릅니다. 현재 RP5에서는 반복하지 않습니다.
-
-## Host의 평소 개발
-
-2026-10-28 Host의 `rp5` SSH 별칭으로 키 인증·원격 명령 실행·결과 회수를 직접 확인했습니다. Host와 RP5가 켜져 있고 SSH 네트워크가 연결되는 동안 Host에서 코드 개발, Git push, RP5 pull·추론 실행, 결과 회수·분석을 진행합니다. 실제 추론 연산은 RP5에서 수행합니다. SSH 설정·개인 키·비밀번호는 저장소에 넣지 않습니다.
+1. Host에서 작업 브랜치의 변경과 [Host 검사](../../tests/README.md)를 마칩니다.
+2. PR 검토 후 main에 반영·push하고 커밋을 확인합니다.
+3. RP5에서 실행 중인 실험이 없는지 담당자와 확인한 뒤 아래 명령으로 소스만 갱신합니다.
+4. 추론 동작을 바꾼 경우 필요한 실제 추론을 새 실행 ID로 수행합니다. 문서 수정만으로 모델 추론을 반복하지 않습니다.
 
 ```bash
-# Host에서 RP5의 현재 환경 확인
-ssh -o BatchMode=yes -o ConnectTimeout=10 rp5 \
-  'cd /home/deepet/projects/edge-asr && .venv/bin/python scripts/edge_asr.py env'
-```
-
-여러 발화의 준비·전달·실행은 [데이터 안내](datasets.md)를 따릅니다. Git은 소스와 작은 요약을 전달하고, Git 제외 음원·원시 결과는 필요한 폴더만 SSH/rsync로 전달합니다. 새 평가마다 고유 결과 폴더를 사용하며 원본·기존 실행을 덮어쓰지 않습니다.
-
-```bash
-cd /d/shin/edge-asr
+# Host: 현재 소스 확인
 git status --short
-.venv/bin/python -m unittest discover -s tests -v
-sha256sum -c experiments/m1_zipformer/SHA256SUMS
-
-# 실제 변경 파일을 검토해 선택. 아래 README.md는 예시.
-git add README.md
-git diff --cached --stat
-git commit -m "docs: update project guide"
-git push origin main
 git rev-parse HEAD
-```
 
-아직 커밋하지 않은 파일은 push되지 않습니다. 소스·설정·문서·테스트·프로브와 검토한 작은 요약을 버전 관리합니다. 원시 결과·자산·백업은 제외합니다. 초기 로그 3개는 `archive-initial-zipformer-20261028` 태그에 보관하고 현재 main의 추적 예외는 없앴습니다.
-
-## RP5의 평소 업데이트·실행
-
-```bash
+# RP5: 실행 중인 실험이 없을 때만 수행
 cd /home/deepet/projects/edge-asr &&
 git pull --ff-only origin main &&
 git rev-parse HEAD &&
 sha256sum -c experiments/m1_zipformer/SHA256SUMS
 ```
 
-RP5의 origin이 SSH이고 GitHub 키 인증을 사용할 수 없으면 공개 HTTPS로 소스만 가져올 수 있습니다. origin·SSH 키·환경을 바꾸지 않고 다음을 실행합니다.
+Host와 RP5의 HEAD가 같아도 OS·패키지·자산·native 빌드가 같은 것은 아닙니다. Git pull은 Python 환경·모델을 갱신하지 않습니다. 실행 중에는 pull·checkout·패키지 변경을 하지 않습니다.
+
+현재 Qwen의 설정·명령·평가 순서는 [실행 안내](qwen3_optimization.md#현재-개발용-대표-명령)를 사용합니다. `scripts/benchmark_zipformer.py`와 `tools repeat-zipformer`는 과거 M1 재현용입니다.
+
+## SSH와 자산·결과 전달
+
+현재 Host는 `rp5` SSH 별칭으로 읽기·원격 실행·결과 회수가 가능합니다. 새 개발자는 자신의 SSH 접속을 별도로 준비합니다. 개인 키·비밀번호·개인 접속 설정은 저장소에 넣지 않습니다.
+
+```bash
+ssh -o BatchMode=yes -o ConnectTimeout=10 rp5 \
+  'cd /home/deepet/projects/edge-asr && .venv/bin/python scripts/edge_asr.py env'
+```
+
+Git은 소스·설정·문서·검토한 요약을 전달합니다. 모델·음원·원시 결과는 필요한 실행 폴더만 SSH/rsync로 전달합니다. 예를 들어 Host에서 **새 회수 경로**를 정하고 다음 형식으로 실행합니다.
+
+```bash
+mkdir -p "results/optimization/opt3/<새회수ID>"
+rsync -rz --ignore-existing \
+  "rp5:/home/deepet/projects/edge-asr/results/optimization/opt3/<실행ID>/" \
+  "results/optimization/opt3/<새회수ID>/"
+```
+
+`<...>`는 실제 경로로 바꿉니다. `--ignore-existing`는 다른 내용의 기존 파일도 교체하지 않으므로 회수 후 실행 영수증·해시를 대조합니다. 데이터 준비·전달은 [데이터 안내](datasets.md), 고정100개는 [준비·검증 안내](../research/fixed100.md)를 따릅니다.
+
+## GitHub 인증과 새 장비
+
+RP5 origin의 SSH 인증을 사용할 수 없을 때 공개 HTTPS로 소스만 받을 수 있습니다. origin·키·환경 설정은 바꾸지 않습니다.
 
 ```bash
 GIT_TERMINAL_PROMPT=0 git fetch --no-tags \
@@ -72,32 +62,6 @@ GIT_TERMINAL_PROMPT=0 git fetch --no-tags \
 git merge --ff-only origin/main
 ```
 
-새 벤치마크가 필요한 경우에만 같은 폴더에서 실행합니다.
+새 장비에는 새 프로젝트 폴더에 clone하고 [환경 준비](setup.md)를 진행합니다. 기존 RP5에는 clone이나 환경 초기화를 반복하지 않습니다. 과거 원시 `benchmarks/runs/`와 `.local-backups/`는 보존합니다.
 
-```bash
-cd /home/deepet/projects/edge-asr &&
-.venv/bin/python scripts/benchmark_zipformer.py --asset-root .
-```
-
-기존 성공 결과를 통합 때문에 다시 측정할 필요는 없습니다. Git pull은 가상환경·모델을 업데이트하지 않습니다. 실행 중에는 pull·checkout을 하지 않습니다. Host와 RP5의 HEAD가 같으면 같은 소스 커밋이며 OS·라이브러리·자산까지 같다는 뜻은 아니므로 실행 환경도 따로 기록합니다.
-
-## 과거 결과와 회수
-
-과거 `edge-asr-bench-20261028-01/benchmarks/runs/`는 통합 기록에 출력된 `.local-backups/.../edge-asr-bench-20261028-01/benchmarks/runs/`에서 찾습니다. 그 안의 manifest에 남은 과거 경로는 당시 출처이며 새 위치로 고치지 않습니다. 새 실행은 현재 `benchmarks/runs/`에 저장됩니다.
-
-원시 결과 회수는 필요한 실행 폴더만 SSH/SFTP로 가져옵니다. 예를 들어 Host에서는 다음과 같습니다.
-
-```bash
-mkdir -p results/rp5-new-runs
-rsync -rz --ignore-existing \
-  rp5:/home/deepet/projects/edge-asr/benchmarks/runs/ \
-  results/rp5-new-runs/
-```
-
-`rp5`는 Host SSH 설정의 별칭이며 회수에는 별도 SSH 인증이 필요합니다. 공개 GitHub pull에는 GitHub 로그인·RP5 SSH 키가 필요하지 않습니다. 작은 요약을 터미널에서 전달해도 됩니다.
-
-## 새 RP5에서 처음 시작할 때
-
-프로젝트 폴더가 없는 새 장비에서는 `git clone https://github.com/shinjuyeop/edge-asr.git /home/deepet/projects/edge-asr`로 처음부터 한 경로에 만듭니다. 그 안에서 Python 3.11 환경·자산을 준비합니다. 이미 기존 폴더가 있는 현재 RP5에는 이 clone 명령을 사용하지 않습니다.
-
-`scripts/deploy_rp5.sh`는 과거 rsync 배포 재현용으로 남겨 둡니다. 현재 운영 경로의 업데이트는 Git pull을 사용하며 새 배포 폴더를 계속 만들지 않습니다. 서비스 등록·마이크 실시간 배포는 아직 구현하지 않았습니다.
+`scripts/deploy_rp5.sh`는 과거 rsync 배포 재현용입니다. 현재 업데이트 절차는 위 Git 동기화이며, 이 스크립트로 새로운 운영 폴더를 계속 만들지 않습니다.

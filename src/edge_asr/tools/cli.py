@@ -51,7 +51,7 @@ COMMANDS = {
     "summarize-annotated-vad": "edge_asr.legacy.tools.reports.annotated_vad",
     "inspect-cooling": "reports.cooling",
     "consolidate": "maintenance.consolidate",
-    "repeat-zipformer": "edge_asr.benchmark",
+    "repeat-zipformer": "edge_asr.legacy.benchmark_zipformer",
 }
 
 
@@ -88,22 +88,55 @@ def module_name(command):
     return module if module.startswith("edge_asr.") else "edge_asr.tools." + module
 
 
+def command_group(command):
+    if command == "consolidate":
+        return "maintenance"
+    if command in {"prepare-opt0", "opt0-baseline"}:
+        return "reference"
+    if module_name(command).startswith("edge_asr.legacy."):
+        return "legacy"
+    return "current"
+
+
+def list_commands(argv):
+    groups = {
+        "current": "현재 Qwen·공통 도구",
+        "reference": "이전 Qwen 진단·호환 명령",
+        "legacy": "과거 모델 비교·자막 재현",
+        "maintenance": "일회성 유지보수",
+    }
+    parser = argparse.ArgumentParser(prog="edge-asr tools list")
+    parser.add_argument("--group", choices=[*groups, "all"], default="current")
+    args = parser.parse_args(argv)
+    for group, title in groups.items():
+        if args.group not in {group, "all"}:
+            continue
+        print(f"[{title}]")
+        for command in sorted(COMMANDS):
+            if command_group(command) == group:
+                print(f"{command:25} {module_name(command)}")
+    if args.group == "current":
+        print("\n과거·유지보수 포함 전체 목록: edge-asr tools list --group all")
+    return 0
+
+
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
     if argv:
         argv[0] = LEGACY_COMMANDS.get(argv[0], argv[0])
     parser = argparse.ArgumentParser(
-        prog="edge-asr tools", description="데이터 준비·측정·집계·유지보수 도구"
+        prog="edge-asr tools",
+        description="현재 Qwen·공통 도구는 tools list, 과거 재현은 tools list --group legacy",
     )
-    parser.add_argument("tool", choices=["list", *COMMANDS], nargs="?", default="list")
+    parser.add_argument(
+        "tool", choices=["list", *COMMANDS], metavar="도구", nargs="?", default="list"
+    )
     parser.add_argument(
         "arguments", nargs=argparse.REMAINDER, help="선택한 도구의 인자. <도구> --help로 확인"
     )
     args = parser.parse_args(argv)
     if args.tool == "list":
-        for command, module in COMMANDS.items():
-            print(f"{command:25} {module}")
-        return 0
+        return list_commands(args.arguments)
     previous = sys.argv
     try:
         sys.argv = [f"edge-asr tools {args.tool}", *args.arguments]

@@ -1,0 +1,42 @@
+name: Host checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  host:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONPATH: src
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+      - name: 개발 도구 준비
+        run: |
+          python -m pip install -e '.[dev]'
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y ffmpeg
+      - name: 정적 검사
+        run: |
+          ruff check src tests scripts native
+          ruff format --check src tests scripts native
+      - name: 모델 없는 회귀 검사
+        run: python -m unittest discover -s tests -v
+      - name: 보존 자산과 공유 설정 검사
+        run: |
+          sha256sum -c experiments/m1_zipformer/SHA256SUMS
+          bash -n scripts/deploy_rp5.sh
+          python scripts/edge_asr.py check-config --evaluation configs/gguf_realtime.toml
+          python scripts/edge_asr.py check-config --evaluation configs/gguf.toml
+          python scripts/edge_asr.py check-config --evaluation configs/onnx.toml

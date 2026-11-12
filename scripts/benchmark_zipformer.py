@@ -1,11 +1,11 @@
-"""설치 없이 기존 RP5 가상환경에서 실행할 수 있는 진입점."""
+"""과거 M1 Zipformer 재현용 진입점. 현재 Qwen은 tools benchmark-qwen3를 사용한다."""
 
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from edge_asr.benchmark import main
+from edge_asr.legacy.benchmark_zipformer import main
 
 if __name__ == "__main__":
     raise SystemExit(main())

@@ -6,7 +6,7 @@ import unittest
 from copy import deepcopy
 from pathlib import Path
 
-from edge_asr.benchmark import digest
+from edge_asr.artifacts import digest
 from edge_asr.vad_annotations import score_segments
 from tests.common import test_vad_annotations as fixtures
 

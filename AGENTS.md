@@ -2,6 +2,8 @@
 
 작업 전 [README](README.md), [현재 상태](docs/status.md), 필요하면 [아키텍처](docs/reference/architecture.md)를 확인합니다.
 
+공동 개발·검증 절차는 [CONTRIBUTING](CONTRIBUTING.md), 기존 Host/RP5 환경은 [환경 기록](docs/reference/environment.md)을 따릅니다. 현재 개발 설정은 `configs/gguf_realtime.toml`이며 연속 입력 옵션은 [대표 명령](docs/guides/qwen3_optimization.md#현재-개발용-대표-명령)을 함께 사용합니다.
+
 ## 코드 재사용과 폴더
 
 - 새 코드보다 기존 구현의 확장·재사용을 먼저 검토합니다. 입력은 `dataset.py`, 기록은 `artifacts.py`, 채점은 `scoring.py`·`metrics.py`, 계측은 `resources.py`·`runtime.py`, 반복 평가는 `qwen/benchmark.py`를 우선 사용합니다.

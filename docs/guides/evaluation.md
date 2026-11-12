@@ -6,7 +6,7 @@
 
 ## RP5 시작
 
-기존 모델·WAV·가상환경을 사용하는 한 프로젝트 폴더에서 실행하며 패키지 재설치는 필요하지 않습니다.
+기존 모델·WAV·가상환경을 사용하는 한 프로젝트 폴더에서 실행하며 패키지 재설치는 필요하지 않습니다. `evaluate`는 `--config`가 필수이며 아래 Zipformer 명령은 이전 모델의 재현 예시입니다. 현재 Qwen 개발은 [전용 실행 안내](qwen3_optimization.md)를 따릅니다.
 
 ```bash
 cd /home/deepet/projects/edge-asr &&

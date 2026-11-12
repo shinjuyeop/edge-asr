@@ -1,140 +1,100 @@
 # Qwen3-ASR 기반 ARM64 Edge 추론 최적화
 
-**Low-Latency Korean ASR on Raspberry Pi 5**
+Qwen3-ASR-0.6B를 Raspberry Pi 5의 ARM64 CPU에서 실행하며 **한국어 정확도·처리 완료율을 유지하면서 인식 지연·메모리·발열을 줄이는** 프로젝트입니다.
 
-Qwen3-ASR-0.6B를 Raspberry Pi 5의 ARM64 CPU에서 실행하며, **한국어 정확도와 처리 완료율을 유지하면서 인식 지연·메모리·발열을 줄이는** 프로젝트입니다.
+[공동 개발 시작](CONTRIBUTING.md) · [현재 환경](docs/reference/environment.md) · [현재 상태·다음 작업](docs/status.md) · [RP5 실행 안내](docs/guides/qwen3_optimization.md)
 
-[현재 상태·다음 작업](docs/status.md) · [연속 입력 평가 기준](docs/research/qwen_realtime.md) · [최근 스레드 분리100개 대조](results/summaries/optimization/realtime-split100-20261111.md) · [갱신 간격 비교 영상](results/summaries/optimization/realtime-video-20261111.md) · [실행 안내](docs/guides/qwen3_optimization.md)
+현재는 WAV를 1배속으로 공급하며 부분·확정 자막을 평가합니다. 개발 기준은 **GGUF Q8·생성2T/음성·prefill3T**이며 [공유 설정](configs/gguf_realtime.toml)을 사용합니다. VAD·갱신·토큰 표시 조건까지 포함한 [대표 명령](docs/guides/qwen3_optimization.md#현재-개발용-대표-명령)을 함께 확인하세요. 마이크 입력·서비스 자동 실행·최종 장시간 안정성 검증은 후속 작업입니다.
 
-## 현재 진행 상태
+최신 측정값과 판단 근거는 [현재 상태](docs/status.md)와 [실측 요약](results/summaries/optimization/realtime-split100-20261111.md)에 있습니다. [자막 비교 영상](results/summaries/optimization/realtime-video-20261111.md)은 저장된 로그의 동기 재생 자료입니다.
 
-- **구현·검증:** ONNX/GGUF·VAD 보정·부분 갱신 간격·생성 중 표시·접두부 재표시 보류·스레드를100개 단독 연속 입력에서 검증, 공통 채점·TTFT·자원 계측
-- **진행 방향:** Qwen 단독·1배속 연속 입력을 주 평가로 사용. ONNX INT8 2T에서 출발해 같은 파이프라인의 GGUF·실행 설정과 비교
-- **현재 과제:** Q8·생성2T/음성·prefill3T·VAD 보정·구간5초·첫1초/이후4초·토큰 표시를 유지하며 남은 연산 지연·분할/문맥 손실 개선
-- **후속 구현·검증:** 음성 처리/prefill·decode 최적화와 안전한 캐시 재사용, 마이크 입력, 최종 장시간 안정성
+## 처음 시작하기
 
-현재는 WAV 파일로 검증합니다. 이전 Zip+VAD+Refine 자막은 `legacy/`에 보존합니다.
+Python 3.11 이상을 사용합니다. 현재는 **Docker 없이 장비별 Python 가상환경과 native 라이브러리**를 사용합니다. 새 작업 환경은 [설치 안내](docs/guides/setup.md), 기존 환경의 버전·용도는 [환경 기록](docs/reference/environment.md)을 확인하세요.
 
-## 연속 입력 대조 결과
-
-RP5·Qwen3-ASR-0.6B GGUF Q8_0·2026-11-11 실측입니다. 같은 Zeroth60개·FLEURS40개를 **14분51초·1배속·추가 무음0초** 공급하며 추론 중에도 다음 음성을 받았습니다. 같은 모델·split bridge·VAD 보정·5초·첫1초/이후4초·토큰 표시에서 생성 스레드만 바꿨습니다. 양쪽 모두 새로 실행한100개 대조입니다.
-
-| 지표 | 생성3T /음성·prefill3T | 생성2T /음성·prefill3T |
-| --- | ---: | ---: |
-| 연결 CER | 11.12% —428/3848 | **동일** |
-| 자막 없는 원음 / 호출 실패 / 입력 드롭 | 0 /0 /0 | 0 /0 /0 |
-| 같은210개 최종 추론 합계 | 514.45초 | **495.50초** |
-| 전체 추론 합계 —부분 재전사 포함 | 658.18초 | **634.32초** |
-| 첫 표시 p50 /p95 —100개 | 3.15 /4.57초 | **3.06 /4.45초** |
-| 파일 끝 기준 최종 반환 p95 —100개 | 3.69초 | **3.47초** |
-| 관측 최대 RSS | 1832.81MiB | 1829.75MiB |
-| 최고 온도 | 87.00°C | 87.00°C |
-
-**다음 개발 권장은 Q8·생성2T/음성·prefill3T입니다.** 최종210구간 PCM·전사·토큰 ID를 유지하며 최종 호출 합계3.68%·decode7.76%·전체 추론 합계3.63%가 줄었습니다.4자 이상 첫 표시 p95는7.315→7.322초로 거의 같고, 양쪽 열 제한을 관측했습니다. 기본 설정과 기존 모두3T 프로필을 보존하고 별도 TOML을 사용합니다. 순차1쌍의 운영 대조이며 통계적 유의성 확인·실사용 채택과 구분합니다. [조건·범위·개발 설정](results/summaries/optimization/realtime-split100-20261111.md).
-
-앞선 [모두2T/3T/4T 대조](results/summaries/optimization/realtime-threads-20261111.md)에서 모두3T를 선택했습니다. 이후 [6개 분리 반복](results/summaries/optimization/realtime-split-20261111.md)은 최종 처리 합계3.88%·2.82% 개선으로 반복3% 선별 기준에 미달했습니다. 이번100개는 감소 관측을 추가 확인한 별도 실행이며 이전 판정은 보존합니다. [추가 검증 조건](docs/research/qwen_realtime.md#스레드-분리100개-추가-검증--2026-11-11-사전-조건).
-
-첫 표시는 원음 시작→텍스트 이벤트 발행이며 실제 화면 시각은 아닙니다. 파일 끝 기준 반환은 원음 입력 끝→마지막으로 겹치는 최종 호출 반환이고 음향 단어 끝과 다릅니다. 생성 중 자막은 임시 가설이며 접두부 재표시 철회는 양쪽0입니다. [표시 안정성 검증](results/summaries/optimization/realtime-stability-20261111.md).
-
-평가 자료는 [고정100개 출처·선정 방법](docs/research/fixed100.md)을 따릅니다. [토큰 전달 끔/켬](results/summaries/optimization/realtime-token-20261111.md), [갱신2초/4초](results/summaries/optimization/realtime-schedule-20261111.md), [VAD 보정·8초 대조](results/summaries/optimization/realtime-accuracy-20261110.md), [ONNX/GGUF 연속 비교](results/summaries/optimization/realtime100-backends-20261110.md), [ONNX 출발·첫 중단](results/summaries/optimization/realtime100-onnx-20261110.md), [batch 참조](results/summaries/optimization/fixed100-baseline-20261109.md)는 보존합니다. batch RTF는 자막 반환 지연을 대신하지 않습니다.
-
-## 빠른 확인
-
-Python3.11 이상이 필요합니다. 아래 명령은 저장소 루트의 **기존 `.venv` 환경**을 기준으로 하며 모델을 로딩하지 않습니다.
+아래는 준비된 Host `.venv`에서 실행하는 모델 없는 검사입니다.
 
 ```bash
-# 설정과 평가 명령 확인
-.venv/bin/python scripts/edge_asr.py check-config --evaluation configs/gguf.toml
+.venv/bin/python scripts/edge_asr.py tools list
+.venv/bin/python scripts/edge_asr.py check-config --evaluation configs/gguf_realtime.toml
 .venv/bin/python scripts/edge_asr.py tools replay-qwen3 --help
-
-# Host 모의 테스트
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v
 ```
 
-실제 모델 실행에는 별도로 준비한 가중치·런타임이 필요합니다. ONNX/GGUF별 RP5 환경과 평가 명령은 [실행 안내](docs/guides/qwen3_optimization.md), C++ 연결·빌드는 [native 안내](native/README.md)를 따릅니다. 로컬에100개 평가 자료가 준비되어 있다면 `.venv/bin/python scripts/edge_asr.py tools prepare-fixed100 --verify-only`로 검사할 수 있습니다.
+실제 추론에는 모델·음원·RP5용 native 빌드가 별도로 필요합니다. Git clone에는 이 자산이 포함되지 않습니다. [실제 평가 순서](docs/guides/qwen3_optimization.md#실제-평가-순서)를 따르며 기존 환경·모델·원음·결과는 보존합니다.
 
-## 핵심 코드
+## 어디를 수정하나요?
 
-GGUF 실행 흐름은 **평가 실행기 → Python 어댑터 → C++ bridge → llama.cpp/libmtmd**입니다.
+실행 흐름은 **CLI → Qwen 실행기 → ONNX/GGUF 어댑터 → native 런타임**입니다. 입력·채점·계측·기록은 공통 모듈을 재사용합니다.
 
-| 목적 | 먼저 볼 파일 |
+| 작업 | 먼저 볼 위치 |
 | --- | --- |
-| 모델 로딩·첫 추론·워밍업·반복 평가 | [qwen/benchmark.py](src/edge_asr/qwen/benchmark.py) |
-| 1배속 연속 입력·부분/생성 중 자막·실제 반환 지연 | [qwen/realtime/](src/edge_asr/qwen/realtime/) |
-| 자막 접두부 재표시 판정·문자 철회·최종 가설 일치 | [qwen/realtime/stability.py](src/edge_asr/qwen/realtime/stability.py) |
-| VAD 신호 보정·원음 보존 / 구간 분할 | [audio_policy.py](src/edge_asr/audio_policy.py) / [segmentation.py](src/edge_asr/segmentation.py), [vad_probability.py](src/edge_asr/vad_probability.py) |
-| GGUF 연결·음성 전달·출력 검사 | [qwen/gguf.py](src/edge_asr/qwen/gguf.py) |
-| KV 초기화·오디오/prefill·토큰 생성 제어 | [native/gguf/bridge.cpp](native/gguf/bridge.cpp) |
-| ONNX 참조·context 검사 / 호출 경계 계측 | [qwen/onnx.py](src/edge_asr/qwen/onnx.py) / [qwen/profiling.py](src/edge_asr/qwen/profiling.py) |
-| 음성 목록·WAV 로딩 / 일반 파일 평가 | [dataset.py](src/edge_asr/dataset.py) / [evaluation.py](src/edge_asr/evaluation.py) |
-| 저장 가설 재채점·CER/RTF 집계 | [scoring.py](src/edge_asr/scoring.py), [metrics.py](src/edge_asr/metrics.py) |
-| CPU/RSS·native 진단 / 온도·실제 클럭 | [resources.py](src/edge_asr/resources.py), [runtime.py](src/edge_asr/runtime.py) / [thermal.py](src/edge_asr/thermal.py) |
+| 연속 입력·부분/확정 자막 | [qwen/realtime/](src/edge_asr/qwen/realtime/) |
+| 모델 로딩·반복 평가 | [qwen/benchmark.py](src/edge_asr/qwen/benchmark.py) |
+| 모델 호출·출력 검사 | [qwen/gguf.py](src/edge_asr/qwen/gguf.py), [qwen/onnx.py](src/edge_asr/qwen/onnx.py) |
+| C++ 연결·빌드 | [native/gguf/](native/gguf/), [native 안내](native/README.md) |
+| 입력·채점·기록·계측 | [아키텍처의 공통 모듈 표](docs/reference/architecture.md) |
+| 데이터 준비·진단·보고서 | [tools/](src/edge_asr/tools/), [명령 안내](docs/reference/tooling.md) |
+| 변경 검증 | [tests/](tests/README.md), [공동 개발 절차](CONTRIBUTING.md) |
 
-설정은 [configs/gguf.toml](configs/gguf.toml)과 [configs/onnx.toml](configs/onnx.toml)에 있습니다. 명령 진입점은 [scripts/edge_asr.py](scripts/edge_asr.py), 상세 의존 방향은 [아키텍처](docs/reference/architecture.md)를 참고하세요.
+`tools list`는 현재 Qwen·공통 도구를, `tools list --group all`은 과거·유지보수 도구까지 표시합니다. `live`와 `repeat-zipformer`는 과거 재현용입니다. 일반 `evaluate` 명령은 `--config`로 모델을 명시합니다.
 
 ## 폴더 구조
 
-탐색기 기본 정렬처럼 **각 계층에서 폴더 우선·이름순**으로 표시했습니다. 자주 쓰는 하위 폴더와 핵심 파일만 펼쳤으며, 숨김 파일·생성물(`build/`, `dist/`)·캐시·과거 실험의 상세 목록은 생략했습니다. 로컬 자산 폴더는 자료가 준비된 작업 환경 기준입니다.
+각 계층에서 **폴더 우선·이름순**으로 정렬했습니다. 자주 쓰는 경로만 펼쳤으며 캐시·생성물(`build/`, `dist/`)·대용량 자산·과거 실험의 상세 목록·그 밖의 숨김 파일은 생략했습니다. 자산 폴더는 준비된 로컬 환경 기준입니다.
 
 ```text
 edge-asr/
-├── benchmarks/                                            # manifest 명세
-├── configs/                                               # 현재 설정·이전 재현 설정
-│   ├── legacy/                                            # 이전 비교·자막 설정
-│   ├── quantization/                                      # text Q6·Q5·Q4 후보
-│   │   ├── q4_k_m.toml
-│   │   ├── q5_k_m.toml
-│   │   └── q6_k.toml
+├── .github/
+│   └── workflows/
+│       └── host.yml                     # 모델 없는 Host CI
+├── benchmarks/                          # manifest 명세·이전 M1 결과 경로
+├── configs/
+│   ├── legacy/                          # 이전 모델 비교 설정
+│   ├── quantization/                    # Q6·Q5·Q4 후보
 │   ├── eval_manifest.example.jsonl
-│   ├── gguf.toml
-│   └── onnx.toml
-├── data/                                                  # 로컬 음성·정답
+│   ├── gguf.toml                        # 보존한 Q8 2T 기준선
+│   ├── gguf_realtime.toml               # 현재 개발용 Q8 생성2T/음성3T
+│   └── onnx.toml                        # ONNX 출발 참조
+├── data/                                # 로컬 음원·정답
 │   ├── evaluation/
-│   │   └── edge100-20261109-01/                           # 현재 고정100개
-│   │       ├── metadata/
-│   │       ├── original/
-│   │       ├── wav/
-│   │       └── manifest.jsonl
-│   └── sources/                                           # 원본 코퍼스·출처 캐시
-├── docs/                                                  # 프로젝트 문서
-│   ├── archive/                                           # 이전 연구
-│   ├── guides/                                            # 실행·데이터 안내
-│   ├── reference/                                         # 구조·계측 계약
-│   ├── research/                                          # 현재 연구·평가 프로토콜
-│   └── status.md                                          # 현재 상태·다음 작업
+│   │   └── edge100-20261109-01/          # 고정100개·manifest.jsonl
+│   └── sources/                         # 원본 코퍼스·출처 캐시
+├── docs/
+│   ├── archive/                         # 이전 연구·이행 기록
+│   ├── guides/                          # 설치·평가·RP5 동기화
+│   ├── reference/
+│   │   ├── architecture.md
+│   │   ├── environment.md               # 확인한 Host/RP5 환경
+│   │   └── tooling.md
+│   ├── research/                        # 현재 연구·평가 프로토콜
+│   └── status.md                        # 현재 기준·판정·다음 작업
 ├── experiments/
-│   └── m1_zipformer/                                      # M1 원본 보관
-├── models/                                                # 로컬 가중치
+│   └── m1_zipformer/                    # 초기 원본 보존
+├── models/                              # 로컬 가중치
 ├── native/
-│   ├── gguf/                                              # GGUF C ABI·빌드
-│   │   ├── bridge.cpp
-│   │   ├── build.py
-│   │   └── quantize.py
-│   └── ort_trace/                                         # ORT 호출 계측·빌드
-│       ├── build.py
-│       ├── ort_trace.cc
-│       └── ort_trace.map
+│   ├── gguf/                            # bridge.cpp·build.py·quantize.py
+│   └── ort_trace/                       # ORT 호출 계측·빌드
 ├── results/
-│   ├── maintenance/                                       # 테스트·자산 보존·전송 검증
-│   ├── optimization/                                      # 원시 측정값
-│   │   ├── opt0/
-│   │   ├── opt1/
-│   │   ├── opt2/
-│   │   └── opt3/
+│   ├── maintenance/                     # 로컬 검사·환경 스냅샷
+│   ├── optimization/                    # 로컬 원시 측정·영상
 │   └── summaries/
-│       └── optimization/                                  # Git에 보관하는 OPT 요약
+│       └── optimization/                # Git에 공유하는 측정 요약
 ├── runtimes/
-│   └── qwen3-opt/                                         # 로컬 외부 엔진·헤더·빌드·라이브러리
+│   └── qwen3-opt/                       # 로컬 외부 엔진·빌드·라이브러리
 ├── scripts/
-│   ├── benchmark_zipformer.py
-│   ├── deploy_rp5.sh
-│   └── edge_asr.py
+│   ├── benchmark_zipformer.py           # 과거 M1 호환 진입점
+│   ├── deploy_rp5.sh                    # 과거 rsync 재현용
+│   └── edge_asr.py                      # 체크아웃의 공통 CLI
 ├── src/
 │   └── edge_asr/
-│       ├── adapters/                                      # 공통 factory·이전 비교 모델
-│       ├── legacy/                                        # 이전 자막·병합 재현
-│       ├── qwen/                                          # 현재 Qwen 실행 경로
-│       │   ├── realtime/                                  # 1배속·VAD·부분/확정 전사
+│       ├── adapters/                    # 공통 factory·이전 비교 모델
+│       ├── legacy/
+│       │   ├── realtime/                # 이전 자막 실행
+│       │   ├── tools/                   # 이전 비교·병합 도구
+│       │   └── benchmark_zipformer.py
+│       ├── qwen/
+│       │   ├── realtime/
 │       │   │   ├── replay.py
 │       │   │   ├── session.py
 │       │   │   ├── stability.py
@@ -144,52 +104,36 @@ edge-asr/
 │       │   ├── onnx.py
 │       │   └── profiling.py
 │       ├── tools/
-│       │   ├── data/                                      # 준비·검증·평가 순서 생성
-│       │   │   ├── baseline100.py
-│       │   │   ├── fixed100.py
-│       │   │   └── opt0.py
+│       │   ├── data/
 │       │   ├── maintenance/
-│       │   ├── probes/                                    # 실행 제한·부하 검사
-│       │   │   ├── load.py
-│       │   │   └── thermal.py
-│       │   ├── reports/                                   # 저장 기록 분석
+│       │   ├── probes/
+│       │   ├── reports/
 │       │   └── cli.py
-│       ├── artifacts.py
-│       ├── audio_policy.py
+│       ├── artifacts.py                 # 결과 기록·해시
 │       ├── cli.py
 │       ├── config.py
-│       ├── dataset.py
+│       ├── dataset.py                   # 입력 목록·PCM
 │       ├── evaluation.py
 │       ├── metrics.py
 │       ├── resources.py
 │       ├── runtime.py
 │       ├── scoring.py
 │       ├── segmentation.py
-│       ├── thermal.py
-│       └── vad_probability.py                             # 연속 음성 구간 판정
-├── tests/                                                 # 공통·legacy·Qwen 회귀 검사
+│       └── streaming.py
+├── tests/
 │   ├── common/
 │   ├── legacy/
 │   └── qwen/
-│       ├── fixtures/
-│       ├── test_baseline.py
-│       ├── test_caption_stability.py
-│       ├── test_fixed100.py
-│       ├── test_profiling.py
-│       ├── test_qwen3.py
-│       ├── test_qwen3_gguf.py
-│       └── test_realtime.py
-├── AGENTS.md                                              # 코드 재사용·폴더 분리·작업 원칙
+├── AGENTS.md                            # 구현·보존 원칙
+├── CONTRIBUTING.md                      # 합류·리뷰·검증·장비 공유
 ├── pyproject.toml
 └── README.md
 ```
 
-음성·정답은 `data/`, 가중치는 `models/`, 외부 엔진·빌드는 `runtimes/`, 원시 측정·검증 로그는 `results/optimization/`·`results/maintenance/`에 보관합니다. 이 로컬 자산들은 GitHub에 포함하지 않습니다. [예시 JSONL](configs/eval_manifest.example.jsonl)은 목록 형식만 보여 주며 실제 평가 자료는 아닙니다.
+## 개발과 기록
 
-## 개발·평가 흐름
+**Host 개발·검사 → main 반영·push → RP5 동기화·필요한 실제 추론 → 결과 회수** 순서입니다. 협업·검증 기준은 [CONTRIBUTING](CONTRIBUTING.md), 소스 전달은 [RP5 동기화 안내](docs/guides/deployment.md)를 따릅니다.
 
-**Host 개발·모의 테스트 → main commit/push → RP5 소스 동기화·실측 → 결과 회수·재채점** 순서로 진행합니다. 새 실험은 별도 설정·실행 ID를 사용하고 기존 환경·모델·원음·결과를 보존합니다. Host 테스트와 RP5 실제 추론을 구분하며, 미측정 값은 추정으로 채우지 않습니다.
+README는 시작 경로, `docs/status.md`는 현재 판단과 다음 작업, `results/summaries/`는 실측 근거를 담당합니다. 설정·구조 변경은 관련 문서와 함께 갱신하며, 과거 실행 기록은 그대로 보존합니다.
 
-코드를 추가하기 전 기존 입력·채점·계측·평가 흐름을 먼저 재사용합니다. 실험 차이는 설정으로 표현하고, 관련 기능의 책임이 커지면 역할별 하위 폴더로 분리합니다. 실험마다 전체 코드를 복제하거나 빈 폴더·추상 계층을 미리 만들지 않습니다. 이후 작업도 [코드 재사용·폴더 분리 원칙](AGENTS.md)을 따릅니다.
-
-[전체 문서](docs/README.md) · [연구 로드맵](docs/research/qwen3_optimization.md) · [테스트 안내](tests/README.md) · [전체 OPT 기록](results/summaries/optimization/README.md) · [이전 연구](docs/archive/model-comparison/README.md) · [경로 이행표](docs/reference/structure_migration.md)
+[전체 문서](docs/README.md) · [평가 조건](docs/research/qwen_realtime.md) · [전체 측정 요약](results/summaries/optimization/README.md) · [경로 이행표](docs/reference/structure_migration.md)

@@ -14,7 +14,6 @@ import wave
 from datetime import datetime, timezone
 from pathlib import Path
 
-# 이전 import 경로를 쓰는 호출자에게도 같은 함수를 제공한다.
 from edge_asr.artifacts import digest, write_json
 from edge_asr.metrics import distribution
 from edge_asr.resources import process_sample

@@ -1,82 +1,64 @@
-# 개발 및 RP5 환경 설치
+# 개발 환경 준비
 
-## 역할과 Python 기준
+현재 프로젝트는 Docker 없이 **Host 개발용 가상환경과 RP5 추론용 가상환경**을 사용합니다. 직접 확인한 OS·Python·패키지·외부 엔진 버전은 [환경 기록](../reference/environment.md), 협업 절차는 [CONTRIBUTING](../../CONTRIBUTING.md)을 확인합니다.
 
-Host는 소스 편집, 패키징, 모델 없이 실행하는 검사를 담당합니다. 성능 결론은 RP5에서 측정한 결과만으로 작성합니다. Host에서 성공한 설치·테스트는 ARM64 추론 검증이 아닙니다.
+## 기존 환경에서 시작
 
-대상은 RP5 ARM64 / Debian 13 / RAM 8GB / Python 3.11입니다. [Debian 13 공식 릴리스 노트](https://www.debian.org/releases/trixie/release-notes/whats-new.en.html)에 따르면 기본 Python은 3.13입니다. `python3`를 3.11로 가정하거나 시스템 Python을 교체하지 않습니다. RP5에 별도 설치된 3.11의 경로를 확인해서 사용합니다. 없다면 별도 3.11 인터프리터를 준비한 뒤 진행해야 하며 기존 RP5 가상환경은 변경하지 않습니다.
-
-## Host 기본 설치
+이미 `.venv`가 있는 현재 Host와 RP5는 재생성·재설치 없이 체크아웃의 명령을 사용합니다.
 
 ```bash
-cd /d/shin/edge-asr
+.venv/bin/python --version
+.venv/bin/python scripts/edge_asr.py env
+.venv/bin/python scripts/edge_asr.py check-config --evaluation configs/gguf_realtime.toml
+.venv/bin/python scripts/edge_asr.py tools list
+```
+
+Host의 모델 없는 검사에는 추론 패키지가 필요하지 않습니다. 실제 모델 실행·성능 판단은 RP5에서 수행합니다. 모델·음원·런타임은 자동으로 내려받지 않습니다.
+
+## 새 Host 개발 환경
+
+아래는 **새 clone에 `.venv`가 없을 때만** 실행합니다. Python 3.11 인터프리터를 먼저 준비하고 버전을 확인합니다. 현재 Host의 기본 `/usr/bin/python`은 3.10이므로 사용하지 않습니다. `python3.11`이 PATH에 없다면 별도 3.11 실행 경로를 지정합니다. 현재 Host의 3.11은 uv 관리 인터프리터입니다.
+
+```bash
 python3.11 --version
 python3.11 -m venv .venv
-source .venv/bin/activate
-python -m pip install -e .
-python -m pip check
-python -m unittest discover -s tests -v
-edge-asr env
-edge-asr check-config --evaluation configs/legacy/zipformer_eval.toml
+.venv/bin/python -m pip install -e '.[dev]'
+.venv/bin/python -m pip check
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v
+.venv/bin/ruff check src tests scripts native
+.venv/bin/ruff format --check src tests scripts native
 ```
 
-필수 런타임은 표준 라이브러리뿐입니다. Python 3.11의 `tomllib`을 사용합니다. Python 패키지와 선택 의존성은 `pyproject.toml`에서 관리합니다. `.venv/`와 빌드 결과는 Git에 포함하지 않습니다.
+Linux 셸을 기준으로 합니다. 기본 코드와 테스트는 Python 3.11 표준 라이브러리를 사용하고 `dev` extra는 Ruff 0.14.14를 설치합니다. 별도 `ffmpeg`가 있으면 합성 음원 변환 검사도 실행되며, 없으면 해당 검사의 생략 이유를 확인합니다. native 검사에 필요한 선택 헤더와 명령은 [테스트 안내](../../tests/README.md)에 있습니다.
 
-## RP5의 새 환경
+기존 Host에는 Ruff가 사용자 도구로 설치되어 있어 `ruff` 명령을 사용합니다. 기존 `.venv`에 이를 다시 설치할 필요는 없습니다. 모델 다운로드·RP5 접속 없이 이 단계까지 공동 개발을 시작할 수 있습니다.
 
-기존 RP5 `.venv`와 모델을 사용하는 반복 도구는 추가 설치 없이 실행할 수 있습니다. [한 작업 폴더 통합·GitHub 업데이트 안내](deployment.md)를 먼저 사용하세요. 기존 `.venv`는 유지합니다. 아래는 새 비교 환경이 필요할 때만 사용하는 선택 절차이며 실제 RP5 실행을 확인한 기록이 아닙니다. `.venv-candidate`가 이미 있으면 그 환경을 덮어쓰지 말고 새 이름을 선택합니다.
+## RP5 실제 추론 준비
 
-```bash
-uname -m                         # 대상 기대값: aarch64
-cat /etc/os-release
-command -v python3.11
-python3.11 --version             # 3.11.x 확인
-cd /home/deepet/projects/edge-asr
-python3.11 -m venv .venv-candidate
-source .venv-candidate/bin/activate
-python -m pip install -e .
-python -m unittest discover -s tests -v
-edge-asr env
-```
+현재 RP5는 Debian 13·ARM64·별도 Python 3.11.18 환경입니다. 기본 `python3`는 3.13.5이며 프로젝트 실행에는 기존 `.venv/bin/python`을 명시합니다. [소스 동기화 안내](deployment.md)로 main 커밋을 맞춘 뒤 [Qwen 대표 명령](qwen3_optimization.md#현재-개발용-대표-명령)을 사용합니다.
 
-`venv`/`ensurepip`가 없는 경우 해당 3.11 설치 방식에 맞는 구성요소를 먼저 준비합니다. Debian의 `python3-venv`는 기본 Python용이므로 별도 3.11을 자동으로 지원한다고 가정하지 않습니다.
+| 필요한 항목 | 현재 경로·준비 안내 |
+| --- | --- |
+| Python 환경 | 현재 `.venv`의 패키지는 [환경 기록](../reference/environment.md#가상환경별-용도) 참고 |
+| Q8 모델·자산 명세 | `models/qwen3-opt/gguf-q8-20261109-01/`, [GGUF 자산·평가 계약](../research/opt2_gguf.md) |
+| 토큰 표시·스레드 분리 bridge | `runtimes/qwen3-opt/split-20261111-01/bridge/`, [native 빌드](../../native/README.md) |
+| 확률 VAD 모델 | `models/silero-vad-k2-20261029/silero_vad.onnx`, [VAD 준비 기록](../archive/model-comparison/m31_online_vad.md) |
+| 평가 음원·정답 | `data/evaluation/edge100-20261109-01/`, [고정100개 준비·검증](../research/fixed100.md) |
+| 모델 설정·연속 입력 옵션 | [configs/gguf_realtime.toml](../../configs/gguf_realtime.toml), [대표 명령](qwen3_optimization.md#현재-개발용-대표-명령) |
 
-## Zipformer 실측 기준 의존성
+새 RP5는 clone만으로 추론할 수 없습니다. Python 3.11·필요한 패키지·모델·음원·고정 엔진을 별도로 준비하고 해시·설정·빌드를 확인합니다. 장비나 빌드 경로가 달라지면 별도 설정·빌드 ID를 사용합니다. Host 가상환경이나 x86_64 바이너리를 ARM64로 복사하지 않습니다.
 
-```bash
-# 새 RP5 가상환경 안에서만 실행
-python -m pip install --only-binary=:all: 'numpy==2.4.6' 'sherpa-onnx==2.0.1'
-python -m pip install -e '.[zipformer]'
-python -m pip check
-python -c 'import numpy, sherpa_onnx; print(numpy.__version__, sherpa_onnx.__version__)'
-```
+## 새 후보 환경과 과거 재현
 
-위 고정값은 [사용자 전달 RP5 Codex 검사 보고](../../results/summaries/rp5-consolidation-audit-20261028.json)에서 현재 환경과 반복 실행 기록이 일치한다고 확인된 Python 3.11.18 / NumPy 2.4.6 / sherpa-onnx 2.0.1을 기준으로 합니다. 기존 `.venv`에는 설치·업그레이드·다운그레이드를 수행하지 않습니다. 새 환경에서 재현할 때만 선택 의존성 `.[zipformer]`를 사용합니다. 최초 1회 보존 로그의 런타임 버전은 여전히 미상이며 반복 실행의 버전을 소급 적용하지 않습니다.
+새 후보 환경이 필요한 경우에만 기존 환경과 다른 이름으로 만듭니다. 의존성은 [pyproject.toml](../../pyproject.toml)의 선택 extra로 구분합니다.
 
-PyPI 배포 메타데이터에서도 [NumPy 2.4.6](https://pypi.org/project/numpy/2.4.6/#files), [sherpa-onnx 2.0.1](https://pypi.org/project/sherpa-onnx/2.0.1/#files)의 CPython 3.11 Linux aarch64 wheel 존재를 확인했습니다. 메타데이터 확인과 실제 설치·추론은 구분하며 이번 실제 RP5 확인의 근거는 사용자 전달 검사 보고입니다. 전이 의존성도 대상 환경에서 설치되어야 하고 이 두 고정값만으로 전체 환경 lock을 대체하지 않습니다. wheel을 찾지 못하면 자동 소스 빌드로 우회하지 말고 Python ABI·아키텍처·전이 의존성의 wheel 가용성을 점검합니다.
+| extra | 용도 |
+| --- | --- |
+| `dev` | Host 정적 검사 |
+| `vad-probability` | NumPy·Python ONNX Runtime 기반 VAD. GGUF 엔진은 별도 native 빌드 |
+| `qwen3` | Qwen ONNX용 sherpa-onnx·NumPy |
+| `zipformer`, `sensevoice` | 이전 비교 모델 재현 |
 
-SenseVoiceSmall INT8은 같은 sherpa CPU 런타임을 사용하며 새 후보 환경용 `.[sensevoice]` 선택 의존성을 추가했습니다. [M2-2 실제 RP5 검증](../../results/summaries/sensevoice-kss-dev50-20261028.md)에서는 기존 `.venv`·설치 패키지를 바꾸지 않고 새 모델 폴더만 추가했습니다. 새 장비·런타임·모델 조합은 별도로 확인해야 합니다. 기본 설치에 PyTorch 등 무거운 패키지를 강제하지 않습니다.
+현재 GGUF+VAD는 준비된 `.venv`를 그대로 사용합니다. ONNX 전용 `.venv-qwen3-onnx-20261106-01`과 ONNX+VAD `.venv-qwen3-vad-20261106-01`도 보존합니다. 선택 extra의 직접 의존성 고정만으로 전체 환경 lock이 되지는 않으며 새 환경의 설치·로딩·실제 추론은 별도로 확인해야 합니다.
 
-Qwen3-ASR은 [sherpa CPU·INT8 ONNX 경로](../archive/model-comparison/qwen3_deployment.md)를 선정하고, 2026-11-06 RP5의 별도 `.venv-qwen3-onnx-20261106-01`에서 실제 설치·로딩·전사를 확인했습니다. Python 3.11.18 / NumPy 2.4.6 / sherpa-onnx·core 2.0.1 / native ORT 1.28.2를 사용합니다. 별도 Python onnxruntime 패키지는 설치하지 않았습니다. 기본 Python 3.13이나 기존 `.venv`는 변경하지 않았습니다.
-
-새 환경용 선택 의존성은 `.[qwen3]`입니다. 이미 준비된 위 환경에는 재설치하지 않고 `scripts/edge_asr.py`로 실행합니다. 모델은 `models/qwen3-20261106-01/` 아래 별도로 보관합니다. 어댑터는 확인한 모델·토크나이저 6개 파일의 SHA-256과 sherpa 2.0.1에 한정하며 다른 변환본은 거부합니다. 다운로드·wheel 해시·설치 로그·전체 freeze는 로컬 `results/maintenance/qwen3-20261106-01/`에 보존했습니다. [입력 예산·실측 절차](../archive/model-comparison/qwen3_batch.md)를 확인하세요.
-
-```bash
-# RP5의 준비된 Qwen 환경. 설정 검사에는 추론이 없음.
-.venv-qwen3-onnx-20261106-01/bin/python scripts/edge_asr.py check-config \
-  --evaluation configs/legacy/qwen3_eval.toml
-```
-
-Qwen과 온라인 VAD를 함께 사용하는 별도 환경은 `.venv-qwen3-vad-20261106-01`이다. 위 batch 환경을 수정하지 않고 새로 만들었다. 같은 Python·NumPy·sherpa/native ORT에 Python onnxruntime 1.31.1을 추가했으며, 전이 의존성을 포함한 wheel 8개의 SHA-256 lock으로 설치하고 `pip check`를 통과했다. 설치 로그·wheel·lock·freeze는 `results/maintenance/qwen3-realtime-20261106-01/`에 보존한다. sherpa 내부 ORT 1.28.2와 Python VAD용 ORT 1.31.1은 별도 런타임이다. 새 장비에서 설치할 때의 선택 의존성 조합은 `.[qwen3,vad-probability]`이며, 이미 준비된 환경에는 재설치하지 않는다. [동시 실행 조건](../archive/model-comparison/qwen3_realtime.md), [자막 모델 선택](legacy/live_captions.md).
-
-## 자산 및 환경 기록
-
-모델·WAV는 Git으로 전달하지 않습니다. 기존 RP5 자산은 수정하지 않고 새 배포 경로의 `models/`에서 심볼릭 링크로 참조할 수 있습니다. 예시 경로와 파일명은 [실험 README](../../experiments/m1_zipformer/README.md)에 있습니다. 자산을 별도로 수급할 때는 배포처·라이선스·버전·SHA-256을 로컬 실행 기록에 남깁니다.
-
-```bash
-mkdir -p results/local-environment
-edge-asr env --probe-runtime > results/local-environment/environment.json
-python -m pip freeze --all > results/local-environment/pip-freeze.txt
-```
-
-이는 **명령을 실행한 컴퓨터**의 정보입니다. 명시적 `--probe-runtime`은 sherpa를 import해 네이티브 ORT 버전을 조회하지만 모델을 생성하지 않습니다. 별도 Python onnxruntime 버전과 구분하며 미설치/미제공은 null·사유로 기록합니다. 각 RP5 실행 결과에는 해당 장비에서 생성한 환경 정보, Git 커밋, 설정 사본, 모델·WAV 체크섬을 함께 보관합니다. `pip freeze`는 그 환경의 설치 스냅샷이며 Host의 가상환경이나 wheel을 ARM64로 복사하는 방법은 아닙니다. 전체 전이 의존성 lock과 해시 검증 설치는 RP5 후보 환경이 통과한 후 추가합니다.
+기존 ONNX 환경의 다운로드·wheel 해시·설치·freeze 기록은 `results/maintenance/qwen3-20261106-01/`, 별도 ONNX+VAD 환경 기록은 `results/maintenance/qwen3-realtime-20261106-01/`에 있습니다. [이전 Qwen 설치 기록](../archive/model-comparison/qwen3_deployment.md)을 참고합니다. 새 환경 기록은 [환경 문서 갱신 절차](../reference/environment.md#환경-기록-갱신)를 따릅니다.

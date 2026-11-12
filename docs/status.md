@@ -4,7 +4,9 @@
 
 ## 유지하는 연속 입력 기준
 
-**Qwen 단독1배속 연속 입력**이 주 평가입니다. 다음 개발 권장은 **GGUF Q8_0·생성2T/음성·prefill3T·VAD 보정·ASR/VAD 판정5초·첫1초/이후4초·토큰 표시/접두부 재표시 보류**입니다. 별도 `results/optimization/opt3/realtime-split100-20261111-01/configs/split-2-3.toml`을 사용하며 기존 기본2T·모두3T 설정·모델·환경·bridge는 보존합니다. 실사용 채택은 보류합니다.
+**Qwen 단독1배속 연속 입력**이 주 평가입니다. 다음 개발 권장은 **GGUF Q8_0·생성2T/음성·prefill3T·VAD 보정·ASR/VAD 판정5초·첫1초/이후4초·토큰 표시/접두부 재표시 보류**입니다. 공동 개발에는 [configs/gguf_realtime.toml](../configs/gguf_realtime.toml)과 [대표 명령](guides/qwen3_optimization.md#현재-개발용-대표-명령)을 사용합니다. 원본 실험의 `results/optimization/opt3/realtime-split100-20261111-01/configs/split-2-3.toml`과 TOML 값은 같으며, 기존 기본2T·모두3T 설정·모델·환경·bridge는 보존합니다. 실사용 채택은 보류합니다.
+
+공동 개발의 시작·검증 절차는 [CONTRIBUTING](../CONTRIBUTING.md), 직접 확인한 Host/RP5 버전과 환경별 용도는 [환경 기록](reference/environment.md)에 정리했습니다. 구조·안내 정리는 아래 실측의 재실행이나 성능 갱신을 뜻하지 않습니다.
 
 ## 최신100개 대조
 
