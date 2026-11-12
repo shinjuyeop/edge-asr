@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-12",
+  "kind": "qwen3_saved_log_cache_reuse_audit",
+  "analysis_source_commit": "0fc514980a557ec6ef2d2f2f1d693fad8f3a3df9",
+  "measurement_source_commit": "976da9029f338673872ea93c93a3c86d41c63374",
+  "measured_run_path": "results/optimization/opt3/realtime-split100-20261111-01/full100/split",
+  "analysis_raw_path": "results/optimization/opt3/realtime-cache-audit-20261112-01",
+  "worker_sha256": "788908ac24772e9e56e8cf90665dd5e5932bf26362e21421e1f6fbcca8cce88e",
+  "configuration": {
+    "num_threads": 2,
+    "num_threads_batch": 3
+  },
+  "input": {
+    "sources": 100,
+    "frames": 14258317,
+    "duration_s": 891.1448125,
+    "manifest_sha256": "75ba1226dddfa0defb97f6fdbba89c31a762b541beb41299cdb0ac8490c45a06",
+    "payload_hashes_verified": 329
+  },
+  "costs": {
+    "partial": {
+      "calls": 119,
+      "input_frames": 1956928,
+      "input_audio_s": 122.308,
+      "inference_s": 138.81751456705388,
+      "native_stages": {
+        "kv_reset_s": 0.8531105760000004,
+        "preprocess_s": 0.035096459999999996,
+        "audio_and_prefill_s": 88.90941193199998,
+        "token_decode_s": 47.88811439,
+        "sampling_s": 0.6162406389999997,
+        "token_callback_s": 0.4401337980000001,
+        "native_elapsed_s": 138.74897700400004
+      },
+      "stage_fraction_of_inference": {
+        "kv_reset_s": 0.006145554317556356,
+        "preprocess_s": 0.00025282443724381143,
+        "audio_and_prefill_s": 0.6404769038639827,
+        "token_decode_s": 0.3449717028816872,
+        "sampling_s": 0.004439213891142916,
+        "token_callback_s": 0.00317059269770602,
+        "native_elapsed_s": 0.9995062758235689
+      },
+      "reported_encoder_s": 43.84899999999998,
+      "reported_audio_embedding_eval_s": 22.887,
+      "combined_stage_residual_s": 22.173411932000008,
+      "reported_encoder_logs": 119,
+      "reported_audio_embedding_eval_logs": 119,
+      "native_unclassified_s": 0.006869209000029741,
+      "python_and_boundary_s": 0.0685375630538374,
+      "timing_scope": "encoder/음성 embedding eval은 기존 stderr 정수ms 합. residual은 text prefill+helper/경계 비용+로그 해상도 차이로 순수 text prefill 계측이 아님."
+    },
+    "final": {
+      "calls": 210,
+      "input_frames": 10387840,
+      "input_audio_s": 649.24,
+      "inference_s": 495.5001545757841,
+      "native_stages": {
+        "kv_reset_s": 1.5146867489999987,
+        "preprocess_s": 0.11743603300000006,
+        "audio_and_prefill_s": 258.46697672,
+        "token_decode_s": 230.5927735680001,
+        "sampling_s": 2.6407358619999983,
+        "token_callback_s": 1.9778353309999992,
+        "native_elapsed_s": 495.33301063100004
+      },
+      "stage_fraction_of_inference": {
+        "kv_reset_s": 0.0030568845135815906,
+        "preprocess_s": 0.00023700503807217046,
+        "audio_and_prefill_s": 0.5216284482116521,
+        "token_decode_s": 0.46537376716949574,
+        "sampling_s": 0.005329434991318679,
+        "token_callback_s": 0.003991593771939984,
+        "native_elapsed_s": 0.9996626763014289
+      },
+      "reported_encoder_s": 142.94199999999998,
+      "reported_audio_embedding_eval_s": 75.46299999999992,
+      "combined_stage_residual_s": 40.061976720000004,
+      "reported_encoder_logs": 210,
+      "reported_audio_embedding_eval_logs": 210,
+      "native_unclassified_s": 0.022566367999957038,
+      "python_and_boundary_s": 0.16714394478407257,
+      "timing_scope": "encoder/음성 embedding eval은 기존 stderr 정수ms 합. residual은 text prefill+helper/경계 비용+로그 해상도 차이로 순수 text prefill 계측이 아님."
+    },
+    "all": {
+      "calls": 329,
+      "input_frames": 12344768,
+      "input_audio_s": 771.548,
+      "inference_s": 634.317669142838,
+      "native_stages": {
+        "kv_reset_s": 2.367797324999998,
+        "preprocess_s": 0.15253249300000002,
+        "audio_and_prefill_s": 347.37638865199995,
+        "token_decode_s": 278.4808879579999,
+        "sampling_s": 3.2569765009999982,
+        "token_callback_s": 2.4179691289999985,
+        "native_elapsed_s": 634.0819876349991
+      },
+      "stage_fraction_of_inference": {
+        "kv_reset_s": 0.003732825743605147,
+        "preprocess_s": 0.00024046704107441819,
+        "audio_and_prefill_s": 0.5476378880024174,
+        "token_decode_s": 0.43902432724964907,
+        "sampling_s": 0.005134614183775133,
+        "token_callback_s": 0.0038119214498114687,
+        "native_elapsed_s": 0.999628448773692
+      },
+      "reported_encoder_s": 186.7910000000001,
+      "reported_audio_embedding_eval_s": 98.34999999999994,
+      "combined_stage_residual_s": 62.235388652,
+      "reported_encoder_logs": 329,
+      "reported_audio_embedding_eval_logs": 329,
+      "native_unclassified_s": 0.029435576999276236,
+      "python_and_boundary_s": 0.23568150783887631,
+      "timing_scope": "encoder/음성 embedding eval은 기존 stderr 정수ms 합. residual은 text prefill+helper/경계 비용+로그 해상도 차이로 순수 text prefill 계측이 아님."
+    }
+  },
+  "overlap": {
+    "processed_input_frames": 12344768,
+    "processed_input_audio_s": 771.548,
+    "input_union_frames": 10388544,
+    "input_union_audio_s": 649.284,
+    "repeated_frames": 1956224,
+    "repeated_audio_s": 122.264,
+    "repeated_fraction_of_processed": 0.15846583751108162,
+    "partial_final_pairs": 119,
+    "strict_prefix_pairs": 118,
+    "trimmed_tail_pairs": 1,
+    "trimmed_tail_frames": 704,
+    "exact_duplicate_calls": 0
+  },
+  "prompt": {
+    "non_audio_positions": {
+      "18": 329
+    },
+    "pre_audio_prefix_tokens": null,
+    "scope": "18은 음성 앞뒤 텍스트 합계이며 재사용 가능한 앞prefix 길이로 간주하지 않음."
+  },
+  "saved_accuracy": {
+    "normalization": "ko_cer_v1",
+    "reference_characters": 3848,
+    "substitutions": 195,
+    "deletions": 157,
+    "insertions": 76,
+    "errors": 428,
+    "cer": 0.11122661122661123
+  },
+  "saved_accuracy_scope": "기존 RP5 전사 점수의 참조. 새 추론·정확도 재측정이 아님.",
+  "cache_assessment": {
+    "within_call_decode_kv": "기존 사용 중",
+    "exact_pcm_result_cache": {
+      "observed_hits": 0,
+      "measured_speedup": null
+    },
+    "growing_audio_prefix_kv": {
+      "safe_in_current_path": false,
+      "reason": "전체 입력 기준 정규화·끝 reflection·비인과 audio encoder이므로 PCM 접두부 동일성만으로 embedding/KV 동등성 보장 불가",
+      "measured_speedup": null
+    },
+    "fixed_text_prefix_before_audio": {
+      "candidate_for_experiment": true,
+      "implemented": false,
+      "measured_speedup": null,
+      "text_prefix_only_time_s": null,
+      "requirement": "음성 앞 동일 text만 유지; audio/이후text/이전생성은 제거; 제거 실패/설정변경/호출실패 시 전체 초기화; 출력·토큰·지연 대조 필요"
+    }
+  },
+  "verification": {
+    "old_artifact_files": 329,
+    "core_and_upstream_files": 13,
+    "project_files_match_measurement_commit": 6,
+    "source_urls_matched_to_local": 7,
+    "native_encoder_log_count": 329,
+    "native_audio_embedding_eval_log_count": 329
+  },
+  "upstream_evidence": [
+    {
+      "path": "runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd/models/qwen3a.cpp",
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/7d7f0287530bc8981690f361d8c1627dbae1c99a/tools/mtmd/models/qwen3a.cpp",
+      "sha256": "3a8701cbccd90824b3df436412b50dd08131b50e18f49186367422cba8ba32fb"
+    },
+    {
+      "path": "runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd/mtmd-audio.cpp",
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/7d7f0287530bc8981690f361d8c1627dbae1c99a/tools/mtmd/mtmd-audio.cpp",
+      "sha256": "7c2362d8ef29e6d68631f12c33eaf7bcc463a8b22155474a59cba79611679708"
+    },
+    {
+      "path": "runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd/mtmd-helper.cpp",
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/7d7f0287530bc8981690f361d8c1627dbae1c99a/tools/mtmd/mtmd-helper.cpp",
+      "sha256": "fd2b9fbb742c1d1d102cfacb70ab0dedc903603a22dc5cf504c77b389ce413d9"
+    },
+    {
+      "path": "runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd/mtmd-graph.cpp",
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/7d7f0287530bc8981690f361d8c1627dbae1c99a/tools/mtmd/mtmd-graph.cpp",
+      "sha256": "4d31e538dc3eeba4893d6cb47f267395adfa04a3914d659ff6f5e490a9c4e8f3"
+    },
+    {
+      "path": "runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd/mtmd-graph.h",
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/7d7f0287530bc8981690f361d8c1627dbae1c99a/tools/mtmd/mtmd-graph.h",
+      "sha256": "5c32d78eb6f2c251377851869b178c47a809f23322fd9991d8e7a3a4183f156b"
+    },
+    {
+      "path": "runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd/mtmd.cpp",
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/7d7f0287530bc8981690f361d8c1627dbae1c99a/tools/mtmd/mtmd.cpp",
+      "sha256": "fd5699428d8efec02cc9064f8ef3df7545e526b46cb5e66aa39f10698c4b5e89"
+    },
+    {
+      "path": "runtimes/qwen3-opt/llama-q8-20261109-01/src/include/llama.h",
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/7d7f0287530bc8981690f361d8c1627dbae1c99a/include/llama.h",
+      "sha256": "a806cb05ff2f218945acefc0d5e49681f41d76af5d7ef7613d954fc18c81fe2a"
+    }
+  ],
+  "analysis_script_sha256": "05f54e90b270dbe56f73e5dc425b75d7360cbd5ef8e4928f10612b44be1606f9",
+  "new_inference_performed": false,
+  "production_runtime_changed": false,
+  "unmeasured": {
+    "cache_speedup": null,
+    "cache_memory_cost_mib": null,
+    "streaming_encoder_equivalence": null,
+    "actual_gui_latency_s": null
+  },
+  "scope": "Host/RP5에서 보존한 실제 RP5 worker/native stderr를 독립 재집계. WAV/float32 payload 해시·입력좌표 재검증. 중복 프레임/부분 호출 비용은 제거 가능한 시간이나 예상 속도 향상이 아님. 기존ms로그를 정밀 계측으로 취급하지 않음."
+}

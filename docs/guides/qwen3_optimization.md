@@ -149,6 +149,8 @@ Python 어댑터는 생성/prefill의 native getter 값과 mtmd 초기화 전달
 
 추가 [음성/prefill3T/4T 대조](../../results/summaries/optimization/realtime-prefill-20261112.md)는 생성2T를 고정하고 같은6개를2/3→2/4→2/3으로 실행했습니다. 전사·실패/드롭/미출력은 같았고, 후보의 음성/prefill·TTFT는 줄었지만 앞control 대비 전체 추론 합계가0.069초(0.17%) 늘었습니다. 현재 공유 설정2/3을 유지하며100개는 실행하지 않았습니다. 운영 변동을 포함한 선별 결과로4T의 효과가 없다고 단정하지 않습니다.
 
+[반복 처리·캐시 분석](../../results/summaries/optimization/realtime-cache-audit-20261112.md)은 기존2/3 로그를 재집계한 결과로 새 추론·캐시 옵션이 아닙니다. 한 호출 안의 decode KV는 이미 사용하며, 입력이 늘어나는 호출 사이의 음성 KV 재사용은 미구현입니다. KV 초기화 비중은0.37%이고 고정 text prefix 재사용은 다음 검증 후보입니다. 현재 대표 명령과 공유 설정은 그대로 사용합니다.
+
 ## 이전 실험 재현
 
 KSS 등 이전 실험 설정은 [설정 색인](../../configs/README.md)에 보존합니다. 소규모 반복·56ms 진단은 [OPT-0](../research/opt0_pilot.md), 별도 C API/ORT 호출 계측은 [OPT-1](../research/opt1_profiling.md), 최초 GGUF/KSS 비교는 [OPT-2](../research/opt2_gguf.md)를 따릅니다. `opt0-baseline`은 현재 `benchmark-qwen3`와 같은 실행기 이름입니다. 프로파일 계측 실행과 일반 성능 측정은 구분합니다.
