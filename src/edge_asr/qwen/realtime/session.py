@@ -77,7 +77,12 @@ class CaptionSession:
         self.partial_budget_s, self.partial_max_calls = partial_budget_s, partial_max_calls
         self.min_new_frames = round(partial_min_new_s * 16000)
         self.tail_margin_s = partial_tail_margin_s
-        self.scheduler_stats = {"mode": partial_mode, "policy": adaptive_policy, "decisions": {}}
+        self.scheduler_stats = {
+            "mode": partial_mode,
+            "policy": adaptive_policy,
+            "version": "budgeted-headroom-v2" if adaptive_policy == "budgeted" else "recent-v1",
+            "decisions": {},
+        }
         self.last_decision = None
         self.partials, self.silence_policy = partials, silence_policy
         self.frames, self.emit, self.telemetry = frames, emit, telemetry
@@ -230,8 +235,6 @@ class CaptionSession:
         if protected and self.partial_requests:
             estimate = self.worker.estimate_cost("partial", end - start)
             final_cost = self.worker.estimate_cost("final", self.pipeline.maximum)
-            if final_cost is not None:
-                budget = min(budget, max(0, self.pipeline.maximum / 16000 - final_cost))
             with self.lock:
                 spent = sum(
                     r["inference_s"]

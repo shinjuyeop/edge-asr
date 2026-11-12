@@ -352,6 +352,41 @@ class RealtimeTests(unittest.TestCase):
             finally:
                 session.close()
 
+    def test_long_final_history_does_not_double_reserve_followup_headroom(self):
+        adapter, events = Adapter(), []
+        adapter.release.set()
+        session = CaptionSession(
+            adapter,
+            BoundedProbabilityVad(Probability()),
+            16000,
+            events.append,
+            {"t0_monotonic_ns": time.perf_counter_ns()},
+            partial_after_s=0.2,
+            partial_mode="adaptive",
+            adaptive_policy="budgeted",
+            partial_min_new_s=0.1,
+            partial_budget_s=1,
+            max_segment_s=3,
+        )
+        try:
+            for pos in range(0, 4800, 1600):
+                session.accept_at(session, array("f", [0.25] * 1600), pos, pos + 1600)
+            deadline = time.monotonic() + 2
+            while not session.worker.availability()[0] and time.monotonic() < deadline:
+                time.sleep(0.001)
+            self.assertTrue(session.worker.availability()[0])
+            with session.worker.condition:
+                session.worker.costs["partial"].append((3200, 0.1))
+                session.worker.costs["final"].append((48000, 10))
+            session.accept_at(session, array("f", [0.25] * 1600), 4800, 6400)
+            partials = [e for e in events if e["type"] == "submitted" and e["kind"] == "partial"]
+            self.assertEqual(len(partials), 2)
+            for pos in range(6400, 16000, 1600):
+                session.accept_at(session, array("f", [0.25] * 1600), pos, pos + 1600)
+            session.finish_stream(session)
+        finally:
+            session.close()
+
     def test_early_followup_resets_each_segment_and_preserves_final_pcm(self):
         signatures, schedules = [], []
         for followup in (None, 0.4, 0.2):
