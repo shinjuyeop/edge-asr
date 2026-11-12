@@ -45,6 +45,7 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv/bin/python -m unittest discover -
 
 | 작업 | 먼저 볼 위치 |
 | --- | --- |
+| 음성·자막 직접 확인 | [청취 도구 사용법](docs/guides/listener.md), [viewer/](src/edge_asr/qwen/viewer/) |
 | 연속 입력·부분/확정 자막 | [qwen/realtime/](src/edge_asr/qwen/realtime/) |
 | 모델 로딩·반복 평가 | [qwen/benchmark.py](src/edge_asr/qwen/benchmark.py) |
 | 모델 호출·출력 검사 | [qwen/gguf.py](src/edge_asr/qwen/gguf.py), [qwen/onnx.py](src/edge_asr/qwen/onnx.py) |
@@ -74,6 +75,7 @@ edge-asr/
 │   ├── eval_manifest.example.jsonl
 │   ├── gguf.toml                        # 보존한 Q8 2T 기준선
 │   ├── gguf_realtime.toml               # 현재 개발용 GGUF 설정
+│   ├── listener.toml                    # 청취용 모델·음원·연속 옵션
 │   └── onnx.toml                        # ONNX 출발 참조
 ├── data/                                # 로컬 음원·정답
 │   ├── evaluation/
@@ -121,6 +123,11 @@ edge-asr/
 │       │   │   ├── session.py
 │       │   │   ├── stability.py
 │       │   │   └── worker.py
+│       │   ├── viewer/                  # 라이브·기록 청취 도구
+│       │   │   ├── web/                  # 공통 음성·자막·지표 화면
+│       │   │   ├── analysis.py
+│       │   │   ├── runs.py
+│       │   │   └── server.py
 │       │   ├── benchmark.py
 │       │   ├── gguf.py
 │       │   ├── onnx.py

@@ -1,0 +1,19 @@
+# 모델 조건은 참조 TOML, 연속 입력 조건은 이 파일에서 바꿉니다.
+# 화면은 실측 worker.json의 설정을 표시하며 특정 모델·스레드 값에 의존하지 않습니다.
+title = "현재 Qwen 개발 구성"
+config = "configs/gguf_realtime.toml"
+manifest = "data/evaluation/edge100-20261109-01/manifest.jsonl"
+vad_model = "models/silero-vad-k2-20261029/silero_vad.onnx"
+
+[replay]
+gap_s = 0
+vad_threshold = 0.3
+vad_preprocess = "rms26-floor80"
+vad_max_speech_s = 5
+max_segment_s = 5
+partial_after_s = 1
+partial_interval_s = 4
+drain_timeout_s = 30
+queue_capacity = 4
+silence_policy = "skip-zero"
+token_stream = true

@@ -1,8 +1,11 @@
 """Qwen 단독 WAV 1배속·VAD·누적 부분 전사. 오디오 encoder 증분 실행은 아니다."""
 
 import argparse
+import json
+import math
 import os
 import subprocess
+import time
 from copy import deepcopy
 from pathlib import Path
 from threading import Lock
@@ -30,6 +33,7 @@ def run(
     *,
     adapter_factory=None,
     vad_factory=None,
+    start_signal=None,
     **settings,
 ):
     config = load_evaluation_config(config_path)
@@ -106,7 +110,7 @@ def run(
                     row.update(status="success", hypothesis=text)
                 finally:
                     row["adapter_result"] = deepcopy(getattr(adapter, "last_result_metadata", None))
-        info["status"] = "replaying"
+        info["status"] = "preparing" if start_signal else "replaying"
         write_json(receipt, info)
         lock = Lock()
         log = (output / "jobs.jsonl").open("x", encoding="utf-8")
@@ -134,6 +138,27 @@ def run(
             "queue_capacity_chunks": 10,
             "drain_timeout_s": settings.get("drain_timeout_s", 30),
         }
+
+        def start_gate():
+            info["status"] = "ready"
+            write_json(receipt, info)
+            deadline = time.perf_counter() + 180
+            while not start_signal.exists():
+                if time.perf_counter() > deadline:
+                    raise TimeoutError("청취 화면의 시작 요청을 180초 동안 받지 못했습니다.")
+                time.sleep(0.02)
+            target = json.loads(start_signal.read_text())["start_monotonic_s"]
+            if not isinstance(target, (int, float)) or not math.isfinite(target):
+                raise ValueError("유한한 예약 시작 시각이 필요합니다.")
+            if not 0 <= target - time.perf_counter() <= 10:
+                raise ValueError("예약 시작 시각은 현재부터 10초 이내여야 합니다.")
+            time.sleep(max(0, target - time.perf_counter()))
+
+        def started(t0):
+            write_json(output / "clock.json", {"t0_monotonic_s": t0 / 1e9})
+            info["status"] = "replaying"
+            write_json(receipt, info)
+
         info["replay_resources"] = {}
         with measure_process(info["replay_resources"], sample_device=True):
             hypothesis = run_paced(
@@ -143,6 +168,8 @@ def run(
                 output / "stream",
                 info["telemetry"],
                 chunk_handler=session.accept_at,
+                start_gate=start_gate if start_signal else None,
+                on_start=started if start_signal else None,
             )
         info.update(
             hypothesis=hypothesis,
@@ -234,11 +261,12 @@ def run(
     return info
 
 
-def main():
+def argument_parser():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, default=Path("configs/gguf.toml"))
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--start-signal", type=Path, help="선택 청취 도구의 예약 시작 JSON")
     parser.add_argument(
         "--vad-model", type=Path, default=Path("models/silero-vad-k2-20261029/silero_vad.onnx")
     )
@@ -285,7 +313,11 @@ def main():
         default="skip-zero",
         help="완전0 PCM만 별도 기록하고 ASR 호출 생략. 조용한 음성 임계값 필터 아님",
     )
-    args = vars(parser.parse_args())
+    return parser
+
+
+def main():
+    args = vars(argument_parser().parse_args())
     root = Path(__file__).resolve().parents[4]
     result = run(
         root,

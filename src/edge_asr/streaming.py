@@ -171,7 +171,15 @@ def warmup_stream(adapter, audio, settings):
 
 
 def run_paced(
-    adapter, audio, settings, directory: Path, telemetry: dict, *, chunk_handler=None
+    adapter,
+    audio,
+    settings,
+    directory: Path,
+    telemetry: dict,
+    *,
+    chunk_handler=None,
+    start_gate=None,
+    on_start=None,
 ) -> str:
     """chunk_handler는 선택적으로 (stream, PCM, 절대 시작, 절대 끝)을 받는다.
 
@@ -226,9 +234,13 @@ def run_paced(
         if not connection.poll(10) or connection.recv() != "ready":
             raise RuntimeError("입력 프로세스 준비 실패")
         stream = timed(adapter.start_stream)
+        if start_gate is not None:
+            start_gate()
         cpu_start, t0 = time.process_time(), time.perf_counter_ns()
         telemetry["t0_monotonic_ns"] = t0
         connection.send(t0)
+        if on_start is not None:
+            on_start(t0)
         with (directory / "decoder.jsonl").open("x", encoding="utf-8") as log:
             while True:
                 if (time.perf_counter_ns() - t0) / 1e9 > audio.duration_s + settings[
