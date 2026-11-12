@@ -21,7 +21,7 @@ function stopAudio(){position=nowPosition();if(node){try{node.stop();}catch{}nod
 function playAudio(offset=0,delay=0){
   stopAudio();const ctx=audioContext();baseContext=ctx.currentTime+Math.max(0,delay);baseOffset=offset;position=offset;
   if(offset<buffer.duration){node=ctx.createBufferSource();node.buffer=buffer;node.connect(gain);node.start(baseContext,offset);}
-  playing=true;$('play').textContent=mode==='live'?'라이브 청취 중':'❚❚ 일시정지';
+  playing=true;$('play').textContent=mode==='live'?'라이브 청취 중':'일시정지';
 }
 async function synchronize(){
   const before=performance.now()/1000;const r=await api('/api/clock');const after=performance.now()/1000;
@@ -38,7 +38,7 @@ function changeMode(value){
   for(const name of ['replay','live']){$(`${name}Tab`).classList.toggle('selected',name===value);$(`${name}Tab`).setAttribute('aria-selected',String(name===value));}
   $('modeBadge').textContent=value==='live'?'라이브 · RP5 실제 추론':'기록 재생';
   $('play').disabled=true;$('seek').disabled=true;$('stopRun').disabled=true;$('rewind').disabled=true;
-  $('play').textContent='▶ 재생';renderMetrics();renderTable();renderCaption(0);drawWave();
+  $('play').textContent='재생';renderMetrics();renderTable();renderCaption(0);drawWave();
   notice(value==='live'?'구성과 음원을 선택해 실행을 준비하세요.':'기록을 선택해 원래 발행 시각으로 재생하세요.');
 }
 async function refreshCatalog(){
@@ -148,7 +148,7 @@ async function poll(){
 async function play(){
   if(!buffer)return;await audioContext().resume();
   if(mode==='replay'){
-    if(playing){stopAudio();$('play').textContent='▶ 이어 듣기';}
+    if(playing){stopAudio();$('play').textContent='이어 듣기';}
     else{const end=Math.max(buffer.duration,run.end_s+1);playAudio(position>=end?0:position);}
     return;
   }
@@ -164,12 +164,12 @@ function drawWave(){
   const canvas=$('wave'),width=Math.max(1,canvas.clientWidth),height=58;canvas.width=width*devicePixelRatio;canvas.height=height*devicePixelRatio;
   const c=canvas.getContext('2d');c.scale(devicePixelRatio,devicePixelRatio);c.clearRect(0,0,width,height);
   const data=buffer?.getChannelData(0),at=nowPosition(),ratio=buffer?Math.min(1,at/buffer.duration):0;
-  for(let x=0;x<width;x+=4){let peak=.035;if(data){const a=Math.floor(x/width*data.length),b=Math.floor((x+4)/width*data.length);for(let i=a;i<b;i+=Math.max(1,Math.floor((b-a)/30)))peak=Math.max(peak,Math.abs(data[i]));}const h=Math.max(2,Math.min(50,peak*90));c.fillStyle=x<width*ratio?'#138f88':'#cfdae5';c.fillRect(x,height/2-h/2,2,h);}
+  for(let x=0;x<width;x+=4){let peak=.035;if(data){const a=Math.floor(x/width*data.length),b=Math.floor((x+4)/width*data.length);for(let i=a;i<b;i+=Math.max(1,Math.floor((b-a)/30)))peak=Math.max(peak,Math.abs(data[i]));}const h=Math.max(2,Math.min(50,peak*90));c.fillStyle=x<width*ratio?'#555':'#d5d5d5';c.fillRect(x,height/2-h/2,2,h);}
 }
 let lastDraw=0;
 function tick(ms){
   const at=nowPosition(),end=buffer?Math.max(buffer.duration,run?.end_s+1||0):0;
-  if(playing&&mode==='replay'&&at>=end){stopAudio();position=end;$('play').textContent='▶ 다시 듣기';}
+  if(playing&&mode==='replay'&&at>=end){stopAudio();position=end;$('play').textContent='다시 듣기';}
   if(playing&&mode==='live'&&run?.terminal&&at>=end){stopAudio();$('play').textContent='청취 종료';}
   if(ms-lastDraw>80){lastDraw=ms;$('clockText').textContent=`${clock(at)} / ${clock(buffer?.duration||0)}`;$('seek').value=at;renderCaption(at);drawWave();
     if(mode==='live'&&calibration){const serverNow=performance.now()/1000+calibration.offset;const origin=run?.clock?.t0_monotonic_s||run?.scheduled?.start_monotonic_s;
@@ -186,7 +186,7 @@ $('loadRun').onclick=action(()=>selectRun($('runSelect').value));$('play').oncli
 $('joinRun').onclick=action(async()=>{await selectRun($('joinSelect').value);if(run.terminal){const id=run.id;changeMode('replay');await selectRun(id);}});
 $('prepare').onclick=action(async()=>{const r=await api('/api/launch',{profile:$('profileSelect').value,selection:$('sourceSelect').value});await refreshCatalog();await selectRun(r.id);});
 $('stopRun').onclick=action(async()=>{await api('/api/stop',{id:run.id});stopAudio();follow=false;notice('중단 요청을 전달했습니다. 실패·중단 기록을 보존합니다.');});
-$('rewind').onclick=()=>{stopAudio();position=0;lastEventKey='';renderCaption(0);$('play').textContent='▶ 재생';};
+$('rewind').onclick=()=>{stopAudio();position=0;lastEventKey='';renderCaption(0);$('play').textContent='재생';};
 $('seek').oninput=()=>{if(mode!=='replay')return;const was=playing;stopAudio();position=Number($('seek').value);lastEventKey='';if(was)playAudio(position);renderCaption(position);};
 $('volume').oninput=()=>{if(gain)gain.gain.value=Number($('volume').value);};$('sort').onchange=renderTable;
 $('download').onclick=()=>{const blob=new Blob([JSON.stringify({run:run?.id,mode,userAgent:navigator.userAgent,audioOutputLatency:context?.outputLatency??null,scope:'브라우저 수신·재생 추정. 물리 화면/음향 실측 아님.',observations},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`listener-${run?.id||'session'}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);};
