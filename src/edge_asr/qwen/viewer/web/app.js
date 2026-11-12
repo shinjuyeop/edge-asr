@@ -100,7 +100,7 @@ async function loadAudio(myEpoch){
 }
 function renderConditions(){
   if(!run)return;const m=run.config?.model||{},s=run.settings||{};
-  const fields=[['모델',`${m.family||'준비 중'} · ${m.quantization||'—'}`],['스레드',`${m.num_threads??'—'} / ${m.num_threads_batch??m.num_threads??'—'}`],['고정 KV',m.cache_text_prefix?'사용':'미사용'],['부분 요청',`첫 ${s.partial_after_s??'—'}초 / 다음 ${s.partial_followup_s??s.partial_interval_s??'—'}초 뒤 / 이후 ${s.partial_interval_s??'—'}초`],['구간',`${s.max_segment_s??'—'}초`],['VAD',`${s.vad_preprocess||'—'} / ${s.vad_threshold??'—'}`],['표시',s.token_stream?'생성 중 토큰':'완성 문자열'],['소스',(run.source_commit||'—').slice(0,8)]];
+  const fields=[['모델',`${m.family||'준비 중'} · ${m.quantization||'—'}`],['스레드',`${m.num_threads??'—'} / ${m.num_threads_batch??m.num_threads??'—'}`],['고정 KV',m.cache_text_prefix?'사용':'미사용'],['부분 요청',s.partial_mode==='adaptive'?`가변 / 첫 ${s.partial_after_s}초 / 새 음성 ${s.partial_min_new_s}초 / 끝 여유 ${s.partial_tail_margin_s}초`:`첫 ${s.partial_after_s??'—'}초 / 다음 ${s.partial_followup_s??s.partial_interval_s??'—'}초 뒤 / 이후 ${s.partial_interval_s??'—'}초`],['구간',`${s.max_segment_s??'—'}초`],['VAD',`${s.vad_preprocess||'—'} / ${s.vad_threshold??'—'}`],['표시',s.token_stream?'생성 중 토큰':'완성 문자열'],['소스',(run.source_commit||'—').slice(0,8)]];
   $('conditions').replaceChildren(...fields.flatMap(([k,v])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=k;dd.textContent=v;return[dt,dd];}));
 }
 function renderMetrics(){
@@ -117,7 +117,7 @@ function renderTable(){
   $('sourceRows').replaceChildren(...sorted.map(row=>{
     const tr=document.createElement('tr');const index=run.sources.findIndex(s=>s.id===row.id);
     if(mode==='replay')tr.classList.add('listenable');tr.dataset.index=index;
-    const values=[String(index+1).padStart(2,'0'),row.reference,sec(row.first_s),sec(row.first4_s),sec(row.file_end_s)];
+    const values=[String(index+1).padStart(2,'0'),row.reference,sec(row.first_s),sec(row.first4_s),sec(row.file_end_s),sec(row.max_growth_gap_s)];
     for(const text of values){const td=document.createElement('td');td.textContent=text;tr.append(td);}
     tr.title=row.ambiguous_final?'최종 구간이 원음 경계를 넘습니다. 원음별 CER는 계산하지 않습니다.':row.id;
     tr.onclick=()=>{if(mode==='replay'&&buffer){position=Math.max(0,row.start/16000-.3);playAudio(position);audioContext().resume();lastEventKey='';renderCaption(position);}};

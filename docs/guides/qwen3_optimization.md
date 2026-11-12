@@ -168,3 +168,9 @@ Python 어댑터는 생성/prefill의 native getter 값과 mtmd 초기화 전달
 ## 이전 실험 재현
 
 KSS 등 이전 실험 설정은 [설정 색인](../../configs/README.md)에 보존합니다. 소규모 반복·56ms 진단은 [OPT-0](../research/opt0_pilot.md), 별도 C API/ORT 호출 계측은 [OPT-1](../research/opt1_profiling.md), 최초 GGUF/KSS 비교는 [OPT-2](../research/opt2_gguf.md)를 따릅니다. `opt0-baseline`은 현재 `benchmark-qwen3`와 같은 실행기 이름입니다. 프로파일 계측 실행과 일반 성능 측정은 구분합니다.
+
+## 가변 부분 요청 선별
+
+기존 대표 명령에 `--partial-mode adaptive --partial-min-new-s 0.8 --partial-tail-margin-s 0.2`를 추가하면 작업자 여유·새 음성량·직전 호출 비용을 기준으로 부분 요청합니다. 첫 요청은 `--partial-after-s`를 따르고 이후 고정 `--partial-interval-s`는 사용하지 않습니다. `--partial-followup-s`와 함께 지정할 수 없습니다. 현재 개발 기본은 고정 간격입니다. [가변 선별 조건](../research/qwen_realtime.md#가변-부분-요청-선별--2026-11-12-사전-조건)을 따르며 최종 구간·PCM은 유지합니다.
+
+가변 판단은 `partial_decision` 이벤트와 `worker.json`의 `partial_scheduler`에 기록합니다. 입력이 도착하는 주기에서 다시 판단하며, 이미 진행 중인 모델 호출은 완료 후 최종 큐를 우선 처리합니다. 끝 여유는 ASR 구간 상한 기준 휴리스틱으로 출력 주기·VAD 종료 지연을 보장하지 않습니다.

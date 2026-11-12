@@ -179,6 +179,7 @@ def run(
             if hasattr(vad.probability, "metadata")
             else None,
             segments=session.segments,
+            partial_scheduler=session.scheduler_stats,
             results=session.results,
             inference_queue_peak=session.worker.queue_peak,
         )
@@ -251,6 +252,7 @@ def run(
                 segments=session.segments,
                 pipeline=session.pipeline.metadata(),
                 skipped_silence=session.skipped,
+                partial_scheduler=session.scheduler_stats,
                 token_timings=list(session.token_timings.values()),
             )
         if adapter is not None and (session is None or not session.worker.thread.is_alive()):
@@ -293,6 +295,9 @@ def argument_parser():
     )
     parser.add_argument("--partial-after-s", type=float, default=2, choices=(1, 2, 3))
     parser.add_argument("--partial-interval-s", type=float, default=1, choices=(0.5, 1, 2, 4))
+    parser.add_argument("--partial-mode", choices=("fixed", "adaptive"), default="fixed")
+    parser.add_argument("--partial-min-new-s", type=float, default=0.8)
+    parser.add_argument("--partial-tail-margin-s", type=float, default=0.2)
     parser.add_argument(
         "--partial-followup-s",
         type=float,

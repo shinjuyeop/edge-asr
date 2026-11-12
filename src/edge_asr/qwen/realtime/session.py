@@ -24,6 +24,9 @@ class CaptionSession:
         partial_after_s=2,
         partial_interval_s=1,
         partial_followup_s=None,
+        partial_mode="fixed",
+        partial_min_new_s=0.8,
+        partial_tail_margin_s=0.2,
         max_segment_s=5,
         drain_timeout_s=30,
         queue_capacity=4,
@@ -40,6 +43,26 @@ class CaptionSession:
             raise ValueError("첫 후속 갱신 간격은 유한한 양수여야 합니다.")
         if type(partials) is not bool or silence_policy not in ("preserve", "skip-zero"):
             raise ValueError("부분 전사 bool·무음 preserve/skip-zero 정책이 필요합니다.")
+        if partial_mode not in ("fixed", "adaptive") or (
+            partial_mode == "adaptive" and partial_followup_s is not None
+        ):
+            raise ValueError(
+                "부분 일정은 fixed/adaptive이며 adaptive는 첫 후속 옵션과 함께 쓰지 않습니다."
+            )
+        if (
+            not math.isfinite(partial_min_new_s)
+            or round(partial_min_new_s * 16000) < 1
+            or not math.isfinite(partial_tail_margin_s)
+            or partial_tail_margin_s < 0
+        ):
+            raise ValueError(
+                "새 음성 최소량은 1프레임 이상, 끝 여유는 유한한 음수가 아닌 값이어야 합니다."
+            )
+        self.partial_mode = partial_mode
+        self.min_new_frames = round(partial_min_new_s * 16000)
+        self.tail_margin_s = partial_tail_margin_s
+        self.scheduler_stats = {"mode": partial_mode, "decisions": {}}
+        self.last_decision = None
         self.partials, self.silence_policy = partials, silence_policy
         self.frames, self.emit, self.telemetry = frames, emit, telemetry
         self.minimum, self.interval = (
@@ -136,7 +159,7 @@ class CaptionSession:
                 timing["visible_characters"] = len(text)
                 self.partial = event
 
-    def _offer(self, kind, segment_id, start, end, pcm):
+    def _offer(self, kind, segment_id, start, end, pcm, *, only_if_idle=False):
         if not 0 <= start < end <= self.position or end - start != len(pcm):
             raise ValueError("도착한 PCM과 전사 구간이 일치해야 합니다.")
         if self.silence_policy == "skip-zero" and not any(pcm):
@@ -158,10 +181,53 @@ class CaptionSession:
                     if self.partial and self.partial["segment_id"] == segment_id:
                         self.partial = None
             self.emit(row)
-            return
-        self.worker.submit(
-            kind, segment_id, start, end, array("f", (x / 32768 for x in pcm)), self.position
+            return True
+        return self.worker.submit(
+            kind,
+            segment_id,
+            start,
+            end,
+            array("f", (x / 32768 for x in pcm)),
+            self.position,
+            only_if_idle=only_if_idle,
         )
+
+    def _adaptive_progress(self, start, end, read):
+        idle, last_cost = self.worker.availability()
+        remaining = (self.pipeline.maximum - (end - start)) / 16000
+        if end - start < self.minimum or (
+            self.partial_requests and end - self.last_partial_end < self.min_new_frames
+        ):
+            reason = "minimum_audio"
+        elif not idle:
+            reason = "busy"
+        elif remaining <= last_cost + self.tail_margin_s:
+            reason = "near_final"
+        elif self._offer(
+            "partial", self.pipeline.segment_id, start, end, read(start, end), only_if_idle=True
+        ):
+            reason = "offered"
+            self.last_partial_end = end
+            self.partial_requests += 1
+        else:
+            reason = "busy"
+        counts = self.scheduler_stats["decisions"]
+        counts[reason] = counts.get(reason, 0) + 1
+        if reason != self.last_decision or reason == "offered":
+            self.emit(
+                {
+                    "type": "partial_decision",
+                    "reason": reason,
+                    "segment_id": self.pipeline.segment_id,
+                    "start_frame": start,
+                    "end_frame": end,
+                    "available_frame": self.position,
+                    "last_inference_s": last_cost,
+                    "remaining_to_cap_s": remaining,
+                    "at_monotonic_s": time.perf_counter(),
+                }
+            )
+            self.last_decision = reason
 
     def _progress(self, start, end, read):
         if not self.partials:
@@ -169,6 +235,10 @@ class CaptionSession:
         if self.partial_start != start:
             self.partial_start, self.last_partial_end = start, start
             self.partial_requests = 0
+            self.last_decision = None
+        if self.partial_mode == "adaptive":
+            self._adaptive_progress(start, end, read)
+            return
         interval = self.followup if self.partial_requests == 1 else self.interval
         if end - start >= self.minimum and (
             self.last_partial_end == start or end - self.last_partial_end >= interval

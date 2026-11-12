@@ -111,6 +111,25 @@ class ListenerTests(unittest.TestCase):
         self.assertEqual(self.run.snapshot(1)["events"], [])
         self.assertEqual(self.run.offset, path.stat().st_size)
 
+    def test_growth_gap_measures_silence_between_growth_and_includes_track_edges(self):
+        source = {"id": "a", "start": 0, "end": 48000}
+        rows = [
+            event(0, 0, 48000, 0.5, "가", type="token", status="provisional"),
+            event(0, 0, 48000, 0.55, "가나", type="token", status="provisional"),
+            event(1, 0, 48000, 1.6, "가", type="token", status="provisional"),
+            event(1, 0, 48000, 1.7, "가나", type="token", status="provisional"),
+            event(0, 0, 48000, 2.5, "가나다"),
+            event(1, 0, 48000, 4, "가나다라"),
+        ]
+        for row in rows:
+            row["segment_id"] = 0
+        result = source_metrics([source], rows)["rows"][0]
+        self.assertAlmostEqual(result["max_growth_gap_s"], 1.95)
+        self.assertEqual(result["growth_updates_during_input"], 3)
+        empty = source_metrics([source], [])["rows"][0]
+        self.assertEqual(empty["max_growth_gap_s"], 3)
+        self.assertIsNone(empty["first_s"])
+
     def test_incomplete_score_is_not_presented_as_full_cer(self):
         self.worker.update(status="failed", telemetry={"complete": False})
         write_json(self.output / "worker.json", self.worker)

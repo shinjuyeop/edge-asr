@@ -74,11 +74,23 @@ def source_metrics(sources, events):
         )
         finals = [e for e in overlaps if e["type"] == "result" and e["kind"] == "final"]
         first_result = results[first["job_id"]] if first else {}
+        previous_s, end_s = source["start"] / 16000, source["end"] / 16000
+        lengths, gaps = {}, []
+        for e in sorted(shown, key=lambda e: e["published_s"]):
+            at = e["published_s"]
+            length = sum(c.isalnum() for c in e["hypothesis"])
+            segment = e["segment_id"]
+            if previous_s <= at <= end_s and length > lengths.get(segment, 0):
+                gaps.append(at - previous_s)
+                previous_s, lengths[segment] = at, length
+        gaps.append(end_s - previous_s)
         rows.append(
             {
                 **source,
                 "first_s": first["published_s"] - source["start"] / 16000 if first else None,
                 "first4_s": four["published_s"] - source["start"] / 16000 if four else None,
+                "max_growth_gap_s": max(gaps),
+                "growth_updates_during_input": len(gaps) - 1,
                 "file_end_s": max(e["published_s"] for e in finals) - source["end"] / 16000
                 if finals
                 else None,
@@ -101,6 +113,6 @@ def source_metrics(sources, events):
         "rows": rows,
         **{
             k: distribution([r[k] for r in rows if r[k] is not None])
-            for k in ("first_s", "first4_s", "file_end_s")
+            for k in ("first_s", "first4_s", "file_end_s", "max_growth_gap_s")
         },
     }

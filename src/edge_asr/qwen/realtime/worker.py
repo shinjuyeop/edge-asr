@@ -21,11 +21,17 @@ class DecodeWorker:
         self.condition = Condition()
         self.finals, self.partial = deque(), None
         self.closing, self.error = False, None
+        self.active, self.last_inference_s = False, 0.0
         self.index = self.queue_peak = 0
         self.thread = Thread(target=self._run, daemon=True)
         self.thread.start()
 
-    def submit(self, kind, segment_id, start, end, samples, available_frame):
+    def availability(self):
+        with self.condition:
+            idle = not (self.active or self.finals or self.partial or self.closing or self.error)
+            return idle, self.last_inference_s
+
+    def submit(self, kind, segment_id, start, end, samples, available_frame, *, only_if_idle=False):
         with self.condition:
             if self.closing or self.error or not self.thread.is_alive():
                 raise RuntimeError(self.error or "종료된 전사 작업자입니다.")
@@ -33,6 +39,8 @@ class DecodeWorker:
                 raise ValueError("도착한 음성 범위의 partial/final 작업이 필요합니다.")
             if end - start != len(samples):
                 raise ValueError("전사 구간과 PCM 길이가 다릅니다.")
+            if only_if_idle and (self.active or self.finals or self.partial is not None):
+                return False
             if kind == "final" and len(self.finals) >= self.capacity:
                 raise RuntimeError("final_queue_full: 입력을 늦추거나 최종 구간을 버리지 않습니다.")
             job = {
@@ -58,6 +66,7 @@ class DecodeWorker:
             self.queue_peak = max(self.queue_peak, len(self.finals) + (self.partial is not None))
             self.emit({"type": "submitted", **job})
             self.condition.notify()
+            return True
 
     def _run(self):
         try:
@@ -71,6 +80,7 @@ class DecodeWorker:
                         self.partial = None
                     else:
                         return
+                    self.active = True
                 started = time.perf_counter()
                 self.emit({"type": "started", **job, "started_monotonic_s": started})
                 result = {"type": "result", **job, "status": "failed", "hypothesis": None}
@@ -104,7 +114,13 @@ class DecodeWorker:
                     ended_monotonic_s=time.perf_counter(),
                     adapter_result=deepcopy(getattr(self.adapter, "last_result_metadata", None)),
                 )
-                self.emit(result)
+                try:
+                    self.emit(result)
+                finally:
+                    with self.condition:
+                        self.last_inference_s = result["ended_monotonic_s"] - started
+                        self.active = False
+                        self.condition.notify_all()
         except BaseException as error:
             self.error = f"{type(error).__name__}: {error}"
 

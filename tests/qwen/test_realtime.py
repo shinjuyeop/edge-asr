@@ -143,7 +143,7 @@ class RealtimeTests(unittest.TestCase):
 
     def test_partial_control_preserves_final_pcm_and_segmentation(self):
         payloads, segments = [], []
-        for partials in (True, False):
+        for partials, mode in ((True, "fixed"), (False, "fixed"), (True, "adaptive")):
             adapter, events = Adapter(), []
             adapter.release.set()
             session = CaptionSession(
@@ -155,6 +155,7 @@ class RealtimeTests(unittest.TestCase):
                 partial_after_s=0.2,
                 partial_interval_s=0.2,
                 partials=partials,
+                partial_mode=mode,
             )
             try:
                 for start in range(0, 16000, 1600):
@@ -170,7 +171,95 @@ class RealtimeTests(unittest.TestCase):
             finally:
                 session.close()
         self.assertEqual(payloads[0], payloads[1])
+        self.assertEqual(payloads[0], payloads[2])
         self.assertEqual(segments[0], segments[1])
+        self.assertEqual(segments[0], segments[2])
+
+    def test_idle_only_submission_does_not_queue_behind_active_or_final_work(self):
+        adapter, events = Adapter(), []
+        worker = DecodeWorker(adapter, events.append)
+        try:
+            pcm = array("f", [0.25] * 1600)
+            self.assertTrue(worker.submit("partial", 0, 0, 1600, pcm, 1600, only_if_idle=True))
+            self.assertTrue(adapter.entered.wait(1))
+            self.assertFalse(worker.availability()[0])
+            self.assertFalse(worker.submit("partial", 0, 0, 1600, pcm, 1600, only_if_idle=True))
+            worker.submit("final", 0, 0, 1600, pcm, 1600)
+            self.assertFalse(worker.submit("partial", 1, 1600, 3200, pcm, 3200, only_if_idle=True))
+            adapter.release.set()
+            worker.finish(2)
+            results = [e for e in events if e["type"] == "result"]
+            self.assertEqual(
+                [(e["job_id"], e["kind"]) for e in results], [(0, "partial"), (1, "final")]
+            )
+            self.assertGreater(worker.availability()[1], 0)
+        finally:
+            adapter.release.set()
+            worker.abort()
+
+    def test_adaptive_uses_latest_audio_after_busy_and_reserves_time_for_final(self):
+        adapter, events = Adapter(), []
+        session = CaptionSession(
+            adapter,
+            BoundedProbabilityVad(Probability()),
+            32000,
+            events.append,
+            {"t0_monotonic_ns": time.perf_counter_ns()},
+            partial_after_s=0.2,
+            partial_interval_s=4,
+            partial_mode="adaptive",
+            partial_min_new_s=0.1,
+            partial_tail_margin_s=0.2,
+            max_segment_s=3,
+        )
+
+        def feed(start, end):
+            for pos in range(start, end, 1600):
+                session.accept_at(session, array("f", [0.25] * 1600), pos, pos + 1600)
+
+        def wait_idle():
+            deadline = time.monotonic() + 2
+            while not session.worker.availability()[0] and time.monotonic() < deadline:
+                time.sleep(0.001)
+            self.assertTrue(session.worker.availability()[0])
+
+        try:
+            feed(0, 4800)
+            self.assertTrue(adapter.entered.wait(1))
+            feed(4800, 12800)
+            partials = [e for e in events if e["type"] == "submitted" and e["kind"] == "partial"]
+            self.assertEqual(len(partials), 1)
+            self.assertGreater(session.scheduler_stats["decisions"].get("busy", 0), 0)
+            adapter.release.set()
+            wait_idle()
+            feed(12800, 14400)
+            wait_idle()
+            partials = [e for e in events if e["type"] == "submitted" and e["kind"] == "partial"]
+            self.assertEqual(len(partials), 2)
+            self.assertGreaterEqual(partials[-1]["end_frame"], 12800)
+            self.assertLessEqual(partials[-1]["end_frame"], 14400)
+            with session.worker.condition:
+                session.worker.last_inference_s = 3
+            feed(14400, 16000)
+            self.assertEqual(events[-1]["reason"], "near_final")
+            feed(16000, 32000)
+            session.finish_stream(session)
+            self.assertTrue(any(e["type"] == "result" and e["kind"] == "final" for e in events))
+        finally:
+            adapter.release.set()
+            session.close()
+
+    def test_adaptive_rejects_ambiguous_or_invalid_limits(self):
+        for settings in (
+            {"partial_mode": "unknown"},
+            {"partial_mode": "adaptive", "partial_followup_s": 2},
+            {"partial_min_new_s": 0},
+            {"partial_min_new_s": float("nan")},
+            {"partial_tail_margin_s": -1},
+            {"partial_tail_margin_s": float("inf")},
+        ):
+            with self.subTest(settings=settings), self.assertRaises(ValueError):
+                CaptionSession(None, None, 1, None, {}, **settings)
 
     def test_early_followup_resets_each_segment_and_preserves_final_pcm(self):
         signatures, schedules = [], []
