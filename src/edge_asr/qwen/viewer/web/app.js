@@ -5,6 +5,7 @@ let catalog, mode='replay', run=null, events=[], cursor=0, epoch=0, loadingAudio
 let context, gain, buffer, node, playing=false, baseContext=0, baseOffset=0, position=0;
 let calibration=null, clockSamples=[], observations=[], lastEventKey='', tableKey='';
 let lastArrival=null, follow=false, currentSource=-1, busy=false, selectionDirty=false;
+let audioEnded=false, completionNotified=false, resultsShown=false;
 
 async function api(path, body) {
   const response=await fetch(path, body ? {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)} : {cache:'no-store'});
@@ -43,12 +44,14 @@ function updateControls(){
 function clearRun(){
   stopAudio();epoch++;run=null;events=[];buffer=null;cursor=0;position=0;lastEventKey='';tableKey='';
   currentSource=-2;loadingAudio=false;follow=false;selectionDirty=false;observations=[];lastArrival=null;calibration=null;clockSamples=[];
+  audioEnded=false;completionNotified=false;resultsShown=false;$('finalResult').open=false;$('finalTranscript').textContent='확정 결과 대기';
   $('clockText').textContent='00:00 / 00:00';$('seek').value=0;$('seek').max=1;$('sync').textContent='음원 준비 전';
   $('play').textContent=mode==='live'?'시작':'재생';$('runStatus').textContent='실행을 선택하세요';
   $('conditions').replaceChildren();$('history').replaceChildren();$('network').textContent='관측 기록 없음';
   renderMetrics();renderTable();renderCaption(0);drawWave();updateControls();
 }
 function changeMode(value){
+  if(mode===value)return;
   mode=value;clearRun();
   $('replaySetup').hidden=value!=='replay';$('liveSetup').hidden=value!=='live';
   for(const name of ['replay','live']){$(`${name}Tab`).classList.toggle('selected',name===value);$(`${name}Tab`).setAttribute('aria-selected',String(name===value));}
@@ -124,7 +127,8 @@ function renderTable(){
 function displayEvents(at){return events.filter(e=>e.displayed&&e.published_s<=at&&(e.type==='token'||e.type==='result'));}
 function renderCaption(at){
   const sources=run?.sources||[];
-  const sourceIndex=sources.findIndex(s=>s.start/16000<=at&&at<s.end/16000);
+  let sourceIndex=sources.findIndex(s=>s.start/16000<=at&&at<s.end/16000);
+  if(sourceIndex<0&&sources.length&&at>=sources.at(-1).end/16000)sourceIndex=sources.length-1;
   const source=sources[sourceIndex];
   if(sourceIndex!==currentSource||!run){currentSource=sourceIndex;$('referenceText').textContent=source?.reference||(sources.length?'원음 사이 또는 입력 종료 구간입니다.':'음성을 재생하면 해당 원음의 정답이 표시됩니다.');$('referenceText').classList.toggle('muted',!source);$('sourceTag').textContent=source?`${sourceIndex+1} / ${sources.length}`:'—';$('sourceName').textContent=source?.id||'현재 듣고 있는 원음';
     for(const tr of $('sourceRows').children)tr.classList.toggle('current',Number(tr.dataset.index)===sourceIndex);
@@ -136,8 +140,11 @@ function renderCaption(at){
     $('captionState').textContent=e?e.status==='failed'?'실패':e.type==='token'?'생성 중':e.kind==='final'?'확정':'부분 결과':'대기';
     const matches=e?sources.filter(s=>e.start_frame<s.end&&e.end_frame>s.start):[];
     $('captionTarget').textContent=e?`원음 ${matches.map(s=>sources.indexOf(s)+1).join('·')||'—'} · 처리 ${e.start_frame/16000>=0?(e.start_frame/16000).toFixed(2):'—'}–${(e.end_frame/16000).toFixed(2)}초 · RP5 발행 +${e.published_s.toFixed(2)}초`:'자막의 처리 구간을 함께 표시합니다.';
-    $('history').replaceChildren(...shown.filter(e=>e.type==='result'&&e.kind==='final').slice(-8).reverse().map(e=>{const div=document.createElement('div');div.className='history-row';const span=document.createElement('span'),p=document.createElement('p');span.textContent=`${clock(e.published_s)} · 구간 ${e.segment_id+1} · ${e.status==='failed'?'실패':'확정'}`;p.textContent=e.hypothesis||'빈 전사 · 실패 기록';div.append(span,p);return div;}));
+    const finals=shown.filter(e=>e.type==='result'&&e.kind==='final').sort((a,b)=>a.start_frame-b.start_frame);
+    $('finalTranscript').textContent=finals.map(e=>e.status==='failed'?'[전사 실패]':e.hypothesis||'[빈 전사]').join(' ')||'확정 결과 대기';
+    $('history').replaceChildren(...finals.slice(-8).reverse().map(e=>{const div=document.createElement('div');div.className='history-row';const span=document.createElement('span'),p=document.createElement('p');span.textContent=`${clock(e.published_s)} · 구간 ${e.segment_id+1} · ${e.status==='failed'?'실패':'확정'}`;p.textContent=e.hypothesis||'빈 전사 · 실패 기록';div.append(span,p);return div;}));
   }
+  if(!resultsShown&&((buffer&&at>=buffer.duration)||(mode==='live'&&follow&&run?.terminal))){resultsShown=true;$('finalResult').open=true;}
   const heard=source?shown.filter(r=>r.hypothesis&&r.status!=='failed'&&r.start_frame<source.end&&r.end_frame>source.start&&sources.filter(s=>r.start_frame<s.end&&r.end_frame>s.start).length===1):[];
   const first=heard.find(r=>r.hypothesis.trim()),four=heard.find(r=>Array.from(r.hypothesis).filter(c=>/[\p{L}\p{N}]/u.test(c)).length>=4);
   $('sourceTiming').textContent=source?`이 원음 · 첫 표시 ${sec(first?first.published_s-source.start/16000:null)} · 4자 ${sec(four?four.published_s-source.start/16000:null)}${mode==='live'?' · 현재 관측':''}`:'';
@@ -158,7 +165,7 @@ async function poll(){
       }
     }
     events.push(...state.events);cursor=state.cursor;run=state;
-    const names={preparing:'모델 준비·워밍업 중',ready:'준비 완료',replaying:'1배속 입력·추론 중',completed:'실행 완료',failed:'실패 기록 있음',interrupted:'중단됨'};
+    const names={preparing:'모델 준비·워밍업 중',ready:'준비 완료',replaying:audioEnded?'음원 종료 · 추론 결과 대기':'1배속 입력·추론 중',completed:'추론 완료 · 결과 보존',failed:'실패 기록 있음',interrupted:'중단됨'};
     $('runStatus').textContent=names[run.status]||run.status;$('connection').textContent='연결됨';
     if(catalog.active?.id===run.id&&!run.can_stop)catalog.active=null;
     updateControls();
@@ -166,7 +173,7 @@ async function poll(){
     renderConditions();renderMetrics();
     const key=`${run.sources.length}:${Boolean(run.summary)}:${$('sort').value}`;if(key!==tableKey){tableKey=key;renderTable();}
     if(run.audio&&!buffer&&!selectionDirty)await loadAudio(myEpoch);
-    if(mode==='live'&&run.terminal&&follow){follow=false;notice('추론이 종료되었습니다. 원음 종료 뒤 도착한 결과까지 확인하세요. 기록 모드에서 다시 재생할 수 있습니다.');await refreshCatalog();}
+    if(mode==='live'&&run.terminal&&follow&&!completionNotified){completionNotified=true;notice('추론이 종료되었습니다. 정답·확정 전사·측정값을 유지합니다. 새 음원을 선택하거나 다시 준비할 수 있습니다.');await refreshCatalog();}
   }catch(e){if(epoch===myEpoch){$('connection').textContent='연결 확인 필요';notice(e.message,true);}}
 }
 async function play(){
@@ -193,9 +200,13 @@ function drawWave(){
 let lastDraw=0;
 function tick(ms){
   const at=nowPosition(),end=buffer?Math.max(buffer.duration,run?.end_s+1||0):0;
+  if(playing&&buffer&&at>=buffer.duration&&!audioEnded){
+    audioEnded=true;
+    if(mode==='live'&&!run?.terminal){$('runStatus').textContent='음원 종료 · 추론 결과 대기';$('play').textContent='결과 대기';notice('음원 재생이 끝났습니다. 남은 추론 결과를 기다립니다.');}
+  }
   if(playing&&mode==='replay'&&at>=end){stopAudio();position=end;$('play').textContent='다시 듣기';}
-  if(playing&&mode==='live'&&run?.terminal&&at>=end){stopAudio();$('play').textContent='청취 종료';}
-  if(ms-lastDraw>80){lastDraw=ms;$('clockText').textContent=`${clock(at)} / ${clock(buffer?.duration||0)}`;$('seek').value=at;renderCaption(at);drawWave();
+  if(playing&&mode==='live'&&run?.terminal&&buffer&&at>=buffer.duration){stopAudio();$('play').textContent='추론 종료';}
+  if(ms-lastDraw>80){lastDraw=ms;$('clockText').textContent=`${clock(Math.min(at,buffer?.duration||0))} / ${clock(buffer?.duration||0)}${mode==='live'&&audioEnded&&!run?.terminal?` · 결과 대기 ${sec(at-buffer.duration)}`:''}`;$('seek').value=at;renderCaption(at);drawWave();
     if(mode==='live'&&calibration){const serverNow=performance.now()/1000+calibration.offset;const origin=run?.clock?.t0_monotonic_s||run?.scheduled?.start_monotonic_s;
       const drift=origin&&playing?at-(serverNow-origin):null;
       $('sync').textContent=`왕복 ${(calibration.rtt*1000).toFixed(0)}ms · 재생 차이 ${drift==null?'—':`${(drift*1000).toFixed(0)}ms`}`;
