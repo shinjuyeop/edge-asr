@@ -1,0 +1,246 @@
+{
+  "date": "2026-11-12",
+  "kind": "listener_validation_and_saved_latency_diagnosis",
+  "source_commit": "8dfafe427b37b141c0f15f3e6f546c33a7a39ad3",
+  "live": {
+    "run_id": "listen-20261112-152107-20c498",
+    "sources": 6,
+    "duration_s": 65.7,
+    "frames": 1051200,
+    "pcm_sha256": "a39a91817f54285940d5c08fa4167df77a2652c81a068e9c6352cf7e2091447d",
+    "manifest_sha256": "acfc3a0ca2ad7be9a2a2feadd26e73c5180fc5a90d14df2a26515118a7261d7e",
+    "status": "completed",
+    "failed_calls": 0,
+    "input_drops": 0,
+    "score": {
+      "normalization": "ko_cer_v1",
+      "reference_characters": 229,
+      "substitutions": 6,
+      "deletions": 11,
+      "insertions": 1,
+      "errors": 18,
+      "cer": 0.07860262008733625
+    },
+    "calls": 19,
+    "first_s": {
+      "n": 6,
+      "mean": 3.649405409328756,
+      "p50": 3.2209766849991865,
+      "p95": 4.888836891995744,
+      "max": 4.888836891995744
+    },
+    "first4_s": {
+      "n": 6,
+      "mean": 3.7863247224925245,
+      "p50": 3.397890517982887,
+      "p95": 4.948871274996783,
+      "max": 4.948871274996783
+    },
+    "file_end_s": {
+      "n": 6,
+      "mean": 0.3409387258201602,
+      "p50": 0.34627385497675434,
+      "p95": 1.317809360979588,
+      "max": 1.317809360979588
+    },
+    "start_schedule_difference_s": 7.248300244100392e-05,
+    "highest_temperature_mc": 79850,
+    "clients": [
+      {
+        "browser": 1,
+        "scope": "개발 PC의 headless Chromium. 실제 노트북 측정 아님.",
+        "clock_round_trip_s": {
+          "n": 18,
+          "mean": 0.0041258329583802045,
+          "p50": 0.0023780001024746866,
+          "p95": 0.014962609988870001,
+          "max": 0.014962609988870001
+        },
+        "publication_to_receive_estimate_s": {
+          "n": 219,
+          "mean": 0.15625130481747954,
+          "p50": 0.15664706108509563,
+          "p95": 0.2852955970738549,
+          "max": 0.3019930571317673
+        },
+        "displayed_events_received": 219
+      },
+      {
+        "browser": 2,
+        "scope": "개발 PC의 headless Chromium. 실제 노트북 측정 아님.",
+        "clock_round_trip_s": {
+          "n": 17,
+          "mean": 0.00429497599264792,
+          "p50": 0.002668444044886087,
+          "p95": 0.015284777979599318,
+          "max": 0.015284777979599318
+        },
+        "publication_to_receive_estimate_s": {
+          "n": 219,
+          "mean": 0.15544175681087707,
+          "p50": 0.1556070671067573,
+          "p95": 0.28298317347071134,
+          "max": 0.2969423411414027
+        },
+        "displayed_events_received": 219
+      }
+    ]
+  },
+  "saved100": {
+    "path": "results/optimization/opt3/realtime-prefix-cache-20261112-01/full100/on",
+    "summary_metrics_exactly_match_existing_report": true,
+    "slow10": [
+      {
+        "source_index": 84,
+        "first_s": 2.3369735590109713,
+        "first4_s": 7.352943733001325,
+        "first_completed_alnum": 2,
+        "partial_calls_before_four": 1,
+        "first_payload_s": 1.028,
+        "four_kind": "final",
+        "four_payload_s": 5.0,
+        "four_submitted_s": 5.520131873012019,
+        "four_queue_s": 0.0006964089989196509,
+        "four_compute_to_display_s": 1.8321154509903863
+      },
+      {
+        "source_index": 38,
+        "first_s": 3.419213766005612,
+        "first4_s": 7.229559373989957,
+        "first_completed_alnum": 3,
+        "partial_calls_before_four": 1,
+        "first_payload_s": 1.028,
+        "four_kind": "final",
+        "four_payload_s": 5.0,
+        "four_submitted_s": 5.433376754000108,
+        "four_queue_s": 0.0005334989982657135,
+        "four_compute_to_display_s": 1.795649120991584
+      },
+      {
+        "source_index": 22,
+        "first_s": 1.962982942008182,
+        "first4_s": 7.163940751990538,
+        "first_completed_alnum": 2,
+        "partial_calls_before_four": 1,
+        "first_payload_s": 1.028,
+        "four_kind": "final",
+        "four_payload_s": 5.0,
+        "four_submitted_s": 5.3988686289885095,
+        "four_queue_s": 0.0009323300037067384,
+        "four_compute_to_display_s": 1.7641397929983214
+      },
+      {
+        "source_index": 94,
+        "first_s": 2.7110606110079516,
+        "first4_s": 7.159114259004809,
+        "first_completed_alnum": 3,
+        "partial_calls_before_four": 1,
+        "first_payload_s": 1.028,
+        "four_kind": "final",
+        "four_payload_s": 5.0,
+        "four_submitted_s": 5.376363763993822,
+        "four_queue_s": 0.00066446399432607,
+        "four_compute_to_display_s": 1.7820860310166609
+      },
+      {
+        "source_index": 47,
+        "first_s": 3.598267321993603,
+        "first4_s": 7.0897948690056865,
+        "first_completed_alnum": 2,
+        "partial_calls_before_four": 1,
+        "first_payload_s": 1.028,
+        "four_kind": "final",
+        "four_payload_s": 5.0,
+        "four_submitted_s": 5.406303872989497,
+        "four_queue_s": 0.0006751850014552474,
+        "four_compute_to_display_s": 1.6828158110147342
+      },
+      {
+        "source_index": 27,
+        "first_s": 1.9158188059884083,
+        "first4_s": 7.079299073993923,
+        "first_completed_alnum": 2,
+        "partial_calls_before_four": 1,
+        "first_payload_s": 1.028,
+        "four_kind": "final",
+        "four_payload_s": 5.0,
+        "four_submitted_s": 5.3236697400063235,
+        "four_queue_s": 0.002281066990690306,
+        "four_compute_to_display_s": 1.753348266996909
+      },
+      {
+        "source_index": 10,
+        "first_s": 2.4947824890050043,
+        "first4_s": 6.9622694910003275,
+        "first_completed_alnum": 3,
+        "partial_calls_before_four": 1,
+        "first_payload_s": 1.028,
+        "four_kind": "final",
+        "four_payload_s": 5.0,
+        "four_submitted_s": 5.207276867012254,
+        "four_queue_s": 0.00048732999130152166,
+        "four_compute_to_display_s": 1.7545052939967718
+      },
+      {
+        "source_index": 14,
+        "first_s": 2.2048949650104674,
+        "first4_s": 6.959300128006149,
+        "first_completed_alnum": 1,
+        "partial_calls_before_four": 1,
+        "first_payload_s": 1.028,
+        "four_kind": "final",
+        "four_payload_s": 5.0,
+        "four_submitted_s": 5.24860981498729,
+        "four_queue_s": 0.0009106250072363764,
+        "four_compute_to_display_s": 1.709779688011622
+      },
+      {
+        "source_index": 50,
+        "first_s": 2.3764682489910456,
+        "first4_s": 6.951656739000214,
+        "first_completed_alnum": 3,
+        "partial_calls_before_four": 1,
+        "first_payload_s": 1.028,
+        "four_kind": "final",
+        "four_payload_s": 5.0,
+        "four_submitted_s": 5.187125434988161,
+        "four_queue_s": 0.0005696110019925982,
+        "four_compute_to_display_s": 1.7639616930100601
+      },
+      {
+        "source_index": 19,
+        "first_s": 3.0756416149949644,
+        "first4_s": 6.9103984769887745,
+        "first_completed_alnum": 1,
+        "partial_calls_before_four": 1,
+        "first_payload_s": 1.028,
+        "four_kind": "final",
+        "four_payload_s": 5.0,
+        "four_submitted_s": 5.141700487000634,
+        "four_queue_s": 0.00067668198607862,
+        "four_compute_to_display_s": 1.7680213080020621
+      }
+    ]
+  },
+  "verification": {
+    "host_full": {
+      "total": 398,
+      "passed": 396,
+      "skipped": 2
+    },
+    "host_optional_gguf_header_followup_passed": 1,
+    "rp5_full": {
+      "total": 398,
+      "passed": 397,
+      "skipped": 1
+    },
+    "host_final_targeted": 28,
+    "rp5_final_targeted": 11,
+    "protected_assets_unchanged_host_and_rp5": 31,
+    "recovered_live_files_hash_matched": 12,
+    "browser_page_errors": 0,
+    "mobile_horizontal_overflow": false,
+    "ssh_eof_closes_listener": true
+  },
+  "scope": "실제 6개 청취 동작 검증. 기존 100개와 다른 목록·서버 관측 부하 포함이므로 성능 개선 대조 아님. 전달 시간은 서버 시계 추정과 300ms 관측 주기 포함. 물리 소리/화면·노트북·자연 대화·관측 오버헤드 통제 비교는 미측정."
+}

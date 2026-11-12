@@ -49,7 +49,7 @@ Host에 회수한 기록만 볼 때는 `--ssh`를 생략합니다. 이 경우 Ho
 
 ## 조건 변경·코드 위치
 
-[청취 구성](../../configs/listener.toml)은 모델 TOML·입력 manifest·VAD 자산과 연속 옵션만 지정합니다. 다른 조건은 이 파일을 별도 이름으로 만들고 `--profile`로 등록합니다. CLI는 기존 replay 인자 검증·실행기를 재사용합니다. 새 실행은 고유 `listen-날짜-시각-ID` 폴더에 기록하며 기존 설정·모델·결과를 덮어쓰지 않습니다.
+[청취 구성](../../configs/listener.toml)은 모델 TOML·입력 manifest·VAD 자산과 연속 옵션만 지정합니다. ONNX 구성은 `token_stream = false`로 지정합니다. 다른 조건은 이 파일을 별도 이름으로 만들고 `--profile`로 등록합니다. CLI는 기존 replay 인자 검증·실행기를 재사용합니다. 새 실행은 고유 `listen-날짜-시각-ID` 폴더에 기록하며 기존 설정·모델·결과를 덮어쓰지 않습니다.
 
 - [viewer/](../../src/edge_asr/qwen/viewer/): `server.py` HTTP/SSH 진입점, `runs.py` 실행·음원 검증·증분 로그, `analysis.py` 기존 정의의 지연 집계, `web/` 공통 화면.
 - [replay.py](../../src/edge_asr/qwen/realtime/replay.py): 선택 시작 예약과 실제 입력 시작 영수증. 옵션을 생략하면 기존 평가 경로입니다.
