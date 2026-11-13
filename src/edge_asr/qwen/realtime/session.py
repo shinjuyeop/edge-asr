@@ -28,6 +28,7 @@ class CaptionSession:
         partial_min_new_s=0.8,
         partial_tail_margin_s=0.2,
         adaptive_policy="recent",
+        partial_cost_model="total",
         partial_budget_s=2.5,
         partial_max_calls=2,
         max_segment_s=5,
@@ -74,6 +75,11 @@ class CaptionSession:
         ):
             raise ValueError("부분 비용 예산은 유한한 양수, 요청 상한은 양의 정수여야 합니다.")
         self.adaptive_policy = adaptive_policy
+        if partial_cost_model not in ("total", "audio") or (
+            partial_cost_model == "audio" and adaptive_policy != "budgeted"
+        ):
+            raise ValueError("audio 비용 추정은 budgeted 정책에서만 사용합니다.")
+        self.partial_cost_model = partial_cost_model
         self.partial_budget_s, self.partial_max_calls = partial_budget_s, partial_max_calls
         self.min_new_frames = round(partial_min_new_s * 16000)
         self.tail_margin_s = partial_tail_margin_s
@@ -81,6 +87,7 @@ class CaptionSession:
             "mode": partial_mode,
             "policy": adaptive_policy,
             "version": "budgeted-headroom-v2" if adaptive_policy == "budgeted" else "recent-v1",
+            "cost_model": partial_cost_model,
             "decisions": {},
         }
         self.last_decision = None
@@ -233,7 +240,9 @@ class CaptionSession:
         protected = self.adaptive_policy == "budgeted"
         estimate, final_cost, spent, budget = None, None, 0.0, self.partial_budget_s
         if protected and self.partial_requests:
-            estimate = self.worker.estimate_cost("partial", end - start)
+            estimate = self.worker.estimate_cost(
+                "partial", end - start, model=self.partial_cost_model
+            )
             final_cost = self.worker.estimate_cost("final", self.pipeline.maximum)
             with self.lock:
                 spent = sum(
@@ -276,6 +285,7 @@ class CaptionSession:
                     "available_frame": self.position,
                     "last_inference_s": last_cost,
                     "estimated_partial_s": estimate,
+                    "partial_cost_model": self.partial_cost_model,
                     "estimated_final_s": final_cost,
                     "partial_spent_s": spent,
                     "partial_budget_s": budget,

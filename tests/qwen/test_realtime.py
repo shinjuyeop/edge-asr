@@ -227,17 +227,75 @@ class RealtimeTests(unittest.TestCase):
             partial_estimate = worker.estimate_cost("partial", 3200)
             self.assertGreater(partial_estimate, 0)
             with worker.condition:
-                worker.costs["final"].append((1600, 100))
+                worker.costs["final"].append((1600, 100, None))
             self.assertEqual(worker.estimate_cost("partial", 3200), partial_estimate)
             self.assertGreater(worker.estimate_cost("final", 3200), partial_estimate)
             with worker.condition:
                 worker.costs["final"].clear()
-                worker.costs["final"].extend(((80000, 2), (1600, 0.5)))
+                worker.costs["final"].extend(((80000, 2, None), (1600, 0.5, None)))
             self.assertLess(worker.estimate_cost("final", 80000), 3)
             self.assertEqual(worker.estimate_cost("partial", 3200), partial_estimate)
         finally:
             adapter.release.set()
             worker.abort()
+
+    def test_audio_cost_scales_paired_stages_and_falls_back_for_missing_measurements(self):
+        worker = DecodeWorker(Adapter(), lambda e: None)
+        try:
+            self.assertIsNone(worker.estimate_cost("partial", 16000, model="audio"))
+            with worker.condition:
+                worker.costs["partial"].extend(((16000, 1.0, 0.25), (32000, 1.4, 0.5)))
+                worker.costs["final"].append((80000, 100, 50))
+            self.assertAlmostEqual(worker.estimate_cost("partial", 48000), 2.52)
+            self.assertAlmostEqual(worker.estimate_cost("partial", 48000, model="audio"), 1.98)
+            self.assertAlmostEqual(worker.estimate_cost("partial", 16000, model="audio"), 1.68)
+            with worker.condition:
+                worker.costs["partial"].append((16000, 1.0, None))
+            self.assertEqual(
+                worker.estimate_cost("partial", 48000, model="audio"),
+                worker.estimate_cost("partial", 48000),
+            )
+            with self.assertRaises(ValueError):
+                worker.estimate_cost("partial", 16000, model="unknown")
+        finally:
+            worker.abort()
+
+    def test_audio_measurements_require_success_and_finite_consistent_native_timings(self):
+        for stages, fail, valid in (
+            ({"audio_encode_s": 0.001, "audio_embedding_eval_s": 0.002}, False, True),
+            ({"audio_encode_s": 0.001}, False, False),
+            ({"audio_encode_s": float("nan"), "audio_embedding_eval_s": 0}, False, False),
+            ({"audio_encode_s": -0.001, "audio_embedding_eval_s": 0}, False, False),
+            ({"audio_encode_s": 10, "audio_embedding_eval_s": 10}, False, False),
+            ({"audio_encode_s": 0.001, "audio_embedding_eval_s": 0.002}, True, False),
+        ):
+            entered = Event()
+
+            class MeasuredAdapter:
+                last_result_metadata = {"native_result": stages}
+
+                def transcribe(self, audio):
+                    entered.set()
+                    time.sleep(0.01)
+                    if fail:
+                        raise RuntimeError("fixture failure with stale metadata")
+                    return "전사"
+
+            with self.subTest(stages=stages, fail=fail):
+                worker = DecodeWorker(MeasuredAdapter(), lambda e: None)
+                try:
+                    pcm = array("f", [0.25] * 1600)
+                    worker.submit("partial", 0, 0, 1600, pcm, 1600)
+                    self.assertTrue(entered.wait(1))
+                    worker.finish(2)
+                    _, cost, audio = worker.costs["partial"][0]
+                    self.assertEqual(audio is not None, valid)
+                    expected = (cost + 0.003) * 1.2 if valid else cost * 2 * 1.2
+                    self.assertAlmostEqual(
+                        worker.estimate_cost("partial", 3200, model="audio"), expected
+                    )
+                finally:
+                    worker.abort()
 
     def test_adaptive_uses_latest_audio_after_busy_and_reserves_time_for_final(self):
         adapter, events = Adapter(), []
@@ -301,6 +359,8 @@ class RealtimeTests(unittest.TestCase):
             {"partial_tail_margin_s": float("inf")},
             {"adaptive_policy": "unknown"},
             {"adaptive_policy": "budgeted"},
+            {"partial_cost_model": "unknown"},
+            {"partial_cost_model": "audio"},
             {"partial_budget_s": 0},
             {"partial_budget_s": float("inf")},
             {"partial_max_calls": 0},
@@ -341,7 +401,11 @@ class RealtimeTests(unittest.TestCase):
             session.close()
 
     def test_budgeted_followups_respect_cost_and_call_limits(self):
-        for budget, expected in ((2.5, 2), (1e-12, 1)):
+        for budget, expected, cost_model in (
+            (2.5, 2, "total"),
+            (1e-12, 1, "total"),
+            (2.5, 2, "audio"),
+        ):
             adapter, events = Adapter(), []
             adapter.release.set()
             session = CaptionSession(
@@ -353,6 +417,7 @@ class RealtimeTests(unittest.TestCase):
                 partial_after_s=0.2,
                 partial_mode="adaptive",
                 adaptive_policy="budgeted",
+                partial_cost_model=cost_model,
                 partial_min_new_s=0.1,
                 partial_budget_s=budget,
                 partial_max_calls=2,
@@ -399,8 +464,8 @@ class RealtimeTests(unittest.TestCase):
                 time.sleep(0.001)
             self.assertTrue(session.worker.availability()[0])
             with session.worker.condition:
-                session.worker.costs["partial"].append((3200, 0.1))
-                session.worker.costs["final"].append((48000, 10))
+                session.worker.costs["partial"].append((3200, 0.1, None))
+                session.worker.costs["final"].append((48000, 10, None))
             session.accept_at(session, array("f", [0.25] * 1600), 4800, 6400)
             partials = [e for e in events if e["type"] == "submitted" and e["kind"] == "partial"]
             self.assertEqual(len(partials), 2)

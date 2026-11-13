@@ -1,5 +1,6 @@
 """모델 하나를 직렬 호출한다. 최종 구간은 유한 FIFO, 대기 부분 전사는 최신 하나만 유지한다."""
 
+import math
 import time
 from collections import deque
 from copy import deepcopy
@@ -32,14 +33,25 @@ class DecodeWorker:
             idle = not (self.active or self.finals or self.partial or self.closing or self.error)
             return idle, self.last_inference_s
 
-    def estimate_cost(self, kind, frames):
-        """같은 종류의 최근 최대 비용을 유지하고 더 긴 입력만 비례 확대한다."""
+    def estimate_cost(self, kind, frames, *, model="total"):
+        """최근3회·1.2 여유. audio는 측정한 음성 처리 부분만 길이에 따라 확대한다."""
+        if model not in ("total", "audio"):
+            raise ValueError("비용 추정은 total/audio여야 합니다.")
         with self.condition:
             history = self.costs[kind]
             if not history:
                 return None
-            largest_input = max(samples for samples, _ in history)
-            return max(cost for _, cost in history) * max(1.0, frames / largest_input) * 1.2
+            if model == "audio" and all(audio is not None for _, _, audio in history):
+                return (
+                    max(
+                        cost + audio * (max(1.0, frames / samples) - 1)
+                        for samples, cost, audio in history
+                    )
+                    * 1.2
+                )
+            # 단계 계측이 없거나 실패한 호출을 포함하면 기존 추정으로 돌아간다.
+            largest_input = max(samples for samples, _, _ in history)
+            return max(cost for _, cost, _ in history) * max(1.0, frames / largest_input) * 1.2
 
     def submit(self, kind, segment_id, start, end, samples, available_frame, *, only_if_idle=False):
         with self.condition:
@@ -129,7 +141,19 @@ class DecodeWorker:
                 finally:
                     with self.condition:
                         self.last_inference_s = result["ended_monotonic_s"] - started
-                        self.costs[job["kind"]].append((len(samples), self.last_inference_s))
+                        native = (result["adapter_result"] or {}).get("native_result") or {}
+                        stages = [
+                            native.get(key) for key in ("audio_encode_s", "audio_embedding_eval_s")
+                        ]
+                        audio = None
+                        if result["status"] == "success" and all(
+                            type(value) in (int, float) and math.isfinite(value) and value >= 0
+                            for value in stages
+                        ):
+                            measured = sum(stages)
+                            if measured <= self.last_inference_s:
+                                audio = measured
+                        self.costs[job["kind"]].append((len(samples), self.last_inference_s, audio))
                         self.active = False
                         self.condition.notify_all()
         except BaseException as error:
