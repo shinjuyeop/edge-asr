@@ -112,3 +112,7 @@ native ORT 버전 확인이 필요할 때만 `env --probe-runtime`을 사용합�
 ## Q4 repack·스레드 대조 — 2026-11-13
 
 별도 `runtimes/qwen3-opt/q4-norepack-20261113-01/{engine,bridge}/`를 빌드해 기존 repack ON과 비교했습니다. CPU C/C++ flags는 같고 repack define만 빠졌으며 기존 엔진6개·모델·패키지는 보존했습니다. OFF는 느려져 제외했습니다. 선택된 Q4 음성/prefill4T는 **기존 prefix bridge/엔진**을 그대로 사용합니다. Q8 공유 기본과 기존 Q4 3T는 유지합니다. [실측·시작 온도·CPU 비용](../../results/summaries/optimization/prefill-q4-20261113.md).
+
+## Q4 3T 커널 추적 추가 — 2026-11-13
+
+`runtimes/qwen3-opt/kernel-q4-20261113-01/libedge_kernel_trace.so`를 별도 빌드했습니다. 추론 자식에만 preload하며 기존 bridge·엔진·패키지·가중치는 그대로입니다. 실제 repack GEMM/GEMV·활성값 변환 호출을 기록하고 끔/켬의 전사·token ID·계측 비용을 대조했습니다. 운영 기본에는 로딩하지 않습니다. 사용자 결정으로 Q4 후속은2/3T를 유지하고4T는 보존한 실험으로 둡니다. [실제96호출·온도/클럭·해시 기록](../../results/summaries/optimization/kernel-q4-20261113.md).

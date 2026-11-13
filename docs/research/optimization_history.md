@@ -126,6 +126,14 @@ RP5 실제 모델에서 콜드·웜 호출의 전사·토큰 ID가 같고, 의�
 
 근거: [음성비용 가변100개](../../results/summaries/optimization/realtime-cost-20261113.md), [text-only Q4](../../results/summaries/optimization/realtime-q4-20261113.md), [text/audio Q4](../../results/summaries/optimization/realtime-both-q4-20261113.md).
 
+## 14. Q4 prefill 병목을 커널까지 확인 — 11월 13일
+
+앞선 node 계측에서 Q4 prefill 행렬곱이 크게 관측되어 repack/스레드를 대조했습니다. repack OFF는 느렸고4T의 짧은 첫 표시 이득은약0.07초·CPU 비용 증가는7~8%여서 사용자 결정에 따라 후속은2/3T를 유지합니다. 기존4T 실험·별도 설정은 보존합니다.
+
+기존 엔진을 바꾸지 않는 선택 함수 추적으로 실제 ARM Q4_K/Q6_K 커널과 Q8 대비 동일 연산량을 확인했습니다. 현재 열 제한 없는 추가 진단에서도 긴 prefill은 Q8 약412ms·Q4 약546ms였고, 입력 변환과 GEMM 모두 CPU 비용이 컸습니다. 변환은3.5~3.7배였지만 추적된 추가 CPU의 대부분은 행렬곱이어서 변환만의 최적화로 충분하다고 가정하지 않습니다. 다음은3T 커널 내부 검토이며 최적화 채택·새 CER 결과와 구분합니다.
+
+근거: [연산별 프로파일링](../../results/summaries/optimization/operator-profile-20261113.md), [repack/4T 선별](../../results/summaries/optimization/prefill-q4-20261113.md), [3T 커널 진단·96호출](../../results/summaries/optimization/kernel-q4-20261113.md).
+
 ## 기록 범위와 갱신
 
 위 평가는 준비된 낭독 WAV의 1배속 공급을 기준으로 합니다. 자연 대화·잡음·독립 holdout·마이크·음향 단어 끝 기준 지연·최종 장시간 운영은 후속 검증입니다. 같은 100개를 반복한 결과를 한국어 전반의 정확도나 독립 평가 결과로 옮기지 않습니다.

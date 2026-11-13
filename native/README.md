@@ -6,6 +6,7 @@ Python 실행 코드는 [src/edge_asr/qwen/](../src/edge_asr/qwen/), C++ 소스�
 | --- | --- |
 | [gguf/bridge.cpp](gguf/bridge.cpp) | llama.cpp/libmtmd batch 입력 C ABI. 모델 상주·KV 초기화·오디오/prefill·토큰 decode·선택적 토큰 callback |
 | [gguf/build.py](gguf/build.py) | 고정 CPU 엔진에 bridge 연결, `build.json`에 소스/바이너리 해시 기록 |
+| [gguf/kernel_trace.cpp](gguf/kernel_trace.cpp) | 기존 엔진의 선택 ELF 함수 호출 추적. 운영 기본과 별도 |
 | [gguf/quantize.py](gguf/quantize.py) | 고정 BF16→Q6/Q5/Q4 독립 변환·자산 명세. 별도 변환 환경·빌드 사용 |
 | [ort_trace/ort_trace.cc](ort_trace/ort_trace.cc), [빌드 도구](ort_trace/build.py) | 기존 ORT1.28.2/API28의 Session.Run 호출 계측 |
 
@@ -71,3 +72,5 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 빌드는 같은 고정 llama.cpp 헤더의 `include`·`ggml/include`·`tools/mtmd`를 `-I`로 전달하고 `g++ -std=c++17 -O2 -shared -fPIC -Wall -Wextra -Werror native/gguf/kernel_trace.cpp -ldl -pthread -o <새 경로>/libedge_kernel_trace.so`를 실행합니다. 실제 추론 자식에만 `LD_PRELOAD`를 지정하고 `EDGE_ASR_TRACE_CPU`·`EDGE_ASR_TRACE_MTMD`·`EDGE_ASR_TRACE_LLAMA`에는 기존에 로딩되는 각 `.so`의 절대 경로를 넣습니다. 누락된 라이브러리/심볼은 실패로 드러내며 다른 계산 경로로 대체하지 않습니다.
 
 직렬 호출 사이에서 `edge_kernel_trace_begin(0/1)`으로 집계를 초기화하고 모드를 고릅니다. `edge_kernel_trace_result()`는 JSON을 반환하며 실행 중 초기화/조회는 거부합니다. 집계 공간은 고정 크기이고 중첩된 입력 변환을 중복 합산하지 않습니다. 단계 구분은 기존 mtmd helper와 `llama_process` 호출 범위입니다. **작업자별 wall/CPU 합계는 병렬 구간의 사용자 대기시간이 아닙니다.** 끔/켬의 전사·token ID·MAC 동등성과 계측 비용을 대조하며 운영 기본에는 적용하지 않습니다. [사전 조건](../docs/research/qwen_realtime.md#q4-3t-커널-추적--2026-11-13-사전-조건).
+
+[실제96호출](../results/summaries/optimization/kernel-q4-20261113.md)에서 같은 모델의 기존 전사/token ID와 단계별 연산량을 유지했습니다.3T에서도 Q4 prefill의 입력 변환과 GEMM 비용 증가를 확인했으며, 커널 내부 unpack/scale/dot은 후속 계측 범위입니다.

@@ -1,0 +1,1879 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-13",
+  "kind": "q4_3t_kernel_dispatch",
+  "source_commit": "a59c90da219fe7ae5e45a2aaad74804a939d33fe",
+  "diagnostics": {
+    "kernel-q4-20261113-01": {
+      "schema_version": 1,
+      "kind": "q4_3t_kernel_dispatch",
+      "source_commit": "a59c90da219fe7ae5e45a2aaad74804a939d33fe",
+      "raw_path": "results/optimization/opt3/kernel-q4-20261113-01",
+      "phases": {
+        "q8-stock": {
+          "thermal": {
+            "start_c": 55.65,
+            "max_c": 77.65,
+            "end_c": 74.35,
+            "current_limits": [
+              0
+            ],
+            "mean_arm_clock_hz": 2400026158.5454545
+          },
+          "samples": {
+            "short": {
+              "stock": {
+                "native_elapsed_s": 0.787134744,
+                "first_generated_token_s": 0.5637388415,
+                "audio_encode_s": 0.31125145225,
+                "audio_embedding_eval_s": 0.16154077075,
+                "suffix_eval_s": 0.09000323775,
+                "token_decode_s": 0.22084669375,
+                "calls": 4,
+                "elapsed_s": 0.7875564087444218,
+                "process_cpu_s": 2.1296734337500016,
+                "token_ids": [
+                  23259,
+                  43590,
+                  12802,
+                  13
+                ],
+                "hypothesis": "수소이."
+              }
+            },
+            "long": {
+              "stock": {
+                "native_elapsed_s": 2.8627860092499997,
+                "first_generated_token_s": 1.30652865375,
+                "audio_encode_s": 0.79930840275,
+                "audio_embedding_eval_s": 0.410375549,
+                "suffix_eval_s": 0.095514033,
+                "token_decode_s": 1.5387751455,
+                "calls": 4,
+                "elapsed_s": 2.8632210207433673,
+                "process_cpu_s": 7.000547276250002,
+                "token_ids": [
+                  21329,
+                  88259,
+                  19969,
+                  95577,
+                  59698,
+                  85413,
+                  222,
+                  125545,
+                  12802,
+                  21329,
+                  136278,
+                  71108,
+                  131137,
+                  143862,
+                  144179,
+                  21329,
+                  132264,
+                  139957,
+                  136196,
+                  41671,
+                  132264,
+                  131417,
+                  16560,
+                  126254,
+                  78374,
+                  57801,
+                  13
+                ],
+                "hypothesis": "지구가 마치 움직이지 않은 것처럼 느껴지기에 언뜻보기에 맞는 말 같게."
+              }
+            }
+          },
+          "rss_max_mib": 1655.75
+        },
+        "q8-trace": {
+          "thermal": {
+            "start_c": 68.85,
+            "max_c": 82.6,
+            "end_c": 78.2,
+            "current_limits": [
+              0
+            ],
+            "mean_arm_clock_hz": 2400024358.787879
+          },
+          "samples": {
+            "short": {
+              "off": {
+                "native_elapsed_s": 0.7960004245,
+                "first_generated_token_s": 0.5680664799999999,
+                "audio_encode_s": 0.3128709555,
+                "audio_embedding_eval_s": 0.1623175985,
+                "suffix_eval_s": 0.091915208,
+                "token_decode_s": 0.2253249025,
+                "calls": 2,
+                "elapsed_s": 0.7964420570060611,
+                "process_cpu_s": 2.153158296499999,
+                "token_ids": [
+                  23259,
+                  43590,
+                  12802,
+                  13
+                ],
+                "hypothesis": "수소이."
+              },
+              "on": {
+                "native_elapsed_s": 0.8067787639999999,
+                "first_generated_token_s": 0.5743742385,
+                "audio_encode_s": 0.31442738,
+                "audio_embedding_eval_s": 0.1653447085,
+                "suffix_eval_s": 0.093588912,
+                "token_decode_s": 0.229834612,
+                "calls": 2,
+                "elapsed_s": 0.8072691835113801,
+                "process_cpu_s": 2.1807392404999995,
+                "token_ids": [
+                  23259,
+                  43590,
+                  12802,
+                  13
+                ],
+                "hypothesis": "수소이.",
+                "kernels": [
+                  {
+                    "stage": "audio_encoder",
+                    "function": "quantize_row_q8_0",
+                    "work_unit": "input_elements",
+                    "calls": 8580.0,
+                    "worker_wall_ns": 10618116.0,
+                    "worker_cpu_ns": 7400174.5,
+                    "work": 3820544.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemm_q8_0_4x4_q8_0",
+                    "work_unit": "MAC",
+                    "calls": 2316.0,
+                    "worker_wall_ns": 381692618.0,
+                    "worker_cpu_ns": 380259430.5,
+                    "work": 10343153664.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemv_q8_0_4x4_q8_0",
+                    "work_unit": "MAC",
+                    "calls": 4632.0,
+                    "worker_wall_ns": 40166779.0,
+                    "worker_cpu_ns": 38358849.0,
+                    "work": 861929472.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "quantize_mat<4,Q8_0>",
+                    "work_unit": "input_elements",
+                    "calls": 1158.0,
+                    "worker_wall_ns": 8571801.0,
+                    "worker_cpu_ns": 8018632.0,
+                    "work": 6758400.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "quantize_row_q8_0",
+                    "work_unit": "input_elements",
+                    "calls": 386.0,
+                    "worker_wall_ns": 982747.5,
+                    "worker_cpu_ns": 843707.5,
+                    "work": 563200.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemm_q8_0_4x4_q8_0",
+                    "work_unit": "MAC",
+                    "calls": 2316.0,
+                    "worker_wall_ns": 174054860.5,
+                    "worker_cpu_ns": 172684293.0,
+                    "work": 3447717888.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemv_q8_0_4x4_q8_0",
+                    "work_unit": "MAC",
+                    "calls": 2364.0,
+                    "worker_wall_ns": 65884140.0,
+                    "worker_cpu_ns": 64571372.0,
+                    "work": 595984384.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "quantize_mat<4,Q8_0>",
+                    "work_unit": "input_elements",
+                    "calls": 386.0,
+                    "worker_wall_ns": 2586029.0,
+                    "worker_cpu_ns": 2397236.0,
+                    "work": 2252800.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "quantize_row_q8_0",
+                    "work_unit": "input_elements",
+                    "calls": 197.0,
+                    "worker_wall_ns": 473074.0,
+                    "worker_cpu_ns": 402076.5,
+                    "work": 287744.0
+                  },
+                  {
+                    "stage": "token_decode",
+                    "function": "ggml_gemv_q8_0_4x4_q8_0",
+                    "work_unit": "MAC",
+                    "calls": 6304.0,
+                    "worker_wall_ns": 423107669.0,
+                    "worker_cpu_ns": 419435230.0,
+                    "work": 2383937536.0
+                  },
+                  {
+                    "stage": "token_decode",
+                    "function": "quantize_row_q8_0",
+                    "work_unit": "input_elements",
+                    "calls": 788.0,
+                    "worker_wall_ns": 1972900.5,
+                    "worker_cpu_ns": 1632821.0,
+                    "work": 1150976.0
+                  }
+                ]
+              }
+            },
+            "long": {
+              "off": {
+                "native_elapsed_s": 2.8866253685,
+                "first_generated_token_s": 1.304291496,
+                "audio_encode_s": 0.796289919,
+                "audio_embedding_eval_s": 0.4099959445,
+                "suffix_eval_s": 0.0966671985,
+                "token_decode_s": 1.5649892799999998,
+                "calls": 2,
+                "elapsed_s": 2.887064917013049,
+                "process_cpu_s": 7.049454366999999,
+                "token_ids": [
+                  21329,
+                  88259,
+                  19969,
+                  95577,
+                  59698,
+                  85413,
+                  222,
+                  125545,
+                  12802,
+                  21329,
+                  136278,
+                  71108,
+                  131137,
+                  143862,
+                  144179,
+                  21329,
+                  132264,
+                  139957,
+                  136196,
+                  41671,
+                  132264,
+                  131417,
+                  16560,
+                  126254,
+                  78374,
+                  57801,
+                  13
+                ],
+                "hypothesis": "지구가 마치 움직이지 않은 것처럼 느껴지기에 언뜻보기에 맞는 말 같게."
+              },
+              "on": {
+                "native_elapsed_s": 2.9473356490000002,
+                "first_generated_token_s": 1.321848133,
+                "audio_encode_s": 0.8078097070000001,
+                "audio_embedding_eval_s": 0.4145980175,
+                "suffix_eval_s": 0.09810688249999999,
+                "token_decode_s": 1.607865362,
+                "calls": 2,
+                "elapsed_s": 2.9478136980033014,
+                "process_cpu_s": 7.1794306019999965,
+                "token_ids": [
+                  21329,
+                  88259,
+                  19969,
+                  95577,
+                  59698,
+                  85413,
+                  222,
+                  125545,
+                  12802,
+                  21329,
+                  136278,
+                  71108,
+                  131137,
+                  143862,
+                  144179,
+                  21329,
+                  132264,
+                  139957,
+                  136196,
+                  41671,
+                  132264,
+                  131417,
+                  16560,
+                  126254,
+                  78374,
+                  57801,
+                  13
+                ],
+                "hypothesis": "지구가 마치 움직이지 않은 것처럼 느껴지기에 언뜻보기에 맞는 말 같게.",
+                "kernels": [
+                  {
+                    "stage": "audio_encoder",
+                    "function": "quantize_row_q8_0",
+                    "work_unit": "input_elements",
+                    "calls": 21450.0,
+                    "worker_wall_ns": 26321470.5,
+                    "worker_cpu_ns": 18355795.5,
+                    "work": 9551360.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemm_q8_0_4x4_q8_0",
+                    "work_unit": "MAC",
+                    "calls": 2316.0,
+                    "worker_wall_ns": 886747608.5,
+                    "worker_cpu_ns": 884087347.5,
+                    "work": 27581743104.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemv_q8_0_4x4_q8_0",
+                    "work_unit": "MAC",
+                    "calls": 2316.0,
+                    "worker_wall_ns": 21663760.0,
+                    "worker_cpu_ns": 20660733.5,
+                    "work": 430964736.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "quantize_mat<4,Q8_0>",
+                    "work_unit": "input_elements",
+                    "calls": 3088.0,
+                    "worker_wall_ns": 25227354.5,
+                    "worker_cpu_ns": 23718752.0,
+                    "work": 18022400.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "quantize_row_q8_0",
+                    "work_unit": "input_elements",
+                    "calls": 193.0,
+                    "worker_wall_ns": 443635.0,
+                    "worker_cpu_ns": 373670.0,
+                    "work": 281600.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemm_q8_0_4x4_q8_0",
+                    "work_unit": "MAC",
+                    "calls": 2316.0,
+                    "worker_wall_ns": 170894226.5,
+                    "worker_cpu_ns": 169493105.0,
+                    "work": 3447717888.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemv_q8_0_4x4_q8_0",
+                    "work_unit": "MAC",
+                    "calls": 2364.0,
+                    "worker_wall_ns": 65256604.0,
+                    "worker_cpu_ns": 64215797.0,
+                    "work": 595984384.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "quantize_mat<4,Q8_0>",
+                    "work_unit": "input_elements",
+                    "calls": 386.0,
+                    "worker_wall_ns": 2552465.0,
+                    "worker_cpu_ns": 2361797.5,
+                    "work": 2252800.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "quantize_row_q8_0",
+                    "work_unit": "input_elements",
+                    "calls": 197.0,
+                    "worker_wall_ns": 460101.5,
+                    "worker_cpu_ns": 389751.5,
+                    "work": 287744.0
+                  },
+                  {
+                    "stage": "token_decode",
+                    "function": "ggml_gemv_q8_0_4x4_q8_0",
+                    "work_unit": "MAC",
+                    "calls": 42552.0,
+                    "worker_wall_ns": 2851131112.5,
+                    "worker_cpu_ns": 2823646829.5,
+                    "work": 16091578368.0
+                  },
+                  {
+                    "stage": "token_decode",
+                    "function": "quantize_row_q8_0",
+                    "work_unit": "input_elements",
+                    "calls": 5319.0,
+                    "worker_wall_ns": 13123783.0,
+                    "worker_cpu_ns": 10776923.5,
+                    "work": 7769088.0
+                  }
+                ]
+              }
+            }
+          },
+          "rss_max_mib": 1655.796875
+        },
+        "q4-trace": {
+          "thermal": {
+            "start_c": 72.7,
+            "max_c": 83.7,
+            "end_c": 82.6,
+            "current_limits": [
+              0,
+              8
+            ],
+            "mean_arm_clock_hz": 2361460531.2
+          },
+          "samples": {
+            "short": {
+              "off": {
+                "native_elapsed_s": 0.783523847,
+                "first_generated_token_s": 0.6249765780000001,
+                "audio_encode_s": 0.3175674295,
+                "audio_embedding_eval_s": 0.2115100935,
+                "suffix_eval_s": 0.094911105,
+                "token_decode_s": 0.1558772825,
+                "calls": 2,
+                "elapsed_s": 0.7839645070198458,
+                "process_cpu_s": 2.1810578829999976,
+                "token_ids": [
+                  23259,
+                  43590,
+                  12802,
+                  13
+                ],
+                "hypothesis": "수소이."
+              },
+              "on": {
+                "native_elapsed_s": 0.7958576865,
+                "first_generated_token_s": 0.634984728,
+                "audio_encode_s": 0.3208625505,
+                "audio_embedding_eval_s": 0.2157977205,
+                "suffix_eval_s": 0.09734704450000001,
+                "token_decode_s": 0.158199037,
+                "calls": 2,
+                "elapsed_s": 0.796371198957786,
+                "process_cpu_s": 2.2170044099999977,
+                "token_ids": [
+                  23259,
+                  43590,
+                  12802,
+                  13
+                ],
+                "hypothesis": "수소이.",
+                "kernels": [
+                  {
+                    "stage": "audio_encoder",
+                    "function": "quantize_row_q8_0",
+                    "work_unit": "input_elements",
+                    "calls": 8580.0,
+                    "worker_wall_ns": 10860362.5,
+                    "worker_cpu_ns": 7571414.5,
+                    "work": 3820544.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemm_q4_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 1992.0,
+                    "worker_wall_ns": 410844121.5,
+                    "worker_cpu_ns": 409800549.0,
+                    "work": 9009364992.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemm_q6_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 324.0,
+                    "worker_wall_ns": 71005063.5,
+                    "worker_cpu_ns": 70829827.0,
+                    "work": 1333788672.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemv_q4_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 3984.0,
+                    "worker_wall_ns": 47383979.0,
+                    "worker_cpu_ns": 45795440.5,
+                    "work": 750780416.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemv_q6_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 648.0,
+                    "worker_wall_ns": 15569993.5,
+                    "worker_cpu_ns": 15303387.0,
+                    "work": 111149056.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "quantize_mat<4,Q8_K>",
+                    "work_unit": "input_elements",
+                    "calls": 1158.0,
+                    "worker_wall_ns": 33206582.5,
+                    "worker_cpu_ns": 32671612.0,
+                    "work": 6758400.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "quantize_row_q8_K",
+                    "work_unit": "input_elements",
+                    "calls": 386.0,
+                    "worker_wall_ns": 1303076.5,
+                    "worker_cpu_ns": 1144725.5,
+                    "work": 563200.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemm_q4_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 1992.0,
+                    "worker_wall_ns": 143246605.0,
+                    "worker_cpu_ns": 141921414.0,
+                    "work": 3003121664.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemm_q6_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 324.0,
+                    "worker_wall_ns": 26449403.0,
+                    "worker_cpu_ns": 26238202.0,
+                    "work": 444596224.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemv_q4_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 2016.0,
+                    "worker_wall_ns": 24906599.0,
+                    "worker_cpu_ns": 24057635.0,
+                    "work": 381681664.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemv_q6_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 348.0,
+                    "worker_wall_ns": 41159140.0,
+                    "worker_cpu_ns": 40845824.5,
+                    "work": 214302720.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "quantize_mat<4,Q8_K>",
+                    "work_unit": "input_elements",
+                    "calls": 386.0,
+                    "worker_wall_ns": 11099585.5,
+                    "worker_cpu_ns": 10910362.0,
+                    "work": 2252800.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "quantize_row_q8_K",
+                    "work_unit": "input_elements",
+                    "calls": 197.0,
+                    "worker_wall_ns": 662230.0,
+                    "worker_cpu_ns": 580307.0,
+                    "work": 287744.0
+                  },
+                  {
+                    "stage": "token_decode",
+                    "function": "ggml_gemv_q4_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 5376.0,
+                    "worker_wall_ns": 142620758.0,
+                    "worker_cpu_ns": 140010279.0,
+                    "work": 1526726656.0
+                  },
+                  {
+                    "stage": "token_decode",
+                    "function": "ggml_gemv_q6_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 928.0,
+                    "worker_wall_ns": 135626216.5,
+                    "worker_cpu_ns": 135213493.5,
+                    "work": 857210880.0
+                  },
+                  {
+                    "stage": "token_decode",
+                    "function": "quantize_row_q8_K",
+                    "work_unit": "input_elements",
+                    "calls": 788.0,
+                    "worker_wall_ns": 2513282.5,
+                    "worker_cpu_ns": 2188355.0,
+                    "work": 1150976.0
+                  }
+                ]
+              }
+            },
+            "long": {
+              "off": {
+                "native_elapsed_s": 2.6304192850000003,
+                "first_generated_token_s": 1.513088591,
+                "audio_encode_s": 0.8347637845,
+                "audio_embedding_eval_s": 0.576970072,
+                "suffix_eval_s": 0.099987385,
+                "token_decode_s": 1.099239238,
+                "calls": 2,
+                "elapsed_s": 2.6308697135245893,
+                "process_cpu_s": 6.737923924000004,
+                "token_ids": [
+                  21329,
+                  88259,
+                  19969,
+                  95577,
+                  59698,
+                  85413,
+                  222,
+                  125545,
+                  12802,
+                  21329,
+                  136278,
+                  71108,
+                  131137,
+                  143862,
+                  144179,
+                  21329,
+                  132264,
+                  139957,
+                  136196,
+                  41671,
+                  32290,
+                  131417,
+                  16560,
+                  126254,
+                  78374,
+                  34395,
+                  13
+                ],
+                "hypothesis": "지구가 마치 움직이지 않은 것처럼 느껴지기에 언뜻보면 맞는 말 같고."
+              },
+              "on": {
+                "native_elapsed_s": 2.6281455400000002,
+                "first_generated_token_s": 1.4857686365,
+                "audio_encode_s": 0.8260200485,
+                "audio_embedding_eval_s": 0.5571946795,
+                "suffix_eval_s": 0.101180095,
+                "token_decode_s": 1.1245070015,
+                "calls": 2,
+                "elapsed_s": 2.6286319229693618,
+                "process_cpu_s": 6.7072741715,
+                "token_ids": [
+                  21329,
+                  88259,
+                  19969,
+                  95577,
+                  59698,
+                  85413,
+                  222,
+                  125545,
+                  12802,
+                  21329,
+                  136278,
+                  71108,
+                  131137,
+                  143862,
+                  144179,
+                  21329,
+                  132264,
+                  139957,
+                  136196,
+                  41671,
+                  32290,
+                  131417,
+                  16560,
+                  126254,
+                  78374,
+                  34395,
+                  13
+                ],
+                "hypothesis": "지구가 마치 움직이지 않은 것처럼 느껴지기에 언뜻보면 맞는 말 같고.",
+                "kernels": [
+                  {
+                    "stage": "audio_encoder",
+                    "function": "quantize_row_q8_0",
+                    "work_unit": "input_elements",
+                    "calls": 21450.0,
+                    "worker_wall_ns": 26624470.5,
+                    "worker_cpu_ns": 18614843.0,
+                    "work": 9551360.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemm_q4_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 1992.0,
+                    "worker_wall_ns": 1050133703.0,
+                    "worker_cpu_ns": 1048109774.5,
+                    "work": 24024973312.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemm_q6_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 324.0,
+                    "worker_wall_ns": 175764276.5,
+                    "worker_cpu_ns": 175502726.5,
+                    "work": 3556769792.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemv_q4_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 1992.0,
+                    "worker_wall_ns": 23014242.5,
+                    "worker_cpu_ns": 22213754.5,
+                    "work": 375390208.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemv_q6_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 324.0,
+                    "worker_wall_ns": 7574580.0,
+                    "worker_cpu_ns": 7440802.5,
+                    "work": 55574528.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "quantize_mat<4,Q8_K>",
+                    "work_unit": "input_elements",
+                    "calls": 3088.0,
+                    "worker_wall_ns": 87893939.5,
+                    "worker_cpu_ns": 86107430.0,
+                    "work": 18022400.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "quantize_row_q8_K",
+                    "work_unit": "input_elements",
+                    "calls": 193.0,
+                    "worker_wall_ns": 654024.0,
+                    "worker_cpu_ns": 570973.0,
+                    "work": 281600.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemm_q4_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 1992.0,
+                    "worker_wall_ns": 139797679.0,
+                    "worker_cpu_ns": 138854082.5,
+                    "work": 3003121664.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemm_q6_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 324.0,
+                    "worker_wall_ns": 26024773.5,
+                    "worker_cpu_ns": 25856872.5,
+                    "work": 444596224.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemv_q4_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 2016.0,
+                    "worker_wall_ns": 24277819.0,
+                    "worker_cpu_ns": 23475222.0,
+                    "work": 381681664.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemv_q6_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 348.0,
+                    "worker_wall_ns": 41800669.0,
+                    "worker_cpu_ns": 41635988.5,
+                    "work": 214302720.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "quantize_mat<4,Q8_K>",
+                    "work_unit": "input_elements",
+                    "calls": 386.0,
+                    "worker_wall_ns": 10788800.5,
+                    "worker_cpu_ns": 10602990.5,
+                    "work": 2252800.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "quantize_row_q8_K",
+                    "work_unit": "input_elements",
+                    "calls": 197.0,
+                    "worker_wall_ns": 655685.0,
+                    "worker_cpu_ns": 576368.5,
+                    "work": 287744.0
+                  },
+                  {
+                    "stage": "token_decode",
+                    "function": "ggml_gemv_q4_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 36288.0,
+                    "worker_wall_ns": 959709224.5,
+                    "worker_cpu_ns": 942628075.0,
+                    "work": 10305404928.0
+                  },
+                  {
+                    "stage": "token_decode",
+                    "function": "ggml_gemv_q6_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 6264.0,
+                    "worker_wall_ns": 909799567.5,
+                    "worker_cpu_ns": 906823343.5,
+                    "work": 5786173440.0
+                  },
+                  {
+                    "stage": "token_decode",
+                    "function": "quantize_row_q8_K",
+                    "work_unit": "input_elements",
+                    "calls": 5319.0,
+                    "worker_wall_ns": 16985374.5,
+                    "worker_cpu_ns": 14755002.5,
+                    "work": 7769088.0
+                  }
+                ]
+              }
+            }
+          },
+          "rss_max_mib": 1072.671875
+        },
+        "q4-stock": {
+          "thermal": {
+            "start_c": 76.0,
+            "max_c": 84.25,
+            "end_c": 82.6,
+            "current_limits": [
+              0,
+              8
+            ],
+            "mean_arm_clock_hz": 2289413780.645161
+          },
+          "samples": {
+            "short": {
+              "stock": {
+                "native_elapsed_s": 0.8076120645,
+                "first_generated_token_s": 0.6447159365,
+                "audio_encode_s": 0.3320317425,
+                "audio_embedding_eval_s": 0.21513507425,
+                "suffix_eval_s": 0.09655149325,
+                "token_decode_s": 0.160145034,
+                "calls": 4,
+                "elapsed_s": 0.8080557527428027,
+                "process_cpu_s": 2.2461111680000005,
+                "token_ids": [
+                  23259,
+                  43590,
+                  12802,
+                  13
+                ],
+                "hypothesis": "수소이."
+              }
+            },
+            "long": {
+              "stock": {
+                "native_elapsed_s": 2.71287451075,
+                "first_generated_token_s": 1.56315145025,
+                "audio_encode_s": 0.8751561685,
+                "audio_embedding_eval_s": 0.58460526675,
+                "suffix_eval_s": 0.101965211,
+                "token_decode_s": 1.1316467695,
+                "calls": 4,
+                "elapsed_s": 2.7133141244848957,
+                "process_cpu_s": 6.954978127500002,
+                "token_ids": [
+                  21329,
+                  88259,
+                  19969,
+                  95577,
+                  59698,
+                  85413,
+                  222,
+                  125545,
+                  12802,
+                  21329,
+                  136278,
+                  71108,
+                  131137,
+                  143862,
+                  144179,
+                  21329,
+                  132264,
+                  139957,
+                  136196,
+                  41671,
+                  32290,
+                  131417,
+                  16560,
+                  126254,
+                  78374,
+                  34395,
+                  13
+                ],
+                "hypothesis": "지구가 마치 움직이지 않은 것처럼 느껴지기에 언뜻보면 맞는 말 같고."
+              }
+            }
+          },
+          "rss_max_mib": 1072.203125
+        }
+      },
+      "checks": {
+        "all_calls_success": true,
+        "call_count": 64,
+        "same_model_all_16_outputs_and_prior_tokens_equal": true,
+        "same_q8_q4_mac_and_activation_elements_per_stage": true,
+        "no_idle_stage_kernels": true,
+        "all_3t_prefill_2t_decode": true,
+        "protected_files": 487,
+        "protected_assets_unchanged": true,
+        "boot_id": "db0f2e44-3c3f-4b8a-8472-e5618db2aeae"
+      },
+      "build": {
+        "command": [
+          "g++",
+          "-std=c++17",
+          "-O2",
+          "-shared",
+          "-fPIC",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-I",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+          "-I",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+          "-I",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+          "native/gguf/kernel_trace.cpp",
+          "-ldl",
+          "-pthread",
+          "-o",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/kernel-q4-20261113-01/libedge_kernel_trace.so"
+        ],
+        "source_commit": "a59c90da219fe7ae5e45a2aaad74804a939d33fe",
+        "source_sha256": "be72ed09bb9272b3fb1f478535596287fa33405060f315023424bc1c173de0e3",
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "",
+        "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+        "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+        "engine_libraries": {
+          "libmtmd.so": "ba8bbb528c24a7cc5721b5cdf520d7ab159f5efb214548628ae5ce240f581296",
+          "libggml.so": "9391d0da5efb090d836eb9f1050270045ae9f215ad8e41368a44d9cd73de82c1",
+          "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+          "libllama.so": "3981f9752c48c595e4fd2ef766e70e6051edc6f54e85e4e0044615e0ddba0999",
+          "libggml-cpu.so": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+          "libllama-common.so": "61278407f85381989b98522229bb57379af9988b301a704f8c55a6619d14bafd"
+        },
+        "library_sha256": "bf66749ce55865296f624fc14d0711d9f4d71bcde7272ee9c1d099c3b82fd94c"
+      },
+      "scope": "실제 RP5 2/3T·연속 호출에서 추출한 동일 PCM2개. 1~4라운드 준비,5~8라운드 끔켬켬끔. 커널 작업자 합계와 단계 wall을 구분. CER 미주석/null, 새 연속/100개 평가 없음."
+    },
+    "kernel-q4-20261113-02": {
+      "schema_version": 1,
+      "kind": "q4_3t_kernel_dispatch",
+      "source_commit": "a59c90da219fe7ae5e45a2aaad74804a939d33fe",
+      "raw_path": "results/optimization/opt3/kernel-q4-20261113-02",
+      "phases": {
+        "q4-trace": {
+          "thermal": {
+            "start_c": 58.4,
+            "max_c": 74.9,
+            "end_c": 74.35,
+            "current_limits": [
+              0
+            ],
+            "mean_arm_clock_hz": 2370519182.6885247
+          },
+          "samples": {
+            "short": {
+              "off": {
+                "native_elapsed_s": 0.757702779,
+                "first_generated_token_s": 0.6075069225,
+                "audio_encode_s": 0.3141095315,
+                "audio_embedding_eval_s": 0.2030440555,
+                "suffix_eval_s": 0.0893967745,
+                "token_decode_s": 0.147600562,
+                "calls": 2,
+                "elapsed_s": 0.7582025140000042,
+                "process_cpu_s": 2.107211796499996,
+                "token_ids": [
+                  23259,
+                  43590,
+                  12802,
+                  13
+                ],
+                "hypothesis": "수소이."
+              },
+              "on": {
+                "native_elapsed_s": 0.7823698345,
+                "first_generated_token_s": 0.628631696,
+                "audio_encode_s": 0.33077490649999997,
+                "audio_embedding_eval_s": 0.2053221065,
+                "suffix_eval_s": 0.09152442699999999,
+                "token_decode_s": 0.15115374199999998,
+                "calls": 2,
+                "elapsed_s": 0.7828745970036834,
+                "process_cpu_s": 2.1826586570000046,
+                "token_ids": [
+                  23259,
+                  43590,
+                  12802,
+                  13
+                ],
+                "hypothesis": "수소이.",
+                "kernels": [
+                  {
+                    "stage": "audio_encoder",
+                    "function": "quantize_row_q8_0",
+                    "work_unit": "input_elements",
+                    "calls": 8580.0,
+                    "worker_wall_ns": 10447664.0,
+                    "worker_cpu_ns": 7274281.0,
+                    "work": 3820544.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemm_q4_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 1992.0,
+                    "worker_wall_ns": 391743512.0,
+                    "worker_cpu_ns": 390715453.5,
+                    "work": 9009364992.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemm_q6_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 324.0,
+                    "worker_wall_ns": 67051483.5,
+                    "worker_cpu_ns": 66888901.0,
+                    "work": 1333788672.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemv_q4_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 3984.0,
+                    "worker_wall_ns": 45229754.0,
+                    "worker_cpu_ns": 43721628.5,
+                    "work": 750780416.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemv_q6_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 648.0,
+                    "worker_wall_ns": 14706968.5,
+                    "worker_cpu_ns": 14453365.5,
+                    "work": 111149056.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "quantize_mat<4,Q8_K>",
+                    "work_unit": "input_elements",
+                    "calls": 1158.0,
+                    "worker_wall_ns": 31965521.5,
+                    "worker_cpu_ns": 31447562.0,
+                    "work": 6758400.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "quantize_row_q8_K",
+                    "work_unit": "input_elements",
+                    "calls": 386.0,
+                    "worker_wall_ns": 1237749.0,
+                    "worker_cpu_ns": 1089213.5,
+                    "work": 563200.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemm_q4_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 1992.0,
+                    "worker_wall_ns": 134284435.5,
+                    "worker_cpu_ns": 133402523.5,
+                    "work": 3003121664.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemm_q6_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 324.0,
+                    "worker_wall_ns": 24974748.5,
+                    "worker_cpu_ns": 24817176.5,
+                    "work": 444596224.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemv_q4_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 2016.0,
+                    "worker_wall_ns": 23654613.0,
+                    "worker_cpu_ns": 22876340.5,
+                    "work": 381681664.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemv_q6_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 348.0,
+                    "worker_wall_ns": 40323390.0,
+                    "worker_cpu_ns": 40163204.5,
+                    "work": 214302720.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "quantize_mat<4,Q8_K>",
+                    "work_unit": "input_elements",
+                    "calls": 386.0,
+                    "worker_wall_ns": 10545074.0,
+                    "worker_cpu_ns": 10355322.0,
+                    "work": 2252800.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "quantize_row_q8_K",
+                    "work_unit": "input_elements",
+                    "calls": 197.0,
+                    "worker_wall_ns": 628805.0,
+                    "worker_cpu_ns": 544469.0,
+                    "work": 287744.0
+                  },
+                  {
+                    "stage": "token_decode",
+                    "function": "ggml_gemv_q4_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 5376.0,
+                    "worker_wall_ns": 136195592.5,
+                    "worker_cpu_ns": 133585713.0,
+                    "work": 1526726656.0
+                  },
+                  {
+                    "stage": "token_decode",
+                    "function": "ggml_gemv_q6_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 928.0,
+                    "worker_wall_ns": 129557020.0,
+                    "worker_cpu_ns": 129147214.0,
+                    "work": 857210880.0
+                  },
+                  {
+                    "stage": "token_decode",
+                    "function": "quantize_row_q8_K",
+                    "work_unit": "input_elements",
+                    "calls": 788.0,
+                    "worker_wall_ns": 2486931.5,
+                    "worker_cpu_ns": 2168609.5,
+                    "work": 1150976.0
+                  }
+                ]
+              }
+            },
+            "long": {
+              "off": {
+                "native_elapsed_s": 2.5177266185000002,
+                "first_generated_token_s": 1.4478576539999999,
+                "audio_encode_s": 0.805075354,
+                "audio_embedding_eval_s": 0.5463276005,
+                "suffix_eval_s": 0.0951128485,
+                "token_decode_s": 1.0527007615,
+                "calls": 2,
+                "elapsed_s": 2.5181535470183007,
+                "process_cpu_s": 6.4349762525,
+                "token_ids": [
+                  21329,
+                  88259,
+                  19969,
+                  95577,
+                  59698,
+                  85413,
+                  222,
+                  125545,
+                  12802,
+                  21329,
+                  136278,
+                  71108,
+                  131137,
+                  143862,
+                  144179,
+                  21329,
+                  132264,
+                  139957,
+                  136196,
+                  41671,
+                  32290,
+                  131417,
+                  16560,
+                  126254,
+                  78374,
+                  34395,
+                  13
+                ],
+                "hypothesis": "지구가 마치 움직이지 않은 것처럼 느껴지기에 언뜻보면 맞는 말 같고."
+              },
+              "on": {
+                "native_elapsed_s": 2.565517026,
+                "first_generated_token_s": 1.4703469275,
+                "audio_encode_s": 0.82384415,
+                "audio_embedding_eval_s": 0.5478245825,
+                "suffix_eval_s": 0.097281732,
+                "token_decode_s": 1.0778458669999997,
+                "calls": 2,
+                "elapsed_s": 2.5660459189966787,
+                "process_cpu_s": 6.552884194000001,
+                "token_ids": [
+                  21329,
+                  88259,
+                  19969,
+                  95577,
+                  59698,
+                  85413,
+                  222,
+                  125545,
+                  12802,
+                  21329,
+                  136278,
+                  71108,
+                  131137,
+                  143862,
+                  144179,
+                  21329,
+                  132264,
+                  139957,
+                  136196,
+                  41671,
+                  32290,
+                  131417,
+                  16560,
+                  126254,
+                  78374,
+                  34395,
+                  13
+                ],
+                "hypothesis": "지구가 마치 움직이지 않은 것처럼 느껴지기에 언뜻보면 맞는 말 같고.",
+                "kernels": [
+                  {
+                    "stage": "audio_encoder",
+                    "function": "quantize_row_q8_0",
+                    "work_unit": "input_elements",
+                    "calls": 21450.0,
+                    "worker_wall_ns": 25978507.5,
+                    "worker_cpu_ns": 18171091.0,
+                    "work": 9551360.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemm_q4_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 1992.0,
+                    "worker_wall_ns": 1034791510.0,
+                    "worker_cpu_ns": 1032870094.5,
+                    "work": 24024973312.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemm_q6_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 324.0,
+                    "worker_wall_ns": 172245811.0,
+                    "worker_cpu_ns": 172007158.5,
+                    "work": 3556769792.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemv_q4_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 1992.0,
+                    "worker_wall_ns": 22608087.0,
+                    "worker_cpu_ns": 21853605.0,
+                    "work": 375390208.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemv_q6_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 324.0,
+                    "worker_wall_ns": 7459425.5,
+                    "worker_cpu_ns": 7322244.0,
+                    "work": 55574528.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "quantize_mat<4,Q8_K>",
+                    "work_unit": "input_elements",
+                    "calls": 3088.0,
+                    "worker_wall_ns": 86097743.0,
+                    "worker_cpu_ns": 84741734.0,
+                    "work": 18022400.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "quantize_row_q8_K",
+                    "work_unit": "input_elements",
+                    "calls": 193.0,
+                    "worker_wall_ns": 631489.0,
+                    "worker_cpu_ns": 553204.0,
+                    "work": 281600.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemm_q4_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 1992.0,
+                    "worker_wall_ns": 134641950.5,
+                    "worker_cpu_ns": 133542442.5,
+                    "work": 3003121664.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemm_q6_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 324.0,
+                    "worker_wall_ns": 25055033.5,
+                    "worker_cpu_ns": 24869775.5,
+                    "work": 444596224.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemv_q4_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 2016.0,
+                    "worker_wall_ns": 23692691.5,
+                    "worker_cpu_ns": 22922199.5,
+                    "work": 381681664.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemv_q6_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 348.0,
+                    "worker_wall_ns": 39652933.0,
+                    "worker_cpu_ns": 39461255.0,
+                    "work": 214302720.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "quantize_mat<4,Q8_K>",
+                    "work_unit": "input_elements",
+                    "calls": 386.0,
+                    "worker_wall_ns": 10514715.0,
+                    "worker_cpu_ns": 10327371.0,
+                    "work": 2252800.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "quantize_row_q8_K",
+                    "work_unit": "input_elements",
+                    "calls": 197.0,
+                    "worker_wall_ns": 619310.0,
+                    "worker_cpu_ns": 542253.5,
+                    "work": 287744.0
+                  },
+                  {
+                    "stage": "token_decode",
+                    "function": "ggml_gemv_q4_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 36288.0,
+                    "worker_wall_ns": 913029618.5,
+                    "worker_cpu_ns": 895968522.5,
+                    "work": 10305404928.0
+                  },
+                  {
+                    "stage": "token_decode",
+                    "function": "ggml_gemv_q6_K_8x4_q8_K",
+                    "work_unit": "MAC",
+                    "calls": 6264.0,
+                    "worker_wall_ns": 871210260.5,
+                    "worker_cpu_ns": 868041461.5,
+                    "work": 5786173440.0
+                  },
+                  {
+                    "stage": "token_decode",
+                    "function": "quantize_row_q8_K",
+                    "work_unit": "input_elements",
+                    "calls": 5319.0,
+                    "worker_wall_ns": 17065766.5,
+                    "worker_cpu_ns": 14520529.5,
+                    "work": 7769088.0
+                  }
+                ]
+              }
+            }
+          },
+          "rss_max_mib": 1072.3125
+        },
+        "q8-trace": {
+          "thermal": {
+            "start_c": 67.75,
+            "max_c": 74.9,
+            "end_c": 71.05,
+            "current_limits": [
+              0
+            ],
+            "mean_arm_clock_hz": 2351588616
+          },
+          "samples": {
+            "short": {
+              "off": {
+                "native_elapsed_s": 0.78912967,
+                "first_generated_token_s": 0.5647820555,
+                "audio_encode_s": 0.3108074165,
+                "audio_embedding_eval_s": 0.1620509315,
+                "suffix_eval_s": 0.090952646,
+                "token_decode_s": 0.2218067735,
+                "calls": 2,
+                "elapsed_s": 0.7895890984800644,
+                "process_cpu_s": 2.136473861999999,
+                "token_ids": [
+                  23259,
+                  43590,
+                  12802,
+                  13
+                ],
+                "hypothesis": "수소이."
+              },
+              "on": {
+                "native_elapsed_s": 0.7977452355000001,
+                "first_generated_token_s": 0.5727312375,
+                "audio_encode_s": 0.314202475,
+                "audio_embedding_eval_s": 0.16497987749999998,
+                "suffix_eval_s": 0.0925824895,
+                "token_decode_s": 0.222500926,
+                "calls": 2,
+                "elapsed_s": 0.7982096645282581,
+                "process_cpu_s": 2.1616861569999983,
+                "token_ids": [
+                  23259,
+                  43590,
+                  12802,
+                  13
+                ],
+                "hypothesis": "수소이.",
+                "kernels": [
+                  {
+                    "stage": "audio_encoder",
+                    "function": "quantize_row_q8_0",
+                    "work_unit": "input_elements",
+                    "calls": 8580.0,
+                    "worker_wall_ns": 10649976.5,
+                    "worker_cpu_ns": 7395931.0,
+                    "work": 3820544.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemm_q8_0_4x4_q8_0",
+                    "work_unit": "MAC",
+                    "calls": 2316.0,
+                    "worker_wall_ns": 380802957.5,
+                    "worker_cpu_ns": 379400678.5,
+                    "work": 10343153664.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemv_q8_0_4x4_q8_0",
+                    "work_unit": "MAC",
+                    "calls": 4632.0,
+                    "worker_wall_ns": 40395869.0,
+                    "worker_cpu_ns": 38549106.0,
+                    "work": 861929472.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "quantize_mat<4,Q8_0>",
+                    "work_unit": "input_elements",
+                    "calls": 1158.0,
+                    "worker_wall_ns": 8591363.5,
+                    "worker_cpu_ns": 8009223.5,
+                    "work": 6758400.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "quantize_row_q8_0",
+                    "work_unit": "input_elements",
+                    "calls": 386.0,
+                    "worker_wall_ns": 997067.0,
+                    "worker_cpu_ns": 854608.0,
+                    "work": 563200.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemm_q8_0_4x4_q8_0",
+                    "work_unit": "MAC",
+                    "calls": 2316.0,
+                    "worker_wall_ns": 172758769.0,
+                    "worker_cpu_ns": 171386983.5,
+                    "work": 3447717888.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemv_q8_0_4x4_q8_0",
+                    "work_unit": "MAC",
+                    "calls": 2364.0,
+                    "worker_wall_ns": 64786389.0,
+                    "worker_cpu_ns": 63710347.5,
+                    "work": 595984384.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "quantize_mat<4,Q8_0>",
+                    "work_unit": "input_elements",
+                    "calls": 386.0,
+                    "worker_wall_ns": 2581843.5,
+                    "worker_cpu_ns": 2383152.0,
+                    "work": 2252800.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "quantize_row_q8_0",
+                    "work_unit": "input_elements",
+                    "calls": 197.0,
+                    "worker_wall_ns": 469831.5,
+                    "worker_cpu_ns": 399033.0,
+                    "work": 287744.0
+                  },
+                  {
+                    "stage": "token_decode",
+                    "function": "ggml_gemv_q8_0_4x4_q8_0",
+                    "work_unit": "MAC",
+                    "calls": 6304.0,
+                    "worker_wall_ns": 410022743.0,
+                    "worker_cpu_ns": 406720604.5,
+                    "work": 2383937536.0
+                  },
+                  {
+                    "stage": "token_decode",
+                    "function": "quantize_row_q8_0",
+                    "work_unit": "input_elements",
+                    "calls": 788.0,
+                    "worker_wall_ns": 1889545.5,
+                    "worker_cpu_ns": 1564837.5,
+                    "work": 1150976.0
+                  }
+                ]
+              }
+            },
+            "long": {
+              "off": {
+                "native_elapsed_s": 2.88350937,
+                "first_generated_token_s": 1.3226587335,
+                "audio_encode_s": 0.8136753889999999,
+                "audio_embedding_eval_s": 0.411685305,
+                "suffix_eval_s": 0.09586628950000001,
+                "token_decode_s": 1.5434401235,
+                "calls": 2,
+                "elapsed_s": 2.8840861049829982,
+                "process_cpu_s": 7.047126251499993,
+                "token_ids": [
+                  21329,
+                  88259,
+                  19969,
+                  95577,
+                  59698,
+                  85413,
+                  222,
+                  125545,
+                  12802,
+                  21329,
+                  136278,
+                  71108,
+                  131137,
+                  143862,
+                  144179,
+                  21329,
+                  132264,
+                  139957,
+                  136196,
+                  41671,
+                  132264,
+                  131417,
+                  16560,
+                  126254,
+                  78374,
+                  57801,
+                  13
+                ],
+                "hypothesis": "지구가 마치 움직이지 않은 것처럼 느껴지기에 언뜻보기에 맞는 말 같게."
+              },
+              "on": {
+                "native_elapsed_s": 2.92997057,
+                "first_generated_token_s": 1.331451494,
+                "audio_encode_s": 0.816611408,
+                "audio_embedding_eval_s": 0.4148236125,
+                "suffix_eval_s": 0.0986375485,
+                "token_decode_s": 1.5808139879999998,
+                "calls": 2,
+                "elapsed_s": 2.93045920250006,
+                "process_cpu_s": 7.155968093000002,
+                "token_ids": [
+                  21329,
+                  88259,
+                  19969,
+                  95577,
+                  59698,
+                  85413,
+                  222,
+                  125545,
+                  12802,
+                  21329,
+                  136278,
+                  71108,
+                  131137,
+                  143862,
+                  144179,
+                  21329,
+                  132264,
+                  139957,
+                  136196,
+                  41671,
+                  132264,
+                  131417,
+                  16560,
+                  126254,
+                  78374,
+                  57801,
+                  13
+                ],
+                "hypothesis": "지구가 마치 움직이지 않은 것처럼 느껴지기에 언뜻보기에 맞는 말 같게.",
+                "kernels": [
+                  {
+                    "stage": "audio_encoder",
+                    "function": "quantize_row_q8_0",
+                    "work_unit": "input_elements",
+                    "calls": 21450.0,
+                    "worker_wall_ns": 26045395.0,
+                    "worker_cpu_ns": 18221920.5,
+                    "work": 9551360.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemm_q8_0_4x4_q8_0",
+                    "work_unit": "MAC",
+                    "calls": 2316.0,
+                    "worker_wall_ns": 887624461.0,
+                    "worker_cpu_ns": 885061434.5,
+                    "work": 27581743104.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "ggml_gemv_q8_0_4x4_q8_0",
+                    "work_unit": "MAC",
+                    "calls": 2316.0,
+                    "worker_wall_ns": 21744757.0,
+                    "worker_cpu_ns": 20789181.0,
+                    "work": 430964736.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "quantize_mat<4,Q8_0>",
+                    "work_unit": "input_elements",
+                    "calls": 3088.0,
+                    "worker_wall_ns": 25385876.0,
+                    "worker_cpu_ns": 23888215.5,
+                    "work": 18022400.0
+                  },
+                  {
+                    "stage": "audio_prefill",
+                    "function": "quantize_row_q8_0",
+                    "work_unit": "input_elements",
+                    "calls": 193.0,
+                    "worker_wall_ns": 463917.5,
+                    "worker_cpu_ns": 394104.5,
+                    "work": 281600.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemm_q8_0_4x4_q8_0",
+                    "work_unit": "MAC",
+                    "calls": 2316.0,
+                    "worker_wall_ns": 173038867.5,
+                    "worker_cpu_ns": 171613945.0,
+                    "work": 3447717888.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "ggml_gemv_q8_0_4x4_q8_0",
+                    "work_unit": "MAC",
+                    "calls": 2364.0,
+                    "worker_wall_ns": 65469499.0,
+                    "worker_cpu_ns": 64343001.0,
+                    "work": 595984384.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "quantize_mat<4,Q8_0>",
+                    "work_unit": "input_elements",
+                    "calls": 386.0,
+                    "worker_wall_ns": 2595193.0,
+                    "worker_cpu_ns": 2400846.0,
+                    "work": 2252800.0
+                  },
+                  {
+                    "stage": "text_suffix",
+                    "function": "quantize_row_q8_0",
+                    "work_unit": "input_elements",
+                    "calls": 197.0,
+                    "worker_wall_ns": 470280.5,
+                    "worker_cpu_ns": 398903.5,
+                    "work": 287744.0
+                  },
+                  {
+                    "stage": "token_decode",
+                    "function": "ggml_gemv_q8_0_4x4_q8_0",
+                    "work_unit": "MAC",
+                    "calls": 42552.0,
+                    "worker_wall_ns": 2815921511.5,
+                    "worker_cpu_ns": 2788564722.0,
+                    "work": 16091578368.0
+                  },
+                  {
+                    "stage": "token_decode",
+                    "function": "quantize_row_q8_0",
+                    "work_unit": "input_elements",
+                    "calls": 5319.0,
+                    "worker_wall_ns": 12911362.5,
+                    "worker_cpu_ns": 10630608.0,
+                    "work": 7769088.0
+                  }
+                ]
+              }
+            }
+          },
+          "rss_max_mib": 1655.40625
+        }
+      },
+      "checks": {
+        "all_calls_success": true,
+        "call_count": 32,
+        "same_model_all_16_outputs_and_prior_tokens_equal": true,
+        "same_q8_q4_mac_and_activation_elements_per_stage": true,
+        "no_idle_stage_kernels": true,
+        "all_3t_prefill_2t_decode": true,
+        "protected_files": 545,
+        "protected_assets_unchanged": true,
+        "boot_id": "db0f2e44-3c3f-4b8a-8472-e5618db2aeae"
+      },
+      "build": {
+        "command": [
+          "g++",
+          "-std=c++17",
+          "-O2",
+          "-shared",
+          "-fPIC",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-I",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+          "-I",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+          "-I",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+          "native/gguf/kernel_trace.cpp",
+          "-ldl",
+          "-pthread",
+          "-o",
+          "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/kernel-q4-20261113-01/libedge_kernel_trace.so"
+        ],
+        "source_commit": "a59c90da219fe7ae5e45a2aaad74804a939d33fe",
+        "source_sha256": "be72ed09bb9272b3fb1f478535596287fa33405060f315023424bc1c173de0e3",
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "",
+        "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+        "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+        "engine_libraries": {
+          "libmtmd.so": "ba8bbb528c24a7cc5721b5cdf520d7ab159f5efb214548628ae5ce240f581296",
+          "libggml.so": "9391d0da5efb090d836eb9f1050270045ae9f215ad8e41368a44d9cd73de82c1",
+          "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+          "libllama.so": "3981f9752c48c595e4fd2ef766e70e6051edc6f54e85e4e0044615e0ddba0999",
+          "libggml-cpu.so": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+          "libllama-common.so": "61278407f85381989b98522229bb57379af9988b301a704f8c55a6619d14bafd"
+        },
+        "library_sha256": "bf66749ce55865296f624fc14d0711d9f4d71bcde7272ee9c1d099c3b82fd94c"
+      },
+      "scope": "실제 RP5 2/3T·연속 호출에서 추출한 동일 PCM2개. 1~4라운드 준비,5~8라운드 끔켬켬끔. 커널 작업자 합계와 단계 wall을 구분. CER 미주석/null, 새 연속/100개 평가 없음."
+    }
+  },
+  "verification": {
+    "independent_host_rp5_analysis_equal": true,
+    "new_raw_files_sha256_equal": {
+      "kernel-q4-20261113-01": 58,
+      "kernel-q4-20261113-02": 33
+    },
+    "upstream_source_sha256": {
+      "ggml/src/ggml-cpu/repack.cpp": "159d4e6e863ca3d39e0ba0ab4fa3b10be7d0c778f6d59f2baea07dcab00c744a",
+      "ggml/src/ggml-cpu/arch/arm/repack.cpp": "eb7f06d503adec539f44c7899a3588fcc94c319f25eb1a5f67aeee63aa1837c2",
+      "ggml/src/ggml-cpu/arch-fallback.h": "92bb73c53e12b10a19facaea987335802dbf9333ec3e8cc7f9cf900c58475afb",
+      "tools/mtmd/mtmd-helper.h": "73758f68e7356675cd434dc1298f3ca8eb7064d47ea4eaa74423b76505735d1b",
+      "tools/mtmd/mtmd.h": "72549ced7f842dc91783edca525f1c85408bc7ccf5177324d9be9235ca4f58bd",
+      "include/llama.h": "a806cb05ff2f218945acefc0d5e49681f41d76af5d7ef7613d954fc18c81fe2a"
+    },
+    "host_tests": {
+      "total": 428,
+      "passed": 425,
+      "skipped": 3
+    },
+    "host_fixed_header_related_tests_passed": 30,
+    "rp5_fixed_header_related_mock_tests_passed": 30,
+    "native_inference_calls": 96,
+    "all_native_calls_succeeded": true
+  },
+  "unchanged": {
+    "production_engine_bridge_models": true,
+    "prefill_threads": 3,
+    "decode_threads": 2,
+    "realtime_interval": true,
+    "shared_q8_default": true
+  },
+  "unmeasured": [
+    "커널 안 unpack/scale/dot/메모리별 cycle",
+    "새 CER·연속 입력·마이크·장시간 성능"
+  ],
+  "supplement_plan": {
+    "run_id": "kernel-q4-20261113-02",
+    "declared_at_utc": "2026-11-13T09:30:01.058992+00:00",
+    "order": [
+      "q4-trace",
+      "q8-trace"
+    ],
+    "fixed_idle_before_each_call_s": 2,
+    "reason": "첫 진단에서 Q4에 현재 열 제한8·클럭 차이가 겹침. 동일 휴지·역순의 진단만 추가. 온도 admission 없음. 운영 실시간 설정 변경 없음.",
+    "prep_rounds": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "measurement_off_rounds": [
+      5,
+      8
+    ],
+    "measurement_on_rounds": [
+      6,
+      7
+    ],
+    "guard": "동일 운영 guard/4GiB/600초/장비 잠금",
+    "success_conditions": [
+      "모델별 기존 전사/token ID 유지·실패0",
+      "동일 PCM·MAC·활성값 변환량",
+      "온도/클럭/현재 제한을 기록하고 여전히 제한이 있으면 순수 커널 차이 단정 금지"
+    ]
+  }
+}
