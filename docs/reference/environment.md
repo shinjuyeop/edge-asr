@@ -108,3 +108,7 @@ native ORT 버전 확인이 필요할 때만 `env --probe-runtime`을 사용합�
 ## 연산 진단 bridge 추가 — 2026-11-13
 
 별도 `runtimes/qwen3-opt/operators-20261113-01/bridge/`를 빌드했습니다. 기존 고정 engine6개 SHA는 모두 같고 기존 운영용 prefix bridge·가상환경/패키지·모델은 그대로입니다. `operator_profile_v1`과 명시적 모드 전환으로 공개 LLM/mtmd node callback만 켭니다. per-node 동기화의 영향을 기존/계측 끔/켬으로 비교했으며 운영 빌드로 채택하지 않았습니다. [빌드/계측 범위](../../native/README.md#gguf-연산별-진단), [RP5 실제 결과](../../results/summaries/optimization/operator-profile-20261113.md).
+
+## Q4 repack·스레드 대조 — 2026-11-13
+
+별도 `runtimes/qwen3-opt/q4-norepack-20261113-01/{engine,bridge}/`를 빌드해 기존 repack ON과 비교했습니다. CPU C/C++ flags는 같고 repack define만 빠졌으며 기존 엔진6개·모델·패키지는 보존했습니다. OFF는 느려져 제외했습니다. 선택된 Q4 음성/prefill4T는 **기존 prefix bridge/엔진**을 그대로 사용합니다. Q8 공유 기본과 기존 Q4 3T는 유지합니다. [실측·시작 온도·CPU 비용](../../results/summaries/optimization/prefill-q4-20261113.md).

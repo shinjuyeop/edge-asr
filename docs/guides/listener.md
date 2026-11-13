@@ -88,3 +88,5 @@ Host에 회수한 기록만 볼 때는 `--ssh`를 생략합니다. 이 경우 Ho
 Q4 선별은 **Q8 가변 · Q4 대조6개**와 **Q4 가변 · 동일6개**입니다. 설정은 `results/optimization/opt3/realtime-q4-20261113-01/configs/listener-quant-{q8,q4}.toml`, 기록은 같은 실행의 `q8-before`/`q4`/`q8-after`입니다. [6개 실측](../../results/summaries/optimization/realtime-q4-20261113.md)은 메모리/최종 반환 이득과 최종 오류2개 증가를 함께 기록합니다.100개와 다른 음원 묶음입니다.
 
 양쪽 Q4 비교는 **Q8/Q8 가변 · 양쪽 Q4 대조6개**와 **Q4/Q4 가변 · 동일6개**입니다. 프로필은 `results/optimization/opt3/realtime-both-q4-20261113-01/configs/listener-both-{q8,q4}.toml`, 저장 기록은 같은 실행의 `q8-before`/`both-q4`/`q8-after`입니다. 실행 조건에서 텍스트·오디오 양자화를 따로 확인합니다. [실측](../../results/summaries/optimization/realtime-both-q4-20261113.md)은 메모리 이득·첫 표시 개선 없음·최종 오류 증가를 함께 기록합니다.
+
+Q4 스레드 대조의 새 프로필은 **Q4 prefill4T · 동일6개**이고, 저장 기록은 `prefill-q4-20261113-01/realtime2/{control-before,candidate,control-after}`입니다. 기존 Q4/Q4 가변 프로필은3T를 유지합니다. [4T 선별 결과](../../results/summaries/optimization/prefill-q4-20261113.md)는 첫 표시의 작은 개선·동일 CER·CPU 비용 증가를 함께 기록합니다.

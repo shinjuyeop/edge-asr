@@ -61,3 +61,5 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 ## Q4 prefill의 repack 대조
 
 고정된 현재 CPU 경로에서 `GGML_CPU_REPACK`을 별도 엔진 빌드마다 비교합니다. 기존 CMake 옵션을 기록하고 새 빌드 경로에서 해당 항목만 바꿉니다. 기존 `build.py`는 같은 고정 소스·native CPU/GPU OFF/KleidiAI OFF 계약으로 새 엔진에 bridge를 연결합니다. 런타임/설정만 바꾸고 가중치는 유지하며, [고정 PCM→연속 입력 선별 조건](../docs/research/qwen_realtime.md#q4-prefill-실행-경로-선별--2026-11-13-사전-조건)을 따릅니다. 켬/끔의 성능·수치 동등성을 가정하지 않습니다.
+
+[이번 Q4 선별](../results/summaries/optimization/prefill-q4-20261113.md)에서는 repack OFF가 느려져 기존 ON을 유지했습니다. 선택된 음성/prefill4T는 기존 prefix bridge의 스레드 설정만 바꿉니다. 새 OFF 엔진은 부정적 결과의 자산으로 보존합니다.

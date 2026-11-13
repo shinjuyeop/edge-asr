@@ -1,0 +1,1570 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-13",
+  "kind": "q4_prefill_paths",
+  "source_commit": "b850d0caa5e05d28f6492aadae053c6a770bc71a",
+  "raw_path": "results/optimization/opt3/prefill-q4-20261113-01",
+  "diagnostic": {
+    "diag-before": {
+      "source_commit": "b850d0caa5e05d28f6492aadae053c6a770bc71a",
+      "worker_sha256": "9c2fff344faea0600b9a2fa3fb86c49dddc4beceff015c1bf0d727cbe41c8a83",
+      "measurements_sha256": "a903dacc04a867a0e8337a41dcfa9f604896937d1e5e9a3223309315844976ab",
+      "model": {
+        "num_threads": 2,
+        "quantization": "q4_k_m",
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "family": "qwen3_gguf",
+        "path": "models/qwen3-opt/gguf-audio-quant-20261113-01/derived",
+        "runtime_library": "runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+        "runtime_manifest": "runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+        "num_threads_batch": 3,
+        "cache_text_prefix": true,
+        "language": "ko",
+        "asset_manifest": "q4_k_m_audio_q4_0.json",
+        "audio_quantization": "q4_0"
+      },
+      "libraries": [
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml-base.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml-cpu.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libllama.so.0.9.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libmtmd.so.0.9.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so"
+      ],
+      "samples": {
+        "short": {
+          "calls": 4,
+          "same_original": true,
+          "elapsed_s": {
+            "n": 4,
+            "mean": 0.7660007044978556,
+            "p50": 0.7643044229771476,
+            "p95": 0.7810889090178534,
+            "max": 0.7810889090178534
+          },
+          "stages_s": {
+            "audio_encode_s": {
+              "n": 4,
+              "mean": 0.313217909,
+              "p50": 0.312184619,
+              "p95": 0.315653349,
+              "max": 0.315653349
+            },
+            "audio_embedding_eval_s": {
+              "n": 4,
+              "mean": 0.20541051500000002,
+              "p50": 0.20371484,
+              "p95": 0.211545791,
+              "max": 0.211545791
+            },
+            "suffix_eval_s": {
+              "n": 4,
+              "mean": 0.0915186495,
+              "p50": 0.091323342,
+              "p95": 0.092876466,
+              "max": 0.092876466
+            },
+            "token_decode_s": {
+              "n": 4,
+              "mean": 0.1516003185,
+              "p50": 0.151527132,
+              "p95": 0.156258819,
+              "max": 0.156258819
+            },
+            "first_generated_token_s": {
+              "n": 4,
+              "mean": 0.6111451415,
+              "p50": 0.609701765,
+              "p95": 0.621059262,
+              "max": 0.621059262
+            }
+          },
+          "process_cpu_s": {
+            "n": 4,
+            "mean": 2.132710904749999,
+            "p50": 2.127712746999997,
+            "p95": 2.1728672680000045,
+            "max": 2.1728672680000045
+          },
+          "process_cpu_pct": 278.42153306478707
+        },
+        "long": {
+          "calls": 4,
+          "same_original": true,
+          "elapsed_s": {
+            "n": 4,
+            "mean": 2.5663974792478257,
+            "p50": 2.542210615996737,
+            "p95": 2.6253227010020055,
+            "max": 2.6253227010020055
+          },
+          "stages_s": {
+            "audio_encode_s": {
+              "n": 4,
+              "mean": 0.8187541135,
+              "p50": 0.809740349,
+              "p95": 0.844774374,
+              "max": 0.844774374
+            },
+            "audio_embedding_eval_s": {
+              "n": 4,
+              "mean": 0.5562415840000001,
+              "p50": 0.549693587,
+              "p95": 0.567379691,
+              "max": 0.567379691
+            },
+            "suffix_eval_s": {
+              "n": 4,
+              "mean": 0.09797481350000001,
+              "p50": 0.096335606,
+              "p95": 0.102418174,
+              "max": 0.102418174
+            },
+            "token_decode_s": {
+              "n": 4,
+              "mean": 1.0651445027500002,
+              "p50": 1.05358459,
+              "p95": 1.0908635540000002,
+              "max": 1.0908635540000002
+            },
+            "first_generated_token_s": {
+              "n": 4,
+              "mean": 1.47433592475,
+              "p50": 1.462501024,
+              "p95": 1.515963306,
+              "max": 1.515963306
+            }
+          },
+          "process_cpu_s": {
+            "n": 4,
+            "mean": 6.553388345499998,
+            "p50": 6.496154683,
+            "p95": 6.734340438999993,
+            "max": 6.734340438999993
+          },
+          "process_cpu_pct": 255.3535996856069
+        }
+      },
+      "same_original": true,
+      "thermal": {
+        "start_mc": 59500,
+        "max_mc": 83150,
+        "end_mc": 74900,
+        "current_limits": [
+          0,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 32,
+          "mean": 2383337752.0,
+          "p50": 2400023808,
+          "p95": 2400037120,
+          "max": 2400037120
+        }
+      },
+      "rss_max_mib": 1073.078125
+    },
+    "threads4": {
+      "source_commit": "b850d0caa5e05d28f6492aadae053c6a770bc71a",
+      "worker_sha256": "ed938721403dda4979aac66d8f9cac0f47e9c397d3d26bdd6d90fe6e6e3ce814",
+      "measurements_sha256": "5296d19b8f0e76094aa8982acb23c7e1621f79f49d81745f81bd0516a595ffa9",
+      "model": {
+        "num_threads": 2,
+        "quantization": "q4_k_m",
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "family": "qwen3_gguf",
+        "path": "models/qwen3-opt/gguf-audio-quant-20261113-01/derived",
+        "runtime_library": "runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+        "runtime_manifest": "runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+        "num_threads_batch": 4,
+        "cache_text_prefix": true,
+        "language": "ko",
+        "asset_manifest": "q4_k_m_audio_q4_0.json",
+        "audio_quantization": "q4_0"
+      },
+      "libraries": [
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml-base.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml-cpu.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libllama.so.0.9.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libmtmd.so.0.9.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so"
+      ],
+      "samples": {
+        "short": {
+          "calls": 4,
+          "same_original": true,
+          "elapsed_s": {
+            "n": 4,
+            "mean": 0.7233913412492257,
+            "p50": 0.7224689649883658,
+            "p95": 0.7330596859974321,
+            "max": 0.7330596859974321
+          },
+          "stages_s": {
+            "audio_encode_s": {
+              "n": 4,
+              "mean": 0.28559603625,
+              "p50": 0.284252734,
+              "p95": 0.291206032,
+              "max": 0.291206032
+            },
+            "audio_embedding_eval_s": {
+              "n": 4,
+              "mean": 0.18710501275,
+              "p50": 0.172697506,
+              "p95": 0.205910092,
+              "max": 0.205910092
+            },
+            "suffix_eval_s": {
+              "n": 4,
+              "mean": 0.082766349,
+              "p50": 0.082542306,
+              "p95": 0.085051696,
+              "max": 0.085051696
+            },
+            "token_decode_s": {
+              "n": 4,
+              "mean": 0.163771628,
+              "p50": 0.157205769,
+              "p95": 0.18263501399999998,
+              "max": 0.18263501399999998
+            },
+            "first_generated_token_s": {
+              "n": 4,
+              "mean": 0.556478786,
+              "p50": 0.547100423,
+              "p95": 0.569797088,
+              "max": 0.569797088
+            }
+          },
+          "process_cpu_s": {
+            "n": 4,
+            "mean": 2.5346314747499985,
+            "p50": 2.5361173049999977,
+            "p95": 2.582180971999996,
+            "max": 2.582180971999996
+          },
+          "process_cpu_pct": 350.3817823383038
+        },
+        "long": {
+          "calls": 4,
+          "same_original": true,
+          "elapsed_s": {
+            "n": 4,
+            "mean": 2.4520315737609053,
+            "p50": 2.4374720040068496,
+            "p95": 2.479778677021386,
+            "max": 2.479778677021386
+          },
+          "stages_s": {
+            "audio_encode_s": {
+              "n": 4,
+              "mean": 0.7266931275,
+              "p50": 0.7181238,
+              "p95": 0.739918406,
+              "max": 0.739918406
+            },
+            "audio_embedding_eval_s": {
+              "n": 4,
+              "mean": 0.51266679725,
+              "p50": 0.50462963,
+              "p95": 0.522359884,
+              "max": 0.522359884
+            },
+            "suffix_eval_s": {
+              "n": 4,
+              "mean": 0.08820762925,
+              "p50": 0.084773508,
+              "p95": 0.093593618,
+              "max": 0.093593618
+            },
+            "token_decode_s": {
+              "n": 4,
+              "mean": 1.10475986975,
+              "p50": 1.0981075380000003,
+              "p95": 1.118852614,
+              "max": 1.118852614
+            },
+            "first_generated_token_s": {
+              "n": 4,
+              "mean": 1.329123617,
+              "p50": 1.321267407,
+              "p95": 1.355918094,
+              "max": 1.355918094
+            }
+          },
+          "process_cpu_s": {
+            "n": 4,
+            "mean": 7.507950771000001,
+            "p50": 7.465252193000005,
+            "p95": 7.619874122000006,
+            "max": 7.619874122000006
+          },
+          "process_cpu_pct": 306.1930707313189
+        }
+      },
+      "same_original": true,
+      "thermal": {
+        "start_mc": 73250,
+        "max_mc": 86450,
+        "end_mc": 77650,
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 30,
+          "mean": 2267758229.3333335,
+          "p50": 2400017408,
+          "p95": 2400030464,
+          "max": 2400037120
+        }
+      },
+      "rss_max_mib": 1072.625
+    },
+    "norepack3": {
+      "source_commit": "b850d0caa5e05d28f6492aadae053c6a770bc71a",
+      "worker_sha256": "bb5d398905c541cb67c88566dc6e4136f6a0da29f63a9d90293f481c476be6cf",
+      "measurements_sha256": "2a469cfd5ba088c44426a41c6a30f9ab363b8d6fd431d4493618b71057f48b38",
+      "model": {
+        "num_threads": 2,
+        "quantization": "q4_k_m",
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "family": "qwen3_gguf",
+        "path": "models/qwen3-opt/gguf-audio-quant-20261113-01/derived",
+        "runtime_library": "runtimes/qwen3-opt/q4-norepack-20261113-01/bridge/libedge_asr_gguf.so",
+        "runtime_manifest": "runtimes/qwen3-opt/q4-norepack-20261113-01/bridge/build.json",
+        "num_threads_batch": 3,
+        "cache_text_prefix": true,
+        "language": "ko",
+        "asset_manifest": "q4_k_m_audio_q4_0.json",
+        "audio_quantization": "q4_0"
+      },
+      "libraries": [
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/q4-norepack-20261113-01/bridge/libedge_asr_gguf.so",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/q4-norepack-20261113-01/engine/bin/libggml-base.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/q4-norepack-20261113-01/engine/bin/libggml-cpu.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/q4-norepack-20261113-01/engine/bin/libggml.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/q4-norepack-20261113-01/engine/bin/libllama.so.0.9.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/q4-norepack-20261113-01/engine/bin/libmtmd.so.0.9.0"
+      ],
+      "samples": {
+        "short": {
+          "calls": 4,
+          "same_original": true,
+          "elapsed_s": {
+            "n": 4,
+            "mean": 1.1083569244947284,
+            "p50": 1.1066719179798383,
+            "p95": 1.1290543880022597,
+            "max": 1.1290543880022597
+          },
+          "stages_s": {
+            "audio_encode_s": {
+              "n": 4,
+              "mean": 0.34787862425000005,
+              "p50": 0.334840566,
+              "p95": 0.364832808,
+              "max": 0.364832808
+            },
+            "audio_embedding_eval_s": {
+              "n": 4,
+              "mean": 0.41783279200000006,
+              "p50": 0.413490838,
+              "p95": 0.430134583,
+              "max": 0.430134583
+            },
+            "suffix_eval_s": {
+              "n": 4,
+              "mean": 0.16699531550000002,
+              "p50": 0.171293507,
+              "p95": 0.176225586,
+              "max": 0.176225586
+            },
+            "token_decode_s": {
+              "n": 4,
+              "mean": 0.17150409375,
+              "p50": 0.171870827,
+              "p95": 0.17446234900000002,
+              "max": 0.17446234900000002
+            },
+            "first_generated_token_s": {
+              "n": 4,
+              "mean": 0.9337237967500001,
+              "p50": 0.93681318,
+              "p95": 0.954021018,
+              "max": 0.954021018
+            }
+          },
+          "process_cpu_s": {
+            "n": 4,
+            "mean": 3.139907405499999,
+            "p50": 3.1422005600000062,
+            "p95": 3.2012915659999948,
+            "max": 3.2012915659999948
+          },
+          "process_cpu_pct": 283.29388630214066
+        },
+        "long": {
+          "calls": 4,
+          "same_original": true,
+          "elapsed_s": {
+            "n": 4,
+            "mean": 3.427186762011843,
+            "p50": 3.4221351090236567,
+            "p95": 3.458074526017299,
+            "max": 3.458074526017299
+          },
+          "stages_s": {
+            "audio_encode_s": {
+              "n": 4,
+              "mean": 0.9190362870000001,
+              "p50": 0.91646092,
+              "p95": 0.944750376,
+              "max": 0.944750376
+            },
+            "audio_embedding_eval_s": {
+              "n": 4,
+              "mean": 1.07441703925,
+              "p50": 1.075334596,
+              "p95": 1.104156077,
+              "max": 1.104156077
+            },
+            "suffix_eval_s": {
+              "n": 4,
+              "mean": 0.16899415574999999,
+              "p50": 0.164918251,
+              "p95": 0.178617809,
+              "max": 0.178617809
+            },
+            "token_decode_s": {
+              "n": 4,
+              "mean": 1.24488765725,
+              "p50": 1.237720135,
+              "p95": 1.258525533,
+              "max": 1.258525533
+            },
+            "first_generated_token_s": {
+              "n": 4,
+              "mean": 2.16389304025,
+              "p50": 2.149752283,
+              "p95": 2.210335522,
+              "max": 2.210335522
+            }
+          },
+          "process_cpu_s": {
+            "n": 4,
+            "mean": 8.974216314249999,
+            "p50": 8.925797046999996,
+            "p95": 9.086149191999993,
+            "max": 9.086149191999993
+          },
+          "process_cpu_pct": 261.85372836179823
+        }
+      },
+      "same_original": true,
+      "thermal": {
+        "start_mc": 77650,
+        "max_mc": 84800,
+        "end_mc": 77650,
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 40,
+          "mean": 2220200700.8,
+          "p50": 2256026112,
+          "p95": 2400033792,
+          "max": 2400037120
+        }
+      },
+      "rss_max_mib": 824.40625
+    },
+    "norepack4": {
+      "source_commit": "b850d0caa5e05d28f6492aadae053c6a770bc71a",
+      "worker_sha256": "c6fcf822f4835706e4da82b33e59f62d562580aa3abc6b7e35789e3314c6a8f4",
+      "measurements_sha256": "b305e3609c9a3d66b9594f0284aca32d106a6df73ed2af726ec9679c87cf573b",
+      "model": {
+        "num_threads": 2,
+        "quantization": "q4_k_m",
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "family": "qwen3_gguf",
+        "path": "models/qwen3-opt/gguf-audio-quant-20261113-01/derived",
+        "runtime_library": "runtimes/qwen3-opt/q4-norepack-20261113-01/bridge/libedge_asr_gguf.so",
+        "runtime_manifest": "runtimes/qwen3-opt/q4-norepack-20261113-01/bridge/build.json",
+        "num_threads_batch": 4,
+        "cache_text_prefix": true,
+        "language": "ko",
+        "asset_manifest": "q4_k_m_audio_q4_0.json",
+        "audio_quantization": "q4_0"
+      },
+      "libraries": [
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/q4-norepack-20261113-01/bridge/libedge_asr_gguf.so",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/q4-norepack-20261113-01/engine/bin/libggml-base.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/q4-norepack-20261113-01/engine/bin/libggml-cpu.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/q4-norepack-20261113-01/engine/bin/libggml.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/q4-norepack-20261113-01/engine/bin/libllama.so.0.9.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/q4-norepack-20261113-01/engine/bin/libmtmd.so.0.9.0"
+      ],
+      "samples": {
+        "short": {
+          "calls": 4,
+          "same_original": true,
+          "elapsed_s": {
+            "n": 4,
+            "mean": 0.9498400692536961,
+            "p50": 0.9490979240217712,
+            "p95": 0.9716255829844158,
+            "max": 0.9716255829844158
+          },
+          "stages_s": {
+            "audio_encode_s": {
+              "n": 4,
+              "mean": 0.29223279675,
+              "p50": 0.289790208,
+              "p95": 0.302423532,
+              "max": 0.302423532
+            },
+            "audio_embedding_eval_s": {
+              "n": 4,
+              "mean": 0.33057383100000004,
+              "p50": 0.319565691,
+              "p95": 0.347876753,
+              "max": 0.347876753
+            },
+            "suffix_eval_s": {
+              "n": 4,
+              "mean": 0.1343618975,
+              "p50": 0.133325806,
+              "p95": 0.139747117,
+              "max": 0.139747117
+            },
+            "token_decode_s": {
+              "n": 4,
+              "mean": 0.188313212,
+              "p50": 0.180949193,
+              "p95": 0.2013506,
+              "max": 0.2013506
+            },
+            "first_generated_token_s": {
+              "n": 4,
+              "mean": 0.7582430765,
+              "p50": 0.744275147,
+              "p95": 0.773297172,
+              "max": 0.773297172
+            }
+          },
+          "process_cpu_s": {
+            "n": 4,
+            "mean": 3.3829894122500033,
+            "p50": 3.3418512339999964,
+            "p95": 3.452377573000007,
+            "max": 3.452377573000007
+          },
+          "process_cpu_pct": 356.1641082280378
+        },
+        "long": {
+          "calls": 4,
+          "same_original": true,
+          "elapsed_s": {
+            "n": 4,
+            "mean": 3.12902329100325,
+            "p50": 3.119884097017348,
+            "p95": 3.1457765380037017,
+            "max": 3.1457765380037017
+          },
+          "stages_s": {
+            "audio_encode_s": {
+              "n": 4,
+              "mean": 0.7644026719999999,
+              "p50": 0.756896637,
+              "p95": 0.791101983,
+              "max": 0.791101983
+            },
+            "audio_embedding_eval_s": {
+              "n": 4,
+              "mean": 0.88828956775,
+              "p50": 0.881052184,
+              "p95": 0.910270845,
+              "max": 0.910270845
+            },
+            "suffix_eval_s": {
+              "n": 4,
+              "mean": 0.14329828525000002,
+              "p50": 0.141317593,
+              "p95": 0.146560969,
+              "max": 0.146560969
+            },
+            "token_decode_s": {
+              "n": 4,
+              "mean": 1.3120878772500002,
+              "p50": 1.3016745240000003,
+              "p95": 1.338612235,
+              "max": 1.338612235
+            },
+            "first_generated_token_s": {
+              "n": 4,
+              "mean": 1.7974499775,
+              "p50": 1.79505928,
+              "p95": 1.810914584,
+              "max": 1.810914584
+            }
+          },
+          "process_cpu_s": {
+            "n": 4,
+            "mean": 9.764066097249996,
+            "p50": 9.758970972999997,
+            "p95": 9.819815032999998,
+            "max": 9.819815032999998
+          },
+          "process_cpu_pct": 312.0483674673885
+        }
+      },
+      "same_original": true,
+      "thermal": {
+        "start_mc": 77650,
+        "max_mc": 85900,
+        "end_mc": 78750,
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 36,
+          "mean": 2181913009.7777777,
+          "p50": 2256022784,
+          "p95": 2400023808,
+          "max": 2400030464
+        }
+      },
+      "rss_max_mib": 824.109375
+    },
+    "diag-after": {
+      "source_commit": "b850d0caa5e05d28f6492aadae053c6a770bc71a",
+      "worker_sha256": "688ba62ab0873bf606e972d096db30e93dc0872bf454a9aaec2c44b41f140e6b",
+      "measurements_sha256": "38dd4abdeaa7ff7cf06b9fad9eb1db52ec720c22003193139c9852ea361c5e10",
+      "model": {
+        "num_threads": 2,
+        "quantization": "q4_k_m",
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "family": "qwen3_gguf",
+        "path": "models/qwen3-opt/gguf-audio-quant-20261113-01/derived",
+        "runtime_library": "runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+        "runtime_manifest": "runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+        "num_threads_batch": 3,
+        "cache_text_prefix": true,
+        "language": "ko",
+        "asset_manifest": "q4_k_m_audio_q4_0.json",
+        "audio_quantization": "q4_0"
+      },
+      "libraries": [
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml-base.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml-cpu.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libllama.so.0.9.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libmtmd.so.0.9.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so"
+      ],
+      "samples": {
+        "short": {
+          "calls": 4,
+          "same_original": true,
+          "elapsed_s": {
+            "n": 4,
+            "mean": 0.8509086019985261,
+            "p50": 0.8463097279891372,
+            "p95": 0.8667821190028917,
+            "max": 0.8667821190028917
+          },
+          "stages_s": {
+            "audio_encode_s": {
+              "n": 4,
+              "mean": 0.3467909875,
+              "p50": 0.335353754,
+              "p95": 0.359564397,
+              "max": 0.359564397
+            },
+            "audio_embedding_eval_s": {
+              "n": 4,
+              "mean": 0.23853193849999998,
+              "p50": 0.245707067,
+              "p95": 0.24740645,
+              "max": 0.24740645
+            },
+            "suffix_eval_s": {
+              "n": 4,
+              "mean": 0.09664438075000001,
+              "p50": 0.095737276,
+              "p95": 0.101045912,
+              "max": 0.101045912
+            },
+            "token_decode_s": {
+              "n": 4,
+              "mean": 0.16465837125,
+              "p50": 0.164217089,
+              "p95": 0.16889542400000002,
+              "max": 0.16889542400000002
+            },
+            "first_generated_token_s": {
+              "n": 4,
+              "mean": 0.68299988925,
+              "p50": 0.678087815,
+              "p95": 0.699098389,
+              "max": 0.699098389
+            }
+          },
+          "process_cpu_s": {
+            "n": 4,
+            "mean": 2.3749747104999983,
+            "p50": 2.3585427149999987,
+            "p95": 2.424043920999999,
+            "max": 2.424043920999999
+          },
+          "process_cpu_pct": 279.11043617633004
+        },
+        "long": {
+          "calls": 4,
+          "same_original": true,
+          "elapsed_s": {
+            "n": 4,
+            "mean": 2.891263292505755,
+            "p50": 2.874676526989788,
+            "p95": 2.9338712000171654,
+            "max": 2.9338712000171654
+          },
+          "stages_s": {
+            "audio_encode_s": {
+              "n": 4,
+              "mean": 0.92970622625,
+              "p50": 0.913530925,
+              "p95": 0.960852792,
+              "max": 0.960852792
+            },
+            "audio_embedding_eval_s": {
+              "n": 4,
+              "mean": 0.6501817704999999,
+              "p50": 0.64644722,
+              "p95": 0.669518003,
+              "max": 0.669518003
+            },
+            "suffix_eval_s": {
+              "n": 4,
+              "mean": 0.1102601855,
+              "p50": 0.104741961,
+              "p95": 0.1210485,
+              "max": 0.1210485
+            },
+            "token_decode_s": {
+              "n": 4,
+              "mean": 1.1806951060000002,
+              "p50": 1.1782695,
+              "p95": 1.1909509850000004,
+              "max": 1.1909509850000004
+            },
+            "first_generated_token_s": {
+              "n": 4,
+              "mean": 1.69162249,
+              "p50": 1.664700348,
+              "p95": 1.73669401,
+              "max": 1.73669401
+            }
+          },
+          "process_cpu_s": {
+            "n": 4,
+            "mean": 7.434920367750003,
+            "p50": 7.3715930450000045,
+            "p95": 7.564422321000002,
+            "max": 7.564422321000002
+          },
+          "process_cpu_pct": 257.151273182956
+        }
+      },
+      "same_original": true,
+      "thermal": {
+        "start_mc": 77100,
+        "max_mc": 85350,
+        "end_mc": 77650,
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 35,
+          "mean": 2211968526.6285715,
+          "p50": 2311027968,
+          "p95": 2400033792,
+          "max": 2400033792
+        }
+      },
+      "rss_max_mib": 1073.609375
+    }
+  },
+  "selected": "threads4",
+  "diagnostic_checks": {
+    "threads4": {
+      "same_outputs": true,
+      "short_prefill_5pct": true,
+      "short_ttft_within25ms": true,
+      "short_compute_within5pct": true,
+      "long_prefill_5pct": true,
+      "long_ttft_within25ms": true,
+      "long_compute_within5pct": true
+    },
+    "norepack3": {
+      "same_outputs": true,
+      "short_prefill_5pct": false,
+      "short_ttft_within25ms": false,
+      "short_compute_within5pct": false,
+      "long_prefill_5pct": false,
+      "long_ttft_within25ms": false,
+      "long_compute_within5pct": false
+    },
+    "norepack4": {
+      "same_outputs": true,
+      "short_prefill_5pct": false,
+      "short_ttft_within25ms": false,
+      "short_compute_within5pct": false,
+      "long_prefill_5pct": false,
+      "long_ttft_within25ms": false,
+      "long_compute_within5pct": false
+    }
+  },
+  "realtime": {
+    "control-before": {
+      "source_commit": "b850d0caa5e05d28f6492aadae053c6a770bc71a",
+      "worker_sha256": "779db741db83fc189390824a3f3e845ddbfcdd66a95cdfd4b305627324f5e4a1",
+      "model": {
+        "num_threads": 2,
+        "quantization": "q4_k_m",
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "family": "qwen3_gguf",
+        "path": "models/qwen3-opt/gguf-audio-quant-20261113-01/derived",
+        "runtime_library": "runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+        "runtime_manifest": "runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+        "num_threads_batch": 3,
+        "cache_text_prefix": true,
+        "language": "ko",
+        "asset_manifest": "q4_k_m_audio_q4_0.json",
+        "audio_quantization": "q4_0"
+      },
+      "libraries": [
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml-base.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml-cpu.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libllama.so.0.9.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libmtmd.so.0.9.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so"
+      ],
+      "settings": {
+        "partials": true,
+        "gap_s": 0,
+        "vad_threshold": 0.3,
+        "vad_preprocess": "rms26-floor80",
+        "vad_max_speech_s": 5,
+        "max_segment_s": 5,
+        "partial_after_s": 1,
+        "partial_interval_s": 4,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "silence_policy": "skip-zero",
+        "token_stream": true,
+        "partial_mode": "adaptive",
+        "adaptive_policy": "budgeted",
+        "partial_cost_model": "audio",
+        "partial_budget_s": 3,
+        "partial_max_calls": 2,
+        "partial_min_new_s": 0.8,
+        "partial_tail_margin_s": 0.2
+      },
+      "audio": {
+        "sha256": "532ab9a6a56f91e3d2a0ebd9b953ad4fce07dbbe197324580a057c537d02b779",
+        "frames": 969980,
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "duration_s": 60.62375
+      },
+      "sources": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "reference": "수소 이온은 전자가 벗겨져 나간 양성자이다 수소 원자는 양성자 하나와 전자 하나로 구성되므로",
+          "audio_sha256": "c8dbd76e54473d30adcea9ee6405db4657d5af1f7f0b190d771a0850e5cb4faa",
+          "start": 0,
+          "end": 67200
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "reference": "구체적인 행동은 하지 않더라도 일종의 시늉이나 속임수만으로도 일정 정도의 효과는 있다고 보시는군요",
+          "audio_sha256": "4b66f7fb0b9a4f902e8b4fc0e43deb400d1bad4a2a8f543f86668dd8ea24f045",
+          "start": 67200,
+          "end": 203897
+        },
+        {
+          "id": "fleurs-14278025439467391857",
+          "reference": "지구가 마치 움직이지 않는 것처럼 느껴지기에 언뜻 보면 맞는 말 같기도 하죠",
+          "audio_sha256": "9972055e3ebd1fce611553ee945501a34e5be246d22722ead7298e23b1fe436e",
+          "start": 203897,
+          "end": 318137
+        },
+        {
+          "id": "zeroth-137_003_2281",
+          "reference": "땅콩보트 운영업체와 모터보트 운전자는 운영허가와 운전면허는 갖춘 것으로 확인됐다",
+          "audio_sha256": "ab6578353cc8f7db0194de83a5f0ab9083c0ded85f0a321ada30ef0596f9e388",
+          "start": 318137,
+          "end": 470975
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "reference": "그린란드는 드문드문 정착했다 노르웨이 모험담에서 그들은 erik the red가 살인죄로 아이슬란드에서 추방당했다고 말한다 그리고 서쪽으로 더 멀리 항해할 때 그린란드를 발견하여 그린란드라고 이름 지었다",
+          "audio_sha256": "a3d69c6505d2dc3c9b5274772f727c7dcadff50aea4f0b03d63bb7f5c7be9e95",
+          "start": 470975,
+          "end": 839615
+        },
+        {
+          "id": "zeroth-104_003_1661",
+          "reference": "그렇게 해주시면 후보들은 정책과 비전을 가지고 국민들에게 새로운 대한민국을 어떻게 만들 것인지",
+          "audio_sha256": "e99172347ff71ce0fad602cc6660c86198d075e5fc7b9e8bfa90846f2e73fc9e",
+          "start": 839615,
+          "end": 969980
+        }
+      ],
+      "complete": true,
+      "failed_calls": 0,
+      "input_drops": 0,
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 19,
+        "deletions": 29,
+        "insertions": 11,
+        "errors": 59,
+        "cer": 0.21071428571428572
+      },
+      "first_s": {
+        "n": 6,
+        "mean": 2.5978678576602054,
+        "p50": 2.441272456001723,
+        "p95": 4.185166304005541,
+        "max": 4.185166304005541
+      },
+      "first4_s": {
+        "n": 6,
+        "mean": 2.850586746164714,
+        "p50": 2.6930892049975226,
+        "p95": 4.385260059998835,
+        "max": 4.385260059998835
+      },
+      "file_end_s": {
+        "n": 6,
+        "mean": 0.7357983708352932,
+        "p50": 0.870915200007147,
+        "p95": 1.7133343040011821,
+        "max": 1.7133343040011821
+      },
+      "max_growth_gap_s": {
+        "n": 6,
+        "mean": 3.5812072196613687,
+        "p50": 4.166540937992977,
+        "p95": 4.272521936974954,
+        "max": 4.272521936974954
+      },
+      "final_calls": 15,
+      "partial_calls": 17,
+      "final_compute_s": 25.576682061044266,
+      "total_compute_s": 42.468065684020985,
+      "rss_max_mib": 1140.96875,
+      "final_native_stage_s": {
+        "audio_encode_s": 8.626790704,
+        "audio_embedding_eval_s": 5.736273818000001,
+        "suffix_eval_s": 1.440704166,
+        "token_decode_s": 9.453708107
+      },
+      "thermal": {
+        "start_mc": 60050,
+        "max_mc": 84250,
+        "end_mc": 74900,
+        "current_limits": [
+          0,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 75,
+          "mean": 2372920490.6666665,
+          "p50": 2400023808,
+          "p95": 2400033792,
+          "max": 2400037120
+        }
+      },
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 315,
+        "normalized_revisions": 7,
+        "retracted_suffix_characters": 37,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 94,
+        "segments_with_display": 15,
+        "revised_segments": 5,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 16,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 10,
+          "whole_partial_is_final_prefix": 6,
+          "partial_characters": 100,
+          "retained_prefix_characters": 71,
+          "retained_prefix_fraction": 0.71
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.45914701949888176,
+          "p50": 0.0,
+          "p95": 2.7899514159944374,
+          "max": 2.7899514159944374
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "replay_cpu_s": 118.04868366899998,
+      "final_signature_sha256": "11370d88f7a2d5e76aea048322f1dcf82079954cd9e984cf8c7f4621ce0e0c64",
+      "final_pcm_signature_sha256": "de8d0528294721639ca8b4613fa38f38aeb4c79c52f345b88646cd5feb3fb284"
+    },
+    "candidate": {
+      "source_commit": "b850d0caa5e05d28f6492aadae053c6a770bc71a",
+      "worker_sha256": "e13c6517becf94a0275548a94509ef294212eb47e63e34f8ffe75dc5d5f3aa66",
+      "model": {
+        "num_threads": 2,
+        "quantization": "q4_k_m",
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "family": "qwen3_gguf",
+        "path": "models/qwen3-opt/gguf-audio-quant-20261113-01/derived",
+        "runtime_library": "runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+        "runtime_manifest": "runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+        "num_threads_batch": 4,
+        "cache_text_prefix": true,
+        "language": "ko",
+        "asset_manifest": "q4_k_m_audio_q4_0.json",
+        "audio_quantization": "q4_0"
+      },
+      "libraries": [
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml-base.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml-cpu.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libllama.so.0.9.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libmtmd.so.0.9.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so"
+      ],
+      "settings": {
+        "partials": true,
+        "gap_s": 0,
+        "vad_threshold": 0.3,
+        "vad_preprocess": "rms26-floor80",
+        "vad_max_speech_s": 5,
+        "max_segment_s": 5,
+        "partial_after_s": 1,
+        "partial_interval_s": 4,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "silence_policy": "skip-zero",
+        "token_stream": true,
+        "partial_mode": "adaptive",
+        "adaptive_policy": "budgeted",
+        "partial_cost_model": "audio",
+        "partial_budget_s": 3,
+        "partial_max_calls": 2,
+        "partial_min_new_s": 0.8,
+        "partial_tail_margin_s": 0.2
+      },
+      "audio": {
+        "sha256": "532ab9a6a56f91e3d2a0ebd9b953ad4fce07dbbe197324580a057c537d02b779",
+        "frames": 969980,
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "duration_s": 60.62375
+      },
+      "sources": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "reference": "수소 이온은 전자가 벗겨져 나간 양성자이다 수소 원자는 양성자 하나와 전자 하나로 구성되므로",
+          "audio_sha256": "c8dbd76e54473d30adcea9ee6405db4657d5af1f7f0b190d771a0850e5cb4faa",
+          "start": 0,
+          "end": 67200
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "reference": "구체적인 행동은 하지 않더라도 일종의 시늉이나 속임수만으로도 일정 정도의 효과는 있다고 보시는군요",
+          "audio_sha256": "4b66f7fb0b9a4f902e8b4fc0e43deb400d1bad4a2a8f543f86668dd8ea24f045",
+          "start": 67200,
+          "end": 203897
+        },
+        {
+          "id": "fleurs-14278025439467391857",
+          "reference": "지구가 마치 움직이지 않는 것처럼 느껴지기에 언뜻 보면 맞는 말 같기도 하죠",
+          "audio_sha256": "9972055e3ebd1fce611553ee945501a34e5be246d22722ead7298e23b1fe436e",
+          "start": 203897,
+          "end": 318137
+        },
+        {
+          "id": "zeroth-137_003_2281",
+          "reference": "땅콩보트 운영업체와 모터보트 운전자는 운영허가와 운전면허는 갖춘 것으로 확인됐다",
+          "audio_sha256": "ab6578353cc8f7db0194de83a5f0ab9083c0ded85f0a321ada30ef0596f9e388",
+          "start": 318137,
+          "end": 470975
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "reference": "그린란드는 드문드문 정착했다 노르웨이 모험담에서 그들은 erik the red가 살인죄로 아이슬란드에서 추방당했다고 말한다 그리고 서쪽으로 더 멀리 항해할 때 그린란드를 발견하여 그린란드라고 이름 지었다",
+          "audio_sha256": "a3d69c6505d2dc3c9b5274772f727c7dcadff50aea4f0b03d63bb7f5c7be9e95",
+          "start": 470975,
+          "end": 839615
+        },
+        {
+          "id": "zeroth-104_003_1661",
+          "reference": "그렇게 해주시면 후보들은 정책과 비전을 가지고 국민들에게 새로운 대한민국을 어떻게 만들 것인지",
+          "audio_sha256": "e99172347ff71ce0fad602cc6660c86198d075e5fc7b9e8bfa90846f2e73fc9e",
+          "start": 839615,
+          "end": 969980
+        }
+      ],
+      "complete": true,
+      "failed_calls": 0,
+      "input_drops": 0,
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 19,
+        "deletions": 29,
+        "insertions": 11,
+        "errors": 59,
+        "cer": 0.21071428571428572
+      },
+      "first_s": {
+        "n": 6,
+        "mean": 2.5434403244873973,
+        "p50": 2.3905533019925933,
+        "p95": 4.119878756994147,
+        "max": 4.119878756994147
+      },
+      "first4_s": {
+        "n": 6,
+        "mean": 2.8091366924978405,
+        "p50": 2.6585870609967968,
+        "p95": 4.319695246004265,
+        "max": 4.319695246004265
+      },
+      "file_end_s": {
+        "n": 6,
+        "mean": 0.6376231739947879,
+        "p50": 0.6657042629946943,
+        "p95": 1.6748437629838007,
+        "max": 1.6748437629838007
+      },
+      "max_growth_gap_s": {
+        "n": 6,
+        "mean": 3.566420992666467,
+        "p50": 3.995821431017248,
+        "p95": 4.249684459995478,
+        "max": 4.249684459995478
+      },
+      "final_calls": 15,
+      "partial_calls": 17,
+      "final_compute_s": 24.964406540966593,
+      "total_compute_s": 41.25520663289353,
+      "rss_max_mib": 1141.09375,
+      "final_native_stage_s": {
+        "audio_encode_s": 7.811688143,
+        "audio_embedding_eval_s": 5.466335604,
+        "suffix_eval_s": 1.4981093060000001,
+        "token_decode_s": 9.910827668000001
+      },
+      "thermal": {
+        "start_mc": 75450,
+        "max_mc": 85350,
+        "end_mc": 77100,
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 74,
+          "mean": 2287012794.810811,
+          "p50": 2400017408,
+          "p95": 2400033792,
+          "max": 2400037120
+        }
+      },
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 311,
+        "normalized_revisions": 7,
+        "retracted_suffix_characters": 33,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 93,
+        "segments_with_display": 15,
+        "revised_segments": 5,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 16,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 11,
+          "whole_partial_is_final_prefix": 7,
+          "partial_characters": 101,
+          "retained_prefix_characters": 76,
+          "retained_prefix_fraction": 0.7524752475247525
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.45103174221419196,
+          "p50": 0.0,
+          "p95": 2.713987528986763,
+          "max": 2.713987528986763
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "replay_cpu_s": 126.76333614200001,
+      "final_signature_sha256": "11370d88f7a2d5e76aea048322f1dcf82079954cd9e984cf8c7f4621ce0e0c64",
+      "final_pcm_signature_sha256": "de8d0528294721639ca8b4613fa38f38aeb4c79c52f345b88646cd5feb3fb284"
+    },
+    "control-after": {
+      "source_commit": "b850d0caa5e05d28f6492aadae053c6a770bc71a",
+      "worker_sha256": "4f1b11a1e0a798f9c40ced2476794110ba9cb2347ee8237e94275e57b40e895c",
+      "model": {
+        "num_threads": 2,
+        "quantization": "q4_k_m",
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "family": "qwen3_gguf",
+        "path": "models/qwen3-opt/gguf-audio-quant-20261113-01/derived",
+        "runtime_library": "runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+        "runtime_manifest": "runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+        "num_threads_batch": 3,
+        "cache_text_prefix": true,
+        "language": "ko",
+        "asset_manifest": "q4_k_m_audio_q4_0.json",
+        "audio_quantization": "q4_0"
+      },
+      "libraries": [
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml-base.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml-cpu.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml.so.0.29.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libllama.so.0.9.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libmtmd.so.0.9.0",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so"
+      ],
+      "settings": {
+        "partials": true,
+        "gap_s": 0,
+        "vad_threshold": 0.3,
+        "vad_preprocess": "rms26-floor80",
+        "vad_max_speech_s": 5,
+        "max_segment_s": 5,
+        "partial_after_s": 1,
+        "partial_interval_s": 4,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "silence_policy": "skip-zero",
+        "token_stream": true,
+        "partial_mode": "adaptive",
+        "adaptive_policy": "budgeted",
+        "partial_cost_model": "audio",
+        "partial_budget_s": 3,
+        "partial_max_calls": 2,
+        "partial_min_new_s": 0.8,
+        "partial_tail_margin_s": 0.2
+      },
+      "audio": {
+        "sha256": "532ab9a6a56f91e3d2a0ebd9b953ad4fce07dbbe197324580a057c537d02b779",
+        "frames": 969980,
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "duration_s": 60.62375
+      },
+      "sources": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "reference": "수소 이온은 전자가 벗겨져 나간 양성자이다 수소 원자는 양성자 하나와 전자 하나로 구성되므로",
+          "audio_sha256": "c8dbd76e54473d30adcea9ee6405db4657d5af1f7f0b190d771a0850e5cb4faa",
+          "start": 0,
+          "end": 67200
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "reference": "구체적인 행동은 하지 않더라도 일종의 시늉이나 속임수만으로도 일정 정도의 효과는 있다고 보시는군요",
+          "audio_sha256": "4b66f7fb0b9a4f902e8b4fc0e43deb400d1bad4a2a8f543f86668dd8ea24f045",
+          "start": 67200,
+          "end": 203897
+        },
+        {
+          "id": "fleurs-14278025439467391857",
+          "reference": "지구가 마치 움직이지 않는 것처럼 느껴지기에 언뜻 보면 맞는 말 같기도 하죠",
+          "audio_sha256": "9972055e3ebd1fce611553ee945501a34e5be246d22722ead7298e23b1fe436e",
+          "start": 203897,
+          "end": 318137
+        },
+        {
+          "id": "zeroth-137_003_2281",
+          "reference": "땅콩보트 운영업체와 모터보트 운전자는 운영허가와 운전면허는 갖춘 것으로 확인됐다",
+          "audio_sha256": "ab6578353cc8f7db0194de83a5f0ab9083c0ded85f0a321ada30ef0596f9e388",
+          "start": 318137,
+          "end": 470975
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "reference": "그린란드는 드문드문 정착했다 노르웨이 모험담에서 그들은 erik the red가 살인죄로 아이슬란드에서 추방당했다고 말한다 그리고 서쪽으로 더 멀리 항해할 때 그린란드를 발견하여 그린란드라고 이름 지었다",
+          "audio_sha256": "a3d69c6505d2dc3c9b5274772f727c7dcadff50aea4f0b03d63bb7f5c7be9e95",
+          "start": 470975,
+          "end": 839615
+        },
+        {
+          "id": "zeroth-104_003_1661",
+          "reference": "그렇게 해주시면 후보들은 정책과 비전을 가지고 국민들에게 새로운 대한민국을 어떻게 만들 것인지",
+          "audio_sha256": "e99172347ff71ce0fad602cc6660c86198d075e5fc7b9e8bfa90846f2e73fc9e",
+          "start": 839615,
+          "end": 969980
+        }
+      ],
+      "complete": true,
+      "failed_calls": 0,
+      "input_drops": 0,
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 19,
+        "deletions": 29,
+        "insertions": 11,
+        "errors": 59,
+        "cer": 0.21071428571428572
+      },
+      "first_s": {
+        "n": 6,
+        "mean": 2.618134254167904,
+        "p50": 2.441529409006005,
+        "p95": 4.190751091000855,
+        "max": 4.190751091000855
+      },
+      "first4_s": {
+        "n": 6,
+        "mean": 2.9026786918307965,
+        "p50": 2.71684196999995,
+        "p95": 4.39006514699431,
+        "max": 4.39006514699431
+      },
+      "file_end_s": {
+        "n": 6,
+        "mean": 0.9149109228310791,
+        "p50": 1.0469683629914641,
+        "p95": 1.784218633995624,
+        "max": 1.784218633995624
+      },
+      "max_growth_gap_s": {
+        "n": 6,
+        "mean": 3.9028645545029623,
+        "p50": 4.217726232018322,
+        "p95": 4.659585170011269,
+        "max": 4.659585170011269
+      },
+      "final_calls": 15,
+      "partial_calls": 15,
+      "final_compute_s": 26.810053346009227,
+      "total_compute_s": 42.110956069111126,
+      "rss_max_mib": 1141.8125,
+      "final_native_stage_s": {
+        "audio_encode_s": 8.969080611999999,
+        "audio_embedding_eval_s": 6.066931352,
+        "suffix_eval_s": 1.5127877079999998,
+        "token_decode_s": 9.965385052999999
+      },
+      "thermal": {
+        "start_mc": 76000,
+        "max_mc": 86450,
+        "end_mc": 77650,
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 75,
+          "mean": 2320786530.9866667,
+          "p50": 2400020480,
+          "p95": 2400033792,
+          "max": 2400033792
+        }
+      },
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 307,
+        "normalized_revisions": 6,
+        "retracted_suffix_characters": 33,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 74,
+        "segments_with_display": 15,
+        "revised_segments": 4,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 14,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 10,
+          "whole_partial_is_final_prefix": 7,
+          "partial_characters": 90,
+          "retained_prefix_characters": 65,
+          "retained_prefix_fraction": 0.7222222222222222
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.46909766542791786,
+          "p50": 0.0,
+          "p95": 2.9784453790052794,
+          "max": 2.9784453790052794
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "replay_cpu_s": 117.263578338,
+      "final_signature_sha256": "11370d88f7a2d5e76aea048322f1dcf82079954cd9e984cf8c7f4621ce0e0c64",
+      "final_pcm_signature_sha256": "de8d0528294721639ca8b4613fa38f38aeb4c79c52f345b88646cd5feb3fb284"
+    }
+  },
+  "realtime_checks": {
+    "complete_no_failure_drop_missing": true,
+    "same_final_pcm": true,
+    "same_audio_sources": true,
+    "errors_not_increased": true,
+    "same_final_text_tokens": true,
+    "first_s_p95_within025s": true,
+    "first4_s_p95_within025s": true,
+    "file_end_s_p95_within025s": true,
+    "gap_p95_within01s": true
+  },
+  "verification": {
+    "protected_files": 371,
+    "continuation_protected_files": 449,
+    "continuation_assets_unchanged": true,
+    "protected_assets_unchanged": true,
+    "boot_id": "db0f2e44-3c3f-4b8a-8472-e5618db2aeae",
+    "compile_flags": {
+      "original": {
+        "CXX_FLAGS": "-O3 -DNDEBUG -std=gnu++17 -fPIC -Wmissing-declarations -Wmissing-noreturn -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wno-array-bounds -Wextra-semi -U__ARM_FEATURE_MATMUL_INT8 -U__ARM_FEATURE_SVE -U__ARM_FEATURE_SME -mcpu=cortex-a76+crc+crypto+dotprod+noi8mm+nosve+nosme -fopenmp",
+        "CXX_DEFINES": "-DGGML_BACKEND_BUILD -DGGML_BACKEND_SHARED -DGGML_SCHED_MAX_COPIES=4 -DGGML_SHARED -DGGML_USE_CPU_REPACK -DGGML_USE_LLAMAFILE -DGGML_USE_OPENMP -D_GNU_SOURCE -D_XOPEN_SOURCE=600 -Dggml_cpu_EXPORTS",
+        "C_FLAGS": "-O3 -DNDEBUG -std=gnu11 -fPIC -Wshadow -Wstrict-prototypes -Wpointer-arith -Wmissing-prototypes -Werror=implicit-int -Werror=implicit-function-declaration -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wdouble-promotion -U__ARM_FEATURE_MATMUL_INT8 -U__ARM_FEATURE_SVE -U__ARM_FEATURE_SME -mcpu=cortex-a76+crc+crypto+dotprod+noi8mm+nosve+nosme -fopenmp",
+        "C_DEFINES": "-DGGML_BACKEND_BUILD -DGGML_BACKEND_SHARED -DGGML_SCHED_MAX_COPIES=4 -DGGML_SHARED -DGGML_USE_CPU_REPACK -DGGML_USE_LLAMAFILE -DGGML_USE_OPENMP -D_GNU_SOURCE -D_XOPEN_SOURCE=600 -Dggml_cpu_EXPORTS"
+      },
+      "norepack": {
+        "C_DEFINES": "-DGGML_BACKEND_BUILD -DGGML_BACKEND_SHARED -DGGML_SCHED_MAX_COPIES=4 -DGGML_SHARED -DGGML_USE_LLAMAFILE -DGGML_USE_OPENMP -D_GNU_SOURCE -D_XOPEN_SOURCE=600 -Dggml_cpu_EXPORTS",
+        "C_INCLUDES": "-I/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/src/.. -I/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/src/. -I/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/src/ggml-cpu -I/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/src/../include",
+        "C_FLAGS": "-O3 -DNDEBUG -std=gnu11 -fPIC -Wshadow -Wstrict-prototypes -Wpointer-arith -Wmissing-prototypes -Werror=implicit-int -Werror=implicit-function-declaration -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wdouble-promotion -U__ARM_FEATURE_MATMUL_INT8 -U__ARM_FEATURE_SVE -U__ARM_FEATURE_SME -mcpu=cortex-a76+crc+crypto+dotprod+noi8mm+nosve+nosme -fopenmp",
+        "CXX_DEFINES": "-DGGML_BACKEND_BUILD -DGGML_BACKEND_SHARED -DGGML_SCHED_MAX_COPIES=4 -DGGML_SHARED -DGGML_USE_LLAMAFILE -DGGML_USE_OPENMP -D_GNU_SOURCE -D_XOPEN_SOURCE=600 -Dggml_cpu_EXPORTS",
+        "CXX_INCLUDES": "-I/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/src/.. -I/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/src/. -I/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/src/ggml-cpu -I/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/src/../include",
+        "CXX_FLAGS": "-O3 -DNDEBUG -std=gnu++17 -fPIC -Wmissing-declarations -Wmissing-noreturn -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wno-array-bounds -Wextra-semi -U__ARM_FEATURE_MATMUL_INT8 -U__ARM_FEATURE_SVE -U__ARM_FEATURE_SME -mcpu=cortex-a76+crc+crypto+dotprod+noi8mm+nosve+nosme -fopenmp"
+      },
+      "only_repack_define_changed": true,
+      "original_generator": "Ninja",
+      "new_generator": "Unix Makefiles"
+    },
+    "build_old_assets_unchanged": true,
+    "independent_host_rp_byte_equal": true,
+    "analysis_sha256": "192898691f23dba714298face6d636f62ead23a460fb96cec9151f5427b00c4e",
+    "host_rp_raw_files_equal": 121,
+    "host_gguf_header_and_document_checks": 30,
+    "wrapper_exit_checks": 4,
+    "browser": {
+      "records": 46,
+      "profiles": 10,
+      "history_preserved": true,
+      "record_playback": true,
+      "thread_configuration_shown": true,
+      "cer_delay_table": true,
+      "mobile_no_horizontal_overflow": true,
+      "js_errors": 0
+    }
+  },
+  "prior_unverified_attempt_sha256": "4b84dd3ad5573866554f38b0488ce73a77bda28eac1c14140a66d0a618c36ed4",
+  "capability": {
+    "cpu_features": "Features\t: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp",
+    "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+    "kleidiai_q4_k_required": "SME2 | FP16 in pinned kernels.cpp; no DOTPROD entry",
+    "kleidiai_q4_k_executed": false
+  },
+  "new_engine_build": {
+    "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+    "machine": "aarch64",
+    "command": [
+      "g++",
+      "-std=c++17",
+      "-O2",
+      "-fPIC",
+      "-shared",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/vendor/nlohmann",
+      "/home/deepet/projects/edge-asr/native/gguf/bridge.cpp",
+      "-L",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/q4-norepack-20261113-01/engine/bin",
+      "-Wl,-rpath,/home/deepet/projects/edge-asr/runtimes/qwen3-opt/q4-norepack-20261113-01/engine/bin",
+      "-lllama",
+      "-lmtmd",
+      "-lggml",
+      "-lggml-base",
+      "-pthread",
+      "-o",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/q4-norepack-20261113-01/bridge/libedge_asr_gguf.so"
+    ],
+    "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "bridge_source_sha256": "cbd0c2651abcd9747869495668423d69dc129a0ff0178842017c372ae25a0c29",
+    "prefix_cache_source_sha256": "9d60e18b86bdb9371511829fc2eefe7ced2830ce4a0d79c1a0e650e827a8fcbd",
+    "features": [
+      "token_callback_v1",
+      "split_threads_v1",
+      "text_prefix_cache_v1"
+    ],
+    "cmake_cache_sha256": "d47324a4da48a97d48f1865735a43201aba60f7fc46e534e1c13b6e0eb98a913",
+    "engine_libraries": {
+      "libmtmd.so": "2b0594e047aac8562e0f4f0980c5edeb7a6ca5401fc1a9c00dcd411c5a9fd8a4",
+      "libggml.so": "e0fb90e98d4737c866960b00e733076123a256de4a0786211dd5cd4e4ef7fef5",
+      "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+      "libllama.so": "b4020c21bbe807c72c87522a68e063c2ec653f5c885653bb8a0461973c79a788",
+      "libggml-cpu.so": "6d2484d69d510899f7b8696c51f170984ffb295cc0a18f52e1e8b9f4d4cb0f57",
+      "libllama-common.so": "089c24e27f185716bc077cdf813b56272c202cc7a293f23bdcb2d2add027b369"
+    },
+    "library_sha256": "ee380928e47f4387d1af89833a96125cb1987e551a424f983451436ca948c421",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model"
+  },
+  "full100_executed": false,
+  "default_adopted": false,
+  "scope": "같은 Q4 가중치·repack/음성prefill3T/4T의 RP5 실제 대조. 고정 PCM2개×8회/조건(1~4라운드 준비) 후 통과 후보만 같은6개1배속. Host/RP5 모의/실측 구분. 순차·운영 열 조건으로 인과/통계 확정 아님.",
+  "published_candidate_config": "configs/quantization/q4_prefill_realtime.toml",
+  "candidate_is_q4_development_option": true
+}
