@@ -1,0 +1,1048 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-13",
+  "kind": "qwen3_both_q4_audio_adaptive_pilot",
+  "source_commit": "b5c500f1ee9e36206a062be662377d070d5421f4",
+  "raw_path": "results/optimization/opt3/realtime-both-q4-20261113-01",
+  "cases": {
+    "q8-before": {
+      "raw_path": "results/optimization/opt3/realtime-both-q4-20261113-01/q8-before",
+      "source_commit": "b5c500f1ee9e36206a062be662377d070d5421f4",
+      "worker_sha256": "5c3007d0d01b45f28fd48b1d3f04ba74ac23017470bb0b15d2c89f347469a721",
+      "complete": true,
+      "operational_valid": true,
+      "limit_verified": true,
+      "failed_calls": 0,
+      "input_drops": 0,
+      "source_count": 6,
+      "audio": {
+        "sha256": "532ab9a6a56f91e3d2a0ebd9b953ad4fce07dbbe197324580a057c537d02b779",
+        "frames": 969980,
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "duration_s": 60.62375
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 17,
+        "deletions": 29,
+        "insertions": 4,
+        "errors": 50,
+        "cer": 0.17857142857142858
+      },
+      "max_growth_gap_s": {
+        "n": 6,
+        "mean": 3.6616845974928776,
+        "p50": 4.127604104985949,
+        "p95": 5.029807560989866,
+        "max": 5.029807560989866
+      },
+      "scheduler": {
+        "mode": "adaptive",
+        "policy": "budgeted",
+        "version": "budgeted-headroom-v2",
+        "cost_model": "audio",
+        "decisions": {
+          "minimum_audio": 838,
+          "first_offered": 14,
+          "busy": 191,
+          "offered": 5,
+          "call_budget": 205,
+          "cost_budget": 107
+        }
+      },
+      "first_s": {
+        "n": 6,
+        "mean": 2.557911962329177,
+        "p50": 2.3989915589983575,
+        "p95": 4.144063286983872,
+        "max": 4.144063286983872
+      },
+      "first4_s": {
+        "n": 6,
+        "mean": 2.859660705323758,
+        "p50": 2.6942661869805304,
+        "p95": 4.318475241982377,
+        "max": 4.318475241982377
+      },
+      "file_end_s": {
+        "n": 6,
+        "mean": 1.0109666074907868,
+        "p50": 1.0149321509804565,
+        "p95": 1.9896325559937393,
+        "max": 1.9896325559937393
+      },
+      "source_delays": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_s": 1.8775212049949914,
+          "first4_s": 2.863665818993468,
+          "file_end_s": 1.9896325559937393,
+          "max_growth_gap_s": 1.8775212049949914,
+          "growth_updates_during_input": 9
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_s": 2.5793170750082934,
+          "first4_s": 2.6942661869805304,
+          "file_end_s": 1.8719147349982528,
+          "max_growth_gap_s": 5.029807560989866,
+          "growth_updates_during_input": 16
+        },
+        {
+          "id": "fleurs-14278025439467391857",
+          "first_s": 2.6359385790054226,
+          "first4_s": 2.8130519069889566,
+          "file_end_s": 1.65590434798575,
+          "max_growth_gap_s": 2.6359385790054226,
+          "growth_updates_during_input": 12
+        },
+        {
+          "id": "zeroth-137_003_2281",
+          "first_s": 2.3989915589983575,
+          "first4_s": 2.573602830008138,
+          "file_end_s": 0.5801708939892691,
+          "max_growth_gap_s": 4.155172847997164,
+          "growth_updates_during_input": 22
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_s": 4.144063286983872,
+          "first4_s": 4.318475241982377,
+          "file_end_s": -1.046755039002747,
+          "max_growth_gap_s": 4.144063286983872,
+          "growth_updates_during_input": 73
+        },
+        {
+          "id": "zeroth-104_003_1661",
+          "first_s": 1.7116400689841242,
+          "first4_s": 1.8949022469890764,
+          "file_end_s": 1.0149321509804565,
+          "max_growth_gap_s": 4.127604104985949,
+          "growth_updates_during_input": 24
+        }
+      ],
+      "final_calls": 15,
+      "partial_calls": 15,
+      "submitted_requests": 34,
+      "coalesced_requests": 4,
+      "final_compute_s": 28.1999082689872,
+      "total_compute_s": 44.677640593989054,
+      "partial_compute_s": 16.477732325001853,
+      "same_previous_final": true,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 276,
+        "normalized_revisions": 3,
+        "retracted_suffix_characters": 4,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 107,
+        "segments_with_display": 15,
+        "revised_segments": 3,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 15,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 10,
+          "whole_partial_is_final_prefix": 7,
+          "partial_characters": 95,
+          "retained_prefix_characters": 91,
+          "retained_prefix_fraction": 0.9578947368421052
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "rss_max_mib": 1724.140625,
+      "thermal": {
+        "start_mc": 67200,
+        "max_mc": 80950,
+        "end_mc": 72700,
+        "current_limits": [
+          0
+        ]
+      },
+      "settings": {
+        "gap_s": 0.0,
+        "vad_preprocess": "rms26-floor80",
+        "vad_threshold": 0.3,
+        "vad_max_speech_s": 5,
+        "partial_after_s": 1.0,
+        "partial_interval_s": 4.0,
+        "partial_mode": "adaptive",
+        "partial_min_new_s": 0.8,
+        "partial_tail_margin_s": 0.2,
+        "adaptive_policy": "budgeted",
+        "partial_cost_model": "audio",
+        "partial_budget_s": 3.0,
+        "partial_max_calls": 2,
+        "partial_followup_s": null,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "token_stream": true,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "model": {
+        "num_threads": 2,
+        "quantization": "q8_0",
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "family": "qwen3_gguf",
+        "path": "models/qwen3-opt/gguf-q8-20261109-01",
+        "runtime_library": "runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+        "runtime_manifest": "runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+        "num_threads_batch": 3,
+        "cache_text_prefix": true,
+        "language": "ko"
+      },
+      "model_files": {
+        "Qwen3-ASR-0.6B-Q8_0.gguf": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+        },
+        "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+        },
+        "runtime_library": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+          "sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf"
+        },
+        "runtime_manifest": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+          "sha256": "a7fa6d9d6ffab5b5a0f7f98e3dc94cd7d751fe503a16f214936b5ff32fd3d113"
+        }
+      },
+      "audio_quantization": "q8_0",
+      "model_load_s": 1.3348040129931178,
+      "pcm_signature_sha256": "de8d0528294721639ca8b4613fa38f38aeb4c79c52f345b88646cd5feb3fb284",
+      "final_signature_sha256": "5b73388f6919ff11951d85a71508a4e59184c645bd99d4f95fefa2c2b0e6fd08",
+      "final_queue_wait_s": {
+        "n": 15,
+        "mean": 0.5255796660707953,
+        "p50": 0.05488165598944761,
+        "p95": 2.3687396319874097,
+        "max": 2.3687396319874097
+      },
+      "engine_ttft_s": {
+        "n": 15,
+        "mean": 0.9502523815999999,
+        "p50": 0.8124344,
+        "p95": 1.569615696,
+        "max": 1.569615696
+      },
+      "actual_partial_origins": {
+        "first_offered": 10,
+        "offered": 5
+      },
+      "followup_costs": [
+        {
+          "segment_id": 0,
+          "input_s": 1.86,
+          "estimate_s": 1.424239719719013,
+          "actual_s": 1.1542135329800658,
+          "remaining_s": 3.14
+        },
+        {
+          "segment_id": 3,
+          "input_s": 2.084,
+          "estimate_s": 1.9033849232981397,
+          "actual_s": 1.6235279210086446,
+          "remaining_s": 2.916
+        },
+        {
+          "segment_id": 5,
+          "input_s": 1.86,
+          "estimate_s": 1.9482335052103734,
+          "actual_s": 1.03598810499534,
+          "remaining_s": 3.14
+        },
+        {
+          "segment_id": 9,
+          "input_s": 2.18,
+          "estimate_s": 1.959375106825259,
+          "actual_s": 1.562424428993836,
+          "remaining_s": 2.82
+        },
+        {
+          "segment_id": 13,
+          "input_s": 1.892,
+          "estimate_s": 1.9106417288290045,
+          "actual_s": 1.1855691810196731,
+          "remaining_s": 3.108
+        }
+      ],
+      "final_native_stages_s": {
+        "audio_encode_s": 8.450488938,
+        "audio_embedding_eval_s": 4.328525118,
+        "token_decode_s": 13.642138976
+      },
+      "arm_clock_hz": {
+        "n": 74,
+        "mean": 2400027104.864865,
+        "p50": 2400027136,
+        "p95": 2400037120,
+        "max": 2400037120
+      },
+      "cpu0_freq_khz": {
+        "n": 74,
+        "mean": 2400000.0,
+        "p50": 2400000,
+        "p95": 2400000,
+        "max": 2400000
+      },
+      "returned_tokens": 229
+    },
+    "both-q4": {
+      "raw_path": "results/optimization/opt3/realtime-both-q4-20261113-01/both-q4",
+      "source_commit": "b5c500f1ee9e36206a062be662377d070d5421f4",
+      "worker_sha256": "cb5ca3fd551ca545adac39c70fb2d4505de934feaaec5c701b30f7a6401219a4",
+      "complete": true,
+      "operational_valid": true,
+      "limit_verified": true,
+      "failed_calls": 0,
+      "input_drops": 0,
+      "source_count": 6,
+      "audio": {
+        "sha256": "532ab9a6a56f91e3d2a0ebd9b953ad4fce07dbbe197324580a057c537d02b779",
+        "frames": 969980,
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "duration_s": 60.62375
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 19,
+        "deletions": 29,
+        "insertions": 11,
+        "errors": 59,
+        "cer": 0.21071428571428572
+      },
+      "max_growth_gap_s": {
+        "n": 6,
+        "mean": 3.5976313423352937,
+        "p50": 4.176044888998149,
+        "p95": 4.343952516006539,
+        "max": 4.343952516006539
+      },
+      "scheduler": {
+        "mode": "adaptive",
+        "policy": "budgeted",
+        "version": "budgeted-headroom-v2",
+        "cost_model": "audio",
+        "decisions": {
+          "minimum_audio": 878,
+          "first_offered": 14,
+          "offered": 7,
+          "busy": 155,
+          "call_budget": 306
+        }
+      },
+      "first_s": {
+        "n": 6,
+        "mean": 2.601296358499521,
+        "p50": 2.4432003900066483,
+        "p95": 4.186155198991763,
+        "max": 4.186155198991763
+      },
+      "first4_s": {
+        "n": 6,
+        "mean": 2.8565054121720603,
+        "p50": 2.704700653016334,
+        "p95": 4.387225637014488,
+        "max": 4.387225637014488
+      },
+      "file_end_s": {
+        "n": 6,
+        "mean": 0.7717195130050721,
+        "p50": 0.7932324359996699,
+        "p95": 1.7804105450166388,
+        "max": 1.7804105450166388
+      },
+      "source_delays": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_s": 1.9237995379953645,
+          "first4_s": 2.8158333050087094,
+          "file_end_s": 1.7804105450166388,
+          "max_growth_gap_s": 1.9237995379953645,
+          "growth_updates_during_input": 7
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_s": 2.6228807559935374,
+          "first4_s": 2.704700653016334,
+          "file_end_s": 1.4231245290064258,
+          "max_growth_gap_s": 4.176044888998149,
+          "growth_updates_during_input": 18
+        },
+        {
+          "id": "fleurs-14278025439467391857",
+          "first_s": 2.6799277170137508,
+          "first4_s": 2.79862180799665,
+          "file_end_s": 1.3016902800074313,
+          "max_growth_gap_s": 2.6799277170137508,
+          "growth_updates_during_input": 12
+        },
+        {
+          "id": "zeroth-137_003_2281",
+          "first_s": 2.4432003900066483,
+          "first4_s": 2.5624660039967857,
+          "file_end_s": 0.24972793000633686,
+          "max_growth_gap_s": 4.2759081950061955,
+          "growth_updates_during_input": 25
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_s": 4.186155198991763,
+          "first4_s": 4.387225637014488,
+          "file_end_s": -0.91786864200607,
+          "max_growth_gap_s": 4.186155198991763,
+          "growth_updates_during_input": 72
+        },
+        {
+          "id": "zeroth-104_003_1661",
+          "first_s": 1.751814550996059,
+          "first4_s": 1.8701850659993937,
+          "file_end_s": 0.7932324359996699,
+          "max_growth_gap_s": 4.343952516006539,
+          "growth_updates_during_input": 25
+        }
+      ],
+      "final_calls": 15,
+      "partial_calls": 17,
+      "submitted_requests": 36,
+      "coalesced_requests": 4,
+      "final_compute_s": 25.75861166496179,
+      "total_compute_s": 42.92151252296753,
+      "partial_compute_s": 17.16290085800574,
+      "same_previous_final": false,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 314,
+        "normalized_revisions": 7,
+        "retracted_suffix_characters": 37,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 94,
+        "segments_with_display": 15,
+        "revised_segments": 5,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 16,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 10,
+          "whole_partial_is_final_prefix": 6,
+          "partial_characters": 99,
+          "retained_prefix_characters": 70,
+          "retained_prefix_fraction": 0.7070707070707071
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.4613515580006476,
+          "p50": 0.0,
+          "p95": 2.7984617250040174,
+          "max": 2.7984617250040174
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "rss_max_mib": 1141.0625,
+      "thermal": {
+        "start_mc": 72150,
+        "max_mc": 84250,
+        "end_mc": 73250,
+        "current_limits": [
+          0,
+          8
+        ]
+      },
+      "settings": {
+        "gap_s": 0.0,
+        "vad_preprocess": "rms26-floor80",
+        "vad_threshold": 0.3,
+        "vad_max_speech_s": 5,
+        "partial_after_s": 1.0,
+        "partial_interval_s": 4.0,
+        "partial_mode": "adaptive",
+        "partial_min_new_s": 0.8,
+        "partial_tail_margin_s": 0.2,
+        "adaptive_policy": "budgeted",
+        "partial_cost_model": "audio",
+        "partial_budget_s": 3.0,
+        "partial_max_calls": 2,
+        "partial_followup_s": null,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "token_stream": true,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "model": {
+        "num_threads": 2,
+        "quantization": "q4_k_m",
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "family": "qwen3_gguf",
+        "path": "models/qwen3-opt/gguf-audio-quant-20261113-01/derived",
+        "runtime_library": "runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+        "runtime_manifest": "runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+        "num_threads_batch": 3,
+        "cache_text_prefix": true,
+        "language": "ko",
+        "asset_manifest": "q4_k_m_audio_q4_0.json",
+        "audio_quantization": "q4_0"
+      },
+      "model_files": {
+        "text": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-quant-20261110-01/derived/Qwen3-ASR-0.6B-Q4_K_M.gguf",
+          "sha256": "3f711631ac7b81f223e08471838f8129b9716e4fe9935ebf99c58e320fc18633"
+        },
+        "audio": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-audio-quant-20261113-01/derived/mmproj-Qwen3-ASR-0.6B-Q4_0.gguf",
+          "sha256": "d89415b0cc99411bd6472e4465dd4c0cb51f69a1a3545571f8ea6e28631cf70f"
+        },
+        "asset_manifest": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-audio-quant-20261113-01/derived/q4_k_m_audio_q4_0.json",
+          "sha256": "1e95582cba5ba2b75eecdc5be86d83dac682bcc8839655b666a93ac7bd29f10e"
+        },
+        "runtime_library": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+          "sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf"
+        },
+        "runtime_manifest": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+          "sha256": "a7fa6d9d6ffab5b5a0f7f98e3dc94cd7d751fe503a16f214936b5ff32fd3d113"
+        }
+      },
+      "audio_quantization": "q4_0",
+      "model_load_s": 1.3976020440168213,
+      "pcm_signature_sha256": "de8d0528294721639ca8b4613fa38f38aeb4c79c52f345b88646cd5feb3fb284",
+      "final_signature_sha256": "11370d88f7a2d5e76aea048322f1dcf82079954cd9e984cf8c7f4621ce0e0c64",
+      "final_queue_wait_s": {
+        "n": 15,
+        "mean": 0.49409355207074745,
+        "p50": 0.19195658501121216,
+        "p95": 2.0265745079959743,
+        "max": 2.0265745079959743
+      },
+      "engine_ttft_s": {
+        "n": 15,
+        "mean": 1.0605005462,
+        "p50": 0.929937573,
+        "p95": 1.753833278,
+        "max": 1.753833278
+      },
+      "actual_partial_origins": {
+        "first_offered": 10,
+        "offered": 7
+      },
+      "followup_costs": [
+        {
+          "segment_id": 0,
+          "input_s": 1.828,
+          "estimate_s": 1.4180198418356067,
+          "actual_s": 0.9036937149940059,
+          "remaining_s": 3.172
+        },
+        {
+          "segment_id": 1,
+          "input_s": 1.988,
+          "estimate_s": 1.7074979928728584,
+          "actual_s": 1.0629596609796863,
+          "remaining_s": 3.012
+        },
+        {
+          "segment_id": 3,
+          "input_s": 2.052,
+          "estimate_s": 1.8406646097856325,
+          "actual_s": 1.5060630990192294,
+          "remaining_s": 2.948
+        },
+        {
+          "segment_id": 5,
+          "input_s": 1.86,
+          "estimate_s": 1.8072757188230753,
+          "actual_s": 0.9623546490038279,
+          "remaining_s": 3.14
+        },
+        {
+          "segment_id": 7,
+          "input_s": 2.116,
+          "estimate_s": 1.882974989099175,
+          "actual_s": 1.4948189390124753,
+          "remaining_s": 2.884
+        },
+        {
+          "segment_id": 9,
+          "input_s": 1.86,
+          "estimate_s": 1.7937827268149704,
+          "actual_s": 1.1596048199862707,
+          "remaining_s": 3.14
+        },
+        {
+          "segment_id": 13,
+          "input_s": 1.828,
+          "estimate_s": 1.7150095099701457,
+          "actual_s": 0.9772840960067697,
+          "remaining_s": 3.172
+        }
+      ],
+      "final_native_stages_s": {
+        "audio_encode_s": 8.665123895,
+        "audio_embedding_eval_s": 5.753741519000001,
+        "token_decode_s": 9.605200711999998
+      },
+      "arm_clock_hz": {
+        "n": 73,
+        "mean": 2374274358.3561645,
+        "p50": 2400023808,
+        "p95": 2400037120,
+        "max": 2400037120
+      },
+      "cpu0_freq_khz": {
+        "n": 73,
+        "mean": 2391780.821917808,
+        "p50": 2400000,
+        "p95": 2400000,
+        "max": 2400000
+      },
+      "returned_tokens": 234
+    },
+    "q8-after": {
+      "raw_path": "results/optimization/opt3/realtime-both-q4-20261113-01/q8-after",
+      "source_commit": "b5c500f1ee9e36206a062be662377d070d5421f4",
+      "worker_sha256": "5235467869d1eb9a0db84d336bb743b80b77788e097df1adfe06e9cb35b06438",
+      "complete": true,
+      "operational_valid": true,
+      "limit_verified": true,
+      "failed_calls": 0,
+      "input_drops": 0,
+      "source_count": 6,
+      "audio": {
+        "sha256": "532ab9a6a56f91e3d2a0ebd9b953ad4fce07dbbe197324580a057c537d02b779",
+        "frames": 969980,
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "duration_s": 60.62375
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 17,
+        "deletions": 29,
+        "insertions": 4,
+        "errors": 50,
+        "cer": 0.17857142857142858
+      },
+      "max_growth_gap_s": {
+        "n": 6,
+        "mean": 3.9668858286690667,
+        "p50": 4.167266748001566,
+        "p95": 4.978711835021386,
+        "max": 4.978711835021386
+      },
+      "scheduler": {
+        "mode": "adaptive",
+        "policy": "budgeted",
+        "version": "budgeted-headroom-v2",
+        "cost_model": "audio",
+        "decisions": {
+          "minimum_audio": 790,
+          "first_offered": 14,
+          "busy": 154,
+          "offered": 3,
+          "call_budget": 143,
+          "cost_budget": 256
+        }
+      },
+      "first_s": {
+        "n": 6,
+        "mean": 2.5765335571537338,
+        "p50": 2.4082472309884615,
+        "p95": 4.153692074998979,
+        "max": 4.153692074998979
+      },
+      "first4_s": {
+        "n": 6,
+        "mean": 2.8994019196497196,
+        "p50": 2.7526272819784934,
+        "p95": 4.336145973973906,
+        "max": 4.336145973973906
+      },
+      "file_end_s": {
+        "n": 6,
+        "mean": 1.1196782606566942,
+        "p50": 1.040258253981591,
+        "p95": 2.048382234974997,
+        "max": 2.048382234974997
+      },
+      "source_delays": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_s": 1.8913019559986424,
+          "first4_s": 2.9777751639776397,
+          "file_end_s": 2.048382234974997,
+          "max_growth_gap_s": 1.8913019559986424,
+          "growth_updates_during_input": 8
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_s": 2.6319234319787936,
+          "first4_s": 2.7526272819784934,
+          "file_end_s": 1.939392141000834,
+          "max_growth_gap_s": 4.978711835021386,
+          "growth_updates_during_input": 16
+        },
+        {
+          "id": "fleurs-14278025439467391857",
+          "first_s": 2.6449864789827267,
+          "first4_s": 2.8288574449759913,
+          "file_end_s": 1.7357113499958068,
+          "max_growth_gap_s": 4.010033305000281,
+          "growth_updates_during_input": 8
+        },
+        {
+          "id": "zeroth-137_003_2281",
+          "first_s": 2.4082472309884615,
+          "first4_s": 2.5917820649985224,
+          "file_end_s": 0.6861637969908756,
+          "max_growth_gap_s": 4.167266748001566,
+          "growth_updates_during_input": 21
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_s": 4.153692074998979,
+          "first4_s": 4.336145973973906,
+          "file_end_s": -0.7318382130039396,
+          "max_growth_gap_s": 4.556256651994772,
+          "growth_updates_during_input": 73
+        },
+        {
+          "id": "zeroth-104_003_1661",
+          "first_s": 1.7290501699747978,
+          "first4_s": 1.9092235879937647,
+          "file_end_s": 1.040258253981591,
+          "max_growth_gap_s": 4.197744475997752,
+          "growth_updates_during_input": 23
+        }
+      ],
+      "final_calls": 15,
+      "partial_calls": 13,
+      "submitted_requests": 32,
+      "coalesced_requests": 4,
+      "final_compute_s": 28.863643486984074,
+      "total_compute_s": 42.4908227789565,
+      "partial_compute_s": 13.627179291972425,
+      "same_previous_final": true,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 272,
+        "normalized_revisions": 3,
+        "retracted_suffix_characters": 3,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 82,
+        "segments_with_display": 15,
+        "revised_segments": 3,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 13,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 10,
+          "whole_partial_is_final_prefix": 7,
+          "partial_characters": 82,
+          "retained_prefix_characters": 79,
+          "retained_prefix_fraction": 0.9634146341463414
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "rss_max_mib": 1724.546875,
+      "thermal": {
+        "start_mc": 74350,
+        "max_mc": 84250,
+        "end_mc": 77100,
+        "current_limits": [
+          0,
+          8
+        ]
+      },
+      "settings": {
+        "gap_s": 0.0,
+        "vad_preprocess": "rms26-floor80",
+        "vad_threshold": 0.3,
+        "vad_max_speech_s": 5,
+        "partial_after_s": 1.0,
+        "partial_interval_s": 4.0,
+        "partial_mode": "adaptive",
+        "partial_min_new_s": 0.8,
+        "partial_tail_margin_s": 0.2,
+        "adaptive_policy": "budgeted",
+        "partial_cost_model": "audio",
+        "partial_budget_s": 3.0,
+        "partial_max_calls": 2,
+        "partial_followup_s": null,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "token_stream": true,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "model": {
+        "num_threads": 2,
+        "quantization": "q8_0",
+        "max_total_len": 512,
+        "max_new_tokens": 128,
+        "family": "qwen3_gguf",
+        "path": "models/qwen3-opt/gguf-q8-20261109-01",
+        "runtime_library": "runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+        "runtime_manifest": "runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+        "num_threads_batch": 3,
+        "cache_text_prefix": true,
+        "language": "ko"
+      },
+      "model_files": {
+        "Qwen3-ASR-0.6B-Q8_0.gguf": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+        },
+        "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+        },
+        "runtime_library": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+          "sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf"
+        },
+        "runtime_manifest": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+          "sha256": "a7fa6d9d6ffab5b5a0f7f98e3dc94cd7d751fe503a16f214936b5ff32fd3d113"
+        }
+      },
+      "audio_quantization": "q8_0",
+      "model_load_s": 1.3410893100081012,
+      "pcm_signature_sha256": "de8d0528294721639ca8b4613fa38f38aeb4c79c52f345b88646cd5feb3fb284",
+      "final_signature_sha256": "5b73388f6919ff11951d85a71508a4e59184c645bd99d4f95fefa2c2b0e6fd08",
+      "final_queue_wait_s": {
+        "n": 15,
+        "mean": 0.5721475324729303,
+        "p50": 0.2764565859979484,
+        "p95": 2.437276576005388,
+        "max": 2.437276576005388
+      },
+      "engine_ttft_s": {
+        "n": 15,
+        "mean": 0.9716535692666667,
+        "p50": 0.874977431,
+        "p95": 1.589490167,
+        "max": 1.589490167
+      },
+      "actual_partial_origins": {
+        "first_offered": 10,
+        "offered": 3
+      },
+      "followup_costs": [
+        {
+          "segment_id": 0,
+          "input_s": 1.892,
+          "estimate_s": 1.477957295108081,
+          "actual_s": 1.187415451015113,
+          "remaining_s": 3.108
+        },
+        {
+          "segment_id": 5,
+          "input_s": 1.86,
+          "estimate_s": 1.821367208692954,
+          "actual_s": 1.0777120479906444,
+          "remaining_s": 3.14
+        },
+        {
+          "segment_id": 13,
+          "input_s": 1.956,
+          "estimate_s": 1.9484012719788928,
+          "actual_s": 1.1951618989987765,
+          "remaining_s": 3.044
+        }
+      ],
+      "final_native_stages_s": {
+        "audio_encode_s": 8.591488769,
+        "audio_embedding_eval_s": 4.439033338,
+        "token_decode_s": 14.008932045000002
+      },
+      "arm_clock_hz": {
+        "n": 74,
+        "mean": 2377648321.7297297,
+        "p50": 2400027136,
+        "p95": 2400037120,
+        "max": 2400037120
+      },
+      "cpu0_freq_khz": {
+        "n": 74,
+        "mean": 2389189.189189189,
+        "p50": 2400000,
+        "p95": 2400000,
+        "max": 2400000
+      },
+      "returned_tokens": 229
+    }
+  },
+  "checks": {
+    "complete_valid": true,
+    "no_failure_drop_missing": true,
+    "same_final_pcm": true,
+    "q8_controls_match_previous": true,
+    "both_q4_final_errors_not_increased": false,
+    "latency_or_engine_improved": true,
+    "first_p95_within_025s": true,
+    "first4_p95_within_025s": true,
+    "file_end_p95_within_025s": true,
+    "gap_p95_within_01s": true,
+    "compute_within15pct": true
+  },
+  "all_screening_checks_passed": false,
+  "full100_executed": false,
+  "default_adopted": false,
+  "verification": {
+    "boot_id": "db0f2e44-3c3f-4b8a-8472-e5618db2aeae",
+    "protected_files": 248,
+    "protected_assets_unchanged": true,
+    "score_recomputed": true,
+    "host_tests": {
+      "total": 425,
+      "passed": 423,
+      "optional_native_skipped": 2
+    },
+    "rp_related_mock_tests": {
+      "total": 67,
+      "passed": 66,
+      "optional_native_skipped": 1
+    },
+    "independent_analysis_byte_equal": true,
+    "analysis_sha256": "69283867ae29392e0904b4297f6875a6cc0fde7eccf27a471b4504eaac69b728",
+    "host_rp_new_raw_files": 50,
+    "host_rp_new_raw_hashes_equal": true,
+    "browser": {
+      "records": 43,
+      "profiles": 9,
+      "history_preserved": true,
+      "q8_q4_record_playback": true,
+      "audio_precision_shown": true,
+      "mobile_no_horizontal_overflow": true,
+      "js_errors": 0,
+      "new_native_inference_started": false
+    }
+  },
+  "smoke": {
+    "complete": true,
+    "audio": {
+      "sha256": "f1fa24f2d145fd301951043924623527e827d5c9f9dcfe0ebf39f2d69a77c489",
+      "frames": 67200,
+      "sample_rate_hz": 16000,
+      "channels": 1,
+      "sample_width_bytes": 2,
+      "duration_s": 4.2
+    },
+    "score": {
+      "normalization": "ko_cer_v1",
+      "normalized_reference": "수소이온은전자가벗겨져나간양성자이다수소원자는양성자하나와전자하나로구성되므로",
+      "normalized_hypothesis": "수소이온은전자가벗겨져나간양성자이다",
+      "reference_characters": 39,
+      "substitutions": 0,
+      "deletions": 21,
+      "insertions": 0,
+      "errors": 21,
+      "cer": 0.5384615384615384
+    },
+    "failed_calls": 0,
+    "model_load": 1.414763014006894,
+    "rss_max_mib": 1114.78125,
+    "hypothesis": "수소 이온은 전자가 벗겨져 나간 양성자이다."
+  },
+  "scope": "고유6개·60.62375초·280자·음성비용 가변 고정·Q8/Q8→Q4_K_M/Q4_0→Q8/Q8. 동일 prefix bridge/2·3T 유지. 독립 정확도·음향/GUI 지연·부분 정답 정확도 미측정.",
+  "audio_assets": {
+    "schema_version": 2,
+    "quantization": "q4_k_m",
+    "source_sha256": "12b2894d9a7c98cd8f26670f5a47ab738f42bcc98df21e109be493870c71ba50",
+    "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+    "text": {
+      "path": "../../gguf-quant-20261110-01/derived/Qwen3-ASR-0.6B-Q4_K_M.gguf",
+      "sha256": "3f711631ac7b81f223e08471838f8129b9716e4fe9935ebf99c58e320fc18633"
+    },
+    "audio": {
+      "path": "mmproj-Qwen3-ASR-0.6B-Q4_0.gguf",
+      "sha256": "d89415b0cc99411bd6472e4465dd4c0cb51f69a1a3545571f8ea6e28631cf70f",
+      "quantization": "q4_0",
+      "source_sha256": "dae36c855f9a82a8916bea2238b24bda69a39d8da8b2f46dee7c103775656039",
+      "reference_q8_sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+    },
+    "audio_conversion": {
+      "source_repository": "ggml-org/Qwen3-ASR-0.6B-GGUF",
+      "source_revision": "928ab958557df9aa2ef1c93e0e83c7ad0933fae2",
+      "source": "/d/shin/edge-asr/models/qwen3-opt/gguf-audio-quant-20261113-01/source/mmproj-Qwen3-ASR-0.6B-bf16.gguf",
+      "command": [
+        "/d/shin/edge-asr/runtimes/qwen3-opt/quantize-20261110-01/build/bin/llama-quantize",
+        "--tensor-type-file",
+        "/d/shin/edge-asr/models/qwen3-opt/gguf-audio-quant-20261113-01/derived/tensor-types.txt",
+        "/d/shin/edge-asr/models/qwen3-opt/gguf-audio-quant-20261113-01/source/mmproj-Qwen3-ASR-0.6B-bf16.gguf",
+        "/d/shin/edge-asr/models/qwen3-opt/gguf-audio-quant-20261113-01/derived/mmproj-Qwen3-ASR-0.6B-Q4_0.gguf",
+        "Q4_0",
+        "2"
+      ],
+      "tool_sha256": "57e33c7a125b6d6541d83234a700c01e4b723e253c0673396d1f94acc07ebc7d",
+      "script_sha256": "df949363c61fbdcd7c7a3def423ef57588522cb4a3234b5fb602ff8eb2f140c4",
+      "tensor_type_file_sha256": "58c5b02ff5f82c214e8a4f2db441d91d43031b48fd4c9ba1126d4deba56cd747",
+      "elapsed_s": 11.105334288207814,
+      "file_type": 2,
+      "tensor_type_counts": {
+        "F32": 188,
+        "Q4_0": 110,
+        "F16": 4
+      },
+      "quantized_matrix_count": 110,
+      "preserved_tensor_count": 192,
+      "preserved_tensor_bytes_equal": true,
+      "bytes": 126828192
+    }
+  },
+  "relative_to_q8_controls": {
+    "q8-before": {
+      "final_compute_reduction_pct": 8.6571083165906,
+      "total_compute_reduction_pct": 3.930664304725595,
+      "rss_reduction_mib": 583.078125,
+      "rss_reduction_pct": 33.818478408627485
+    },
+    "q8-after": {
+      "final_compute_reduction_pct": 10.757587909587652,
+      "total_compute_reduction_pct": -1.0136065056954635,
+      "rss_reduction_mib": 583.484375,
+      "rss_reduction_pct": 33.834068731822676
+    }
+  }
+}

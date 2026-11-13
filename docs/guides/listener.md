@@ -86,3 +86,5 @@ Host에 회수한 기록만 볼 때는 `--ssh`를 생략합니다. 이 경우 Ho
 이전2026-11-12 total 가변 대조는 `고정 대조 · 동일 100개`와 `보완 가변 · 동일 100개`입니다. 기록 재생은 `realtime-adaptive100-20261112-01/fixed`와 `/adaptive`를 선택합니다. `현재 Qwen 개발 구성`은 같은100개 자산의 원본 목록 순서이므로 대조에는 각 실행의 짝 프로필을 사용합니다. 이전 기록·구성도 보존하며 다른 평가 묶음의 수치를 섞지 않습니다.
 
 Q4 선별은 **Q8 가변 · Q4 대조6개**와 **Q4 가변 · 동일6개**입니다. 설정은 `results/optimization/opt3/realtime-q4-20261113-01/configs/listener-quant-{q8,q4}.toml`, 기록은 같은 실행의 `q8-before`/`q4`/`q8-after`입니다. [6개 실측](../../results/summaries/optimization/realtime-q4-20261113.md)은 메모리/최종 반환 이득과 최종 오류2개 증가를 함께 기록합니다.100개와 다른 음원 묶음입니다.
+
+양쪽 Q4 비교는 **Q8/Q8 가변 · 양쪽 Q4 대조6개**와 **Q4/Q4 가변 · 동일6개**입니다. 프로필은 `results/optimization/opt3/realtime-both-q4-20261113-01/configs/listener-both-{q8,q4}.toml`, 저장 기록은 같은 실행의 `q8-before`/`both-q4`/`q8-after`입니다. 실행 조건에서 텍스트·오디오 양자화를 따로 확인합니다. [실측](../../results/summaries/optimization/realtime-both-q4-20261113.md)은 메모리 이득·첫 표시 개선 없음·최종 오류 증가를 함께 기록합니다.

@@ -107,7 +107,7 @@ ONNX 측정은 guard와 자식 명령 모두 표의 ONNX Python·설정을 사�
 
 [6개 선별 결과](../../results/summaries/optimization/realtime-q4-20261113.md)는 메모리/최종 반환 이득과 최종 오류2개 증가를 확인했습니다.100개 확대·기본 전환은 하지 않았으며 다음 저지연 개발 비교는 Q8 음성비용 가변을 사용합니다.
 
-text와 audio를 함께 낮추는 별도 비교는 [q4_both_realtime.toml](../../configs/quantization/q4_both_realtime.toml)을 사용합니다. text Q4_K_M·audio Q4_0이며 명세 v2와 `audio_quantization`을 명시합니다. 기존 text-only Q4/Q8 설정·명세는 유지합니다. [사전 조건](../research/qwen_realtime.md#textaudio-모두-q4-대조--2026-11-13-사전-조건)을 따르며 파일 크기 감소를 속도/정확도 개선으로 가정하지 않습니다.
+text와 audio를 함께 낮추는 별도 비교는 [q4_both_realtime.toml](../../configs/quantization/q4_both_realtime.toml)을 사용합니다. text Q4_K_M·audio Q4_0이며 명세 v2와 `audio_quantization`을 명시합니다. 기존 text-only Q4/Q8 설정·명세는 유지합니다. [사전 조건](../research/qwen_realtime.md#textaudio-모두-q4-대조--2026-11-13-사전-조건)을 따르며 파일 크기 감소를 속도/정확도 개선으로 가정하지 않습니다. [6개 실측](../../results/summaries/optimization/realtime-both-q4-20261113.md)에서 메모리/최종 반환은 줄었지만 CER가 늘고 encoder 가속은 없어 Q8 가변 기준을 유지했습니다.
 
 ## 첫 후속 갱신 선별
 
