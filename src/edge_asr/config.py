@@ -85,6 +85,7 @@ def load_evaluation_config(path: str | Path) -> dict:
             "asset_manifest",
             "num_threads_batch",
             "cache_text_prefix",
+            "audio_quantization",
         }
     allowed = {
         "model": model_keys,
@@ -169,10 +170,13 @@ def load_evaluation_config(path: str | Path) -> dict:
 
             if config["model"]["quantization"] not in QUANTIZATIONS:
                 raise ValueError(f"GGUF 양자화는 {QUANTIZATIONS}입니다.")
+            audio_quant = config["model"].get("audio_quantization", "q8_0")
+            if audio_quant not in ("q8_0", "q4_0"):
+                raise ValueError("GGUF audio_quantization은 q8_0/q4_0입니다.")
             asset = config["model"].get("asset_manifest")
             if asset is not None and (not isinstance(asset, str) or not asset.strip()):
                 raise ValueError("asset_manifest는 파일 경로여야 합니다.")
-            if config["model"]["quantization"] != "q8_0" and not asset:
+            if (config["model"]["quantization"] != "q8_0" or audio_quant != "q8_0") and not asset:
                 raise ValueError("새 GGUF 양자화에는 asset_manifest가 필요합니다.")
         elif config["model"]["quantization"] != "int8":
             raise ValueError("현재 ONNX Qwen 양자화는 int8입니다.")

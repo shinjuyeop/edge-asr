@@ -36,6 +36,8 @@ GGUF의 선택 설정 `num_threads_batch`는 여러 토큰 prefill과 오디오 
 
 선택 `cache_text_prefix`는 음성 앞 동일 text KV만 유지하는 별도 GGUF 실험 기능입니다. 기본은 끔이며 명시할 때 `text_prefix_cache_v1` 빌드를 요구합니다. `native/gguf/prefix_cache.h`가 일치/실패 상태를 관리하고 bridge는 그 뒤 KV를 제거합니다. audio/뒤 text/이전 생성 결과는 재계산하며 실패 시 전체 초기화로 돌아갑니다. 앞/뒤 text·audio encoder·embedding 평가 시간을 분리하고 첫 추론/워밍업도 기록합니다. 기존 빌드는 보존하며 현재 공유 개발 설정은 검증한 고정 prefix KV 켬을 사용합니다.
 
+GGUF의 text/audio 정밀도는 별도입니다. 기존 자산 명세 v1은 알려진 audio Q8 해시를 유지합니다. 선택 `audio_quantization=q4_0`은 v2 명세와 고정 BF16 오디오 원본·변환 Q4 해시·기준 Q8 해시를 함께 요구합니다. 새 경로에서도 모델 파일 해시를 실제로 확인하며, 기존 v1 검증을 완화하지 않습니다. 측정 웹은 text와 audio 정밀도를 따로 표시합니다.
+
 토큰 표시의 `hold_replayed_prefix_v1`은 같은 구간의 다른 호출이 이미 보인 원문 접두부를 다시 생성할 때 이전 문자열을 유지합니다. 확장·실제 내용 변경·종료 result는 전달하며 실패 시 임시 문자를 확정하지 않습니다. 원시 토큰은 숨기지 않고 `prefix_replay_suppressed`로 기록합니다. `caption_stability`의 문자 철회량과 자기 최종 전사 일치는 정답 CER·음향 지연과 구분합니다.
 
 가변 후속의 기본 비용 추정은 `total`입니다. 선택 `partial_cost_model=audio`는 같은 작업자의 최근3개 성공 native 계측에서 음성 처리 부분만 입력 길이에 따라 확대합니다. 단계 계측이 없거나 실패하면 기존 추정으로 돌아가며, 첫 요청 보호·유휴 조건·구간당 비용/횟수 예산·최종 우선순위는 유지합니다. [선별 조건](../research/qwen_realtime.md#음성-단계-비용-추정-선별--2026-11-13-사전-조건).

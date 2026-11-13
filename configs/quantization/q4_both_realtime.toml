@@ -1,0 +1,27 @@
+# text Q4_K_M + audio Q4_0 비교용. 가변 요청 조건은 별도로 지정한다.
+# 이전 q4_k_m.toml의2T/구 bridge 설정은 보존한다.
+# 연속 입력은 tools replay-qwen3로 실행한다. 아래 batch는 어댑터 평가 계약이다.
+# VAD·부분 갱신·토큰 표시 옵션은 docs/guides/qwen3_optimization.md의 대표 명령을 따른다.
+[model]
+family = "qwen3_gguf"
+path = "models/qwen3-opt/gguf-audio-quant-20261113-01/derived"
+runtime_library = "runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so"
+runtime_manifest = "runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json"
+num_threads = 2
+num_threads_batch = 3
+cache_text_prefix = true
+language = "ko"
+quantization = "q4_k_m"
+asset_manifest = "q4_k_m_audio_q4_0.json"
+audio_quantization = "q4_0"
+max_total_len = 512
+max_new_tokens = 128
+
+[audio]
+sample_rate_hz = 16000
+
+[evaluation]
+mode = "batch"
+warmup_runs = 3
+normalization = "ko_cer_v1"
+output_dir = "results/optimization/opt3"

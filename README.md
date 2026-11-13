@@ -74,6 +74,7 @@ edge-asr/
 ├── configs/
 │   ├── legacy/                          # 이전 모델 비교 설정
 │   ├── quantization/                    # Q6·Q5·Q4 후보
+│   │   ├── q4_both_realtime.toml        # text Q4_K_M + audio Q4_0 비교
 │   │   └── q4_k_m_realtime.toml         # 현재 bridge·2/3·prefix KV의 Q4 비교
 │   ├── eval_manifest.example.jsonl
 │   ├── gguf.toml                        # 보존한 Q8 2T 기준선

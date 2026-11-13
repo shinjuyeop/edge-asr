@@ -119,6 +119,7 @@ async function loadAudio(myEpoch){
 function renderConditions(){
   if(!run)return;const m=run.config?.model||{},s=run.settings||{};
   const fields=[['모델',`${m.family||'준비 중'} · ${m.quantization||'—'}`],['스레드',`${m.num_threads??'—'} / ${m.num_threads_batch??m.num_threads??'—'}`],['고정 KV',m.cache_text_prefix?'사용':'미사용'],['부분 요청',s.partial_mode==='adaptive'?`가변${s.adaptive_policy==='budgeted'?`·첫 요청 보호 / ${s.partial_max_calls}회·${s.partial_budget_s}초 예산`:''} / 첫 ${s.partial_after_s}초 / 새 음성 ${s.partial_min_new_s}초 / 끝 여유 ${s.partial_tail_margin_s}초`:`첫 ${s.partial_after_s??'—'}초 / 다음 ${s.partial_followup_s??s.partial_interval_s??'—'}초 뒤 / 이후 ${s.partial_interval_s??'—'}초`],['구간',`${s.max_segment_s??'—'}초`],['VAD',`${s.vad_preprocess||'—'} / ${s.vad_threshold??'—'}`],['표시',s.token_stream?'생성 중 토큰':'완성 문자열'],['소스',(run.source_commit||'—').slice(0,8)]];
+  if(m.family==='qwen3_gguf'){fields[0][0]='텍스트 모델';fields.splice(1,0,['오디오 양자화',m.audio_quantization??'q8_0']);}
   $('conditions').replaceChildren(...fields.flatMap(([k,v])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=k;dd.textContent=v;return[dt,dd];}));
 }
 function renderMetrics(){

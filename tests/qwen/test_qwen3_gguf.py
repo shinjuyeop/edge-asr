@@ -474,6 +474,87 @@ class GGUFTests(unittest.TestCase):
             path.write_text(text.replace("[audio]", 'asset_manifest = "assets.json"\n\n[audio]'))
             self.assertEqual(load_evaluation_config(path)["model"]["quantization"], quant)
 
+    def audio_q4_assets(self):
+        directory = self.root / "model"
+        text, audio = directory / "text-q4.gguf", directory / "audio-q4.gguf"
+        text.write_bytes(b"fixture text q4")
+        audio.write_bytes(b"fixture audio q4")
+        audio_hash = hashlib.sha256(audio.read_bytes()).hexdigest()
+        expected = patch.object(gguf, "AUDIO_Q4_SHA256", audio_hash)
+        expected.start()
+        self.addCleanup(expected.stop)
+        assets = {
+            "schema_version": 2,
+            "quantization": "q4_k_m",
+            "source_sha256": gguf.BF16_SHA256,
+            "llama_commit": gguf.LLAMA_COMMIT,
+            "text": {"path": text.name, "sha256": hashlib.sha256(text.read_bytes()).hexdigest()},
+            "audio": {
+                "path": audio.name,
+                "sha256": audio_hash,
+                "quantization": "q4_0",
+                "source_sha256": gguf.AUDIO_BF16_SHA256,
+                "reference_q8_sha256": self.expected["mmproj-Qwen3-ASR-0.6B-Q8_0.gguf"],
+            },
+        }
+        path = directory / "both-q4.json"
+        path.write_text(json.dumps(assets))
+        self.model.update(
+            quantization="q4_k_m", audio_quantization="q4_0", asset_manifest=path.name
+        )
+        return path, assets, text, audio
+
+    def test_both_q4_uses_separately_bound_audio_and_reports_its_precision(self):
+        path, _, text, audio = self.audio_q4_assets()
+        adapter = self.load()
+        self.assertEqual(
+            self.library.edge_gguf_create.call_args.args[:2],
+            (str(text).encode(), str(audio).encode()),
+        )
+        self.assertEqual(adapter.metadata["audio_quantization"], "q4_0")
+        self.assertEqual(adapter.model_files["asset_manifest"], path)
+        self.assertEqual(adapter.model_files["audio"], audio)
+
+    def test_audio_q4_cannot_bypass_schema_source_or_payload_hash_guards(self):
+        path, assets, _, audio = self.audio_q4_assets()
+        for field, value in (
+            ("quantization", "q8_0"),
+            ("source_sha256", "0" * 64),
+            ("sha256", "0" * 64),
+            ("reference_q8_sha256", "0" * 64),
+        ):
+            with self.subTest(field=field):
+                path.write_text(json.dumps({**assets, "audio": {**assets["audio"], field: value}}))
+                with self.assertRaises(ValueError):
+                    create_adapter(self.model, 16000, self.root)
+        path.write_text(json.dumps({**assets, "schema_version": 1}))
+        with self.assertRaises(ValueError):
+            create_adapter(self.model, 16000, self.root)
+        path.write_text(json.dumps(assets))
+        self.model.pop("audio_quantization")
+        with self.assertRaises(ValueError):
+            create_adapter(self.model, 16000, self.root)
+        self.model["audio_quantization"] = "q4_0"
+        audio.write_bytes(b"tampered audio")
+        with self.assertRaises(ValueError):
+            create_adapter(self.model, 16000, self.root)
+
+    def test_audio_quantization_is_explicit_validated_and_requires_manifest(self):
+        original = (ROOT / "configs/gguf.toml").read_text()
+        path = self.root / "audio-config.toml"
+        text = original.replace("[audio]", 'audio_quantization = "q4_0"\n\n[audio]')
+        path.write_text(text)
+        with self.assertRaises(ValueError):
+            load_evaluation_config(path)
+        text = text.replace("[audio]", 'asset_manifest = "both-q4.json"\n\n[audio]')
+        path.write_text(text)
+        self.assertEqual(load_evaluation_config(path)["model"]["audio_quantization"], "q4_0")
+        path.write_text(
+            text.replace('audio_quantization = "q4_0"', 'audio_quantization = "q4_k_m"')
+        )
+        with self.assertRaises(ValueError):
+            load_evaluation_config(path)
+
 
 @unittest.skipUnless(shutil.which("g++"), "text prefix KV 상태 검사는 g++가 필요합니다.")
 class PrefixCachePolicyTests(unittest.TestCase):

@@ -36,6 +36,8 @@ Python 실행 코드는 [src/edge_asr/qwen/](../src/edge_asr/qwen/), C++ 소스�
 
 양자화 준비는 별도 환경에서 upstream `gguf-py`의 numpy·pyyaml·tqdm·requests 의존성을 준비하고, 고정 llama.cpp 소스의 `llama-quantize`를 새 빌드 경로에 만듭니다. 기존 추론 환경·엔진은 변경하지 않습니다. `quantize.py --help`의 source/tool/llama-source/audio-model/output을 지정하며 output은 새 폴더여야 합니다. 모델별 명세는 원본·도구·GGUF type·tensor dtype·SHA를 보존하고 Q8 오디오 파일은 기존 경로를 참조합니다. [실험 조건](../docs/research/qwen_realtime.md).
 
+오디오 Q4 실험은 같은 고정 `llama-quantize`의 `--tensor-type-file`을 사용합니다. 공식 BF16 mmproj에서 기존 Q8 배포본이 양자화한110개 행렬만 Q4_0으로 바꾸고 나머지192개 tensor의 dtype/바이트를 보존했습니다. 주요 폭896은 K 방식의256블록과 맞지 않아 audio는 Q4_0을 사용하며 text Q4_K_M과 구분합니다. 새 자산은 `models/qwen3-opt/gguf-audio-quant-20261113-01/`이며 원본·명령·tensor별 정밀도·해시는 해당 명세에 기록합니다. 기존 Q8을 입력으로 재양자화하지 않습니다. [text/audio 모두 Q4 비교 조건](../docs/research/qwen_realtime.md#textaudio-모두-q4-대조--2026-11-13-사전-조건).
+
 ## ORT 계측
 
 [OPT-1 프로토콜](../docs/research/opt1_profiling.md)을 따릅니다. 공식 v1.28.2의 [C API](https://raw.githubusercontent.com/microsoft/onnxruntime/v1.28.2/include/onnxruntime/core/session/onnxruntime_c_api.h), [error code](https://raw.githubusercontent.com/microsoft/onnxruntime/v1.28.2/include/onnxruntime/core/session/onnxruntime_error_code.h), [EP API](https://raw.githubusercontent.com/microsoft/onnxruntime/v1.28.2/include/onnxruntime/core/session/onnxruntime_ep_c_api.h) 헤더를 별도 `runtimes/.../include/`에 준비합니다. MIT 라이선스·원본 저작권 표시를 유지하며 빌드 도구가 고정 헤더 SHA-256을 검사합니다.

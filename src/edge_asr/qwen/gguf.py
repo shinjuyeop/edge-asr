@@ -12,6 +12,8 @@ from edge_asr.runtime import capture_native_stderr
 
 LLAMA_COMMIT = "7d7f0287530bc8981690f361d8c1627dbae1c99a"
 BF16_SHA256 = "12b2894d9a7c98cd8f26670f5a47ab738f42bcc98df21e109be493870c71ba50"
+AUDIO_BF16_SHA256 = "dae36c855f9a82a8916bea2238b24bda69a39d8da8b2f46dee7c103775656039"
+AUDIO_Q4_SHA256 = "d89415b0cc99411bd6472e4465dd4c0cb51f69a1a3545571f8ea6e28631cf70f"
 QUANTIZATIONS = ("q8_0", "q6_k", "q5_k_m", "q4_k_m")
 MODEL_FILES = {
     "Qwen3-ASR-0.6B-Q8_0.gguf": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971",
@@ -35,6 +37,9 @@ class Qwen3GGUFAdapter:
         if type(self.cache_text_prefix) is not bool:
             raise ValueError("cache_text_prefix는 true/false여야 합니다.")
         self.model = model
+        self.audio_quantization = model.get("audio_quantization", "q8_0")
+        if self.audio_quantization not in ("q8_0", "q4_0"):
+            raise ValueError("오디오 양자화는 검증한 q8_0/q4_0이어야 합니다.")
         self.thread_configuration = {
             "threads": model["num_threads"],
             "threads_batch": batch_threads,
@@ -49,13 +54,24 @@ class Qwen3GGUFAdapter:
             assets_path = resolve_path(model["asset_manifest"], self.directory)
             self.assets = json.loads(assets_path.read_text())
             a = self.assets
+            audio = a.get("audio", {})
+            audio_valid = (
+                a.get("schema_version") == 1
+                and self.audio_quantization == audio.get("quantization", "q8_0") == "q8_0"
+                and audio.get("sha256") == MODEL_FILES["mmproj-Qwen3-ASR-0.6B-Q8_0.gguf"]
+            ) or (
+                a.get("schema_version") == 2
+                and self.audio_quantization == audio.get("quantization") == "q4_0"
+                and audio.get("sha256") == AUDIO_Q4_SHA256
+                and audio.get("source_sha256") == AUDIO_BF16_SHA256
+                and audio.get("reference_q8_sha256")
+                == MODEL_FILES["mmproj-Qwen3-ASR-0.6B-Q8_0.gguf"]
+            )
             if (
-                a.get("schema_version") != 1
+                not audio_valid
                 or a.get("quantization") != model["quantization"]
                 or a.get("source_sha256") != BF16_SHA256
                 or a.get("llama_commit") != LLAMA_COMMIT
-                or a.get("audio", {}).get("sha256")
-                != MODEL_FILES["mmproj-Qwen3-ASR-0.6B-Q8_0.gguf"]
             ):
                 raise ValueError("GGUF 자산 명세의 양자화·원본·오디오·도구 커밋이 다릅니다.")
             for role in ("text", "audio"):
@@ -72,7 +88,7 @@ class Qwen3GGUFAdapter:
             }
             expected = {role: a[role]["sha256"] for role in ("text", "audio")}
         else:
-            if model["quantization"] != "q8_0":
+            if model["quantization"] != "q8_0" or self.audio_quantization != "q8_0":
                 raise ValueError("새 양자화에는 asset_manifest가 필요합니다.")
             self.model_files = {name: self.directory / name for name in MODEL_FILES}
         self.text_path, self.audio_path = self.model_files.values()
@@ -118,10 +134,13 @@ class Qwen3GGUFAdapter:
             "language": "ko",
             "stream_language": "Korean",
             "quantization": self.model["quantization"],
+            "audio_quantization": self.audio_quantization,
             "quantization_evidence": "local_BF16_conversion_and_bound_sha256"
             if self.assets
             else "official_GGUF_asset_names_and_bound_sha256",
-            "quantization_scope": "text만 양자화 변경·audio mmproj Q8_0 유지. tensor 혼합 dtype은 자산 명세에 기록."
+            "quantization_scope": "text 양자화와 audio Q4_0을 별도 명세/해시로 고정. audio 행렬110개 Q4_0, 나머지192개 원본 정밀도 보존."
+            if self.audio_quantization == "q4_0"
+            else "text만 양자화 변경·audio mmproj Q8_0 유지. tensor 혼합 dtype은 자산 명세에 기록."
             if self.assets
             else "텍스트 모델과 오디오 mmproj 모두 Q8_0 배포본. 일부 tensor 혼합 dtype 가능. ONNX INT8과 동일 양자화 방식 아님.",
             "assets": self.assets,
