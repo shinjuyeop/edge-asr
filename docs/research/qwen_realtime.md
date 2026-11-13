@@ -362,3 +362,15 @@ text/audio Q8과 Q4_K_M/Q4_0을 기존 bridge·새 계측 bridge에서 비교합
 공개 LLM/mtmd node callback으로 audio encoder·audio embedding prefill·공통 text suffix·token decode의 연산/dtype/가중치/shape·횟수·시간을 기록합니다. per-node 동기화와 graph 분할은 fusion·커널·스케줄을 바꿀 수 있어 **프로파일 시간/비율을 기존 운영 시간에 그대로 적용하지 않습니다.** 계측 켬/끔과 기존 빌드의 전사/token ID·실패·profile 유효성·그룹 용량·오버헤드·단계/node 잔여 시간을 확인합니다. 불일치는 숨기지 않고 원시에 보존합니다. dequant와 행렬 연산 내부 커널은 이 경계만으로 분리되지 않습니다. 모든 단계에서 Host 모의/헤더 검사와 RP5 실제 추론을 구분합니다.
 
 [실측 결과](../../results/summaries/optimization/operator-profile-20261113.md):64회 모두 기존 연속 호출과 모델별 전사/token ID가 같고 trace 오류/넘침0입니다. 계측 node 기준 Q4 encoder의약50%는 FP16 앞단이며 prefill의81.5~90.1%는 Q4_K/Q6_K 행렬곱이었습니다. 계측 자체가7.56~18.36%를 더해 운영 시간과 분리하고 Q8 가변 기준을 유지합니다.
+
+## Q4 prefill 실행 경로 선별 — 2026-11-13 사전 조건
+
+`prefill-q4-20261113-01`은 Q4_K_M/audio Q4_0 가중치를 그대로 두고 CPU 행렬 실행 경로를 비교합니다. 고정 소스의 KleidiAI Q4_K 선택표에는 SME2/FP16 항목만 있고 RP5 Cortex-A76에는 SME2가 없어 해당 후보는 정적으로 제외합니다. 다운로드한 고정 KleidiAI 검토 자산은 별도 보존하며 설치/활성화하지 않습니다. 대신 **현재 repack ON·음성/prefill3T → ON/4T → OFF/3T → OFF/4T → ON/3T**를 같은 PCM에서 비교합니다. 생성2T·context512·출력128·prefix KV·모델/원음은 고정합니다. batch 스레드는 인코더에도 적용하므로 prefill만 바꾼 실험으로 부르지 않습니다.
+
+repack OFF 엔진은 동일 고정 llama.cpp 소스·기존 CMake 옵션을 새 `runtimes/qwen3-opt/q4-norepack-20261113-01/engine/`에 복제해 해당 옵션만 끕니다. bridge도 같은 새 경로에 빌드하며 기존 엔진·환경/패키지·모델·설정·원시 결과는 덮어쓰지 않습니다. 연산별 callback은 사용하지 않습니다. Host 검사→main push→RP5 동기화 뒤 빌드/추론하고 하나의 모델만 실행합니다.
+
+입력은 앞선 연산 계측의 실제 연속 호출에서 추출한1.028초/4.024초 PCM입니다. 동일16행·8라운드 reproduction manifest와 기존 `qwen/benchmark.py`를 사용하고1~4라운드는 준비,5~8라운드를 비교합니다. 잘린 PCM의 정답은 만들지 않으며 CER은null입니다. 각 단계600초/4GiB·온도 대기 없는 운영 guard와 장비 잠금을 유지합니다. 전사/token ID·실패·prefill·첫 token·전체/단계 비용·메모리·열/클럭을 기록합니다.
+
+다음6개 연속 입력 후보는 양쪽 ON/3T 대조 각각보다 **두 PCM의 평균 LLM prefill이5% 이상 감소**하고, native 첫 token 증가는0.025초 이하·전체 호출 증가는5% 이하·실패0·모델별 원래 전사/token ID 유지인 구성에서 고릅니다. 여러 구성이 통과하면 short 첫 token이 작은 구성을 우선합니다. 미통과하면 새 연속 평가를 실행하지 않고 실패/미개선을 기록합니다. 계측용 새 엔진의 개선이 Q8보다 낫다는 결론은 별도입니다.
+
+통과하면 같은 고유6개·60.62375초·280자·동일 가변 조건에서 **새 Q4 기존→후보→기존**을 비교합니다. 최종15구간 PCM·입력 완료·실패/드롭/미출력0을 우선 확인하고 후보 최종 오류가 양쪽 기존 Q4보다 늘지 않아야 합니다. 첫/4자/파일 끝 반환 p95 증가는각0.25초 이하, 갱신 공백 p95 증가는0.1초 이하로 봅니다. 부분 호출 수와 수정량·전체 연산·온도·클럭도 함께 보고합니다. 기존 Q4의59/280오류와 Q8의50/280오류를 소급 변경하지 않으며 Q8 공유 기본과100개 자동 확대는 유지/미실행입니다.
