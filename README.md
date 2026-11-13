@@ -4,7 +4,7 @@ Qwen3-ASR-0.6B를 Raspberry Pi 5의 ARM64 CPU에서 실행하며 **한국어 정
 
 [음성·자막 청취](docs/guides/listener.md) · [개발 안내](CONTRIBUTING.md) · [현재 환경](docs/reference/environment.md) · [현재 상태·다음 작업](docs/status.md) · [RP5 실행 안내](docs/guides/qwen3_optimization.md)
 
-현재는 WAV를 1배속으로 공급하며 부분·확정 자막을 평가합니다. 개발에는 [공유 설정](configs/gguf_realtime.toml)과 VAD·갱신·토큰 표시 옵션을 포함한 [대표 명령](docs/guides/qwen3_optimization.md#현재-개발용-대표-명령)을 사용합니다. 마이크 입력·서비스 자동 실행·최종 장시간 안정성 검증은 후속 작업입니다.
+WAV 1배속 입력과 **RP5 USB 마이크**로 부분·확정 자막을 확인합니다. [측정 웹의 마이크 탭](docs/guides/listener.md#rp5-usb-마이크)에서 준비·시작·입력 종료·녹음 재생을 지원합니다. 개발에는 [공유 설정](configs/gguf_realtime.toml)과 VAD·갱신·토큰 표시 옵션을 포함한 [대표 명령](docs/guides/qwen3_optimization.md#현재-개발용-대표-명령)을 사용합니다. 서비스 자동 실행·마이크 정답 정확도·최종 장시간 안정성은 후속 검증입니다.
 
 ## 주요 결과
 
@@ -146,6 +146,7 @@ edge-asr/
 │       ├── dataset.py                   # 입력 목록·PCM
 │       ├── evaluation.py
 │       ├── metrics.py
+│       ├── microphone.py                # ALSA 수집·유한 큐·녹음 보존
 │       ├── resources.py
 │       ├── runtime.py
 │       ├── scoring.py

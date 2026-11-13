@@ -10,7 +10,7 @@ from threading import Event
 from unittest.mock import patch
 
 from edge_asr.artifacts import digest
-from edge_asr.dataset import prepare_track, write_wav
+from edge_asr.dataset import load_audio, prepare_track, write_wav
 from edge_asr.qwen.realtime.replay import run
 from edge_asr.qwen.realtime.session import CaptionSession
 from edge_asr.qwen.realtime.worker import DecodeWorker
@@ -42,6 +42,29 @@ class Adapter:
 
 
 class RealtimeTests(unittest.TestCase):
+    def test_unknown_microphone_length_flushes_exact_received_frames(self):
+        adapter, events = Adapter(), []
+        adapter.release.set()
+        session = CaptionSession(
+            adapter,
+            BoundedProbabilityVad(Probability()),
+            None,
+            events.append,
+            {"t0_monotonic_ns": time.perf_counter_ns()},
+            partials=False,
+        )
+        try:
+            pcm = array("f", [0.25] * 5200)
+            for start in range(0, len(pcm), 1600):
+                end = min(start + 1600, len(pcm))
+                session.accept_at(session, pcm[start:end], start, end)
+            self.assertEqual(session.finish_stream(session), "전사")
+            finals = [r for r in session.results if r["kind"] == "final"]
+            self.assertEqual(finals[0]["end_frame"], 5200)
+            self.assertEqual(adapter.calls, [list(pcm)])
+        finally:
+            session.close()
+
     def test_prefix_replay_keeps_caption_until_correction_and_terminal_failure_clears_it(self):
         class Streaming(Adapter):
             supports_token_stream = True
@@ -504,11 +527,12 @@ class RealtimeTests(unittest.TestCase):
                 return self.transcribe(audio)
 
         root = Path(__file__).resolve().parents[2]
-        for config, fail, tokens in (
-            (config, fail, tokens)
+        for config, fail, tokens, microphone in (
+            (config, fail, tokens, microphone)
             for config in ("onnx", "gguf")
             for fail in (False, True)
             for tokens in ((False, True) if config == "gguf" else (False,))
+            for microphone in (False, True)
         ):
             with self.subTest(config=config, fail=fail), tempfile.TemporaryDirectory() as temporary:
                 directory = Path(temporary)
@@ -529,7 +553,24 @@ class RealtimeTests(unittest.TestCase):
                 vad_model.write_bytes(b"fixture")
                 adapter = Loaded(fail)
                 output = directory / "run"
-                with patch("edge_asr.qwen.realtime.replay.limits_verified", return_value=True):
+
+                def capture(device, seconds, output, telemetry, accept, **callbacks):
+                    audio = load_audio(wav, 16000)
+                    (output / "recording.wav").write_bytes(wav.read_bytes())
+                    now = time.perf_counter_ns()
+                    telemetry["t0_monotonic_ns"] = now
+                    callbacks["on_start"](now)
+                    for start in range(0, len(audio.samples), 1600):
+                        end = min(start + 1600, len(audio.samples))
+                        accept(audio.samples[start:end], start, end)
+                    telemetry.update(complete=True, dropped_chunks=0)
+                    return audio
+
+                reference = "" if microphone and config == "onnx" and not fail else "전사"
+                with (
+                    patch("edge_asr.qwen.realtime.replay.limits_verified", return_value=True),
+                    patch("edge_asr.microphone.record", side_effect=capture),
+                ):
                     info = run(
                         root,
                         root / f"configs/{config}.toml",
@@ -543,6 +584,8 @@ class RealtimeTests(unittest.TestCase):
                         partial_after_s=0.2,
                         partial_interval_s=0.2,
                         token_stream=tokens,
+                        microphone_device="fixture" if microphone else None,
+                        reference=reference,
                     )
                     self.assertEqual(info["status"], "failed" if fail else "completed")
                     self.assertEqual(
@@ -552,7 +595,12 @@ class RealtimeTests(unittest.TestCase):
                     self.assertTrue(info["telemetry"]["complete"])
                     self.assertTrue(adapter.closed)
                     self.assertIsNone(info["engine_ttft_s"])
-                    self.assertEqual(info["final_transcript_score"]["cer"], 1.0 if fail else 0.0)
+                    if microphone and not reference:
+                        self.assertIsNone(info["final_transcript_score"])
+                    else:
+                        self.assertEqual(
+                            info["final_transcript_score"]["cer"], 1.0 if fail else 0.0
+                        )
                     self.assertEqual(info["failed_calls"] > 0, fail)
                     self.assertTrue((output / "jobs.jsonl").exists())
                     self.assertEqual(bool(info["token_timings"]), tokens)

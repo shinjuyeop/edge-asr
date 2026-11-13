@@ -14,7 +14,7 @@ import uuid
 from edge_asr.artifacts import digest, write_json, write_jsonl
 from edge_asr.dataset import load_manifest, prepare_track, write_wav
 from edge_asr.qwen.realtime.replay import argument_parser
-from edge_asr.qwen.viewer.analysis import compact_event, source_metrics
+from edge_asr.qwen.viewer.analysis import compact_event, microphone_sources, source_metrics
 
 
 def read(path, default=None):
@@ -53,8 +53,16 @@ class Run:
                             self.events.append(compact_event(row))
                         self.offset = stream.tell()
             key = (self.stamp, len(self.events))
-            if self.worker.get("status") in ("completed", "failed") and self.summary_key != key:
-                self.summary = source_metrics(self.worker.get("sources", []), self.events)
+            mic = self.worker.get("input", {}).get("kind") == "microphone"
+            if (
+                mic or self.worker.get("status") in ("completed", "failed")
+            ) and self.summary_key != key:
+                sources = (
+                    microphone_sources(self.worker, self.events)
+                    if mic
+                    else self.worker.get("sources", [])
+                )
+                self.summary = source_metrics(sources, self.events)
                 self.summary_key = key
 
     def snapshot(self, cursor=0):
@@ -73,7 +81,12 @@ class Run:
                 "id": self.id,
                 "name": str(self.path),
                 "status": status,
-                "sources": w.get("sources", []),
+                "sources": microphone_sources(w, self.events)
+                if w.get("input")
+                else w.get("sources", []),
+                "input": w.get("input"),
+                "capture": w.get("telemetry", {}) if w.get("input") else None,
+                "device_status": self.device_status() if w.get("input") else None,
                 "audio": w.get("audio"),
                 "config": w.get("config", {}),
                 "settings": w.get("settings", {}),
@@ -86,7 +99,7 @@ class Run:
                 "complete_input": complete,
                 "terminal": terminal,
                 "dropped_chunks": w.get("telemetry", {}).get("dropped_chunks")
-                if terminal
+                if terminal or w.get("input")
                 else None,
                 "failed_calls": sum(
                     e.get("status") == "failed" for e in self.events if e["type"] == "result"
@@ -98,6 +111,15 @@ class Run:
                 "guard": guard.get("status"),
                 "end_s": max((e.get("published_s", 0) for e in self.events), default=0),
             }
+
+    def device_status(self):
+        path = self.path / "thermal.jsonl"
+        if not path.exists():
+            return {}
+        with path.open("rb") as stream:
+            stream.seek(max(0, path.stat().st_size - 4096))
+            rows = stream.read().splitlines(keepends=True)
+        return next((json.loads(r) for r in reversed(rows) if r.endswith(b"\n")), {})
 
 
 def digest_text(text):
@@ -187,6 +209,16 @@ class Library:
                 return run.audio_path
             run.refresh()
             w = run.worker
+            if w.get("input", {}).get("kind") == "microphone":
+                if not w.get("audio") or w.get("status") not in ("completed", "failed"):
+                    raise ValueError("마이크 녹음 종료 후 재생할 수 있습니다.")
+                from edge_asr.dataset import load_audio
+
+                target = run.path / "recording.wav"
+                if load_audio(target, 16000).metadata() != w["audio"]:
+                    raise ValueError("마이크 녹음 해시·프레임이 실측과 다릅니다.")
+                run.audio_path = target
+                return target
             if not w.get("sources"):
                 raise ValueError("음원 메타데이터 준비 중입니다.")
             directory = self.cache / "audio" / digest_text(str(run.path) + w["audio"]["sha256"])
@@ -225,7 +257,7 @@ class Library:
             run.audio_path = target
             return target
 
-    def launch(self, profile_id, selection):
+    def launch(self, profile_id, selection, *, microphone=None):
         with self.lock:
             if self.process and self.process.poll() is None:
                 raise ValueError("이미 준비 또는 실행 중인 평가가 있습니다.")
@@ -237,13 +269,26 @@ class Library:
                     raise ValueError("다른 청취 서버의 평가가 실행 중입니다.") from None
                 profile = self.profiles[profile_id]
                 samples, _ = load_manifest(self.root / profile["manifest"], self.root)
-                if selection == "six":
+                if microphone is not None:
+                    from edge_asr.microphone import devices
+
+                    if microphone["device"] not in {d["id"] for d in devices()}:
+                        raise ValueError("마이크 목록을 새로 확인해 장치를 선택하세요.")
+                    seconds, reference = microphone["seconds"], microphone.get("reference", "")
+                    if type(seconds) is not int or not 5 <= seconds <= 600:
+                        raise ValueError("마이크 입력 제한은5~600초 정수입니다.")
+                    if not isinstance(reference, str) or len(reference) > 1000:
+                        raise ValueError("정답은1000자 이하 문자열입니다.")
+                    reference = reference.strip()
+                    selection, samples = "microphone", samples[:1]
+                elif selection == "six":
                     samples = samples[:6]
                 elif selection != "all":
                     samples = [s for s in samples if s.id == selection]
                 if not samples:
                     raise ValueError("선택한 음원이 없습니다.")
-                identifier = time.strftime("listen-%Y%m%d-%H%M%S-") + uuid.uuid4().hex[:6]
+                prefix = "microphone" if microphone is not None else "listen"
+                identifier = time.strftime(prefix + "-%Y%m%d-%H%M%S-") + uuid.uuid4().hex[:6]
                 inputs = self.cache / "inputs" / identifier
                 inputs.mkdir(parents=True)
                 manifest = inputs / "manifest.jsonl"
@@ -262,6 +307,17 @@ class Library:
                 output = self.root / "results/optimization/opt3" / identifier
                 args = self.replay_args(profile, output, manifest)
                 args += ["--start-signal", str(output / "viewer-start.json")]
+                if microphone is not None:
+                    args += [
+                        "--microphone-device",
+                        microphone["device"],
+                        "--microphone-seconds",
+                        str(seconds),
+                        "--reference",
+                        reference,
+                        "--stop-signal",
+                        str(output / "viewer-finish.json"),
+                    ]
                 argument_parser().parse_args(args)
                 script = str(self.root / "scripts/edge_asr.py")
                 command = [
@@ -310,6 +366,21 @@ class Library:
                 self.stopping = False
                 self.active = {"id": self.active_id, "profile": profile_id, "selection": selection}
                 return self.active_id
+
+    def finish(self, run_id):
+        with self.lock:
+            if run_id != self.active_id or not self.process or self.process.poll() is not None:
+                raise ValueError("이 서버에서 진행 중인 마이크 입력만 종료할 수 있습니다.")
+            run = self.runs[run_id]
+            run.refresh()
+            if run.worker.get("input", {}).get("kind") != "microphone":
+                raise ValueError("마이크 입력이 아닙니다.")
+            if run.worker.get("status") not in ("replaying", "draining"):
+                raise ValueError("마이크 입력 시작 후 종료할 수 있습니다.")
+            path = run.path / "viewer-finish.json"
+            if not path.exists():
+                write_json(path, {"requested_monotonic_s": time.perf_counter()})
+            return {"status": "draining"}
 
     def stop(self, run_id):
         with self.lock:

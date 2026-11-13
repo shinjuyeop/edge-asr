@@ -16,7 +16,7 @@ from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 from edge_asr.artifacts import digest, write_json, write_jsonl
-from edge_asr.dataset import Audio, prepare_track, write_wav
+from edge_asr.dataset import Audio, load_audio, prepare_track, write_wav
 from edge_asr.qwen.viewer.analysis import compact_event, source_metrics
 from edge_asr.qwen.viewer.runs import Library, Run
 from edge_asr.qwen.viewer.server import handler
@@ -39,6 +39,41 @@ def event(job, start, end, published, text, *, kind="final", status="success", t
 
 
 class ListenerTests(unittest.TestCase):
+    def test_microphone_recording_uses_own_hash_and_segment_metrics(self):
+        self.worker.update(
+            input={"kind": "microphone", "reference": ""},
+            audio=load_audio(self.root / "a.wav", 16000).metadata(),
+            segments=[{"segment_id": 0, "owned_start_frame": 0, "owned_end_frame": 3200}],
+        )
+        write_json(self.output / "worker.json", self.worker)
+        write_jsonl(self.output / "jobs.jsonl", [event(0, 0, 3200, 0.4, "가나다라")])
+        (self.output / "recording.wav").write_bytes((self.root / "a.wav").read_bytes())
+        value = self.run.snapshot()
+        self.assertEqual(value["sources"][0]["id"], "speech-1")
+        self.assertEqual(value["summary"]["first_s"]["mean"], 0.4)
+        self.assertEqual(self.library.audio(self.run), self.output / "recording.wav")
+        (self.output / "recording.wav").write_bytes(b"changed")
+        self.run.audio_path = None
+        with self.assertRaises(Exception):
+            self.library.audio(self.run)
+
+    def test_microphone_finish_is_graceful_idempotent_and_rejects_other_runs(self):
+        self.library.active_id = self.run.id
+        self.library.process = Mock()
+        self.library.process.poll.return_value = None
+        self.worker.update(input={"kind": "microphone"}, status="replaying")
+        write_json(self.output / "worker.json", self.worker)
+        for _ in range(2):
+            self.assertEqual(self.library.finish(self.run.id), {"status": "draining"})
+        self.assertTrue((self.output / "viewer-finish.json").exists())
+        self.library.process.send_signal.assert_not_called()
+        with self.assertRaises(ValueError):
+            self.library.finish("other")
+        self.worker.pop("input")
+        write_json(self.output / "worker.json", self.worker)
+        with self.assertRaises(ValueError):
+            self.library.finish(self.run.id)
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

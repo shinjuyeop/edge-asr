@@ -16,6 +16,7 @@
 | `artifacts.py`, `resources.py`, `runtime.py`, `diagnostics.py` | 원자적 기록·공통 계측·native 경고·런타임 진단 |
 | `tools/probes/`, `thermal.py`, `cooling.py` | 열·시간·메모리 제한과 냉각 점검 |
 | `streaming.py`, `segmentation.py`, `vad*.py`, `textgrid.py` | 재사용 입력·큐·구간/VAD·주석 기반 |
+| `microphone.py` | 모델 독립 ALSA 장치 조회·16kHz 수집·유한 큐·녹음/실패 보존 |
 | `adapters/`, `legacy/` | 공통 factory·이전 비교 모델과 자막/병합 재현 |
 | `legacy/benchmark_zipformer.py` | M1 Zipformer 전용 반복 프로브. 현재 Qwen의 `qwen/benchmark.py`와 구분 |
 
@@ -44,3 +45,5 @@ GGUF의 선택 설정 `num_threads_batch`는 여러 토큰 prefill과 오디오 
 ## 청취 도구
 
 `qwen/viewer/`는 기존 연속 실행 기록을 읽어 모델 조건과 독립적으로 라이브·기록 화면을 제공합니다. `runs.py`는 등록한 manifest의 해시로 원음을 재구성하고 기존 replay/thermal-run을 실행합니다. `analysis.py`는 원음별 지연 정의를 공유하며 웹 서버·추론에 의존하지 않습니다. `web/`은 음원 재생과 표시만 담당합니다. 선택 시작 gate는 입력 생산자 준비 뒤 열리며, 기존 평가에서는 사용하지 않습니다. 서버는 localhost와 SSH 터널로 접근합니다. [사용법·계측 범위](../guides/listener.md).
+
+마이크도 같은 `replay.run`·`CaptionSession`·모델 어댑터·채점을 사용합니다. `microphone.py`가 별도 arecord 프로세스와 수집 스레드·유한 큐로 PCM을 공급하며, 길이 미정 세션은 실제 도착 프레임에서 정상 종료합니다. `worker.input.kind = microphone`으로 파일 입력과 구분합니다. 웹의 입력 종료 파일은 수집만 멈추고 Native 최종 배출을 기다립니다. 녹음 재생은 등록 manifest 대신 저장된 WAV 해시/프레임을 확인하고, 지연은 완료 VAD/ASR 구간으로 집계합니다.

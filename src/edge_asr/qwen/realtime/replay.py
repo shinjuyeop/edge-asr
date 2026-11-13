@@ -34,9 +34,17 @@ def run(
     adapter_factory=None,
     vad_factory=None,
     start_signal=None,
+    microphone_device=None,
+    microphone_seconds=120,
+    stop_signal=None,
+    reference="",
     **settings,
 ):
     config = load_evaluation_config(config_path)
+    if microphone_device and (
+        not math.isfinite(microphone_seconds) or not 0 < microphone_seconds <= 600
+    ):
+        raise ValueError("마이크 입력 제한은0초 초과600초 이하입니다.")
     if config["model"]["family"] not in ("qwen3_asr", "qwen3_gguf"):
         raise ValueError("Qwen 단독 연속 경로는 ONNX 또는 GGUF 설정이 필요합니다.")
     limits = Path("/proc/self/limits").read_text()
@@ -72,8 +80,23 @@ def run(
     write_json(receipt, info)
     adapter = session = log = None
     try:
-        audio, sources, manifest_sha = prepare_track(root, manifest, gap_s=settings.get("gap_s", 1))
-        info.update(sources=sources, input_manifest_sha256=manifest_sha, audio=audio.metadata())
+        if microphone_device:
+            info["input"] = {
+                "kind": "microphone",
+                "device": microphone_device,
+                "duration_limit_s": microphone_seconds,
+                "reference": reference,
+                "clock_scope": "arecord 시작 직전 시계와16kHz 프레임 기준. 하드웨어 ADC·음향 단어 시각 미계측.",
+            }
+            info["scope"] = (
+                "RP5 ALSA 마이크16kHz·모노 PCM16 수집과 추론 동시 진행. 원음 recording.wav 보존. 지연은 입력 프레임/VAD 구간 기준으로 하드웨어 ADC·음향 단어 시각 미계측."
+            )
+            audio, sources = None, []
+        else:
+            audio, sources, manifest_sha = prepare_track(
+                root, manifest, gap_s=settings.get("gap_s", 1)
+            )
+            info.update(sources=sources, input_manifest_sha256=manifest_sha, audio=audio.metadata())
         samples, _ = load_manifest(manifest, root)
         warmup = load_audio(samples[0].audio_path, 16000)
         vad = (
@@ -131,7 +154,12 @@ def run(
             if k not in ("gap_s", "vad_threshold", "vad_max_speech_s")
         }
         session = CaptionSession(
-            adapter, vad, len(audio.samples), emit, info["telemetry"], **session_settings
+            adapter,
+            vad,
+            len(audio.samples) if audio else None,
+            emit,
+            info["telemetry"],
+            **session_settings,
         )
         paced = {
             "chunk_ms": 100,
@@ -161,16 +189,44 @@ def run(
 
         info["replay_resources"] = {}
         with measure_process(info["replay_resources"], sample_device=True):
-            hypothesis = run_paced(
-                session,
-                audio,
-                paced,
-                output / "stream",
-                info["telemetry"],
-                chunk_handler=session.accept_at,
-                start_gate=start_gate if start_signal else None,
-                on_start=started if start_signal else None,
-            )
+            if microphone_device:
+                from edge_asr.microphone import record
+
+                session.start_stream()
+                audio = record(
+                    microphone_device,
+                    microphone_seconds,
+                    output,
+                    info["telemetry"],
+                    lambda pcm, start, end: session.accept_at(session, pcm, start, end),
+                    start_gate=start_gate if start_signal else None,
+                    on_start=started,
+                    on_update=lambda: write_json(receipt, info),
+                    stop_signal=stop_signal,
+                )
+                sources = [
+                    {
+                        "id": "microphone",
+                        "reference": reference,
+                        "audio_sha256": audio.sha256,
+                        "start": 0,
+                        "end": len(audio.samples),
+                    }
+                ]
+                info.update(sources=sources, audio=audio.metadata(), status="draining")
+                write_json(receipt, info)
+                hypothesis = session.finish_stream(session)
+            else:
+                hypothesis = run_paced(
+                    session,
+                    audio,
+                    paced,
+                    output / "stream",
+                    info["telemetry"],
+                    chunk_handler=session.accept_at,
+                    start_gate=start_gate if start_signal else None,
+                    on_start=started if start_signal else None,
+                )
         info.update(
             hypothesis=hypothesis,
             pipeline=session.pipeline.metadata(),
@@ -269,6 +325,16 @@ def argument_parser():
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--start-signal", type=Path, help="선택 청취 도구의 예약 시작 JSON")
+    parser.add_argument(
+        "--microphone-device", help="RP5 ALSA 입력 장치. 지정하면 manifest는 워밍업에만 사용"
+    )
+    parser.add_argument("--microphone-seconds", type=float, default=120)
+    parser.add_argument(
+        "--stop-signal", type=Path, help="마이크 입력만 정상 종료하고 최종 추론 배출"
+    )
+    parser.add_argument(
+        "--reference", default="", help="마이크 전체 녹음의 선택 정답. 미입력 시 CER 미측정"
+    )
     parser.add_argument(
         "--vad-model", type=Path, default=Path("models/silero-vad-k2-20261029/silero_vad.onnx")
     )

@@ -1,12 +1,18 @@
 # 현재 상태 — Qwen3-ASR 최적화
 
-2026-11-12 기준. 목표는 **RP5에서 Qwen3-ASR-0.6B의 한국어 정확도·완료율을 유지하면서 실제 인식 지연을 줄이는 것**입니다. [최적화 과정](research/optimization_history.md), [연구 계획](research/qwen3_optimization.md), [평가 조건](research/qwen_realtime.md), [최근100개 캐시 대조](../results/summaries/optimization/realtime-prefix-cache-20261112.md).
+2026-11-13 기준. 목표는 **RP5에서 Qwen3-ASR-0.6B의 한국어 정확도·완료율을 유지하면서 실제 인식 지연을 줄이는 것**입니다. [최적화 과정](research/optimization_history.md), [연구 계획](research/qwen3_optimization.md), [평가 조건](research/qwen_realtime.md), [최근100개 캐시 대조](../results/summaries/optimization/realtime-prefix-cache-20261112.md).
 
 ## 유지하는 연속 입력 기준
 
 **Qwen 단독1배속 연속 입력**이 주 평가입니다. 다음 개발 권장은 **GGUF Q8_0·생성2T/음성·prefill3T·VAD 보정·ASR/VAD 판정5초·첫1초/이후4초·토큰 표시/접두부 재표시 보류·고정 text prefix KV**입니다. 개발에는 [configs/gguf_realtime.toml](../configs/gguf_realtime.toml)과 [대표 명령](guides/qwen3_optimization.md#현재-개발용-대표-명령)을 사용합니다. 기존 캐시 끔2/3 원본 `results/optimization/opt3/realtime-split100-20261111-01/configs/split-2-3.toml`은 보존하며, 기존 기본2T·모두3T 설정·모델·환경·bridge는 보존합니다. 실사용 채택은 보류합니다.
 
 개발·검증 절차는 [CONTRIBUTING](../CONTRIBUTING.md), 직접 확인한 Host/RP5 버전과 환경별 용도는 [환경 기록](reference/environment.md)에 정리했습니다. 구조·안내 정리는 아래 실측의 재실행이나 성능 갱신을 뜻하지 않습니다.
+
+## USB 마이크 측정 웹 — 2026-11-13
+
+측정 웹에 **마이크** 탭을 추가했습니다. RP5 ALSA 장치 선택·모델 준비·입력 시작·정상 입력 종료·남은 최종 결과 유지·녹음 재생을 지원합니다. 기존 Qwen 세션/VAD/토큰 표시·장비 잠금·계측을 재사용하며, 원음은 새 실행 ID의 `recording.wav`로 보존합니다. 자유 발화는 CER 미측정, 선택 정답이 있으면 종료 후 전체 녹음을 채점합니다. [사용법·지연 정의](guides/listener.md#rp5-usb-마이크).
+
+Host 전체420개 중418통과·선택 native2생략과 마이크 수집/정상 종료/오류·웹 모의 흐름·모바일 배치를 확인했습니다. 실제 USB 수집·RP5 추론 검증은 배포 후 별도 기록하며 기존100개 성능으로 대신하지 않습니다. 마이크 한국어 정확도·음향 단어 지연·장시간 운영은 추가 검증입니다.
 
 ## 최신100개 고정/가변 대조 — 2026-11-12
 

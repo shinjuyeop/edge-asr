@@ -59,6 +59,10 @@ def handler(library):
                     return self.json({"received_s": received, "sent_s": time.perf_counter()})
                 if url.path == "/api/catalog":
                     return self.json(library.catalog())
+                if url.path == "/api/devices":
+                    from edge_asr.microphone import devices
+
+                    return self.json({"devices": devices()})
                 if url.path in ("/api/state", "/api/audio"):
                     run = library.runs[query["id"][0]]
                     if url.path == "/api/audio":
@@ -95,11 +99,21 @@ def handler(library):
                 if self.headers.get("Content-Type") != "application/json":
                     return self.json({"error": "application/json이 필요합니다."}, 415)
                 size = int(self.headers.get("Content-Length", "0"))
-                if not 0 < size <= 4096:
+                if not 0 < size <= 8192:
                     raise ValueError("요청 크기 오류")
                 data = json.loads(self.rfile.read(size))
                 if self.path == "/api/launch":
-                    return self.json({"id": library.launch(data["profile"], data["selection"])})
+                    return self.json(
+                        {
+                            "id": library.launch(
+                                data["profile"],
+                                data.get("selection", "all"),
+                                microphone=data.get("microphone"),
+                            )
+                        }
+                    )
+                if self.path == "/api/finish":
+                    return self.json(library.finish(data["id"]))
                 if self.path == "/api/start":
                     return self.json(library.start(data["id"]))
                 if self.path == "/api/stop":

@@ -316,11 +316,13 @@ class CaptionSession:
         if self.worker.error:
             raise RuntimeError(self.worker.error)
         self.position = end
-        self.pipeline.accept(samples, final=end == self.frames)
+        self.pipeline.accept(
+            samples, final=end == self.frames or (self.frames is None and len(samples) < 1600)
+        )
         return self.text()
 
     def finish_stream(self, stream):
-        if stream is not self or self.position != self.frames:
+        if stream is not self or (self.frames is not None and self.position != self.frames):
             raise RuntimeError("입력이 완전하지 않습니다.")
         self.pipeline.finish()
         self.worker.finish(self.timeout)

@@ -116,3 +116,22 @@ def source_metrics(sources, events):
             for k in ("first_s", "first4_s", "file_end_s", "max_growth_gap_s")
         },
     }
+
+
+def microphone_sources(worker, events):
+    """완료 VAD/ASR 구간만 지연 집계한다. 전체 정답을 구간에 임의 배분하지 않는다."""
+    spans = {
+        e["segment_id"]: (e["start_frame"], e["end_frame"])
+        for e in events
+        if e["type"] == "result" and e["kind"] == "final"
+    }
+    spans.update(
+        {
+            s["segment_id"]: (s["owned_start_frame"], s["owned_end_frame"])
+            for s in worker.get("segments", [])
+        }
+    )
+    return [
+        {"id": f"speech-{key + 1}", "reference": "", "start": start, "end": end}
+        for key, (start, end) in sorted(spans.items())
+    ]
