@@ -101,7 +101,7 @@ edge-asr/
 │   └── m1_zipformer/                    # 초기 원본 보존
 ├── models/                              # 로컬 가중치
 ├── native/
-│   ├── gguf/                            # bridge.cpp·build.py·prefix_cache.h·quantize.py
+│   ├── gguf/                            # bridge·KV/연산 계측·빌드·양자화
 │   └── ort_trace/                       # ORT 호출 계측·빌드
 ├── results/
 │   ├── maintenance/                     # 로컬 검사·환경 스냅샷

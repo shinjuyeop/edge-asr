@@ -99,6 +99,38 @@ class GGUFTests(unittest.TestCase):
         self.build["features"] = ["token_callback_v1"]
         (self.root / "build.json").write_text(json.dumps(self.build))
 
+    def test_operator_profile_requires_separate_build_and_preserves_invalid_trace(self):
+        adapter = self.load()
+        with self.assertRaisesRegex(ValueError, "별도 빌드"):
+            adapter.set_operator_profile(True)
+        with self.assertRaises(ValueError):
+            adapter.set_operator_profile(1)
+        self.build["features"] = ["operator_profile_v1"]
+        (self.root / "build.json").write_text(json.dumps(self.build))
+        self.library.edge_gguf_set_operator_profile.return_value = 0
+        adapter = self.load()
+        for enabled in (False, True, False):
+            adapter.set_operator_profile(enabled)
+            self.library.edge_gguf_set_operator_profile.assert_called_with(1234, int(enabled))
+            row = json.loads(self.result())
+            row["operator_profile"] = {
+                "schema_version": 1,
+                "enabled": enabled,
+                "valid": True,
+                "overflow_groups": 0,
+                "groups": [{"op": "MUL_MAT"}] if enabled else [],
+            }
+            self.library.edge_gguf_transcribe.return_value = json.dumps(row).encode()
+            self.assertEqual(adapter.transcribe(self.audio), "한 글!")
+            row["operator_profile"]["overflow_groups"] = 1
+            self.library.edge_gguf_transcribe.return_value = json.dumps(row).encode()
+            with self.assertRaisesRegex(ValueError, "집계 용량"):
+                adapter.transcribe(self.audio)
+            self.assertEqual(adapter.last_result_metadata["native_result"], row)
+        self.library.edge_gguf_set_operator_profile.return_value = -1
+        with self.assertRaises(RuntimeError):
+            adapter.set_operator_profile(True)
+
     def enable_split_threads(self):
         self.build["features"] = ["split_threads_v1"]
         (self.root / "build.json").write_text(json.dumps(self.build))
@@ -557,7 +589,7 @@ class GGUFTests(unittest.TestCase):
 
 
 @unittest.skipUnless(shutil.which("g++"), "text prefix KV 상태 검사는 g++가 필요합니다.")
-class PrefixCachePolicyTests(unittest.TestCase):
+class GGUFPolicyTests(unittest.TestCase):
     def test_only_matching_prefix_survives_and_all_failure_paths_clear_state(self):
         code = r"""
 #include "prefix_cache.h"
@@ -601,6 +633,34 @@ int main() {
     assert(!cache.valid() && memory.empty() && trims==2);
 }
 """
+        self.compile_and_run(code)
+
+    def test_operator_profile_pairs_callbacks_bounds_memory_and_tracks_shape_changes(self):
+        self.compile_and_run(r"""
+#include "operator_profile.h"
+#include <cassert>
+int main() {
+    OperatorProfile p; OperatorNode n; n.name="layer.0"; n.op="MUL_MAT";
+    n.lhs_type="q4_0"; n.shape={2,3,1,1}; int tensor=0;
+    p.enabled=true; p.phase="audio_encoder";
+    p.before(&tensor,100); p.after(&tensor,130,n);
+    n.shape[1]=4; p.before(&tensor,200); p.after(&tensor,250,n);
+    assert(p.complete() && p.groups.size()==1);
+    const auto& sample=p.groups.begin()->second;
+    assert(sample.count==2 && sample.total_ns==80 && sample.max_ns==50 && sample.shape_changed);
+    p.before(&tensor,300); assert(!p.complete());
+    p.after(nullptr,400,n); assert(!p.complete());
+    p.reset(); assert(p.complete() && p.enabled && p.groups.empty());
+    p.before(&tensor,100); p.after(&tensor,99,n); assert(!p.complete());
+    p.reset();
+    for(int i=0;i<8193;++i) {
+        n.name=std::to_string(i); p.before(&tensor,100); p.after(&tensor,110,n);
+    }
+    assert(p.groups.size()==8192 && p.overflow==1 && !p.complete());
+}
+""")
+
+    def compile_and_run(self, code):
         with tempfile.TemporaryDirectory() as directory:
             source = Path(directory) / "prefix.cpp"
             binary = Path(directory) / "prefix"
@@ -637,8 +697,14 @@ class GGUFNativeSyntaxTests(unittest.TestCase):
         for path in ("include", "ggml/include", "tools/mtmd", "vendor/nlohmann"):
             command += ["-I", str(source / path)]
         command.append(str(ROOT / "native/gguf/bridge.cpp"))
-        result = subprocess.run(command, capture_output=True, text=True)
-        self.assertEqual(result.returncode, 0, result.stderr)
+        for profile in (False, True):
+            with self.subTest(profile=profile):
+                result = subprocess.run(
+                    command + (["-DEDGE_ASR_PROFILE_OPERATORS"] if profile else []),
+                    capture_output=True,
+                    text=True,
+                )
+                self.assertEqual(result.returncode, 0, result.stderr)
 
 
 if __name__ == "__main__":

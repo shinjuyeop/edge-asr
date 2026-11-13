@@ -14,7 +14,7 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def build(source, engine_build, output):
+def build(source, engine_build, output, *, profile_operators=False):
     head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=source, text=True).strip()
     if (
         head != COMMIT
@@ -62,6 +62,8 @@ def build(source, engine_build, output):
         "-o",
         str(library),
     ]
+    if profile_operators:
+        command.insert(1, "-DEDGE_ASR_PROFILE_OPERATORS")
     result = subprocess.run(command, capture_output=True, text=True)
     receipt = {
         "llama_commit": head,
@@ -79,6 +81,9 @@ def build(source, engine_build, output):
         "stderr": result.stderr,
         "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model",
     }
+    if profile_operators:
+        receipt["features"].append("operator_profile_v1")
+        receipt["operator_profile_source_sha256"] = sha(cpp.with_name("operator_profile.h"))
     (output / "build.json").write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + "\n")
     if result.returncode:
         raise RuntimeError(result.stderr)
@@ -90,8 +95,14 @@ def main():
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument("--engine-build", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--profile-operators", action="store_true", help="별도 연산 진단 빌드")
     args = parser.parse_args()
-    build(args.source.resolve(), args.engine_build.resolve(), args.output.resolve())
+    build(
+        args.source.resolve(),
+        args.engine_build.resolve(),
+        args.output.resolve(),
+        profile_operators=args.profile_operators,
+    )
 
 
 if __name__ == "__main__":

@@ -116,6 +116,25 @@ class Qwen3GGUFAdapter:
             runtime_library=self.library_path, runtime_manifest=self.manifest_path
         )
         self.handle, self.library, self.last_result_metadata = None, None, None
+        self.operator_profile_enabled = False
+
+    def set_operator_profile(self, enabled):
+        """별도 진단 빌드에서만 켠다. 전사 호출 사이에 사용한다."""
+        if type(enabled) is not bool:
+            raise ValueError("연산 계측은 true/false여야 합니다.")
+        if self.handle is None:
+            raise RuntimeError("모델을 먼저 로드해야 합니다.")
+        if "operator_profile_v1" not in self.build.get("features", []):
+            raise ValueError("연산 계측에는 operator_profile_v1 별도 빌드가 필요합니다.")
+        try:
+            setter = self.library.edge_gguf_set_operator_profile
+        except AttributeError as error:
+            raise ValueError("연산 계측 심볼이 없습니다.") from error
+        setter.argtypes = [ctypes.c_void_p, ctypes.c_int]
+        setter.restype = ctypes.c_int
+        if setter(self.handle, int(enabled)) != 0:
+            raise RuntimeError("연산 계측 모드 설정 실패")
+        self.operator_profile_enabled = enabled
 
     @property
     def supports_token_stream(self):
@@ -323,6 +342,17 @@ class Qwen3GGUFAdapter:
         self.last_result_metadata.update(
             raw_text=text, token_ids=tokens, returned_token_count=len(tokens)
         )
+        if "operator_profile_v1" in self.build.get("features", []):
+            profile = result.get("operator_profile", {})
+            if (
+                profile.get("schema_version") != 1
+                or profile.get("enabled") is not self.operator_profile_enabled
+                or profile.get("valid") is not True
+                or profile.get("overflow_groups") != 0
+                or not isinstance(profile.get("groups"), list)
+                or bool(profile["groups"]) != self.operator_profile_enabled
+            ):
+                raise ValueError("연산 계측 모드·콜백·집계 용량 검증 실패")
         if "num_threads_batch" in self.model:
             actual = result.get("runtime_configuration", {})
             if any(actual.get(k) != value for k, value in self.thread_configuration.items()):

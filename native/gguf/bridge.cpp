@@ -4,6 +4,9 @@
 #include "mtmd.h"
 #include "mtmd-helper.h"
 #include "prefix_cache.h"
+#ifdef EDGE_ASR_PROFILE_OPERATORS
+#include "operator_profile.h"
+#endif
 #include "json.hpp"
 #include <algorithm>
 #include <chrono>
@@ -31,6 +34,9 @@ struct State {
     std::string result;
     json configuration;
     TextPrefixCache prefix_cache;
+#ifdef EDGE_ASR_PROFILE_OPERATORS
+    OperatorProfile operators;
+#endif
     ~State() {
         if (batch) llama_batch_ext_free(batch);
         if (sampler) llama_sampler_free(sampler);
@@ -39,6 +45,48 @@ struct State {
         if (model) llama_model_free(model);
     }
 };
+#ifdef EDGE_ASR_PROFILE_OPERATORS
+uint64_t profile_now() {
+    return std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now().time_since_epoch()).count();
+}
+bool profile_callback(ggml_tensor* t, bool ask, void* user) {
+    auto& profile=*static_cast<OperatorProfile*>(user);
+    if (!profile.enabled) return !ask;
+    if (ask) { profile.before(t,profile_now()); return true; }
+    const auto ended=profile_now();
+    OperatorNode node; node.name=t->name; node.op=ggml_op_name(t->op);
+    std::copy_n(t->ne,4,node.shape.begin());
+    if (t->src[0]) {
+        node.lhs_name=t->src[0]->name; node.lhs_type=ggml_type_name(t->src[0]->type);
+        std::copy_n(t->src[0]->ne,4,node.lhs_shape.begin());
+    }
+    if (t->src[1]) {
+        node.rhs_type=ggml_type_name(t->src[1]->type);
+        std::copy_n(t->src[1]->ne,4,node.rhs_shape.begin());
+    }
+    profile.after(t,ended,node); return true;
+}
+json profile_result(const OperatorProfile& p) {
+    json groups=json::array();
+    for (const auto& entry:p.groups) {
+        const auto& a=entry.second; const auto& n=a.node;
+        groups.push_back({{"stage",entry.first.first},{"name",n.name},{"op",n.op},{"lhs_name",n.lhs_name},
+            {"lhs_type",n.lhs_type},{"rhs_type",n.rhs_type},{"shape",n.shape},{"lhs_shape",n.lhs_shape},
+            {"rhs_shape",n.rhs_shape},{"shape_changed",a.shape_changed},{"count",a.count},
+            {"total_s",a.total_ns/1e9},{"max_s",a.max_ns/1e9}});
+    }
+    return {{"schema_version",1},{"enabled",p.enabled},{"valid",p.complete()},
+        {"overflow_groups",p.overflow},{"groups",groups},
+        {"scope","per-node synchronized graph views; fusion/scheduling may change; observer time is not production latency"}};
+}
+#endif
+void operator_phase(State* s,const char* phase) {
+#ifdef EDGE_ASR_PROFILE_OPERATORS
+    s->operators.phase=phase;
+#else
+    (void)s; (void)phase;
+#endif
+}
 std::string hex(const std::string& value) {
     const char* digits = "0123456789abcdef"; std::string out;
     for (unsigned char c : value) { out += digits[c>>4]; out += digits[c&15]; }
@@ -66,16 +114,19 @@ llama_pos eval_prompt(State* s, const mtmd_input_chunks* chunks, bool hit, size_
         if (i==0 && hit) continue;
         auto stage=Clock::now();
         if (type==MTMD_INPUT_CHUNK_TYPE_TEXT) {
+            operator_phase(s,i==0 ? "text_prefix" : "text_suffix");
             const int rc=mtmd_helper_eval_chunk_single(s->audio,s->ctx,chunk,past,0,llama_n_batch(s->ctx),
                 i+1==mtmd_input_chunks_size(chunks),&past);
             const char* key=i==0 ? "prefix_eval_s" : "suffix_eval_s";
             out[key]=out[key].get<double>()+since(stage);
             if (rc!=0) throw std::runtime_error("text prefill failed");
         } else if (type==MTMD_INPUT_CHUNK_TYPE_AUDIO) {
+            operator_phase(s,"audio_encoder");
             const int encoded=mtmd_encode_chunk(s->audio,chunk);
             out["audio_encode_s"]=out["audio_encode_s"].get<double>()+since(stage);
             if (encoded!=0) throw std::runtime_error("audio encoder failed");
             stage=Clock::now();
+            operator_phase(s,"audio_prefill");
             const int decoded=mtmd_helper_decode_image_chunk(s->audio,s->ctx,chunk,mtmd_get_output_embd(s->audio),
                 past,0,llama_n_batch(s->ctx),&past,nullptr,nullptr);
             out["audio_embedding_eval_s"]=out["audio_embedding_eval_s"].get<double>()+since(stage);
@@ -102,9 +153,15 @@ __attribute__((visibility("default"))) void* edge_gguf_create_threads(const char
         if (!s->model) throw std::runtime_error("model load failed");
         auto cp=llama_context_default_params(); cp.n_ctx=context; cp.n_batch=context; cp.n_ubatch=context;
         cp.n_threads=threads; cp.n_threads_batch=batch_threads; cp.no_perf=false;
+#ifdef EDGE_ASR_PROFILE_OPERATORS
+        cp.cb_eval=profile_callback; cp.cb_eval_user_data=&s->operators;
+#endif
         s->ctx=llama_init_from_model(s->model,cp);
         if (!s->ctx) throw std::runtime_error("context creation failed");
         auto ap=mtmd_context_params_default(); ap.use_gpu=false; ap.n_threads=batch_threads; ap.warmup=false; ap.print_timings=false;
+#ifdef EDGE_ASR_PROFILE_OPERATORS
+        ap.cb_eval=profile_callback; ap.cb_eval_user_data=&s->operators;
+#endif
         s->audio=mtmd_init_from_file(mmproj,s->model,ap);
         if (!s->audio || !mtmd_support_audio(s->audio) || mtmd_get_audio_sample_rate(s->audio)!=16000)
             throw std::runtime_error("expected 16000Hz audio projector");
@@ -131,10 +188,20 @@ __attribute__((visibility("default"))) int edge_gguf_set_prefix_cache(void* hand
     s->configuration["cache_text_prefix"]=s->prefix_cache.enabled;
     return 0;
 }
+#ifdef EDGE_ASR_PROFILE_OPERATORS
+__attribute__((visibility("default"))) int edge_gguf_set_operator_profile(void* handle,int enabled) {
+    auto* s=static_cast<State*>(handle);
+    if (!s || (enabled!=0 && enabled!=1)) { error="invalid operator profile setting"; return -1; }
+    s->operators.enabled=enabled!=0; s->operators.reset(); return 0;
+}
+#endif
 // 입력은 같은 batch PCM이다. callback은 토큰 바이트 전달만 하며 0 외 반환은 호출 실패로 남긴다.
 typedef int (*edge_token_callback)(void*,const void*,size_t,int,double);
 __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(void* handle,const float* samples,size_t count,edge_token_callback callback,void* user) {
     auto* s=static_cast<State*>(handle); if (!s) return nullptr;
+#ifdef EDGE_ASR_PROFILE_OPERATORS
+    s->operators.reset();
+#endif
     json out={{"schema_version",1},{"status","failed"},{"input_samples",count},{"token_ids",json::array()},
               {"text_utf8_hex",""},{"termination","error"},{"first_generated_token_s",nullptr},{"first_visible_text_s",nullptr}};
     out["runtime_configuration"]=s->configuration;
@@ -210,6 +277,7 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
             int idx=llama_batch_ext_add_token(s->batch,0,token);
             if(idx<0 || !llama_batch_ext_set_pos(s->batch,idx,&past) || !llama_batch_ext_set_output_logits(s->batch,idx,true))
                 throw std::runtime_error("token batch preparation failed");
+            operator_phase(s,"token_decode");
             if(llama_process(s->ctx,LLAMA_PROCESS_TYPE_DECODE,s->batch)!=0) throw std::runtime_error("token decode failed");
             ++past;++decode_calls;decode_s+=since(stage);
         }
@@ -221,6 +289,9 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
     out["prefix_cache"]["valid_after_call"]=s->prefix_cache.valid();
     out["token_ids"]=ids;out["text_utf8_hex"]=hex(text);out["native_elapsed_s"]=since(began);
     out["token_callback_enabled"]=callback!=nullptr;out["token_callback_s"]=callback_s;
+#ifdef EDGE_ASR_PROFILE_OPERATORS
+    out["operator_profile"]=profile_result(s->operators);
+#endif
     s->result=out.dump();return s->result.c_str();
 }
 __attribute__((visibility("default"))) const char* edge_gguf_transcribe(void* handle,const float* samples,size_t count) {
