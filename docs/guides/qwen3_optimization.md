@@ -103,6 +103,8 @@ ONNX 측정은 guard와 자식 명령 모두 표의 ONNX Python·설정을 사�
 
 전체100개 입력에는 외부 `--timeout-s 1800`을 사용합니다. 이전 추가 무음1초 조건은 [별도 실측 보고서](../../results/summaries/optimization/realtime100-q8-20261110.md)에 보존합니다. 당시 고정12dB 증폭은 오류 증가로 폐기했고 소스 `be32cda`로 재현합니다. 현재 RMS 보정과 구분합니다. 양자화 후보는 `--config configs/quantization/q6_k.toml` 등으로 선택하며 대응하는 GGUF·자산 명세가 별도로 준비되어 있어야 합니다. VAD·부분 전사 조건은 비교 모델 사이에서 동일하게 지정합니다.
 
+현재 가변 조건의 Q4 비교에는 [q4_k_m_realtime.toml](../../configs/quantization/q4_k_m_realtime.toml)을 사용합니다. 기존 `q4_k_m.toml`은 예전2T/bridge 재현용으로 보존합니다. 새 설정은 text Q4_K_M·audio Q8_0·현재 prefix bridge·생성2T/음성3T이며, 입력/VAD/가변 요청 조건을 Q8과 같게 지정합니다. [2026-11-13 선별 조건](../research/qwen_realtime.md#q4-음성비용-가변-대조--2026-11-13-사전-조건).
+
 ## 첫 후속 갱신 선별
 
 부분 요청의 첫 후속 갱신만 앞당기는 선택 실험은 기존 명령에 `--partial-followup-s 2`를 추가합니다. 첫1초 요청 뒤2초 후 한 번 더 요청하고 이후에는 `--partial-interval-s 4`를 따릅니다. 각 VAD/ASR 구간마다 적용되며, 생략하면 기존 간격을 유지합니다. 최종 구간·PCM·모델은 같고 부분 호출·큐 부담은 실측으로 확인합니다. 공유 개발 설정과 청취 기본 구성은 변경하지 않습니다.
