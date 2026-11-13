@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "kind": "rp5_microphone_web_verification",
+  "date": "2026-11-13",
+  "source_commit": "0bde741a86200ae3fd31a196f3dd5ba492726196",
+  "run": "results/optimization/opt3/microphone-20261113-121020-0e3a23",
+  "web_run_id": "49117aea8e5e3f64",
+  "scope": "RP5 USB 입력·실제 Qwen 추론·Host 브라우저 표시 기능 확인. 정확도·대표 지연 비교 아님.",
+  "config_sha256": "fe87ae0570093045f40d6e99c505046366e9b619512c8cd9265454ce6443e069",
+  "model_files": {
+    "Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+    },
+    "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+    },
+    "runtime_library": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+      "sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf"
+    },
+    "runtime_manifest": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+      "sha256": "a7fa6d9d6ffab5b5a0f7f98e3dc94cd7d751fe503a16f214936b5ff32fd3d113"
+    }
+  },
+  "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+  "input": {
+    "kind": "microphone",
+    "device": "plughw:CARD=Device,DEV=0",
+    "duration_limit_s": 60.0,
+    "reference": "",
+    "clock_scope": "arecord 시작 직전 시계와16kHz 프레임 기준. 하드웨어 ADC·음향 단어 시각 미계측."
+  },
+  "audio": {
+    "sha256": "a280ecaf74a7dddd38dcd716edfc581118b2a509e89b3c5d8e8ded750acd73ca",
+    "frames": 808000,
+    "sample_rate_hz": 16000,
+    "channels": 1,
+    "sample_width_bytes": 2,
+    "duration_s": 50.5
+  },
+  "capture": {
+    "captured_frames": 808000,
+    "captured_chunks": 505,
+    "processed_chunks": 505,
+    "dropped_chunks": 0,
+    "hardware_overruns": 0,
+    "clipped_samples": 9029,
+    "stop_reason": "requested",
+    "complete": true
+  },
+  "clipped_fraction": 0.011174504950495049,
+  "calls": {
+    "final": 3,
+    "partial": 1,
+    "failed": 0
+  },
+  "displayed_events": 11,
+  "latency": {
+    "first_s": {
+      "n": 3,
+      "mean": 1.3875190933386332,
+      "p50": 1.2472396690105096,
+      "p95": 1.720609990990022,
+      "max": 1.720609990990022
+    },
+    "first4_s": {
+      "n": 0,
+      "mean": null,
+      "p50": null,
+      "p95": null,
+      "max": null
+    },
+    "file_end_s": {
+      "n": 3,
+      "mean": 1.0365007139990725,
+      "p50": 0.8377685500101653,
+      "p95": 1.4386868209920358,
+      "max": 1.4386868209920358
+    }
+  },
+  "latency_scope": "완료 VAD/ASR 구간 프레임 시작/끝→서버 텍스트 발행. ADC·음향 단어·GUI 픽셀·스피커 지연 미측정.",
+  "cer": null,
+  "cer_reason": "정답 미입력 자유 발화. 최종3구간 모두4자 미만으로 대표 문장 성능 미검증.",
+  "rss_observed_max_mib": 1760.25,
+  "thermal": {
+    "full_guard_start_c": 55.65,
+    "full_guard_max_c": 80.4,
+    "full_guard_end_c": 56.2,
+    "capture_max_c": 66.65,
+    "current_limits_observed": [
+      0
+    ],
+    "history_limits_observed": [
+      14
+    ]
+  },
+  "guard": {
+    "status": "completed",
+    "exit_code": 0,
+    "operational_valid": true,
+    "control_valid": false
+  },
+  "verification": {
+    "host_tests": {
+      "total": 420,
+      "passed": 418,
+      "skipped_optional_native": 2
+    },
+    "rp5_related_mock_tests": 44,
+    "browser": "Host headless Chromium 1360px/390px; 실측 자막·정상 종료·녹음 재생·JS 오류 없음",
+    "protected_unchanged_files": 91,
+    "host_rp5_raw_file_hash_matches": 33
+  },
+  "artifacts": "results/maintenance/microphone-web-20261113-01",
+  "unmeasured": [
+    "마이크 문장 CER",
+    "부분 정답 정확도",
+    "실제 노트북 브라우저/스피커",
+    "음향 단어 지연",
+    "장시간 마이크 안정성"
+  ]
+}

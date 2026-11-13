@@ -62,11 +62,15 @@ soundfile==0.14.0
 typing_extensions==4.16.0
 ```
 
-`sounddevice`가 설치되어 있다는 사실과 프로젝트의 마이크 입력 구현은 별개입니다. 현재 입력은 WAV입니다. 프로젝트는 RP5에서 재설치 없이 `scripts/edge_asr.py`로 체크아웃의 `src/`를 사용합니다. `env --probe-runtime`으로 sherpa native ORT **1.28.2**도 확인했으며 모델은 로딩하지 않았습니다.
+2026-11-11 스냅샷 당시 입력은 WAV였습니다. 프로젝트는 RP5에서 재설치 없이 `scripts/edge_asr.py`로 체크아웃의 `src/`를 사용합니다. `env --probe-runtime`으로 sherpa native ORT **1.28.2**도 확인했으며 해당 환경 조사에서는 모델을 로딩하지 않았습니다.
 
-## 현재 GGUF 자산·빌드
+## USB 입력 추가 확인 — 2026-11-13
 
-개발 설정은 [configs/gguf_realtime.toml](../../configs/gguf_realtime.toml)입니다. 모델·native 바이너리는 Git에서 제외하며 [빌드 안내](../../native/README.md)와 [실행 안내](../guides/qwen3_optimization.md)를 함께 따릅니다.
+기존 `arecord`·ALSA를 사용해 마이크 입력을 추가했습니다. 연결 장치는 card2 `USB Audio Device`, 선택 ID는 `plughw:CARD=Device,DEV=0`입니다. 하드웨어는 모노·S16_LE와48000/44100/32000/22050/11025/8000Hz를 광고했고16kHz 직접 열기는 거부됐습니다. `plughw` 변환으로16kHz 수집·실제 Qwen/웹 자막을 확인했습니다. 기존 Python 패키지·오디오 기본 설정·모델은 바꾸지 않았습니다. [사용법](../guides/listener.md#rp5-usb-마이크), [실측·자산 해시](../../results/summaries/optimization/microphone-web-20261113.md).
+
+## 보존한 2026-11-11 GGUF 자산·빌드
+
+아래 표는 최초 확인한 split 빌드입니다. 이후 현재 개발 설정 [configs/gguf_realtime.toml](../../configs/gguf_realtime.toml)은 별도 `prefix-20261112-01/bridge/` 빌드를 사용하며 기존 split 빌드는 보존합니다. 최신 해시는 각 실행의 `model_files`·`model_metadata.runtime_build`에 기록합니다. 모델·native 바이너리는 Git에서 제외하며 [빌드 안내](../../native/README.md)와 [실행 안내](../guides/qwen3_optimization.md)를 함께 따릅니다.
 
 | 항목 | 확인한 값·위치 |
 | --- | --- |
