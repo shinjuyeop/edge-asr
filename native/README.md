@@ -54,6 +54,6 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 
 ## GGUF 연산별 진단
 
-`build.py --profile-operators`로 새 경로에 빌드하면 `operator_profile_v1`과 `edge_gguf_set_operator_profile(handle, 0/1)`을 추가합니다. Python 어댑터의 `set_operator_profile(bool)`로 호출 사이에 켜고 끕니다. 기본 빌드와 공유 실행 설정은 그대로입니다. [operator_profile.h](gguf/operator_profile.h)는 단계·연산·가중치 dtype/이름별 시간과 횟수를8192그룹까지 모으며, 콜백 불일치·역전 시계·용량 초과를 실패로 드러냅니다. 같은 그룹의 shape 변화도 표시하고 tensor payload는 읽지 않습니다.
+`build.py --profile-operators`로 새 경로에 빌드하면 `operator_profile_v1`과 `edge_gguf_set_operator_profile(handle, 0/1)`을 추가합니다. Python 어댑터의 `set_operator_profile(bool)`로 호출 사이에 켜고 끕니다. 기본 빌드와 공유 실행 설정은 그대로입니다. [operator_profile.h](gguf/operator_profile.h)는 단계·연산·tensor 이름·입력 dtype별 시간과 횟수를8192그룹까지 모으며, 콜백 불일치·역전 시계·용량 초과를 실패로 드러냅니다. 같은 그룹의 shape 변화도 표시하고 tensor payload는 읽지 않습니다.
 
 같은 고정 llama.cpp의 LLM/mtmd 공개 `cb_eval`을 사용합니다. 계측 켬은 각 node를 별도 graph view로 계산하고 동기화하므로 fusion·스케줄·실행 시간이 달라질 수 있습니다. **계측 시간은 운영 성능값으로 쓰지 않고**, 같은 PCM의 기존 빌드·새 빌드 끔·새 빌드 켬·새 빌드 끔에서 전사/token ID와 비용을 비교합니다. 단계 합계와 node 합계의 잔여 시간도 구분합니다. [이번 프로파일링 조건](../docs/research/qwen_realtime.md#q4-연산별-프로파일링--2026-11-13-사전-조건).

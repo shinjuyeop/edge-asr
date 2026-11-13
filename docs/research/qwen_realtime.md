@@ -360,3 +360,5 @@ Q8·2T·VAD0.3·완전0 PCM 생략·첫1초/이후2초·최대5초·문맥0·입
 text/audio Q8과 Q4_K_M/Q4_0을 기존 bridge·새 계측 bridge에서 비교합니다. 새 bridge는 같은 기존 엔진·스레드2/3·prefix KV·입력/출력 계약을 사용하고 별도 `runtimes/qwen3-opt/operators-20261113-01/bridge/`에 둡니다. 외부 엔진 소스/바이너리·환경/패키지·모델·공유 설정·원음·기존 결과는 보존합니다. 새 계측 bridge의5~8라운드는 끔/켬/켬/끔이며 기존 bridge는 모두 끔입니다.600초/4GiB·온도 대기 없는 운영 계측·장비 단일 추론 잠금을 유지합니다.
 
 공개 LLM/mtmd node callback으로 audio encoder·audio embedding prefill·공통 text suffix·token decode의 연산/dtype/가중치/shape·횟수·시간을 기록합니다. per-node 동기화와 graph 분할은 fusion·커널·스케줄을 바꿀 수 있어 **프로파일 시간/비율을 기존 운영 시간에 그대로 적용하지 않습니다.** 계측 켬/끔과 기존 빌드의 전사/token ID·실패·profile 유효성·그룹 용량·오버헤드·단계/node 잔여 시간을 확인합니다. 불일치는 숨기지 않고 원시에 보존합니다. dequant와 행렬 연산 내부 커널은 이 경계만으로 분리되지 않습니다. 모든 단계에서 Host 모의/헤더 검사와 RP5 실제 추론을 구분합니다.
+
+[실측 결과](../../results/summaries/optimization/operator-profile-20261113.md):64회 모두 기존 연속 호출과 모델별 전사/token ID가 같고 trace 오류/넘침0입니다. 계측 node 기준 Q4 encoder의약50%는 FP16 앞단이며 prefill의81.5~90.1%는 Q4_K/Q6_K 행렬곱이었습니다. 계측 자체가7.56~18.36%를 더해 운영 시간과 분리하고 Q8 가변 기준을 유지합니다.
