@@ -105,6 +105,8 @@ ONNX 측정은 guard와 자식 명령 모두 표의 ONNX Python·설정을 사�
 
 현재 가변 조건의 Q4 비교에는 [q4_k_m_realtime.toml](../../configs/quantization/q4_k_m_realtime.toml)을 사용합니다. 기존 `q4_k_m.toml`은 예전2T/bridge 재현용으로 보존합니다. 새 설정은 text Q4_K_M·audio Q8_0·현재 prefix bridge·생성2T/음성3T이며, 입력/VAD/가변 요청 조건을 Q8과 같게 지정합니다. [2026-11-13 선별 조건](../research/qwen_realtime.md#q4-음성비용-가변-대조--2026-11-13-사전-조건).
 
+[6개 선별 결과](../../results/summaries/optimization/realtime-q4-20261113.md)는 메모리/최종 반환 이득과 최종 오류2개 증가를 확인했습니다.100개 확대·기본 전환은 하지 않았으며 다음 저지연 개발 비교는 Q8 음성비용 가변을 사용합니다.
+
 ## 첫 후속 갱신 선별
 
 부분 요청의 첫 후속 갱신만 앞당기는 선택 실험은 기존 명령에 `--partial-followup-s 2`를 추가합니다. 첫1초 요청 뒤2초 후 한 번 더 요청하고 이후에는 `--partial-interval-s 4`를 따릅니다. 각 VAD/ASR 구간마다 적용되며, 생략하면 기존 간격을 유지합니다. 최종 구간·PCM·모델은 같고 부분 호출·큐 부담은 실측으로 확인합니다. 공유 개발 설정과 청취 기본 구성은 변경하지 않습니다.

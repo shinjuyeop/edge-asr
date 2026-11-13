@@ -84,3 +84,5 @@ Host에 회수한 기록만 볼 때는 `--ssh`를 생략합니다. 이 경우 Ho
 2026-11-13 비용 추정 대조는 **고정4초 · 비용 대조100개**와 **음성비용 가변 · 동일100개**를 선택합니다. 설정은 `results/optimization/opt3/realtime-cost-20261113-01/configs/listener-cost-{fixed,audio}.toml`, 기록은 같은 실행의 `full100/{fixed,audio}`입니다. 같은 해시 순서의100개를 사용하며 [공백 감소·철회/연산 증가](../../results/summaries/optimization/realtime-cost-20261113.md)를 함께 비교합니다. 기본은 고정을 유지합니다.
 
 이전2026-11-12 total 가변 대조는 `고정 대조 · 동일 100개`와 `보완 가변 · 동일 100개`입니다. 기록 재생은 `realtime-adaptive100-20261112-01/fixed`와 `/adaptive`를 선택합니다. `현재 Qwen 개발 구성`은 같은100개 자산의 원본 목록 순서이므로 대조에는 각 실행의 짝 프로필을 사용합니다. 이전 기록·구성도 보존하며 다른 평가 묶음의 수치를 섞지 않습니다.
+
+Q4 선별은 **Q8 가변 · Q4 대조6개**와 **Q4 가변 · 동일6개**입니다. 설정은 `results/optimization/opt3/realtime-q4-20261113-01/configs/listener-quant-{q8,q4}.toml`, 기록은 같은 실행의 `q8-before`/`q4`/`q8-after`입니다. [6개 실측](../../results/summaries/optimization/realtime-q4-20261113.md)은 메모리/최종 반환 이득과 최종 오류2개 증가를 함께 기록합니다.100개와 다른 음원 묶음입니다.
