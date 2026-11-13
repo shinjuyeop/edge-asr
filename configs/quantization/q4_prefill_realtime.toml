@@ -1,0 +1,25 @@
+# Q4 개발 비교용: 생성2T / 음성·prefill4T / 기존 repack ON·prefix KV.
+# 같은6개 선별 결과이며 Q8 공유 기본은 유지한다.
+[model]
+family = "qwen3_gguf"
+path = "models/qwen3-opt/gguf-audio-quant-20261113-01/derived"
+runtime_library = "runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so"
+runtime_manifest = "runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json"
+num_threads = 2
+num_threads_batch = 4
+cache_text_prefix = true
+language = "ko"
+quantization = "q4_k_m"
+asset_manifest = "q4_k_m_audio_q4_0.json"
+audio_quantization = "q4_0"
+max_total_len = 512
+max_new_tokens = 128
+
+[audio]
+sample_rate_hz = 16000
+
+[evaluation]
+mode = "batch"
+warmup_runs = 3
+normalization = "ko_cer_v1"
+output_dir = "results/optimization/opt3"
