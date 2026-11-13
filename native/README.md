@@ -63,3 +63,11 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 고정된 현재 CPU 경로에서 `GGML_CPU_REPACK`을 별도 엔진 빌드마다 비교합니다. 기존 CMake 옵션을 기록하고 새 빌드 경로에서 해당 항목만 바꿉니다. 기존 `build.py`는 같은 고정 소스·native CPU/GPU OFF/KleidiAI OFF 계약으로 새 엔진에 bridge를 연결합니다. 런타임/설정만 바꾸고 가중치는 유지하며, [고정 PCM→연속 입력 선별 조건](../docs/research/qwen_realtime.md#q4-prefill-실행-경로-선별--2026-11-13-사전-조건)을 따릅니다. 켬/끔의 성능·수치 동등성을 가정하지 않습니다.
 
 [이번 Q4 선별](../results/summaries/optimization/prefill-q4-20261113.md)에서는 repack OFF가 느려져 기존 ON을 유지했습니다. 선택된 음성/prefill4T는 기존 prefix bridge의 스레드 설정만 바꿉니다. 새 OFF 엔진은 부정적 결과의 자산으로 보존합니다.
+
+## GGUF CPU 커널 호출 추적
+
+[gguf/kernel_trace.cpp](gguf/kernel_trace.cpp)는 고정 upstream의 공개 ELF 심볼을 `LD_PRELOAD`로 감싸 원래 함수를 그대로 호출하는 선택 진단입니다. 기존 bridge·엔진을 재빌드하거나 패키지를 설치하지 않습니다. Q4_K/Q6_K/Q8_0의 repack GEMM/GEMV 선택·호출 수·MAC 수, F32 입력의 Q8 활성값 변환을 단계별로 집계합니다. 오디오 Q4_0 행렬곱·일반 MUL_MAT·barrier·커널 내부 bit unpack/scale/dot은 분리 계측하지 않습니다.
+
+빌드는 같은 고정 llama.cpp 헤더의 `include`·`ggml/include`·`tools/mtmd`를 `-I`로 전달하고 `g++ -std=c++17 -O2 -shared -fPIC -Wall -Wextra -Werror native/gguf/kernel_trace.cpp -ldl -pthread -o <새 경로>/libedge_kernel_trace.so`를 실행합니다. 실제 추론 자식에만 `LD_PRELOAD`를 지정하고 `EDGE_ASR_TRACE_CPU`·`EDGE_ASR_TRACE_MTMD`·`EDGE_ASR_TRACE_LLAMA`에는 기존에 로딩되는 각 `.so`의 절대 경로를 넣습니다. 누락된 라이브러리/심볼은 실패로 드러내며 다른 계산 경로로 대체하지 않습니다.
+
+직렬 호출 사이에서 `edge_kernel_trace_begin(0/1)`으로 집계를 초기화하고 모드를 고릅니다. `edge_kernel_trace_result()`는 JSON을 반환하며 실행 중 초기화/조회는 거부합니다. 집계 공간은 고정 크기이고 중첩된 입력 변환을 중복 합산하지 않습니다. 단계 구분은 기존 mtmd helper와 `llama_process` 호출 범위입니다. **작업자별 wall/CPU 합계는 병렬 구간의 사용자 대기시간이 아닙니다.** 끔/켬의 전사·token ID·MAC 동등성과 계측 비용을 대조하며 운영 기본에는 적용하지 않습니다. [사전 조건](../docs/research/qwen_realtime.md#q4-3t-커널-추적--2026-11-13-사전-조건).
