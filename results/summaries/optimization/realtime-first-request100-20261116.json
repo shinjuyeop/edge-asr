@@ -1,0 +1,1267 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-16",
+  "kind": "qwen3_first_request_full100",
+  "source_commit": "b4eabf55b5b0399df343c9be8952e74212a04143",
+  "raw_path": "results/optimization/opt3/realtime-first-request100-20261116-01",
+  "cases": {
+    "first-100": {
+      "raw_path": "results/optimization/opt3/realtime-first-request100-20261116-01/first-100",
+      "source_commit": "b4eabf55b5b0399df343c9be8952e74212a04143",
+      "worker_sha256": "5d57edf49a167d1c1b491012ecad3a630aa0df3f21f84d5dd554ec043f59ec5f",
+      "complete": true,
+      "operational_valid": true,
+      "limit_verified": true,
+      "failed_calls": 0,
+      "input_drops": 0,
+      "source_count": 100,
+      "audio": {
+        "sha256": "5c0d625b894fdba80453c129d760c900ccacdc3ce73727fba63e7fd99aba0173",
+        "frames": 14258317,
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "duration_s": 891.1448125
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 3848,
+        "substitutions": 195,
+        "deletions": 157,
+        "insertions": 76,
+        "errors": 428,
+        "cer": 0.11122661122661123
+      },
+      "max_growth_gap_s": {
+        "n": 100,
+        "mean": 4.023423642519956,
+        "p50": 4.1355041729984805,
+        "p95": 5.102131219988223,
+        "max": 5.155208533979021
+      },
+      "scheduler": {
+        "mode": "adaptive",
+        "policy": "budgeted",
+        "version": "budgeted-headroom-v2",
+        "cost_model": "audio",
+        "decisions": {
+          "minimum_audio": 10173,
+          "first_offered": 172,
+          "busy": 3776,
+          "cost_budget": 4517,
+          "offered": 40,
+          "call_budget": 1726
+        }
+      },
+      "first_s": {
+        "n": 100,
+        "mean": 2.8154214207570316,
+        "p50": 2.7687526780362077,
+        "p95": 4.162944927023204,
+        "max": 4.8897221429986075
+      },
+      "first4_s": {
+        "n": 100,
+        "mean": 3.3001744316871755,
+        "p50": 2.987281832020244,
+        "p95": 6.896988737017381,
+        "max": 7.442750727046246
+      },
+      "file_end_s": {
+        "n": 100,
+        "mean": 1.6868505297802137,
+        "p50": 1.7631322560394125,
+        "p95": 2.9799355039987745,
+        "max": 3.566287584011434
+      },
+      "final_calls": 210,
+      "partial_calls": 165,
+      "submitted_requests": 422,
+      "coalesced_requests": 47,
+      "final_compute_s": 451.4475665772334,
+      "total_compute_s": 633.7749388224911,
+      "partial_compute_s": 182.32737224525772,
+      "same_previous_final": true,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 4250,
+        "normalized_revisions": 66,
+        "retracted_suffix_characters": 273,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 828,
+        "segments_with_display": 210,
+        "revised_segments": 58,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 146,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 125,
+          "whole_partial_is_final_prefix": 75,
+          "partial_characters": 985,
+          "retained_prefix_characters": 757,
+          "retained_prefix_fraction": 0.7685279187817259
+        },
+        "finals_shorter_than4": 30,
+        "first4_to_final_consistent4_s": {
+          "n": 180,
+          "mean": 0.5698564351384346,
+          "p50": 0.0,
+          "p95": 4.651085818011779,
+          "max": 5.105978532053996
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "rss_max_mib": 1833.375,
+      "thermal": {
+        "start_mc": 57300,
+        "max_mc": 85900,
+        "end_mc": 74900,
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 913,
+          "mean": 2323244420.065717,
+          "p50": 2400020480,
+          "p95": 2400033792,
+          "max": 2400037120
+        }
+      },
+      "settings": {
+        "gap_s": 0.0,
+        "vad_preprocess": "rms26-floor80",
+        "vad_threshold": 0.3,
+        "vad_max_speech_s": 5,
+        "partial_after_s": 1.0,
+        "partial_interval_s": 4.0,
+        "partial_mode": "adaptive",
+        "partial_min_new_s": 0.8,
+        "partial_tail_margin_s": 0.2,
+        "adaptive_policy": "budgeted",
+        "partial_cost_model": "audio",
+        "partial_budget_s": 3.0,
+        "partial_max_calls": 2,
+        "partial_followup_s": null,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "token_stream": true,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "first_owned_s": {
+        "n": 100,
+        "mean": 1.9791539207570321,
+        "p50": 1.7216414639958857,
+        "p95": 2.9958292430374174,
+        "max": 3.9979915710124097
+      },
+      "first4_owned_s": {
+        "n": 100,
+        "mean": 2.4639069316871756,
+        "p50": 1.9446261189999061,
+        "p95": 6.871761305022967,
+        "max": 7.062125727046245
+      },
+      "initial_partial_calls": 125,
+      "initial_pcm_s": {
+        "n": 125,
+        "mean": 1.0277440000000024,
+        "p50": 1.028,
+        "p95": 1.028,
+        "max": 1.028
+      },
+      "initial_native_ttft_s": {
+        "n": 125,
+        "mean": 0.617994642264,
+        "p50": 0.61632563,
+        "p95": 0.673015639,
+        "max": 0.691845074
+      },
+      "initial_empty_outputs": 0,
+      "empty_partial_outputs": 0,
+      "final_queue_wait_s": {
+        "n": 210,
+        "mean": 0.8477895655015129,
+        "p50": 0.002013625984545797,
+        "p95": 3.192748642002698,
+        "max": 3.7458469909615815
+      },
+      "replay_cpu_s": 1725.462111047,
+      "final_signature_sha256": "b1eda304941787e1d8ea6fef30924a51228802babaeaee7f3c9aa4808fcb4151"
+    },
+    "first-060": {
+      "raw_path": "results/optimization/opt3/realtime-first-request100-20261116-01/first-060",
+      "source_commit": "b4eabf55b5b0399df343c9be8952e74212a04143",
+      "worker_sha256": "80ecd1452a0a868b3af8ee779fb9cbf8c69c492da1d70883b5615ab41a775856",
+      "complete": true,
+      "operational_valid": true,
+      "limit_verified": true,
+      "failed_calls": 0,
+      "input_drops": 0,
+      "source_count": 100,
+      "audio": {
+        "sha256": "5c0d625b894fdba80453c129d760c900ccacdc3ce73727fba63e7fd99aba0173",
+        "frames": 14258317,
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "duration_s": 891.1448125
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 3848,
+        "substitutions": 195,
+        "deletions": 157,
+        "insertions": 76,
+        "errors": 428,
+        "cer": 0.11122661122661123
+      },
+      "max_growth_gap_s": {
+        "n": 100,
+        "mean": 3.965208483822589,
+        "p50": 3.8947023900109343,
+        "p95": 4.882668059028219,
+        "max": 7.140968999005395
+      },
+      "scheduler": {
+        "mode": "adaptive",
+        "policy": "budgeted",
+        "version": "budgeted-headroom-v2",
+        "cost_model": "audio",
+        "decisions": {
+          "minimum_audio": 9192,
+          "first_offered": 189,
+          "busy": 5109,
+          "offered": 86,
+          "call_budget": 4197,
+          "cost_budget": 1575,
+          "near_final": 56
+        }
+      },
+      "first_s": {
+        "n": 100,
+        "mean": 2.438790847850453,
+        "p50": 2.3995568789779327,
+        "p95": 3.76585352897132,
+        "max": 4.2655650210115255
+      },
+      "first4_s": {
+        "n": 100,
+        "mean": 3.309090036891705,
+        "p50": 2.8113817789936775,
+        "p95": 7.173970373983025,
+        "max": 8.34553017100086
+      },
+      "file_end_s": {
+        "n": 100,
+        "mean": 1.7760311266742155,
+        "p50": 1.8577121900068647,
+        "p95": 3.228036001010821,
+        "max": 3.486811237982465
+      },
+      "final_calls": 210,
+      "partial_calls": 209,
+      "submitted_requests": 485,
+      "coalesced_requests": 66,
+      "final_compute_s": 465.66650728025706,
+      "total_compute_s": 664.15214742854,
+      "partial_compute_s": 198.48564014828298,
+      "same_previous_final": true,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 4342,
+        "normalized_revisions": 89,
+        "retracted_suffix_characters": 290,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 931,
+        "segments_with_display": 210,
+        "revised_segments": 76,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 180,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 123,
+          "whole_partial_is_final_prefix": 76,
+          "partial_characters": 1007,
+          "retained_prefix_characters": 819,
+          "retained_prefix_fraction": 0.8133068520357497
+        },
+        "finals_shorter_than4": 30,
+        "first4_to_final_consistent4_s": {
+          "n": 180,
+          "mean": 0.6089396650705667,
+          "p50": 0.0,
+          "p95": 4.418959637987427,
+          "max": 5.712805486982688
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "rss_max_mib": 1832.8125,
+      "thermal": {
+        "start_mc": 73800,
+        "max_mc": 87000,
+        "end_mc": 73250,
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 915,
+          "mean": 2242089141.578142,
+          "p50": 2311031296,
+          "p95": 2400033792,
+          "max": 2400040192
+        }
+      },
+      "settings": {
+        "gap_s": 0.0,
+        "vad_preprocess": "rms26-floor80",
+        "vad_threshold": 0.3,
+        "vad_max_speech_s": 5,
+        "partial_after_s": 0.6,
+        "partial_interval_s": 4.0,
+        "partial_mode": "adaptive",
+        "partial_min_new_s": 0.8,
+        "partial_tail_margin_s": 0.2,
+        "adaptive_policy": "budgeted",
+        "partial_cost_model": "audio",
+        "partial_budget_s": 3.0,
+        "partial_max_calls": 2,
+        "partial_followup_s": null,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "token_stream": true,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "first_owned_s": {
+        "n": 100,
+        "mean": 1.6025233478504533,
+        "p50": 1.3797306549893862,
+        "p95": 2.609593280008096,
+        "max": 3.6476585920159614
+      },
+      "first4_owned_s": {
+        "n": 100,
+        "mean": 2.4728225368917056,
+        "p50": 2.1315392959686172,
+        "p95": 6.885093340017834,
+        "max": 7.034714940009662
+      },
+      "initial_partial_calls": 123,
+      "initial_pcm_s": {
+        "n": 123,
+        "mean": 0.6117398373983737,
+        "p50": 0.612,
+        "p95": 0.612,
+        "max": 0.612
+      },
+      "initial_native_ttft_s": {
+        "n": 123,
+        "mean": 0.3905504491707317,
+        "p50": 0.393235427,
+        "p95": 0.421218874,
+        "max": 0.438221927
+      },
+      "initial_empty_outputs": 0,
+      "empty_partial_outputs": 0,
+      "final_queue_wait_s": {
+        "n": 210,
+        "mean": 0.889833801891932,
+        "p50": 0.0018616440356709063,
+        "p95": 3.2995999879785813,
+        "max": 3.900853770028334
+      },
+      "replay_cpu_s": 1805.827322865,
+      "final_signature_sha256": "b1eda304941787e1d8ea6fef30924a51228802babaeaee7f3c9aa4808fcb4151"
+    }
+  },
+  "checks": {
+    "input_complete": true,
+    "no_failure_drop_missing": true,
+    "same_previous_final_pcm_text_tokens": true,
+    "same_final_pcm_text_tokens": true,
+    "same_score": true,
+    "first_p50_improves_015s": true,
+    "first_p95_within01s": true,
+    "rss_within32mib": true,
+    "first4_s_p50_within025s": true,
+    "first4_s_p95_within025s": false,
+    "file_end_s_p95_within025s": true,
+    "final_queue_wait_s_p95_within025s": true,
+    "gap_p95_within01s": true
+  },
+  "all_checks_passed": false,
+  "paired_changes": {
+    "first_s": {
+      "paired": 100,
+      "missing": 0,
+      "improved_over01s": 77,
+      "worsened_over01s": 4,
+      "within01s": 19
+    },
+    "first4_s": {
+      "paired": 100,
+      "missing": 0,
+      "improved_over01s": 57,
+      "worsened_over01s": 30,
+      "within01s": 13
+    },
+    "file_end_s": {
+      "paired": 100,
+      "missing": 0,
+      "improved_over01s": 10,
+      "worsened_over01s": 54,
+      "within01s": 36
+    },
+    "max_growth_gap_s": {
+      "paired": 100,
+      "missing": 0,
+      "improved_over01s": 49,
+      "worsened_over01s": 44,
+      "within01s": 7
+    }
+  },
+  "source_count": 100,
+  "input_duration_s": 891.1448125,
+  "reference_characters": 3848,
+  "full100_executed": true,
+  "default_changed": false,
+  "model": {
+    "num_threads": 2,
+    "quantization": "q8_0",
+    "max_total_len": 512,
+    "max_new_tokens": 128,
+    "family": "qwen3_gguf",
+    "path": "models/qwen3-opt/gguf-q8-20261109-01",
+    "runtime_library": "runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+    "runtime_manifest": "runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+    "num_threads_batch": 3,
+    "cache_text_prefix": true,
+    "language": "ko"
+  },
+  "model_files": {
+    "Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+    },
+    "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+    },
+    "runtime_library": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+      "sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf"
+    },
+    "runtime_manifest": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+      "sha256": "a7fa6d9d6ffab5b5a0f7f98e3dc94cd7d751fe503a16f214936b5ff32fd3d113"
+    }
+  },
+  "model_metadata": {
+    "backend": "llama_cpp_mtmd",
+    "provider": "cpu",
+    "supported_modes": [
+      "batch"
+    ],
+    "token_output_callback": true,
+    "thread_configuration": {
+      "threads": 2,
+      "threads_batch": 3,
+      "audio_threads": 3
+    },
+    "cache_text_prefix": true,
+    "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+    "language": "ko",
+    "stream_language": "Korean",
+    "quantization": "q8_0",
+    "audio_quantization": "q8_0",
+    "quantization_evidence": "official_GGUF_asset_names_and_bound_sha256",
+    "quantization_scope": "텍스트 모델과 오디오 mmproj 모두 Q8_0 배포본. 일부 tensor 혼합 dtype 가능. ONNX INT8과 동일 양자화 방식 아님.",
+    "assets": null,
+    "max_total_len": 512,
+    "max_new_tokens": 128,
+    "prompt_policy": "empty_system_audio_user_forced_assistant_language_Korean_asr_text_v1",
+    "output_policy": "gguf_raw_utf8_until_eog_v1",
+    "sampling": "greedy",
+    "repetition_policy": "last64_token_ids_at_most3_distinct_failure",
+    "use_itn": null,
+    "context_policy": "mtmd_positions_plus_reserved_output_no_truncation_v1",
+    "input_policy": "동일 float32 PCM을 직접 전달. file codec/resampling 없음",
+    "runtime_build": {
+      "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+      "machine": "aarch64",
+      "command": [
+        "g++",
+        "-std=c++17",
+        "-O2",
+        "-fPIC",
+        "-shared",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+        "-I",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+        "-I",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+        "-I",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/vendor/nlohmann",
+        "/home/deepet/projects/edge-asr/native/gguf/bridge.cpp",
+        "-L",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+        "-Wl,-rpath,/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+        "-lllama",
+        "-lmtmd",
+        "-lggml",
+        "-lggml-base",
+        "-pthread",
+        "-o",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so"
+      ],
+      "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "bridge_source_sha256": "7ee8307814e8ee1e5adc85bf2d0751195eafdb2d8815784f56ddc1ac79ab494d",
+      "prefix_cache_source_sha256": "9d60e18b86bdb9371511829fc2eefe7ced2830ce4a0d79c1a0e650e827a8fcbd",
+      "features": [
+        "token_callback_v1",
+        "split_threads_v1",
+        "text_prefix_cache_v1"
+      ],
+      "cmake_cache_sha256": "2d21bf15406912c839456d69ef66f7edcbdfbdc1d3b02d4f5f03b0a09b139b24",
+      "engine_libraries": {
+        "libmtmd.so": "ba8bbb528c24a7cc5721b5cdf520d7ab159f5efb214548628ae5ce240f581296",
+        "libggml.so": "9391d0da5efb090d836eb9f1050270045ae9f215ad8e41368a44d9cd73de82c1",
+        "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+        "libllama.so": "3981f9752c48c595e4fd2ef766e70e6051edc6f54e85e4e0044615e0ddba0999",
+        "libggml-cpu.so": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+        "libllama-common.so": "61278407f85381989b98522229bb57379af9988b301a704f8c55a6619d14bafd"
+      },
+      "library_sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model"
+    }
+  },
+  "input_manifest_sha256": "75ba1226dddfa0defb97f6fdbba89c31a762b541beb41299cdb0ac8490c45a06",
+  "verification": {
+    "protected_assets_unchanged": true,
+    "protected_files": 629,
+    "boot_id": "db0f2e44-3c3f-4b8a-8472-e5618db2aeae",
+    "score_recomputed": true,
+    "independent_analysis_equal": true,
+    "independent_audit_equal": true,
+    "new_raw_files_sha256_equal": 27,
+    "host_structure_tests_passed": 6,
+    "host_existing100_reaggregation_and_profile_checks": true,
+    "production_code_changed": false,
+    "viewer": {
+      "records": 52,
+      "profiles": 15,
+      "old_records_preserved": 50,
+      "old_profiles_preserved": 13,
+      "two_100_source_replays_verified": true,
+      "no_native_inference_started_by_browser_check": true
+    }
+  },
+  "scope": "같은100개·Q8·2/3T·1배속·새1초→새0.6초. 최초 요청만 변경. 원음 시작/끝→서버 발행과 첫 작업 VAD 소유 시작을 구분. 순차1쌍·운영 열 조건 포함. GUI/음향 단어/부분 CER/장시간 마이크 미측정.",
+  "audit": {
+    "scope": "추가 진단. 기존 첫 표시/첫4자/선별 기준은 변경하지 않는다. first_alnum은 표시된 첫 문자·숫자까지의 서버 발행 시각이며 정답 단어 지연이 아니다.",
+    "cases": {
+      "first-100": {
+        "first_alnum_s": {
+          "n": 100,
+          "mean": 2.8154214207570316,
+          "p50": 2.7687526780362077,
+          "p95": 4.162944927023204,
+          "max": 4.8897221429986075
+        },
+        "punctuation_only_first_sources": 0,
+        "examples": [
+          {
+            "id": "fleurs-9406104450793293120",
+            "jobs": [
+              {
+                "job_id": 197,
+                "segment_id": 92,
+                "kind": "partial",
+                "input_s": 1.028,
+                "input_end_from_source_s": 2.3018749999999955,
+                "queue_wait_s": 0.00032387301325798035,
+                "compute_s": 1.1000041830120608,
+                "first_visible_from_source_s": 2.9885554510163956,
+                "first4_from_source_s": 3.173441101016465,
+                "returned_alnum": 8
+              },
+              {
+                "job_id": 198,
+                "segment_id": 92,
+                "kind": "final",
+                "input_s": 5.0,
+                "input_end_from_source_s": 6.273874999999975,
+                "queue_wait_s": 0.0005832820315845311,
+                "compute_s": 3.5189875150099397,
+                "first_visible_from_source_s": 8.377832564035884,
+                "first4_from_source_s": 8.377832564035884,
+                "returned_alnum": 33
+              },
+              {
+                "job_id": 199,
+                "segment_id": 93,
+                "kind": "final",
+                "input_s": 0.216,
+                "input_end_from_source_s": 6.489874999999984,
+                "queue_wait_s": 3.2371094320551492,
+                "compute_s": 0.515858982980717,
+                "first_visible_from_source_s": 10.24921893803355,
+                "first4_from_source_s": null,
+                "returned_alnum": 1
+              }
+            ],
+            "decision_transitions": [
+              {
+                "segment_id": 92,
+                "reason": "minimum_audio",
+                "start_frame": 6322624,
+                "end_frame": 6325248,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 92,
+                "reason": "first_offered",
+                "start_frame": 6322624,
+                "end_frame": 6339072,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 92,
+                "reason": "minimum_audio",
+                "start_frame": 6322624,
+                "end_frame": 6339584,
+                "estimated_partial_s": 1.9310793060343712,
+                "partial_spent_s": 0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 92,
+                "reason": "busy",
+                "start_frame": 6322624,
+                "end_frame": 6351872,
+                "estimated_partial_s": 1.9310793060343712,
+                "partial_spent_s": 0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 92,
+                "reason": "cost_budget",
+                "start_frame": 6322624,
+                "end_frame": 6356480,
+                "estimated_partial_s": 2.015022687595778,
+                "partial_spent_s": 1.1000041830120608,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 93,
+                "reason": "minimum_audio",
+                "start_frame": 6402624,
+                "end_frame": 6403072,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              }
+            ]
+          },
+          {
+            "id": "fleurs-16212391279578882998",
+            "jobs": [
+              {
+                "job_id": 283,
+                "segment_id": 139,
+                "kind": "partial",
+                "input_s": 1.028,
+                "input_end_from_source_s": 1.1694374999999582,
+                "queue_wait_s": 0.43228200200246647,
+                "compute_s": 1.0539862230070867,
+                "first_visible_from_source_s": 2.37047683703247,
+                "first4_from_source_s": 2.5681233210442542,
+                "returned_alnum": 5
+              },
+              {
+                "job_id": 284,
+                "segment_id": 139,
+                "kind": "final",
+                "input_s": 5.0,
+                "input_end_from_source_s": 5.141437500000052,
+                "queue_wait_s": 0.0006868199561722577,
+                "compute_s": 3.624711923999712,
+                "first_visible_from_source_s": 7.285250788026019,
+                "first4_from_source_s": 7.285250788026019,
+                "returned_alnum": 35
+              },
+              {
+                "job_id": 285,
+                "segment_id": 140,
+                "kind": "final",
+                "input_s": 0.056,
+                "input_end_from_source_s": 5.197437499999978,
+                "queue_wait_s": 3.5354491869802587,
+                "compute_s": 0.5026326919905841,
+                "first_visible_from_source_s": 9.272498066008552,
+                "first4_from_source_s": null,
+                "returned_alnum": 1
+              }
+            ],
+            "decision_transitions": [
+              {
+                "segment_id": 139,
+                "reason": "minimum_audio",
+                "start_frame": 9231808,
+                "end_frame": 9234432,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 139,
+                "reason": "first_offered",
+                "start_frame": 9231808,
+                "end_frame": 9248256,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 139,
+                "reason": "minimum_audio",
+                "start_frame": 9231808,
+                "end_frame": 9248768,
+                "estimated_partial_s": 1.4838406452429627,
+                "partial_spent_s": 0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 139,
+                "reason": "busy",
+                "start_frame": 9231808,
+                "end_frame": 9261056,
+                "estimated_partial_s": 1.9767521270670871,
+                "partial_spent_s": 0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 139,
+                "reason": "cost_budget",
+                "start_frame": 9231808,
+                "end_frame": 9272320,
+                "estimated_partial_s": 2.4285876520725345,
+                "partial_spent_s": 1.0539862230070867,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 140,
+                "reason": "minimum_audio",
+                "start_frame": 9311808,
+                "end_frame": 9312256,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              }
+            ]
+          },
+          {
+            "id": "zeroth-104_003_1968",
+            "jobs": [
+              {
+                "job_id": 202,
+                "segment_id": 95,
+                "kind": "partial",
+                "input_s": 1.028,
+                "input_end_from_source_s": 1.3458749999999782,
+                "queue_wait_s": 1.8084367529954761,
+                "compute_s": 0.8339462790172547,
+                "first_visible_from_source_s": 3.853126512020367,
+                "first4_from_source_s": null,
+                "returned_alnum": 2
+              },
+              {
+                "job_id": 203,
+                "segment_id": 95,
+                "kind": "final",
+                "input_s": 5.0,
+                "input_end_from_source_s": 5.317875000000015,
+                "queue_wait_s": 0.0006948380032554269,
+                "compute_s": 3.4572650509653613,
+                "first_visible_from_source_s": 7.197414695047314,
+                "first4_from_source_s": 7.2610192529922415,
+                "returned_alnum": 29
+              },
+              {
+                "job_id": 204,
+                "segment_id": 96,
+                "kind": "final",
+                "input_s": 0.536,
+                "input_end_from_source_s": 5.853875000000016,
+                "queue_wait_s": 2.866572368016932,
+                "compute_s": 0.6039415210252628,
+                "first_visible_from_source_s": 9.230082524003933,
+                "first4_from_source_s": null,
+                "returned_alnum": 3
+              },
+              {
+                "job_id": 206,
+                "segment_id": 97,
+                "kind": "final",
+                "input_s": 1.08,
+                "input_end_from_source_s": 7.029875000000004,
+                "queue_wait_s": 2.059923160006292,
+                "compute_s": 1.1964553290163167,
+                "first_visible_from_source_s": 10.078892378014984,
+                "first4_from_source_s": 10.410883554019506,
+                "returned_alnum": 7
+              }
+            ],
+            "decision_transitions": [
+              {
+                "segment_id": 95,
+                "reason": "minimum_audio",
+                "start_frame": 6515648,
+                "end_frame": 6518272,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 95,
+                "reason": "first_offered",
+                "start_frame": 6515648,
+                "end_frame": 6532096,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 95,
+                "reason": "minimum_audio",
+                "start_frame": 6515648,
+                "end_frame": 6532608,
+                "estimated_partial_s": 1.6006205741681943,
+                "partial_spent_s": 0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 95,
+                "reason": "busy",
+                "start_frame": 6515648,
+                "end_frame": 6544896,
+                "estimated_partial_s": 2.0587674742397892,
+                "partial_spent_s": 0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 95,
+                "reason": "cost_budget",
+                "start_frame": 6515648,
+                "end_frame": 6574592,
+                "estimated_partial_s": 3.165955816079478,
+                "partial_spent_s": 0.8339462790172547,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 96,
+                "reason": "minimum_audio",
+                "start_frame": 6595648,
+                "end_frame": 6596096,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 97,
+                "reason": "minimum_audio",
+                "start_frame": 6605760,
+                "end_frame": 6608384,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 97,
+                "reason": "first_offered",
+                "start_frame": 6605760,
+                "end_frame": 6622208,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 97,
+                "reason": "minimum_audio",
+                "start_frame": 6605760,
+                "end_frame": 6622720,
+                "estimated_partial_s": 1.6006205741681943,
+                "partial_spent_s": 0,
+                "partial_budget_s": 3.0
+              }
+            ]
+          }
+        ]
+      },
+      "first-060": {
+        "first_alnum_s": {
+          "n": 100,
+          "mean": 2.481975692910912,
+          "p50": 2.4040572309745585,
+          "p95": 3.7731557800080964,
+          "max": 7.140968999005395
+        },
+        "punctuation_only_first_sources": 2,
+        "examples": [
+          {
+            "id": "fleurs-9406104450793293120",
+            "jobs": [
+              {
+                "job_id": 213,
+                "segment_id": 92,
+                "kind": "partial",
+                "input_s": 0.612,
+                "input_end_from_source_s": 1.8858749999999986,
+                "queue_wait_s": 0.12603367801057175,
+                "compute_s": 0.667896697006654,
+                "first_visible_from_source_s": 2.4586017150194266,
+                "first4_from_source_s": null,
+                "returned_alnum": 3
+              },
+              {
+                "job_id": 214,
+                "segment_id": 92,
+                "kind": "final",
+                "input_s": 5.0,
+                "input_end_from_source_s": 6.273874999999975,
+                "queue_wait_s": 0.000565744994673878,
+                "compute_s": 3.6434774600202218,
+                "first_visible_from_source_s": 8.142333672008931,
+                "first4_from_source_s": 8.270097844977386,
+                "returned_alnum": 33
+              },
+              {
+                "job_id": 215,
+                "segment_id": 93,
+                "kind": "final",
+                "input_s": 0.216,
+                "input_end_from_source_s": 6.489874999999984,
+                "queue_wait_s": 3.3547077319817618,
+                "compute_s": 0.5299040569807403,
+                "first_visible_from_source_s": 10.373518804995797,
+                "first4_from_source_s": null,
+                "returned_alnum": 1
+              }
+            ],
+            "decision_transitions": [
+              {
+                "segment_id": 92,
+                "reason": "minimum_audio",
+                "start_frame": 6322624,
+                "end_frame": 6325248,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 92,
+                "reason": "first_offered",
+                "start_frame": 6322624,
+                "end_frame": 6332416,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 92,
+                "reason": "minimum_audio",
+                "start_frame": 6322624,
+                "end_frame": 6332928,
+                "estimated_partial_s": 2.478491803212091,
+                "partial_spent_s": 0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 92,
+                "reason": "cost_budget",
+                "start_frame": 6322624,
+                "end_frame": 6345216,
+                "estimated_partial_s": 2.478491803212091,
+                "partial_spent_s": 0.667896697006654,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 93,
+                "reason": "minimum_audio",
+                "start_frame": 6402624,
+                "end_frame": 6403072,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              }
+            ]
+          },
+          {
+            "id": "fleurs-16212391279578882998",
+            "jobs": [
+              {
+                "job_id": 317,
+                "segment_id": 139,
+                "kind": "partial",
+                "input_s": 0.612,
+                "input_end_from_source_s": 0.7534375000000182,
+                "queue_wait_s": 1.09617412899388,
+                "compute_s": 0.6036868109949864,
+                "first_visible_from_source_s": 2.3117888389923564,
+                "first4_from_source_s": null,
+                "returned_alnum": 3
+              },
+              {
+                "job_id": 318,
+                "segment_id": 139,
+                "kind": "final",
+                "input_s": 5.0,
+                "input_end_from_source_s": 5.141437500000052,
+                "queue_wait_s": 0.0007156910141929984,
+                "compute_s": 3.6236418610205874,
+                "first_visible_from_source_s": 6.98532618098659,
+                "first4_from_source_s": 7.173970373983025,
+                "returned_alnum": 35
+              },
+              {
+                "job_id": 319,
+                "segment_id": 140,
+                "kind": "final",
+                "input_s": 0.056,
+                "input_end_from_source_s": 5.197437499999978,
+                "queue_wait_s": 3.533956643019337,
+                "compute_s": 0.5279933279962279,
+                "first_visible_from_source_s": 9.296706844000141,
+                "first4_from_source_s": null,
+                "returned_alnum": 1
+              }
+            ],
+            "decision_transitions": [
+              {
+                "segment_id": 139,
+                "reason": "minimum_audio",
+                "start_frame": 9231808,
+                "end_frame": 9234432,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 139,
+                "reason": "first_offered",
+                "start_frame": 9231808,
+                "end_frame": 9241600,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 139,
+                "reason": "minimum_audio",
+                "start_frame": 9231808,
+                "end_frame": 9242112,
+                "estimated_partial_s": 2.435899849212728,
+                "partial_spent_s": 0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 139,
+                "reason": "busy",
+                "start_frame": 9231808,
+                "end_frame": 9254400,
+                "estimated_partial_s": 2.435899849212728,
+                "partial_spent_s": 0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 139,
+                "reason": "cost_budget",
+                "start_frame": 9231808,
+                "end_frame": 9269248,
+                "estimated_partial_s": 2.435899849212728,
+                "partial_spent_s": 0.6036868109949864,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 140,
+                "reason": "minimum_audio",
+                "start_frame": 9311808,
+                "end_frame": 9312256,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              }
+            ]
+          },
+          {
+            "id": "zeroth-104_003_1968",
+            "jobs": [
+              {
+                "job_id": 218,
+                "segment_id": 95,
+                "kind": "partial",
+                "input_s": 0.612,
+                "input_end_from_source_s": 0.9298749999999814,
+                "queue_wait_s": 2.2416394909960218,
+                "compute_s": 0.45554678997723386,
+                "first_visible_from_source_s": 3.63664885097603,
+                "first4_from_source_s": null,
+                "returned_alnum": 0
+              },
+              {
+                "job_id": 219,
+                "segment_id": 95,
+                "kind": "final",
+                "input_s": 5.0,
+                "input_end_from_source_s": 5.317875000000015,
+                "queue_wait_s": 0.0007191899931058288,
+                "compute_s": 3.509013833012432,
+                "first_visible_from_source_s": 7.140968999005395,
+                "first4_from_source_s": 7.273671208992141,
+                "returned_alnum": 29
+              },
+              {
+                "job_id": 221,
+                "segment_id": 96,
+                "kind": "final",
+                "input_s": 0.536,
+                "input_end_from_source_s": 5.853875000000016,
+                "queue_wait_s": 2.917604307003785,
+                "compute_s": 0.6524893220048398,
+                "first_visible_from_source_s": 9.318859118963132,
+                "first4_from_source_s": null,
+                "returned_alnum": 3
+              },
+              {
+                "job_id": 223,
+                "segment_id": 97,
+                "kind": "final",
+                "input_s": 1.08,
+                "input_end_from_source_s": 7.029875000000004,
+                "queue_wait_s": 2.165935361990705,
+                "compute_s": 1.2891740610357374,
+                "first_visible_from_source_s": 10.2624132609875,
+                "first4_from_source_s": 10.583420919016476,
+                "returned_alnum": 7
+              }
+            ],
+            "decision_transitions": [
+              {
+                "segment_id": 95,
+                "reason": "minimum_audio",
+                "start_frame": 6515648,
+                "end_frame": 6518272,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 95,
+                "reason": "first_offered",
+                "start_frame": 6515648,
+                "end_frame": 6525440,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 95,
+                "reason": "minimum_audio",
+                "start_frame": 6515648,
+                "end_frame": 6525952,
+                "estimated_partial_s": 2.478491803212091,
+                "partial_spent_s": 0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 95,
+                "reason": "busy",
+                "start_frame": 6515648,
+                "end_frame": 6538240,
+                "estimated_partial_s": 2.478491803212091,
+                "partial_spent_s": 0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 95,
+                "reason": "cost_budget",
+                "start_frame": 6515648,
+                "end_frame": 6569472,
+                "estimated_partial_s": 2.5676629641574085,
+                "partial_spent_s": 0.45554678997723386,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 96,
+                "reason": "minimum_audio",
+                "start_frame": 6595648,
+                "end_frame": 6596096,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 96,
+                "reason": "first_offered",
+                "start_frame": 6595648,
+                "end_frame": 6605312,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 97,
+                "reason": "minimum_audio",
+                "start_frame": 6605760,
+                "end_frame": 6608384,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 97,
+                "reason": "first_offered",
+                "start_frame": 6605760,
+                "end_frame": 6615552,
+                "estimated_partial_s": null,
+                "partial_spent_s": 0.0,
+                "partial_budget_s": 3.0
+              },
+              {
+                "segment_id": 97,
+                "reason": "minimum_audio",
+                "start_frame": 6605760,
+                "end_frame": 6616064,
+                "estimated_partial_s": 0.9580397801574083,
+                "partial_spent_s": 0,
+                "partial_budget_s": 3.0
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

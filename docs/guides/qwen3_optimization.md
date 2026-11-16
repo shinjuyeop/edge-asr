@@ -183,6 +183,8 @@ KSS 등 이전 실험 설정은 [설정 색인](../../configs/README.md)에 보�
 
 [같은6개 실측](../../results/summaries/optimization/realtime-first-request-20261116.md)에서 두 후보가 통과했고 첫 표시 p50 우선 규칙은0.6초를 선택했습니다.0.8초는 갱신 공백/수정량의 절충이 다릅니다. 측정 웹의 **Q8 첫 요청0.6초 /0.8초 /1초 · 동일6개**를 비교하며100개 확인 전 공유1초는 보존합니다.
 
+[후속100개 확인](../../results/summaries/optimization/realtime-first-request100-20261116.md)은 첫 표시 개선·최종 전사 동등성을 유지했지만 첫4자 긴 지연 한 조건이 미달해 공유1초를 유지했습니다. **Q8 첫 요청1초 /0.6초 · 동일100개**와 저장된 두 기록을 비교할 수 있고 기록 재생은 재추론이 필요하지 않습니다.
+
 기존 대표 명령에 `--partial-mode adaptive --partial-min-new-s 0.8 --partial-tail-margin-s 0.2`를 추가하면 작업자 여유·새 음성량·직전 호출 비용을 기준으로 부분 요청합니다. 첫 요청은 `--partial-after-s`를 따르고 이후 고정 `--partial-interval-s`는 사용하지 않습니다. `--partial-followup-s`와 함께 지정할 수 없습니다. 현재 개발 기본은 고정 간격입니다. [가변 선별 조건](../research/qwen_realtime.md#가변-부분-요청-선별--2026-11-12-사전-조건)을 따르며 최종 구간·PCM은 유지합니다.
 
 가변 판단은 `partial_decision` 이벤트와 `worker.json`의 `partial_scheduler`에 기록합니다. 입력이 도착하는 주기에서 다시 판단하며, 이미 진행 중인 모델 호출은 완료 후 최종 큐를 우선 처리합니다. 끝 여유는 ASR 구간 상한 기준 휴리스틱으로 출력 주기·VAD 종료 지연을 보장하지 않습니다.
