@@ -492,3 +492,17 @@ Q8 text/audio·생성 2T/음성·prefill 3T·기존 prefix bridge/text KV·첫 �
 Host 선택성/실패 제외/구간별1회/호출 상한/끝 여유/확정PCM 테스트와 전체 회귀 뒤 main commit/push→RP5 동기화→실측 순서를 따릅니다. 장비 잠금·각1800초/4GiB operational guard·시작 온도 대기 없는 기록·기본 열 보호·EOF30초를 유지합니다. 같은 개발100개 순차1쌍이고 독립정확도·통계적유의성·마이크/GUI 지연 검증은 아닙니다. 기본은 자동 전환하지 않으며 결과에 따라 후속 decode/encoder 최적화를 별도 단계로 진행합니다.
 
 [실측 결과](../../results/summaries/optimization/realtime-short-followup-20261116.md): 양쪽 100개 추론 정상 완료·확정 210구간 PCM/전사/token·428오류 동일·실패/드롭/미출력 0입니다. 실제 예외 3회는 대조군에도 같은 PCM 후속이 있었습니다. 첫 4자 p95 6.603→6.700초·갱신 공백 p95 4.827→5.168초로 개선과 공백 증가 제한의 2조건에 미달해 기본 끔을 유지합니다. 두 실측 뒤 마지막 비교 집계의 조건 이름 오류는 원시 실패 기록을 보존하고 독립 재집계로 복구했습니다. 다음은 Q8 decode 연산 비용을 검토합니다.
+
+## Q8 GEMV 정수 누적 분리 — 2026-11-16 사전 조건
+
+후속 보호 선별 뒤 엔진의 Q8 decode 비용을 검토합니다. 고정 upstream `7d7f028`의 `ggml_gemv_q8_0_4x4_q8_0`는 ARM NEON dot 8개를 한 int32 누적값에 연결합니다. 별도 `native/gguf/q8_gemv.cpp` 후보는 앞/뒤 4개를 독립 int32 누적값으로 계산한 뒤 float 변환 전에 합칩니다. 32개의 int8 곱은 int32 범위 안이며 블록별 scale·float FMA·가중치 배치는 유지합니다. 같은 계산을 기대하는 근거와 실제 비트/전사 검증을 구분합니다. [고정 구현](https://github.com/ggml-org/llama.cpp/blob/7d7f0287530bc8981690f361d8c1627dbae1c99a/ggml/src/ggml-cpu/arch/arm/repack.cpp#L1771), [ARM intrinsic 정의](https://arm-software.github.io/acle/neon_intrinsics/advsimd.html).
+
+`decode-q8-20261116-01`과 별도 `runtimes/qwen3-opt/decode-q8-20261116-01/`를 사용합니다. 기존 CPU ISA/최적화 옵션·가중치·bridge·엔진 파일을 유지하고 실제 추론 자식에만 새 라이브러리를 preload합니다. 기본 모드는 원래 함수 전달이며 호출 사이에 명시적으로 끔/켬을 선택합니다. 적용 대상은 해당 Q8 GEMV 심볼 전체로 decode뿐 아니라 prefill의 잔여 행도 포함하며 GEMM은 변경하지 않습니다. CPU/스레드·고정 prefix KV·모델/전사 정책은 동일합니다.
+
+Host ELF 모의 검사 뒤 main commit/push→RP5 동기화→별도 빌드 순서입니다. 먼저 RP5에서 임의·0·int8 극값을 포함한 합성 packed 입력의 원래/후보 float 출력 비트 일치·경계 sentinel·실제 호출 수를 검사합니다. 하나라도 다르면 ASR 추론을 진행하지 않습니다. 원래 엔진과 후보의 disassembly도 기록합니다.
+
+통과하면 `reprofile-q8-20261116-01`의 첫0.612초·후속2.276초·확정4.504초 PCM 세 개를 그대로 사용합니다. 공통 `qwen/benchmark.py` reproduction에 12라운드×3개=36호출을 공급합니다. 1~4라운드는 준비, 5~12라운드는 **끔/켬/켬/끔·켬/끔/끔/켬**의 두 교차 블록입니다. 호출 사이에는 측정 타이머 밖의 동일2초 휴지를 두며 모델은 한 번 로딩합니다. 합성 입력 속도는 ASR 성능으로 사용하지 않습니다.
+
+모든 실제 전사/token ID·PCM은 보존 참조와 같고 실패0·모든 호출에 선택 모드와 대체/전달 횟수 증거가 있어야 합니다. 두 교차 블록 각각에서 후속/확정 decode 합계가 **3% 이상 감소**하고 전체 native 비용 합계가 **1% 이상 감소**할 때만 연속 입력 선별 후보로 봅니다. 최초 전체 비용 증가는 각 블록5% 이하를 확인하며 RSS·CPU·단계별 비용·온도/클럭·후속 재현 한계를 함께 기록합니다. 이 실용 선별 기준은 통계적 유의수준이 아닙니다. 미달하면 기본을 바꾸거나 100개로 확대하지 않습니다.
+
+기존 장비 잠금·600초/4GiB operational guard·시작 온도 대기 없는 관측·기본 열 보호·부팅/보존 해시 검사를 사용합니다. Host 모의 검사·RP5 합성 커널 검사·실제 고정 PCM 추론을 구분합니다. 잘린 PCM의 새 CER·연속 표시 지연·마이크 성능은 이번에 측정하지 않습니다.

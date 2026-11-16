@@ -74,3 +74,9 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 직렬 호출 사이에서 `edge_kernel_trace_begin(0/1)`으로 집계를 초기화하고 모드를 고릅니다. `edge_kernel_trace_result()`는 JSON을 반환하며 실행 중 초기화/조회는 거부합니다. 집계 공간은 고정 크기이고 중첩된 입력 변환을 중복 합산하지 않습니다. 단계 구분은 기존 mtmd helper와 `llama_process` 호출 범위입니다. **작업자별 wall/CPU 합계는 병렬 구간의 사용자 대기시간이 아닙니다.** 끔/켬의 전사·token ID·MAC 동등성과 계측 비용을 대조하며 운영 기본에는 적용하지 않습니다. [사전 조건](../docs/research/qwen_realtime.md#q4-3t-커널-추적--2026-11-13-사전-조건).
 
 [실제96호출](../results/summaries/optimization/kernel-q4-20261113.md)에서 같은 모델의 기존 전사/token ID와 단계별 연산량을 유지했습니다.3T에서도 Q4 prefill의 입력 변환과 GEMM 비용 증가를 확인했으며, 커널 내부 unpack/scale/dot은 후속 계측 범위입니다.
+
+## Q8 GEMV 누적 분리 후보
+
+[gguf/q8_gemv.cpp](gguf/q8_gemv.cpp)는 고정 Q8 4x4 GEMV의 int32 누적을 둘로 나누는 선택 실험입니다. 기존 엔진·가중치 배치를 보존하며 decode와 prefill 잔여 행에 사용되는 해당 심볼만 대체합니다. 기본 모드는 원래 함수 전달입니다. `EDGE_ASR_Q8_CPU`에 이미 로딩된 기존 CPU 라이브러리 경로를 지정하고, 별도 실험 자식에만 새 라이브러리를 `LD_PRELOAD`로 지정합니다. `edge_q8_gemv_begin(0/1)`은 직렬 모델 호출 사이에서만 사용하며 미지원 ARM 빌드에서 켬을 거부합니다. 전달/대체 횟수는 `edge_q8_gemv_calls(0/1)`로 확인합니다.
+
+빌드는 기존 엔진의 `build.ninja`에 기록된 ARM ISA·`-O3` 조건과 고정 upstream의 `ggml/include`·`ggml/src`·`ggml/src/ggml-cpu` 헤더를 사용하며 output은 새 경로에 둡니다. 원래 라이브러리와 합성 입력의 float 비트 일치부터 검증합니다. 공유 설정에는 연결하지 않으며 [선별 조건](../docs/research/qwen_realtime.md#q8-gemv-정수-누적-분리--2026-11-16-사전-조건)에 따라 실제 전사/token 동등성과 비용을 비교합니다.
