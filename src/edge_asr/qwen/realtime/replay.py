@@ -367,9 +367,9 @@ def argument_parser():
     parser.add_argument("--adaptive-policy", choices=("recent", "budgeted"), default="recent")
     parser.add_argument(
         "--partial-cost-model",
-        choices=("total", "audio"),
+        choices=("total", "audio", "audio_scaled"),
         default="total",
-        help="budgeted 후속 비용 추정. audio는 측정한 음성 처리만 길이에 비례 확대",
+        help="budgeted 후속 비용 추정. audio는 음성 비용 확대만, audio_scaled는 축소도 적용",
     )
     parser.add_argument("--partial-budget-s", type=float, default=2.5)
     parser.add_argument("--partial-max-calls", type=int, default=2)

@@ -75,10 +75,10 @@ class CaptionSession:
         ):
             raise ValueError("부분 비용 예산은 유한한 양수, 요청 상한은 양의 정수여야 합니다.")
         self.adaptive_policy = adaptive_policy
-        if partial_cost_model not in ("total", "audio") or (
-            partial_cost_model == "audio" and adaptive_policy != "budgeted"
+        if partial_cost_model not in ("total", "audio", "audio_scaled") or (
+            partial_cost_model != "total" and adaptive_policy != "budgeted"
         ):
-            raise ValueError("audio 비용 추정은 budgeted 정책에서만 사용합니다.")
+            raise ValueError("음성 단계 비용 추정은 budgeted 정책에서만 사용합니다.")
         self.partial_cost_model = partial_cost_model
         self.partial_budget_s, self.partial_max_calls = partial_budget_s, partial_max_calls
         self.min_new_frames = round(partial_min_new_s * 16000)

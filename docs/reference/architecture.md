@@ -44,6 +44,8 @@ GGUF의 text/audio 정밀도는 별도입니다. 기존 자산 명세 v1은 알�
 
 가변 후속의 기본 비용 추정은 `total`입니다. 선택 `partial_cost_model=audio`는 같은 작업자의 최근3개 성공 native 계측에서 음성 처리 부분만 입력 길이에 따라 확대합니다. 단계 계측이 없거나 실패하면 기존 추정으로 돌아가며, 첫 요청 보호·유휴 조건·구간당 비용/횟수 예산·최종 우선순위는 유지합니다. [선별 조건](../research/qwen_realtime.md#음성-단계-비용-추정-선별--2026-11-13-사전-조건).
 
+선택 `partial_cost_model=audio_scaled`는 같은 비용 이력에서 입력이 짧아질 때의 음성 비용도 비례 조정합니다. 생성 등 나머지 비용은 줄이지 않으며 기존 `audio` 식·최근 3회·1.2 여유·불완전 계측의 `total` 복귀를 유지합니다. 같은 `DecodeWorker`의 선택 분기이며 별도 실행기·native 변경은 없습니다. [문맥 24개 선별](../research/qwen_realtime.md#음성-비용-축소의-연속-입력-선별--2026-11-16-사전-조건).
+
 공통 코드와 Qwen은 `legacy`를 import하지 않습니다. CLI dispatch는 예외이며 보고서는 실행 probe에 의존하지 않습니다. `write_json`은 원자적 체크포인트, JSONL 이벤트는 행별 보존입니다. 입력·출력/실패·`ko_cer_v1` 계약을 유지하며 Host 모의 검사와 RP5 실제 추론을 구분합니다. [테스트](../../tests/README.md), [경로 이행](structure_migration.md).
 
 새 개발은 [공유 GGUF 설정](../../configs/gguf_realtime.toml)과 [개발 안내](../../CONTRIBUTING.md)에서 시작합니다. CLI 목록은 현재·이전 Qwen 진단·legacy·유지보수로 구분하지만 기존 명령은 같은 실행기로 전달합니다. 환경·외부 바이너리는 [환경 기록](environment.md)에, 모델 없는 자동 검사는 `.github/workflows/host.yml`에 있습니다.

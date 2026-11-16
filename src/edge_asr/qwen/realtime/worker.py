@@ -34,17 +34,28 @@ class DecodeWorker:
             return idle, self.last_inference_s
 
     def estimate_cost(self, kind, frames, *, model="total"):
-        """최근3회·1.2 여유. audio는 측정한 음성 처리 부분만 길이에 따라 확대한다."""
-        if model not in ("total", "audio"):
-            raise ValueError("비용 추정은 total/audio여야 합니다.")
+        """최근3회·1.2 여유. audio_scaled는 짧아진 입력의 음성 비용도 비례 조정한다."""
+        if model not in ("total", "audio", "audio_scaled"):
+            raise ValueError("비용 추정은 total/audio/audio_scaled여야 합니다.")
         with self.condition:
             history = self.costs[kind]
             if not history:
                 return None
-            if model == "audio" and all(audio is not None for _, _, audio in history):
+            if model in ("audio", "audio_scaled") and all(
+                audio is not None for _, _, audio in history
+            ):
                 return (
                     max(
-                        cost + audio * (max(1.0, frames / samples) - 1)
+                        cost
+                        + audio
+                        * (
+                            (
+                                frames / samples
+                                if model == "audio_scaled"
+                                else max(1.0, frames / samples)
+                            )
+                            - 1
+                        )
                         for samples, cost, audio in history
                     )
                     * 1.2

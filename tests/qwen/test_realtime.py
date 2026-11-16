@@ -81,6 +81,41 @@ class RealtimeTests(unittest.TestCase):
         finally:
             session.close()
 
+    def test_scaled_audio_cost_is_optional_and_preserves_non_audio_work(self):
+        required = ["--manifest", "input.jsonl", "--output", "new-run"]
+        parser = argument_parser()
+        self.assertEqual(parser.parse_args(required).partial_cost_model, "total")
+        self.assertEqual(
+            parser.parse_args(
+                [*required, "--partial-cost-model", "audio_scaled"]
+            ).partial_cost_model,
+            "audio_scaled",
+        )
+        worker = DecodeWorker(None, lambda event: None)
+        try:
+            with worker.condition:
+                worker.costs["partial"].extend(((16000, 1.0, 0.25), (32000, 1.4, 0.5)))
+            shorter = worker.estimate_cost("partial", 16000, model="audio_scaled")
+            self.assertAlmostEqual(shorter, 1.38)
+            self.assertLess(shorter, worker.estimate_cost("partial", 16000, model="audio"))
+            # 생성 등 나머지 비용과 20% 여유는 짧은 입력에서도 유지한다.
+            self.assertGreaterEqual(
+                worker.estimate_cost("partial", 320, model="audio_scaled"), (1.4 - 0.5) * 1.2
+            )
+            for frames in (32000, 48000):
+                self.assertEqual(
+                    worker.estimate_cost("partial", frames, model="audio_scaled"),
+                    worker.estimate_cost("partial", frames, model="audio"),
+                )
+            with worker.condition:
+                worker.costs["partial"].append((16000, 1.0, None))
+            self.assertEqual(
+                worker.estimate_cost("partial", 16000, model="audio_scaled"),
+                worker.estimate_cost("partial", 16000),
+            )
+        finally:
+            worker.finish(2)
+
     def test_prefix_replay_keeps_caption_until_correction_and_terminal_failure_clears_it(self):
         class Streaming(Adapter):
             supports_token_stream = True
@@ -421,6 +456,7 @@ class RealtimeTests(unittest.TestCase):
             (2.5, 2, "total"),
             (1e-12, 1, "total"),
             (2.5, 2, "audio"),
+            (2.5, 2, "audio_scaled"),
         ):
             adapter, events = Adapter(), []
             adapter.release.set()
