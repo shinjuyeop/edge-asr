@@ -1,0 +1,1474 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-16",
+  "kind": "qwen3_first_request_pilot",
+  "source_commit": "d605175a33ca47c0a42a592eb277508d73e6e2b3",
+  "raw_path": "results/optimization/opt3/realtime-first-request-20261116-01",
+  "cases": {
+    "control-before": {
+      "raw_path": "results/optimization/opt3/realtime-first-request-20261116-01/control-before",
+      "source_commit": "d605175a33ca47c0a42a592eb277508d73e6e2b3",
+      "worker_sha256": "6912fca3481d09d11bc86d9a1671e369c8906b756f702d45daacca2b787736ac",
+      "complete": true,
+      "operational_valid": true,
+      "limit_verified": true,
+      "failed_calls": 0,
+      "input_drops": 0,
+      "source_count": 6,
+      "audio": {
+        "sha256": "532ab9a6a56f91e3d2a0ebd9b953ad4fce07dbbe197324580a057c537d02b779",
+        "frames": 969980,
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "duration_s": 60.62375
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 17,
+        "deletions": 29,
+        "insertions": 4,
+        "errors": 50,
+        "cer": 0.17857142857142858
+      },
+      "max_growth_gap_s": {
+        "n": 6,
+        "mean": 3.888496861312771,
+        "p50": 4.10444716794882,
+        "p95": 5.00515770597849,
+        "max": 5.00515770597849
+      },
+      "scheduler": {
+        "mode": "adaptive",
+        "policy": "budgeted",
+        "version": "budgeted-headroom-v2",
+        "cost_model": "audio",
+        "decisions": {
+          "minimum_audio": 815,
+          "first_offered": 14,
+          "busy": 166,
+          "offered": 5,
+          "call_budget": 183,
+          "cost_budget": 177
+        }
+      },
+      "first_s": {
+        "n": 6,
+        "mean": 2.5569333904813196,
+        "p50": 2.396198296984192,
+        "p95": 4.142719302012118,
+        "max": 4.142719302012118
+      },
+      "first4_s": {
+        "n": 6,
+        "mean": 2.8725261689883967,
+        "p50": 2.697858973999973,
+        "p95": 4.316722889989613,
+        "max": 4.316722889989613
+      },
+      "file_end_s": {
+        "n": 6,
+        "mean": 1.1674084399856313,
+        "p50": 0.8943471689987916,
+        "p95": 1.983018787007313,
+        "max": 1.983018787007313
+      },
+      "source_delays": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_s": 1.8831847629626282,
+          "first4_s": 2.962362246995326,
+          "file_end_s": 1.983018787007313,
+          "max_growth_gap_s": 1.8831847629626282,
+          "growth_updates_during_input": 8
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_s": 2.5797055349801665,
+          "first4_s": 2.697858973999973,
+          "file_end_s": 1.8122197579867212,
+          "max_growth_gap_s": 5.00515770597849,
+          "growth_updates_during_input": 17
+        },
+        {
+          "id": "fleurs-14278025439467391857",
+          "first_s": 2.6356117759640334,
+          "first4_s": 2.810010853972752,
+          "file_end_s": 1.6305918279751204,
+          "max_growth_gap_s": 4.037741855013184,
+          "growth_updates_during_input": 8
+        },
+        {
+          "id": "zeroth-137_003_2281",
+          "first_s": 2.396198296984192,
+          "first4_s": 2.570304574975278,
+          "file_end_s": 0.5868944739690036,
+          "max_growth_gap_s": 4.157730373961385,
+          "growth_updates_during_input": 22
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_s": 4.142719302012118,
+          "first4_s": 4.316722889989613,
+          "file_end_s": 0.09737862397683728,
+          "max_growth_gap_s": 4.142719302012118,
+          "growth_updates_during_input": 73
+        },
+        {
+          "id": "zeroth-104_003_1661",
+          "first_s": 1.7041806699847797,
+          "first4_s": 1.877897473997436,
+          "file_end_s": 0.8943471689987916,
+          "max_growth_gap_s": 4.10444716794882,
+          "growth_updates_during_input": 24
+        }
+      ],
+      "final_calls": 15,
+      "partial_calls": 15,
+      "submitted_requests": 34,
+      "coalesced_requests": 4,
+      "final_compute_s": 27.84989470813889,
+      "total_compute_s": 43.97759886016138,
+      "partial_compute_s": 16.12770415202249,
+      "same_previous_final": true,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 274,
+        "normalized_revisions": 2,
+        "retracted_suffix_characters": 2,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 104,
+        "segments_with_display": 15,
+        "revised_segments": 2,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 15,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 10,
+          "whole_partial_is_final_prefix": 8,
+          "partial_characters": 93,
+          "retained_prefix_characters": 91,
+          "retained_prefix_fraction": 0.978494623655914
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "rss_max_mib": 1724.78125,
+      "thermal": {
+        "start_mc": 57850,
+        "max_mc": 78200,
+        "end_mc": 71050,
+        "current_limits": [
+          0
+        ],
+        "arm_clock_hz": {
+          "n": 74,
+          "mean": 2400028364.108108,
+          "p50": 2400030464,
+          "p95": 2400037120,
+          "max": 2400037120
+        }
+      },
+      "settings": {
+        "gap_s": 0.0,
+        "vad_preprocess": "rms26-floor80",
+        "vad_threshold": 0.3,
+        "vad_max_speech_s": 5,
+        "partial_after_s": 1.0,
+        "partial_interval_s": 4.0,
+        "partial_mode": "adaptive",
+        "partial_min_new_s": 0.8,
+        "partial_tail_margin_s": 0.2,
+        "adaptive_policy": "budgeted",
+        "partial_cost_model": "audio",
+        "partial_budget_s": 3.0,
+        "partial_max_calls": 2,
+        "partial_followup_s": null,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "token_stream": true,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "source_details": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_job_id": 0,
+          "first_job_kind": "partial",
+          "first_s": 1.8831847629626282,
+          "first4_s": 2.962362246995326,
+          "file_end_s": 1.983018787007313,
+          "max_growth_gap_s": 1.8831847629626282,
+          "first_owned_start_offset_s": 0.22,
+          "first_from_owned_start_s": 1.6631847629626282,
+          "first4_from_owned_start_s": 2.742362246995326
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_job_id": 3,
+          "first_job_kind": "partial",
+          "first_s": 2.5797055349801665,
+          "first4_s": 2.697858973999973,
+          "file_end_s": 1.8122197579867212,
+          "max_growth_gap_s": 5.00515770597849,
+          "first_owned_start_offset_s": 0.916,
+          "first_from_owned_start_s": 1.6637055349801666,
+          "first4_from_owned_start_s": 1.7818589739999733
+        },
+        {
+          "id": "fleurs-14278025439467391857",
+          "first_job_id": 7,
+          "first_job_kind": "partial",
+          "first_s": 2.6356117759640334,
+          "first4_s": 2.810010853972752,
+          "file_end_s": 1.6305918279751204,
+          "max_growth_gap_s": 4.037741855013184,
+          "first_owned_start_offset_s": 1.0124375,
+          "first_from_owned_start_s": 1.6231742759640333,
+          "first4_from_owned_start_s": 1.797573353972752
+        },
+        {
+          "id": "zeroth-137_003_2281",
+          "first_job_id": 10,
+          "first_job_kind": "partial",
+          "first_s": 2.396198296984192,
+          "first4_s": 2.570304574975278,
+          "file_end_s": 0.5868944739690036,
+          "max_growth_gap_s": 4.157730373961385,
+          "first_owned_start_offset_s": 0.7844375,
+          "first_from_owned_start_s": 1.6117607969841918,
+          "first4_from_owned_start_s": 1.785867074975278
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_job_id": 15,
+          "first_job_kind": "partial",
+          "first_s": 4.142719302012118,
+          "first4_s": 4.316722889989613,
+          "file_end_s": 0.09737862397683728,
+          "max_growth_gap_s": 4.142719302012118,
+          "first_owned_start_offset_s": 2.4640625,
+          "first_from_owned_start_s": 1.6786568020121182,
+          "first4_from_owned_start_s": 1.8526603899896132
+        },
+        {
+          "id": "zeroth-104_003_1661",
+          "first_job_id": 29,
+          "first_job_kind": "partial",
+          "first_s": 1.7041806699847797,
+          "first4_s": 1.877897473997436,
+          "file_end_s": 0.8943471689987916,
+          "max_growth_gap_s": 4.10444716794882,
+          "first_owned_start_offset_s": 0.0640625,
+          "first_from_owned_start_s": 1.6401181699847798,
+          "first4_from_owned_start_s": 1.813834973997436
+        }
+      ],
+      "first_owned_s": {
+        "n": 6,
+        "mean": 1.6467667238146528,
+        "p50": 1.6401181699847798,
+        "p95": 1.6786568020121182,
+        "max": 1.6786568020121182
+      },
+      "first4_owned_s": {
+        "n": 6,
+        "mean": 1.96235950232173,
+        "p50": 1.797573353972752,
+        "p95": 2.742362246995326,
+        "max": 2.742362246995326
+      },
+      "initial_partial_calls": 10,
+      "initial_pcm_s": {
+        "n": 10,
+        "mean": 1.0280000000000002,
+        "p50": 1.028,
+        "p95": 1.028,
+        "max": 1.028
+      },
+      "initial_native_ttft_s": {
+        "n": 10,
+        "mean": 0.5720672985000002,
+        "p50": 0.571446092,
+        "p95": 0.574379008,
+        "max": 0.574379008
+      },
+      "initial_empty_outputs": 0,
+      "empty_partial_outputs": 0,
+      "final_queue_wait_s": {
+        "n": 15,
+        "mean": 0.5838003469980322,
+        "p50": 0.3231815980398096,
+        "p95": 2.3458163809846155,
+        "max": 2.3458163809846155
+      },
+      "replay_cpu_s": 119.246485184,
+      "final_signature_sha256": "5b73388f6919ff11951d85a71508a4e59184c645bd99d4f95fefa2c2b0e6fd08"
+    },
+    "first-060": {
+      "raw_path": "results/optimization/opt3/realtime-first-request-20261116-01/first-060",
+      "source_commit": "d605175a33ca47c0a42a592eb277508d73e6e2b3",
+      "worker_sha256": "296eb30f168359fcc525dd07972adaa7ad75220f1e2bda9d20f70f04049193a3",
+      "complete": true,
+      "operational_valid": true,
+      "limit_verified": true,
+      "failed_calls": 0,
+      "input_drops": 0,
+      "source_count": 6,
+      "audio": {
+        "sha256": "532ab9a6a56f91e3d2a0ebd9b953ad4fce07dbbe197324580a057c537d02b779",
+        "frames": 969980,
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "duration_s": 60.62375
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 17,
+        "deletions": 29,
+        "insertions": 4,
+        "errors": 50,
+        "cer": 0.17857142857142858
+      },
+      "max_growth_gap_s": {
+        "n": 6,
+        "mean": 3.806879702826341,
+        "p50": 4.3110037770238705,
+        "p95": 4.656576766981743,
+        "max": 4.656576766981743
+      },
+      "scheduler": {
+        "mode": "adaptive",
+        "policy": "budgeted",
+        "version": "budgeted-headroom-v2",
+        "cost_model": "audio",
+        "decisions": {
+          "minimum_audio": 733,
+          "first_offered": 14,
+          "offered": 8,
+          "busy": 217,
+          "call_budget": 388
+        }
+      },
+      "first_s": {
+        "n": 6,
+        "mean": 2.0971711740035874,
+        "p50": 2.104170865036547,
+        "p95": 3.524645888980011,
+        "max": 3.524645888980011
+      },
+      "first4_s": {
+        "n": 6,
+        "mean": 2.589805885344433,
+        "p50": 2.383122669001576,
+        "p95": 3.6957404929911704,
+        "max": 3.6957404929911704
+      },
+      "file_end_s": {
+        "n": 6,
+        "mean": 1.1495551676732327,
+        "p50": 0.9887135059968557,
+        "p95": 2.0144965450279413,
+        "max": 2.0144965450279413
+      },
+      "source_delays": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_s": 1.2568456400185823,
+          "first4_s": 2.4540982820326462,
+          "file_end_s": 2.0144965450279413,
+          "max_growth_gap_s": 1.688247867964674,
+          "growth_updates_during_input": 5
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_s": 2.369258979987353,
+          "first4_s": 2.4885563440155236,
+          "file_end_s": 1.8489801150206482,
+          "max_growth_gap_s": 4.452263644023333,
+          "growth_updates_during_input": 16
+        },
+        {
+          "id": "fleurs-14278025439467391857",
+          "first_s": 2.204492349985056,
+          "first4_s": 2.383122669001576,
+          "file_end_s": 1.7480362579873763,
+          "max_growth_gap_s": 3.331332421971485,
+          "growth_updates_during_input": 11
+        },
+        {
+          "id": "zeroth-137_003_2281",
+          "first_s": 2.104170865036547,
+          "first4_s": 2.2242106589903123,
+          "file_end_s": 0.6365710170124643,
+          "max_growth_gap_s": 4.401853738992941,
+          "growth_updates_during_input": 20
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_s": 3.524645888980011,
+          "first4_s": 3.6957404929911704,
+          "file_end_s": -0.3394664350058889,
+          "max_growth_gap_s": 4.3110037770238705,
+          "growth_updates_during_input": 73
+        },
+        {
+          "id": "zeroth-104_003_1661",
+          "first_s": 1.1236133200139733,
+          "first4_s": 2.2931068650353694,
+          "file_end_s": 0.9887135059968557,
+          "max_growth_gap_s": 4.656576766981743,
+          "growth_updates_during_input": 23
+        }
+      ],
+      "final_calls": 15,
+      "partial_calls": 18,
+      "submitted_requests": 37,
+      "coalesced_requests": 4,
+      "final_compute_s": 28.36311731400201,
+      "total_compute_s": 43.43950966914417,
+      "partial_compute_s": 15.076392355142161,
+      "same_previous_final": true,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 296,
+        "normalized_revisions": 9,
+        "retracted_suffix_characters": 18,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 78,
+        "segments_with_display": 15,
+        "revised_segments": 8,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 15,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 10,
+          "whole_partial_is_final_prefix": 8,
+          "partial_characters": 83,
+          "retained_prefix_characters": 80,
+          "retained_prefix_fraction": 0.963855421686747
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.5625583702099642,
+          "p50": 0.0,
+          "p95": 2.817503077967558,
+          "max": 2.817503077967558
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "rss_max_mib": 1723.890625,
+      "thermal": {
+        "start_mc": 71050,
+        "max_mc": 83150,
+        "end_mc": 73250,
+        "current_limits": [
+          0,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 74,
+          "mean": 2398649416.6486487,
+          "p50": 2400027136,
+          "p95": 2400037120,
+          "max": 2400037120
+        }
+      },
+      "settings": {
+        "gap_s": 0.0,
+        "vad_preprocess": "rms26-floor80",
+        "vad_threshold": 0.3,
+        "vad_max_speech_s": 5,
+        "partial_after_s": 0.6,
+        "partial_interval_s": 4.0,
+        "partial_mode": "adaptive",
+        "partial_min_new_s": 0.8,
+        "partial_tail_margin_s": 0.2,
+        "adaptive_policy": "budgeted",
+        "partial_cost_model": "audio",
+        "partial_budget_s": 3.0,
+        "partial_max_calls": 2,
+        "partial_followup_s": null,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "token_stream": true,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "source_details": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_job_id": 0,
+          "first_job_kind": "partial",
+          "first_s": 1.2568456400185823,
+          "first4_s": 2.4540982820326462,
+          "file_end_s": 2.0144965450279413,
+          "max_growth_gap_s": 1.688247867964674,
+          "first_owned_start_offset_s": 0.22,
+          "first_from_owned_start_s": 1.0368456400185824,
+          "first4_from_owned_start_s": 2.234098282032646
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_job_id": 3,
+          "first_job_kind": "partial",
+          "first_s": 2.369258979987353,
+          "first4_s": 2.4885563440155236,
+          "file_end_s": 1.8489801150206482,
+          "max_growth_gap_s": 4.452263644023333,
+          "first_owned_start_offset_s": 0.916,
+          "first_from_owned_start_s": 1.453258979987353,
+          "first4_from_owned_start_s": 1.5725563440155237
+        },
+        {
+          "id": "fleurs-14278025439467391857",
+          "first_job_id": 8,
+          "first_job_kind": "partial",
+          "first_s": 2.204492349985056,
+          "first4_s": 2.383122669001576,
+          "file_end_s": 1.7480362579873763,
+          "max_growth_gap_s": 3.331332421971485,
+          "first_owned_start_offset_s": 1.0124375,
+          "first_from_owned_start_s": 1.192054849985056,
+          "first4_from_owned_start_s": 1.370685169001576
+        },
+        {
+          "id": "zeroth-137_003_2281",
+          "first_job_id": 12,
+          "first_job_kind": "partial",
+          "first_s": 2.104170865036547,
+          "first4_s": 2.2242106589903123,
+          "file_end_s": 0.6365710170124643,
+          "max_growth_gap_s": 4.401853738992941,
+          "first_owned_start_offset_s": 0.7844375,
+          "first_from_owned_start_s": 1.319733365036547,
+          "first4_from_owned_start_s": 1.4397731589903122
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_job_id": 17,
+          "first_job_kind": "partial",
+          "first_s": 3.524645888980011,
+          "first4_s": 3.6957404929911704,
+          "file_end_s": -0.3394664350058889,
+          "max_growth_gap_s": 4.3110037770238705,
+          "first_owned_start_offset_s": 2.4640625,
+          "first_from_owned_start_s": 1.0605833889800111,
+          "first4_from_owned_start_s": 1.2316779929911705
+        },
+        {
+          "id": "zeroth-104_003_1661",
+          "first_job_id": 32,
+          "first_job_kind": "partial",
+          "first_s": 1.1236133200139733,
+          "first4_s": 2.2931068650353694,
+          "file_end_s": 0.9887135059968557,
+          "max_growth_gap_s": 4.656576766981743,
+          "first_owned_start_offset_s": 0.0640625,
+          "first_from_owned_start_s": 1.0595508200139734,
+          "first4_from_owned_start_s": 2.2290443650353695
+        }
+      ],
+      "first_owned_s": {
+        "n": 6,
+        "mean": 1.1870045073369206,
+        "p50": 1.0605833889800111,
+        "p95": 1.453258979987353,
+        "max": 1.453258979987353
+      },
+      "first4_owned_s": {
+        "n": 6,
+        "mean": 1.6796392186777662,
+        "p50": 1.4397731589903122,
+        "p95": 2.234098282032646,
+        "max": 2.234098282032646
+      },
+      "initial_partial_calls": 10,
+      "initial_pcm_s": {
+        "n": 10,
+        "mean": 0.612,
+        "p50": 0.612,
+        "p95": 0.612,
+        "max": 0.612
+      },
+      "initial_native_ttft_s": {
+        "n": 10,
+        "mean": 0.35398150829999997,
+        "p50": 0.354286068,
+        "p95": 0.356179967,
+        "max": 0.356179967
+      },
+      "initial_empty_outputs": 0,
+      "empty_partial_outputs": 0,
+      "final_queue_wait_s": {
+        "n": 15,
+        "mean": 0.5011290353296014,
+        "p50": 0.005914344976190478,
+        "p95": 2.4498384699691087,
+        "max": 2.4498384699691087
+      },
+      "replay_cpu_s": 117.743422151,
+      "final_signature_sha256": "5b73388f6919ff11951d85a71508a4e59184c645bd99d4f95fefa2c2b0e6fd08"
+    },
+    "first-080": {
+      "raw_path": "results/optimization/opt3/realtime-first-request-20261116-01/first-080",
+      "source_commit": "d605175a33ca47c0a42a592eb277508d73e6e2b3",
+      "worker_sha256": "d6a81462d99ecaabea6d818fd34282cad7b8880bb3db2992483d125284e9745e",
+      "complete": true,
+      "operational_valid": true,
+      "limit_verified": true,
+      "failed_calls": 0,
+      "input_drops": 0,
+      "source_count": 6,
+      "audio": {
+        "sha256": "532ab9a6a56f91e3d2a0ebd9b953ad4fce07dbbe197324580a057c537d02b779",
+        "frames": 969980,
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "duration_s": 60.62375
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 17,
+        "deletions": 29,
+        "insertions": 4,
+        "errors": 50,
+        "cer": 0.17857142857142858
+      },
+      "max_growth_gap_s": {
+        "n": 6,
+        "mean": 3.619325013674951,
+        "p50": 3.8258773860288784,
+        "p95": 4.474718909012154,
+        "max": 4.474718909012154
+      },
+      "scheduler": {
+        "mode": "adaptive",
+        "policy": "budgeted",
+        "version": "budgeted-headroom-v2",
+        "cost_model": "audio",
+        "decisions": {
+          "minimum_audio": 813,
+          "first_offered": 14,
+          "offered": 8,
+          "busy": 189,
+          "call_budget": 336
+        }
+      },
+      "first_s": {
+        "n": 6,
+        "mean": 2.213726172359738,
+        "p50": 2.1126675390470773,
+        "p95": 3.7243175760144354,
+        "max": 3.7243175760144354
+      },
+      "first4_s": {
+        "n": 6,
+        "mean": 2.747878735021843,
+        "p50": 2.5010524940001773,
+        "p95": 4.023055216041392,
+        "max": 4.023055216041392
+      },
+      "file_end_s": {
+        "n": 6,
+        "mean": 1.193526578024262,
+        "p50": 1.0174200239987101,
+        "p95": 2.043191097048111,
+        "max": 2.043191097048111
+      },
+      "source_delays": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_s": 1.4615344270132482,
+          "first4_s": 2.674175614025444,
+          "file_end_s": 2.043191097048111,
+          "max_growth_gap_s": 1.4615344270132482,
+          "growth_updates_during_input": 7
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_s": 2.397607500036247,
+          "first4_s": 2.520625218003988,
+          "file_end_s": 1.9325025229989556,
+          "max_growth_gap_s": 4.357177235011477,
+          "growth_updates_during_input": 15
+        },
+        {
+          "id": "fleurs-14278025439467391857",
+          "first_s": 2.293493496013806,
+          "first4_s": 2.473715221036226,
+          "file_end_s": 1.7486986370123923,
+          "max_growth_gap_s": 3.147083936951123,
+          "growth_updates_during_input": 12
+        },
+        {
+          "id": "zeroth-137_003_2281",
+          "first_s": 2.1126675390470773,
+          "first4_s": 2.2946486470238305,
+          "file_end_s": 0.6634811610332676,
+          "max_growth_gap_s": 4.4495581880328245,
+          "growth_updates_during_input": 21
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_s": 3.7243175760144354,
+          "first4_s": 4.023055216041392,
+          "file_end_s": -0.2441339739458641,
+          "max_growth_gap_s": 3.8258773860288784,
+          "growth_updates_during_input": 71
+        },
+        {
+          "id": "zeroth-104_003_1661",
+          "first_s": 1.292736496033612,
+          "first4_s": 2.5010524940001773,
+          "file_end_s": 1.0174200239987101,
+          "max_growth_gap_s": 4.474718909012154,
+          "growth_updates_during_input": 23
+        }
+      ],
+      "final_calls": 15,
+      "partial_calls": 18,
+      "submitted_requests": 37,
+      "coalesced_requests": 4,
+      "final_compute_s": 28.806693020858802,
+      "total_compute_s": 44.98521430196706,
+      "partial_compute_s": 16.17852128110826,
+      "same_previous_final": true,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 283,
+        "normalized_revisions": 5,
+        "retracted_suffix_characters": 10,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 106,
+        "segments_with_display": 15,
+        "revised_segments": 5,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 17,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 10,
+          "whole_partial_is_final_prefix": 9,
+          "partial_characters": 95,
+          "retained_prefix_characters": 94,
+          "retained_prefix_fraction": 0.9894736842105263
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.13585152478273294,
+          "p50": 0.0,
+          "p95": 0.9730964379850775,
+          "max": 0.9730964379850775
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "rss_max_mib": 1724.84375,
+      "thermal": {
+        "start_mc": 72150,
+        "max_mc": 85900,
+        "end_mc": 74350,
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 74,
+          "mean": 2371972507.675676,
+          "p50": 2400023808,
+          "p95": 2400033792,
+          "max": 2400037120
+        }
+      },
+      "settings": {
+        "gap_s": 0.0,
+        "vad_preprocess": "rms26-floor80",
+        "vad_threshold": 0.3,
+        "vad_max_speech_s": 5,
+        "partial_after_s": 0.8,
+        "partial_interval_s": 4.0,
+        "partial_mode": "adaptive",
+        "partial_min_new_s": 0.8,
+        "partial_tail_margin_s": 0.2,
+        "adaptive_policy": "budgeted",
+        "partial_cost_model": "audio",
+        "partial_budget_s": 3.0,
+        "partial_max_calls": 2,
+        "partial_followup_s": null,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "token_stream": true,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "source_details": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_job_id": 0,
+          "first_job_kind": "partial",
+          "first_s": 1.4615344270132482,
+          "first4_s": 2.674175614025444,
+          "file_end_s": 2.043191097048111,
+          "max_growth_gap_s": 1.4615344270132482,
+          "first_owned_start_offset_s": 0.22,
+          "first_from_owned_start_s": 1.2415344270132482,
+          "first4_from_owned_start_s": 2.4541756140254436
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_job_id": 3,
+          "first_job_kind": "partial",
+          "first_s": 2.397607500036247,
+          "first4_s": 2.520625218003988,
+          "file_end_s": 1.9325025229989556,
+          "max_growth_gap_s": 4.357177235011477,
+          "first_owned_start_offset_s": 0.916,
+          "first_from_owned_start_s": 1.481607500036247,
+          "first4_from_owned_start_s": 1.6046252180039882
+        },
+        {
+          "id": "fleurs-14278025439467391857",
+          "first_job_id": 8,
+          "first_job_kind": "partial",
+          "first_s": 2.293493496013806,
+          "first4_s": 2.473715221036226,
+          "file_end_s": 1.7486986370123923,
+          "max_growth_gap_s": 3.147083936951123,
+          "first_owned_start_offset_s": 1.0124375,
+          "first_from_owned_start_s": 1.2810559960138057,
+          "first4_from_owned_start_s": 1.461277721036226
+        },
+        {
+          "id": "zeroth-137_003_2281",
+          "first_job_id": 12,
+          "first_job_kind": "partial",
+          "first_s": 2.1126675390470773,
+          "first4_s": 2.2946486470238305,
+          "file_end_s": 0.6634811610332676,
+          "max_growth_gap_s": 4.4495581880328245,
+          "first_owned_start_offset_s": 0.7844375,
+          "first_from_owned_start_s": 1.3282300390470771,
+          "first4_from_owned_start_s": 1.5102111470238304
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_job_id": 17,
+          "first_job_kind": "partial",
+          "first_s": 3.7243175760144354,
+          "first4_s": 4.023055216041392,
+          "file_end_s": -0.2441339739458641,
+          "max_growth_gap_s": 3.8258773860288784,
+          "first_owned_start_offset_s": 2.4640625,
+          "first_from_owned_start_s": 1.2602550760144355,
+          "first4_from_owned_start_s": 1.5589927160413923
+        },
+        {
+          "id": "zeroth-104_003_1661",
+          "first_job_id": 32,
+          "first_job_kind": "partial",
+          "first_s": 1.292736496033612,
+          "first4_s": 2.5010524940001773,
+          "file_end_s": 1.0174200239987101,
+          "max_growth_gap_s": 4.474718909012154,
+          "first_owned_start_offset_s": 0.0640625,
+          "first_from_owned_start_s": 1.2286739960336122,
+          "first4_from_owned_start_s": 2.4369899940001774
+        }
+      ],
+      "first_owned_s": {
+        "n": 6,
+        "mean": 1.303559505693071,
+        "p50": 1.2602550760144355,
+        "p95": 1.481607500036247,
+        "max": 1.481607500036247
+      },
+      "first4_owned_s": {
+        "n": 6,
+        "mean": 1.8377120683551762,
+        "p50": 1.5589927160413923,
+        "p95": 2.4541756140254436,
+        "max": 2.4541756140254436
+      },
+      "initial_partial_calls": 10,
+      "initial_pcm_s": {
+        "n": 10,
+        "mean": 0.804,
+        "p50": 0.804,
+        "p95": 0.804,
+        "max": 0.804
+      },
+      "initial_native_ttft_s": {
+        "n": 10,
+        "mean": 0.35860021630000005,
+        "p50": 0.356069977,
+        "p95": 0.370693263,
+        "max": 0.370693263
+      },
+      "initial_empty_outputs": 0,
+      "empty_partial_outputs": 0,
+      "final_queue_wait_s": {
+        "n": 15,
+        "mean": 0.5728064907326673,
+        "p50": 0.37702806101879105,
+        "p95": 2.438773164001759,
+        "max": 2.438773164001759
+      },
+      "replay_cpu_s": 121.71634083700002,
+      "final_signature_sha256": "5b73388f6919ff11951d85a71508a4e59184c645bd99d4f95fefa2c2b0e6fd08"
+    },
+    "control-after": {
+      "raw_path": "results/optimization/opt3/realtime-first-request-20261116-01/control-after",
+      "source_commit": "d605175a33ca47c0a42a592eb277508d73e6e2b3",
+      "worker_sha256": "d8a6f8f2b9f703a7164a96d5b69a729c047959ba7612d96ba102a1d44f0fa2cb",
+      "complete": true,
+      "operational_valid": true,
+      "limit_verified": true,
+      "failed_calls": 0,
+      "input_drops": 0,
+      "source_count": 6,
+      "audio": {
+        "sha256": "532ab9a6a56f91e3d2a0ebd9b953ad4fce07dbbe197324580a057c537d02b779",
+        "frames": 969980,
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "duration_s": 60.62375
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 17,
+        "deletions": 29,
+        "insertions": 4,
+        "errors": 50,
+        "cer": 0.17857142857142858
+      },
+      "max_growth_gap_s": {
+        "n": 6,
+        "mean": 3.91209282849147,
+        "p50": 4.040274933038745,
+        "p95": 4.917147723957896,
+        "max": 4.917147723957896
+      },
+      "scheduler": {
+        "mode": "adaptive",
+        "policy": "budgeted",
+        "version": "budgeted-headroom-v2",
+        "cost_model": "audio",
+        "decisions": {
+          "minimum_audio": 790,
+          "first_offered": 14,
+          "busy": 167,
+          "offered": 3,
+          "call_budget": 136,
+          "cost_budget": 250
+        }
+      },
+      "first_s": {
+        "n": 6,
+        "mean": 2.5936274906564503,
+        "p50": 2.4243638800173066,
+        "p95": 4.183704853965899,
+        "max": 4.183704853965899
+      },
+      "first4_s": {
+        "n": 6,
+        "mean": 2.918576986829905,
+        "p50": 2.8053848410025237,
+        "p95": 4.364172695006708,
+        "max": 4.364172695006708
+      },
+      "file_end_s": {
+        "n": 6,
+        "mean": 1.1233937241632177,
+        "p50": 1.0038645000010717,
+        "p95": 2.0744057190138845,
+        "max": 2.0744057190138845
+      },
+      "source_delays": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_s": 1.893829337961506,
+          "first4_s": 2.9857185420114547,
+          "file_end_s": 2.0744057190138845,
+          "max_growth_gap_s": 1.893829337961506,
+          "growth_updates_during_input": 8
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_s": 2.679008641000837,
+          "first4_s": 2.8053848410025237,
+          "file_end_s": 1.9696770419757819,
+          "max_growth_gap_s": 4.917147723957896,
+          "growth_updates_during_input": 16
+        },
+        {
+          "id": "fleurs-14278025439467391857",
+          "first_s": 2.6570661169751553,
+          "first4_s": 2.84190864499379,
+          "file_end_s": 1.7452487649926915,
+          "max_growth_gap_s": 3.9958619989855215,
+          "growth_updates_during_input": 8
+        },
+        {
+          "id": "zeroth-137_003_2281",
+          "first_s": 2.4243638800173066,
+          "first4_s": 2.609882244963199,
+          "file_end_s": 0.7355738419922986,
+          "max_growth_gap_s": 4.040274933038745,
+          "growth_updates_during_input": 21
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_s": 4.183704853965899,
+          "first4_s": 4.364172695006708,
+          "file_end_s": -0.7884075229964225,
+          "max_growth_gap_s": 4.521151536027901,
+          "growth_updates_during_input": 73
+        },
+        {
+          "id": "zeroth-104_003_1661",
+          "first_s": 1.7237921140179964,
+          "first4_s": 1.9043949530017557,
+          "file_end_s": 1.0038645000010717,
+          "max_growth_gap_s": 4.104291440977249,
+          "growth_updates_during_input": 24
+        }
+      ],
+      "final_calls": 15,
+      "partial_calls": 13,
+      "submitted_requests": 32,
+      "coalesced_requests": 4,
+      "final_compute_s": 28.895997006911784,
+      "total_compute_s": 42.75054895703215,
+      "partial_compute_s": 13.854551950120367,
+      "same_previous_final": true,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 272,
+        "normalized_revisions": 2,
+        "retracted_suffix_characters": 2,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 82,
+        "segments_with_display": 15,
+        "revised_segments": 2,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 13,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 10,
+          "whole_partial_is_final_prefix": 8,
+          "partial_characters": 81,
+          "retained_prefix_characters": 79,
+          "retained_prefix_fraction": 0.9753086419753086
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "rss_max_mib": 1723.40625,
+      "thermal": {
+        "start_mc": 76000,
+        "max_mc": 84800,
+        "end_mc": 77100,
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 74,
+          "mean": 2376148853.6216216,
+          "p50": 2400023808,
+          "p95": 2400033792,
+          "max": 2400037120
+        }
+      },
+      "settings": {
+        "gap_s": 0.0,
+        "vad_preprocess": "rms26-floor80",
+        "vad_threshold": 0.3,
+        "vad_max_speech_s": 5,
+        "partial_after_s": 1.0,
+        "partial_interval_s": 4.0,
+        "partial_mode": "adaptive",
+        "partial_min_new_s": 0.8,
+        "partial_tail_margin_s": 0.2,
+        "adaptive_policy": "budgeted",
+        "partial_cost_model": "audio",
+        "partial_budget_s": 3.0,
+        "partial_max_calls": 2,
+        "partial_followup_s": null,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "token_stream": true,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "source_details": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_job_id": 0,
+          "first_job_kind": "partial",
+          "first_s": 1.893829337961506,
+          "first4_s": 2.9857185420114547,
+          "file_end_s": 2.0744057190138845,
+          "max_growth_gap_s": 1.893829337961506,
+          "first_owned_start_offset_s": 0.22,
+          "first_from_owned_start_s": 1.6738293379615061,
+          "first4_from_owned_start_s": 2.7657185420114545
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_job_id": 3,
+          "first_job_kind": "partial",
+          "first_s": 2.679008641000837,
+          "first4_s": 2.8053848410025237,
+          "file_end_s": 1.9696770419757819,
+          "max_growth_gap_s": 4.917147723957896,
+          "first_owned_start_offset_s": 0.916,
+          "first_from_owned_start_s": 1.763008641000837,
+          "first4_from_owned_start_s": 1.8893848410025238
+        },
+        {
+          "id": "fleurs-14278025439467391857",
+          "first_job_id": 7,
+          "first_job_kind": "partial",
+          "first_s": 2.6570661169751553,
+          "first4_s": 2.84190864499379,
+          "file_end_s": 1.7452487649926915,
+          "max_growth_gap_s": 3.9958619989855215,
+          "first_owned_start_offset_s": 1.0124375,
+          "first_from_owned_start_s": 1.6446286169751552,
+          "first4_from_owned_start_s": 1.82947114499379
+        },
+        {
+          "id": "zeroth-137_003_2281",
+          "first_job_id": 10,
+          "first_job_kind": "partial",
+          "first_s": 2.4243638800173066,
+          "first4_s": 2.609882244963199,
+          "file_end_s": 0.7355738419922986,
+          "max_growth_gap_s": 4.040274933038745,
+          "first_owned_start_offset_s": 0.7844375,
+          "first_from_owned_start_s": 1.6399263800173065,
+          "first4_from_owned_start_s": 1.8254447449631988
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_job_id": 15,
+          "first_job_kind": "partial",
+          "first_s": 4.183704853965899,
+          "first4_s": 4.364172695006708,
+          "file_end_s": -0.7884075229964225,
+          "max_growth_gap_s": 4.521151536027901,
+          "first_owned_start_offset_s": 2.4640625,
+          "first_from_owned_start_s": 1.7196423539658996,
+          "first4_from_owned_start_s": 1.9001101950067083
+        },
+        {
+          "id": "zeroth-104_003_1661",
+          "first_job_id": 27,
+          "first_job_kind": "partial",
+          "first_s": 1.7237921140179964,
+          "first4_s": 1.9043949530017557,
+          "file_end_s": 1.0038645000010717,
+          "max_growth_gap_s": 4.104291440977249,
+          "first_owned_start_offset_s": 0.0640625,
+          "first_from_owned_start_s": 1.6597296140179965,
+          "first4_from_owned_start_s": 1.8403324530017557
+        }
+      ],
+      "first_owned_s": {
+        "n": 6,
+        "mean": 1.6834608239897835,
+        "p50": 1.6597296140179965,
+        "p95": 1.763008641000837,
+        "max": 1.763008641000837
+      },
+      "first4_owned_s": {
+        "n": 6,
+        "mean": 2.0084103201632386,
+        "p50": 1.8403324530017557,
+        "p95": 2.7657185420114545,
+        "max": 2.7657185420114545
+      },
+      "initial_partial_calls": 10,
+      "initial_pcm_s": {
+        "n": 10,
+        "mean": 1.0280000000000002,
+        "p50": 1.028,
+        "p95": 1.028,
+        "max": 1.028
+      },
+      "initial_native_ttft_s": {
+        "n": 10,
+        "mean": 0.5999818707,
+        "p50": 0.592237669,
+        "p95": 0.636133583,
+        "max": 0.636133583
+      },
+      "initial_empty_outputs": 0,
+      "empty_partial_outputs": 0,
+      "final_queue_wait_s": {
+        "n": 15,
+        "mean": 0.5689216386061162,
+        "p50": 0.2435819449601695,
+        "p95": 2.442752248956822,
+        "max": 2.442752248956822
+      },
+      "replay_cpu_s": 116.12188001199999,
+      "final_signature_sha256": "5b73388f6919ff11951d85a71508a4e59184c645bd99d4f95fefa2c2b0e6fd08"
+    }
+  },
+  "checks": {
+    "first-060": {
+      "control-before": {
+        "input_complete": true,
+        "no_failure_drop_missing": true,
+        "same_previous_final_pcm_text_tokens": true,
+        "same_control_final_pcm_text_tokens": true,
+        "same_score": true,
+        "first_p50_improves_015s": true,
+        "first_p95_within01s": true,
+        "rss_within32mib": true,
+        "first4_s_p50_within025s": true,
+        "first4_s_p95_within025s": true,
+        "file_end_s_p95_within025s": true,
+        "final_queue_wait_s_p95_within025s": true,
+        "gap_p95_within01s": true
+      },
+      "control-after": {
+        "input_complete": true,
+        "no_failure_drop_missing": true,
+        "same_previous_final_pcm_text_tokens": true,
+        "same_control_final_pcm_text_tokens": true,
+        "same_score": true,
+        "first_p50_improves_015s": true,
+        "first_p95_within01s": true,
+        "rss_within32mib": true,
+        "first4_s_p50_within025s": true,
+        "first4_s_p95_within025s": true,
+        "file_end_s_p95_within025s": true,
+        "final_queue_wait_s_p95_within025s": true,
+        "gap_p95_within01s": true
+      }
+    },
+    "first-080": {
+      "control-before": {
+        "input_complete": true,
+        "no_failure_drop_missing": true,
+        "same_previous_final_pcm_text_tokens": true,
+        "same_control_final_pcm_text_tokens": true,
+        "same_score": true,
+        "first_p50_improves_015s": true,
+        "first_p95_within01s": true,
+        "rss_within32mib": true,
+        "first4_s_p50_within025s": true,
+        "first4_s_p95_within025s": true,
+        "file_end_s_p95_within025s": true,
+        "final_queue_wait_s_p95_within025s": true,
+        "gap_p95_within01s": true
+      },
+      "control-after": {
+        "input_complete": true,
+        "no_failure_drop_missing": true,
+        "same_previous_final_pcm_text_tokens": true,
+        "same_control_final_pcm_text_tokens": true,
+        "same_score": true,
+        "first_p50_improves_015s": true,
+        "first_p95_within01s": true,
+        "rss_within32mib": true,
+        "first4_s_p50_within025s": true,
+        "first4_s_p95_within025s": true,
+        "file_end_s_p95_within025s": true,
+        "final_queue_wait_s_p95_within025s": true,
+        "gap_p95_within01s": true
+      }
+    }
+  },
+  "selected": "first-060",
+  "source_count": 6,
+  "input_duration_s": 60.62375,
+  "reference_characters": 280,
+  "full100_executed": false,
+  "default_changed": false,
+  "verification": {
+    "protected_assets_unchanged": true,
+    "protected_files": 579,
+    "boot_id": "db0f2e44-3c3f-4b8a-8472-e5618db2aeae",
+    "score_recomputed": true,
+    "independent_host_rp5_analysis_equal": true,
+    "new_raw_files_sha256_equal": 50,
+    "host_tests": {
+      "total": 429,
+      "passed": 426,
+      "skipped": 3
+    },
+    "host_initial_related_tests_passed": 32,
+    "rp5_related_mock_tests_passed": 45,
+    "viewer": {
+      "records": 50,
+      "profiles": 13,
+      "old_records_preserved": 46,
+      "old_profiles_preserved": 10,
+      "replay_records_verified": [
+        "control-before",
+        "first-060",
+        "first-080"
+      ],
+      "no_native_inference_started_by_browser_check": true
+    }
+  },
+  "scope": "Q8·2/3T·같은6개1배속. 첫 요청1→0.6→0.8→1초만 변경. 서버 발행/원음 시작·VAD 소유 시작 기준을 구분. 소표본/운영 열/순서 포함. GUI·음향 단어·부분 CER·장시간 안정성 미측정.",
+  "model": {
+    "num_threads": 2,
+    "quantization": "q8_0",
+    "max_total_len": 512,
+    "max_new_tokens": 128,
+    "family": "qwen3_gguf",
+    "path": "models/qwen3-opt/gguf-q8-20261109-01",
+    "runtime_library": "runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+    "runtime_manifest": "runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+    "num_threads_batch": 3,
+    "cache_text_prefix": true,
+    "language": "ko"
+  },
+  "model_files": {
+    "Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+    },
+    "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+    },
+    "runtime_library": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+      "sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf"
+    },
+    "runtime_manifest": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+      "sha256": "a7fa6d9d6ffab5b5a0f7f98e3dc94cd7d751fe503a16f214936b5ff32fd3d113"
+    }
+  },
+  "model_metadata": {
+    "backend": "llama_cpp_mtmd",
+    "provider": "cpu",
+    "supported_modes": [
+      "batch"
+    ],
+    "token_output_callback": true,
+    "thread_configuration": {
+      "threads": 2,
+      "threads_batch": 3,
+      "audio_threads": 3
+    },
+    "cache_text_prefix": true,
+    "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+    "language": "ko",
+    "stream_language": "Korean",
+    "quantization": "q8_0",
+    "audio_quantization": "q8_0",
+    "quantization_evidence": "official_GGUF_asset_names_and_bound_sha256",
+    "quantization_scope": "텍스트 모델과 오디오 mmproj 모두 Q8_0 배포본. 일부 tensor 혼합 dtype 가능. ONNX INT8과 동일 양자화 방식 아님.",
+    "assets": null,
+    "max_total_len": 512,
+    "max_new_tokens": 128,
+    "prompt_policy": "empty_system_audio_user_forced_assistant_language_Korean_asr_text_v1",
+    "output_policy": "gguf_raw_utf8_until_eog_v1",
+    "sampling": "greedy",
+    "repetition_policy": "last64_token_ids_at_most3_distinct_failure",
+    "use_itn": null,
+    "context_policy": "mtmd_positions_plus_reserved_output_no_truncation_v1",
+    "input_policy": "동일 float32 PCM을 직접 전달. file codec/resampling 없음",
+    "runtime_build": {
+      "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+      "machine": "aarch64",
+      "command": [
+        "g++",
+        "-std=c++17",
+        "-O2",
+        "-fPIC",
+        "-shared",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+        "-I",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+        "-I",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+        "-I",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/vendor/nlohmann",
+        "/home/deepet/projects/edge-asr/native/gguf/bridge.cpp",
+        "-L",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+        "-Wl,-rpath,/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+        "-lllama",
+        "-lmtmd",
+        "-lggml",
+        "-lggml-base",
+        "-pthread",
+        "-o",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so"
+      ],
+      "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "bridge_source_sha256": "7ee8307814e8ee1e5adc85bf2d0751195eafdb2d8815784f56ddc1ac79ab494d",
+      "prefix_cache_source_sha256": "9d60e18b86bdb9371511829fc2eefe7ced2830ce4a0d79c1a0e650e827a8fcbd",
+      "features": [
+        "token_callback_v1",
+        "split_threads_v1",
+        "text_prefix_cache_v1"
+      ],
+      "cmake_cache_sha256": "2d21bf15406912c839456d69ef66f7edcbdfbdc1d3b02d4f5f03b0a09b139b24",
+      "engine_libraries": {
+        "libmtmd.so": "ba8bbb528c24a7cc5721b5cdf520d7ab159f5efb214548628ae5ce240f581296",
+        "libggml.so": "9391d0da5efb090d836eb9f1050270045ae9f215ad8e41368a44d9cd73de82c1",
+        "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+        "libllama.so": "3981f9752c48c595e4fd2ef766e70e6051edc6f54e85e4e0044615e0ddba0999",
+        "libggml-cpu.so": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+        "libllama-common.so": "61278407f85381989b98522229bb57379af9988b301a704f8c55a6619d14bafd"
+      },
+      "library_sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model"
+    }
+  },
+  "input_manifest_sha256": "b9dabb0e87600d49c6b9d07184eee5170497db7dd1f15fe6a52f186583444b80"
+}
