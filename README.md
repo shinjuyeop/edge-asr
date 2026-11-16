@@ -28,6 +28,8 @@ WAV 1배속 입력과 **RP5 USB 마이크**로 부분·확정 자막을 확인�
 
 [거부된 후속 요청의 비용 진단](results/summaries/optimization/blocked-followup-cost-20261116.md)은 RP5 고정 PCM 40호출로 비용 추정의 보수성과 큐 대기 문제를 구분했습니다. 정책·공유 기본은 유지하며 연속 입력의 지연 개선은 후속 비교에서 확인합니다.
 
+후속 [음성 비용 축소·문맥 24개 비교](results/summaries/optimization/realtime-scaled-cost-20261116.md)는 최종 전사·CER 10.20%를 유지했지만 지연 개선 조건에 미달해 기본 전환을 하지 않았습니다. 부분 목록의 VAD 절단 위치가 원래 100개와 달라진 재현 한계도 함께 기록했습니다.
+
 문제 발견과 선택의 흐름은 [ASR 최적화 과정](docs/research/optimization_history.md), 현재 채택한 구성과 최신 결과는 [현재 상태](docs/status.md)에 정리했습니다. [자막 비교 영상](results/summaries/optimization/realtime-video-20261111.md)은 저장된 로그의 동기 재생 자료입니다.
 
 ## 처음 시작하기
