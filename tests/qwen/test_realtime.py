@@ -46,6 +46,10 @@ class RealtimeTests(unittest.TestCase):
         parser = argument_parser()
         required = ["--manifest", "input.jsonl", "--output", "new-run"]
         default = parser.parse_args(required)
+        self.assertFalse(default.protect_short_followup)
+        self.assertTrue(
+            parser.parse_args([*required, "--protect-short-followup"]).protect_short_followup
+        )
         self.assertEqual(default.partial_after_s, 2)
         for value in ("0.6", "0.8", "1", "2", "3"):
             with self.subTest(value=value):
@@ -416,6 +420,14 @@ class RealtimeTests(unittest.TestCase):
             {"partial_budget_s": float("inf")},
             {"partial_max_calls": 0},
             {"partial_max_calls": True},
+            {"protect_short_followup": True},
+            {"protect_short_followup": "true"},
+            {
+                "partial_mode": "adaptive",
+                "adaptive_policy": "budgeted",
+                "partials": False,
+                "protect_short_followup": True,
+            },
         ):
             with self.subTest(settings=settings), self.assertRaises(ValueError):
                 CaptionSession(None, None, 1, None, {}, **settings)
@@ -489,6 +501,104 @@ class RealtimeTests(unittest.TestCase):
                 reason = "call_budget" if expected == 2 else "cost_budget"
                 self.assertGreater(session.scheduler_stats["decisions"].get(reason, 0), 0)
                 self.assertTrue(any(e["type"] == "result" and e["kind"] == "final" for e in events))
+            finally:
+                session.close()
+
+    def test_short_followup_is_selective_bounded_and_preserves_final_pcm(self):
+        class TextAdapter(Adapter):
+            def transcribe(self, audio):
+                super().transcribe(audio)
+                return text
+
+        signatures = []
+        for enabled, text, expected in (
+            (False, "가 나 다!", 1),
+            (True, "가 나 다!", 2),
+            (True, ".", 2),
+            (True, "가나다라", 1),
+            (True, "1234", 1),
+            (True, "", 1),
+        ):
+            adapter, events = TextAdapter(), []
+            adapter.release.set()
+            session = CaptionSession(
+                adapter,
+                BoundedProbabilityVad(Probability()),
+                96000,
+                events.append,
+                {"t0_monotonic_ns": time.perf_counter_ns()},
+                partial_after_s=0.2,
+                partial_mode="adaptive",
+                adaptive_policy="budgeted",
+                partial_min_new_s=0.2,
+                partial_budget_s=1e-12,
+                partial_max_calls=2,
+                max_segment_s=3,
+                protect_short_followup=enabled,
+            )
+            try:
+                for pos in range(0, 96000, 1600):
+                    session.accept_at(session, array("f", [0.25] * 1600), pos, pos + 1600)
+                    deadline = time.monotonic() + 2
+                    while not session.worker.availability()[0] and time.monotonic() < deadline:
+                        time.sleep(0.001)
+                    self.assertTrue(session.worker.availability()[0])
+                session.finish_stream(session)
+                for segment in (0, 1):
+                    requests = [
+                        e
+                        for e in events
+                        if e["type"] == "submitted"
+                        and e["kind"] == "partial"
+                        and e["segment_id"] == segment
+                    ]
+                    self.assertEqual(len(requests), expected, (enabled, text, segment))
+                overrides = [e for e in events if e.get("short_followup_budget_override")]
+                self.assertEqual(len(overrides), 2 if expected == 2 else 0)
+                self.assertTrue(all(e["reason"] == "offered" for e in overrides))
+                signatures.append(
+                    [
+                        (r["start_frame"], r["end_frame"], r["payload_float32_sha256"])
+                        for r in session.results
+                        if r["kind"] == "final"
+                    ]
+                )
+            finally:
+                session.close()
+        self.assertTrue(all(s == signatures[0] for s in signatures))
+
+    def test_short_followup_keeps_tail_margin_and_call_limit(self):
+        for max_calls, cost, expected_reason in ((1, 0.1, "call_budget"), (2, 10, "near_final")):
+            adapter, events = Adapter(), []
+            adapter.release.set()
+            session = CaptionSession(
+                adapter,
+                BoundedProbabilityVad(Probability()),
+                16000,
+                events.append,
+                {"t0_monotonic_ns": time.perf_counter_ns()},
+                partial_after_s=0.2,
+                partial_mode="adaptive",
+                adaptive_policy="budgeted",
+                partial_min_new_s=0.1,
+                partial_budget_s=1e-12,
+                partial_max_calls=max_calls,
+                max_segment_s=3,
+                protect_short_followup=True,
+            )
+            try:
+                with patch.object(session.worker, "estimate_cost", return_value=cost):
+                    for pos in range(0, 16000, 1600):
+                        session.accept_at(session, array("f", [0.25] * 1600), pos, pos + 1600)
+                        deadline = time.monotonic() + 2
+                        while not session.worker.availability()[0] and time.monotonic() < deadline:
+                            time.sleep(0.001)
+                    session.finish_stream(session)
+                self.assertEqual(
+                    sum(e["type"] == "submitted" and e["kind"] == "partial" for e in events), 1
+                )
+                self.assertGreater(session.scheduler_stats["decisions"].get(expected_reason, 0), 0)
+                self.assertFalse(any(e.get("short_followup_budget_override") for e in events))
             finally:
                 session.close()
 

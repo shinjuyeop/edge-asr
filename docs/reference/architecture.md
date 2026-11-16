@@ -55,3 +55,5 @@ GGUF의 text/audio 정밀도는 별도입니다. 기존 자산 명세 v1은 알�
 `qwen/viewer/`는 기존 연속 실행 기록을 읽어 모델 조건과 독립적으로 라이브·기록 화면을 제공합니다. `runs.py`는 등록한 manifest의 해시로 원음을 재구성하고 기존 replay/thermal-run을 실행합니다. `analysis.py`는 원음별 지연 정의를 공유하며 웹 서버·추론에 의존하지 않습니다. `web/`은 음원 재생과 표시만 담당합니다. 선택 시작 gate는 입력 생산자 준비 뒤 열리며, 기존 평가에서는 사용하지 않습니다. 서버는 localhost와 SSH 터널로 접근합니다. [사용법·계측 범위](../guides/listener.md).
 
 마이크도 같은 `replay.run`·`CaptionSession`·모델 어댑터·채점을 사용합니다. `microphone.py`가 별도 arecord 프로세스와 수집 스레드·유한 큐로 PCM을 공급하며, 길이 미정 세션은 실제 도착 프레임에서 정상 종료합니다. `worker.input.kind = microphone`으로 파일 입력과 구분합니다. 웹의 입력 종료 파일은 수집만 멈추고 Native 최종 배출을 기다립니다. 녹음 재생은 등록 manifest 대신 저장된 WAV 해시/프레임을 확인하고, 지연은 완료 VAD/ASR 구간으로 집계합니다.
+
+선택 `protect_short_followup`은 같은 `CaptionSession`에서 현재 구간의 성공한 첫 부분 결과가4자 미만일 때만 두 번째 요청의 비용 예산 검사를 예외로 둡니다. token 중간 결과·실패·다른 구간에는 적용하지 않고 유휴/최소 새 음성/최대 횟수/끝 여유는 유지합니다. 메타데이터는 `short-first-budget-v1`, 실제 예외 요청은 `short_followup_budget_override`로 남깁니다. 기본 정책과 최종 음성 분할·native 어댑터는 유지합니다.

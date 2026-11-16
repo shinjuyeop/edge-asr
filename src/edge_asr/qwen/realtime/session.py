@@ -31,6 +31,7 @@ class CaptionSession:
         partial_cost_model="total",
         partial_budget_s=2.5,
         partial_max_calls=2,
+        protect_short_followup=False,
         max_segment_s=5,
         drain_timeout_s=30,
         queue_capacity=4,
@@ -75,6 +76,11 @@ class CaptionSession:
         ):
             raise ValueError("부분 비용 예산은 유한한 양수, 요청 상한은 양의 정수여야 합니다.")
         self.adaptive_policy = adaptive_policy
+        if type(protect_short_followup) is not bool or (
+            protect_short_followup and (adaptive_policy != "budgeted" or not partials)
+        ):
+            raise ValueError("짧은 첫 결과 후속 보호는 부분 전사의 budgeted 정책에서만 사용합니다.")
+        self.protect_short_followup = protect_short_followup
         if partial_cost_model not in ("total", "audio", "audio_scaled") or (
             partial_cost_model != "total" and adaptive_policy != "budgeted"
         ):
@@ -88,8 +94,11 @@ class CaptionSession:
             "policy": adaptive_policy,
             "version": "budgeted-headroom-v2" if adaptive_policy == "budgeted" else "recent-v1",
             "cost_model": partial_cost_model,
+            "protect_short_followup": protect_short_followup,
             "decisions": {},
         }
+        if protect_short_followup:
+            self.scheduler_stats["version"] = "short-first-budget-v1"
         self.last_decision = None
         self.partials, self.silence_policy = partials, silence_policy
         self.frames, self.emit, self.telemetry = frames, emit, telemetry
@@ -239,16 +248,25 @@ class CaptionSession:
         remaining = (self.pipeline.maximum - (end - start)) / 16000
         protected = self.adaptive_policy == "budgeted"
         estimate, final_cost, spent, budget = None, None, 0.0, self.partial_budget_s
+        short_first = False
         if protected and self.partial_requests:
             estimate = self.worker.estimate_cost(
                 "partial", end - start, model=self.partial_cost_model
             )
             final_cost = self.worker.estimate_cost("final", self.pipeline.maximum)
             with self.lock:
-                spent = sum(
-                    r["inference_s"]
+                completed = [
+                    r
                     for r in self.results
                     if r["kind"] == "partial" and r["segment_id"] == self.pipeline.segment_id
+                ]
+                spent = sum(r["inference_s"] for r in completed)
+                short_first = (
+                    self.protect_short_followup
+                    and self.partial_requests == 1
+                    and len(completed) == 1
+                    and completed[0]["status"] == "success"
+                    and sum(c.isalnum() for c in completed[0]["hypothesis"]) < 4
                 )
         if end - start < self.minimum or (
             self.partial_requests and end - self.last_partial_end < self.min_new_frames
@@ -264,7 +282,7 @@ class CaptionSession:
             reason = "call_budget"
         elif protected and estimate is None:
             reason = "cost_unavailable"
-        elif protected and spent + estimate > budget:
+        elif protected and spent + estimate > budget and not short_first:
             reason = "cost_budget"
         elif remaining <= (estimate if protected else last_cost) + self.tail_margin_s:
             reason = "near_final"
@@ -289,6 +307,10 @@ class CaptionSession:
                     "estimated_final_s": final_cost,
                     "partial_spent_s": spent,
                     "partial_budget_s": budget,
+                    "short_first_eligible": short_first,
+                    "short_followup_budget_override": (
+                        reason == "offered" and short_first and spent + estimate > budget
+                    ),
                     "remaining_to_cap_s": remaining,
                     "at_monotonic_s": time.perf_counter(),
                 }

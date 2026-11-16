@@ -372,6 +372,11 @@ def argument_parser():
         help="budgeted 후속 비용 추정. audio는 음성 비용 확대만, audio_scaled는 축소도 적용",
     )
     parser.add_argument("--partial-budget-s", type=float, default=2.5)
+    parser.add_argument(
+        "--protect-short-followup",
+        action="store_true",
+        help="budgeted: 첫 성공 결과가4자 미만이면 후속1회의 비용 예산만 예외. 유휴/횟수/끝 여유 유지",
+    )
     parser.add_argument("--partial-max-calls", type=int, default=2)
     parser.add_argument(
         "--partial-followup-s",
