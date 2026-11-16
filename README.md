@@ -30,6 +30,8 @@ WAV 1배속 입력과 **RP5 USB 마이크**로 부분·확정 자막을 확인�
 
 후속 [음성 비용 축소·문맥 24개 비교](results/summaries/optimization/realtime-scaled-cost-20261116.md)는 최종 전사·CER 10.20%를 유지했지만 지연 개선 조건에 미달해 기본 전환을 하지 않았습니다. 부분 목록의 VAD 절단 위치가 원래 100개와 달라진 재현 한계도 함께 기록했습니다.
 
+[원래 100개 경계·ASR 5초/3초 대조](results/summaries/optimization/realtime-queue-20261116.md)는 첫 4자 p95를 7.16→4.98초, 최종 반환 p95를 3.09→1.95초로 줄였습니다. 다만 CER 11.12→12.81% 악화와 짧은 잔여 요청 실패 2회가 있어 3초를 기본으로 채택하지 않았습니다.
+
 문제 발견과 선택의 흐름은 [ASR 최적화 과정](docs/research/optimization_history.md), 현재 채택한 구성과 최신 결과는 [현재 상태](docs/status.md)에 정리했습니다. [자막 비교 영상](results/summaries/optimization/realtime-video-20261111.md)은 저장된 로그의 동기 재생 자료입니다.
 
 ## 처음 시작하기
