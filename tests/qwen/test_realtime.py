@@ -11,7 +11,7 @@ from unittest.mock import patch
 
 from edge_asr.artifacts import digest
 from edge_asr.dataset import load_audio, prepare_track, write_wav
-from edge_asr.qwen.realtime.replay import run
+from edge_asr.qwen.realtime.replay import argument_parser, run
 from edge_asr.qwen.realtime.session import CaptionSession
 from edge_asr.qwen.realtime.worker import DecodeWorker
 from edge_asr.streaming import run_paced
@@ -42,6 +42,22 @@ class Adapter:
 
 
 class RealtimeTests(unittest.TestCase):
+    def test_cli_accepts_early_first_request_without_changing_followup_or_default(self):
+        parser = argument_parser()
+        required = ["--manifest", "input.jsonl", "--output", "new-run"]
+        default = parser.parse_args(required)
+        self.assertEqual(default.partial_after_s, 2)
+        for value in ("0.6", "0.8", "1", "2", "3"):
+            with self.subTest(value=value):
+                args = parser.parse_args([*required, "--partial-after-s", value])
+                self.assertEqual(args.partial_after_s, float(value))
+                self.assertEqual(args.partial_interval_s, default.partial_interval_s)
+                self.assertEqual(args.partial_min_new_s, default.partial_min_new_s)
+                self.assertEqual(args.partial_mode, default.partial_mode)
+        for value in ("0", "-1", "0.2", "nan", "inf"):
+            with self.subTest(value=value), patch("sys.stderr"), self.assertRaises(SystemExit):
+                parser.parse_args([*required, "--partial-after-s", value])
+
     def test_unknown_microphone_length_flushes_exact_received_frames(self):
         adapter, events = Adapter(), []
         adapter.release.set()

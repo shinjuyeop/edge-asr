@@ -359,7 +359,7 @@ def argument_parser():
         choices=(5, 15, 30),
         help="VAD가 판정을 강화하는 활성 길이. ASR 구간 상한과 독립; 기본5초 보존",
     )
-    parser.add_argument("--partial-after-s", type=float, default=2, choices=(1, 2, 3))
+    parser.add_argument("--partial-after-s", type=float, default=2, choices=(0.6, 0.8, 1, 2, 3))
     parser.add_argument("--partial-interval-s", type=float, default=1, choices=(0.5, 1, 2, 4))
     parser.add_argument("--partial-mode", choices=("fixed", "adaptive"), default="fixed")
     parser.add_argument("--partial-min-new-s", type=float, default=0.8)
