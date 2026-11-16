@@ -26,6 +26,8 @@ WAV 1배속 입력과 **RP5 USB 마이크**로 부분·확정 자막을 확인�
 
 최신 [첫 요청0.6초·100개 확인](results/summaries/optimization/realtime-first-request100-20261116.md)은 같은 Q8 가변 조건에서 첫 표시 p95를4.16→3.77초로 줄이고 최종 전사·CER11.12%를 유지했습니다. 첫4자 p95는6.90→7.17초로 늘어 기본 전환을 보류하고, 짧은 초기 결과 뒤의 후속 요청 예산을 다음 검토 대상으로 둡니다.
 
+[거부된 후속 요청의 비용 진단](results/summaries/optimization/blocked-followup-cost-20261116.md)은 RP5 고정 PCM 40호출로 비용 추정의 보수성과 큐 대기 문제를 구분했습니다. 정책·공유 기본은 유지하며 연속 입력의 지연 개선은 후속 비교에서 확인합니다.
+
 문제 발견과 선택의 흐름은 [ASR 최적화 과정](docs/research/optimization_history.md), 현재 채택한 구성과 최신 결과는 [현재 상태](docs/status.md)에 정리했습니다. [자막 비교 영상](results/summaries/optimization/realtime-video-20261111.md)은 저장된 로그의 동기 재생 자료입니다.
 
 ## 처음 시작하기

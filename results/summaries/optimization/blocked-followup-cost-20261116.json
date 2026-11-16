@@ -1,0 +1,469 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-16",
+  "kind": "blocked_followup_cost_diagnostic",
+  "source_commit": "d44bdf831e262e8ea82eb08129b0011b0376cffa",
+  "origin_source_commit": "b4eabf55b5b0399df343c9be8952e74212a04143",
+  "raw_path": "results/optimization/opt3/blocked-followup-cost-20261116-01",
+  "worker_sha256": "6ae66b8030d1596feb0d051a0afb9a113a2aafd0c9f53bbef5690b5c748c5bc6",
+  "plan_sha256": "ad648b22f1985bd2b5972cd20bec782aca427af81997aa1e83c0d176dec38354",
+  "config_sha256": "fe87ae0570093045f40d6e99c505046366e9b619512c8cd9265454ce6443e069",
+  "input_manifest_sha256": "284877ac52192991017e661e0e3292b566b8cbffc3242324f3d75c869aa984fb",
+  "model_files": {
+    "Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+    },
+    "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+    },
+    "runtime_library": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+      "sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf"
+    },
+    "runtime_manifest": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+      "sha256": "a7fa6d9d6ffab5b5a0f7f98e3dc94cd7d751fe503a16f214936b5ff32fd3d113"
+    }
+  },
+  "model_metadata": {
+    "backend": "llama_cpp_mtmd",
+    "provider": "cpu",
+    "supported_modes": [
+      "batch"
+    ],
+    "token_output_callback": true,
+    "thread_configuration": {
+      "threads": 2,
+      "threads_batch": 3,
+      "audio_threads": 3
+    },
+    "cache_text_prefix": true,
+    "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+    "language": "ko",
+    "stream_language": "Korean",
+    "quantization": "q8_0",
+    "audio_quantization": "q8_0",
+    "quantization_evidence": "official_GGUF_asset_names_and_bound_sha256",
+    "quantization_scope": "텍스트 모델과 오디오 mmproj 모두 Q8_0 배포본. 일부 tensor 혼합 dtype 가능. ONNX INT8과 동일 양자화 방식 아님.",
+    "assets": null,
+    "max_total_len": 512,
+    "max_new_tokens": 128,
+    "prompt_policy": "empty_system_audio_user_forced_assistant_language_Korean_asr_text_v1",
+    "output_policy": "gguf_raw_utf8_until_eog_v1",
+    "sampling": "greedy",
+    "repetition_policy": "last64_token_ids_at_most3_distinct_failure",
+    "use_itn": null,
+    "context_policy": "mtmd_positions_plus_reserved_output_no_truncation_v1",
+    "input_policy": "동일 float32 PCM을 직접 전달. file codec/resampling 없음",
+    "runtime_build": {
+      "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+      "machine": "aarch64",
+      "command": [
+        "g++",
+        "-std=c++17",
+        "-O2",
+        "-fPIC",
+        "-shared",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+        "-I",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+        "-I",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+        "-I",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/vendor/nlohmann",
+        "/home/deepet/projects/edge-asr/native/gguf/bridge.cpp",
+        "-L",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+        "-Wl,-rpath,/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+        "-lllama",
+        "-lmtmd",
+        "-lggml",
+        "-lggml-base",
+        "-pthread",
+        "-o",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so"
+      ],
+      "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "bridge_source_sha256": "7ee8307814e8ee1e5adc85bf2d0751195eafdb2d8815784f56ddc1ac79ab494d",
+      "prefix_cache_source_sha256": "9d60e18b86bdb9371511829fc2eefe7ced2830ce4a0d79c1a0e650e827a8fcbd",
+      "features": [
+        "token_callback_v1",
+        "split_threads_v1",
+        "text_prefix_cache_v1"
+      ],
+      "cmake_cache_sha256": "2d21bf15406912c839456d69ef66f7edcbdfbdc1d3b02d4f5f03b0a09b139b24",
+      "engine_libraries": {
+        "libmtmd.so": "ba8bbb528c24a7cc5721b5cdf520d7ab159f5efb214548628ae5ce240f581296",
+        "libggml.so": "9391d0da5efb090d836eb9f1050270045ae9f215ad8e41368a44d9cd73de82c1",
+        "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+        "libllama.so": "3981f9752c48c595e4fd2ef766e70e6051edc6f54e85e4e0044615e0ddba0999",
+        "libggml-cpu.so": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+        "libllama-common.so": "61278407f85381989b98522229bb57379af9988b301a704f8c55a6619d14bafd"
+      },
+      "library_sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model"
+    }
+  },
+  "model": {
+    "num_threads": 2,
+    "quantization": "q8_0",
+    "max_total_len": 512,
+    "max_new_tokens": 128,
+    "family": "qwen3_gguf",
+    "path": "models/qwen3-opt/gguf-q8-20261109-01",
+    "runtime_library": "runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+    "runtime_manifest": "runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+    "num_threads_batch": 3,
+    "cache_text_prefix": true,
+    "language": "ko"
+  },
+  "calls": 40,
+  "setup_calls": 4,
+  "history_calls": 27,
+  "candidate_calls": 9,
+  "failures": 0,
+  "cer": null,
+  "production_code_changed": false,
+  "default_changed": false,
+  "policy_changed": false,
+  "cases": [
+    {
+      "segment_id": 92,
+      "source_id": "fleurs-9406104450793293120",
+      "input_s": 1.412,
+      "original_estimate_s": 2.478491803212091,
+      "original_spent_s": 0.667896697006654,
+      "original_remaining_to_cap_s": 3.588,
+      "original_estimate_fits_headroom": true,
+      "history_job_ids": [
+        210,
+        211,
+        213
+      ],
+      "history_inputs_s": [
+        0.612,
+        2.564,
+        0.612
+      ],
+      "candidate_tokens_equal_across_rounds": true,
+      "cost_s": {
+        "n": 3,
+        "mean": 1.0675628063230154,
+        "p50": 1.0674516650033183,
+        "p95": 1.0680902539752424,
+        "max": 1.0680902539752424
+      },
+      "fresh_estimate_s": {
+        "n": 3,
+        "mean": 2.1098626368213442,
+        "p50": 2.1103524503996596,
+        "p95": 2.1129952896153554,
+        "max": 2.1129952896153554
+      },
+      "first4_from_call_s": {
+        "n": 3,
+        "mean": 0.7885152756546935,
+        "p50": 0.7882467469898984,
+        "p95": 0.7894917340017855,
+        "max": 0.7894917340017855
+      },
+      "rounds": [
+        {
+          "round": 1,
+          "cost_s": 1.0674516650033183,
+          "native_elapsed_s": 1.066932922,
+          "fresh_estimate_s": 2.1062401704490186,
+          "fresh_spent_s": 0.5601911290432326,
+          "fresh_prediction_over_actual": 1.97314804923038,
+          "actual_cost_fits_budget": true,
+          "fresh_estimate_fits_budget": true,
+          "actual_cost_fits_original_headroom": true,
+          "first_alnum_from_call_s": 0.622933076985646,
+          "first4_from_call_s": 0.7894917340017855,
+          "returned_alnum": 9,
+          "audio_encode_s": 0.311495797,
+          "audio_embedding_eval_s": 0.162305724,
+          "suffix_eval_s": 0.09146223,
+          "token_decode_s": 0.49454340499999994,
+          "native_ttft_s": 0.566238628
+        },
+        {
+          "round": 2,
+          "cost_s": 1.0680902539752424,
+          "native_elapsed_s": 1.067615528,
+          "fresh_estimate_s": 2.1103524503996596,
+          "fresh_spent_s": 0.5641427420196123,
+          "fresh_prediction_over_actual": 1.9758184690341498,
+          "actual_cost_fits_budget": true,
+          "fresh_estimate_fits_budget": true,
+          "actual_cost_fits_original_headroom": true,
+          "first_alnum_from_call_s": 0.621514139987994,
+          "first4_from_call_s": 0.7882467469898984,
+          "returned_alnum": 9,
+          "audio_encode_s": 0.312200717,
+          "audio_embedding_eval_s": 0.161062555,
+          "suffix_eval_s": 0.090177057,
+          "token_decode_s": 0.4970402480000001,
+          "native_ttft_s": 0.564407132
+        },
+        {
+          "round": 3,
+          "cost_s": 1.0671464999904856,
+          "native_elapsed_s": 1.066674367,
+          "fresh_estimate_s": 2.1129952896153554,
+          "fresh_spent_s": 0.5627828130382113,
+          "fresh_prediction_over_actual": 1.980042374345223,
+          "actual_cost_fits_budget": true,
+          "fresh_estimate_fits_budget": true,
+          "actual_cost_fits_original_headroom": true,
+          "first_alnum_from_call_s": 0.6211717010010034,
+          "first4_from_call_s": 0.7878073459723964,
+          "returned_alnum": 9,
+          "audio_encode_s": 0.31169894,
+          "audio_embedding_eval_s": 0.161386781,
+          "suffix_eval_s": 0.090409616,
+          "token_decode_s": 0.49597320999999994,
+          "native_ttft_s": 0.564487009
+        }
+      ]
+    },
+    {
+      "segment_id": 139,
+      "source_id": "fleurs-16212391279578882998",
+      "input_s": 2.34,
+      "original_estimate_s": 2.435899849212728,
+      "original_spent_s": 0.6036868109949864,
+      "original_remaining_to_cap_s": 2.66,
+      "original_estimate_fits_headroom": true,
+      "history_job_ids": [
+        310,
+        311,
+        317
+      ],
+      "history_inputs_s": [
+        0.612,
+        2.404,
+        0.612
+      ],
+      "candidate_tokens_equal_across_rounds": true,
+      "cost_s": {
+        "n": 3,
+        "mean": 1.6448182873427868,
+        "p50": 1.6431334149674512,
+        "p95": 1.648443230020348,
+        "max": 1.648443230020348
+      },
+      "fresh_estimate_s": {
+        "n": 3,
+        "mean": 2.1107804751954973,
+        "p50": 2.1110097551951186,
+        "p95": 2.1176316815894096,
+        "max": 2.1176316815894096
+      },
+      "first4_from_call_s": {
+        "n": 3,
+        "mean": 0.9675260033497276,
+        "p50": 0.9664239920093678,
+        "p95": 0.9713795690331608,
+        "max": 0.9713795690331608
+      },
+      "rounds": [
+        {
+          "round": 1,
+          "cost_s": 1.6431334149674512,
+          "native_elapsed_s": 1.642655893,
+          "fresh_estimate_s": 2.1036999888019636,
+          "fresh_spent_s": 0.5090524940169416,
+          "fresh_prediction_over_actual": 1.2802977345839173,
+          "actual_cost_fits_budget": true,
+          "fresh_estimate_fits_budget": true,
+          "actual_cost_fits_original_headroom": true,
+          "first_alnum_from_call_s": 0.7965715029858984,
+          "first4_from_call_s": 0.9647744490066543,
+          "returned_alnum": 15,
+          "audio_encode_s": 0.468355566,
+          "audio_embedding_eval_s": 0.235611162,
+          "suffix_eval_s": 0.091307747,
+          "token_decode_s": 0.83601235,
+          "native_ttft_s": 0.796372742
+        },
+        {
+          "round": 2,
+          "cost_s": 1.6428782170405611,
+          "native_elapsed_s": 1.642400436,
+          "fresh_estimate_s": 2.1176316815894096,
+          "fresh_spent_s": 0.5095199110219255,
+          "fresh_prediction_over_actual": 1.2889766628010062,
+          "actual_cost_fits_budget": true,
+          "fresh_estimate_fits_budget": true,
+          "actual_cost_fits_original_headroom": true,
+          "first_alnum_from_call_s": 0.7961972720222548,
+          "first4_from_call_s": 0.9664239920093678,
+          "returned_alnum": 15,
+          "audio_encode_s": 0.466879435,
+          "audio_embedding_eval_s": 0.234261361,
+          "suffix_eval_s": 0.093754208,
+          "token_decode_s": 0.8360657709999999,
+          "native_ttft_s": 0.796003882
+        },
+        {
+          "round": 3,
+          "cost_s": 1.648443230020348,
+          "native_elapsed_s": 1.647961636,
+          "fresh_estimate_s": 2.1110097551951186,
+          "fresh_spent_s": 0.511249205970671,
+          "fresh_prediction_over_actual": 1.2806081014807291,
+          "actual_cost_fits_budget": true,
+          "fresh_estimate_fits_budget": true,
+          "actual_cost_fits_original_headroom": true,
+          "first_alnum_from_call_s": 0.7978200489887968,
+          "first4_from_call_s": 0.9713795690331608,
+          "returned_alnum": 15,
+          "audio_encode_s": 0.470151774,
+          "audio_embedding_eval_s": 0.234338512,
+          "suffix_eval_s": 0.092005273,
+          "token_decode_s": 0.8399207289999999,
+          "native_ttft_s": 0.797620938
+        }
+      ]
+    },
+    {
+      "segment_id": 95,
+      "source_id": "zeroth-104_003_1968",
+      "input_s": 3.364,
+      "original_estimate_s": 2.5676629641574085,
+      "original_spent_s": 0.45554678997723386,
+      "original_remaining_to_cap_s": 1.636,
+      "original_estimate_fits_headroom": false,
+      "history_job_ids": [
+        213,
+        216,
+        218
+      ],
+      "history_inputs_s": [
+        0.612,
+        0.612,
+        0.612
+      ],
+      "candidate_tokens_equal_across_rounds": true,
+      "cost_s": {
+        "n": 3,
+        "mean": 2.0628765290020965,
+        "p50": 2.0612719240016304,
+        "p95": 2.069681214983575,
+        "max": 2.069681214983575
+      },
+      "fresh_estimate_s": {
+        "n": 3,
+        "mean": 2.166666212145064,
+        "p50": 2.1640646842943823,
+        "p95": 2.172674407519109,
+        "max": 2.172674407519109
+      },
+      "first4_from_call_s": {
+        "n": 3,
+        "mean": 1.1492533563286997,
+        "p50": 1.147673159954138,
+        "p95": 1.154576305008959,
+        "max": 1.154576305008959
+      },
+      "rounds": [
+        {
+          "round": 1,
+          "cost_s": 2.057676448021084,
+          "native_elapsed_s": 2.057181964,
+          "fresh_estimate_s": 2.1632595446217002,
+          "fresh_spent_s": 0.39895641402108595,
+          "fresh_prediction_over_actual": 1.0513118069180205,
+          "actual_cost_fits_budget": true,
+          "fresh_estimate_fits_budget": true,
+          "actual_cost_fits_original_headroom": false,
+          "first_alnum_from_call_s": 1.0314929989981465,
+          "first4_from_call_s": 1.145510604023002,
+          "returned_alnum": 18,
+          "audio_encode_s": 0.634277946,
+          "audio_embedding_eval_s": 0.302192541,
+          "suffix_eval_s": 0.093609484,
+          "token_decode_s": 1.0134298190000002,
+          "native_ttft_s": 1.031291313
+        },
+        {
+          "round": 2,
+          "cost_s": 2.0612719240016304,
+          "native_elapsed_s": 2.060806922,
+          "fresh_estimate_s": 2.1640646842943823,
+          "fresh_spent_s": 0.39849554299144074,
+          "fresh_prediction_over_actual": 1.0498686073854808,
+          "actual_cost_fits_budget": true,
+          "fresh_estimate_fits_budget": true,
+          "actual_cost_fits_original_headroom": false,
+          "first_alnum_from_call_s": 1.033424441004172,
+          "first4_from_call_s": 1.147673159954138,
+          "returned_alnum": 18,
+          "audio_encode_s": 0.635498031,
+          "audio_embedding_eval_s": 0.302898085,
+          "suffix_eval_s": 0.093623262,
+          "token_decode_s": 1.0146132589999999,
+          "native_ttft_s": 1.033228477
+        },
+        {
+          "round": 3,
+          "cost_s": 2.069681214983575,
+          "native_elapsed_s": 2.069206545,
+          "fresh_estimate_s": 2.172674407519109,
+          "fresh_spent_s": 0.396919987979345,
+          "fresh_prediction_over_actual": 1.0497628290723753,
+          "actual_cost_fits_budget": true,
+          "fresh_estimate_fits_budget": true,
+          "actual_cost_fits_original_headroom": false,
+          "first_alnum_from_call_s": 1.040546307049226,
+          "first4_from_call_s": 1.154576305008959,
+          "returned_alnum": 18,
+          "audio_encode_s": 0.636858629,
+          "audio_embedding_eval_s": 0.306655652,
+          "suffix_eval_s": 0.09562724,
+          "token_decode_s": 1.016673738,
+          "native_ttft_s": 1.040348214
+        }
+      ]
+    }
+  ],
+  "resources": {
+    "call_temperature_c": {
+      "n": 446,
+      "mean": 74.44988789237665,
+      "p50": 74.9,
+      "p95": 80.4,
+      "max": 82.6
+    },
+    "max_rss_mib": 1636.890625,
+    "guard_start_c": 56.2,
+    "guard_end_c": 74.9,
+    "guard_max_c": 81.5,
+    "current_limits": [
+      0
+    ]
+  },
+  "verification": {
+    "operational_valid": true,
+    "limit_verified": true,
+    "protected_files_unchanged": 660,
+    "known_history_text_token_matches": 27,
+    "candidate_pcm_repetitions": 3,
+    "token_callback_enabled_all_calls": true,
+    "host_related_tests_passed": 37,
+    "host_mock_integration_preserved_failure_and_tokens": true,
+    "independent_host_rp5_analysis_equal": true,
+    "new_raw_files_host_rp5_sha256_equal": 27
+  },
+  "scope": "연속 로그의 거부 PCM을 별도 고정 입력으로 측정. 최근3회 이력의 수치 재현과 같은 PCM 재실행이며, 원래 연속 큐/온도/과거 발화 전체는 재현하지 않음. 거부 PCM의 정답·CER·연속 지연 개선은 미측정. headroom/budget 비교는 비용 진단이며 실제 스케줄링 성공 보장 아님."
+}
