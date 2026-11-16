@@ -34,6 +34,8 @@ WAV 1배속 입력과 **RP5 USB 마이크**로 부분·확정 자막을 확인�
 
 최신 [확정 5초 유지·부분 예산 비교](results/summaries/optimization/realtime-partial-budget-20261116.md)는 최종 210구간 전사·CER 11.12%·실패/드롭 0을 유지했습니다. 부분 계산 예산 3.0→3.2초만으로는 첫 4자 p95가 7.14→7.17초, 갱신 공백 p95가 4.87→4.84초여서 개선 조건에 미달했습니다. **빠른 임시 표시와 5초 확정 정확도 유지**를 주력으로 두고 예산 3.0초를 유지합니다.
 
+[Q8 재프로파일링](results/summaries/optimization/reprofile-q8-20261116.md)은 최신 850호출 재집계와 RP5 추가 48호출로 병목을 좁혔습니다. 전체 호출 비용은 decode 47%·encoder 29%·음성 prefill 16%였고, 긴 첫 4자 지연은 후속 요청 없이 확정까지 기다리는 경로도 컸습니다. 다음은 짧은 초기 결과의 후속 보호, 이후 Q8 decode·encoder 최적화 순서로 검토합니다.
+
 문제 발견과 선택의 흐름은 [ASR 최적화 과정](docs/research/optimization_history.md), 현재 채택한 구성과 최신 결과는 [현재 상태](docs/status.md)에 정리했습니다. [자막 비교 영상](results/summaries/optimization/realtime-video-20261111.md)은 저장된 로그의 동기 재생 자료입니다.
 
 ## 처음 시작하기
