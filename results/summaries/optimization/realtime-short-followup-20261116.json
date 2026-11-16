@@ -1,0 +1,823 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-16",
+  "kind": "qwen3_short_followup_full100",
+  "source_commit": "f21c30ae8dd98df2a557027c74bc0c97e38d8170",
+  "raw_path": "results/optimization/opt3/realtime-short-followup-20261116-01",
+  "cases": {
+    "control": {
+      "raw_path": "results/optimization/opt3/realtime-short-followup-20261116-01/control",
+      "source_commit": "f21c30ae8dd98df2a557027c74bc0c97e38d8170",
+      "worker_sha256": "502918a159ccb8bfd46b6bcbda7036ef5d6db215046d49fd837fc6d4e17a7270",
+      "complete": true,
+      "operational_valid": true,
+      "limit_verified": true,
+      "failed_calls": 0,
+      "input_drops": 0,
+      "source_count": 100,
+      "audio": {
+        "sha256": "5c0d625b894fdba80453c129d760c900ccacdc3ce73727fba63e7fd99aba0173",
+        "frames": 14258317,
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "duration_s": 891.1448125
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 3848,
+        "substitutions": 195,
+        "deletions": 157,
+        "insertions": 76,
+        "errors": 428,
+        "cer": 0.11122661122661123
+      },
+      "max_growth_gap_s": {
+        "n": 100,
+        "mean": 3.9679880504173273,
+        "p50": 3.9337121480400583,
+        "p95": 4.827037134964485,
+        "max": 7.0202059370298
+      },
+      "scheduler": {
+        "mode": "adaptive",
+        "policy": "budgeted",
+        "version": "budgeted-headroom-v2",
+        "cost_model": "audio",
+        "protect_short_followup": false,
+        "decisions": {
+          "minimum_audio": 9438,
+          "first_offered": 189,
+          "busy": 4685,
+          "offered": 96,
+          "call_budget": 5141,
+          "near_final": 76,
+          "cost_budget": 779
+        }
+      },
+      "first_s": {
+        "n": 100,
+        "mean": 2.342827058571695,
+        "p50": 2.2629304350181485,
+        "p95": 3.686280041024588,
+        "max": 4.271026749037219
+      },
+      "first4_s": {
+        "n": 100,
+        "mean": 3.1053138373936076,
+        "p50": 2.704408135049505,
+        "p95": 6.603274935032232,
+        "max": 7.223551517038629
+      },
+      "file_end_s": {
+        "n": 100,
+        "mean": 1.6330648361655864,
+        "p50": 1.6862741860500705,
+        "p95": 2.9414812790029714,
+        "max": 3.534072907050131
+      },
+      "final_calls": 210,
+      "partial_calls": 220,
+      "submitted_requests": 495,
+      "coalesced_requests": 65,
+      "final_compute_s": 449.5879358922248,
+      "total_compute_s": 650.934742805839,
+      "partial_compute_s": 201.34680691361427,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 4387,
+        "normalized_revisions": 89,
+        "retracted_suffix_characters": 320,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 979,
+        "segments_with_display": 210,
+        "revised_segments": 75,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 189,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 124,
+          "whole_partial_is_final_prefix": 82,
+          "partial_characters": 1059,
+          "retained_prefix_characters": 854,
+          "retained_prefix_fraction": 0.8064211520302171
+        },
+        "finals_shorter_than4": 30,
+        "first4_to_final_consistent4_s": {
+          "n": 180,
+          "mean": 0.6579334010053167,
+          "p50": 0.0,
+          "p95": 4.814083133009262,
+          "max": 5.724885287985671
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "rss_max_mib": 1832.375,
+      "thermal": {
+        "start_mc": 56750,
+        "max_mc": 86450,
+        "end_mc": 72700,
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 913,
+          "mean": 2332769169.8050385,
+          "p50": 2400020480,
+          "p95": 2400033792,
+          "max": 2400040192
+        }
+      },
+      "settings": {
+        "gap_s": 0.0,
+        "vad_preprocess": "rms26-floor80",
+        "vad_threshold": 0.3,
+        "vad_max_speech_s": 5,
+        "partial_after_s": 0.6,
+        "partial_interval_s": 4.0,
+        "partial_mode": "adaptive",
+        "partial_min_new_s": 0.8,
+        "partial_tail_margin_s": 0.2,
+        "adaptive_policy": "budgeted",
+        "partial_cost_model": "audio",
+        "partial_budget_s": 3.0,
+        "protect_short_followup": false,
+        "partial_max_calls": 2,
+        "partial_followup_s": null,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "token_stream": true,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "first_owned_s": {
+        "n": 100,
+        "mean": 1.506559558571695,
+        "p50": 1.2053280490143394,
+        "p95": 2.522717541024588,
+        "max": 3.6922746480400583
+      },
+      "first4_owned_s": {
+        "n": 100,
+        "mean": 2.269046337393608,
+        "p50": 1.9603695410383444,
+        "p95": 6.361837435032232,
+        "max": 6.886858990013133
+      },
+      "initial_partial_calls": 124,
+      "initial_pcm_s": {
+        "n": 124,
+        "mean": 0.6117419354838706,
+        "p50": 0.612,
+        "p95": 0.612,
+        "max": 0.612
+      },
+      "initial_native_ttft_s": {
+        "n": 124,
+        "mean": 0.36905411592741927,
+        "p50": 0.362256535,
+        "p95": 0.404323743,
+        "max": 0.423341978
+      },
+      "initial_empty_outputs": 0,
+      "empty_partial_outputs": 0,
+      "final_queue_wait_s": {
+        "n": 210,
+        "mean": 0.8384256633408811,
+        "p50": 0.002436441951431334,
+        "p95": 3.196756125020329,
+        "max": 3.6214206269942224
+      },
+      "replay_cpu_s": 1768.237791735,
+      "initial_queue_wait_s": {
+        "n": 124,
+        "mean": 0.7123774335547839,
+        "p50": 0.5282339039840735,
+        "p95": 2.5910512909758836,
+        "max": 3.069800272001885
+      },
+      "initial_queue_totals": {
+        "wait_s": 88.3348017607932,
+        "active_final_s": 86.38635530730244,
+        "active_partial_s": 1.8990394730935805,
+        "other_s": 0.04940698039717972
+      },
+      "source_first_job_queue_wait_s": {
+        "n": 100,
+        "mean": 0.45997000148752704,
+        "p50": 0.15140338602941483,
+        "p95": 1.470209763967432,
+        "max": 2.5910512909758836
+      },
+      "final_input_s": {
+        "n": 210,
+        "mean": 3.0916190476190475,
+        "p50": 3.32,
+        "p95": 5.0,
+        "max": 5.0
+      },
+      "final_call_s": {
+        "n": 210,
+        "mean": 2.140894932820118,
+        "p50": 2.279392681957688,
+        "p95": 3.755009736982174,
+        "max": 4.149063596967608
+      },
+      "processed_pcm_sha256": "02728ab47bd05a1b8393e900b6a417591eaf11408d6d255e497ec6d04515bd9a",
+      "vad_processed_pcm_sha256": "c20e2c52e4e2cf62c706aa8a92719dd59f9ce9b67ca62aa1e23dc5599b1c29c3",
+      "worker_status": "completed",
+      "guard_status": "completed",
+      "guard_exit_code": 0,
+      "failed_final_inputs": [],
+      "followup_calls": 96,
+      "underestimated_followups": 7,
+      "punctuation_only_first_sources": 2,
+      "short_budget_override_calls": 0,
+      "final_signature_sha256": "b1eda304941787e1d8ea6fef30924a51228802babaeaee7f3c9aa4808fcb4151",
+      "matches_preserved_final_reference": true
+    },
+    "candidate": {
+      "raw_path": "results/optimization/opt3/realtime-short-followup-20261116-01/candidate",
+      "source_commit": "f21c30ae8dd98df2a557027c74bc0c97e38d8170",
+      "worker_sha256": "d1318481376cb2d958523588eeb1f75b8ee833eadcf7e3d9b996ed4ce64dd76b",
+      "complete": true,
+      "operational_valid": true,
+      "limit_verified": true,
+      "failed_calls": 0,
+      "input_drops": 0,
+      "source_count": 100,
+      "audio": {
+        "sha256": "5c0d625b894fdba80453c129d760c900ccacdc3ce73727fba63e7fd99aba0173",
+        "frames": 14258317,
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "duration_s": 891.1448125
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 3848,
+        "substitutions": 195,
+        "deletions": 157,
+        "insertions": 76,
+        "errors": 428,
+        "cer": 0.11122661122661123
+      },
+      "max_growth_gap_s": {
+        "n": 100,
+        "mean": 3.9469398689080037,
+        "p50": 3.884015877963975,
+        "p95": 5.167532536056825,
+        "max": 7.135950764927088
+      },
+      "scheduler": {
+        "mode": "adaptive",
+        "policy": "budgeted",
+        "version": "short-first-budget-v1",
+        "cost_model": "audio",
+        "protect_short_followup": true,
+        "decisions": {
+          "minimum_audio": 9265,
+          "first_offered": 189,
+          "busy": 5114,
+          "offered": 89,
+          "call_budget": 4286,
+          "near_final": 433,
+          "cost_budget": 1028
+        }
+      },
+      "first_s": {
+        "n": 100,
+        "mean": 2.4288005593324327,
+        "p50": 2.388622809036633,
+        "p95": 3.71603219801284,
+        "max": 4.264049813956035
+      },
+      "first4_s": {
+        "n": 100,
+        "mean": 3.212141091478827,
+        "p50": 2.799827846006508,
+        "p95": 6.699705365038426,
+        "max": 7.417367991038599
+      },
+      "file_end_s": {
+        "n": 100,
+        "mean": 1.7505631184575126,
+        "p50": 1.8802563950065405,
+        "p95": 3.1001681409897515,
+        "max": 3.6283110539568497
+      },
+      "final_calls": 210,
+      "partial_calls": 212,
+      "submitted_requests": 488,
+      "coalesced_requests": 66,
+      "final_compute_s": 461.8501334122848,
+      "total_compute_s": 664.4117277511396,
+      "partial_compute_s": 202.56159433885477,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 4349,
+        "normalized_revisions": 90,
+        "retracted_suffix_characters": 289,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 980,
+        "segments_with_display": 210,
+        "revised_segments": 76,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 182,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 123,
+          "whole_partial_is_final_prefix": 77,
+          "partial_characters": 1045,
+          "retained_prefix_characters": 864,
+          "retained_prefix_fraction": 0.8267942583732057
+        },
+        "finals_shorter_than4": 30,
+        "first4_to_final_consistent4_s": {
+          "n": 180,
+          "mean": 0.6273294489513824,
+          "p50": 0.0,
+          "p95": 4.465183594031259,
+          "max": 5.716832898091525
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "rss_max_mib": 1833.890625,
+      "thermal": {
+        "start_mc": 71600,
+        "max_mc": 87000,
+        "end_mc": 72150,
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 914,
+          "mean": 2279144262.8621445,
+          "p50": 2366020096,
+          "p95": 2400033792,
+          "max": 2400037120
+        }
+      },
+      "settings": {
+        "gap_s": 0.0,
+        "vad_preprocess": "rms26-floor80",
+        "vad_threshold": 0.3,
+        "vad_max_speech_s": 5,
+        "partial_after_s": 0.6,
+        "partial_interval_s": 4.0,
+        "partial_mode": "adaptive",
+        "partial_min_new_s": 0.8,
+        "partial_tail_margin_s": 0.2,
+        "adaptive_policy": "budgeted",
+        "partial_cost_model": "audio",
+        "partial_budget_s": 3.0,
+        "protect_short_followup": true,
+        "partial_max_calls": 2,
+        "partial_followup_s": null,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "token_stream": true,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "first_owned_s": {
+        "n": 100,
+        "mean": 1.5925330593324332,
+        "p50": 1.4034097099462324,
+        "p95": 2.85596000199861,
+        "max": 3.7855519979335277
+      },
+      "first4_owned_s": {
+        "n": 100,
+        "mean": 2.375873591478827,
+        "p50": 2.1572482089632903,
+        "p95": 6.524330365038426,
+        "max": 6.995786756980232
+      },
+      "initial_partial_calls": 123,
+      "initial_pcm_s": {
+        "n": 123,
+        "mean": 0.6117398373983737,
+        "p50": 0.612,
+        "p95": 0.612,
+        "max": 0.612
+      },
+      "initial_native_ttft_s": {
+        "n": 123,
+        "mean": 0.3845642811463413,
+        "p50": 0.387449683,
+        "p95": 0.417863956,
+        "max": 0.42293473
+      },
+      "initial_empty_outputs": 0,
+      "empty_partial_outputs": 0,
+      "final_queue_wait_s": {
+        "n": 210,
+        "mean": 0.8809289005180333,
+        "p50": 0.0020705510396510363,
+        "p95": 3.2762007920537144,
+        "max": 3.822946212021634
+      },
+      "replay_cpu_s": 1806.800206572,
+      "initial_queue_wait_s": {
+        "n": 123,
+        "mean": 0.7587910394668882,
+        "p50": 0.5724153670016676,
+        "p95": 2.408491117064841,
+        "max": 2.9542932129697874
+      },
+      "initial_queue_totals": {
+        "wait_s": 93.33129785442725,
+        "active_final_s": 91.49298450618517,
+        "active_partial_s": 1.7915288639487699,
+        "other_s": 0.046784484293311834
+      },
+      "source_first_job_queue_wait_s": {
+        "n": 100,
+        "mean": 0.5291735904256347,
+        "p50": 0.36210189503617585,
+        "p95": 1.7303568969946355,
+        "max": 2.6860308829927817
+      },
+      "final_input_s": {
+        "n": 210,
+        "mean": 3.0916190476190475,
+        "p50": 3.32,
+        "p95": 5.0,
+        "max": 5.0
+      },
+      "final_call_s": {
+        "n": 210,
+        "mean": 2.1992863495823083,
+        "p50": 2.3704017580021173,
+        "p95": 3.803429034072906,
+        "max": 4.388290830072947
+      },
+      "processed_pcm_sha256": "02728ab47bd05a1b8393e900b6a417591eaf11408d6d255e497ec6d04515bd9a",
+      "vad_processed_pcm_sha256": "c20e2c52e4e2cf62c706aa8a92719dd59f9ce9b67ca62aa1e23dc5599b1c29c3",
+      "worker_status": "completed",
+      "guard_status": "completed",
+      "guard_exit_code": 0,
+      "failed_final_inputs": [],
+      "followup_calls": 89,
+      "underestimated_followups": 8,
+      "punctuation_only_first_sources": 2,
+      "short_budget_override_calls": 3,
+      "final_signature_sha256": "b1eda304941787e1d8ea6fef30924a51228802babaeaee7f3c9aa4808fcb4151",
+      "matches_preserved_final_reference": true
+    }
+  },
+  "checks": {
+    "candidate_exercised_budget_override": true,
+    "complete_valid": true,
+    "no_failure_drop_missing": true,
+    "same_input_and_vad_pcm": true,
+    "same_preserved_reference_final": true,
+    "same_final_pcm_text_tokens": true,
+    "same_score": true,
+    "first4_or_gap_p95_improves020s": false,
+    "first_p95_within01s": true,
+    "first4_p50_within025s": true,
+    "first4_p95_within025s": true,
+    "gap_p95_within01s": false,
+    "rss_within32mib": true
+  },
+  "all_screening_checks_passed": false,
+  "source_count": 100,
+  "input_duration_s": 891.1448125,
+  "reference_characters": 3848,
+  "full100_executed": true,
+  "default_changed": false,
+  "paired_changes": {
+    "first_s": {
+      "n": 100,
+      "improved_over01s": 1,
+      "worsened_over01s": 35,
+      "within01s": 64
+    },
+    "first4_s": {
+      "n": 100,
+      "improved_over01s": 3,
+      "worsened_over01s": 39,
+      "within01s": 58
+    },
+    "file_end_s": {
+      "n": 100,
+      "improved_over01s": 3,
+      "worsened_over01s": 49,
+      "within01s": 48
+    },
+    "max_growth_gap_s": {
+      "n": 100,
+      "improved_over01s": 27,
+      "worsened_over01s": 16,
+      "within01s": 57
+    }
+  },
+  "model": {
+    "num_threads": 2,
+    "quantization": "q8_0",
+    "max_total_len": 512,
+    "max_new_tokens": 128,
+    "family": "qwen3_gguf",
+    "path": "models/qwen3-opt/gguf-q8-20261109-01",
+    "runtime_library": "runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+    "runtime_manifest": "runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+    "num_threads_batch": 3,
+    "cache_text_prefix": true,
+    "language": "ko"
+  },
+  "model_files": {
+    "Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+    },
+    "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+    },
+    "runtime_library": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+      "sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf"
+    },
+    "runtime_manifest": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+      "sha256": "a7fa6d9d6ffab5b5a0f7f98e3dc94cd7d751fe503a16f214936b5ff32fd3d113"
+    }
+  },
+  "model_metadata": {
+    "backend": "llama_cpp_mtmd",
+    "provider": "cpu",
+    "supported_modes": [
+      "batch"
+    ],
+    "token_output_callback": true,
+    "thread_configuration": {
+      "threads": 2,
+      "threads_batch": 3,
+      "audio_threads": 3
+    },
+    "cache_text_prefix": true,
+    "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+    "language": "ko",
+    "stream_language": "Korean",
+    "quantization": "q8_0",
+    "audio_quantization": "q8_0",
+    "quantization_evidence": "official_GGUF_asset_names_and_bound_sha256",
+    "quantization_scope": "텍스트 모델과 오디오 mmproj 모두 Q8_0 배포본. 일부 tensor 혼합 dtype 가능. ONNX INT8과 동일 양자화 방식 아님.",
+    "assets": null,
+    "max_total_len": 512,
+    "max_new_tokens": 128,
+    "prompt_policy": "empty_system_audio_user_forced_assistant_language_Korean_asr_text_v1",
+    "output_policy": "gguf_raw_utf8_until_eog_v1",
+    "sampling": "greedy",
+    "repetition_policy": "last64_token_ids_at_most3_distinct_failure",
+    "use_itn": null,
+    "context_policy": "mtmd_positions_plus_reserved_output_no_truncation_v1",
+    "input_policy": "동일 float32 PCM을 직접 전달. file codec/resampling 없음",
+    "runtime_build": {
+      "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+      "machine": "aarch64",
+      "command": [
+        "g++",
+        "-std=c++17",
+        "-O2",
+        "-fPIC",
+        "-shared",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+        "-I",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+        "-I",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+        "-I",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/vendor/nlohmann",
+        "/home/deepet/projects/edge-asr/native/gguf/bridge.cpp",
+        "-L",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+        "-Wl,-rpath,/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin",
+        "-lllama",
+        "-lmtmd",
+        "-lggml",
+        "-lggml-base",
+        "-pthread",
+        "-o",
+        "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so"
+      ],
+      "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "bridge_source_sha256": "7ee8307814e8ee1e5adc85bf2d0751195eafdb2d8815784f56ddc1ac79ab494d",
+      "prefix_cache_source_sha256": "9d60e18b86bdb9371511829fc2eefe7ced2830ce4a0d79c1a0e650e827a8fcbd",
+      "features": [
+        "token_callback_v1",
+        "split_threads_v1",
+        "text_prefix_cache_v1"
+      ],
+      "cmake_cache_sha256": "2d21bf15406912c839456d69ef66f7edcbdfbdc1d3b02d4f5f03b0a09b139b24",
+      "engine_libraries": {
+        "libmtmd.so": "ba8bbb528c24a7cc5721b5cdf520d7ab159f5efb214548628ae5ce240f581296",
+        "libggml.so": "9391d0da5efb090d836eb9f1050270045ae9f215ad8e41368a44d9cd73de82c1",
+        "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+        "libllama.so": "3981f9752c48c595e4fd2ef766e70e6051edc6f54e85e4e0044615e0ddba0999",
+        "libggml-cpu.so": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+        "libllama-common.so": "61278407f85381989b98522229bb57379af9988b301a704f8c55a6619d14bafd"
+      },
+      "library_sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model"
+    }
+  },
+  "input_manifest_sha256": "75ba1226dddfa0defb97f6fdbba89c31a762b541beb41299cdb0ac8490c45a06",
+  "verification": {
+    "protected_files_unchanged_during_inference": 849,
+    "boot_id": "db0f2e44-3c3f-4b8a-8472-e5618db2aeae",
+    "score_recomputed": true,
+    "raw_files_host_rp5_equal": 28,
+    "raw_hashes_rechecked_on_host": true,
+    "independent_analysis_byte_equal": true,
+    "independent_input_audit_byte_equal": true,
+    "independent_protection_audit_byte_equal": true,
+    "boot_unchanged": true,
+    "aggregation_error_preserved_and_recomputed": true,
+    "model_inference_completed_both": true,
+    "web": {
+      "records": 61,
+      "profiles": 23,
+      "old_records_preserved": 59,
+      "old_profiles_preserved": 21,
+      "two_100_source_replays_checked": true,
+      "conditions_and_profiles_checked": true,
+      "mobile_width_checked": true,
+      "javascript_errors": 0,
+      "screenshot_inspected": true,
+      "physical_audio_latency_measured": false
+    },
+    "documentation_structure_tests_passed": 6,
+    "host_tests_total": 432,
+    "host_tests_passed": 429,
+    "host_tests_skipped": 3,
+    "host_native_inference": false
+  },
+  "scope": "원래100개1배속·확정5초·첫0.6초. 짧은 첫성공 결과의 후속1회 비용예산예외만 끔→켬. 같은개발자료 순차1쌍·운영열포함·독립정확도/GUI음향지연미측정.",
+  "inference_completed": true,
+  "campaign_outcome": {
+    "raw_status": "failed",
+    "raw_error": "KeyError('budget300')",
+    "phases_completed": [
+      "control",
+      "candidate"
+    ],
+    "aggregation_recovered": true,
+    "raw_campaign_modified": false,
+    "explanation": "양쪽 추론과 개별 집계 완료 뒤 이전 조건 이름을 조회한 최종 비교 집계만 실패. 기존 공통 분석으로 두 조건을 재계산했고 각 원시 cases와 일치한다."
+  },
+  "input_audit": {
+    "checks": {
+      "only_short_followup_protection_changed": true,
+      "same_source_manifest_audio": true,
+      "same_vad_metadata": true,
+      "same_first_offered_coordinates_and_pcm": true,
+      "same_model_config_files": true,
+      "same_core_source_commit": true,
+      "protected_files_unchanged": true
+    },
+    "all_passed": true,
+    "settings_differences": {
+      "protect_short_followup": [
+        false,
+        true
+      ]
+    },
+    "initial_offered_count_each": 189,
+    "final_count_each": {
+      "control": 210,
+      "candidate": 210
+    },
+    "reference": "results/optimization/opt3/realtime-queue-20261116-02/asr5",
+    "clocks": {
+      "control": {
+        "arm_ghz_sample_distribution": {
+          "n": 913,
+          "mean": 2.3327691698050486,
+          "p50": 2.40002048,
+          "p95": 2.400033792,
+          "max": 2.400040192
+        },
+        "current_limit_sample_counts": {
+          "0": 579,
+          "6": 31,
+          "8": 303
+        }
+      },
+      "candidate": {
+        "arm_ghz_sample_distribution": {
+          "n": 914,
+          "mean": 2.2791442628621477,
+          "p50": 2.366020096,
+          "p95": 2.400033792,
+          "max": 2.40003712
+        },
+        "current_limit_sample_counts": {
+          "0": 359,
+          "6": 48,
+          "8": 507
+        }
+      }
+    },
+    "scope": "원래 전체100개 입력과 최초 요청 경계/PCM을 재검산. 최종 전사/token 동등성 및 채점은 재사용한 주 분석에서 별도 검사. 클럭은 워밍업/유휴 포함 단순 표본 분포."
+  },
+  "protection_audit": {
+    "control": {
+      "overrides": 0,
+      "max_submitted_partials_per_segment": 2,
+      "rows": [],
+      "eligibility_min_new_tail_call_limits_verified": true
+    },
+    "candidate": {
+      "overrides": 3,
+      "max_submitted_partials_per_segment": 2,
+      "rows": [
+        {
+          "segment_id": 92,
+          "first_job_id": 215,
+          "first_hypothesis": "오 십 시",
+          "followup_job_id": 216,
+          "first_completed_s": 0.6379487180383876,
+          "estimated_followup_s": 2.426672949688509,
+          "actual_followup_s": 1.2381067170063034,
+          "remaining_to_cap_s": 3.588,
+          "followup_input_s": 1.412,
+          "source_ids": [
+            "fleurs-9406104450793293120"
+          ],
+          "matching_control_pcm_jobs": [
+            221
+          ],
+          "matching_control_hypotheses": [
+            "오후 열 시에서 열 한 시"
+          ],
+          "candidate_followup_hypothesis": "오후 열 시에서 열 한 시"
+        },
+        {
+          "segment_id": 139,
+          "first_job_id": 320,
+          "first_hypothesis": "이집트",
+          "followup_job_id": 321,
+          "first_completed_s": 0.5841232589446008,
+          "estimated_followup_s": 2.438522162474692,
+          "actual_followup_s": 1.6330618929350749,
+          "remaining_to_cap_s": 2.98,
+          "followup_input_s": 2.02,
+          "source_ids": [
+            "fleurs-16212391279578882998"
+          ],
+          "matching_control_pcm_jobs": [
+            327
+          ],
+          "matching_control_hypotheses": [
+            "20세기의 연구에 따르면."
+          ],
+          "candidate_followup_hypothesis": "20세기의 연구에 따르면."
+        },
+        {
+          "segment_id": 168,
+          "first_job_id": 388,
+          "first_hypothesis": "뇌 병리",
+          "followup_job_id": 389,
+          "first_completed_s": 0.6316442760871723,
+          "estimated_followup_s": 2.585456883581355,
+          "actual_followup_s": 1.2147117760032415,
+          "remaining_to_cap_s": 3.588,
+          "followup_input_s": 1.412,
+          "source_ids": [
+            "fleurs-3130425339095858923"
+          ],
+          "matching_control_pcm_jobs": [
+            396
+          ],
+          "matching_control_hypotheses": [
+            "뇌 병리와 행동 사이에."
+          ],
+          "candidate_followup_hypothesis": "뇌 병리와 행동 사이에."
+        }
+      ],
+      "eligibility_min_new_tail_call_limits_verified": true
+    }
+  },
+  "reference_final_path": "results/optimization/opt3/realtime-queue-20261116-02/asr5/worker.json"
+}

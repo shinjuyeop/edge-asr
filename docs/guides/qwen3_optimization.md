@@ -200,3 +200,5 @@ KSS 등 이전 실험 설정은 [설정 색인](../../configs/README.md)에 보�
 ### 짧은 첫 결과의 후속 보호
 
 가변 `adaptive/budgeted` 명령에 선택 `--protect-short-followup`을 추가하면 첫 성공 부분 결과가 문자/숫자4자 미만인 구간의 후속1회에 비용 예산 예외를 둡니다. 기본은 끔이며 유휴·최소 새 음성·최대 횟수·끝 여유는 유지합니다. 예산3초의 일반 확대와 다르고 확정용5초 입력을 바꾸지 않습니다. 실제 예외는 `partial_decision.short_followup_budget_override`, 활성 정책은 `short-first-budget-v1`로 기록합니다. [사전 조건](../research/qwen_realtime.md#짧은-최초-결과의-후속-1회-보호--2026-11-16-사전-조건).
+
+[100개 끔/켬 실측](../../results/summaries/optimization/realtime-short-followup-20261116.md)에서 최종 정확도는 유지했지만 표시 개선 조건에 미달했습니다. 기본 끔을 유지하며 재현·청취 비교용 선택 옵션으로 보존합니다.
