@@ -116,3 +116,7 @@ native ORT 버전 확인이 필요할 때만 `env --probe-runtime`을 사용합�
 ## Q4 3T 커널 추적 추가 — 2026-11-13
 
 `runtimes/qwen3-opt/kernel-q4-20261113-01/libedge_kernel_trace.so`를 별도 빌드했습니다. 추론 자식에만 preload하며 기존 bridge·엔진·패키지·가중치는 그대로입니다. 실제 repack GEMM/GEMV·활성값 변환 호출을 기록하고 끔/켬의 전사·token ID·계측 비용을 대조했습니다. 운영 기본에는 로딩하지 않습니다. 사용자 결정으로 Q4 후속은2/3T를 유지하고4T는 보존한 실험으로 둡니다. [실제96호출·온도/클럭·해시 기록](../../results/summaries/optimization/kernel-q4-20261113.md).
+
+## Q8 GEMV 선택 실험 — 2026-11-16
+
+`runtimes/qwen3-opt/decode-q8-20261116-02/libedge_q8_gemv.so`를 별도 빌드했습니다. 원래 Q8 엔진의 `-O3`·Cortex-A76 ISA·미사용 함수 경고 옵션을 사용하고 실험 자식에만 preload했습니다. 기존 엔진·가중치·가상환경은 유지합니다. 합성 커널72조건·실제36호출 전사/token 동등성은 통과했지만 속도 선별에 미달해 운영 기본에는 연결하지 않습니다. 첫 `-01` 빌드 경고 실패도 보존합니다. [소스·빌드·측정 기록](../../results/summaries/optimization/decode-q8-20261116.md).
