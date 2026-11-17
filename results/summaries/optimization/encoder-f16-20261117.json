@@ -1,0 +1,888 @@
+{
+  "source_commit": "dba8d2b1d939493e01d4391531772f078d8a82db",
+  "raw_path": "results/optimization/opt3/encoder-f16-20261117-02",
+  "build": {
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-O3",
+      "-DNDEBUG",
+      "-fPIC",
+      "-shared",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wno-unused-function",
+      "-mcpu=cortex-a76+crc+crypto+dotprod+noi8mm+nosve+nosme",
+      "-U__ARM_FEATURE_MATMUL_INT8",
+      "-U__ARM_FEATURE_SVE",
+      "-U__ARM_FEATURE_SME",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/src",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/src/ggml-cpu",
+      "/home/deepet/projects/edge-asr/native/gguf/f16_dot.cpp",
+      "-ldl",
+      "-o",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/encoder-f16-20261117-02/libedge_f16_dot.so"
+    ],
+    "original_repack_flags": "-O3 -DNDEBUG -std=gnu++17 -fPIC -Wmissing-declarations -Wmissing-noreturn -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wno-array-bounds -Wextra-semi -U__ARM_FEATURE_MATMUL_INT8 -U__ARM_FEATURE_SVE -U__ARM_FEATURE_SME -mcpu=cortex-a76+crc+crypto+dotprod+noi8mm+nosve+nosme -fopenmp",
+    "source_commit": "dba8d2b1d939493e01d4391531772f078d8a82db",
+    "source_sha256": "7868be45c0133f1dcba97da9fdcbe7e50facd2c6da9e8390ed8227373334041c",
+    "upstream_vec_sha256": "2422d2ab0ce6f9c1b78f478656bc1a2864d1374f8a339de127584c7349a4a869",
+    "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "library_sha256": "2f45599e6c83c6bb34ed841c2c3fa07faea81b90052f5d921794e91c94f91445",
+    "original_cpu_sha256": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746"
+  },
+  "model_files": {
+    "Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+    },
+    "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+    },
+    "runtime_library": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+      "sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf"
+    },
+    "runtime_manifest": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+      "sha256": "a7fa6d9d6ffab5b5a0f7f98e3dc94cd7d751fe503a16f214936b5ff32fd3d113"
+    },
+    "experimental_kernel": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/encoder-f16-20261117-02/libedge_f16_dot.so",
+      "sha256": "2f45599e6c83c6bb34ed841c2c3fa07faea81b90052f5d921794e91c94f91445"
+    },
+    "experimental_build": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/encoder-f16-20261117-02/build.json",
+      "sha256": "ba8fa9eedb46ad704e9e26109c6bc1cd70e6f67b72898f57524572b147fbc5b6"
+    }
+  },
+  "plan": {
+    "modes_by_round": [
+      "stock",
+      "fused",
+      "stock",
+      "fused",
+      "stock",
+      "fused",
+      "fused",
+      "stock",
+      "fused",
+      "stock",
+      "stock",
+      "fused"
+    ],
+    "warmup_rounds": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "measured_blocks": [
+      [
+        5,
+        6,
+        7,
+        8
+      ],
+      [
+        9,
+        10,
+        11,
+        12
+      ]
+    ],
+    "pause_s": 2,
+    "native_modes": {
+      "stock": 0,
+      "fused": 1
+    },
+    "scope": "고정 PCM 선별; 연속 지연·CER 미측정"
+  },
+  "synthetic_cases": 65,
+  "bit_equal_comparisons": 130,
+  "all_36_transcripts_and_tokens_equal_reference": true,
+  "same_measured_kernel_calls_per_pcm": true,
+  "failures": 0,
+  "by_kind": {
+    "initial": {
+      "stock": {
+        "calls": 4,
+        "native_elapsed_s": {
+          "sum": 1.612150985,
+          "mean": 0.40303774625,
+          "min": 0.400646696,
+          "max": 0.406862834
+        },
+        "token_decode_s": {
+          "sum": 0.223921966,
+          "mean": 0.0559804915,
+          "min": 0.055160611,
+          "max": 0.057725703
+        },
+        "audio_encode_s": {
+          "sum": 0.6568312700000001,
+          "mean": 0.1642078175,
+          "min": 0.162720348,
+          "max": 0.168259593
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.368806591,
+          "mean": 0.09220164775,
+          "min": 0.091870437,
+          "max": 0.092489034
+        },
+        "suffix_eval_s": {
+          "sum": 0.35635483300000004,
+          "mean": 0.08908870825000001,
+          "min": 0.088225651,
+          "max": 0.090371055
+        },
+        "first_generated_token_s": {
+          "sum": 1.385560129,
+          "mean": 0.34639003225,
+          "min": 0.343911241,
+          "max": 0.350425918
+        },
+        "rss_max_mib": 1659.015625,
+        "process_cpu_mean_s": 1.144209005749996,
+        "kernel_calls": {
+          "forwarded": {
+            "9": 6144000,
+            "4320": 0,
+            "7680": 46592,
+            "other": 1035888
+          },
+          "replaced": {
+            "9": 0,
+            "4320": 0,
+            "7680": 0,
+            "other": 0
+          }
+        }
+      },
+      "fused": {
+        "calls": 4,
+        "native_elapsed_s": {
+          "sum": 1.590373305,
+          "mean": 0.39759332625,
+          "min": 0.395791827,
+          "max": 0.401662518
+        },
+        "token_decode_s": {
+          "sum": 0.220427979,
+          "mean": 0.05510699475,
+          "min": 0.054530828,
+          "max": 0.056179026
+        },
+        "audio_encode_s": {
+          "sum": 0.6462673409999999,
+          "mean": 0.16156683524999998,
+          "min": 0.160071884,
+          "max": 0.164587455
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.365640549,
+          "mean": 0.09141013725,
+          "min": 0.091064968,
+          "max": 0.091625065
+        },
+        "suffix_eval_s": {
+          "sum": 0.35174078,
+          "mean": 0.087935195,
+          "min": 0.087699869,
+          "max": 0.088185706
+        },
+        "first_generated_token_s": {
+          "sum": 1.367368827,
+          "mean": 0.34184220675,
+          "min": 0.340299733,
+          "max": 0.344835525
+        },
+        "rss_max_mib": 1659.015625,
+        "process_cpu_mean_s": 1.1270261292500017,
+        "kernel_calls": {
+          "forwarded": {
+            "9": 6144000,
+            "4320": 0,
+            "7680": 0,
+            "other": 0
+          },
+          "replaced": {
+            "9": 0,
+            "4320": 0,
+            "7680": 46592,
+            "other": 1035888
+          }
+        }
+      }
+    },
+    "followup": {
+      "stock": {
+        "calls": 4,
+        "native_elapsed_s": {
+          "sum": 6.736531431,
+          "mean": 1.68413285775,
+          "min": 1.682151186,
+          "max": 1.687226815
+        },
+        "token_decode_s": {
+          "sum": 3.360970308,
+          "mean": 0.840242577,
+          "min": 0.839486098,
+          "max": 0.84177471
+        },
+        "audio_encode_s": {
+          "sum": 2.0133313150000003,
+          "mean": 0.50333282875,
+          "min": 0.500924399,
+          "max": 0.504712167
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.9470079849999999,
+          "mean": 0.23675199624999999,
+          "min": 0.235637664,
+          "max": 0.238711594
+        },
+        "suffix_eval_s": {
+          "sum": 0.371257129,
+          "mean": 0.09281428225,
+          "min": 0.09254872,
+          "max": 0.092961779
+        },
+        "first_generated_token_s": {
+          "sum": 3.336530389,
+          "mean": 0.83413259725,
+          "min": 0.830921407,
+          "max": 0.837476788
+        },
+        "rss_max_mib": 1659.015625,
+        "process_cpu_mean_s": 4.189617139250007,
+        "kernel_calls": {
+          "forwarded": {
+            "9": 18432000,
+            "4320": 0,
+            "7680": 139776,
+            "other": 6161904
+          },
+          "replaced": {
+            "9": 0,
+            "4320": 0,
+            "7680": 0,
+            "other": 0
+          }
+        }
+      },
+      "fused": {
+        "calls": 4,
+        "native_elapsed_s": {
+          "sum": 6.643847433,
+          "mean": 1.66096185825,
+          "min": 1.655955419,
+          "max": 1.668221824
+        },
+        "token_decode_s": {
+          "sum": 3.3272925190000002,
+          "mean": 0.8318231297500001,
+          "min": 0.8283128489999999,
+          "max": 0.8353261390000001
+        },
+        "audio_encode_s": {
+          "sum": 1.975956428,
+          "mean": 0.493989107,
+          "min": 0.488900014,
+          "max": 0.500315246
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.932008263,
+          "mean": 0.23300206575,
+          "min": 0.232268435,
+          "max": 0.234016985
+        },
+        "suffix_eval_s": {
+          "sum": 0.365102284,
+          "mean": 0.091275571,
+          "min": 0.090945467,
+          "max": 0.091632379
+        },
+        "first_generated_token_s": {
+          "sum": 3.277953067,
+          "mean": 0.81948826675,
+          "min": 0.813520815,
+          "max": 0.825451274
+        },
+        "rss_max_mib": 1659.015625,
+        "process_cpu_mean_s": 4.124281834750004,
+        "kernel_calls": {
+          "forwarded": {
+            "9": 18432000,
+            "4320": 0,
+            "7680": 0,
+            "other": 0
+          },
+          "replaced": {
+            "9": 0,
+            "4320": 0,
+            "7680": 139776,
+            "other": 6161904
+          }
+        }
+      }
+    },
+    "final": {
+      "stock": {
+        "calls": 4,
+        "native_elapsed_s": {
+          "sum": 12.995484508,
+          "mean": 3.248871127,
+          "min": 3.238199516,
+          "max": 3.262408064
+        },
+        "token_decode_s": {
+          "sum": 7.631587745999999,
+          "mean": 1.9078969364999998,
+          "min": 1.901105431,
+          "max": 1.9255740200000002
+        },
+        "audio_encode_s": {
+          "sum": 3.2454319590000003,
+          "mean": 0.8113579897500001,
+          "min": 0.806896952,
+          "max": 0.8213218
+        },
+        "audio_embedding_eval_s": {
+          "sum": 1.6408200110000002,
+          "mean": 0.41020500275,
+          "min": 0.408373031,
+          "max": 0.41193552
+        },
+        "suffix_eval_s": {
+          "sum": 0.38741145,
+          "mean": 0.0968528625,
+          "min": 0.096264895,
+          "max": 0.098276817
+        },
+        "first_generated_token_s": {
+          "sum": 5.279212459,
+          "mean": 1.31980311475,
+          "min": 1.314095323,
+          "max": 1.330525315
+        },
+        "rss_max_mib": 1659.015625,
+        "process_cpu_mean_s": 7.772811312,
+        "kernel_calls": {
+          "forwarded": {
+            "9": 30720000,
+            "4320": 0,
+            "7680": 232960,
+            "other": 7187712
+          },
+          "replaced": {
+            "9": 0,
+            "4320": 0,
+            "7680": 0,
+            "other": 0
+          }
+        }
+      },
+      "fused": {
+        "calls": 4,
+        "native_elapsed_s": {
+          "sum": 12.763407056,
+          "mean": 3.190851764,
+          "min": 3.187916107,
+          "max": 3.193396705
+        },
+        "token_decode_s": {
+          "sum": 7.496236477,
+          "mean": 1.87405911925,
+          "min": 1.873388356,
+          "max": 1.8751463669999995
+        },
+        "audio_encode_s": {
+          "sum": 3.1652051629999995,
+          "mean": 0.79130129075,
+          "min": 0.788878819,
+          "max": 0.793090795
+        },
+        "audio_embedding_eval_s": {
+          "sum": 1.6366089050000001,
+          "mean": 0.40915222625000003,
+          "min": 0.408461605,
+          "max": 0.410045303
+        },
+        "suffix_eval_s": {
+          "sum": 0.376286312,
+          "mean": 0.094071578,
+          "min": 0.093577968,
+          "max": 0.094387437
+        },
+        "first_generated_token_s": {
+          "sum": 5.183671181999999,
+          "mean": 1.2959177954999999,
+          "min": 1.293713765,
+          "max": 1.298573616
+        },
+        "rss_max_mib": 1659.015625,
+        "process_cpu_mean_s": 7.6527793412499925,
+        "kernel_calls": {
+          "forwarded": {
+            "9": 30720000,
+            "4320": 0,
+            "7680": 0,
+            "other": 0
+          },
+          "replaced": {
+            "9": 0,
+            "4320": 0,
+            "7680": 232960,
+            "other": 7187712
+          }
+        }
+      }
+    }
+  },
+  "by_label": {
+    "stock": {
+      "calls": 12,
+      "native_elapsed_s": {
+        "sum": 21.344166924,
+        "mean": 1.778680577,
+        "min": 0.400646696,
+        "max": 3.262408064
+      },
+      "token_decode_s": {
+        "sum": 11.21648002,
+        "mean": 0.9347066683333333,
+        "min": 0.055160611,
+        "max": 1.9255740200000002
+      },
+      "audio_encode_s": {
+        "sum": 5.915594544,
+        "mean": 0.492966212,
+        "min": 0.162720348,
+        "max": 0.8213218
+      },
+      "audio_embedding_eval_s": {
+        "sum": 2.9566345870000004,
+        "mean": 0.24638621558333332,
+        "min": 0.091870437,
+        "max": 0.41193552
+      },
+      "suffix_eval_s": {
+        "sum": 1.115023412,
+        "mean": 0.09291861766666668,
+        "min": 0.088225651,
+        "max": 0.098276817
+      },
+      "first_generated_token_s": {
+        "sum": 10.001302977,
+        "mean": 0.83344191475,
+        "min": 0.343911241,
+        "max": 1.330525315
+      },
+      "rss_max_mib": 1659.015625,
+      "process_cpu_mean_s": 4.368879152333334,
+      "kernel_calls": {
+        "forwarded": {
+          "9": 55296000,
+          "4320": 0,
+          "7680": 419328,
+          "other": 14385504
+        },
+        "replaced": {
+          "9": 0,
+          "4320": 0,
+          "7680": 0,
+          "other": 0
+        }
+      }
+    },
+    "fused": {
+      "calls": 12,
+      "native_elapsed_s": {
+        "sum": 20.997627794,
+        "mean": 1.7498023161666667,
+        "min": 0.395791827,
+        "max": 3.193396705
+      },
+      "token_decode_s": {
+        "sum": 11.043956974999999,
+        "mean": 0.9203297479166667,
+        "min": 0.054530828,
+        "max": 1.8751463669999995
+      },
+      "audio_encode_s": {
+        "sum": 5.787428932,
+        "mean": 0.4822857443333333,
+        "min": 0.160071884,
+        "max": 0.793090795
+      },
+      "audio_embedding_eval_s": {
+        "sum": 2.9342577169999995,
+        "mean": 0.24452147641666666,
+        "min": 0.091064968,
+        "max": 0.410045303
+      },
+      "suffix_eval_s": {
+        "sum": 1.0931293759999998,
+        "mean": 0.09109411466666667,
+        "min": 0.087699869,
+        "max": 0.094387437
+      },
+      "first_generated_token_s": {
+        "sum": 9.828993076,
+        "mean": 0.8190827563333333,
+        "min": 0.340299733,
+        "max": 1.298573616
+      },
+      "rss_max_mib": 1659.015625,
+      "process_cpu_mean_s": 4.301362435083333,
+      "kernel_calls": {
+        "forwarded": {
+          "9": 55296000,
+          "4320": 0,
+          "7680": 0,
+          "other": 0
+        },
+        "replaced": {
+          "9": 0,
+          "4320": 0,
+          "7680": 419328,
+          "other": 14385504
+        }
+      }
+    }
+  },
+  "crossed_blocks": [
+    {
+      "block": 1,
+      "rounds": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "conditions": {
+        "stock": {
+          "calls": 6,
+          "native_elapsed_s": {
+            "sum": 10.662038891,
+            "mean": 1.7770064818333333,
+            "min": 0.400646696,
+            "max": 3.253816318
+          },
+          "token_decode_s": {
+            "sum": 5.596849325,
+            "mean": 0.9328082208333333,
+            "min": 0.05524237,
+            "max": 1.9031801349999997
+          },
+          "audio_encode_s": {
+            "sum": 2.96295132,
+            "mean": 0.49382522,
+            "min": 0.162923405,
+            "max": 0.8213218
+          },
+          "audio_embedding_eval_s": {
+            "sum": 1.476353688,
+            "mean": 0.246058948,
+            "min": 0.091870437,
+            "max": 0.411477184
+          },
+          "suffix_eval_s": {
+            "sum": 0.555069744,
+            "mean": 0.092511624,
+            "min": 0.088225651,
+            "max": 0.0963461
+          },
+          "first_generated_token_s": {
+            "sum": 5.001415524,
+            "mean": 0.833569254,
+            "min": 0.343911241,
+            "max": 1.330525315
+          },
+          "rss_max_mib": 1659.015625,
+          "process_cpu_mean_s": 4.363366403666666,
+          "kernel_calls": {
+            "forwarded": {
+              "9": 27648000,
+              "4320": 0,
+              "7680": 209664,
+              "other": 7192752
+            },
+            "replaced": {
+              "9": 0,
+              "4320": 0,
+              "7680": 0,
+              "other": 0
+            }
+          }
+        },
+        "fused": {
+          "calls": 6,
+          "native_elapsed_s": {
+            "sum": 10.49350137,
+            "mean": 1.748916895,
+            "min": 0.395791827,
+            "max": 3.193396705
+          },
+          "token_decode_s": {
+            "sum": 5.5163749840000005,
+            "mean": 0.9193958306666667,
+            "min": 0.05485259,
+            "max": 1.8738882280000004
+          },
+          "audio_encode_s": {
+            "sum": 2.8932727320000002,
+            "mean": 0.482212122,
+            "min": 0.160071884,
+            "max": 0.793090795
+          },
+          "audio_embedding_eval_s": {
+            "sum": 1.468677907,
+            "mean": 0.24477965116666667,
+            "min": 0.091334359,
+            "max": 0.410045303
+          },
+          "suffix_eval_s": {
+            "sum": 0.54569658,
+            "mean": 0.09094943,
+            "min": 0.087699869,
+            "max": 0.094032323
+          },
+          "first_generated_token_s": {
+            "sum": 4.91471642,
+            "mean": 0.8191194033333333,
+            "min": 0.340299733,
+            "max": 1.298573616
+          },
+          "rss_max_mib": 1658.515625,
+          "process_cpu_mean_s": 4.301143442666668,
+          "kernel_calls": {
+            "forwarded": {
+              "9": 27648000,
+              "4320": 0,
+              "7680": 0,
+              "other": 0
+            },
+            "replaced": {
+              "9": 0,
+              "4320": 0,
+              "7680": 209664,
+              "other": 7192752
+            }
+          }
+        }
+      },
+      "encoder_reduction_fraction": 0.023516615858542034,
+      "native_reduction_fraction": 0.0158072506321717,
+      "initial_increase_fraction": -0.013453657698032306,
+      "rss_increase_mib": -0.5,
+      "checks": {
+        "encoder_reduction_at_least_3pct": false,
+        "native_reduction_at_least_1pct": true,
+        "initial_increase_at_most_5pct": true,
+        "rss_increase_at_most_32mib": true
+      },
+      "passed": false
+    },
+    {
+      "block": 2,
+      "rounds": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "conditions": {
+        "stock": {
+          "calls": 6,
+          "native_elapsed_s": {
+            "sum": 10.682128033000001,
+            "mean": 1.7803546721666668,
+            "min": 0.402302209,
+            "max": 3.262408064
+          },
+          "token_decode_s": {
+            "sum": 5.619630695000001,
+            "mean": 0.9366051158333334,
+            "min": 0.055160611,
+            "max": 1.9255740200000002
+          },
+          "audio_encode_s": {
+            "sum": 2.952643224,
+            "mean": 0.49210720399999996,
+            "min": 0.162720348,
+            "max": 0.809129765
+          },
+          "audio_embedding_eval_s": {
+            "sum": 1.4802808989999998,
+            "mean": 0.24671348316666666,
+            "min": 0.092232754,
+            "max": 0.41193552
+          },
+          "suffix_eval_s": {
+            "sum": 0.559953668,
+            "mean": 0.09332561133333334,
+            "min": 0.089035528,
+            "max": 0.098276817
+          },
+          "first_generated_token_s": {
+            "sum": 4.999887453,
+            "mean": 0.8333145755,
+            "min": 0.346471519,
+            "max": 1.319001136
+          },
+          "rss_max_mib": 1659.015625,
+          "process_cpu_mean_s": 4.374391901000003,
+          "kernel_calls": {
+            "forwarded": {
+              "9": 27648000,
+              "4320": 0,
+              "7680": 209664,
+              "other": 7192752
+            },
+            "replaced": {
+              "9": 0,
+              "4320": 0,
+              "7680": 0,
+              "other": 0
+            }
+          }
+        },
+        "fused": {
+          "calls": 6,
+          "native_elapsed_s": {
+            "sum": 10.504126423999999,
+            "mean": 1.7506877373333334,
+            "min": 0.396527943,
+            "max": 3.191308133
+          },
+          "token_decode_s": {
+            "sum": 5.527581991,
+            "mean": 0.9212636651666666,
+            "min": 0.054530828,
+            "max": 1.8751463669999995
+          },
+          "audio_encode_s": {
+            "sum": 2.8941562000000003,
+            "mean": 0.4823593666666667,
+            "min": 0.160785186,
+            "max": 0.79068948
+          },
+          "audio_embedding_eval_s": {
+            "sum": 1.46557981,
+            "mean": 0.24426330166666665,
+            "min": 0.091064968,
+            "max": 0.409056498
+          },
+          "suffix_eval_s": {
+            "sum": 0.5474327959999999,
+            "mean": 0.09123879933333333,
+            "min": 0.088046631,
+            "max": 0.094387437
+          },
+          "first_generated_token_s": {
+            "sum": 4.914276656,
+            "mean": 0.8190461093333333,
+            "min": 0.341363351,
+            "max": 1.295391926
+          },
+          "rss_max_mib": 1659.015625,
+          "process_cpu_mean_s": 4.301581427499997,
+          "kernel_calls": {
+            "forwarded": {
+              "9": 27648000,
+              "4320": 0,
+              "7680": 0,
+              "other": 0
+            },
+            "replaced": {
+              "9": 0,
+              "4320": 0,
+              "7680": 209664,
+              "other": 7192752
+            }
+          }
+        }
+      },
+      "encoder_reduction_fraction": 0.019808361377561368,
+      "native_reduction_fraction": 0.0166634970532189,
+      "initial_increase_fraction": -0.013562847400465428,
+      "rss_increase_mib": 0.0,
+      "checks": {
+        "encoder_reduction_at_least_3pct": false,
+        "native_reduction_at_least_1pct": true,
+        "initial_increase_at_most_5pct": true,
+        "rss_increase_at_most_32mib": true
+      },
+      "passed": false
+    }
+  ],
+  "passed": false,
+  "thermal": {
+    "start_c": 59.5,
+    "guard_max_c": 73.8,
+    "end_c": 71.05,
+    "worker_observed_max_c": 73.25,
+    "current_limits": [
+      0
+    ],
+    "cpu0_freq_khz": [
+      1500000,
+      1900000,
+      2400000
+    ]
+  },
+  "guard": {
+    "status": "completed",
+    "exit_code": 0,
+    "operational_valid": true,
+    "limit_verified": true
+  },
+  "boot_id": "db0f2e44-3c3f-4b8a-8472-e5618db2aeae",
+  "protected_files": 1003,
+  "default_changed": false,
+  "new_continuous_latency_cer_measured": false,
+  "speed_verdict_valid": true,
+  "excluded_first_execution": {
+    "source_commit": "8f924ae8262b5956bad169ba3b1d8471f21e8029",
+    "raw_path": "results/optimization/opt3/encoder-f16-20261117-01",
+    "speed_verdict_valid": false,
+    "exclusion_reason": "RP5 ELF 전달 테스트의 추가 CPU 부하가 실행 중 겹침; -02에서 동일 사전 조건 반복",
+    "all_36_transcripts_and_tokens_equal_reference": true,
+    "protected_files": 975,
+    "thermal": {
+      "start_c": 56.75,
+      "guard_max_c": 70.5,
+      "end_c": 69.95,
+      "worker_observed_max_c": 72.7,
+      "current_limits": [
+        0
+      ],
+      "cpu0_freq_khz": [
+        1500000,
+        2400000
+      ]
+    }
+  },
+  "verification": {
+    "host_tests": 435,
+    "host_passed": 432,
+    "host_skipped": 3,
+    "host_rp_independent_analysis_equal": true,
+    "raw_files_verified": 46,
+    "viewer_records": 61,
+    "viewer_profiles": 23,
+    "viewer_idle": true
+  }
+}

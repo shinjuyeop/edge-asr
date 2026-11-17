@@ -124,3 +124,7 @@ native ORT 버전 확인이 필요할 때만 `env --probe-runtime`을 사용합�
 ## Q8 prefetch 선택 빌드 — 2026-11-17
 
 `runtimes/qwen3-opt/prefetch-q8-20261117-01/libedge_q8_gemv.so`를 별도 빌드했습니다. 기존 엔진의 O3·Cortex-A76 ISA를 사용하고 원래 함수/clone/prefetch4/8블록을 같은 프로세스에서 대조했습니다. 합성84조건·실제60호출의 출력 동등성은 유지했지만 속도 선별에 미달해 기본에는 연결하지 않습니다. 기존 패키지·모델·과거 빌드는 보존합니다. [빌드 해시·실측 기록](../../results/summaries/optimization/prefetch-q8-20261117.md).
+
+## FP16 내적 선택 빌드 — 2026-11-17
+
+`runtimes/qwen3-opt/encoder-f16-20261117-{01,02}/libedge_f16_dot.so`를 기존 O3·Cortex-A76 ISA로 별도 빌드했습니다. 두 바이너리 SHA는 같고 기존 엔진·bridge·가중치·패키지를 교체하지 않았습니다. 합성65조건 및 실제36호출을 각 실행에서 확인했고, 첫 부하 혼입 실행은 제외했습니다. 유효 재비교에 작은 감소가 있었지만 encoder 기준 미달로 기본에 연결하지 않습니다. [빌드 해시·온도·실측](../../results/summaries/optimization/encoder-f16-20261117.md).
