@@ -109,8 +109,10 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 
 `conv_sgemm.patch`는 고정 upstream `ggml-cpu/llamafile/sgemm.cpp`의 첫 FP 타일 선택2줄만 바꿉니다. 원본에 적용하지 않고 `patch --fuzz=0 --output <새 사본> <원본> native/gguf/conv_sgemm.patch`로 새 빌드 경로에 생성합니다. 원래 컴파일 옵션으로 `EDGE_CONV_COLUMNS=6/4`·`llamafile_sgemm=edge_conv6/edge_conv4`를 각각 정의해 빌드한 뒤 선택 래퍼와 연결합니다. 원래 누적/축약·동적 작업 분배 코드는 그대로이며 열 타일에 따라 작업 묶음의 타일 수12→18로 조절해 약72열 단위를 유지합니다.
 
-`EDGE_ASR_CONV_CPU`는 이미 로딩한 원래 CPU 경로입니다. 실험 자식에만 preload하고 `edge_conv_begin(0/1/2)`로 원래 함수/재컴파일6열/4열을 선택합니다. FP16×FP16→FP32·3T·m800/2400/4000 및208/624/1040·n480·k4320·연속 행만 대상으로 하며 나머지는 원래 함수로 전달합니다. `edge_conv_result()`는 실제 accepted 호출·작업자별 CPU/wall 시간이며 병렬 wall 합을 단일 추론 지연으로 해석하지 않습니다. 제어/집계 조회는 유휴 상태에서만 합니다. [사전 조건](../docs/research/qwen_realtime.md#fp16-합성곱-타일-선별--2026-11-17-사전-조건).
+`EDGE_ASR_CONV_CPU`는 이미 로딩한 원래 CPU 경로입니다. 실험 자식에만 preload하고 `edge_conv_begin(0/1/2)`로 원래 함수/재컴파일6열/4열을 선택합니다. FP16×FP16→FP32·3T·m=800c 또는208c(c=1~6)·n480·k4320·연속 행만 대상으로 하며 나머지는 원래 함수로 전달합니다. `edge_conv_result()`는 실제 accepted 호출·작업자별 CPU/wall 시간이며 병렬 wall 합을 단일 추론 지연으로 해석하지 않습니다. 제어/집계 조회는 유휴 상태에서만 합니다. [사전 조건](../docs/research/qwen_realtime.md#fp16-합성곱-타일-선별--2026-11-17-사전-조건).
 
 선택 연속 입력은 모델 설정의 `conv_kernel_manifest`가 가리키는 `conv_tile4_1to6_v1` 빌드 명세를 사용합니다. 명세는 repo 기준 `library`/`cpu_library`, 두 SHA-256, 고정 `upstream_commit`을 포함합니다. 실행 프로세스를 시작할 때 해당 후보 하나의 `LD_PRELOAD`와 원래 CPU의 `EDGE_ASR_CONV_CPU`를 지정해야 합니다. `qwen/convolution.py`가 해시·실제 전역 심볼을 확인하고 직렬 호출마다 mode2를 초기화/기록합니다. 1~6청크 외에는 원래 함수로 전달하며 기본 설정은 변경하지 않습니다.
 
 5초 입력은 전처리의 끝 프레임 패딩으로6청크를 사용합니다. 1~5청크 진단 빌드는 보존하며1~6청크 후보는 새 실행 ID/빌드 명세로 구분합니다.
+
+선택 어댑터를 `close()`하면 mode0으로 복원합니다. 같은 프로세스에서 후속 기본 어댑터를 열어도 후보 선택이 남지 않도록 하며 모드 변경과 모델 종료는 추론 호출이 끝난 유휴 상태에서만 수행합니다.

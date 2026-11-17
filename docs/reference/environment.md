@@ -132,3 +132,9 @@ native ORT 버전 확인이 필요할 때만 `env --probe-runtime`을 사용합�
 ## FP16 합성곱 타일 선택 빌드 — 2026-11-17
 
 고정 upstream 사본에 최소 패치를 적용해 별도 `runtimes/qwen3-opt/conv-tile-20261117-03/libedge_conv_sgemm.so`를 빌드했습니다. 원래 O3·Cortex-A76 ISA와 compiler를 유지하고 재컴파일6열/후보4열을 선택합니다. `-01` 빌드 실패·`-02` 단일 청크 적용 기록도 보존합니다. 유효54호출 및 같은 바이너리의 추가 무-preload36호출 대조를 통과했지만 운영 engine/bridge·패키지·설정에는 연결하지 않았습니다. [해시·온도·비교 범위](../../results/summaries/optimization/conv-tile-20261117.md).
+
+## 2026-11-17 합성곱 선택 빌드
+
+`runtimes/qwen3-opt/conv-realtime-20261117-02/`는 원래 CPU 라이브러리·고정 upstream·컴파일 옵션을 재사용한 FP16 합성곱1~6청크/4×4 후보입니다. `build.json`의 원본/후보 SHA-256과 선택 명세를 검증하며 기존 엔진·모델·Python 패키지는 보존했습니다. 첫1~5청크 빌드는 `conv-realtime-20261117-01`에 별도로 남깁니다. [연속 입력 검증](../../results/summaries/optimization/conv-realtime-20261117.md).
+
+보호 파일의 실행 전후 대조는 RP5에서 수행합니다. Host/RP5 사이의 공유 자산 대조에서는 장비별 Python 버전·경로가 다른 `.venv/pyvenv.cfg`를 제외하며 이를 덮어쓰지 않습니다. 실측 소스는 해당 Git 커밋의 내용으로 검증하고 이후 종료 처리 보완과 구분합니다.

@@ -1,0 +1,1214 @@
+{
+  "source_commit": "8d49d982efc572dcc0d5c1b4f9ba64ee409e2476",
+  "status": "completed",
+  "error": null,
+  "checks": {
+    "pilot": {
+      "before": {
+        "complete": true,
+        "no_failure_drop_missing": true,
+        "same_audio": true,
+        "same_final_pcm_text_tokens": true,
+        "same_score": true,
+        "encoder_reduction_3pct": true,
+        "native_reduction_1pct": true,
+        "first_p95_within010": true,
+        "gap_p95_within010": true,
+        "first4_p95_within025": true,
+        "final_p95_within025": true,
+        "rss_within32mib": true
+      },
+      "after": {
+        "complete": true,
+        "no_failure_drop_missing": true,
+        "same_audio": true,
+        "same_final_pcm_text_tokens": true,
+        "same_score": true,
+        "encoder_reduction_3pct": true,
+        "native_reduction_1pct": true,
+        "first_p95_within010": true,
+        "gap_p95_within010": true,
+        "first4_p95_within025": true,
+        "final_p95_within025": true,
+        "rss_within32mib": true
+      }
+    },
+    "full100": {
+      "before": {
+        "complete": true,
+        "no_failure_drop_missing": true,
+        "same_audio": true,
+        "same_final_pcm_text_tokens": true,
+        "same_score": true,
+        "encoder_reduction_3pct": true,
+        "native_reduction_1pct": true,
+        "first_p95_within010": true,
+        "gap_p95_within010": true,
+        "first4_p95_within025": true,
+        "final_p95_within025": true,
+        "rss_within32mib": true
+      },
+      "after": {
+        "complete": true,
+        "no_failure_drop_missing": true,
+        "same_audio": true,
+        "same_final_pcm_text_tokens": true,
+        "same_score": true,
+        "encoder_reduction_3pct": true,
+        "native_reduction_1pct": true,
+        "first_p95_within010": true,
+        "gap_p95_within010": true,
+        "first4_p95_within025": true,
+        "final_p95_within025": true,
+        "rss_within32mib": true
+      }
+    }
+  },
+  "pilot_passed": true,
+  "full100_passed": true,
+  "full100_executed": true,
+  "boundary": {
+    "calls": 34,
+    "all_equivalent": true,
+    "failed_calls": 0,
+    "records": [
+      {
+        "frames": 320,
+        "status": "success",
+        "same_tokens_text": true,
+        "m": [
+          208,
+          800
+        ]
+      },
+      {
+        "frames": 15999,
+        "status": "success",
+        "same_tokens_text": true,
+        "m": [
+          208,
+          800
+        ]
+      },
+      {
+        "frames": 16000,
+        "status": "success",
+        "same_tokens_text": true,
+        "m": [
+          416,
+          1600
+        ]
+      },
+      {
+        "frames": 16001,
+        "status": "success",
+        "same_tokens_text": true,
+        "m": [
+          416,
+          1600
+        ]
+      },
+      {
+        "frames": 31999,
+        "status": "success",
+        "same_tokens_text": true,
+        "m": [
+          416,
+          1600
+        ]
+      },
+      {
+        "frames": 32000,
+        "status": "success",
+        "same_tokens_text": true,
+        "m": [
+          624,
+          2400
+        ]
+      },
+      {
+        "frames": 32001,
+        "status": "success",
+        "same_tokens_text": true,
+        "m": [
+          624,
+          2400
+        ]
+      },
+      {
+        "frames": 47999,
+        "status": "success",
+        "same_tokens_text": true,
+        "m": [
+          624,
+          2400
+        ]
+      },
+      {
+        "frames": 48000,
+        "status": "success",
+        "same_tokens_text": true,
+        "m": [
+          832,
+          3200
+        ]
+      },
+      {
+        "frames": 48001,
+        "status": "success",
+        "same_tokens_text": true,
+        "m": [
+          832,
+          3200
+        ]
+      },
+      {
+        "frames": 63999,
+        "status": "success",
+        "same_tokens_text": true,
+        "m": [
+          832,
+          3200
+        ]
+      },
+      {
+        "frames": 64000,
+        "status": "success",
+        "same_tokens_text": true,
+        "m": [
+          1040,
+          4000
+        ]
+      },
+      {
+        "frames": 64001,
+        "status": "success",
+        "same_tokens_text": true,
+        "m": [
+          1040,
+          4000
+        ]
+      },
+      {
+        "frames": 79999,
+        "status": "success",
+        "same_tokens_text": true,
+        "m": [
+          1040,
+          4000
+        ]
+      },
+      {
+        "frames": 80000,
+        "status": "success",
+        "same_tokens_text": true,
+        "m": [
+          1248,
+          4800
+        ]
+      },
+      {
+        "frames": 80001,
+        "status": "success",
+        "same_tokens_text": true,
+        "m": [
+          1248,
+          4800
+        ]
+      },
+      {
+        "frames": 96001,
+        "status": "success",
+        "same_tokens_text": true,
+        "m": []
+      }
+    ]
+  },
+  "numeric": {
+    "case_count": 56,
+    "comparisons_vs_original": 112,
+    "all_bit_equal": true,
+    "seed": 20261117,
+    "scope": "RP5 synthetic GGML matmul; not ASR accuracy/speed"
+  },
+  "protected_files": 1227,
+  "protected_unchanged": true,
+  "boot_id": "db0f2e44-3c3f-4b8a-8472-e5618db2aeae",
+  "default_changed": false,
+  "cases": {
+    "pilot-before": {
+      "source_count": 6,
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 17,
+        "deletions": 29,
+        "insertions": 4,
+        "errors": 50,
+        "cer": 0.17857142857142858
+      },
+      "failed_calls": 0,
+      "input_drops": 0,
+      "final_calls": 15,
+      "partial_calls": 18,
+      "submitted_requests": 37,
+      "coalesced_requests": 4,
+      "total_compute_s": 44.55330532894004,
+      "final_compute_s": 28.84420806192793,
+      "partial_compute_s": 15.709097267012112,
+      "final_native_s": 28.830620158,
+      "final_encoder_s": 8.611973144,
+      "first_s": {
+        "n": 6,
+        "mean": 2.117684247680629,
+        "p50": 2.121957657981664,
+        "p95": 3.5297490759752677,
+        "max": 3.5297490759752677
+      },
+      "first4_s": {
+        "n": 6,
+        "mean": 2.624403415354745,
+        "p50": 2.477071749046445,
+        "p95": 3.709213818982242,
+        "max": 3.709213818982242
+      },
+      "max_growth_gap_s": {
+        "n": 6,
+        "mean": 3.7433468779848575,
+        "p50": 4.170723558054306,
+        "p95": 4.683112854021601,
+        "max": 4.683112854021601
+      },
+      "file_end_s": {
+        "n": 6,
+        "mean": 1.2631914498779608,
+        "p50": 1.0363287120405573,
+        "p95": 2.044594568037428,
+        "max": 2.044594568037428
+      },
+      "final_queue_wait_s": {
+        "n": 15,
+        "mean": 0.5476552970086535,
+        "p50": 0.05512622802052647,
+        "p95": 2.452737358980812,
+        "max": 2.452737358980812
+      },
+      "initial_native_ttft_s": {
+        "n": 10,
+        "mean": 0.3590769364,
+        "p50": 0.358539335,
+        "p95": 0.366954883,
+        "max": 0.366954883
+      },
+      "rss_max_mib": 1724.15625,
+      "thermal": {
+        "start_mc": 75450,
+        "max_mc": 84250,
+        "end_mc": 76550,
+        "current_limits": [
+          0,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 74,
+          "mean": 2376609084.5405407,
+          "p50": 2400023808,
+          "p95": 2400037120,
+          "max": 2400037120
+        }
+      },
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 296,
+        "normalized_revisions": 9,
+        "retracted_suffix_characters": 18,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 79,
+        "segments_with_display": 15,
+        "revised_segments": 8,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 15,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 10,
+          "whole_partial_is_final_prefix": 8,
+          "partial_characters": 85,
+          "retained_prefix_characters": 82,
+          "retained_prefix_fraction": 0.9647058823529412
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.5881215392063106,
+          "p50": 0.0,
+          "p95": 2.7795769789954647,
+          "max": 2.7795769789954647
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "kernel_shapes": [],
+      "final_signature_sha256": "5b73388f6919ff11951d85a71508a4e59184c645bd99d4f95fefa2c2b0e6fd08"
+    },
+    "pilot-tile4": {
+      "source_count": 6,
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 17,
+        "deletions": 29,
+        "insertions": 4,
+        "errors": 50,
+        "cer": 0.17857142857142858
+      },
+      "failed_calls": 0,
+      "input_drops": 0,
+      "final_calls": 15,
+      "partial_calls": 18,
+      "submitted_requests": 37,
+      "coalesced_requests": 4,
+      "total_compute_s": 42.71373080799822,
+      "final_compute_s": 27.829138990025967,
+      "partial_compute_s": 14.88459181797225,
+      "final_native_s": 27.819804799,
+      "final_encoder_s": 7.5218186110000005,
+      "first_s": {
+        "n": 6,
+        "mean": 2.05032354097565,
+        "p50": 2.0239123889543116,
+        "p95": 3.507029261998831,
+        "max": 3.507029261998831
+      },
+      "first4_s": {
+        "n": 6,
+        "mean": 2.5506937161458967,
+        "p50": 2.3320748299518606,
+        "p95": 3.6903907159343348,
+        "max": 3.6903907159343348
+      },
+      "max_growth_gap_s": {
+        "n": 6,
+        "mean": 3.8023376263706012,
+        "p50": 4.225780531996861,
+        "p95": 4.611386785982177,
+        "max": 4.611386785982177
+      },
+      "file_end_s": {
+        "n": 6,
+        "mean": 1.0489869971207029,
+        "p50": 0.8867250409955147,
+        "p95": 1.9714980609249322,
+        "max": 1.9714980609249322
+      },
+      "final_queue_wait_s": {
+        "n": 15,
+        "mean": 0.46890364058781414,
+        "p50": 0.05336785898543894,
+        "p95": 2.3862236390123144,
+        "max": 2.3862236390123144
+      },
+      "initial_native_ttft_s": {
+        "n": 10,
+        "mean": 0.3406465651,
+        "p50": 0.339309812,
+        "p95": 0.35125121,
+        "max": 0.35125121
+      },
+      "rss_max_mib": 1724.796875,
+      "thermal": {
+        "start_mc": 77100,
+        "max_mc": 83700,
+        "end_mc": 77100,
+        "current_limits": [
+          0,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 73,
+          "mean": 2367177584.219178,
+          "p50": 2400023808,
+          "p95": 2400037120,
+          "max": 2400037120
+        }
+      },
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 297,
+        "normalized_revisions": 10,
+        "retracted_suffix_characters": 19,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 76,
+        "segments_with_display": 15,
+        "revised_segments": 8,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 15,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 10,
+          "whole_partial_is_final_prefix": 7,
+          "partial_characters": 82,
+          "retained_prefix_characters": 78,
+          "retained_prefix_fraction": 0.9512195121951219
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.5539251971557471,
+          "p50": 0.0,
+          "p95": 2.7454869160428643,
+          "max": 2.7454869160428643
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "kernel_shapes": [
+        208,
+        416,
+        624,
+        800,
+        832,
+        1040,
+        1248,
+        1600,
+        2400,
+        3200,
+        4000,
+        4800
+      ],
+      "final_signature_sha256": "5b73388f6919ff11951d85a71508a4e59184c645bd99d4f95fefa2c2b0e6fd08"
+    },
+    "pilot-after": {
+      "source_count": 6,
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 17,
+        "deletions": 29,
+        "insertions": 4,
+        "errors": 50,
+        "cer": 0.17857142857142858
+      },
+      "failed_calls": 0,
+      "input_drops": 0,
+      "final_calls": 15,
+      "partial_calls": 18,
+      "submitted_requests": 37,
+      "coalesced_requests": 4,
+      "total_compute_s": 44.885247588856146,
+      "final_compute_s": 29.024569750996307,
+      "partial_compute_s": 15.86067783785984,
+      "final_native_s": 29.014384689,
+      "final_encoder_s": 8.576521227999999,
+      "first_s": {
+        "n": 6,
+        "mean": 2.149953718889194,
+        "p50": 2.1704864330887794,
+        "p95": 3.5312226670561344,
+        "max": 3.5312226670561344
+      },
+      "first4_s": {
+        "n": 6,
+        "mean": 2.6537978920486442,
+        "p50": 2.4744816520251334,
+        "p95": 3.7124597470741705,
+        "max": 3.7124597470741705
+      },
+      "max_growth_gap_s": {
+        "n": 6,
+        "mean": 3.706974802331999,
+        "p50": 4.191050348919816,
+        "p95": 4.673444509040564,
+        "max": 4.673444509040564
+      },
+      "file_end_s": {
+        "n": 6,
+        "mean": 1.2941405135546806,
+        "p50": 1.0074791420763347,
+        "p95": 2.0549966730875893,
+        "max": 2.0549966730875893
+      },
+      "final_queue_wait_s": {
+        "n": 15,
+        "mean": 0.5590921277257924,
+        "p50": 0.07522175798658282,
+        "p95": 2.4875835550483316,
+        "max": 2.4875835550483316
+      },
+      "initial_native_ttft_s": {
+        "n": 10,
+        "mean": 0.36412642460000005,
+        "p50": 0.363905971,
+        "p95": 0.370962319,
+        "max": 0.370962319
+      },
+      "rss_max_mib": 1725.34375,
+      "thermal": {
+        "start_mc": 76550,
+        "max_mc": 84800,
+        "end_mc": 78750,
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 74,
+          "mean": 2349621158.0540543,
+          "p50": 2400020480,
+          "p95": 2400037120,
+          "max": 2400037120
+        }
+      },
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 295,
+        "normalized_revisions": 9,
+        "retracted_suffix_characters": 18,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 79,
+        "segments_with_display": 15,
+        "revised_segments": 8,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 15,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 10,
+          "whole_partial_is_final_prefix": 8,
+          "partial_characters": 85,
+          "retained_prefix_characters": 82,
+          "retained_prefix_fraction": 0.9647058823529412
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.5926895934971981,
+          "p50": 0.0,
+          "p95": 2.7943208360811695,
+          "max": 2.7943208360811695
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "kernel_shapes": [],
+      "final_signature_sha256": "5b73388f6919ff11951d85a71508a4e59184c645bd99d4f95fefa2c2b0e6fd08"
+    },
+    "full100-before": {
+      "source_count": 100,
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 3848,
+        "substitutions": 195,
+        "deletions": 157,
+        "insertions": 76,
+        "errors": 428,
+        "cer": 0.11122661122661123
+      },
+      "failed_calls": 0,
+      "input_drops": 0,
+      "final_calls": 210,
+      "partial_calls": 213,
+      "submitted_requests": 488,
+      "coalesced_requests": 65,
+      "total_compute_s": 654.7889262737008,
+      "final_compute_s": 456.51485088909976,
+      "partial_compute_s": 198.27407538460102,
+      "final_native_s": 456.319515898,
+      "final_encoder_s": 135.65362382299998,
+      "first_s": {
+        "n": 100,
+        "mean": 2.386769786275529,
+        "p50": 2.3256514740129433,
+        "p95": 3.6326251750103893,
+        "max": 4.261887070014154
+      },
+      "first4_s": {
+        "n": 100,
+        "mean": 3.216866789737089,
+        "p50": 2.7398471789443875,
+        "p95": 6.950490382993593,
+        "max": 8.465596585995513
+      },
+      "max_growth_gap_s": {
+        "n": 100,
+        "mean": 3.9981198401043194,
+        "p50": 4.077744195004925,
+        "p95": 5.1734103150386375,
+        "max": 6.9872108710063685
+      },
+      "file_end_s": {
+        "n": 100,
+        "mean": 1.6928223087065364,
+        "p50": 1.8016072650030424,
+        "p95": 3.0644338090419865,
+        "max": 3.5592675789911254
+      },
+      "final_queue_wait_s": {
+        "n": 210,
+        "mean": 0.858908402026143,
+        "p50": 0.002173979999497533,
+        "p95": 3.1870684209279716,
+        "max": 3.8555116069037467
+      },
+      "initial_native_ttft_s": {
+        "n": 124,
+        "mean": 0.3774016893548387,
+        "p50": 0.372517878,
+        "p95": 0.404977059,
+        "max": 0.418353432
+      },
+      "rss_max_mib": 1832.390625,
+      "thermal": {
+        "start_mc": 79300,
+        "max_mc": 86450,
+        "end_mc": 72700,
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 914,
+          "mean": 2291539391.439825,
+          "p50": 2366030080,
+          "p95": 2400033792,
+          "max": 2400040192
+        }
+      },
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 4352,
+        "normalized_revisions": 90,
+        "retracted_suffix_characters": 295,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 961,
+        "segments_with_display": 210,
+        "revised_segments": 76,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 183,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 124,
+          "whole_partial_is_final_prefix": 79,
+          "partial_characters": 1030,
+          "retained_prefix_characters": 851,
+          "retained_prefix_fraction": 0.8262135922330097
+        },
+        "finals_shorter_than4": 30,
+        "first4_to_final_consistent4_s": {
+          "n": 180,
+          "mean": 0.6091220583986594,
+          "p50": 0.0,
+          "p95": 4.536234798026271,
+          "max": 5.68254682503175
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "kernel_shapes": [],
+      "final_signature_sha256": "b1eda304941787e1d8ea6fef30924a51228802babaeaee7f3c9aa4808fcb4151"
+    },
+    "full100-tile4": {
+      "source_count": 100,
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 3848,
+        "substitutions": 195,
+        "deletions": 157,
+        "insertions": 76,
+        "errors": 428,
+        "cer": 0.11122661122661123
+      },
+      "failed_calls": 0,
+      "input_drops": 0,
+      "final_calls": 210,
+      "partial_calls": 221,
+      "submitted_requests": 495,
+      "coalesced_requests": 64,
+      "total_compute_s": 647.2710384881357,
+      "final_compute_s": 444.2736061750911,
+      "partial_compute_s": 202.99743231304456,
+      "final_native_s": 444.09057684899994,
+      "final_encoder_s": 120.78657788899999,
+      "first_s": {
+        "n": 100,
+        "mean": 2.3229116897877096,
+        "p50": 2.2513272910220508,
+        "p95": 3.615643855951703,
+        "max": 4.248216775934225
+      },
+      "first4_s": {
+        "n": 100,
+        "mean": 3.108284112455861,
+        "p50": 2.6732614939911628,
+        "p95": 6.611194451031224,
+        "max": 7.353600536917337
+      },
+      "max_growth_gap_s": {
+        "n": 100,
+        "mean": 3.9435600813189415,
+        "p50": 3.972527705016546,
+        "p95": 4.840111374040134,
+        "max": 6.938476709003567
+      },
+      "file_end_s": {
+        "n": 100,
+        "mean": 1.592572908994926,
+        "p50": 1.7132307959394524,
+        "p95": 3.032365335023087,
+        "max": 3.561344168023197
+      },
+      "final_queue_wait_s": {
+        "n": 210,
+        "mean": 0.8110038897560333,
+        "p50": 0.0013015849981456995,
+        "p95": 3.077444755937904,
+        "max": 3.606597070931457
+      },
+      "initial_native_ttft_s": {
+        "n": 125,
+        "mean": 0.3621250314,
+        "p50": 0.365069482,
+        "p95": 0.386431332,
+        "max": 0.40062859
+      },
+      "rss_max_mib": 1835.25,
+      "thermal": {
+        "start_mc": 72700,
+        "max_mc": 87000,
+        "end_mc": 73800,
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 909,
+          "mean": 2279115310.3278327,
+          "p50": 2366020096,
+          "p95": 2400033792,
+          "max": 2400037120
+        }
+      },
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 4373,
+        "normalized_revisions": 96,
+        "retracted_suffix_characters": 295,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 1022,
+        "segments_with_display": 210,
+        "revised_segments": 79,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 192,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 125,
+          "whole_partial_is_final_prefix": 80,
+          "partial_characters": 1076,
+          "retained_prefix_characters": 908,
+          "retained_prefix_fraction": 0.8438661710037175
+        },
+        "finals_shorter_than4": 30,
+        "first4_to_final_consistent4_s": {
+          "n": 180,
+          "mean": 0.5982510962213079,
+          "p50": 0.0,
+          "p95": 4.431218730984256,
+          "max": 5.548175513977185
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "kernel_shapes": [
+        208,
+        416,
+        624,
+        800,
+        832,
+        1040,
+        1248,
+        1600,
+        2400,
+        3200,
+        4000,
+        4800
+      ],
+      "final_signature_sha256": "b1eda304941787e1d8ea6fef30924a51228802babaeaee7f3c9aa4808fcb4151"
+    },
+    "full100-after": {
+      "source_count": 100,
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 3848,
+        "substitutions": 195,
+        "deletions": 157,
+        "insertions": 76,
+        "errors": 428,
+        "cer": 0.11122661122661123
+      },
+      "failed_calls": 0,
+      "input_drops": 0,
+      "final_calls": 210,
+      "partial_calls": 210,
+      "submitted_requests": 485,
+      "coalesced_requests": 65,
+      "total_compute_s": 662.5847948290175,
+      "final_compute_s": 463.3548611634178,
+      "partial_compute_s": 199.22993366559967,
+      "final_native_s": 463.1992667159998,
+      "final_encoder_s": 137.88439883900003,
+      "first_s": {
+        "n": 100,
+        "mean": 2.4357037713854357,
+        "p50": 2.404952172051196,
+        "p95": 3.6929887840477704,
+        "max": 4.267956365006057
+      },
+      "first4_s": {
+        "n": 100,
+        "mean": 3.303932305462497,
+        "p50": 2.781648022054693,
+        "p95": 7.059465273977253,
+        "max": 8.34611262101214
+      },
+      "max_growth_gap_s": {
+        "n": 100,
+        "mean": 3.9901042960266775,
+        "p50": 3.8980989869768337,
+        "p95": 5.156410578959623,
+        "max": 7.134086350963457
+      },
+      "file_end_s": {
+        "n": 100,
+        "mean": 1.7639936079862037,
+        "p50": 1.8779176679924134,
+        "p95": 3.060899034992815,
+        "max": 3.5744388820510267
+      },
+      "final_queue_wait_s": {
+        "n": 210,
+        "mean": 0.8881795781204432,
+        "p50": 0.0014561759307980537,
+        "p95": 3.330729447072372,
+        "max": 3.8293478609994054
+      },
+      "initial_native_ttft_s": {
+        "n": 124,
+        "mean": 0.38698386026612913,
+        "p50": 0.389959219,
+        "p95": 0.419053998,
+        "max": 0.425131592
+      },
+      "rss_max_mib": 1831.71875,
+      "thermal": {
+        "start_mc": 74900,
+        "max_mc": 85900,
+        "end_mc": 74350,
+        "current_limits": [
+          0,
+          6,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 914,
+          "mean": 2270082799.6148796,
+          "p50": 2311034624,
+          "p95": 2400033792,
+          "max": 2400037120
+        }
+      },
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 4360,
+        "normalized_revisions": 91,
+        "retracted_suffix_characters": 304,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 942,
+        "segments_with_display": 210,
+        "revised_segments": 77,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 180,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 124,
+          "whole_partial_is_final_prefix": 72,
+          "partial_characters": 1032,
+          "retained_prefix_characters": 817,
+          "retained_prefix_fraction": 0.7916666666666666
+        },
+        "finals_shorter_than4": 30,
+        "first4_to_final_consistent4_s": {
+          "n": 180,
+          "mean": 0.6654106458655507,
+          "p50": 0.0,
+          "p95": 4.622718385071494,
+          "max": 5.7320590149611235
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "kernel_shapes": [],
+      "final_signature_sha256": "b1eda304941787e1d8ea6fef30924a51228802babaeaee7f3c9aa4808fcb4151"
+    }
+  },
+  "verification": {
+    "all_passed": true,
+    "protected_files": 1227,
+    "protected_unchanged": true,
+    "cross_host_shared_files": 1226,
+    "machine_specific_cross_host_exclusions": [
+      ".venv/pyvenv.cfg"
+    ],
+    "measured_source_verified_from_git": 14,
+    "raw_files": 146,
+    "boot_id": "db0f2e44-3c3f-4b8a-8472-e5618db2aeae",
+    "cases": {
+      "pilot-before": {
+        "same_model_runtime_settings_except_kernel": true,
+        "preserved_reference_final_identical": true,
+        "score_recomputed": true,
+        "source_clean": true,
+        "calls": 33,
+        "final_calls": 15,
+        "source_count": 6
+      },
+      "pilot-tile4": {
+        "same_model_runtime_settings_except_kernel": true,
+        "preserved_reference_final_identical": true,
+        "score_recomputed": true,
+        "source_clean": true,
+        "calls": 33,
+        "final_calls": 15,
+        "source_count": 6
+      },
+      "pilot-after": {
+        "same_model_runtime_settings_except_kernel": true,
+        "preserved_reference_final_identical": true,
+        "score_recomputed": true,
+        "source_clean": true,
+        "calls": 33,
+        "final_calls": 15,
+        "source_count": 6
+      },
+      "full100-before": {
+        "same_model_runtime_settings_except_kernel": true,
+        "preserved_reference_final_identical": true,
+        "score_recomputed": true,
+        "source_clean": true,
+        "calls": 423,
+        "final_calls": 210,
+        "source_count": 100
+      },
+      "full100-tile4": {
+        "same_model_runtime_settings_except_kernel": true,
+        "preserved_reference_final_identical": true,
+        "score_recomputed": true,
+        "source_clean": true,
+        "calls": 431,
+        "final_calls": 210,
+        "source_count": 100
+      },
+      "full100-after": {
+        "same_model_runtime_settings_except_kernel": true,
+        "preserved_reference_final_identical": true,
+        "score_recomputed": true,
+        "source_clean": true,
+        "calls": 420,
+        "final_calls": 210,
+        "source_count": 100
+      }
+    },
+    "plain_preload_absent": true
+  },
+  "plan": {
+    "phases": [
+      "synthetic",
+      "boundary34",
+      "pilot-before",
+      "pilot-tile4",
+      "pilot-after",
+      "if_pass_full100_before_tile4_after"
+    ],
+    "first_s": 0.6,
+    "partial_policy": "adaptive/budgeted/audio; budget3/max2; short protection off",
+    "unchanged_final_s": 5,
+    "gates": {
+      "numeric_and_boundary_equivalent": true,
+      "final_pcm_text_tokens_score_identical": true,
+      "failures_drops_missing": 0,
+      "final_encoder_reduction_min": 0.03,
+      "final_native_reduction_min": 0.01,
+      "first_gap_p95_increase_max_s": 0.1,
+      "first4_final_p95_increase_max_s": 0.25,
+      "rss_increase_max_mib": 32,
+      "both_before_after_required": true
+    },
+    "pilot_manifest_sha256": "b9dabb0e87600d49c6b9d07184eee5170497db7dd1f15fe6a52f186583444b80",
+    "full100_manifest_sha256": "75ba1226dddfa0defb97f6fdbba89c31a762b541beb41299cdb0ac8490c45a06",
+    "boundary_original": "data/evaluation/edge100-20261109-01/wav/zeroth-121_003_2904.wav",
+    "boundary_original_sha256": "4b66f7fb0b9a4f902e8b4fc0e43deb400d1bad4a2a8f543f86668dd8ea24f045",
+    "scope": "원래 무-preload 앞/후 대조. 경계는 수치/출력 동등성만, 연속은 ko_cer_v1·실제 발행 지연. 기본 미변경."
+  },
+  "runtime": {
+    "source_commit": "8d49d982efc572dcc0d5c1b4f9ba64ee409e2476",
+    "feature": "conv_tile4_1to6_v1",
+    "library": "runtimes/qwen3-opt/conv-realtime-20261117-02/libedge_conv_sgemm.so",
+    "cpu_library": "runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml-cpu.so",
+    "upstream_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+    "upstream_source_sha256": "25c773b9b46dec168dcd3c45e8e99cbf7b0d21f95eedb9b3d18809eb8cd07958",
+    "generated_source_sha256": "eb6cac79ed8d04a428cd6a4a3fd7fe9275e1ae9a42da5f4314295f685355d82d",
+    "patch_sha256": "f6c2df015616721d954362ae53ee705281ce95b81c03222ce22e3367a5c2cfda",
+    "wrapper_sha256": "a663317a5e055436702db122de96f0408dea9a56769e7363d3c0ec6c5c816196",
+    "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "original_flags": "-O3 -DNDEBUG -std=gnu++17 -fPIC -Wmissing-declarations -Wmissing-noreturn -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wno-array-bounds -Wextra-semi -U__ARM_FEATURE_MATMUL_INT8 -U__ARM_FEATURE_SVE -U__ARM_FEATURE_SME -mcpu=cortex-a76+crc+crypto+dotprod+noi8mm+nosve+nosme -fopenmp",
+    "original_defines": "-DGGML_BACKEND_BUILD -DGGML_BACKEND_SHARED -DGGML_SCHED_MAX_COPIES=4 -DGGML_SHARED -DGGML_USE_CPU_REPACK -DGGML_USE_LLAMAFILE -DGGML_USE_OPENMP -D_GNU_SOURCE -D_XOPEN_SOURCE=600 -Dggml_cpu_EXPORTS",
+    "original_cpu_sha256": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+    "library_sha256": "22dbea51d80359fa91bed54ec74d64842b9acd1af648f3e57ea27ee3f2c03aa3",
+    "fixture_sha256": "ec5479f69960880a3dd8afd5afd1899b780a29bbf8ba1c7831ef50632d13ee28"
+  },
+  "host_tests": {
+    "total": 439,
+    "passed": 435,
+    "optional_skipped": 4,
+    "after_six_chunk_change_targeted_passed": 39,
+    "host_inference": false,
+    "cleanup_total": 440,
+    "cleanup_passed": 436,
+    "cleanup_optional_skipped": 4
+  },
+  "scope": "같은 개발용6/100개 원래→후보→원래 순차1배속 대조. 운영 열·클럭 및 적응 요청 변화 포함. GUI 실제 표시·독립 음향 단어 지연·독립 데이터 일반화 미측정. 공유 기본 변경 없음.",
+  "shared_model_config": {
+    "num_threads": 2,
+    "quantization": "q8_0",
+    "max_total_len": 512,
+    "max_new_tokens": 128,
+    "family": "qwen3_gguf",
+    "path": "models/qwen3-opt/gguf-q8-20261109-01",
+    "runtime_library": "runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+    "runtime_manifest": "runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+    "num_threads_batch": 3,
+    "cache_text_prefix": true,
+    "language": "ko"
+  },
+  "shared_model_files": {
+    "Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+    },
+    "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+    },
+    "runtime_library": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+      "sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf"
+    },
+    "runtime_manifest": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+      "sha256": "a7fa6d9d6ffab5b5a0f7f98e3dc94cd7d751fe503a16f214936b5ff32fd3d113"
+    }
+  },
+  "continuous_settings": {
+    "gap_s": 0.0,
+    "vad_preprocess": "rms26-floor80",
+    "vad_threshold": 0.3,
+    "vad_max_speech_s": 5,
+    "partial_after_s": 0.6,
+    "partial_interval_s": 4.0,
+    "partial_mode": "adaptive",
+    "partial_min_new_s": 0.8,
+    "partial_tail_margin_s": 0.2,
+    "adaptive_policy": "budgeted",
+    "partial_cost_model": "audio",
+    "partial_budget_s": 3.0,
+    "protect_short_followup": false,
+    "partial_max_calls": 2,
+    "partial_followup_s": null,
+    "max_segment_s": 5,
+    "drain_timeout_s": 30,
+    "queue_capacity": 4,
+    "token_stream": true,
+    "partials": true,
+    "silence_policy": "skip-zero"
+  },
+  "input_audio": {
+    "sha256": "5c0d625b894fdba80453c129d760c900ccacdc3ce73727fba63e7fd99aba0173",
+    "frames": 14258317,
+    "sample_rate_hz": 16000,
+    "channels": 1,
+    "sample_width_bytes": 2,
+    "duration_s": 891.1448125
+  },
+  "candidate_extra_files": {
+    "conv_library": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/conv-realtime-20261117-02/libedge_conv_sgemm.so",
+      "sha256": "22dbea51d80359fa91bed54ec74d64842b9acd1af648f3e57ea27ee3f2c03aa3"
+    },
+    "conv_manifest": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/conv-realtime-20261117-02/build.json",
+      "sha256": "657738bae1f316095631090c2a2f47cc5607655f37e14db0ba30c99de27e646b"
+    },
+    "conv_original_cpu": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/build/bin/libggml-cpu.so.0.29.0",
+      "sha256": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746"
+    }
+  },
+  "cross_host_verification": {
+    "passed": true,
+    "same_analysis_verification_raw_hashes": {
+      "analysis.json": "abd2ba50a4d7cc3a769bcc6c98029f0bfd338e310010eb02a6b06ed933b740dd",
+      "verification.json": "27cbf204265e2cadaad39b4fb750423f45948423fc7bcb61bb1c1ee14b6affd4",
+      "raw-hashes-local.json": "735be658ef169e39b939fc4786d97f8dcbe8e5a6f41a7d7b7fa0278a1f8fee1d"
+    },
+    "machine_specific_exclusions": [
+      ".venv/pyvenv.cfg"
+    ]
+  },
+  "lifecycle_restoration": {
+    "passed": true,
+    "actual_asr_calls": 2,
+    "native_selected_then_restored": true,
+    "same_pcm_text_tokens": true,
+    "model_assets_unchanged_across_both_experiments": true,
+    "raw_files": 26,
+    "source_commit": "74846dedb31671f7c75bec77780e39f9a2caa9f9",
+    "excluded_before_inference_attempt": "conv-close-20261117-01"
+  },
+  "viewer": {
+    "passed": true,
+    "records": 64,
+    "profiles": 23,
+    "active": null,
+    "runs": [
+      {
+        "id": "84572cb20ce75111",
+        "name": "results/optimization/opt3/conv-realtime-20261117-02/full100-before",
+        "events": 5384,
+        "first4_p95_s": 6.950490382993593,
+        "source_rows": 100
+      },
+      {
+        "id": "138e92204058504f",
+        "name": "results/optimization/opt3/conv-realtime-20261117-02/full100-tile4",
+        "events": 5467,
+        "first4_p95_s": 6.611194451031224,
+        "source_rows": 100
+      },
+      {
+        "id": "493f9fc598738bd4",
+        "name": "results/optimization/opt3/conv-realtime-20261117-02/full100-after",
+        "events": 5373,
+        "first4_p95_s": 7.059465273977253,
+        "source_rows": 100
+      }
+    ],
+    "candidate_audio_wav_header_valid": true,
+    "scope": "카탈로그/이벤트/청취 WAV API 확인; GUI·SSH 체감 지연 측정 아님"
+  }
+}
