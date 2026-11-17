@@ -522,3 +522,5 @@ Q8 정수 누적 분리의 개선이 작아, 기존 `kernel_trace.cpp`에 선택
 작업자별 cycle/stall·CPU 시간 합계는 wall time이나 사용자 지연이 아닙니다. PMU 읽기는 커널 타이머 밖, native 전체 타이머 안이며 PMU 구간에는 소량의 wrapper 계측 명령도 들어갑니다. 두 bank의 지표는 동시 관측이 아니고 frontend/backend stall은 합산 가능한 시간 분할이 아닙니다. L2 refill/bus는 cache hierarchy의 단서이며 DRAM 바이트·대역폭을 직접 측정하지 않습니다. [Linux 계측 ABI](https://man7.org/linux/man-pages/man2/perf_event_open.2.html), [권한 범위](https://docs.kernel.org/admin-guide/perf-security.html), [Arm Cortex-A76 이벤트 정의](https://github.com/ARM-software/data/blob/master/pmu/cortex-a76.json)를 근거로 해석합니다.
 
 Host ELF 전달·실패/회복·그룹 자원 정리·차분/coverage 검사 뒤 main push→RP5 동기화→별도 빌드/실측 순서입니다. 기존 단일 추론 잠금·600초/4GiB operational guard·시작 온도 대기 없는 관측·기본 열 보호·부팅/보존 해시 검사를 유지합니다. 실패는 원시로 보존하고, 미측정 새 CER/연속 표시 지연/가속률을 채우지 않습니다. 이번 진단만으로 운영 기본을 변경하지 않습니다.
+
+[실측 결과](../../results/summaries/optimization/pmu-q8-20261117.md): 36/36호출 전사/token 동일·PMU997,038커널 valid·coverage100%·같은 PCM의 호출/MAC 및 작업자 합계 동등을 확인했습니다. 계산량은약50:50, Q8 GEMV backend stall/cycle 약81%·L2 refill/access 약30~32%였습니다. 최고71.05°C·관측 현재 제한0이며, 새 연속 지연/CER·운영 기본 변경은 없습니다. 가중치 prefetch를 다음 작은 후보로 두되 DRAM 대역폭 병목으로 확정하지 않습니다.

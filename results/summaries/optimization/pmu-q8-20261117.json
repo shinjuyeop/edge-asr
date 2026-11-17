@@ -1,0 +1,2683 @@
+{
+  "source_commit": "18b91878c7b60163cd06b20d05ae4e1668592ea4",
+  "raw_path": "results/optimization/opt3/pmu-q8-20261117-01",
+  "build": {
+    "command": [
+      "g++",
+      "-std=c++17",
+      "-O2",
+      "-shared",
+      "-fPIC",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+      "/home/deepet/projects/edge-asr/native/gguf/kernel_trace.cpp",
+      "-ldl",
+      "-pthread",
+      "-o",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/pmu-q8-20261117-01/libedge_kernel_trace.so"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "source_commit": "18b91878c7b60163cd06b20d05ae4e1668592ea4",
+    "sources": {
+      "native/gguf/kernel_trace.cpp": "5c6c5ba51e2d28d312437f618d9a21026d1493cd0aef3f85da3b16be264d45e0",
+      "native/gguf/perf_counters.h": "8b9e19587e7fd8ebded2934a8fd7d7d9c8f752377772670b1760b094f7681863"
+    },
+    "library_sha256": "7d751ca5cd5ee890032c90648392abfcbbd97dd9f69887b7145b3aaf7fb8b2fe"
+  },
+  "model_files": {
+    "Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+    },
+    "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+    },
+    "runtime_library": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+      "sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf"
+    },
+    "runtime_manifest": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+      "sha256": "a7fa6d9d6ffab5b5a0f7f98e3dc94cd7d751fe503a16f214936b5ff32fd3d113"
+    },
+    "diagnostic_kernel": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/pmu-q8-20261117-01/libedge_kernel_trace.so",
+      "sha256": "7d751ca5cd5ee890032c90648392abfcbbd97dd9f69887b7145b3aaf7fb8b2fe"
+    },
+    "diagnostic_build": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/pmu-q8-20261117-01/build.json",
+      "sha256": "3c35ca78b7bcb3b7eccabf8a2c7e50a3c510bac224cc7e4ced9ffe42b25f32ce"
+    }
+  },
+  "plan": {
+    "modes_by_round": [
+      "off",
+      "timing",
+      "cache",
+      "stall",
+      "off",
+      "timing",
+      "cache",
+      "stall",
+      "stall",
+      "cache",
+      "timing",
+      "off"
+    ],
+    "warmup_rounds": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "measured_rounds": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "pause_s": 2,
+    "output_shape": [
+      1024,
+      151936
+    ],
+    "pmu_type": 9,
+    "banks": {
+      "cache": 1,
+      "stall": 2
+    },
+    "scope": "동일 PCM 진단; 새 CER/연속 지연 측정 아님"
+  },
+  "all_36_transcripts_and_tokens_equal_reference": true,
+  "trace_call_work_same_per_pcm": true,
+  "output_shape_mac_checks": 27,
+  "worker_sums_equal": true,
+  "pmu_valid_kernel_calls": 997038,
+  "pmu_min_group_coverage": 1.0,
+  "failures": 0,
+  "by_kind": {
+    "initial": {
+      "off": {
+        "calls": 2,
+        "native_elapsed_s": {
+          "sum": 0.797282491,
+          "mean": 0.3986412455,
+          "min": 0.398324958,
+          "max": 0.398957533
+        },
+        "token_decode_s": {
+          "sum": 0.110927113,
+          "mean": 0.0554635565,
+          "min": 0.055161934,
+          "max": 0.055765179
+        },
+        "audio_encode_s": {
+          "sum": 0.32209301999999995,
+          "mean": 0.16104650999999998,
+          "min": 0.159944818,
+          "max": 0.162148202
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.184187417,
+          "mean": 0.0920937085,
+          "min": 0.091778715,
+          "max": 0.092408702
+        },
+        "suffix_eval_s": {
+          "sum": 0.176958679,
+          "mean": 0.0884793395,
+          "min": 0.088310542,
+          "max": 0.088648137
+        },
+        "first_generated_token_s": {
+          "sum": 0.6850368689999999,
+          "mean": 0.34251843449999997,
+          "min": 0.341899497,
+          "max": 0.343137372
+        },
+        "process_cpu_mean_s": 1.1308010730000078,
+        "rss_max_mib": 1659.65625,
+        "temperature_c": {
+          "min": 60.6,
+          "max": 68.3,
+          "mean": 65.22
+        }
+      },
+      "timing": {
+        "calls": 2,
+        "native_elapsed_s": {
+          "sum": 0.80876137,
+          "mean": 0.404380685,
+          "min": 0.404250905,
+          "max": 0.404510465
+        },
+        "token_decode_s": {
+          "sum": 0.111982842,
+          "mean": 0.055991421,
+          "min": 0.055854975,
+          "max": 0.056127867
+        },
+        "audio_encode_s": {
+          "sum": 0.323137415,
+          "mean": 0.1615687075,
+          "min": 0.161372252,
+          "max": 0.161765163
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.18936636099999998,
+          "mean": 0.09468318049999999,
+          "min": 0.094672199,
+          "max": 0.094694162
+        },
+        "suffix_eval_s": {
+          "sum": 0.18114945,
+          "mean": 0.090574725,
+          "min": 0.090377613,
+          "max": 0.090771837
+        },
+        "first_generated_token_s": {
+          "sum": 0.6954600559999999,
+          "mean": 0.34773002799999997,
+          "min": 0.347716205,
+          "max": 0.347743851
+        },
+        "process_cpu_mean_s": 1.1493310975000028,
+        "rss_max_mib": 1659.65625,
+        "temperature_c": {
+          "min": 60.05,
+          "max": 68.3,
+          "mean": 65.32083333333333
+        }
+      },
+      "cache": {
+        "calls": 2,
+        "native_elapsed_s": {
+          "sum": 0.861297099,
+          "mean": 0.4306485495,
+          "min": 0.421212048,
+          "max": 0.440085051
+        },
+        "token_decode_s": {
+          "sum": 0.113949523,
+          "mean": 0.0569747615,
+          "min": 0.056341405,
+          "max": 0.057608118
+        },
+        "audio_encode_s": {
+          "sum": 0.358257779,
+          "mean": 0.1791288895,
+          "min": 0.170401966,
+          "max": 0.187855813
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.19615102,
+          "mean": 0.09807551,
+          "min": 0.097977667,
+          "max": 0.098173353
+        },
+        "suffix_eval_s": {
+          "sum": 0.189689511,
+          "mean": 0.0948447555,
+          "min": 0.094774495,
+          "max": 0.094915016
+        },
+        "first_generated_token_s": {
+          "sum": 0.7459520479999999,
+          "mean": 0.37297602399999996,
+          "min": 0.364209434,
+          "max": 0.381742614
+        },
+        "process_cpu_mean_s": 1.1859896054999979,
+        "rss_max_mib": 1659.65625,
+        "temperature_c": {
+          "min": 60.6,
+          "max": 67.2,
+          "mean": 64.725
+        }
+      },
+      "stall": {
+        "calls": 2,
+        "native_elapsed_s": {
+          "sum": 0.832416558,
+          "mean": 0.416208279,
+          "min": 0.41528617,
+          "max": 0.417130388
+        },
+        "token_decode_s": {
+          "sum": 0.113400241,
+          "mean": 0.0567001205,
+          "min": 0.056599444,
+          "max": 0.056800797
+        },
+        "audio_encode_s": {
+          "sum": 0.32928782999999995,
+          "mean": 0.16464391499999997,
+          "min": 0.164242551,
+          "max": 0.165045279
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.19675597,
+          "mean": 0.098377985,
+          "min": 0.098366133,
+          "max": 0.098389837
+        },
+        "suffix_eval_s": {
+          "sum": 0.189694308,
+          "mean": 0.094847154,
+          "min": 0.09447479,
+          "max": 0.095219518
+        },
+        "first_generated_token_s": {
+          "sum": 0.717689271,
+          "mean": 0.3588446355,
+          "min": 0.358018648,
+          "max": 0.359670623
+        },
+        "process_cpu_mean_s": 1.1831270785,
+        "rss_max_mib": 1659.15625,
+        "temperature_c": {
+          "min": 61.15,
+          "max": 67.2,
+          "mean": 65.275
+        }
+      }
+    },
+    "followup": {
+      "off": {
+        "calls": 2,
+        "native_elapsed_s": {
+          "sum": 3.3459047560000004,
+          "mean": 1.6729523780000002,
+          "min": 1.670852819,
+          "max": 1.675051937
+        },
+        "token_decode_s": {
+          "sum": 1.6781863600000002,
+          "mean": 0.8390931800000001,
+          "min": 0.8359537290000002,
+          "max": 0.8422326309999999
+        },
+        "audio_encode_s": {
+          "sum": 0.9880562509999999,
+          "mean": 0.49402812549999997,
+          "min": 0.491840408,
+          "max": 0.496215843
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.473247215,
+          "mean": 0.2366236075,
+          "min": 0.235720711,
+          "max": 0.237526504
+        },
+        "suffix_eval_s": {
+          "sum": 0.184589198,
+          "mean": 0.092294599,
+          "min": 0.091967161,
+          "max": 0.092622037
+        },
+        "first_generated_token_s": {
+          "sum": 1.6483434049999999,
+          "mean": 0.8241717024999999,
+          "min": 0.823209847,
+          "max": 0.825133558
+        },
+        "process_cpu_mean_s": 4.147534697500003,
+        "rss_max_mib": 1659.65625,
+        "temperature_c": {
+          "min": 58.4,
+          "max": 66.65,
+          "mean": 63.96111111111111
+        }
+      },
+      "timing": {
+        "calls": 2,
+        "native_elapsed_s": {
+          "sum": 3.379541295,
+          "mean": 1.6897706475,
+          "min": 1.688761783,
+          "max": 1.690779512
+        },
+        "token_decode_s": {
+          "sum": 1.685456858,
+          "mean": 0.842728429,
+          "min": 0.842673599,
+          "max": 0.842783259
+        },
+        "audio_encode_s": {
+          "sum": 1.002558874,
+          "mean": 0.501279437,
+          "min": 0.500712709,
+          "max": 0.501846165
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.479191685,
+          "mean": 0.2395958425,
+          "min": 0.239329443,
+          "max": 0.239862242
+        },
+        "suffix_eval_s": {
+          "sum": 0.19046447900000002,
+          "mean": 0.09523223950000001,
+          "min": 0.094429752,
+          "max": 0.096034727
+        },
+        "first_generated_token_s": {
+          "sum": 1.674692169,
+          "mean": 0.8373460845,
+          "min": 0.836221453,
+          "max": 0.838470716
+        },
+        "process_cpu_mean_s": 4.196609703,
+        "rss_max_mib": 1659.65625,
+        "temperature_c": {
+          "min": 57.85,
+          "max": 67.75,
+          "mean": 64.52638888888889
+        }
+      },
+      "cache": {
+        "calls": 2,
+        "native_elapsed_s": {
+          "sum": 3.42171595,
+          "mean": 1.710857975,
+          "min": 1.709928604,
+          "max": 1.711787346
+        },
+        "token_decode_s": {
+          "sum": 1.697307387,
+          "mean": 0.8486536935,
+          "min": 0.8466642160000001,
+          "max": 0.850643171
+        },
+        "audio_encode_s": {
+          "sum": 1.0136404350000001,
+          "mean": 0.5068202175000001,
+          "min": 0.50674029,
+          "max": 0.506900145
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.492207705,
+          "mean": 0.2461038525,
+          "min": 0.245448246,
+          "max": 0.246759459
+        },
+        "suffix_eval_s": {
+          "sum": 0.1967696,
+          "mean": 0.0983848,
+          "min": 0.097878778,
+          "max": 0.098890822
+        },
+        "first_generated_token_s": {
+          "sum": 1.70506959,
+          "mean": 0.852534795,
+          "min": 0.851461974,
+          "max": 0.853607616
+        },
+        "process_cpu_mean_s": 4.259799527500007,
+        "rss_max_mib": 1659.65625,
+        "temperature_c": {
+          "min": 58.4,
+          "max": 68.3,
+          "mean": 65.2081081081081
+        }
+      },
+      "stall": {
+        "calls": 2,
+        "native_elapsed_s": {
+          "sum": 3.402710184,
+          "mean": 1.701355092,
+          "min": 1.699114771,
+          "max": 1.703595413
+        },
+        "token_decode_s": {
+          "sum": 1.692700165,
+          "mean": 0.8463500825,
+          "min": 0.8446813479999999,
+          "max": 0.848018817
+        },
+        "audio_encode_s": {
+          "sum": 0.9974986159999999,
+          "mean": 0.49874930799999995,
+          "min": 0.494902225,
+          "max": 0.502596391
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.493798272,
+          "mean": 0.246899136,
+          "min": 0.246734033,
+          "max": 0.247064239
+        },
+        "suffix_eval_s": {
+          "sum": 0.19686737799999998,
+          "mean": 0.09843368899999999,
+          "min": 0.098256632,
+          "max": 0.098610746
+        },
+        "first_generated_token_s": {
+          "sum": 1.690650839,
+          "mean": 0.8453254195,
+          "min": 0.841483883,
+          "max": 0.849166956
+        },
+        "process_cpu_mean_s": 4.236378033000001,
+        "rss_max_mib": 1659.15625,
+        "temperature_c": {
+          "min": 58.4,
+          "max": 68.3,
+          "mean": 65.09166666666667
+        }
+      }
+    },
+    "final": {
+      "off": {
+        "calls": 2,
+        "native_elapsed_s": {
+          "sum": 6.433818883000001,
+          "mean": 3.2169094415000004,
+          "min": 3.213253142,
+          "max": 3.220565741
+        },
+        "token_decode_s": {
+          "sum": 3.778689363999999,
+          "mean": 1.8893446819999995,
+          "min": 1.8863264189999995,
+          "max": 1.8923629449999997
+        },
+        "audio_encode_s": {
+          "sum": 1.595496395,
+          "mean": 0.7977481975,
+          "min": 0.797727349,
+          "max": 0.797769046
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.820633807,
+          "mean": 0.4103169035,
+          "min": 0.410271729,
+          "max": 0.410362078
+        },
+        "suffix_eval_s": {
+          "sum": 0.193068425,
+          "mean": 0.0965342125,
+          "min": 0.095434408,
+          "max": 0.097634017
+        },
+        "first_generated_token_s": {
+          "sum": 2.611976833,
+          "mean": 1.3059884165,
+          "min": 1.304977246,
+          "max": 1.306999587
+        },
+        "process_cpu_mean_s": 7.708063522000003,
+        "rss_max_mib": 1659.65625,
+        "temperature_c": {
+          "min": 58.95,
+          "max": 71.05,
+          "mean": 66.80833333333334
+        }
+      },
+      "timing": {
+        "calls": 2,
+        "native_elapsed_s": {
+          "sum": 6.494469189,
+          "mean": 3.2472345945,
+          "min": 3.244392573,
+          "max": 3.250076616
+        },
+        "token_decode_s": {
+          "sum": 3.8148854650000006,
+          "mean": 1.9074427325000003,
+          "min": 1.904358629,
+          "max": 1.9105268360000003
+        },
+        "audio_encode_s": {
+          "sum": 1.610034186,
+          "mean": 0.805017093,
+          "min": 0.804717565,
+          "max": 0.805316621
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.8272825960000001,
+          "mean": 0.41364129800000005,
+          "min": 0.41350603,
+          "max": 0.413776566
+        },
+        "suffix_eval_s": {
+          "sum": 0.196786229,
+          "mean": 0.0983931145,
+          "min": 0.098101038,
+          "max": 0.098685191
+        },
+        "first_generated_token_s": {
+          "sum": 2.636940735,
+          "mean": 1.3184703675,
+          "min": 1.318316982,
+          "max": 1.318623753
+        },
+        "process_cpu_mean_s": 7.778473533499991,
+        "rss_max_mib": 1659.65625,
+        "temperature_c": {
+          "min": 59.5,
+          "max": 69.95,
+          "mean": 67.38602941176471
+        }
+      },
+      "cache": {
+        "calls": 2,
+        "native_elapsed_s": {
+          "sum": 6.559114914,
+          "mean": 3.279557457,
+          "min": 3.27413418,
+          "max": 3.284980734
+        },
+        "token_decode_s": {
+          "sum": 3.8395167290000005,
+          "mean": 1.9197583645000003,
+          "min": 1.915318024,
+          "max": 1.9241987050000002
+        },
+        "audio_encode_s": {
+          "sum": 1.632684812,
+          "mean": 0.816342406,
+          "min": 0.815481232,
+          "max": 0.81720358
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.837770041,
+          "mean": 0.4188850205,
+          "min": 0.418499489,
+          "max": 0.419270552
+        },
+        "suffix_eval_s": {
+          "sum": 0.203964837,
+          "mean": 0.1019824185,
+          "min": 0.101741676,
+          "max": 0.102223161
+        },
+        "first_generated_token_s": {
+          "sum": 2.6772607649999998,
+          "mean": 1.3386303824999999,
+          "min": 1.337645169,
+          "max": 1.339615596
+        },
+        "process_cpu_mean_s": 7.861209935000005,
+        "rss_max_mib": 1659.65625,
+        "temperature_c": {
+          "min": 58.95,
+          "max": 69.95,
+          "mean": 67.43455882352941
+        }
+      },
+      "stall": {
+        "calls": 2,
+        "native_elapsed_s": {
+          "sum": 6.563148627,
+          "mean": 3.2815743135,
+          "min": 3.276629076,
+          "max": 3.286519551
+        },
+        "token_decode_s": {
+          "sum": 3.82816602,
+          "mean": 1.91408301,
+          "min": 1.9125723069999998,
+          "max": 1.915593713
+        },
+        "audio_encode_s": {
+          "sum": 1.644769546,
+          "mean": 0.822384773,
+          "min": 0.820231415,
+          "max": 0.824538131
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.838363102,
+          "mean": 0.419181551,
+          "min": 0.419147736,
+          "max": 0.419215366
+        },
+        "suffix_eval_s": {
+          "sum": 0.205346032,
+          "mean": 0.102673016,
+          "min": 0.102083382,
+          "max": 0.10326265
+        },
+        "first_generated_token_s": {
+          "sum": 2.69197037,
+          "mean": 1.345985185,
+          "min": 1.342954377,
+          "max": 1.349015993
+        },
+        "process_cpu_mean_s": 7.861569445000008,
+        "rss_max_mib": 1659.15625,
+        "temperature_c": {
+          "min": 60.6,
+          "max": 69.95,
+          "mean": 67.18382352941177
+        }
+      }
+    }
+  },
+  "by_mode": {
+    "off": {
+      "calls": 6,
+      "native_elapsed_s": {
+        "sum": 10.577006130000001,
+        "mean": 1.762834355,
+        "min": 0.398324958,
+        "max": 3.220565741
+      },
+      "token_decode_s": {
+        "sum": 5.5678028369999994,
+        "mean": 0.9279671394999999,
+        "min": 0.055161934,
+        "max": 1.8923629449999997
+      },
+      "audio_encode_s": {
+        "sum": 2.905645666,
+        "mean": 0.48427427766666664,
+        "min": 0.159944818,
+        "max": 0.797769046
+      },
+      "audio_embedding_eval_s": {
+        "sum": 1.478068439,
+        "mean": 0.24634473983333333,
+        "min": 0.091778715,
+        "max": 0.410362078
+      },
+      "suffix_eval_s": {
+        "sum": 0.554616302,
+        "mean": 0.09243605033333334,
+        "min": 0.088310542,
+        "max": 0.097634017
+      },
+      "first_generated_token_s": {
+        "sum": 4.945357107,
+        "mean": 0.8242261845,
+        "min": 0.341899497,
+        "max": 1.306999587
+      },
+      "process_cpu_mean_s": 4.328799764166671,
+      "rss_max_mib": 1659.65625,
+      "temperature_c": {
+        "min": 58.4,
+        "max": 71.05,
+        "mean": 65.75133928571428
+      },
+      "native_increase_vs_off_fraction": 0.0
+    },
+    "timing": {
+      "calls": 6,
+      "native_elapsed_s": {
+        "sum": 10.682771854,
+        "mean": 1.7804619756666666,
+        "min": 0.404250905,
+        "max": 3.250076616
+      },
+      "token_decode_s": {
+        "sum": 5.612325165,
+        "mean": 0.9353875275000001,
+        "min": 0.055854975,
+        "max": 1.9105268360000003
+      },
+      "audio_encode_s": {
+        "sum": 2.9357304749999997,
+        "mean": 0.4892884125,
+        "min": 0.161372252,
+        "max": 0.805316621
+      },
+      "audio_embedding_eval_s": {
+        "sum": 1.4958406419999999,
+        "mean": 0.24930677366666668,
+        "min": 0.094672199,
+        "max": 0.413776566
+      },
+      "suffix_eval_s": {
+        "sum": 0.568400158,
+        "mean": 0.09473335966666667,
+        "min": 0.090377613,
+        "max": 0.098685191
+      },
+      "first_generated_token_s": {
+        "sum": 5.00709296,
+        "mean": 0.8345154933333333,
+        "min": 0.347716205,
+        "max": 1.318623753
+      },
+      "process_cpu_mean_s": 4.374804777999998,
+      "rss_max_mib": 1659.65625,
+      "temperature_c": {
+        "min": 57.85,
+        "max": 69.95,
+        "mean": 66.28491379310344
+      },
+      "native_increase_vs_off_fraction": 0.009999589931219965
+    },
+    "cache": {
+      "calls": 6,
+      "native_elapsed_s": {
+        "sum": 10.842127963,
+        "mean": 1.8070213271666666,
+        "min": 0.421212048,
+        "max": 3.284980734
+      },
+      "token_decode_s": {
+        "sum": 5.6507736390000005,
+        "mean": 0.9417956065,
+        "min": 0.056341405,
+        "max": 1.9241987050000002
+      },
+      "audio_encode_s": {
+        "sum": 3.004583026,
+        "mean": 0.5007638376666667,
+        "min": 0.170401966,
+        "max": 0.81720358
+      },
+      "audio_embedding_eval_s": {
+        "sum": 1.5261287659999998,
+        "mean": 0.25435479433333336,
+        "min": 0.097977667,
+        "max": 0.419270552
+      },
+      "suffix_eval_s": {
+        "sum": 0.590423948,
+        "mean": 0.09840399133333333,
+        "min": 0.094774495,
+        "max": 0.102223161
+      },
+      "first_generated_token_s": {
+        "sum": 5.128282403,
+        "mean": 0.8547137338333334,
+        "min": 0.364209434,
+        "max": 1.339615596
+      },
+      "process_cpu_mean_s": 4.435666356000003,
+      "rss_max_mib": 1659.65625,
+      "temperature_c": {
+        "min": 58.4,
+        "max": 69.95,
+        "mean": 66.4525641025641
+      },
+      "native_increase_vs_off_fraction": 0.025065867386426355
+    },
+    "stall": {
+      "calls": 6,
+      "native_elapsed_s": {
+        "sum": 10.798275368999999,
+        "mean": 1.7997125615,
+        "min": 0.41528617,
+        "max": 3.286519551
+      },
+      "token_decode_s": {
+        "sum": 5.634266426,
+        "mean": 0.9390444043333332,
+        "min": 0.056599444,
+        "max": 1.915593713
+      },
+      "audio_encode_s": {
+        "sum": 2.971555992,
+        "mean": 0.495259332,
+        "min": 0.164242551,
+        "max": 0.824538131
+      },
+      "audio_embedding_eval_s": {
+        "sum": 1.528917344,
+        "mean": 0.25481955733333334,
+        "min": 0.098366133,
+        "max": 0.419215366
+      },
+      "suffix_eval_s": {
+        "sum": 0.5919077180000001,
+        "mean": 0.09865128633333334,
+        "min": 0.09447479,
+        "max": 0.10326265
+      },
+      "first_generated_token_s": {
+        "sum": 5.10031048,
+        "mean": 0.8500517466666667,
+        "min": 0.358018648,
+        "max": 1.349015993
+      },
+      "process_cpu_mean_s": 4.42702485216667,
+      "rss_max_mib": 1659.15625,
+      "temperature_c": {
+        "min": 58.4,
+        "max": 69.95,
+        "mean": 66.33706896551725
+      },
+      "native_increase_vs_off_fraction": 0.020919836509539547
+    }
+  },
+  "stage_groups": {
+    "timing": {
+      "token_decode": {
+        "ggml_gemv_q8_0_4x4_q8_0": {
+          "calls": 153664,
+          "worker_wall_ns": 7486639727,
+          "worker_cpu_ns": 7400004071,
+          "work": 43159388160,
+          "workers": {
+            "0": {
+              "calls": 76821,
+              "cpu_ns": 3704496459,
+              "work": 21574975488
+            },
+            "1": {
+              "calls": 76843,
+              "cpu_ns": 3695507612,
+              "work": 21584412672
+            }
+          },
+          "largest_worker_work_fraction": 0.5001093294460641,
+          "largest_worker_cpu_fraction": 0.5006073541929001,
+          "cpu_to_worker_wall_fraction": 0.9884279651273248
+        },
+        "q8_output_gemv4": {
+          "calls": 784,
+          "worker_wall_ns": 2534621338,
+          "worker_cpu_ns": 2529315777,
+          "work": 15247081472,
+          "workers": {
+            "0": {
+              "calls": 392,
+              "cpu_ns": 1264465131,
+              "work": 7623540736
+            },
+            "1": {
+              "calls": 392,
+              "cpu_ns": 1264850646,
+              "work": 7623540736
+            }
+          },
+          "largest_worker_work_fraction": 0.5,
+          "largest_worker_cpu_fraction": 0.5000762093455284,
+          "cpu_to_worker_wall_fraction": 0.9979067638544437
+        },
+        "ggml_gemm_q8_0_4x4_q8_0": null
+      },
+      "audio_prefill": {
+        "ggml_gemv_q8_0_4x4_q8_0": {
+          "calls": 23160,
+          "worker_wall_ns": 204142190,
+          "worker_cpu_ns": 194731418,
+          "work": 4309647360,
+          "workers": {
+            "0": {
+              "calls": 7713,
+              "cpu_ns": 62873038,
+              "work": 1435066368
+            },
+            "1": {
+              "calls": 7723,
+              "cpu_ns": 66006357,
+              "work": 1437155328
+            },
+            "11": {
+              "calls": 772,
+              "cpu_ns": 6441392,
+              "work": 143785984
+            },
+            "12": {
+              "calls": 2316,
+              "cpu_ns": 19269255,
+              "work": 430829568
+            },
+            "13": {
+              "calls": 773,
+              "cpu_ns": 7134953,
+              "work": 143691776
+            },
+            "26": {
+              "calls": 772,
+              "cpu_ns": 6674484,
+              "work": 143806464
+            },
+            "27": {
+              "calls": 2319,
+              "cpu_ns": 19553314,
+              "work": 431542272
+            },
+            "28": {
+              "calls": 772,
+              "cpu_ns": 6778625,
+              "work": 143769600
+            }
+          },
+          "largest_worker_work_fraction": 0.33347399635036495,
+          "largest_worker_cpu_fraction": 0.3389610042278848,
+          "cpu_to_worker_wall_fraction": 0.9539008962331599
+        },
+        "q8_output_gemv4": null,
+        "ggml_gemm_q8_0_4x4_q8_0": {
+          "calls": 13896,
+          "worker_wall_ns": 3288387141,
+          "worker_cpu_ns": 3276846851,
+          "work": 96536100864,
+          "workers": {
+            "0": {
+              "calls": 4629,
+              "cpu_ns": 1093281126,
+              "work": 32158564352
+            },
+            "1": {
+              "calls": 4633,
+              "cpu_ns": 1092040319,
+              "work": 32180436992
+            },
+            "11": {
+              "calls": 772,
+              "cpu_ns": 74213530,
+              "work": 1725431808
+            },
+            "12": {
+              "calls": 772,
+              "cpu_ns": 176042385,
+              "work": 5169954816
+            },
+            "13": {
+              "calls": 773,
+              "cpu_ns": 294230145,
+              "work": 9196273664
+            },
+            "26": {
+              "calls": 772,
+              "cpu_ns": 74690640,
+              "work": 1725677568
+            },
+            "27": {
+              "calls": 773,
+              "cpu_ns": 176438584,
+              "work": 5178507264
+            },
+            "28": {
+              "calls": 772,
+              "cpu_ns": 295910122,
+              "work": 9201254400
+            }
+          },
+          "largest_worker_work_fraction": 0.33335132353580116,
+          "largest_worker_cpu_fraction": 0.33363815146452813,
+          "cpu_to_worker_wall_fraction": 0.9964905926506906
+        }
+      },
+      "text_suffix": {
+        "ggml_gemv_q8_0_4x4_q8_0": {
+          "calls": 14112,
+          "worker_wall_ns": 147702841,
+          "worker_cpu_ns": 141196301,
+          "work": 2642411520,
+          "workers": {
+            "0": {
+              "calls": 4701,
+              "cpu_ns": 46619753,
+              "work": 878391296
+            },
+            "1": {
+              "calls": 4708,
+              "cpu_ns": 47320580,
+              "work": 882401280
+            },
+            "11": {
+              "calls": 785,
+              "cpu_ns": 7770802,
+              "work": 147406848
+            },
+            "12": {
+              "calls": 785,
+              "cpu_ns": 7670551,
+              "work": 147300352
+            },
+            "13": {
+              "calls": 785,
+              "cpu_ns": 7737767,
+              "work": 147161088
+            },
+            "26": {
+              "calls": 784,
+              "cpu_ns": 7878709,
+              "work": 147075072
+            },
+            "27": {
+              "calls": 780,
+              "cpu_ns": 8149528,
+              "work": 146067456
+            },
+            "28": {
+              "calls": 784,
+              "cpu_ns": 8048611,
+              "work": 146608128
+            }
+          },
+          "largest_worker_work_fraction": 0.33393787202380953,
+          "largest_worker_cpu_fraction": 0.3351403660355097,
+          "cpu_to_worker_wall_fraction": 0.9559484438082
+        },
+        "q8_output_gemv4": {
+          "calls": 72,
+          "worker_wall_ns": 239835281,
+          "worker_cpu_ns": 238296476,
+          "work": 933494784,
+          "workers": {
+            "0": {
+              "calls": 24,
+              "cpu_ns": 79203536,
+              "work": 311136256
+            },
+            "1": {
+              "calls": 24,
+              "cpu_ns": 79819109,
+              "work": 311177216
+            },
+            "11": {
+              "calls": 4,
+              "cpu_ns": 13024573,
+              "work": 51863552
+            },
+            "12": {
+              "calls": 4,
+              "cpu_ns": 13219055,
+              "work": 51863552
+            },
+            "13": {
+              "calls": 4,
+              "cpu_ns": 12713575,
+              "work": 51863552
+            },
+            "26": {
+              "calls": 4,
+              "cpu_ns": 13242759,
+              "work": 51867648
+            },
+            "27": {
+              "calls": 4,
+              "cpu_ns": 13318258,
+              "work": 51867648
+            },
+            "28": {
+              "calls": 4,
+              "cpu_ns": 13755611,
+              "work": 51855360
+            }
+          },
+          "largest_worker_work_fraction": 0.33334649677057004,
+          "largest_worker_cpu_fraction": 0.3349571522828563,
+          "cpu_to_worker_wall_fraction": 0.9935839089495762
+        },
+        "ggml_gemm_q8_0_4x4_q8_0": {
+          "calls": 13896,
+          "worker_wall_ns": 1033292363,
+          "worker_cpu_ns": 1023456296,
+          "work": 20686307328,
+          "workers": {
+            "0": {
+              "calls": 4629,
+              "cpu_ns": 340928089,
+              "work": 6876528640
+            },
+            "1": {
+              "calls": 4636,
+              "cpu_ns": 342392555,
+              "work": 6907822080
+            },
+            "11": {
+              "calls": 773,
+              "cpu_ns": 56468543,
+              "work": 1154023424
+            },
+            "12": {
+              "calls": 773,
+              "cpu_ns": 56231605,
+              "work": 1153171456
+            },
+            "13": {
+              "calls": 773,
+              "cpu_ns": 56082196,
+              "work": 1152057344
+            },
+            "26": {
+              "calls": 772,
+              "cpu_ns": 56938902,
+              "work": 1151467520
+            },
+            "27": {
+              "calls": 768,
+              "cpu_ns": 57233906,
+              "work": 1143406592
+            },
+            "28": {
+              "calls": 772,
+              "cpu_ns": 57180500,
+              "work": 1147830272
+            }
+          },
+          "largest_worker_work_fraction": 0.3339321015815085,
+          "largest_worker_cpu_fraction": 0.33454536001017476,
+          "cpu_to_worker_wall_fraction": 0.9904808480617794
+        }
+      }
+    },
+    "cache": {
+      "token_decode": {
+        "ggml_gemv_q8_0_4x4_q8_0": {
+          "calls": 153664,
+          "worker_wall_ns": 7217104136,
+          "worker_cpu_ns": 7129996405,
+          "work": 43159388160,
+          "workers": {
+            "0": {
+              "calls": 76814,
+              "cpu_ns": 3572518210,
+              "work": 21573140480
+            },
+            "1": {
+              "calls": 76850,
+              "cpu_ns": 3557478195,
+              "work": 21586247680
+            }
+          },
+          "largest_worker_work_fraction": 0.5001518464528668,
+          "largest_worker_cpu_fraction": 0.5010547000409041,
+          "cpu_to_worker_wall_fraction": 0.9879303763173524,
+          "pmu": {
+            "valid_calls": 153664,
+            "invalid_calls": 0,
+            "time_enabled_ns": 7333591624,
+            "time_running_ns": 7333591624,
+            "cycles": 16926484670,
+            "instructions": 8908990098,
+            "l1d_access": 4069560415,
+            "l1d_refill": 452759225,
+            "l2d_access": 1454795346,
+            "l2d_refill": 459526034
+          },
+          "ipc": 0.5263343376779249,
+          "cycles_per_mac": 0.3921854639655763,
+          "coverage_fraction": 1.0,
+          "l1d_refill_per_access": 0.11125506905639586,
+          "l2d_refill_per_access": 0.3158698818108537,
+          "l2d_refills_per_1000_mac": 10.647186014232876
+        },
+        "q8_output_gemv4": {
+          "calls": 784,
+          "worker_wall_ns": 2529776700,
+          "worker_cpu_ns": 2525828353,
+          "work": 15247081472,
+          "workers": {
+            "0": {
+              "calls": 392,
+              "cpu_ns": 1262164337,
+              "work": 7623540736
+            },
+            "1": {
+              "calls": 392,
+              "cpu_ns": 1263664016,
+              "work": 7623540736
+            }
+          },
+          "largest_worker_work_fraction": 0.5,
+          "largest_worker_cpu_fraction": 0.5002968687476761,
+          "cpu_to_worker_wall_fraction": 0.9984392507844665,
+          "pmu": {
+            "valid_calls": 784,
+            "invalid_calls": 0,
+            "time_enabled_ns": 2529433687,
+            "time_running_ns": 2529433687,
+            "cycles": 6035620421,
+            "instructions": 3134583348,
+            "l1d_access": 1433271174,
+            "l1d_refill": 147775328,
+            "l2d_access": 509220259,
+            "l2d_refill": 152915296
+          },
+          "ipc": 0.5193473295791939,
+          "cycles_per_mac": 0.3958541463875507,
+          "coverage_fraction": 1.0,
+          "l1d_refill_per_access": 0.10310353733521749,
+          "l2d_refill_per_access": 0.30029303292114307,
+          "l2d_refills_per_1000_mac": 10.029151892499312
+        },
+        "ggml_gemm_q8_0_4x4_q8_0": null
+      },
+      "audio_prefill": {
+        "ggml_gemv_q8_0_4x4_q8_0": {
+          "calls": 23160,
+          "worker_wall_ns": 206364145,
+          "worker_cpu_ns": 196494820,
+          "work": 4309647360,
+          "workers": {
+            "0": {
+              "calls": 7713,
+              "cpu_ns": 63220352,
+              "work": 1433620480
+            },
+            "1": {
+              "calls": 7724,
+              "cpu_ns": 66208281,
+              "work": 1438392320
+            },
+            "14": {
+              "calls": 772,
+              "cpu_ns": 6587395,
+              "work": 143773696
+            },
+            "15": {
+              "calls": 2319,
+              "cpu_ns": 19695896,
+              "work": 431751168
+            },
+            "16": {
+              "calls": 772,
+              "cpu_ns": 7328472,
+              "work": 143622144
+            },
+            "23": {
+              "calls": 772,
+              "cpu_ns": 6594777,
+              "work": 143659008
+            },
+            "24": {
+              "calls": 2316,
+              "cpu_ns": 19536470,
+              "work": 431259648
+            },
+            "25": {
+              "calls": 772,
+              "cpu_ns": 7323177,
+              "work": 143568896
+            }
+          },
+          "largest_worker_work_fraction": 0.33376102493917276,
+          "largest_worker_cpu_fraction": 0.33694669915471565,
+          "cpu_to_worker_wall_fraction": 0.9521751949690679,
+          "pmu": {
+            "valid_calls": 23160,
+            "invalid_calls": 0,
+            "time_enabled_ns": 221603533,
+            "time_running_ns": 221603533,
+            "cycles": 457246006,
+            "instructions": 892553702,
+            "l1d_access": 407090795,
+            "l1d_refill": 5907369,
+            "l2d_access": 145408339,
+            "l2d_refill": 675499
+          },
+          "ipc": 1.9520207728178602,
+          "cycles_per_mac": 0.10609824141156644,
+          "coverage_fraction": 1.0,
+          "l1d_refill_per_access": 0.014511182941387805,
+          "l2d_refill_per_access": 0.00464553136804623,
+          "l2d_refills_per_1000_mac": 0.1567411306710719
+        },
+        "q8_output_gemv4": null,
+        "ggml_gemm_q8_0_4x4_q8_0": {
+          "calls": 13896,
+          "worker_wall_ns": 3285579056,
+          "worker_cpu_ns": 3274002210,
+          "work": 96536100864,
+          "workers": {
+            "0": {
+              "calls": 4631,
+              "cpu_ns": 1088982918,
+              "work": 32136953856
+            },
+            "1": {
+              "calls": 4632,
+              "cpu_ns": 1093448780,
+              "work": 32213598208
+            },
+            "14": {
+              "calls": 772,
+              "cpu_ns": 74522690,
+              "work": 1725284352
+            },
+            "15": {
+              "calls": 773,
+              "cpu_ns": 176693308,
+              "work": 5181014016
+            },
+            "16": {
+              "calls": 772,
+              "cpu_ns": 294855826,
+              "work": 9191817216
+            },
+            "23": {
+              "calls": 772,
+              "cpu_ns": 74656142,
+              "work": 1723908096
+            },
+            "24": {
+              "calls": 772,
+              "cpu_ns": 176922926,
+              "work": 5175115776
+            },
+            "25": {
+              "calls": 772,
+              "cpu_ns": 293919620,
+              "work": 9188409344
+            }
+          },
+          "largest_worker_work_fraction": 0.3336948345716024,
+          "largest_worker_cpu_fraction": 0.33397924309892263,
+          "cpu_to_worker_wall_fraction": 0.9964764670693713,
+          "pmu": {
+            "valid_calls": 13896,
+            "invalid_calls": 0,
+            "time_enabled_ns": 3296673487,
+            "time_running_ns": 3296673487,
+            "cycles": 7800454525,
+            "instructions": 12729258982,
+            "l1d_access": 3414116260,
+            "l1d_refill": 41393595,
+            "l2d_access": 827824597,
+            "l2d_refill": 25163194
+          },
+          "ipc": 1.6318611872171642,
+          "cycles_per_mac": 0.0808034968802943,
+          "coverage_fraction": 1.0,
+          "l1d_refill_per_access": 0.012124248809265797,
+          "l2d_refill_per_access": 0.030396770150573335,
+          "l2d_refills_per_1000_mac": 0.26066097319851245
+        }
+      },
+      "text_suffix": {
+        "ggml_gemv_q8_0_4x4_q8_0": {
+          "calls": 14112,
+          "worker_wall_ns": 148137973,
+          "worker_cpu_ns": 141721570,
+          "work": 2642411520,
+          "workers": {
+            "0": {
+              "calls": 4706,
+              "cpu_ns": 46572135,
+              "work": 879915008
+            },
+            "1": {
+              "calls": 4702,
+              "cpu_ns": 47478366,
+              "work": 880713728
+            },
+            "14": {
+              "calls": 785,
+              "cpu_ns": 7853904,
+              "work": 147210240
+            },
+            "15": {
+              "calls": 784,
+              "cpu_ns": 8061847,
+              "work": 146808832
+            },
+            "16": {
+              "calls": 784,
+              "cpu_ns": 7791758,
+              "work": 146976768
+            },
+            "23": {
+              "calls": 783,
+              "cpu_ns": 7914798,
+              "work": 146829312
+            },
+            "24": {
+              "calls": 784,
+              "cpu_ns": 8119444,
+              "work": 146829312
+            },
+            "25": {
+              "calls": 784,
+              "cpu_ns": 7929318,
+              "work": 147128320
+            }
+          },
+          "largest_worker_work_fraction": 0.33329923115079363,
+          "largest_worker_cpu_fraction": 0.33501157233863554,
+          "cpu_to_worker_wall_fraction": 0.9566863048679625,
+          "pmu": {
+            "valid_calls": 14112,
+            "invalid_calls": 0,
+            "time_enabled_ns": 158072383,
+            "time_running_ns": 158072383,
+            "cycles": 329310817,
+            "instructions": 547223013,
+            "l1d_access": 249670292,
+            "l1d_refill": 4654536,
+            "l2d_access": 89180777,
+            "l2d_refill": 1464917
+          },
+          "ipc": 1.6617219500566847,
+          "cycles_per_mac": 0.12462510646335663,
+          "coverage_fraction": 1.0,
+          "l1d_refill_per_access": 0.018642730629721858,
+          "l2d_refill_per_access": 0.01642637628061931,
+          "l2d_refills_per_1000_mac": 0.5543863962567042
+        },
+        "q8_output_gemv4": {
+          "calls": 72,
+          "worker_wall_ns": 242306930,
+          "worker_cpu_ns": 241809426,
+          "work": 933494784,
+          "workers": {
+            "0": {
+              "calls": 24,
+              "cpu_ns": 80102261,
+              "work": 311148544
+            },
+            "1": {
+              "calls": 24,
+              "cpu_ns": 81194443,
+              "work": 311144448
+            },
+            "14": {
+              "calls": 4,
+              "cpu_ns": 13417555,
+              "work": 51867648
+            },
+            "15": {
+              "calls": 4,
+              "cpu_ns": 13566740,
+              "work": 51867648
+            },
+            "16": {
+              "calls": 4,
+              "cpu_ns": 13612297,
+              "work": 51867648
+            },
+            "23": {
+              "calls": 4,
+              "cpu_ns": 13475630,
+              "work": 51863552
+            },
+            "24": {
+              "calls": 4,
+              "cpu_ns": 13263297,
+              "work": 51867648
+            },
+            "25": {
+              "calls": 4,
+              "cpu_ns": 13177203,
+              "work": 51867648
+            }
+          },
+          "largest_worker_work_fraction": 0.33331578208368434,
+          "largest_worker_cpu_fraction": 0.3357786515733262,
+          "cpu_to_worker_wall_fraction": 0.9979468024294641,
+          "pmu": {
+            "valid_calls": 72,
+            "invalid_calls": 0,
+            "time_enabled_ns": 242359052,
+            "time_running_ns": 242359052,
+            "cycles": 576879152,
+            "instructions": 191922312,
+            "l1d_access": 87798838,
+            "l1d_refill": 9231395,
+            "l2d_access": 31223269,
+            "l2d_refill": 10157687
+          },
+          "ipc": 0.33269067071434055,
+          "cycles_per_mac": 0.6179779061304321,
+          "coverage_fraction": 1.0,
+          "l1d_refill_per_access": 0.1051425646430537,
+          "l2d_refill_per_access": 0.325324263772637,
+          "l2d_refills_per_1000_mac": 10.881353783761474
+        },
+        "ggml_gemm_q8_0_4x4_q8_0": {
+          "calls": 13896,
+          "worker_wall_ns": 1035213892,
+          "worker_cpu_ns": 1026128751,
+          "work": 20686307328,
+          "workers": {
+            "0": {
+              "calls": 4634,
+              "cpu_ns": 338809813,
+              "work": 6888521728
+            },
+            "1": {
+              "calls": 4630,
+              "cpu_ns": 343965566,
+              "work": 6895206400
+            },
+            "14": {
+              "calls": 773,
+              "cpu_ns": 57563705,
+              "work": 1152548864
+            },
+            "15": {
+              "calls": 772,
+              "cpu_ns": 57256060,
+              "work": 1149337600
+            },
+            "16": {
+              "calls": 772,
+              "cpu_ns": 57397543,
+              "work": 1150681088
+            },
+            "23": {
+              "calls": 771,
+              "cpu_ns": 57486617,
+              "work": 1149206528
+            },
+            "24": {
+              "calls": 772,
+              "cpu_ns": 56574998,
+              "work": 1149206528
+            },
+            "25": {
+              "calls": 772,
+              "cpu_ns": 57074449,
+              "work": 1151598592
+            }
+          },
+          "largest_worker_work_fraction": 0.3333222450324412,
+          "largest_worker_cpu_fraction": 0.335207025107515,
+          "cpu_to_worker_wall_fraction": 0.9912238996499093,
+          "pmu": {
+            "valid_calls": 13896,
+            "invalid_calls": 0,
+            "time_enabled_ns": 1048232626,
+            "time_running_ns": 1048232626,
+            "cycles": 2434499049,
+            "instructions": 2731969168,
+            "l1d_access": 732784575,
+            "l1d_refill": 15859995,
+            "l2d_access": 180183504,
+            "l2d_refill": 20228424
+          },
+          "ipc": 1.1221894578772538,
+          "cycles_per_mac": 0.11768649717897105,
+          "coverage_fraction": 1.0,
+          "l1d_refill_per_access": 0.021643461859169183,
+          "l2d_refill_per_access": 0.11226568221250709,
+          "l2d_refills_per_1000_mac": 0.9778653908239954
+        }
+      }
+    },
+    "stall": {
+      "token_decode": {
+        "ggml_gemv_q8_0_4x4_q8_0": {
+          "calls": 153664,
+          "worker_wall_ns": 7185173944,
+          "worker_cpu_ns": 7099607315,
+          "work": 43159388160,
+          "workers": {
+            "0": {
+              "calls": 76861,
+              "cpu_ns": 3559025295,
+              "work": 21587558400
+            },
+            "1": {
+              "calls": 76803,
+              "cpu_ns": 3540582020,
+              "work": 21571829760
+            }
+          },
+          "largest_worker_work_fraction": 0.5001822157434402,
+          "largest_worker_cpu_fraction": 0.5012988940219999,
+          "cpu_to_worker_wall_fraction": 0.988091223724451,
+          "pmu": {
+            "valid_calls": 153664,
+            "invalid_calls": 0,
+            "time_enabled_ns": 7302918950,
+            "time_running_ns": 7302918950,
+            "cycles": 16852021107,
+            "instructions": 8908990016,
+            "stall_frontend": 15888968,
+            "stall_backend": 13648470221,
+            "bus_access": 5712078962,
+            "l1d_tlb_refill": 4210556
+          },
+          "ipc": 0.5286600318996384,
+          "cycles_per_mac": 0.3904601484276463,
+          "coverage_fraction": 1.0,
+          "frontend_stall_per_cycle": 0.0009428523676249155,
+          "backend_stall_per_cycle": 0.8099010874921521,
+          "bus_accesses_per_1000_mac": 132.3484693718142
+        },
+        "q8_output_gemv4": {
+          "calls": 784,
+          "worker_wall_ns": 2531016158,
+          "worker_cpu_ns": 2528504884,
+          "work": 15247081472,
+          "workers": {
+            "0": {
+              "calls": 392,
+              "cpu_ns": 1264280796,
+              "work": 7623540736
+            },
+            "1": {
+              "calls": 392,
+              "cpu_ns": 1264224088,
+              "work": 7623540736
+            }
+          },
+          "largest_worker_work_fraction": 0.5,
+          "largest_worker_cpu_fraction": 0.5000112137414404,
+          "cpu_to_worker_wall_fraction": 0.99900780009165,
+          "pmu": {
+            "valid_calls": 784,
+            "invalid_calls": 0,
+            "time_enabled_ns": 2531801116,
+            "time_running_ns": 2531801116,
+            "cycles": 6042414748,
+            "instructions": 3134583366,
+            "stall_frontend": 589003,
+            "stall_backend": 4918230218,
+            "bus_access": 2036057142,
+            "l1d_tlb_refill": 1003251
+          },
+          "ipc": 0.5187633581487479,
+          "cycles_per_mac": 0.39629976130818173,
+          "coverage_fraction": 1.0,
+          "frontend_stall_per_cycle": 9.747808195307285e-05,
+          "backend_stall_per_cycle": 0.8139511144328354,
+          "bus_accesses_per_1000_mac": 133.5374999955926
+        },
+        "ggml_gemm_q8_0_4x4_q8_0": null
+      },
+      "audio_prefill": {
+        "ggml_gemv_q8_0_4x4_q8_0": {
+          "calls": 23160,
+          "worker_wall_ns": 206293827,
+          "worker_cpu_ns": 196273309,
+          "work": 4309647360,
+          "workers": {
+            "0": {
+              "calls": 7717,
+              "cpu_ns": 63878702,
+              "work": 1435439104
+            },
+            "1": {
+              "calls": 7721,
+              "cpu_ns": 66327903,
+              "work": 1436684288
+            },
+            "17": {
+              "calls": 773,
+              "cpu_ns": 6551108,
+              "work": 143921152
+            },
+            "18": {
+              "calls": 2316,
+              "cpu_ns": 19409697,
+              "work": 431321088
+            },
+            "19": {
+              "calls": 773,
+              "cpu_ns": 7327006,
+              "work": 143654912
+            },
+            "20": {
+              "calls": 772,
+              "cpu_ns": 6565525,
+              "work": 143699968
+            },
+            "21": {
+              "calls": 2316,
+              "cpu_ns": 19295461,
+              "work": 431173632
+            },
+            "22": {
+              "calls": 772,
+              "cpu_ns": 6917907,
+              "work": 143753216
+            }
+          },
+          "largest_worker_work_fraction": 0.3333646973844282,
+          "largest_worker_cpu_fraction": 0.3379364384181244,
+          "cpu_to_worker_wall_fraction": 0.9514259920147781,
+          "pmu": {
+            "valid_calls": 23160,
+            "invalid_calls": 0,
+            "time_enabled_ns": 221538192,
+            "time_running_ns": 221538192,
+            "cycles": 456705807,
+            "instructions": 892553199,
+            "stall_frontend": 2144847,
+            "stall_backend": 144188154,
+            "bus_access": 32654293,
+            "l1d_tlb_refill": 476319
+          },
+          "ipc": 1.95432855312917,
+          "cycles_per_mac": 0.1059728949609464,
+          "coverage_fraction": 1.0,
+          "frontend_stall_per_cycle": 0.004696342737765977,
+          "backend_stall_per_cycle": 0.31571342380588563,
+          "bus_accesses_per_1000_mac": 7.57702203272613
+        },
+        "q8_output_gemv4": null,
+        "ggml_gemm_q8_0_4x4_q8_0": {
+          "calls": 13896,
+          "worker_wall_ns": 3291115556,
+          "worker_cpu_ns": 3279002526,
+          "work": 96536100864,
+          "workers": {
+            "0": {
+              "calls": 4629,
+              "cpu_ns": 1093594973,
+              "work": 32156221440
+            },
+            "1": {
+              "calls": 4633,
+              "cpu_ns": 1091107538,
+              "work": 32184369152
+            },
+            "17": {
+              "calls": 773,
+              "cpu_ns": 74907482,
+              "work": 1727053824
+            },
+            "18": {
+              "calls": 772,
+              "cpu_ns": 177240977,
+              "work": 5175853056
+            },
+            "19": {
+              "calls": 773,
+              "cpu_ns": 294174921,
+              "work": 9193914368
+            },
+            "20": {
+              "calls": 772,
+              "cpu_ns": 75262642,
+              "work": 1724399616
+            },
+            "21": {
+              "calls": 772,
+              "cpu_ns": 177849101,
+              "work": 5174083584
+            },
+            "22": {
+              "calls": 772,
+              "cpu_ns": 294864892,
+              "work": 9200205824
+            }
+          },
+          "largest_worker_work_fraction": 0.33339205606969063,
+          "largest_worker_cpu_fraction": 0.3335145259354399,
+          "cpu_to_worker_wall_fraction": 0.9963194759363837,
+          "pmu": {
+            "valid_calls": 13896,
+            "invalid_calls": 0,
+            "time_enabled_ns": 3301618693,
+            "time_running_ns": 3301618693,
+            "cycles": 7812325471,
+            "instructions": 12729258874,
+            "stall_frontend": 6473077,
+            "stall_backend": 3628945497,
+            "bus_access": 816975251,
+            "l1d_tlb_refill": 602288
+          },
+          "ipc": 1.6293815357862476,
+          "cycles_per_mac": 0.0809264658617816,
+          "coverage_fraction": 1.0,
+          "frontend_stall_per_cycle": 0.0008285723660680292,
+          "backend_stall_per_cycle": 0.46451540075627246,
+          "bus_accesses_per_1000_mac": 8.462898787998018
+        }
+      },
+      "text_suffix": {
+        "ggml_gemv_q8_0_4x4_q8_0": {
+          "calls": 14112,
+          "worker_wall_ns": 147817672,
+          "worker_cpu_ns": 141517085,
+          "work": 2642411520,
+          "workers": {
+            "0": {
+              "calls": 4705,
+              "cpu_ns": 46792580,
+              "work": 879013888
+            },
+            "1": {
+              "calls": 4704,
+              "cpu_ns": 47146465,
+              "work": 882614272
+            },
+            "17": {
+              "calls": 786,
+              "cpu_ns": 7915979,
+              "work": 147525632
+            },
+            "18": {
+              "calls": 784,
+              "cpu_ns": 8284574,
+              "work": 146698240
+            },
+            "19": {
+              "calls": 784,
+              "cpu_ns": 7824710,
+              "work": 147034112
+            },
+            "20": {
+              "calls": 784,
+              "cpu_ns": 7813636,
+              "work": 146804736
+            },
+            "21": {
+              "calls": 784,
+              "cpu_ns": 7795830,
+              "work": 146845696
+            },
+            "22": {
+              "calls": 781,
+              "cpu_ns": 7943311,
+              "work": 145874944
+            }
+          },
+          "largest_worker_work_fraction": 0.3340184771825397,
+          "largest_worker_cpu_fraction": 0.3331503401161775,
+          "cpu_to_worker_wall_fraction": 0.9573759556976381,
+          "pmu": {
+            "valid_calls": 14112,
+            "invalid_calls": 0,
+            "time_enabled_ns": 157776742,
+            "time_running_ns": 157776742,
+            "cycles": 329925808,
+            "instructions": 547221024,
+            "stall_frontend": 1346911,
+            "stall_backend": 137941843,
+            "bus_access": 82275596,
+            "l1d_tlb_refill": 283522
+          },
+          "ipc": 1.6586184249035771,
+          "cycles_per_mac": 0.12485784500364273,
+          "coverage_fraction": 1.0,
+          "frontend_stall_per_cycle": 0.004082466322246606,
+          "backend_stall_per_cycle": 0.418099583770664,
+          "bus_accesses_per_1000_mac": 31.136556655641584
+        },
+        "q8_output_gemv4": {
+          "calls": 72,
+          "worker_wall_ns": 242712889,
+          "worker_cpu_ns": 242508960,
+          "work": 933494784,
+          "workers": {
+            "0": {
+              "calls": 24,
+              "cpu_ns": 80976093,
+              "work": 311152640
+            },
+            "1": {
+              "calls": 24,
+              "cpu_ns": 80728109,
+              "work": 311156736
+            },
+            "17": {
+              "calls": 4,
+              "cpu_ns": 13183518,
+              "work": 51863552
+            },
+            "18": {
+              "calls": 4,
+              "cpu_ns": 13086591,
+              "work": 51867648
+            },
+            "19": {
+              "calls": 4,
+              "cpu_ns": 14376724,
+              "work": 51863552
+            },
+            "20": {
+              "calls": 4,
+              "cpu_ns": 13466739,
+              "work": 51867648
+            },
+            "21": {
+              "calls": 4,
+              "cpu_ns": 13419481,
+              "work": 51867648
+            },
+            "22": {
+              "calls": 4,
+              "cpu_ns": 13271705,
+              "work": 51855360
+            }
+          },
+          "largest_worker_work_fraction": 0.33332455770850883,
+          "largest_worker_cpu_fraction": 0.3339096955427956,
+          "cpu_to_worker_wall_fraction": 0.9991597932815179,
+          "pmu": {
+            "valid_calls": 72,
+            "invalid_calls": 0,
+            "time_enabled_ns": 243035750,
+            "time_running_ns": 243035750,
+            "cycles": 578160625,
+            "instructions": 191922312,
+            "stall_frontend": 128107,
+            "stall_backend": 508896586,
+            "bus_access": 124719404,
+            "l1d_tlb_refill": 61788
+          },
+          "ipc": 0.33195327336585745,
+          "cycles_per_mac": 0.6193506754505872,
+          "coverage_fraction": 1.0,
+          "frontend_stall_per_cycle": 0.00022157683256275018,
+          "backend_stall_per_cycle": 0.8801993148530307,
+          "bus_accesses_per_1000_mac": 133.6048215133894
+        },
+        "ggml_gemm_q8_0_4x4_q8_0": {
+          "calls": 13896,
+          "worker_wall_ns": 1038318968,
+          "worker_cpu_ns": 1028731147,
+          "work": 20686307328,
+          "workers": {
+            "0": {
+              "calls": 4633,
+              "cpu_ns": 342451636,
+              "work": 6881411072
+            },
+            "1": {
+              "calls": 4632,
+              "cpu_ns": 342500935,
+              "work": 6909526016
+            },
+            "17": {
+              "calls": 774,
+              "cpu_ns": 57328738,
+              "work": 1155072000
+            },
+            "18": {
+              "calls": 772,
+              "cpu_ns": 57291539,
+              "work": 1148649472
+            },
+            "19": {
+              "calls": 772,
+              "cpu_ns": 56870224,
+              "work": 1151041536
+            },
+            "20": {
+              "calls": 772,
+              "cpu_ns": 57972299,
+              "work": 1149304832
+            },
+            "21": {
+              "calls": 772,
+              "cpu_ns": 57280437,
+              "work": 1149337600
+            },
+            "22": {
+              "calls": 769,
+              "cpu_ns": 57035339,
+              "work": 1141964800
+            }
+          },
+          "largest_worker_work_fraction": 0.33401447181670724,
+          "largest_worker_cpu_fraction": 0.33293532134105785,
+          "cpu_to_worker_wall_fraction": 0.9907660157470994,
+          "pmu": {
+            "valid_calls": 13896,
+            "invalid_calls": 0,
+            "time_enabled_ns": 1050575179,
+            "time_running_ns": 1050575179,
+            "cycles": 2439302755,
+            "instructions": 2731967179,
+            "stall_frontend": 3835114,
+            "stall_backend": 1538035632,
+            "bus_access": 503493482,
+            "l1d_tlb_refill": 355218
+          },
+          "ipc": 1.1199787207225944,
+          "cycles_per_mac": 0.11791871387786432,
+          "coverage_fraction": 1.0,
+          "frontend_stall_per_cycle": 0.001572217303546644,
+          "backend_stall_per_cycle": 0.6305226478539356,
+          "bus_accesses_per_1000_mac": 24.339456724521117
+        }
+      }
+    }
+  },
+  "decode_per_pcm": {
+    "initial": {
+      "timing": {
+        "ggml_gemv_q8_0_4x4_q8_0": {
+          "calls": 3136,
+          "worker_wall_ns": 153614444,
+          "worker_cpu_ns": 151899511,
+          "work": 880803840,
+          "workers": {
+            "0": {
+              "calls": 1569,
+              "cpu_ns": 76055398,
+              "work": 440795136
+            },
+            "1": {
+              "calls": 1567,
+              "cpu_ns": 75844113,
+              "work": 440008704
+            }
+          },
+          "largest_worker_work_fraction": 0.5004464285714286,
+          "largest_worker_cpu_fraction": 0.5006954762349433,
+          "cpu_to_worker_wall_fraction": 0.9888361214261857
+        },
+        "q8_output_gemv4": {
+          "calls": 16,
+          "worker_wall_ns": 51678040,
+          "worker_cpu_ns": 51118724,
+          "work": 311164928,
+          "workers": {
+            "0": {
+              "calls": 8,
+              "cpu_ns": 25527464,
+              "work": 155582464
+            },
+            "1": {
+              "calls": 8,
+              "cpu_ns": 25591260,
+              "work": 155582464
+            }
+          },
+          "largest_worker_work_fraction": 0.5,
+          "largest_worker_cpu_fraction": 0.5006239983611485,
+          "cpu_to_worker_wall_fraction": 0.9891769115082538
+        }
+      },
+      "cache": {
+        "ggml_gemv_q8_0_4x4_q8_0": {
+          "calls": 3136,
+          "worker_wall_ns": 149833364,
+          "worker_cpu_ns": 148062585,
+          "work": 880803840,
+          "workers": {
+            "0": {
+              "calls": 1568,
+              "cpu_ns": 74144634,
+              "work": 440401920
+            },
+            "1": {
+              "calls": 1568,
+              "cpu_ns": 73917951,
+              "work": 440401920
+            }
+          },
+          "largest_worker_work_fraction": 0.5,
+          "largest_worker_cpu_fraction": 0.5007654972388872,
+          "cpu_to_worker_wall_fraction": 0.9881816776135387,
+          "pmu": {
+            "valid_calls": 3136,
+            "invalid_calls": 0,
+            "time_enabled_ns": 152478517,
+            "time_running_ns": 152478517,
+            "cycles": 351048371,
+            "instructions": 181815872,
+            "l1d_access": 83069270,
+            "l1d_refill": 9090683,
+            "l2d_access": 29698385,
+            "l2d_refill": 9223700
+          },
+          "ipc": 0.5179225628709726,
+          "cycles_per_mac": 0.3985545419511341,
+          "coverage_fraction": 1.0,
+          "l1d_refill_per_access": 0.10943496915285279,
+          "l2d_refill_per_access": 0.3105791779586668,
+          "l2d_refills_per_1000_mac": 10.4719116574242
+        },
+        "q8_output_gemv4": {
+          "calls": 16,
+          "worker_wall_ns": 52170745,
+          "worker_cpu_ns": 52018575,
+          "work": 311164928,
+          "workers": {
+            "0": {
+              "calls": 8,
+              "cpu_ns": 25991298,
+              "work": 155582464
+            },
+            "1": {
+              "calls": 8,
+              "cpu_ns": 26027277,
+              "work": 155582464
+            }
+          },
+          "largest_worker_work_fraction": 0.5,
+          "largest_worker_cpu_fraction": 0.500345828389186,
+          "cpu_to_worker_wall_fraction": 0.9970832312247027,
+          "pmu": {
+            "valid_calls": 16,
+            "invalid_calls": 0,
+            "time_enabled_ns": 52151240,
+            "time_running_ns": 52151240,
+            "cycles": 124158244,
+            "instructions": 63971088,
+            "l1d_access": 29251042,
+            "l1d_refill": 3011819,
+            "l2d_access": 10393260,
+            "l2d_refill": 3127680
+          },
+          "ipc": 0.5152383437381733,
+          "cycles_per_mac": 0.3990110479288977,
+          "coverage_fraction": 1.0,
+          "l1d_refill_per_access": 0.10296450293975852,
+          "l2d_refill_per_access": 0.3009334895884448,
+          "l2d_refills_per_1000_mac": 10.051518402485257
+        }
+      },
+      "stall": {
+        "ggml_gemv_q8_0_4x4_q8_0": {
+          "calls": 3136,
+          "worker_wall_ns": 148998032,
+          "worker_cpu_ns": 147315479,
+          "work": 880803840,
+          "workers": {
+            "0": {
+              "calls": 1568,
+              "cpu_ns": 73920469,
+              "work": 440401920
+            },
+            "1": {
+              "calls": 1568,
+              "cpu_ns": 73395010,
+              "work": 440401920
+            }
+          },
+          "largest_worker_work_fraction": 0.5,
+          "largest_worker_cpu_fraction": 0.5017834480244944,
+          "cpu_to_worker_wall_fraction": 0.9887075488352759,
+          "pmu": {
+            "valid_calls": 3136,
+            "invalid_calls": 0,
+            "time_enabled_ns": 151523549,
+            "time_running_ns": 151523549,
+            "cycles": 349417320,
+            "instructions": 181815872,
+            "stall_frontend": 421246,
+            "stall_backend": 283887651,
+            "bus_access": 117304241,
+            "l1d_tlb_refill": 87388
+          },
+          "ipc": 0.5203401823355522,
+          "cycles_per_mac": 0.39670276641845703,
+          "coverage_fraction": 1.0,
+          "frontend_stall_per_cycle": 0.0012055670279881947,
+          "backend_stall_per_cycle": 0.8124601579566806,
+          "bus_accesses_per_1000_mac": 133.1786212467012
+        },
+        "q8_output_gemv4": {
+          "calls": 16,
+          "worker_wall_ns": 51941376,
+          "worker_cpu_ns": 51330837,
+          "work": 311164928,
+          "workers": {
+            "0": {
+              "calls": 8,
+              "cpu_ns": 25629298,
+              "work": 155582464
+            },
+            "1": {
+              "calls": 8,
+              "cpu_ns": 25701539,
+              "work": 155582464
+            }
+          },
+          "largest_worker_work_fraction": 0.5,
+          "largest_worker_cpu_fraction": 0.5007036803237789,
+          "cpu_to_worker_wall_fraction": 0.988245613670304,
+          "pmu": {
+            "valid_calls": 16,
+            "invalid_calls": 0,
+            "time_enabled_ns": 51424869,
+            "time_running_ns": 51424869,
+            "cycles": 122542979,
+            "instructions": 63971088,
+            "stall_frontend": 23662,
+            "stall_backend": 99615344,
+            "bus_access": 41563545,
+            "l1d_tlb_refill": 20489
+          },
+          "ipc": 0.5220298096392777,
+          "cycles_per_mac": 0.39382002267299226,
+          "coverage_fraction": 1.0,
+          "frontend_stall_per_cycle": 0.00019309143773957053,
+          "backend_stall_per_cycle": 0.8129012760494422,
+          "bus_accesses_per_1000_mac": 133.57400291590702
+        }
+      }
+    },
+    "followup": {
+      "timing": {
+        "ggml_gemv_q8_0_4x4_q8_0": {
+          "calls": 47040,
+          "worker_wall_ns": 2285647465,
+          "worker_cpu_ns": 2257761513,
+          "work": 13212057600,
+          "workers": {
+            "0": {
+              "calls": 23508,
+              "cpu_ns": 1129775337,
+              "work": 6601048064
+            },
+            "1": {
+              "calls": 23532,
+              "cpu_ns": 1127986176,
+              "work": 6611009536
+            }
+          },
+          "largest_worker_work_fraction": 0.5003769841269842,
+          "largest_worker_cpu_fraction": 0.5003962245325067,
+          "cpu_to_worker_wall_fraction": 0.9877995393309703
+        },
+        "q8_output_gemv4": {
+          "calls": 240,
+          "worker_wall_ns": 773067359,
+          "worker_cpu_ns": 771256466,
+          "work": 4667473920,
+          "workers": {
+            "0": {
+              "calls": 120,
+              "cpu_ns": 385540670,
+              "work": 2333736960
+            },
+            "1": {
+              "calls": 120,
+              "cpu_ns": 385715796,
+              "work": 2333736960
+            }
+          },
+          "largest_worker_work_fraction": 0.5,
+          "largest_worker_cpu_fraction": 0.5001135329217454,
+          "cpu_to_worker_wall_fraction": 0.9976575223634555
+        }
+      },
+      "cache": {
+        "ggml_gemv_q8_0_4x4_q8_0": {
+          "calls": 47040,
+          "worker_wall_ns": 2203807252,
+          "worker_cpu_ns": 2176164237,
+          "work": 13212057600,
+          "workers": {
+            "0": {
+              "calls": 23508,
+              "cpu_ns": 1089454844,
+              "work": 6601310208
+            },
+            "1": {
+              "calls": 23532,
+              "cpu_ns": 1086709393,
+              "work": 6610747392
+            }
+          },
+          "largest_worker_work_fraction": 0.5003571428571428,
+          "largest_worker_cpu_fraction": 0.5006308005051551,
+          "cpu_to_worker_wall_fraction": 0.9874567002287004,
+          "pmu": {
+            "valid_calls": 47040,
+            "invalid_calls": 0,
+            "time_enabled_ns": 2238129964,
+            "time_running_ns": 2238129964,
+            "cycles": 5165577398,
+            "instructions": 2727242743,
+            "l1d_access": 1245731921,
+            "l1d_refill": 139241744,
+            "l2d_access": 445326192,
+            "l2d_refill": 141449305
+          },
+          "ipc": 0.5279647429261112,
+          "cycles_per_mac": 0.3909744836413671,
+          "coverage_fraction": 1.0,
+          "l1d_refill_per_access": 0.11177504698460722,
+          "l2d_refill_per_access": 0.3176307783845779,
+          "l2d_refills_per_1000_mac": 10.706076924763028
+        },
+        "q8_output_gemv4": {
+          "calls": 240,
+          "worker_wall_ns": 772766965,
+          "worker_cpu_ns": 771995609,
+          "work": 4667473920,
+          "workers": {
+            "0": {
+              "calls": 120,
+              "cpu_ns": 385714053,
+              "work": 2333736960
+            },
+            "1": {
+              "calls": 120,
+              "cpu_ns": 386281556,
+              "work": 2333736960
+            }
+          },
+          "largest_worker_work_fraction": 0.5,
+          "largest_worker_cpu_fraction": 0.5003675558470696,
+          "cpu_to_worker_wall_fraction": 0.9990018258609179,
+          "pmu": {
+            "valid_calls": 240,
+            "invalid_calls": 0,
+            "time_enabled_ns": 773033789,
+            "time_running_ns": 773033789,
+            "cycles": 1845277422,
+            "instructions": 959566320,
+            "l1d_access": 438755747,
+            "l1d_refill": 45262363,
+            "l2d_access": 155882700,
+            "l2d_refill": 46857869
+          },
+          "ipc": 0.5200119551454632,
+          "cycles_per_mac": 0.39534820196702886,
+          "coverage_fraction": 1.0,
+          "l1d_refill_per_access": 0.10316072965307506,
+          "l2d_refill_per_access": 0.30059698093502357,
+          "l2d_refills_per_1000_mac": 10.039235312963463
+        }
+      },
+      "stall": {
+        "ggml_gemv_q8_0_4x4_q8_0": {
+          "calls": 47040,
+          "worker_wall_ns": 2198370080,
+          "worker_cpu_ns": 2173434726,
+          "work": 13212057600,
+          "workers": {
+            "0": {
+              "calls": 23526,
+              "cpu_ns": 1089863543,
+              "work": 6607208448
+            },
+            "1": {
+              "calls": 23514,
+              "cpu_ns": 1083571183,
+              "work": 6604849152
+            }
+          },
+          "largest_worker_work_fraction": 0.5000892857142857,
+          "largest_worker_cpu_fraction": 0.5014475613011807,
+          "cpu_to_worker_wall_fraction": 0.9886573447178648,
+          "pmu": {
+            "valid_calls": 47040,
+            "invalid_calls": 0,
+            "time_enabled_ns": 2235556214,
+            "time_running_ns": 2235556214,
+            "cycles": 5160458008,
+            "instructions": 2727243471,
+            "stall_frontend": 5434501,
+            "stall_backend": 4178932323,
+            "bus_access": 1751414345,
+            "l1d_tlb_refill": 1299069
+          },
+          "ipc": 0.5284886470875435,
+          "cycles_per_mac": 0.3905870050097269,
+          "coverage_fraction": 1.0,
+          "frontend_stall_per_cycle": 0.0010531043933649231,
+          "backend_stall_per_cycle": 0.8097987264931931,
+          "bus_accesses_per_1000_mac": 132.56181573110914
+        },
+        "q8_output_gemv4": {
+          "calls": 240,
+          "worker_wall_ns": 773229586,
+          "worker_cpu_ns": 772406676,
+          "work": 4667473920,
+          "workers": {
+            "0": {
+              "calls": 120,
+              "cpu_ns": 386218328,
+              "work": 2333736960
+            },
+            "1": {
+              "calls": 120,
+              "cpu_ns": 386188348,
+              "work": 2333736960
+            }
+          },
+          "largest_worker_work_fraction": 0.5,
+          "largest_worker_cpu_fraction": 0.5000194068752456,
+          "cpu_to_worker_wall_fraction": 0.9989357494657479,
+          "pmu": {
+            "valid_calls": 240,
+            "invalid_calls": 0,
+            "time_enabled_ns": 773428552,
+            "time_running_ns": 773428552,
+            "cycles": 1846148030,
+            "instructions": 959566320,
+            "stall_frontend": 202787,
+            "stall_backend": 1501986139,
+            "bus_access": 623263438,
+            "l1d_tlb_refill": 307194
+          },
+          "ipc": 0.519766727481761,
+          "cycles_per_mac": 0.39553472855826904,
+          "coverage_fraction": 1.0,
+          "frontend_stall_per_cycle": 0.00010984330438551019,
+          "backend_stall_per_cycle": 0.8135783884025811,
+          "bus_accesses_per_1000_mac": 133.53335201924386
+        }
+      }
+    },
+    "final": {
+      "timing": {
+        "ggml_gemv_q8_0_4x4_q8_0": {
+          "calls": 103488,
+          "worker_wall_ns": 5047377818,
+          "worker_cpu_ns": 4990343047,
+          "work": 29066526720,
+          "workers": {
+            "0": {
+              "calls": 51744,
+              "cpu_ns": 2498665724,
+              "work": 14533132288
+            },
+            "1": {
+              "calls": 51744,
+              "cpu_ns": 2491677323,
+              "work": 14533394432
+            }
+          },
+          "largest_worker_work_fraction": 0.5000045093795094,
+          "largest_worker_cpu_fraction": 0.5007001924451067,
+          "cpu_to_worker_wall_fraction": 0.9887001185453955
+        },
+        "q8_output_gemv4": {
+          "calls": 528,
+          "worker_wall_ns": 1709875939,
+          "worker_cpu_ns": 1706940587,
+          "work": 10268442624,
+          "workers": {
+            "0": {
+              "calls": 264,
+              "cpu_ns": 853396997,
+              "work": 5134221312
+            },
+            "1": {
+              "calls": 264,
+              "cpu_ns": 853543590,
+              "work": 5134221312
+            }
+          },
+          "largest_worker_work_fraction": 0.5,
+          "largest_worker_cpu_fraction": 0.500042940276046,
+          "cpu_to_worker_wall_fraction": 0.9982832953356156
+        }
+      },
+      "cache": {
+        "ggml_gemv_q8_0_4x4_q8_0": {
+          "calls": 103488,
+          "worker_wall_ns": 4863463520,
+          "worker_cpu_ns": 4805769583,
+          "work": 29066526720,
+          "workers": {
+            "0": {
+              "calls": 51738,
+              "cpu_ns": 2408918732,
+              "work": 14531428352
+            },
+            "1": {
+              "calls": 51750,
+              "cpu_ns": 2396850851,
+              "work": 14535098368
+            }
+          },
+          "largest_worker_work_fraction": 0.5000631313131313,
+          "largest_worker_cpu_fraction": 0.5012555617567153,
+          "cpu_to_worker_wall_fraction": 0.9881372736193568,
+          "pmu": {
+            "valid_calls": 103488,
+            "invalid_calls": 0,
+            "time_enabled_ns": 4942983143,
+            "time_running_ns": 4942983143,
+            "cycles": 11409858901,
+            "instructions": 5999931483,
+            "l1d_access": 2740759224,
+            "l1d_refill": 304426798,
+            "l2d_access": 979770769,
+            "l2d_refill": 308853029
+          },
+          "ipc": 0.525855011447525,
+          "cycles_per_mac": 0.39254290720429086,
+          "coverage_fraction": 1.0,
+          "l1d_refill_per_access": 0.11107389344318412,
+          "l2d_refill_per_access": 0.31522988720640227,
+          "l2d_refills_per_1000_mac": 10.625728762683071
+        },
+        "q8_output_gemv4": {
+          "calls": 528,
+          "worker_wall_ns": 1704838990,
+          "worker_cpu_ns": 1701814169,
+          "work": 10268442624,
+          "workers": {
+            "0": {
+              "calls": 264,
+              "cpu_ns": 850458986,
+              "work": 5134221312
+            },
+            "1": {
+              "calls": 264,
+              "cpu_ns": 851355183,
+              "work": 5134221312
+            }
+          },
+          "largest_worker_work_fraction": 0.5,
+          "largest_worker_cpu_fraction": 0.5002633063633871,
+          "cpu_to_worker_wall_fraction": 0.9982257438868172,
+          "pmu": {
+            "valid_calls": 528,
+            "invalid_calls": 0,
+            "time_enabled_ns": 1704248658,
+            "time_running_ns": 1704248658,
+            "cycles": 4066184755,
+            "instructions": 2111045940,
+            "l1d_access": 965264385,
+            "l1d_refill": 99501146,
+            "l2d_access": 342944299,
+            "l2d_refill": 102929747
+          },
+          "ipc": 0.5191711806513819,
+          "cycles_per_mac": 0.3959884574410804,
+          "coverage_fraction": 1.0,
+          "l1d_refill_per_access": 0.10308175412480385,
+          "l2d_refill_per_access": 0.30013546602213675,
+          "l2d_refills_per_1000_mac": 10.023890746531185
+        }
+      },
+      "stall": {
+        "ggml_gemv_q8_0_4x4_q8_0": {
+          "calls": 103488,
+          "worker_wall_ns": 4837805832,
+          "worker_cpu_ns": 4778857110,
+          "work": 29066526720,
+          "workers": {
+            "0": {
+              "calls": 51767,
+              "cpu_ns": 2395241283,
+              "work": 14539948032
+            },
+            "1": {
+              "calls": 51721,
+              "cpu_ns": 2383615827,
+              "work": 14526578688
+            }
+          },
+          "largest_worker_work_fraction": 0.5002299783549784,
+          "largest_worker_cpu_fraction": 0.501216342708351,
+          "cpu_to_worker_wall_fraction": 0.9878149880240997,
+          "pmu": {
+            "valid_calls": 103488,
+            "invalid_calls": 0,
+            "time_enabled_ns": 4915839187,
+            "time_running_ns": 4915839187,
+            "cycles": 11342145779,
+            "instructions": 5999930673,
+            "stall_frontend": 10033221,
+            "stall_backend": 9185650247,
+            "bus_access": 3843360376,
+            "l1d_tlb_refill": 2824099
+          },
+          "ipc": 0.5289943181746862,
+          "cycles_per_mac": 0.39021331610273663,
+          "coverage_fraction": 1.0,
+          "frontend_stall_per_cycle": 0.0008845963714005972,
+          "backend_stall_per_cycle": 0.8098688225297938,
+          "bus_accesses_per_1000_mac": 132.226337636532
+        },
+        "q8_output_gemv4": {
+          "calls": 528,
+          "worker_wall_ns": 1705845196,
+          "worker_cpu_ns": 1704767371,
+          "work": 10268442624,
+          "workers": {
+            "0": {
+              "calls": 264,
+              "cpu_ns": 852433170,
+              "work": 5134221312
+            },
+            "1": {
+              "calls": 264,
+              "cpu_ns": 852334201,
+              "work": 5134221312
+            }
+          },
+          "largest_worker_work_fraction": 0.5,
+          "largest_worker_cpu_fraction": 0.5000290271275963,
+          "cpu_to_worker_wall_fraction": 0.999368157789155,
+          "pmu": {
+            "valid_calls": 528,
+            "invalid_calls": 0,
+            "time_enabled_ns": 1706947695,
+            "time_running_ns": 1706947695,
+            "cycles": 4073723739,
+            "instructions": 2111045958,
+            "stall_frontend": 362554,
+            "stall_backend": 3316628735,
+            "bus_access": 1371230159,
+            "l1d_tlb_refill": 675568
+          },
+          "ipc": 0.5182103876582977,
+          "cycles_per_mac": 0.3967226470622387,
+          "coverage_fraction": 1.0,
+          "frontend_stall_per_cycle": 8.899818034518909e-05,
+          "backend_stall_per_cycle": 0.8141516085757331,
+          "bus_accesses_per_1000_mac": 133.53827929028705
+        }
+      }
+    }
+  },
+  "thermal": {
+    "start_c": 54.55,
+    "max_c": 70.5,
+    "end_c": 68.3,
+    "current_limits": [
+      0
+    ],
+    "worker_observed_max_c": 71.05,
+    "cpu0_freq_khz": [
+      1500000,
+      1900000,
+      2400000
+    ]
+  },
+  "boot_id": "db0f2e44-3c3f-4b8a-8472-e5618db2aeae",
+  "guard": {
+    "status": "completed",
+    "exit_code": 0,
+    "limit_verified": true,
+    "operational_valid": true
+  },
+  "protected_files": 921,
+  "rss_max_all_calls_mib": 1659.65625,
+  "new_continuous_latency_cer_measured": false,
+  "default_changed": false
+}

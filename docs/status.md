@@ -1,6 +1,6 @@
 # 현재 상태 — Qwen3-ASR 최적화
 
-2026-11-16 방향 정리, 최신 완료 실측은2026-11-16입니다. 목표는 **RP5에서 Qwen3-ASR-0.6B의 한국어 정확도·완료율을 유지하면서 실제 인식 지연을 줄이는 것**입니다. [최적화 과정](research/optimization_history.md), [연구 계획](research/qwen3_optimization.md), [평가 조건](research/qwen_realtime.md), [최근100개 캐시 대조](../results/summaries/optimization/realtime-prefix-cache-20261112.md).
+2026-11-17 갱신, 최신 완료 실측은2026-11-17입니다. 목표는 **RP5에서 Qwen3-ASR-0.6B의 한국어 정확도·완료율을 유지하면서 실제 인식 지연을 줄이는 것**입니다. [최적화 과정](research/optimization_history.md), [연구 계획](research/qwen3_optimization.md), [평가 조건](research/qwen_realtime.md), [최근100개 캐시 대조](../results/summaries/optimization/realtime-prefix-cache-20261112.md).
 
 ## 유지하는 연속 입력 기준
 
@@ -11,6 +11,14 @@
 커널 진단 뒤 사용자 결정으로 **주력은 Q8 text/audio·생성2T/음성·prefill3T**에 집중합니다. Q4 모델·계측·실측은 별도 연구 후보로 보존합니다. 같은6개에서 첫 요청0.6/0.8초를 새1초 앞/뒤 대조로 선별했고 두 후보가 통과했습니다. 사전 첫 표시 p50 우선 규칙은0.6초를 선택했으며0.8초는 갱신 공백이 더 짧았습니다. 후속100개에서 첫 표시 개선을 확인했지만 첫4자 p95 한 조건이 미달해 공유1초를 유지합니다. [첫 요청 결과](../results/summaries/optimization/realtime-first-request-20261116.md). 이 방향 정리는 모델·공유 설정·기존 수치를 변경하지 않습니다.
 
 개발·검증 절차는 [CONTRIBUTING](../CONTRIBUTING.md), 직접 확인한 Host/RP5 버전과 환경별 용도는 [환경 기록](reference/environment.md)에 정리했습니다. 구조·안내 정리는 아래 실측의 재실행이나 성능 갱신을 뜻하지 않습니다.
+
+## Q8 CPU·캐시·작업자 진단 — 2026-11-17
+
+기존 커널 추적기에 선택 PMU/작업자 계측을 추가하고 RP5 고정 PCM3개×12라운드의36호출을 완료했습니다. 전사/token 동일·실패0·PMU997,038커널 valid·coverage100%·보호921파일 불변입니다. 출력층/나머지 Q8 GEMV의 계산량은 두 작업자에 약50:50으로 분배됐고, backend stall/cycle은81.40/80.99%·IPC는약0.52·L2 refill/access는약30/32%였습니다.
+
+단순 작업량 불균형보다 가중치 읽기·실행 경로를 다음 실험 대상으로 봅니다. backend stall을 RAM 대기 시간으로 해석하거나 DRAM 대역폭 포화를 확정하지 않습니다. 최고71.05°C·관측 현재 제한0이며 계측 native 비용은끔 대비약1.0~2.5% 증가했습니다. 새 연속 지연/CER 측정·운영 기본 변경은 없습니다.
+
+**다음은 같은 Q8·2/3T에서 가중치 prefetch의 작은 고정 PCM 선별**입니다. 합성 비트/경계·전사/token과 앞뒤 대조를 먼저 확인하고, 이득이 있을 때 원래100개 연속 평가로 확대합니다. 이득이 작으면 encoder FP16 합성곱·투영으로 옮깁니다. 기존 웹61기록/23프로필을 유지했습니다. [전체 수치·범위·검증](../results/summaries/optimization/pmu-q8-20261117.md).
 
 ## Q8 GEMV 정수 누적 분리 — 2026-11-16
 

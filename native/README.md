@@ -80,6 +80,8 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 
 `edge_kernel_trace_set_output_shape(width, stride)`는 별도로 확인한 출력층 모양의 Q8 GEMV만 분리하며 `(0, 0)`은 분류 끔입니다. 작업자별 호출·MAC·CPU 합계도 최대64개 슬롯까지 기록하고 초과를 표시합니다. PMU 읽기는 기존 커널 타이머 밖에 있지만 native 전체 비용에는 들어갑니다. 두 PMU bank는 서로 다른 호출에서 관측하며 cache/bus 횟수를 DRAM 대역폭으로 환산하지 않습니다. 기존 시간 전용·끔 API와 운영 설정은 유지합니다. [PMU 사전 조건](../docs/research/qwen_realtime.md#q8-cpu캐시작업자-진단--2026-11-17-사전-조건).
 
+[RP5 PMU 진단](../results/summaries/optimization/pmu-q8-20261117.md)에서 실제36호출의 전사/token을 유지하고997,038커널의 실패0·coverage100%를 확인했습니다. 이번 native 합계의 계측 비용은끔 대비약1~2.5%이며 운영 엔진에는 연결하지 않습니다.
+
 ## Q8 GEMV 누적 분리 후보
 
 [gguf/q8_gemv.cpp](gguf/q8_gemv.cpp)는 고정 Q8 4x4 GEMV의 int32 누적을 둘로 나누는 선택 실험입니다. 기존 엔진·가중치 배치를 보존하며 decode와 prefill 잔여 행에 사용되는 해당 심볼만 대체합니다. 기본 모드는 원래 함수 전달입니다. `EDGE_ASR_Q8_CPU`에 이미 로딩된 기존 CPU 라이브러리 경로를 지정하고, 별도 실험 자식에만 새 라이브러리를 `LD_PRELOAD`로 지정합니다. `edge_q8_gemv_begin(0/1)`은 직렬 모델 호출 사이에서만 사용하며 미지원 ARM 빌드에서 켬을 거부합니다. 전달/대체 횟수는 `edge_q8_gemv_calls(0/1)`로 확인합니다.
@@ -87,3 +89,4 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 빌드는 기존 엔진의 `build.ninja`에 기록된 ARM ISA·`-O3` 조건과 고정 upstream의 `ggml/include`·`ggml/src`·`ggml/src/ggml-cpu` 헤더를 사용하며 output은 새 경로에 둡니다. 원래 라이브러리와 합성 입력의 float 비트 일치부터 검증합니다. 공유 설정에는 연결하지 않으며 [선별 조건](../docs/research/qwen_realtime.md#q8-gemv-정수-누적-분리--2026-11-16-사전-조건)에 따라 실제 전사/token 동등성과 비용을 비교합니다.
 
 [RP5 선별 결과](../results/summaries/optimization/decode-q8-20261116.md)는 합성72조건·실제36호출 동등성을 유지했지만 속도 기준에 미달했습니다. 운영 기본에는 적용하지 않으며 후보 소스·별도 빌드·부정적 결과를 재현용으로 보존합니다.
+
