@@ -128,13 +128,15 @@ llama_pos eval_prompt(State* s, const mtmd_input_chunks* chunks, bool hit, size_
         } else if (type==MTMD_INPUT_CHUNK_TYPE_AUDIO) {
             if (s->audio_window_s) {
                 const size_t dim=llama_model_n_embd_inp(s->model), rows=window_embeds.size()/dim;
-                if (mtmd_decode_use_mrope(s->audio) || mtmd_decode_use_non_causal(s->audio,chunk))
-                    throw std::runtime_error("partial window requires ordinary causal positions");
+                if (mtmd_decode_use_non_causal(s->audio,chunk))
+                    throw std::runtime_error("partial window requires causal attention");
                 past+=llama_pos(reused_audio);
                 llama_batch_ext_clear(s->batch);
                 for(size_t row=reused_audio;row<rows;++row) {
                     const int idx=llama_batch_ext_add_embd(s->batch,0,{window_embeds.data()+row*dim,1,dim});
-                    if(idx<0 || !llama_batch_ext_set_pos(s->batch,idx,&past))
+                    // mtmd_helper의 audio M-RoPE와 동일하게 네 축 모두 같은 위치를 쓴다.
+                    const llama_pos pos[4]={past,past,past,past};
+                    if(idx<0 || !llama_batch_ext_set_pos(s->batch,idx,pos))
                         throw std::runtime_error("window embedding batch failed");
                     ++past;
                 }
