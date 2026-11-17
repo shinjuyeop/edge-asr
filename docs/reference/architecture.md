@@ -51,6 +51,71 @@ GGUF의 text/audio 정밀도는 별도입니다. 기존 자산 명세 v1은 알�
 
 새 개발은 [공유 GGUF 설정](../../configs/gguf_realtime.toml)과 [개발 안내](../../CONTRIBUTING.md)에서 시작합니다. CLI 목록은 현재·이전 Qwen 진단·legacy·유지보수로 구분하지만 기존 명령은 같은 실행기로 전달합니다. 환경·외부 바이너리는 [환경 기록](environment.md)에, 모델 없는 자동 검사는 `.github/workflows/host.yml`에 있습니다.
 
+## Q8 전처리·추론·후처리
+
+2026-11-17, 프로젝트 `542f905`와 실제 빌드의 llama.cpp `7d7f0287530bc8981690f361d8c1627dbae1c99a` 소스를 대조했습니다. 아래는 현재 GGUF Q8 경로입니다. **텍스트 토크나이저는 입력 준비의 일부이며, 음성 특징 추출과 다릅니다.** 확인은 소스·기존 로그 분석이며 새 추론은 실행하지 않았습니다.
+
+```mermaid
+flowchart TD
+  A[WAV 또는 USB 마이크] --> B[16kHz 모노 PCM · 100ms 입력]
+  B --> C[VAD용 음량 보정 · 발화 구간 판단]
+  B --> D[ASR용 원음 버퍼]
+  C --> E[부분·확정 요청 시점과 PCM 범위 결정]
+  D --> E
+  E --> F[직렬 추론 큐]
+  F --> G[프롬프트 토큰화 · 음성 크기 및 버퍼 준비]
+  G --> H[음성 특징 추출: 주파수 변환 · Mel · 정규화 · 패딩]
+  H --> I[audio encoder · 음성 임베딩 생성]
+  I --> J[LLM prefill · 토큰 생성과 선택]
+  J --> K[토큰 ID를 바이트로 변환 · UTF-8 복원]
+  K --> L[부분 자막 갱신 · 최종 결과 검증]
+  L --> M[이벤트 기록 · HTTP와 SSH 터널 · 브라우저 표시]
+```
+
+### 입력과 전처리
+
+1. **입력 형식:** 파일은 `dataset.load_audio()`가 모노 PCM16/16kHz WAV를 검증하고 float32 파형으로 바꿉니다. WAV 경로에서 리샘플링은 하지 않습니다. USB 마이크는 `microphone.py`가 ALSA `arecord`의 16kHz·모노·S16_LE 출력을 읽습니다. 현재 USB 장치는 직접 16kHz를 지원하지 않아 **ALSA `plughw`에서 변환**합니다. GGUF 어댑터가 리샘플링하지 않는다는 설명과 구분합니다. [환경 기록](environment.md#usb-입력-추가-확인--2026-11-13)
+2. **VAD와 ASR 파형 분리:** `CaptionSession` → `SegmentPipeline`이 100ms 블록을 처리하고, VAD에는 512샘플(32ms) 창을 공급합니다. 대표 명령의 `rms26-floor80`은 VAD용 분기에만 적용합니다. ASR 분기는 `identity`로 원래 PCM16 값을 보존하며 구간을 float32로 변환해 전달합니다. 이 음량 보정은 모델의 Mel 정규화와 다릅니다. [음량 정책](../../src/edge_asr/audio_policy.py), [구간 처리](../../src/edge_asr/segmentation.py)
+3. **부분/확정 요청:** VAD 좌표와 부분 갱신 정책으로 도착한 PCM 범위를 결정합니다. 직렬 작업자는 대기 중 확정 요청을 우선하고, 부분 요청은 최신 대기로 합칩니다. 실행 중인 호출을 선점하지 않습니다. 요청 시점·큐 대기는 전처리 연산 시간과 별도입니다. [세션](../../src/edge_asr/qwen/realtime/session.py), [작업자](../../src/edge_asr/qwen/realtime/worker.py)
+4. **텍스트 토큰화:** bridge는 빈 system, 음성 marker가 있는 user, `language Korean<asr_text>`로 시작하는 assistant 프롬프트를 구성합니다. `mtmd_tokenize()`가 텍스트를 모델 어휘의 토큰 ID로 바꾸고 `<|audio_start|>`·`<|audio_end|>`를 붙입니다. **파형을 텍스트 토크나이저에 넣는 것은 아닙니다.** 음성 입력은 별도 파형·특징·임베딩 경로를 탑니다. 고정 prefix KV가 적중해도 현재 구현은 프롬프트 토큰화를 수행하고 모델의 앞 text 평가를 생략합니다. [bridge](../../native/gguf/bridge.cpp)
+5. **음성 특징 추출:** 고정 런타임은 16kHz, 400샘플 창(25ms), 160샘플 간격(10ms), 128 Mel 대역입니다. 양끝 반사 패딩 → Hann 창을 포함한 주파수 변환 → 파워 → Mel 필터 → log10 → `max(log_mel, 최대값−8)`과 `(값+4)/4` 정규화 → 100 특징 프레임 배수 패딩 순입니다. 마지막 정규화를 엄밀한 `[-1,1]` 범위 보장으로 해석하지 않습니다. 내부 추론 창은 최대 800 특징 프레임으로 나누며 현재 ASR 구간 상한 5초와는 다른 층위입니다.
+
+주파수 변환을 앞선 대화에서는 FFT라고 통칭했지만, **현재 실제 `mtmd_audio_log_mel()` 경로는 Hann 창을 합친 DFT 행렬과 FP32 행렬곱**을 사용합니다. Mel 필터도 FP32 계산입니다. 같은 파일의 별도 FFT helper를 이번 Qwen 경로의 실행 함수로 혼동하지 않습니다. [특징 추출](https://github.com/ggml-org/llama.cpp/blob/7d7f0287530bc8981690f361d8c1627dbae1c99a/tools/mtmd/mtmd-audio.cpp#L591), [DFT·Mel 계산](https://github.com/ggml-org/llama.cpp/blob/7d7f0287530bc8981690f361d8c1627dbae1c99a/tools/mtmd/mtmd-subcontext.cpp#L314)
+
+### 모델 연산과 후처리
+
+특징값은 encoder의 합성곱·Transformer·투영을 거쳐 음성 임베딩이 됩니다. LLM은 음성 앞 text prefix → 음성 임베딩 → 음성 뒤 text suffix 순으로 평가하며, prefix KV 적중 시 앞 text 평가만 생략합니다. 이어 greedy sampler가 토큰을 선택하고, 선택한 토큰으로 다음 모델 계산을 반복합니다. 그래프의 **`token_decode_s`는 이 신경망 계산이며 글자 복원이 아닙니다.**
+
+생성 중에는 다음 순서로 표시합니다.
+
+1. `llama_token_to_piece()`가 토큰 ID를 바이트 조각으로 바꿉니다. 이는 토큰을 다시 텍스트로 복원하는 단계입니다.
+2. Python 증분 UTF-8 decoder가 완전한 문자를 복원하고 누적 문자열을 구성합니다. 한글 한 문자가 토큰 경계에서 나뉘면 바이트가 완성될 때까지 기다립니다.
+3. 세션이 같은 구간의 이미 보인 접두부 재생을 보류하고, 확장 또는 실제 내용 변경을 부분 자막으로 전달합니다. 글자를 교정하는 모델이 아니라 표시 규칙입니다.
+4. callback 안에서 `jobs.jsonl` 기록·flush와 표시용 표준 출력까지 수행합니다. 따라서 `token_callback_s`는 UTF-8 복원만의 시간이 아닙니다.
+5. EOG 종료 뒤 C++ 결과 JSON을 반환하고, Python은 JSON/UTF-8·토큰·성공 종료·스트리밍 결과 일치를 검증합니다. 반복·길이 제한 등 비정상 종료는 실패로 기록합니다. 이 최종 검사까지 기다리지 않고 중간 토큰 자막을 표시할 수 있습니다. [어댑터](../../src/edge_asr/qwen/gguf.py), [표시 규칙](../../src/edge_asr/qwen/realtime/stability.py)
+
+현재 이 경로에는 별도 맞춤법·문장부호 교정 모델이나 ITN 변환을 추가하지 않습니다. 모델이 만든 원문을 표시합니다. `ko_cer_v1`의 NFC·공백/문장부호 제거는 **채점과 사후 분석**에 쓰며 화면의 원문을 바꾸지 않습니다. [채점](../../src/edge_asr/metrics.py)
+
+라이브 화면은 RP5의 JSONL을 HTTP 서버가 읽고, 브라우저가 300ms 간격으로 조회합니다. SSH 터널 전달·조회·화면 렌더링은 모델 후처리와 별도 경로입니다. 300ms는 설정 간격이지 측정된 추가 지연 또는 상한이 아닙니다. [청취 도구](../guides/listener.md)
+
+### 현재 타이머에 들어가는 범위
+
+아래 수치는 [11월 16일 Q8 프로파일](../../results/summaries/optimization/reprofile-q8-20261116.json)의 `budget300`·100개 원음·427호출 합계를 나눈 **호출당 평균**입니다. 토큰당 비용이나 합성곱 최적화 후 수치가 아닙니다.
+
+| 계측 | 평균 | 실제 포함 범위·누락 |
+| --- | ---: | --- |
+| `preprocess_s` | 0.453ms | native 입력 버퍼·프롬프트 토큰화·특징 크기 준비. 토크나이저 단독 시간은 미분리 |
+| `audio_encode_s` | 451.319ms | **지연 계산한 DFT/Mel·정규화·패딩 + encoder 실행**. 순수 모델 encoder만의 시간이 아님 |
+| `sampling_s` | 8.785ms | 호출 내 전체 sampler 선택/accept 비용 |
+| `token_callback_s` | 6.182ms | 전체 토큰의 Python UTF-8 복원·표시 판단·이벤트 기록/출력 등을 합산 |
+| 단계 타이머 밖 호출 잔여 | 0.938ms | 토큰→바이트, 종료/반복 검사, JSON 직렬화/파싱·반환 검사, 기타 호출 경계 등을 합산. 순수 후처리 시간이 아님 |
+
+`mtmd_tokenize()`에서는 특징의 **크기와 버퍼를 먼저 준비**하고 실제 값 계산을 미룹니다. `mtmd_encode_chunk()` → `audio_preproc->compute()`에서 특징을 계산하기 때문에 Mel 비용이 `preprocess_s`가 아니라 `audio_encode_s`에 들어갑니다. [지연 준비](https://github.com/ggml-org/llama.cpp/blob/7d7f0287530bc8981690f361d8c1627dbae1c99a/tools/mtmd/mtmd-audio.cpp#L287), [실제 계산 호출](https://github.com/ggml-org/llama.cpp/blob/7d7f0287530bc8981690f361d8c1627dbae1c99a/tools/mtmd/mtmd.cpp#L2270)
+
+별도의 입력 처리 경로는 100ms 청크 8,912개에서 평균 8.968ms·p95 14.941ms입니다. 이 값에는 VAD·버퍼·요청 판단 등이 묶여 있으며 위 427호출 평균과 더하지 않습니다. 기존 `token_receive_to_publish_s` p95 0.011ms는 **Python 수신→세션의 `published_s` 시각을 찍는 지점**입니다. 그 시각은 표시 판단과 실제 로그 쓰기보다 앞서므로 전체 후처리·로그 전달·브라우저 지연으로 해석하지 않습니다.
+
+다음 세부 계측에서 분리할 항목은 **특징 계산(DFT/Mel·정규화·패딩), 순수 encoder, 토큰화, 토큰→바이트, UTF-8/표시 판단, 기록 I/O, 최종 JSON 처리**입니다. 먼저 고정 PCM으로 각 시간과 전사/token 동등성을 확인하고 계측 오버헤드를 대조해야 합니다. 이번 확인만으로 전처리 비중·DFT 최적화 이득을 추정하지 않습니다.
+
 ## 청취 도구
 
 `qwen/viewer/`는 기존 연속 실행 기록을 읽어 모델 조건과 독립적으로 라이브·기록 화면을 제공합니다. `runs.py`는 등록한 manifest의 해시로 원음을 재구성하고 기존 replay/thermal-run을 실행합니다. `analysis.py`는 원음별 지연 정의를 공유하며 웹 서버·추론에 의존하지 않습니다. `web/`은 음원 재생과 표시만 담당합니다. 선택 시작 gate는 입력 생산자 준비 뒤 열리며, 기존 평가에서는 사용하지 않습니다. 서버는 localhost와 SSH 터널로 접근합니다. [사용법·계측 범위](../guides/listener.md).

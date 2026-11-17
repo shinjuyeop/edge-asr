@@ -38,6 +38,8 @@ WAV 1배속 입력과 **RP5 USB 마이크**로 부분·확정 자막을 확인�
 
 [프로파일링 그래프 3장](results/summaries/optimization/profile-visuals-20261117.md)에서 **단계별 추론 시간·첫 자막 대기 경로·encoder/decode 내부 연산**을 볼 수 있습니다. 11월 16일 저장된 측정값을 그린 자료이며 합성곱 최적화 이후의 새 계측은 아닙니다.
 
+[전처리·추론·후처리 흐름](docs/reference/architecture.md#q8-전처리추론후처리)에는 VAD 보정, 음성 특징 추출, 텍스트 토큰화, 글자 복원과 자막 표시를 구분했습니다. 현재 encoder 시간에는 DFT/Mel 전처리도 포함됩니다.
+
 후속 [짧은 첫 결과 보호·100개 비교](results/summaries/optimization/realtime-short-followup-20261116.md)는 최종 전사·CER 11.12%·실패/드롭 0을 유지했지만 첫 4자 p95 6.60→6.70초·공백 p95 4.83→5.17초로 개선되지 않아 보호 기본은 끔으로 유지했습니다.
 
 최신 [Q8 GEMV 연산 선별](results/summaries/optimization/decode-q8-20261116.md)은 합성 72조건의 비트 일치·실제 36호출의 전사/token 동등성을 확인했습니다. 정수 누적을 분리해도 두 교차 구간의 decode 감소가 0.001%·0.414%여서 적용하지 않았습니다.

@@ -4,6 +4,8 @@
 
 원본은 [Q8 재프로파일링 보고서](reprofile-q8-20261116.md)와 [측정 JSON](reprofile-q8-20261116.json)입니다. 연속 입력은 두 조건 중 `budget300`만 사용했습니다. Q8 text/audio·생성 2T/음성·prefill 3T·첫 요청 0.6초·부분 예산 3초·확정 5초·고정 text prefix KV 조건입니다.
 
+계측 이름의 범위는 [Q8 전처리·추론·후처리](../../../docs/reference/architecture.md#q8-전처리추론후처리)에 정리했습니다. 첫 그래프의 `audio encoder`에는 지연 계산한 DFT/Mel 특징 추출도 포함됩니다. `preprocess_s`만으로 전체 음성 전처리 비용을 판단하지 않습니다. 기존 측정값과 그림의 수치는 변경하지 않았습니다.
+
 ## 1. 추론 시간: decode와 encoder가 크다
 
 ![Q8 단계별 누적 시간과 고정 PCM 호출 평균](profile-q8-20261117-cost.svg)
