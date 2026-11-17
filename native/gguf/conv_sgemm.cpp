@@ -24,7 +24,7 @@ std::atomic<int> mode{0}, active{0};
 struct Totals {
     std::atomic<uint64_t> calls{0}, accepted{0}, cpu_ns{0}, wall_ns{0};
 };
-constexpr int64_t shapes[] = {800, 1600, 2400, 3200, 4000, 208, 416, 624, 832, 1040}; // 1~5청크
+constexpr int64_t shapes[] = {800, 1600, 2400, 3200, 4000, 4800, 208, 416, 624, 832, 1040, 1248}; // 1~6청크
 constexpr int shape_count = sizeof(shapes) / sizeof(shapes[0]);
 Totals totals[shape_count][3];
 std::atomic<uint64_t> other{0};

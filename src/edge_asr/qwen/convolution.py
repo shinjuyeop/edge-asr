@@ -13,7 +13,7 @@ class ConvolutionTile:
         path = resolve_path(manifest, root)
         self.build = json.loads(path.read_text())
         if (
-            self.build.get("feature") != "conv_tile4_1to5_v1"
+            self.build.get("feature") not in ("conv_tile4_1to5_v1", "conv_tile4_1to6_v1")
             or self.build.get("upstream_commit") != llama_commit
         ):
             raise ValueError("합성곱 후보의 기능·upstream 커밋이 다릅니다.")

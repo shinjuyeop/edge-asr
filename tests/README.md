@@ -38,4 +38,4 @@ GGUF의 선택적 C++ 문법 검사에는 `EDGE_ASR_LLAMA_SOURCE`를 고정 upst
 
 `qwen/test_q8_gemv.py`는 모델 없는 ELF 라이브러리로 선택 Q8 GEMV의 기본 전달·미지원 모드 거부·실행 중 초기화 거부·호출 집계를 확인합니다. ARM 수치 동등성이나 실제 추론 성능은 보장하지 않으며 RP5에서 별도로 검사합니다.
 
-`qwen/test_convolution.py`는 선택 합성곱 자산 해시·preload 누락/혼합·미로드·호출 수락 실패를 검사합니다. 어댑터는 성공과 native 실패 모두 선택 경로 기록을 보존합니다. `test_conv_sgemm.py`의 Host ELF 검사는 1~5청크 모의 shape·기본 전달·호출 중 초기화 거부를 다루며 실제 FP16 동등성은 RP5 별도 실행에서 확인합니다.
+`qwen/test_convolution.py`는 선택 합성곱 자산 해시·preload 누락/혼합·미로드·호출 수락 실패를 검사합니다. 어댑터는 성공과 native 실패 모두 선택 경로 기록을 보존합니다. `test_conv_sgemm.py`의 Host ELF 검사는 1~6청크 모의 shape·기본 전달·호출 중 초기화 거부를 다루며 실제 FP16 동등성은 RP5 별도 실행에서 확인합니다.

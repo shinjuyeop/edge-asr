@@ -114,10 +114,10 @@ e=ctypes.CDLL(sys.argv[1]);e.drive.restype=ctypes.c_float
 p=ctypes.CDLL(None);p.edge_conv_result.restype=ctypes.c_char_p
 for mode,extra in [(0,0),(1,6),(2,4),(0,0)]:
  assert p.edge_conv_begin(mode)==0
- for m in [800,1600,2400,3200,4000,208,416,624,832,1040]:assert e.drive(m,1)==3*m+3+3*extra
+ for m in [800,1600,2400,3200,4000,4800,208,416,624,832,1040,1248]:assert e.drive(m,1)==3*m+3+3*extra
  assert e.drive(16,1)==51 and e.drive(800,0)==2403
  r=json.loads(p.edge_conv_result());assert r['mode']==mode and r['other_forwarded']==6
- assert len(r['groups'])==30
+ assert len(r['groups'])==36
  for g in r['groups']:assert g['calls']==g['accepted']==1 and g['cpu_ns']>0 and g['wall_ns']>0
  for invalid in [-1,3]:assert p.edge_conv_begin(invalid)==-1
  assert json.loads(p.edge_conv_result())==r
