@@ -6,7 +6,7 @@ export function continuousCaption(events) {
     const old=segments.get(e.segment_id);
     if(old?.type==='result'&&old.kind==='final')continue;
     if(old&&(e.job_id<old.job_id||(e.job_id===old.job_id&&e.type==='token'&&(old.type==='result'||e.token_index<=old.token_index))))continue;
-    if(e.kind==='partial'&&e.status==='failed')continue;
+    if(e.kind==='partial'&&!['success','provisional'].includes(e.status))continue;
     segments.set(e.segment_id,e);
   }
   const rows=[...segments.values()].sort((a,b)=>a.segment_id-b.segment_id);

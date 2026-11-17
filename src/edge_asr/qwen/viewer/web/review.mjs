@@ -3,7 +3,7 @@ export function sourceReview(sources, events, index) {
   const source = sources[index];
   if (!source) return null;
   const relevant = events.filter(e =>
-    e.start_frame < source.end && e.end_frame > source.start &&
+    !e.stale_revision && e.start_frame < source.end && e.end_frame > source.start &&
     (e.type === 'token' || e.type === 'result'));
   const finals = relevant.filter(e => e.type === 'result' && e.kind === 'final')
     .sort((a, b) => a.start_frame - b.start_frame);

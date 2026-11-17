@@ -13,6 +13,9 @@ test('next audio is excluded while delayed final and suppressed final remain rev
  assert.equal(r.audioEnd,2);assert.equal(r.end,3.2);assert.equal(r.events.length,2);
  assert.equal(reviewTranscript(r),'첫 문장');assert.equal(r.crossesBoundary,false);
  assert.equal(JSON.stringify({sources,events}),copy);
+ const stale=event(99,0,32000,9,'오래된 확정',{stale_revision:true});
+ const clean=sourceReview(sources,[...events,stale],0);
+ assert.equal(reviewTranscript(clean),reviewTranscript(r));assert.equal(clean.end,r.end);
 });
 test('cross-source results are preserved whole and failed/absent finals are explicit',()=>{
  const r=sourceReview(sources,[event(4,16000,40000,4,'경계를 넘은 전사'),event(5,0,1000,1,null,{status:'failed'})],0);
@@ -48,7 +51,7 @@ test('continuous captions keep completed context, accept corrections and reject 
  const token=(job,index,text,extra={})=>event(job,0,32000,index/10,text,{segment_id:0,type:'token',kind:'partial',status:'provisional',token_index:index,...extra});
  const rows=[token(1,1,'한국'),token(1,2,'한글'),token(1,3,'한')];
  assert.equal(continuousCaption(rows).text,'한');
- rows.push(token(2,1,'한국어'),token(1,4,'낡은 문자'),event(3,0,32000,3,null,{segment_id:0,kind:'partial',status:'failed'}));
+ rows.push(token(2,1,'한국어'),token(1,4,'낡은 문자'),event(3,0,32000,3,null,{segment_id:0,kind:'partial',status:'failed'}),event(3,0,32000,3.1,null,{segment_id:0,kind:'partial',status:'cancelled'}));
  assert.equal(continuousCaption(rows).text,'한국어');
  rows.push(event(4,0,32000,4,'첫 확정',{segment_id:0}),token(5,1,'지나간 토큰'));
  assert.equal(continuousCaption(rows).text,'첫 확정');
