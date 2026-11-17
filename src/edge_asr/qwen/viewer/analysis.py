@@ -63,14 +63,19 @@ def source_metrics(sources, events):
             for e in events
             if e.get("start_frame", 0) < source["end"] and e.get("end_frame", 0) > source["start"]
         ]
-        shown = [
+        observed = [
             e
             for e in overlaps
             if visible(e)
-            and results.get(e["job_id"], {}).get("status") == "success"
             and sum(e["start_frame"] < s["end"] and e["end_frame"] > s["start"] for s in sources)
             == 1
         ]
+        shown = [e for e in observed if results.get(e["job_id"], {}).get("status") == "success"]
+        observed_first = min((e["published_s"] for e in observed), default=None)
+        observed_four = min(
+            (e["published_s"] for e in observed if sum(c.isalnum() for c in e["hypothesis"]) >= 4),
+            default=None,
+        )
         first = min(shown, key=lambda e: e["published_s"], default=None)
         four = min(
             (e for e in shown if sum(c.isalnum() for c in e["hypothesis"]) >= 4),
@@ -89,11 +94,29 @@ def source_metrics(sources, events):
                 gaps.append(at - previous_s)
                 previous_s, lengths[segment] = at, length
         gaps.append(end_s - previous_s)
+        changed, content_gaps = {}, []
+        last_change = source["start"] / 16000
+        for e in sorted(observed, key=lambda e: e["published_s"]):
+            if last_change <= e["published_s"] <= end_s and e["hypothesis"] != changed.get(
+                e["segment_id"]
+            ):
+                content_gaps.append(e["published_s"] - last_change)
+                last_change = e["published_s"]
+                changed[e["segment_id"]] = e["hypothesis"]
+        content_gaps.append(end_s - last_change)
         rows.append(
             {
                 **source,
                 "first_s": first["published_s"] - source["start"] / 16000 if first else None,
                 "first4_s": four["published_s"] - source["start"] / 16000 if four else None,
+                "observed_first_s": observed_first - source["start"] / 16000
+                if observed_first is not None
+                else None,
+                "observed_first4_s": observed_four - source["start"] / 16000
+                if observed_four is not None
+                else None,
+                "max_content_gap_s": max(content_gaps),
+                "content_updates_during_input": len(content_gaps) - 1,
                 "max_growth_gap_s": max(gaps),
                 "growth_updates_during_input": len(gaps) - 1,
                 "file_end_s": max(e["published_s"] for e in finals) - source["end"] / 16000
@@ -118,7 +141,15 @@ def source_metrics(sources, events):
         "rows": rows,
         **{
             k: distribution([r[k] for r in rows if r[k] is not None])
-            for k in ("first_s", "first4_s", "file_end_s", "max_growth_gap_s")
+            for k in (
+                "first_s",
+                "first4_s",
+                "file_end_s",
+                "max_growth_gap_s",
+                "observed_first_s",
+                "observed_first4_s",
+                "max_content_gap_s",
+            )
         },
     }
 

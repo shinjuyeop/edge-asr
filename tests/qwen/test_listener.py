@@ -145,6 +145,28 @@ class ListenerTests(unittest.TestCase):
         self.assertEqual(result["rows"][0]["first_s"], 0.3)
         self.assertEqual(result["rows"][0]["first4_s"], 0.8)
 
+    def test_observed_changes_include_cancelled_tokens_without_changing_legacy_firsts(self):
+        source = {"id": "one", "start": 0, "end": 48000}
+        rows = [
+            event(0, 0, 16000, at, text, type="token", kind="partial", status="provisional")
+            for at, text in [(0.5, "한국어다"), (0.6, "한국어다"), (0.8, "한글이다"), (1.0, "한글")]
+        ]
+        rows += [
+            {
+                **event(0, 0, 16000, 1.1, None, kind="partial", status="cancelled"),
+                "displayed": False,
+            },
+            event(1, 0, 48000, 3.5, "최종 자막"),
+        ]
+        for row in rows:
+            row["segment_id"] = 0
+        result = source_metrics([source], rows)["rows"][0]
+        self.assertEqual(result["first_s"], 3.5)
+        self.assertEqual(result["observed_first_s"], 0.5)
+        self.assertEqual(result["observed_first4_s"], 0.5)
+        self.assertEqual(result["content_updates_during_input"], 3)
+        self.assertEqual(result["max_content_gap_s"], 2.0)
+
     def test_partial_line_is_read_once_after_completion(self):
         row = event(0, 0, 3200, 0.3, "가나다라")
         raw = json.dumps(row).encode()
