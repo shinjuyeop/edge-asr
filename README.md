@@ -40,7 +40,9 @@ WAV 1배속 입력과 **RP5 USB 마이크**로 부분·확정 자막을 확인�
 
 최신 [Q8 GEMV 연산 선별](results/summaries/optimization/decode-q8-20261116.md)은 합성 72조건의 비트 일치·실제 36호출의 전사/token 동등성을 확인했습니다. 정수 누적을 분리해도 두 교차 구간의 decode 감소가 0.001%·0.414%여서 적용하지 않았습니다.
 
-후속 [Q8 CPU·캐시 진단](results/summaries/optimization/pmu-q8-20261117.md)은 실제36호출 전사/token을 유지하고 작업자 계산량 약50:50·backend stall/cycle 약81%를 확인했습니다. 메모리 대역폭 병목을 확정한 것은 아니며, **다음은 가중치 사전 읽기(prefetch)의 작은 선별, 이득이 작으면 encoder 비용 감소**입니다. 운영 기본은 유지합니다.
+후속 [Q8 CPU·캐시 진단](results/summaries/optimization/pmu-q8-20261117.md)은 실제36호출 전사/token을 유지하고 작업자 계산량 약50:50·backend stall/cycle 약81%를 확인했습니다. 메모리 대역폭 병목을 확정한 것은 아니며 가중치 사전 읽기(prefetch)를 후속 후보로 정했습니다.
+
+최신 [Q8 prefetch 선별](results/summaries/optimization/prefetch-q8-20261117.md)은 합성84조건과 실제60호출의 출력 동등성을 유지했지만, 두 거리 모두 처리 시간이 줄지 않아 적용하지 않았습니다. **다음은 음성 encoder의 FP16 합성곱·투영 비용 감소**이며 운영 기본은 유지합니다.
 
 문제 발견과 선택의 흐름은 [ASR 최적화 과정](docs/research/optimization_history.md), 현재 채택한 구성과 최신 결과는 [현재 상태](docs/status.md)에 정리했습니다. [자막 비교 영상](results/summaries/optimization/realtime-video-20261111.md)은 저장된 로그의 동기 재생 자료입니다.
 

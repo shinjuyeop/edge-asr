@@ -120,3 +120,7 @@ native ORT 버전 확인이 필요할 때만 `env --probe-runtime`을 사용합�
 ## Q8 GEMV 선택 실험 — 2026-11-16
 
 `runtimes/qwen3-opt/decode-q8-20261116-02/libedge_q8_gemv.so`를 별도 빌드했습니다. 원래 Q8 엔진의 `-O3`·Cortex-A76 ISA·미사용 함수 경고 옵션을 사용하고 실험 자식에만 preload했습니다. 기존 엔진·가중치·가상환경은 유지합니다. 합성 커널72조건·실제36호출 전사/token 동등성은 통과했지만 속도 선별에 미달해 운영 기본에는 연결하지 않습니다. 첫 `-01` 빌드 경고 실패도 보존합니다. [소스·빌드·측정 기록](../../results/summaries/optimization/decode-q8-20261116.md).
+
+## Q8 prefetch 선택 빌드 — 2026-11-17
+
+`runtimes/qwen3-opt/prefetch-q8-20261117-01/libedge_q8_gemv.so`를 별도 빌드했습니다. 기존 엔진의 O3·Cortex-A76 ISA를 사용하고 원래 함수/clone/prefetch4/8블록을 같은 프로세스에서 대조했습니다. 합성84조건·실제60호출의 출력 동등성은 유지했지만 속도 선별에 미달해 기본에는 연결하지 않습니다. 기존 패키지·모델·과거 빌드는 보존합니다. [빌드 해시·실측 기록](../../results/summaries/optimization/prefetch-q8-20261117.md).

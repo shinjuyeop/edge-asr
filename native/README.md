@@ -96,3 +96,5 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 같은 [gguf/q8_gemv.cpp](gguf/q8_gemv.cpp)의 계산 템플릿을 재사용합니다. 기존 `edge_q8_gemv_begin(0/1)`은 원래 함수/정수 누적 분리로 유지하고, 새 `edge_q8_gemv_prefetch_begin(0/4/8)`은 원래 정수 누적 순서에 사전 읽기0/4/8 packed 블록을 지정합니다. 한 블록은136바이트로, 거리0은 재컴파일된 무-prefetch 대조입니다. `edge_q8_gemv_mode()`는 실제 모드0/1/2/3/4를 반환합니다. 지원되지 않는 거리·ARM ISA·실행 중 전환은 거부하고 기존 값/집계를 보존합니다.
 
 미래 블록이 호출자의 가중치 범위 안에 있을 때만 주소0/64/128바이트에 읽기·locality3 힌트를 넣습니다. 계산 순서·가중치 배치·GEMM·스레드는 바꾸지 않습니다. 새 빌드/실험 자식에만 연결하며 공유 설정과 과거 바이너리는 보존합니다. [고정 PCM 선별 조건](../docs/research/qwen_realtime.md#q8-가중치-prefetch--2026-11-17-사전-조건).
+
+[RP5 prefetch 선별](../results/summaries/optimization/prefetch-q8-20261117.md)에서 합성84조건의336비교와 실제60호출 전사/token 동등성을 확인했습니다. 두 거리 모두 원래/무-prefetch 대조 대비 속도 기준에 미달해 운영 기본에는 연결하지 않습니다.

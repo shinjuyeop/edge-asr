@@ -1,0 +1,1478 @@
+{
+  "source_commit": "49cf10092ebdda22c258af0c97cb4be0b502f962",
+  "raw_path": "results/optimization/opt3/prefetch-q8-20261117-01",
+  "build": {
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-O3",
+      "-DNDEBUG",
+      "-fPIC",
+      "-shared",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wno-unused-function",
+      "-mcpu=cortex-a76+crc+crypto+dotprod+noi8mm+nosve+nosme",
+      "-U__ARM_FEATURE_MATMUL_INT8",
+      "-U__ARM_FEATURE_SVE",
+      "-U__ARM_FEATURE_SME",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/src",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/src/ggml-cpu",
+      "/home/deepet/projects/edge-asr/native/gguf/q8_gemv.cpp",
+      "-ldl",
+      "-o",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefetch-q8-20261117-01/libedge_q8_gemv.so"
+    ],
+    "original_repack_flags": "-O3 -DNDEBUG -std=gnu++17 -fPIC -Wmissing-declarations -Wmissing-noreturn -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wno-array-bounds -Wextra-semi -U__ARM_FEATURE_MATMUL_INT8 -U__ARM_FEATURE_SVE -U__ARM_FEATURE_SME -mcpu=cortex-a76+crc+crypto+dotprod+noi8mm+nosve+nosme -fopenmp",
+    "source_commit": "49cf10092ebdda22c258af0c97cb4be0b502f962",
+    "source_sha256": "135830ebb2b86df004a4c36982c744a22ae04fb4ea465fe1ed2a6299d982c409",
+    "upstream_repack_sha256": "eb7f06d503adec539f44c7899a3588fcc94c319f25eb1a5f67aeee63aa1837c2",
+    "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "library_sha256": "f70d73cec91b1f0d08ddc7892b56a7785f258cd4288f9865c991a6f7ebdd5a35",
+    "original_cpu_sha256": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746"
+  },
+  "model_files": {
+    "Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+    },
+    "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+    },
+    "runtime_library": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+      "sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf"
+    },
+    "runtime_manifest": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+      "sha256": "a7fa6d9d6ffab5b5a0f7f98e3dc94cd7d751fe503a16f214936b5ff32fd3d113"
+    },
+    "experimental_kernel": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefetch-q8-20261117-01/libedge_q8_gemv.so",
+      "sha256": "f70d73cec91b1f0d08ddc7892b56a7785f258cd4288f9865c991a6f7ebdd5a35"
+    },
+    "experimental_build": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefetch-q8-20261117-01/build.json",
+      "sha256": "3695a0d81bdcccaa617c9f30bb4e5a15eb595a55a56d91eb8f7f0166aafdbc7f"
+    }
+  },
+  "plan": {
+    "modes_by_round": [
+      "stock",
+      "clone",
+      "pf4",
+      "pf8",
+      "stock",
+      "clone",
+      "pf4",
+      "pf8",
+      "pf8",
+      "pf4",
+      "clone",
+      "stock",
+      "pf8",
+      "pf4",
+      "clone",
+      "stock",
+      "stock",
+      "clone",
+      "pf4",
+      "pf8"
+    ],
+    "warmup_rounds": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "measured_blocks": [
+      [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      [
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ]
+    ],
+    "pause_s": 2,
+    "prefetch_blocks": {
+      "clone": 0,
+      "pf4": 4,
+      "pf8": 8
+    },
+    "native_modes": {
+      "stock": 0,
+      "clone": 2,
+      "pf4": 3,
+      "pf8": 4
+    },
+    "scope": "고정 PCM 선별; 연속 지연·CER 미측정"
+  },
+  "synthetic_cases": 84,
+  "bit_equal_comparisons": 336,
+  "all_60_transcripts_and_tokens_equal_reference": true,
+  "same_measured_kernel_calls_per_pcm": true,
+  "failures": 0,
+  "by_kind": {
+    "initial": {
+      "stock": {
+        "calls": 4,
+        "native_elapsed_s": {
+          "sum": 1.5898090750000002,
+          "mean": 0.39745226875,
+          "min": 0.396766708,
+          "max": 0.398755913
+        },
+        "token_decode_s": {
+          "sum": 0.221848069,
+          "mean": 0.055462017249999995,
+          "min": 0.055280341,
+          "max": 0.05577514
+        },
+        "audio_encode_s": {
+          "sum": 0.638655894,
+          "mean": 0.1596639735,
+          "min": 0.15926671,
+          "max": 0.159841142
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.36852964899999996,
+          "mean": 0.09213241225,
+          "min": 0.091824798,
+          "max": 0.092343468
+        },
+        "suffix_eval_s": {
+          "sum": 0.354564361,
+          "mean": 0.08864109025,
+          "min": 0.088134178,
+          "max": 0.089413114
+        },
+        "first_generated_token_s": {
+          "sum": 1.365370986,
+          "mean": 0.3413427465,
+          "min": 0.340616251,
+          "max": 0.342333231
+        },
+        "rss_max_mib": 1662.859375,
+        "process_cpu_mean_s": 1.1285336939999944,
+        "temperature_c": {
+          "min": 61.15,
+          "max": 69.95,
+          "mean": 66.5675
+        },
+        "kernel_calls": {
+          "forwarded_calls": 25024,
+          "replaced_calls": 0
+        }
+      },
+      "clone": {
+        "calls": 4,
+        "native_elapsed_s": {
+          "sum": 1.595504061,
+          "mean": 0.39887601525,
+          "min": 0.398074809,
+          "max": 0.401006797
+        },
+        "token_decode_s": {
+          "sum": 0.22162675199999998,
+          "mean": 0.055406688,
+          "min": 0.055121449,
+          "max": 0.055709326
+        },
+        "audio_encode_s": {
+          "sum": 0.643886174,
+          "mean": 0.1609715435,
+          "min": 0.159846997,
+          "max": 0.163757688
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.36820716400000003,
+          "mean": 0.092051791,
+          "min": 0.091722279,
+          "max": 0.092238877
+        },
+        "suffix_eval_s": {
+          "sum": 0.35552212699999997,
+          "mean": 0.08888053175,
+          "min": 0.088536089,
+          "max": 0.089515466
+        },
+        "first_generated_token_s": {
+          "sum": 1.371232863,
+          "mean": 0.34280821575000003,
+          "min": 0.341794344,
+          "max": 0.34523088
+        },
+        "rss_max_mib": 1662.859375,
+        "process_cpu_mean_s": 1.1310474590000013,
+        "temperature_c": {
+          "min": 61.15,
+          "max": 69.4,
+          "mean": 66.375
+        },
+        "kernel_calls": {
+          "forwarded_calls": 0,
+          "replaced_calls": 25024
+        }
+      },
+      "pf4": {
+        "calls": 4,
+        "native_elapsed_s": {
+          "sum": 1.5973989840000002,
+          "mean": 0.399349746,
+          "min": 0.398075836,
+          "max": 0.400209621
+        },
+        "token_decode_s": {
+          "sum": 0.22730161,
+          "mean": 0.0568254025,
+          "min": 0.056650703,
+          "max": 0.056938649
+        },
+        "audio_encode_s": {
+          "sum": 0.640130222,
+          "mean": 0.1600325555,
+          "min": 0.15919484,
+          "max": 0.160789961
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.37001391899999997,
+          "mean": 0.09250347975,
+          "min": 0.091647854,
+          "max": 0.093306754
+        },
+        "suffix_eval_s": {
+          "sum": 0.35358670299999995,
+          "mean": 0.08839667575,
+          "min": 0.088210828,
+          "max": 0.088572718
+        },
+        "first_generated_token_s": {
+          "sum": 1.367384187,
+          "mean": 0.34184604675,
+          "min": 0.340478904,
+          "max": 0.342725747
+        },
+        "rss_max_mib": 1662.859375,
+        "process_cpu_mean_s": 1.133362238250001,
+        "temperature_c": {
+          "min": 61.7,
+          "max": 68.85,
+          "mean": 65.85249999999999
+        },
+        "kernel_calls": {
+          "forwarded_calls": 0,
+          "replaced_calls": 25024
+        }
+      },
+      "pf8": {
+        "calls": 4,
+        "native_elapsed_s": {
+          "sum": 1.603606472,
+          "mean": 0.400901618,
+          "min": 0.396965995,
+          "max": 0.404145322
+        },
+        "token_decode_s": {
+          "sum": 0.226939569,
+          "mean": 0.05673489225,
+          "min": 0.055729342,
+          "max": 0.057724507
+        },
+        "audio_encode_s": {
+          "sum": 0.648391707,
+          "mean": 0.16209792675,
+          "min": 0.159816346,
+          "max": 0.164523676
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.36753825300000004,
+          "mean": 0.09188456325,
+          "min": 0.091607613,
+          "max": 0.092278599
+        },
+        "suffix_eval_s": {
+          "sum": 0.35451747,
+          "mean": 0.0886293675,
+          "min": 0.087887993,
+          "max": 0.089942582
+        },
+        "first_generated_token_s": {
+          "sum": 1.3740720690000001,
+          "mean": 0.34351801725,
+          "min": 0.340223903,
+          "max": 0.346105832
+        },
+        "rss_max_mib": 1662.859375,
+        "process_cpu_mean_s": 1.1341959782499984,
+        "temperature_c": {
+          "min": 61.7,
+          "max": 69.95,
+          "mean": 65.94285714285714
+        },
+        "kernel_calls": {
+          "forwarded_calls": 0,
+          "replaced_calls": 25024
+        }
+      }
+    },
+    "followup": {
+      "stock": {
+        "calls": 4,
+        "native_elapsed_s": {
+          "sum": 6.699424583,
+          "mean": 1.67485614575,
+          "min": 1.668980035,
+          "max": 1.681477963
+        },
+        "token_decode_s": {
+          "sum": 3.369729573,
+          "mean": 0.84243239325,
+          "min": 0.840089748,
+          "max": 0.8466193969999999
+        },
+        "audio_encode_s": {
+          "sum": 1.9760577810000002,
+          "mean": 0.49401444525,
+          "min": 0.486017048,
+          "max": 0.500485651
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.9399377630000001,
+          "mean": 0.23498444075,
+          "min": 0.234143011,
+          "max": 0.236195192
+        },
+        "suffix_eval_s": {
+          "sum": 0.36910007899999997,
+          "mean": 0.09227501974999999,
+          "min": 0.092049596,
+          "max": 0.092373061
+        },
+        "first_generated_token_s": {
+          "sum": 3.2899966779999996,
+          "mean": 0.8224991695,
+          "min": 0.814352859,
+          "max": 0.830080226
+        },
+        "rss_max_mib": 1662.859375,
+        "process_cpu_mean_s": 4.153261969749989,
+        "temperature_c": {
+          "min": 58.4,
+          "max": 70.5,
+          "mean": 66.61944444444444
+        },
+        "kernel_calls": {
+          "forwarded_calls": 131808,
+          "replaced_calls": 0
+        }
+      },
+      "clone": {
+        "calls": 4,
+        "native_elapsed_s": {
+          "sum": 6.694596492,
+          "mean": 1.6736491230000001,
+          "min": 1.669489417,
+          "max": 1.679589221
+        },
+        "token_decode_s": {
+          "sum": 3.3608231539999998,
+          "mean": 0.8402057885,
+          "min": 0.8371135970000001,
+          "max": 0.841821451
+        },
+        "audio_encode_s": {
+          "sum": 1.982423496,
+          "mean": 0.495605874,
+          "min": 0.490061654,
+          "max": 0.500223688
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.9391436820000001,
+          "mean": 0.23478592050000002,
+          "min": 0.233701451,
+          "max": 0.235832123
+        },
+        "suffix_eval_s": {
+          "sum": 0.368092054,
+          "mean": 0.0920230135,
+          "min": 0.091540074,
+          "max": 0.092661992
+        },
+        "first_generated_token_s": {
+          "sum": 3.294603824,
+          "mean": 0.823650956,
+          "min": 0.818183316,
+          "max": 0.828049717
+        },
+        "rss_max_mib": 1662.859375,
+        "process_cpu_mean_s": 4.154129007000002,
+        "temperature_c": {
+          "min": 58.95,
+          "max": 69.4,
+          "mean": 66.5125
+        },
+        "kernel_calls": {
+          "forwarded_calls": 0,
+          "replaced_calls": 131808
+        }
+      },
+      "pf4": {
+        "calls": 4,
+        "native_elapsed_s": {
+          "sum": 6.832710840000001,
+          "mean": 1.70817771,
+          "min": 1.696374749,
+          "max": 1.733067213
+        },
+        "token_decode_s": {
+          "sum": 3.4500595799999996,
+          "mean": 0.862514895,
+          "min": 0.8595274770000001,
+          "max": 0.8678267660000001
+        },
+        "audio_encode_s": {
+          "sum": 1.994666327,
+          "mean": 0.49866658175,
+          "min": 0.496668389,
+          "max": 0.50043156
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.959521984,
+          "mean": 0.239880496,
+          "min": 0.235207136,
+          "max": 0.252264891
+        },
+        "suffix_eval_s": {
+          "sum": 0.384539046,
+          "mean": 0.0961347615,
+          "min": 0.091767504,
+          "max": 0.105213733
+        },
+        "first_generated_token_s": {
+          "sum": 3.343792137,
+          "mean": 0.83594803425,
+          "min": 0.826647519,
+          "max": 0.855502024
+        },
+        "rss_max_mib": 1662.859375,
+        "process_cpu_mean_s": 4.217143255750003,
+        "temperature_c": {
+          "min": 58.4,
+          "max": 69.95,
+          "mean": 66.5068493150685
+        },
+        "kernel_calls": {
+          "forwarded_calls": 0,
+          "replaced_calls": 131808
+        }
+      },
+      "pf8": {
+        "calls": 4,
+        "native_elapsed_s": {
+          "sum": 6.7270419210000005,
+          "mean": 1.68176048025,
+          "min": 1.672248355,
+          "max": 1.687783582
+        },
+        "token_decode_s": {
+          "sum": 3.390094852,
+          "mean": 0.847523713,
+          "min": 0.8456000959999999,
+          "max": 0.849028415
+        },
+        "audio_encode_s": {
+          "sum": 1.9857323340000002,
+          "mean": 0.49643308350000004,
+          "min": 0.488636497,
+          "max": 0.500902029
+        },
+        "audio_embedding_eval_s": {
+          "sum": 0.93789921,
+          "mean": 0.2344748025,
+          "min": 0.233987421,
+          "max": 0.234890162
+        },
+        "suffix_eval_s": {
+          "sum": 0.369497972,
+          "mean": 0.092374493,
+          "min": 0.091785874,
+          "max": 0.093232996
+        },
+        "first_generated_token_s": {
+          "sum": 3.297980238,
+          "mean": 0.8244950595,
+          "min": 0.817082646,
+          "max": 0.829231936
+        },
+        "rss_max_mib": 1662.859375,
+        "process_cpu_mean_s": 4.172330871249997,
+        "temperature_c": {
+          "min": 57.85,
+          "max": 69.95,
+          "mean": 65.93958333333333
+        },
+        "kernel_calls": {
+          "forwarded_calls": 0,
+          "replaced_calls": 131808
+        }
+      }
+    },
+    "final": {
+      "stock": {
+        "calls": 4,
+        "native_elapsed_s": {
+          "sum": 12.899565044000001,
+          "mean": 3.224891261,
+          "min": 3.223945663,
+          "max": 3.226012985
+        },
+        "token_decode_s": {
+          "sum": 7.571634458999999,
+          "mean": 1.89290861475,
+          "min": 1.8909452530000004,
+          "max": 1.8941484809999998
+        },
+        "audio_encode_s": {
+          "sum": 3.206795459,
+          "mean": 0.80169886475,
+          "min": 0.799563301,
+          "max": 0.805517858
+        },
+        "audio_embedding_eval_s": {
+          "sum": 1.642571893,
+          "mean": 0.41064297325,
+          "min": 0.409633138,
+          "max": 0.411404155
+        },
+        "suffix_eval_s": {
+          "sum": 0.38692734300000003,
+          "mean": 0.09673183575,
+          "min": 0.095406159,
+          "max": 0.099751194
+        },
+        "first_generated_token_s": {
+          "sum": 5.241947552,
+          "mean": 1.310486888,
+          "min": 1.308387039,
+          "max": 1.312720522
+        },
+        "rss_max_mib": 1662.859375,
+        "process_cpu_mean_s": 7.726321732499999,
+        "temperature_c": {
+          "min": 59.5,
+          "max": 72.15,
+          "mean": 68.87083333333334
+        },
+        "kernel_calls": {
+          "forwarded_calls": 226752,
+          "replaced_calls": 0
+        }
+      },
+      "clone": {
+        "calls": 4,
+        "native_elapsed_s": {
+          "sum": 12.968162557,
+          "mean": 3.24204063925,
+          "min": 3.228042481,
+          "max": 3.270867466
+        },
+        "token_decode_s": {
+          "sum": 7.62789117,
+          "mean": 1.9069727924999997,
+          "min": 1.8956969669999997,
+          "max": 1.9400126119999999
+        },
+        "audio_encode_s": {
+          "sum": 3.2066977750000003,
+          "mean": 0.80167444375,
+          "min": 0.799252474,
+          "max": 0.805273433
+        },
+        "audio_embedding_eval_s": {
+          "sum": 1.6561281609999998,
+          "mean": 0.41403204025,
+          "min": 0.410599365,
+          "max": 0.422227484
+        },
+        "suffix_eval_s": {
+          "sum": 0.385997613,
+          "mean": 0.09649940325,
+          "min": 0.095553031,
+          "max": 0.098040196
+        },
+        "first_generated_token_s": {
+          "sum": 5.254340571,
+          "mean": 1.31358514275,
+          "min": 1.30926686,
+          "max": 1.319124995
+        },
+        "rss_max_mib": 1662.859375,
+        "process_cpu_mean_s": 7.754477446000003,
+        "temperature_c": {
+          "min": 58.95,
+          "max": 71.05,
+          "mean": 68.65992647058823
+        },
+        "kernel_calls": {
+          "forwarded_calls": 0,
+          "replaced_calls": 226752
+        }
+      },
+      "pf4": {
+        "calls": 4,
+        "native_elapsed_s": {
+          "sum": 13.071224088000001,
+          "mean": 3.267806022,
+          "min": 3.264386579,
+          "max": 3.271208424
+        },
+        "token_decode_s": {
+          "sum": 7.7492698440000005,
+          "mean": 1.9373174610000001,
+          "min": 1.9352504100000003,
+          "max": 1.9388215660000006
+        },
+        "audio_encode_s": {
+          "sum": 3.199316885,
+          "mean": 0.79982922125,
+          "min": 0.798738626,
+          "max": 0.801474921
+        },
+        "audio_embedding_eval_s": {
+          "sum": 1.64908996,
+          "mean": 0.41227249,
+          "min": 0.411324438,
+          "max": 0.414090335
+        },
+        "suffix_eval_s": {
+          "sum": 0.382862515,
+          "mean": 0.09571562875,
+          "min": 0.095038713,
+          "max": 0.096134442
+        },
+        "first_generated_token_s": {
+          "sum": 5.236783105000001,
+          "mean": 1.30919577625,
+          "min": 1.307278038,
+          "max": 1.311332206
+        },
+        "rss_max_mib": 1662.859375,
+        "process_cpu_mean_s": 7.810620665249996,
+        "temperature_c": {
+          "min": 60.05,
+          "max": 72.15,
+          "mean": 68.75698529411764
+        },
+        "kernel_calls": {
+          "forwarded_calls": 0,
+          "replaced_calls": 226752
+        }
+      },
+      "pf8": {
+        "calls": 4,
+        "native_elapsed_s": {
+          "sum": 12.966307043,
+          "mean": 3.24157676075,
+          "min": 3.239501381,
+          "max": 3.242851408
+        },
+        "token_decode_s": {
+          "sum": 7.646033241,
+          "mean": 1.9115083102500001,
+          "min": 1.9106637320000002,
+          "max": 1.9123413870000001
+        },
+        "audio_encode_s": {
+          "sum": 3.2032068220000003,
+          "mean": 0.8008017055000001,
+          "min": 0.800298056,
+          "max": 0.801298203
+        },
+        "audio_embedding_eval_s": {
+          "sum": 1.644717725,
+          "mean": 0.41117943125,
+          "min": 0.410842876,
+          "max": 0.411618594
+        },
+        "suffix_eval_s": {
+          "sum": 0.38091948099999995,
+          "mean": 0.09522987025,
+          "min": 0.094580672,
+          "max": 0.095724624
+        },
+        "first_generated_token_s": {
+          "sum": 5.234409272000001,
+          "mean": 1.3086023180000002,
+          "min": 1.307097318,
+          "max": 1.309442859
+        },
+        "rss_max_mib": 1662.859375,
+        "process_cpu_mean_s": 7.760597694999998,
+        "temperature_c": {
+          "min": 59.5,
+          "max": 73.8,
+          "mean": 68.42536764705882
+        },
+        "kernel_calls": {
+          "forwarded_calls": 0,
+          "replaced_calls": 226752
+        }
+      }
+    }
+  },
+  "by_label": {
+    "stock": {
+      "calls": 12,
+      "native_elapsed_s": {
+        "sum": 21.188798702,
+        "mean": 1.7657332251666666,
+        "min": 0.396766708,
+        "max": 3.226012985
+      },
+      "token_decode_s": {
+        "sum": 11.163212101000001,
+        "mean": 0.9302676750833333,
+        "min": 0.055280341,
+        "max": 1.8941484809999998
+      },
+      "audio_encode_s": {
+        "sum": 5.821509133999999,
+        "mean": 0.48512576116666667,
+        "min": 0.15926671,
+        "max": 0.805517858
+      },
+      "audio_embedding_eval_s": {
+        "sum": 2.9510393049999997,
+        "mean": 0.24591994208333334,
+        "min": 0.091824798,
+        "max": 0.411404155
+      },
+      "suffix_eval_s": {
+        "sum": 1.110591783,
+        "mean": 0.09254931525,
+        "min": 0.088134178,
+        "max": 0.099751194
+      },
+      "first_generated_token_s": {
+        "sum": 9.897315215999999,
+        "mean": 0.824776268,
+        "min": 0.340616251,
+        "max": 1.312720522
+      },
+      "rss_max_mib": 1662.859375,
+      "process_cpu_mean_s": 4.336039132083328,
+      "temperature_c": {
+        "min": 58.4,
+        "max": 72.15,
+        "mean": 67.94151785714286
+      },
+      "kernel_calls": {
+        "forwarded_calls": 383584,
+        "replaced_calls": 0
+      }
+    },
+    "clone": {
+      "calls": 12,
+      "native_elapsed_s": {
+        "sum": 21.258263109999998,
+        "mean": 1.7715219258333335,
+        "min": 0.398074809,
+        "max": 3.270867466
+      },
+      "token_decode_s": {
+        "sum": 11.210341075999999,
+        "mean": 0.9341950896666666,
+        "min": 0.055121449,
+        "max": 1.9400126119999999
+      },
+      "audio_encode_s": {
+        "sum": 5.833007445,
+        "mean": 0.48608395375,
+        "min": 0.159846997,
+        "max": 0.805273433
+      },
+      "audio_embedding_eval_s": {
+        "sum": 2.9634790069999997,
+        "mean": 0.24695658391666667,
+        "min": 0.091722279,
+        "max": 0.422227484
+      },
+      "suffix_eval_s": {
+        "sum": 1.109611794,
+        "mean": 0.0924676495,
+        "min": 0.088536089,
+        "max": 0.098040196
+      },
+      "first_generated_token_s": {
+        "sum": 9.920177257999999,
+        "mean": 0.8266814381666666,
+        "min": 0.341794344,
+        "max": 1.319124995
+      },
+      "rss_max_mib": 1662.859375,
+      "process_cpu_mean_s": 4.346551304000002,
+      "temperature_c": {
+        "min": 58.95,
+        "max": 71.05,
+        "mean": 67.7813596491228
+      },
+      "kernel_calls": {
+        "forwarded_calls": 0,
+        "replaced_calls": 383584
+      }
+    },
+    "pf4": {
+      "calls": 12,
+      "native_elapsed_s": {
+        "sum": 21.501333912,
+        "mean": 1.791777826,
+        "min": 0.398075836,
+        "max": 3.271208424
+      },
+      "token_decode_s": {
+        "sum": 11.426631034,
+        "mean": 0.9522192528333334,
+        "min": 0.056650703,
+        "max": 1.9388215660000006
+      },
+      "audio_encode_s": {
+        "sum": 5.834113434000001,
+        "mean": 0.4861761195,
+        "min": 0.15919484,
+        "max": 0.801474921
+      },
+      "audio_embedding_eval_s": {
+        "sum": 2.9786258630000004,
+        "mean": 0.24821882191666667,
+        "min": 0.091647854,
+        "max": 0.414090335
+      },
+      "suffix_eval_s": {
+        "sum": 1.120988264,
+        "mean": 0.09341568866666666,
+        "min": 0.088210828,
+        "max": 0.105213733
+      },
+      "first_generated_token_s": {
+        "sum": 9.947959428999999,
+        "mean": 0.8289966190833333,
+        "min": 0.340478904,
+        "max": 1.311332206
+      },
+      "rss_max_mib": 1662.859375,
+      "process_cpu_mean_s": 4.387042053083333,
+      "temperature_c": {
+        "min": 58.4,
+        "max": 72.15,
+        "mean": 67.78602620087337
+      },
+      "kernel_calls": {
+        "forwarded_calls": 0,
+        "replaced_calls": 383584
+      }
+    },
+    "pf8": {
+      "calls": 12,
+      "native_elapsed_s": {
+        "sum": 21.296955435999998,
+        "mean": 1.7747462863333334,
+        "min": 0.396965995,
+        "max": 3.242851408
+      },
+      "token_decode_s": {
+        "sum": 11.263067662,
+        "mean": 0.9385889718333333,
+        "min": 0.055729342,
+        "max": 1.9123413870000001
+      },
+      "audio_encode_s": {
+        "sum": 5.837330863,
+        "mean": 0.48644423858333335,
+        "min": 0.159816346,
+        "max": 0.801298203
+      },
+      "audio_embedding_eval_s": {
+        "sum": 2.950155188,
+        "mean": 0.24584626566666667,
+        "min": 0.091607613,
+        "max": 0.411618594
+      },
+      "suffix_eval_s": {
+        "sum": 1.104934923,
+        "mean": 0.09207791025,
+        "min": 0.087887993,
+        "max": 0.095724624
+      },
+      "first_generated_token_s": {
+        "sum": 9.906461579,
+        "mean": 0.8255384649166667,
+        "min": 0.340223903,
+        "max": 1.309442859
+      },
+      "rss_max_mib": 1662.859375,
+      "process_cpu_mean_s": 4.355708181499998,
+      "temperature_c": {
+        "min": 57.85,
+        "max": 73.8,
+        "mean": 67.41615720524017
+      },
+      "kernel_calls": {
+        "forwarded_calls": 0,
+        "replaced_calls": 383584
+      }
+    }
+  },
+  "crossed_blocks": [
+    {
+      "block": 1,
+      "rounds": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "conditions": {
+        "stock": {
+          "calls": 6,
+          "native_elapsed_s": {
+            "sum": 10.585827798,
+            "mean": 1.764304633,
+            "min": 0.397376503,
+            "max": 3.226012985
+          },
+          "token_decode_s": {
+            "sum": 5.586368952999999,
+            "mean": 0.9310614921666666,
+            "min": 0.055280341,
+            "max": 1.8941484809999998
+          },
+          "audio_encode_s": {
+            "sum": 2.8945648209999995,
+            "mean": 0.48242747016666665,
+            "min": 0.159803274,
+            "max": 0.800077529
+          },
+          "audio_embedding_eval_s": {
+            "sum": 1.476580982,
+            "mean": 0.24609683033333332,
+            "min": 0.092178709,
+            "max": 0.411404155
+          },
+          "suffix_eval_s": {
+            "sum": 0.557805592,
+            "mean": 0.09296759866666666,
+            "min": 0.088557703,
+            "max": 0.099751194
+          },
+          "first_generated_token_s": {
+            "sum": 4.936119409,
+            "mean": 0.8226865681666666,
+            "min": 0.341448898,
+            "max": 1.311932352
+          },
+          "rss_max_mib": 1662.859375,
+          "process_cpu_mean_s": 4.334455365333324,
+          "temperature_c": {
+            "min": 58.4,
+            "max": 71.05,
+            "mean": 67.05758928571429
+          },
+          "kernel_calls": {
+            "forwarded_calls": 191792,
+            "replaced_calls": 0
+          }
+        },
+        "clone": {
+          "calls": 6,
+          "native_elapsed_s": {
+            "sum": 10.610265981,
+            "mean": 1.7683776635,
+            "min": 0.398171415,
+            "max": 3.236722407
+          },
+          "token_decode_s": {
+            "sum": 5.586651744999999,
+            "mean": 0.9311086241666666,
+            "min": 0.055662732,
+            "max": 1.8960780369999999
+          },
+          "audio_encode_s": {
+            "sum": 2.9105485339999997,
+            "mean": 0.48509142233333336,
+            "min": 0.159846997,
+            "max": 0.802643866
+          },
+          "audio_embedding_eval_s": {
+            "sum": 1.4884684769999998,
+            "mean": 0.2480780795,
+            "min": 0.092216616,
+            "max": 0.422227484
+          },
+          "suffix_eval_s": {
+            "sum": 0.553835802,
+            "mean": 0.092305967,
+            "min": 0.088647312,
+            "max": 0.095992146
+          },
+          "first_generated_token_s": {
+            "sum": 4.959860903,
+            "mean": 0.8266434838333333,
+            "min": 0.341794344,
+            "max": 1.319124995
+          },
+          "rss_max_mib": 1662.859375,
+          "process_cpu_mean_s": 4.338551585833334,
+          "temperature_c": {
+            "min": 58.95,
+            "max": 71.05,
+            "mean": 67.11798245614035
+          },
+          "kernel_calls": {
+            "forwarded_calls": 0,
+            "replaced_calls": 191792
+          }
+        },
+        "pf4": {
+          "calls": 6,
+          "native_elapsed_s": {
+            "sum": 10.762628992,
+            "mean": 1.7937714986666666,
+            "min": 0.398075836,
+            "max": 3.268246245
+          },
+          "token_decode_s": {
+            "sum": 5.716875967,
+            "mean": 0.9528126611666667,
+            "min": 0.056650703,
+            "max": 1.9388215660000006
+          },
+          "audio_encode_s": {
+            "sum": 2.915635552,
+            "mean": 0.48593925866666665,
+            "min": 0.159404825,
+            "max": 0.801474921
+          },
+          "audio_embedding_eval_s": {
+            "sum": 1.4947279880000002,
+            "mean": 0.24912133133333333,
+            "min": 0.091647854,
+            "max": 0.411962625
+          },
+          "suffix_eval_s": {
+            "sum": 0.564776402,
+            "mean": 0.09412940033333334,
+            "min": 0.088210828,
+            "max": 0.105213733
+          },
+          "first_generated_token_s": {
+            "sum": 4.982301847,
+            "mean": 0.8303836411666666,
+            "min": 0.340478904,
+            "max": 1.310205183
+          },
+          "rss_max_mib": 1662.859375,
+          "process_cpu_mean_s": 4.389245056999999,
+          "temperature_c": {
+            "min": 58.4,
+            "max": 71.6,
+            "mean": 66.86521739130434
+          },
+          "kernel_calls": {
+            "forwarded_calls": 0,
+            "replaced_calls": 191792
+          }
+        },
+        "pf8": {
+          "calls": 6,
+          "native_elapsed_s": {
+            "sum": 10.63319602,
+            "mean": 1.7721993366666668,
+            "min": 0.396965995,
+            "max": 3.242439356
+          },
+          "token_decode_s": {
+            "sum": 5.630150728,
+            "mean": 0.9383584546666667,
+            "min": 0.056093587,
+            "max": 1.9121903290000002
+          },
+          "audio_encode_s": {
+            "sum": 2.905833995,
+            "mean": 0.48430566583333334,
+            "min": 0.159816346,
+            "max": 0.801114972
+          },
+          "audio_embedding_eval_s": {
+            "sum": 1.474219871,
+            "mean": 0.24570331183333333,
+            "min": 0.091607613,
+            "max": 0.411220418
+          },
+          "suffix_eval_s": {
+            "sum": 0.552581626,
+            "mean": 0.09209693766666667,
+            "min": 0.087887993,
+            "max": 0.095151509
+          },
+          "first_generated_token_s": {
+            "sum": 4.9396621000000005,
+            "mean": 0.8232770166666666,
+            "min": 0.340223903,
+            "max": 1.308876465
+          },
+          "rss_max_mib": 1662.859375,
+          "process_cpu_mean_s": 4.349832855833334,
+          "temperature_c": {
+            "min": 57.85,
+            "max": 68.85,
+            "mean": 65.94561403508771
+          },
+          "kernel_calls": {
+            "forwarded_calls": 0,
+            "replaced_calls": 191792
+          }
+        }
+      },
+      "comparisons": {
+        "pf4": {
+          "decode_reduction_vs_stock_fraction": -0.02337275183502041,
+          "native_reduction_vs_stock_fraction": -0.01670168808464867,
+          "decode_reduction_vs_clone_fraction": -0.023379066516716618,
+          "native_reduction_vs_clone_fraction": -0.014359961500761687,
+          "initial_increase_fraction": 0.001790567713800817,
+          "rss_increase_mib": 0.0,
+          "checks": {
+            "decode_vs_stock_at_least_3pct": false,
+            "native_vs_stock_at_least_1pct": false,
+            "initial_increase_at_most_5pct": true,
+            "rss_increase_at_most_32mib": true,
+            "decode_vs_clone_at_least_2pct": false,
+            "native_vs_clone_not_increased": false
+          },
+          "passed": false
+        },
+        "pf8": {
+          "decode_reduction_vs_stock_fraction": -0.007491655447631862,
+          "native_reduction_vs_stock_fraction": -0.004474682840481137,
+          "decode_reduction_vs_clone_fraction": -0.00749787213564157,
+          "native_reduction_vs_clone_fraction": -0.0021611182076926028,
+          "initial_increase_fraction": 0.003061512068866623,
+          "rss_increase_mib": 0.0,
+          "checks": {
+            "decode_vs_stock_at_least_3pct": false,
+            "native_vs_stock_at_least_1pct": false,
+            "initial_increase_at_most_5pct": true,
+            "rss_increase_at_most_32mib": true,
+            "decode_vs_clone_at_least_2pct": false,
+            "native_vs_clone_not_increased": false
+          },
+          "passed": false
+        }
+      }
+    },
+    {
+      "block": 2,
+      "rounds": [
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "conditions": {
+        "stock": {
+          "calls": 6,
+          "native_elapsed_s": {
+            "sum": 10.602970904000001,
+            "mean": 1.7671618173333334,
+            "min": 0.396766708,
+            "max": 3.224970823
+          },
+          "token_decode_s": {
+            "sum": 5.576843148,
+            "mean": 0.929473858,
+            "min": 0.055292821,
+            "max": 1.8937719169999998
+          },
+          "audio_encode_s": {
+            "sum": 2.926944313,
+            "mean": 0.4878240521666667,
+            "min": 0.15926671,
+            "max": 0.805517858
+          },
+          "audio_embedding_eval_s": {
+            "sum": 1.474458323,
+            "mean": 0.24574305383333334,
+            "min": 0.091824798,
+            "max": 0.410318716
+          },
+          "suffix_eval_s": {
+            "sum": 0.552786191,
+            "mean": 0.09213103183333334,
+            "min": 0.088134178,
+            "max": 0.096191812
+          },
+          "first_generated_token_s": {
+            "sum": 4.961195807,
+            "mean": 0.8268659678333333,
+            "min": 0.340616251,
+            "max": 1.312720522
+          },
+          "rss_max_mib": 1662.859375,
+          "process_cpu_mean_s": 4.337622898833331,
+          "temperature_c": {
+            "min": 58.95,
+            "max": 72.15,
+            "mean": 68.82544642857142
+          },
+          "kernel_calls": {
+            "forwarded_calls": 191792,
+            "replaced_calls": 0
+          }
+        },
+        "clone": {
+          "calls": 6,
+          "native_elapsed_s": {
+            "sum": 10.647997129,
+            "mean": 1.7746661881666668,
+            "min": 0.398074809,
+            "max": 3.270867466
+          },
+          "token_decode_s": {
+            "sum": 5.623689331,
+            "mean": 0.9372815551666667,
+            "min": 0.055121449,
+            "max": 1.9400126119999999
+          },
+          "audio_encode_s": {
+            "sum": 2.9224589110000005,
+            "mean": 0.4870764851666667,
+            "min": 0.1601344,
+            "max": 0.805273433
+          },
+          "audio_embedding_eval_s": {
+            "sum": 1.47501053,
+            "mean": 0.24583508833333334,
+            "min": 0.091722279,
+            "max": 0.412078953
+          },
+          "suffix_eval_s": {
+            "sum": 0.5557759919999999,
+            "mean": 0.092629332,
+            "min": 0.088536089,
+            "max": 0.098040196
+          },
+          "first_generated_token_s": {
+            "sum": 4.960316355,
+            "mean": 0.8267193924999999,
+            "min": 0.342292262,
+            "max": 1.315155562
+          },
+          "rss_max_mib": 1662.859375,
+          "process_cpu_mean_s": 4.35455102216667,
+          "temperature_c": {
+            "min": 60.05,
+            "max": 71.05,
+            "mean": 68.44473684210526
+          },
+          "kernel_calls": {
+            "forwarded_calls": 0,
+            "replaced_calls": 191792
+          }
+        },
+        "pf4": {
+          "calls": 6,
+          "native_elapsed_s": {
+            "sum": 10.73870492,
+            "mean": 1.7897841533333334,
+            "min": 0.399631418,
+            "max": 3.271208424
+          },
+          "token_decode_s": {
+            "sum": 5.709755067000001,
+            "mean": 0.9516258445,
+            "min": 0.056833758,
+            "max": 1.9386498939999999
+          },
+          "audio_encode_s": {
+            "sum": 2.9184778820000004,
+            "mean": 0.4864129803333333,
+            "min": 0.15919484,
+            "max": 0.800192183
+          },
+          "audio_embedding_eval_s": {
+            "sum": 1.483897875,
+            "mean": 0.2473163125,
+            "min": 0.092738267,
+            "max": 0.414090335
+          },
+          "suffix_eval_s": {
+            "sum": 0.556211862,
+            "mean": 0.09270197699999999,
+            "min": 0.088282938,
+            "max": 0.096134442
+          },
+          "first_generated_token_s": {
+            "sum": 4.965657582,
+            "mean": 0.8276095969999999,
+            "min": 0.341989357,
+            "max": 1.311332206
+          },
+          "rss_max_mib": 1662.859375,
+          "process_cpu_mean_s": 4.384839049166668,
+          "temperature_c": {
+            "min": 60.6,
+            "max": 72.15,
+            "mean": 68.71491228070175
+          },
+          "kernel_calls": {
+            "forwarded_calls": 0,
+            "replaced_calls": 191792
+          }
+        },
+        "pf8": {
+          "calls": 6,
+          "native_elapsed_s": {
+            "sum": 10.663759416,
+            "mean": 1.777293236,
+            "min": 0.400891365,
+            "max": 3.242851408
+          },
+          "token_decode_s": {
+            "sum": 5.632916934000001,
+            "mean": 0.9388194890000001,
+            "min": 0.055729342,
+            "max": 1.9123413870000001
+          },
+          "audio_encode_s": {
+            "sum": 2.931496868,
+            "mean": 0.48858281133333337,
+            "min": 0.163676278,
+            "max": 0.801298203
+          },
+          "audio_embedding_eval_s": {
+            "sum": 1.4759353170000002,
+            "mean": 0.2459892195,
+            "min": 0.091650758,
+            "max": 0.411618594
+          },
+          "suffix_eval_s": {
+            "sum": 0.552353297,
+            "mean": 0.09205888283333333,
+            "min": 0.088280752,
+            "max": 0.095724624
+          },
+          "first_generated_token_s": {
+            "sum": 4.9667994790000005,
+            "mean": 0.8277999131666667,
+            "min": 0.344511611,
+            "max": 1.309442859
+          },
+          "rss_max_mib": 1662.859375,
+          "process_cpu_mean_s": 4.361583507166661,
+          "temperature_c": {
+            "min": 58.95,
+            "max": 73.8,
+            "mean": 68.87391304347825
+          },
+          "kernel_calls": {
+            "forwarded_calls": 0,
+            "replaced_calls": 191792
+          }
+        }
+      },
+      "comparisons": {
+        "pf4": {
+          "decode_reduction_vs_stock_fraction": -0.023781750200276175,
+          "native_reduction_vs_stock_fraction": -0.012801507919708799,
+          "decode_reduction_vs_clone_fraction": -0.014983069073790656,
+          "native_reduction_vs_clone_fraction": -0.008518765538821915,
+          "initial_increase_fraction": 0.007766865675207013,
+          "rss_increase_mib": 0.0,
+          "checks": {
+            "decode_vs_stock_at_least_3pct": false,
+            "native_vs_stock_at_least_1pct": false,
+            "initial_increase_at_most_5pct": true,
+            "rss_increase_at_most_32mib": true,
+            "decode_vs_clone_at_least_2pct": false,
+            "native_vs_clone_not_increased": false
+          },
+          "passed": false
+        },
+        "pf8": {
+          "decode_reduction_vs_stock_fraction": -0.009832492109257185,
+          "native_reduction_vs_stock_fraction": -0.005733158427989826,
+          "decode_reduction_vs_clone_fraction": -0.001153695004800559,
+          "native_reduction_vs_clone_fraction": -0.0014803053390266552,
+          "initial_increase_fraction": 0.014313168808962162,
+          "rss_increase_mib": 0.0,
+          "checks": {
+            "decode_vs_stock_at_least_3pct": false,
+            "native_vs_stock_at_least_1pct": false,
+            "initial_increase_at_most_5pct": true,
+            "rss_increase_at_most_32mib": true,
+            "decode_vs_clone_at_least_2pct": false,
+            "native_vs_clone_not_increased": false
+          },
+          "passed": false
+        }
+      }
+    }
+  ],
+  "eligible_candidates": [],
+  "selected": null,
+  "thermal": {
+    "start_c": 56.75,
+    "guard_max_c": 72.7,
+    "end_c": 71.6,
+    "worker_observed_max_c": 73.8,
+    "current_limits": [
+      0
+    ],
+    "cpu0_freq_khz": [
+      1500000,
+      1900000,
+      2400000
+    ]
+  },
+  "guard": {
+    "status": "completed",
+    "exit_code": 0,
+    "operational_valid": true,
+    "limit_verified": true
+  },
+  "boot_id": "db0f2e44-3c3f-4b8a-8472-e5618db2aeae",
+  "protected_files": 947,
+  "default_changed": false,
+  "new_continuous_latency_cer_measured": false
+}
