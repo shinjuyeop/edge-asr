@@ -120,3 +120,7 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 ## 정규화 전 log-Mel 접두 캐시 실험
 
 `gguf/mel_prefix_cache.h`는 반사 패딩을 포함한 같은 입력 창의 원시 log-Mel 프레임을 재사용합니다. `mel_prefix_cache.cpp`는 별도 preload로 원래 mtmd 계산을 호출하고, `mel_cache_build.py`가 고정 소스·기존 mtmd SHA를 기록한 새 라이브러리를 만듭니다. 기존 엔진·모델은 변경하지 않습니다. off/verify/on을 분리하며 verify의 불일치는 원래 전체 결과로 복귀합니다. 수명·메모리·실행 옵션은 [Qwen 실행 안내](../docs/guides/qwen3_optimization.md#정규화-전-특징-캐시-실험)를 확인합니다.
+
+## 부분 음성 창 선택 실험
+
+`gguf/audio_window_cache.h`와 기존 `gguf/bridge.cpp`의 `partial_audio_window_v1`을 별도 빌드에서 사용합니다. 기존 엔진·가중치는 그대로 두고 새 bridge 경로에 빌드합니다. 창 캐시/음성 KV는 부분 요청에만 적용하며 확정은 원래 전체 구간을 계산합니다. 캐시 끔은 창 분할까지 취소하는 설정이 아니라 같은 창을 다시 계산하는 대조입니다. [적용 범위·제약](../docs/guides/qwen3_optimization.md#부분-음성-창-캐시-실험)을 확인합니다.

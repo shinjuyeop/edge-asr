@@ -119,6 +119,11 @@ class Qwen3GGUFAdapter:
         self.operator_profile_enabled = False
         self.convolution = None
         self.feature_cache = None
+        self.audio_windows = None
+        if model.get("partial_audio_window_s"):
+            from edge_asr.qwen.audio_windows import PartialAudioWindows
+
+            self.audio_windows = PartialAudioWindows(model, self.build)
         if model.get("audio_feature_cache_manifest"):
             from edge_asr.qwen.feature_cache import AudioFeatureCache
 
@@ -144,6 +149,12 @@ class Qwen3GGUFAdapter:
     def reset_audio_feature_cache(self):
         if self.feature_cache:
             self.feature_cache.reset()
+        if self.audio_windows:
+            self.audio_windows.reset()
+
+    def prepare_realtime_request(self, kind):
+        if self.audio_windows:
+            self.audio_windows.prepare(kind)
 
     def set_operator_profile(self, enabled):
         """별도 진단 빌드에서만 켠다. 전사 호출 사이에 사용한다."""
@@ -176,6 +187,8 @@ class Qwen3GGUFAdapter:
             "token_output_callback": self.supports_token_stream,
             "thread_configuration": self.thread_configuration,
             "cache_text_prefix": self.cache_text_prefix,
+            "partial_audio_window_s": self.model.get("partial_audio_window_s"),
+            "partial_audio_window_cache": self.model.get("partial_audio_window_cache"),
             "llama_commit": LLAMA_COMMIT,
             "language": "ko",
             "stream_language": "Korean",
@@ -283,6 +296,12 @@ class Qwen3GGUFAdapter:
             if lib.edge_gguf_set_prefix_cache(self.handle, int(self.cache_text_prefix)) != 0:
                 self.close()
                 raise RuntimeError("GGUF text prefix 캐시 설정 실패")
+        if self.audio_windows:
+            try:
+                self.audio_windows.bind(lib, self.handle)
+            except Exception:
+                self.close()
+                raise
 
     def transcribe(self, audio):
         return self._transcribe(audio)
@@ -359,6 +378,8 @@ class Qwen3GGUFAdapter:
             self.convolution.begin()
         if self.feature_cache:
             self.feature_cache.begin()
+        if self.audio_windows:
+            self.audio_windows.begin()
         with capture_native_stderr(self.last_result_metadata):
             if callback is None:
                 blob = self.library.edge_gguf_transcribe(self.handle, pcm, len(audio.samples))
@@ -372,6 +393,8 @@ class Qwen3GGUFAdapter:
             raise RuntimeError("GGUF C ABI가 결과를 반환하지 않았습니다.")
         result = json.loads(blob)
         self.last_result_metadata["native_result"] = result
+        if self.audio_windows:
+            self.audio_windows.verify(result)
         if self.feature_cache:
             self.last_result_metadata["audio_feature_cache"] = self.feature_cache.result()
             if (
@@ -471,4 +494,6 @@ class Qwen3GGUFAdapter:
             self.convolution.close()
         if self.feature_cache:
             self.feature_cache.close()
+        if self.audio_windows:
+            self.audio_windows.close()
         self.last_result_metadata = None

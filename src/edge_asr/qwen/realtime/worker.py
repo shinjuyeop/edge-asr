@@ -148,6 +148,9 @@ class DecodeWorker:
                         reset_cache()
                         self.cache_segment = job["segment_id"]
                     audio = Audio(samples, 16000, job["payload_float32_sha256"])
+                    prepare_request = getattr(self.adapter, "prepare_realtime_request", None)
+                    if prepare_request:
+                        prepare_request(job["kind"])
 
                     def token(update):
                         with self.condition:

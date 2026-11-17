@@ -139,3 +139,7 @@ flowchart TD
 연속 모드의 segment/job revision 및 token 순서는 오래된 이벤트를 거부합니다. 기존 접두부 재표시 보류를 유지하면서 같은 길이 변경·삭제를 허용하고, 빈 partial은 실패를 보존하되 이전 표시를 지우지 않습니다. `viewer/web/captions.mjs`는 최근 확정 2구간과 미확정 결과를 이어 표시하며 전체 확정 이력·원음별 확인은 유지합니다. 음성 encoder/LLM의 증분 계산이 아니라 연속 입력에 대한 최신 접두 PCM 재전사입니다. 기본은 기존 고정 text prefix KV만 재사용합니다.
 
 선택 `qwen/feature_cache.py`와 `native/gguf/mel_prefix_cache.{h,cpp}`는 정규화 전 log-Mel의 비트 동일 입력 창만 재사용합니다. 모델/설정/구간/오류 수명을 검증하고 경계 및 전체 최대값 정규화는 원래 계산을 유지합니다. Transformer/음성 KV/합성곱 출력 캐시는 추가하지 않았습니다. verify 모드는 전체 재계산과 비교해 불일치 때 원래 출력을 사용하며, 연속 정책의 기본에는 켜지 않습니다.
+
+## 선택 부분 음성 창
+
+`qwen/audio_windows.py`는 요청 단위로만 `partial_audio_window_v1` ABI를 활성화합니다. `realtime/worker.py`의 부분/확정 구분과 기존 구간별 캐시 수명을 재사용합니다. `native/gguf/audio_window_cache.h`는5초 이내 PCM의 완료 창을 바이트 비교하고 embedding을 보관합니다. bridge는 완료 창의 LLM KV 접두부만 유지하고 나머지를 재평가합니다. 일반/확정 호출에는 기존 전체 음성 경로를 적용합니다. 창별 처리로 모델 입력 의미가 달라지는 선택 실험이며 정확도 동등성은 전제하지 않습니다.

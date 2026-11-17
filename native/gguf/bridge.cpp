@@ -4,6 +4,7 @@
 #include "mtmd.h"
 #include "mtmd-helper.h"
 #include "prefix_cache.h"
+#include "audio_window_cache.h"
 #ifdef EDGE_ASR_PROFILE_OPERATORS
 #include "operator_profile.h"
 #endif
@@ -34,6 +35,9 @@ struct State {
     std::string result;
     json configuration;
     TextPrefixCache prefix_cache;
+    AudioWindowCache audio_windows;
+    int audio_window_s = 0;
+    bool audio_window_reuse = false, audio_window_kv_valid = false;
 #ifdef EDGE_ASR_PROFILE_OPERATORS
     OperatorProfile operators;
 #endif
@@ -106,7 +110,8 @@ std::string piece(const llama_vocab* vocab,llama_token token) {
 }
 
 // upstream과 같은 chunk 순서·평가 함수를 사용하고 시간만 세분한다.
-llama_pos eval_prompt(State* s, const mtmd_input_chunks* chunks, bool hit, size_t prefix_size, json& out) {
+llama_pos eval_prompt(State* s, const mtmd_input_chunks* chunks, bool hit, size_t prefix_size, json& out,
+                      const std::vector<float>& window_embeds, size_t reused_audio) {
     llama_pos past=hit ? llama_pos(prefix_size) : 0;
     for (size_t i=0;i<mtmd_input_chunks_size(chunks);++i) {
         const auto* chunk=mtmd_input_chunks_get(chunks,i);
@@ -121,6 +126,24 @@ llama_pos eval_prompt(State* s, const mtmd_input_chunks* chunks, bool hit, size_
             out[key]=out[key].get<double>()+since(stage);
             if (rc!=0) throw std::runtime_error("text prefill failed");
         } else if (type==MTMD_INPUT_CHUNK_TYPE_AUDIO) {
+            if (s->audio_window_s) {
+                const size_t dim=llama_model_n_embd_inp(s->model), rows=window_embeds.size()/dim;
+                if (mtmd_decode_use_mrope(s->audio) || mtmd_decode_use_non_causal(s->audio,chunk))
+                    throw std::runtime_error("partial window requires ordinary causal positions");
+                past+=llama_pos(reused_audio);
+                llama_batch_ext_clear(s->batch);
+                for(size_t row=reused_audio;row<rows;++row) {
+                    const int idx=llama_batch_ext_add_embd(s->batch,0,{window_embeds.data()+row*dim,1,dim});
+                    if(idx<0 || !llama_batch_ext_set_pos(s->batch,idx,&past))
+                        throw std::runtime_error("window embedding batch failed");
+                    ++past;
+                }
+                operator_phase(s,"audio_prefill");
+                if(rows>reused_audio && llama_process(s->ctx,LLAMA_PROCESS_TYPE_DECODE,s->batch)!=0)
+                    throw std::runtime_error("window embedding prefill failed");
+                out["audio_embedding_eval_s"]=out["audio_embedding_eval_s"].get<double>()+since(stage);
+                continue;
+            }
             operator_phase(s,"audio_encoder");
             const int encoded=mtmd_encode_chunk(s->audio,chunk);
             out["audio_encode_s"]=out["audio_encode_s"].get<double>()+since(stage);
@@ -136,6 +159,35 @@ llama_pos eval_prompt(State* s, const mtmd_input_chunks* chunks, bool hit, size_
         }
     }
     return past;
+}
+
+// 같은 mtmd 전처리/인코더를 창별로 호출한다. 창 경계 정규화·attention이 달라지는 실험이다.
+std::vector<float> encode_audio_window(State* s,const float* pcm,size_t count,bool completed) {
+    std::unique_ptr<mtmd_bitmap,decltype(&mtmd_bitmap_free)> bitmap(mtmd_bitmap_init_from_audio(count,pcm),mtmd_bitmap_free);
+    std::unique_ptr<mtmd_input_chunks,decltype(&mtmd_input_chunks_free)> chunks(mtmd_input_chunks_init(),mtmd_input_chunks_free);
+    const auto marker=mtmd_default_marker();
+    mtmd_input_text input{marker,std::strlen(marker),false,true};
+    const mtmd_bitmap* bitmaps[]={bitmap.get()};
+    if(!bitmap || !chunks || mtmd_tokenize(s->audio,chunks.get(),&input,bitmaps,1)!=0)
+        throw std::runtime_error("window preprocessing failed");
+    const size_t dim=llama_model_n_embd_inp(s->model);
+    std::vector<float> output;
+    for(size_t i=0;i<mtmd_input_chunks_size(chunks.get());++i) {
+        auto* chunk=mtmd_input_chunks_get(chunks.get(),i);
+        if(mtmd_input_chunk_get_type(chunk)!=MTMD_INPUT_CHUNK_TYPE_AUDIO) continue;
+        if(mtmd_encode_chunk(s->audio,chunk)!=0) throw std::runtime_error("window encoder failed");
+        auto* values=mtmd_get_output_embd(s->audio);
+        const size_t n=mtmd_input_chunk_get_n_tokens(chunk)*dim;
+        output.insert(output.end(),values,values+n);
+    }
+    // 정확한 초 경계에는 STFT 한 프레임 때문에 패딩 sub-chunk가 생긴다.
+    // 완료된 창에서는 실제 1초당13행만 남긴다. 미완료 꼬리는 원래 출력을 유지한다.
+    if(completed) {
+        const size_t expected=(count/16000)*13*dim;
+        if(output.size()<expected) throw std::runtime_error("short completed window");
+        output.resize(expected);
+    }
+    return output;
 }
 }
 extern "C" {
@@ -183,9 +235,21 @@ __attribute__((visibility("default"))) int edge_gguf_set_prefix_cache(void* hand
     auto* s=static_cast<State*>(handle);
     if (!s || (enabled!=0 && enabled!=1)) { error="invalid prefix cache setting"; return -1; }
     s->prefix_cache.invalidate();
+    s->audio_windows.reset(); s->audio_window_kv_valid=false;
     s->prefix_cache.enabled=enabled!=0;
     llama_memory_clear(llama_get_memory(s->ctx),true);
     s->configuration["cache_text_prefix"]=s->prefix_cache.enabled;
+    return 0;
+}
+// window=0은 확정/일반 추론. 별도 선택 설정에서 부분 요청 직전에만 켠다.
+__attribute__((visibility("default"))) int edge_gguf_set_audio_window(void* handle,int window,int reuse,int reset) {
+    auto* s=static_cast<State*>(handle);
+    if(!s || (window!=0 && window!=1 && window!=2 && window!=4 && window!=8) ||
+       (reuse!=0 && reuse!=1) || (reset!=0 && reset!=1)) return -1;
+    if(reset || s->audio_window_s!=window || s->audio_window_reuse!=bool(reuse) || !window) {
+        s->audio_windows.reset(); s->audio_window_kv_valid=false;
+    }
+    s->audio_window_s=window; s->audio_window_reuse=reuse;
     return 0;
 }
 #ifdef EDGE_ASR_PROFILE_OPERATORS
@@ -207,6 +271,9 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
     out["runtime_configuration"]=s->configuration;
     out["prefix_cache"]={{"enabled",s->prefix_cache.enabled},{"hit",false},{"prefix_tokens",0},
         {"reused_tokens",0},{"miss_reason","not_prepared"},{"valid_after_call",false}};
+    out["audio_window"]={{"active",s->audio_window_s>0},{"window_s",s->audio_window_s},
+        {"reuse",s->audio_window_reuse},{"kv_reused_tokens",0},
+        {"policy","independent_windows_partial_only_v1"}};
     for (const char* key : {"prefix_eval_s","suffix_eval_s","audio_encode_s","audio_embedding_eval_s"}) out[key]=0.0;
     std::vector<int32_t> prefix;
     std::vector<llama_token> ids; std::string text;
@@ -225,7 +292,7 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
         mtmd_input_text input{prompt.c_str(),prompt.size(),false,true};
         const mtmd_bitmap* bitmaps[]={bitmap.get()};
         if (mtmd_tokenize(s->audio,chunks.get(),&input,bitmaps,1)!=0) throw std::runtime_error("audio preprocessing/tokenization failed");
-        const auto positions=mtmd_helper_get_n_pos(chunks.get());
+        auto positions=mtmd_helper_get_n_pos(chunks.get());
         out["prompt_positions"]=positions; out["prompt_tokens"]=mtmd_helper_get_n_tokens(chunks.get());
         size_t audio_tokens=0;
         for(size_t i=0;i<mtmd_input_chunks_size(chunks.get());++i) {
@@ -233,6 +300,22 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
             if(mtmd_input_chunk_get_type(c)==MTMD_INPUT_CHUNK_TYPE_AUDIO) audio_tokens+=mtmd_input_chunk_get_n_tokens(c);
         }
         out["audio_tokens"]=audio_tokens; out["preprocess_s"]=since(stage);
+        std::vector<float> window_embeds;
+        size_t reused_audio=0;
+        if(s->audio_window_s) {
+            stage=Clock::now(); operator_phase(s,"audio_encoder");
+            window_embeds=s->audio_windows.run(samples,count,size_t(s->audio_window_s)*16000,
+                llama_model_n_embd_inp(s->model),s->audio_window_reuse,
+                [&](const float* p,size_t n,bool full){return encode_audio_window(s,p,n,full);});
+            out["audio_encode_s"]=since(stage);
+            const size_t rows=window_embeds.size()/llama_model_n_embd_inp(s->model);
+            positions=positions-llama_pos(audio_tokens)+llama_pos(rows);
+            out["prompt_positions"]=positions; out["prompt_tokens"]=positions; out["audio_tokens"]=rows;
+            out["audio_window"]["reused_samples"]=s->audio_windows.reused_samples;
+            out["audio_window"]["computed_samples"]=s->audio_windows.computed_samples;
+            out["audio_window"]["cache_bytes"]=s->audio_windows.bytes();
+            if(s->audio_window_kv_valid) reused_audio=s->audio_windows.reused_tokens;
+        }
         if (positions+s->max_new+1>int(llama_n_ctx(s->ctx))) { out["termination"]="context_limit"; throw std::runtime_error("full input plus output reservation exceeds context; no truncation"); }
         const auto* first=mtmd_input_chunks_get(chunks.get(),0);
         if (first && mtmd_input_chunk_get_type(first)==MTMD_INPUT_CHUNK_TYPE_TEXT && audio_tokens>0) {
@@ -247,15 +330,17 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
         llama_sampler_reset(s->sampler); llama_perf_context_reset(s->ctx);
         const char* miss=s->prefix_cache.begin(prefix,
             [&]{ llama_memory_clear(llama_get_memory(s->ctx),true); },
-            [&](size_t n){ return llama_memory_seq_rm(llama_get_memory(s->ctx),0,llama_pos(n),-1); });
+            [&](size_t n){ return llama_memory_seq_rm(llama_get_memory(s->ctx),0,llama_pos(n+reused_audio),-1); });
         const bool hit=miss==nullptr;
+        if(!hit) reused_audio=0;
+        out["audio_window"]["kv_reused_tokens"]=reused_audio;
         out["kv_reset_s"]=since(stage);
         out["prefix_cache"]["hit"]=hit;
         out["prefix_cache"]["reused_tokens"]=hit ? prefix.size() : 0;
         out["prefix_cache"]["miss_reason"]=miss ? json(miss) : json(nullptr);
         stage=Clock::now();
-        llama_pos past=eval_prompt(s,chunks.get(),hit,prefix.size(),out);
-        out["audio_and_prefill_s"]=since(stage);
+        llama_pos past=eval_prompt(s,chunks.get(),hit,prefix.size(),out,window_embeds,reused_audio);
+        out["audio_and_prefill_s"]=since(stage)+(s->audio_window_s?out["audio_encode_s"].get<double>():0);
         if (past!=positions) throw std::runtime_error("prompt position mismatch after prefix reuse");
         double decode_s=0,sample_s=0;int decode_calls=0;
         const auto* vocab=llama_model_get_vocab(s->model);
@@ -286,6 +371,8 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
         else out["error"]="generation did not terminate with eog";
     } catch (const std::exception& e) { out["error"]=e.what(); }
     s->prefix_cache.complete(prefix,out["status"]=="success");
+    s->audio_window_kv_valid=s->audio_window_s>0 && s->audio_window_reuse && out["status"]=="success";
+    if(out["status"]!="success") s->audio_windows.reset();
     out["prefix_cache"]["valid_after_call"]=s->prefix_cache.valid();
     out["token_ids"]=ids;out["text_utf8_hex"]=hex(text);out["native_elapsed_s"]=since(began);
     out["token_callback_enabled"]=callback!=nullptr;out["token_callback_s"]=callback_s;

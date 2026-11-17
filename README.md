@@ -221,3 +221,5 @@ edge-asr/
 README는 프로젝트 소개와 시작 경로, `docs/research/optimization_history.md`는 판단이 바뀐 과정, `docs/status.md`는 현재 판단과 다음 작업, `results/summaries/`는 실측 근거를 담당합니다. 설정·구조 변경은 관련 문서와 함께 갱신하며, 과거 실행 기록은 그대로 보존합니다.
 
 [전체 문서](docs/README.md) · [평가 조건](docs/research/qwen_realtime.md) · [전체 측정 요약](results/summaries/optimization/README.md) · [경로 이행표](docs/reference/structure_migration.md)
+
+선택 부분 음성 창 실험은 `native/gguf/audio_window_cache.h`·`src/edge_asr/qwen/audio_windows.py`에 있으며 기존 bridge/worker를 확장합니다. [동작·설정](docs/guides/qwen3_optimization.md#부분-음성-창-캐시-실험)을 참고하세요.

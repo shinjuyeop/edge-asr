@@ -255,3 +255,13 @@ flock -n results/listener/inference.lock env OPENBLAS_NUM_THREADS=1 PYTHONPATH=s
 원음별 `observed_first_s`/`observed_first4_s`/`max_content_gap_s`는 이후 실패·취소된 호출이라도 이미 발행한 임시 자막을 포함합니다. 같은 문자열의 재발행을 제외하고 같은 길이 수정·삭제를 내용 변경으로 셉니다. 기존 성공 완료 호출 기준 `first_s`/`first4_s`와 문자 증가 기준 `max_growth_gap_s`는 그대로 보존합니다. 모두 유일하게 귀속되는 원음·서버 발행 기준이며 실제 브라우저 표시나 인식 정확도를 뜻하지 않습니다.
 
 [이번 실제 대조](../../results/summaries/optimization/continuous-q4-20261117.md)에서 새 연속 정책은 Q4 최종 정확도를 유지했지만 장비의 열 보류로100개 표시/확정 지연이 늘었습니다. 기본 채택은 보류하며 청취/개발 후보로 사용합니다. 빠른 Q4 자체는100개에서 빈 final11건이 있었고, 이를 성공 처리하지 않습니다. 선택 Mel 캐시는 비트/전사 동등성을 확인했지만 전체 지연 이득이 불분명해 기본 프로필에서 끕니다.
+
+## 부분 음성 창 캐시 실험
+
+`configs/quantization/q4_0_partial_window.toml`은 기존 Q4 text/output·Q8 audio를 유지하고 새 bridge에서 **부분 요청만** 독립2초 창으로 인코딩합니다. `partial_audio_window_s`는1/2/4/8초, `partial_audio_window_cache=false`는 같은 창 분할의 재계산 대조입니다. 실제 기본 채택 여부와 측정 결과는 현재 상태를 따릅니다.
+
+완료된 창의 embedding과 그에 해당하는 LLM KV를 재사용하고, 꼬리 창은 다시 계산합니다. PCM 바이트가 달라지거나 구간이 바뀌면 캐시를 초기화합니다. 오류·취소·확정 뒤에도 초기화하며, 확정/일반 batch 호출은 기존 전체 입력 경로를 사용합니다. 부분 입력은5초까지로 제한합니다.
+
+**전체 입력 인코딩과 수치 동등한 캐시가 아닙니다.** 창별 Mel 정규화·경계 반사 padding·attention 문맥이 바뀌며, 완료 창은1초당13행만 남겨 끝의 추가 padding sub-chunk를 제외합니다. 최종 CER 외에 부분 전사의 누락/수정도 비교해야 합니다. 기존 log-Mel preload 캐시와 함께 켤 수 없습니다.
+
+설계 참고는 [antirez/qwen-asr](https://github.com/antirez/qwen-asr/tree/924694251d9e0f18e5d86bbd06aa3ab5f870002d)의 완료 인코더 창·변하지 않은 prefill 접두부 재사용입니다. 이 프로젝트에서는 외부 BF16 엔진으로 교체하지 않고 고정 llama.cpp의 기존 Q4 bridge를 확장합니다. 공식 vLLM의 누적 입력 streaming을 RP5에 설치하는 작업도 아닙니다.

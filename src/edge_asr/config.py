@@ -89,6 +89,8 @@ def load_evaluation_config(path: str | Path) -> dict:
             "conv_kernel_manifest",
             "audio_feature_cache_manifest",
             "audio_feature_cache_mode",
+            "partial_audio_window_s",
+            "partial_audio_window_cache",
         }
     allowed = {
         "model": model_keys,
@@ -169,7 +171,10 @@ def load_evaluation_config(path: str | Path) -> dict:
         if config["model"].get("language") != "ko" or config["audio"]["sample_rate_hz"] != 16000:
             raise ValueError("현재 Qwen 평가는 한국어 ko·16000Hz를 사용합니다.")
         if family == "qwen3_gguf":
+            from edge_asr.qwen.audio_windows import validate_audio_windows
             from edge_asr.qwen.gguf import QUANTIZATIONS
+
+            validate_audio_windows(config["model"])
 
             if config["model"]["quantization"] not in QUANTIZATIONS:
                 raise ValueError(f"GGUF 양자화는 {QUANTIZATIONS}입니다.")
