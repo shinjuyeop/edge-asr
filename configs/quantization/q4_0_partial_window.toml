@@ -1,14 +1,14 @@
-# 선택 실험: 부분 요청만 독립2초 창+완료 창/음성 KV 재사용. 확정은 전체 구간.
+# 선택 실험: 부분 요청만 독립1.99초 창+완료 창/음성 KV 재사용. 확정은 전체 구간.
 # Q4_0 text/output + Q8 audio, KleidiAI OFF, 생성2T·음성3T.
 [model]
 family = "qwen3_gguf"
 path = "models/qwen3-opt/decoder-q4-20261117-01/head-q4"
-runtime_library = "runtimes/qwen3-opt/stream-cache-20261118-02/bridge/libedge_asr_gguf.so"
-runtime_manifest = "runtimes/qwen3-opt/stream-cache-20261118-02/bridge/build.json"
+runtime_library = "runtimes/qwen3-opt/stream-cache-20261118-03/bridge/libedge_asr_gguf.so"
+runtime_manifest = "runtimes/qwen3-opt/stream-cache-20261118-03/bridge/build.json"
 num_threads = 2
 num_threads_batch = 3
 cache_text_prefix = true
-partial_audio_window_s = 2
+partial_audio_window_ms = 1990
 partial_audio_window_cache = true
 language = "ko"
 quantization = "q4_0"

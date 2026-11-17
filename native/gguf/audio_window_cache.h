@@ -16,7 +16,7 @@ public:
     std::vector<float> run(const float* pcm, size_t count, size_t window, size_t dim,
                           bool reuse, Encode encode) {
         if (!pcm || count<320 || count>80000 || !dim || dim>4096 ||
-            (window!=16000 && window!=32000 && window!=64000 && window!=128000))
+            (window!=15840 && window!=16000 && window!=31840 && window!=32000 && window!=64000 && window!=128000))
             throw std::invalid_argument("partial audio window bounds");
         size_t full=count/window*window;
         // 20ms 미만 잔여 입력은 앞 창과 함께 계산한다. 음성을 버리거나 0으로 대체하지 않는다.

@@ -90,6 +90,7 @@ def load_evaluation_config(path: str | Path) -> dict:
             "audio_feature_cache_manifest",
             "audio_feature_cache_mode",
             "partial_audio_window_s",
+            "partial_audio_window_ms",
             "partial_audio_window_cache",
         }
     allowed = {

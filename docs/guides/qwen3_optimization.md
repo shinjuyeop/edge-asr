@@ -258,10 +258,12 @@ flock -n results/listener/inference.lock env OPENBLAS_NUM_THREADS=1 PYTHONPATH=s
 
 ## 부분 음성 창 캐시 실험
 
-`configs/quantization/q4_0_partial_window.toml`은 기존 Q4 text/output·Q8 audio를 유지하고 새 bridge에서 **부분 요청만** 독립2초 창으로 인코딩합니다. `partial_audio_window_s`는1/2/4/8초, `partial_audio_window_cache=false`는 같은 창 분할의 재계산 대조입니다. 실제 기본 채택 여부와 측정 결과는 현재 상태를 따릅니다.
+`configs/quantization/q4_0_partial_window.toml`은 기존 Q4 text/output·Q8 audio를 유지하고 새 bridge에서 **부분 요청만** 독립1.99초 창으로 인코딩합니다. `partial_audio_window_s`는1/2/4/8초, 별도 `partial_audio_window_ms`는990/1990ms이며 둘을 함께 지정하지 않습니다. `partial_audio_window_cache=false`는 같은 창 분할의 재계산 대조입니다. 실제 기본 채택 여부와 측정 결과는 현재 상태를 따릅니다.
 
 완료된 창의 embedding과 그에 해당하는 LLM KV를 재사용하고, 꼬리 창은 다시 계산합니다. PCM 바이트가 달라지거나 구간이 바뀌면 캐시를 초기화합니다. 오류·취소·확정 뒤에도 초기화하며, 확정/일반 batch 호출은 기존 전체 입력 경로를 사용합니다. 부분 입력은5초까지로 제한합니다.
 
 **전체 입력 인코딩과 수치 동등한 캐시가 아닙니다.** 창별 Mel 정규화·경계 반사 padding·attention 문맥이 바뀌며, 완료 창은1초당13행만 남겨 끝의 추가 padding sub-chunk를 제외합니다. 최종 CER 외에 부분 전사의 누락/수정도 비교해야 합니다. 기존 log-Mel preload 캐시와 함께 켤 수 없습니다.
 
 설계 참고는 [antirez/qwen-asr](https://github.com/antirez/qwen-asr/tree/924694251d9e0f18e5d86bbd06aa3ab5f870002d)의 완료 인코더 창·변하지 않은 prefill 접두부 재사용입니다. 이 프로젝트에서는 외부 BF16 엔진으로 교체하지 않고 고정 llama.cpp의 기존 Q4 bridge를 확장합니다. 공식 vLLM의 누적 입력 streaming을 RP5에 설치하는 작업도 아닙니다.
+
+정확한1/2초 경계의 STFT는 추가1프레임 때문에 각각2/3개의 합성곱 sub-chunk를 계산합니다.990/1990ms는99/199프레임에 경계1프레임을 더해100/200프레임에 맞춥니다. 원음 샘플은 모두 인접 창/꼬리에 포함하며 삭제하지 않습니다. 새 ms 옵션은 `partial_audio_window_ms_v1` 빌드만 허용하고 기존 초 단위 실험 빌드도 보존합니다.

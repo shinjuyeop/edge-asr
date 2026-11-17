@@ -120,7 +120,7 @@ class Qwen3GGUFAdapter:
         self.convolution = None
         self.feature_cache = None
         self.audio_windows = None
-        if model.get("partial_audio_window_s"):
+        if model.get("partial_audio_window_s") or model.get("partial_audio_window_ms"):
             from edge_asr.qwen.audio_windows import PartialAudioWindows
 
             self.audio_windows = PartialAudioWindows(model, self.build)
@@ -188,6 +188,7 @@ class Qwen3GGUFAdapter:
             "thread_configuration": self.thread_configuration,
             "cache_text_prefix": self.cache_text_prefix,
             "partial_audio_window_s": self.model.get("partial_audio_window_s"),
+            "partial_audio_window_ms": self.model.get("partial_audio_window_ms"),
             "partial_audio_window_cache": self.model.get("partial_audio_window_cache"),
             "llama_commit": LLAMA_COMMIT,
             "language": "ko",

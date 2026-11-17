@@ -36,7 +36,7 @@ struct State {
     json configuration;
     TextPrefixCache prefix_cache;
     AudioWindowCache audio_windows;
-    int audio_window_s = 0;
+    int audio_window_ms = 0;
     bool audio_window_reuse = false, audio_window_kv_valid = false;
 #ifdef EDGE_ASR_PROFILE_OPERATORS
     OperatorProfile operators;
@@ -126,7 +126,7 @@ llama_pos eval_prompt(State* s, const mtmd_input_chunks* chunks, bool hit, size_
             out[key]=out[key].get<double>()+since(stage);
             if (rc!=0) throw std::runtime_error("text prefill failed");
         } else if (type==MTMD_INPUT_CHUNK_TYPE_AUDIO) {
-            if (s->audio_window_s) {
+            if (s->audio_window_ms) {
                 const size_t dim=llama_model_n_embd_inp(s->model), rows=window_embeds.size()/dim;
                 if (mtmd_decode_use_non_causal(s->audio,chunk))
                     throw std::runtime_error("partial window requires causal attention");
@@ -185,7 +185,7 @@ std::vector<float> encode_audio_window(State* s,const float* pcm,size_t count,bo
     // 정확한 초 경계에는 STFT 한 프레임 때문에 패딩 sub-chunk가 생긴다.
     // 완료된 창에서는 실제 1초당13행만 남긴다. 미완료 꼬리는 원래 출력을 유지한다.
     if(completed) {
-        const size_t expected=(count/16000)*13*dim;
+        const size_t expected=((count/160+99)/100)*13*dim;
         if(output.size()<expected) throw std::runtime_error("short completed window");
         output.resize(expected);
     }
@@ -244,15 +244,19 @@ __attribute__((visibility("default"))) int edge_gguf_set_prefix_cache(void* hand
     return 0;
 }
 // window=0은 확정/일반 추론. 별도 선택 설정에서 부분 요청 직전에만 켠다.
-__attribute__((visibility("default"))) int edge_gguf_set_audio_window(void* handle,int window,int reuse,int reset) {
+__attribute__((visibility("default"))) int edge_gguf_set_audio_window_ms(void* handle,int window,int reuse,int reset) {
     auto* s=static_cast<State*>(handle);
-    if(!s || (window!=0 && window!=1 && window!=2 && window!=4 && window!=8) ||
+    if(!s || (window!=0 && window!=990 && window!=1000 && window!=1990 && window!=2000 && window!=4000 && window!=8000) ||
        (reuse!=0 && reuse!=1) || (reset!=0 && reset!=1)) return -1;
-    if(reset || s->audio_window_s!=window || s->audio_window_reuse!=bool(reuse) || !window) {
+    if(reset || s->audio_window_ms!=window || s->audio_window_reuse!=bool(reuse) || !window) {
         s->audio_windows.reset(); s->audio_window_kv_valid=false;
     }
-    s->audio_window_s=window; s->audio_window_reuse=reuse;
+    s->audio_window_ms=window; s->audio_window_reuse=reuse;
     return 0;
+}
+__attribute__((visibility("default"))) int edge_gguf_set_audio_window(void* handle,int window,int reuse,int reset) {
+    if(window!=0 && window!=1 && window!=2 && window!=4 && window!=8) return -1;
+    return edge_gguf_set_audio_window_ms(handle,window*1000,reuse,reset);
 }
 #ifdef EDGE_ASR_PROFILE_OPERATORS
 __attribute__((visibility("default"))) int edge_gguf_set_operator_profile(void* handle,int enabled) {
@@ -273,7 +277,8 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
     out["runtime_configuration"]=s->configuration;
     out["prefix_cache"]={{"enabled",s->prefix_cache.enabled},{"hit",false},{"prefix_tokens",0},
         {"reused_tokens",0},{"miss_reason","not_prepared"},{"valid_after_call",false}};
-    out["audio_window"]={{"active",s->audio_window_s>0},{"window_s",s->audio_window_s},
+    out["audio_window"]={{"active",s->audio_window_ms>0},{"window_s",s->audio_window_ms/1000.0},
+        {"window_ms",s->audio_window_ms},
         {"reuse",s->audio_window_reuse},{"kv_reused_tokens",0},
         {"policy","independent_windows_partial_only_v1"}};
     for (const char* key : {"prefix_eval_s","suffix_eval_s","audio_encode_s","audio_embedding_eval_s"}) out[key]=0.0;
@@ -304,9 +309,9 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
         out["audio_tokens"]=audio_tokens; out["preprocess_s"]=since(stage);
         std::vector<float> window_embeds;
         size_t reused_audio=0;
-        if(s->audio_window_s) {
+        if(s->audio_window_ms) {
             stage=Clock::now(); operator_phase(s,"audio_encoder");
-            window_embeds=s->audio_windows.run(samples,count,size_t(s->audio_window_s)*16000,
+            window_embeds=s->audio_windows.run(samples,count,size_t(s->audio_window_ms)*16,
                 llama_model_n_embd_inp(s->model),s->audio_window_reuse,
                 [&](const float* p,size_t n,bool full){return encode_audio_window(s,p,n,full);});
             out["audio_encode_s"]=since(stage);
@@ -342,7 +347,7 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
         out["prefix_cache"]["miss_reason"]=miss ? json(miss) : json(nullptr);
         stage=Clock::now();
         llama_pos past=eval_prompt(s,chunks.get(),hit,prefix.size(),out,window_embeds,reused_audio);
-        out["audio_and_prefill_s"]=since(stage)+(s->audio_window_s?out["audio_encode_s"].get<double>():0);
+        out["audio_and_prefill_s"]=since(stage)+(s->audio_window_ms?out["audio_encode_s"].get<double>():0);
         if (past!=positions) throw std::runtime_error("prompt position mismatch after prefix reuse");
         double decode_s=0,sample_s=0;int decode_calls=0;
         const auto* vocab=llama_model_get_vocab(s->model);
@@ -373,7 +378,7 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
         else out["error"]="generation did not terminate with eog";
     } catch (const std::exception& e) { out["error"]=e.what(); }
     s->prefix_cache.complete(prefix,out["status"]=="success");
-    s->audio_window_kv_valid=s->audio_window_s>0 && s->audio_window_reuse && out["status"]=="success";
+    s->audio_window_kv_valid=s->audio_window_ms>0 && s->audio_window_reuse && out["status"]=="success";
     if(out["status"]!="success") s->audio_windows.reset();
     out["prefix_cache"]["valid_after_call"]=s->prefix_cache.valid();
     out["token_ids"]=ids;out["text_utf8_hex"]=hex(text);out["native_elapsed_s"]=since(began);

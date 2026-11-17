@@ -78,6 +78,7 @@ def build(source, engine_build, output, *, profile_operators=False, kleidiai=Fal
             "split_threads_v1",
             "text_prefix_cache_v1",
             "partial_audio_window_v1",
+            "partial_audio_window_ms_v1",
         ],
         "cmake_cache_sha256": sha(engine_build / "CMakeCache.txt"),
         "engine_libraries": {p.name: sha(p) for p in (engine_build / "bin").glob("*.so")},

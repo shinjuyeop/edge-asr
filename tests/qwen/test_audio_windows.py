@@ -40,6 +40,25 @@ class AudioWindowsTests(unittest.TestCase):
             windows.verify({"audio_window": {"active": True, "window_s": 2}})
         windows.close()
 
+    def test_frame_aligned_windows_require_new_capability(self):
+        for size in (990, 1990):
+            model = {"partial_audio_window_ms": size, "cache_text_prefix": True}
+            with self.assertRaises(ValueError):
+                PartialAudioWindows(model, {"features": ["partial_audio_window_v1"]})
+            windows = PartialAudioWindows(model, {"features": ["partial_audio_window_ms_v1"]})
+            library = Mock()
+            library.edge_gguf_set_audio_window_ms.return_value = 0
+            windows.bind(library, 321)
+            windows.prepare("partial")
+            windows.begin()
+            library.edge_gguf_set_audio_window_ms.assert_called_with(321, size, 1, 0)
+            windows.verify({"audio_window": {"active": True, "window_ms": size}})
+            windows.prepare("final")
+            windows.begin()
+            library.edge_gguf_set_audio_window_ms.assert_called_with(321, 0, 1, 0)
+        with self.assertRaises(ValueError):
+            validate_audio_windows({**model, "partial_audio_window_s": 2})
+
     @unittest.skipUnless(shutil.which("g++"), "C++ 창 캐시 검사에 g++ 필요")
     def test_cached_and_recomputed_windows_match_at_boundaries(self):
         root = Path(__file__).resolve().parents[2]
@@ -52,13 +71,13 @@ int main() {
     std::vector<float> pcm(80000);
     for(size_t i=0;i<pcm.size();++i) pcm[i]=std::sin(float(i)*0.03f);
     auto encode=[](const float* p,size_t n,bool full) {
-        const size_t rows=full?n/16000*13:(n/16000+1)*13;
+        const size_t rows=full?((n/160+99)/100)*13:(n/16000+1)*13;
         std::vector<float> out(rows*4);
         float sum=0;for(size_t i=0;i<n;++i)sum+=p[i];
         for(size_t i=0;i<out.size();++i)out[i]=sum+float(i);
         return out;
     };
-    for(size_t w:{16000,32000,64000,128000}) {
+    for(size_t w:{15840,16000,31840,32000,64000,128000}) {
         cached.reset();
         for(size_t n:{320,9600,16000,16100,16320,22400,32000,32100,32320,35200,48000,64000,80000}) {
             auto a=cached.run(pcm.data(),n,w,4,true,encode);
