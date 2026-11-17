@@ -52,6 +52,8 @@ WAV 1배속 입력과 **RP5 USB 마이크**로 부분·확정 자막을 확인�
 
 후속 [Q4 부분 요청3회 비교](results/summaries/optimization/realtime-q4-followup-20261117.md)는 같은 최종 전사·CER에서 갱신 공백 p95를4.61~4.63→3.59초로 줄였고 계산량은20~21% 늘었습니다. 청취 후보로 보존합니다. 기록 화면은 **한 원음 재생→확정 전사 확인·자동 정지→다음 음원**을 지원하며 원래 연속 재생도 선택할 수 있습니다.
 
+최신 [연속 수정 자막·100개 대조](results/summaries/optimization/continuous-q4-20261117.md)는 횟수 제한 없는 최신 입력 재전사·수정/삭제·최종 우선 취소·열 backoff를 구현했습니다. 같은100개 최종 PCM/전사/token·CER12.42%는 유지했으나 열 backoff 상태622초·최종 반환 p95 2.02→2.64초여서 기본 채택을 보류합니다. 선택 청취 프로필을 제공하고, 작은 Mel 캐시는 반복 계산을 줄였지만 전체 지연 이득이 없어 비활성 실험으로 남깁니다.
+
 문제 발견과 선택의 흐름은 [ASR 최적화 과정](docs/research/optimization_history.md), 현재 채택한 구성과 최신 결과는 [현재 상태](docs/status.md)에 정리했습니다. [자막 비교 영상](results/summaries/optimization/realtime-video-20261111.md)은 저장된 로그의 동기 재생 자료입니다.
 
 ## 처음 시작하기
@@ -102,6 +104,7 @@ edge-asr/
 ├── configs/
 │   ├── legacy/                          # 이전 모델 비교 설정
 │   ├── quantization/                    # Q6·Q5·Q4 후보
+│   │   ├── q4_0_head_realtime.toml     # 빠른 Q4_0 본체·출력층, audio Q8
 │   │   ├── q4_both_realtime.toml        # text Q4_K_M + audio Q4_0 비교
 │   │   ├── q4_k_m_realtime.toml         # 현재 bridge·2/3·prefix KV의 Q4 비교
 │   │   └── q4_prefill_realtime.toml     # Q4 음성·prefill4T 선별 후보
@@ -109,6 +112,8 @@ edge-asr/
 │   ├── gguf.toml                        # 보존한 Q8 2T 기준선
 │   ├── gguf_realtime.toml               # 현재 개발용 GGUF 설정
 │   ├── listener.toml                    # 청취용 모델·음원·연속 옵션
+│   ├── listener_continuous.toml         # 최신 음성으로 연속 수정
+│   ├── listener_continuous_priority.toml # 최종 대기 시 선택 부분 취소
 │   └── onnx.toml                        # ONNX 출발 참조
 ├── data/                                # 로컬 음원·정답
 │   ├── evaluation/

@@ -241,3 +241,5 @@ flock -n results/listener/inference.lock env OPENBLAS_NUM_THREADS=1 PYTHONPATH=s
 빌드는 `native/gguf/mel_cache_build.py --source <고정 엔진 소스> --mtmd <현재 libmtmd.so> --output <새 빌드 폴더>`를 사용합니다. 실행 프로세스에 그 `libedge_mel_cache.so`만 `LD_PRELOAD`, 기존 mtmd 경로를 `EDGE_ASR_MEL_MTMD`로 지정합니다. 계측은 `adapter_result.audio_feature_cache`에 원래/재계산 프레임 수·동등성·계산 시간·메모리를 남깁니다. 실제 채택 여부와 조건은 이번 실측 보고서를 따릅니다.
 
 원음별 `observed_first_s`/`observed_first4_s`/`max_content_gap_s`는 이후 실패·취소된 호출이라도 이미 발행한 임시 자막을 포함합니다. 같은 문자열의 재발행을 제외하고 같은 길이 수정·삭제를 내용 변경으로 셉니다. 기존 성공 완료 호출 기준 `first_s`/`first4_s`와 문자 증가 기준 `max_growth_gap_s`는 그대로 보존합니다. 모두 유일하게 귀속되는 원음·서버 발행 기준이며 실제 브라우저 표시나 인식 정확도를 뜻하지 않습니다.
+
+[이번 실제 대조](../../results/summaries/optimization/continuous-q4-20261117.md)에서 새 연속 정책은 Q4 최종 정확도를 유지했지만 장비의 열 보류로100개 표시/확정 지연이 늘었습니다. 기본 채택은 보류하며 청취/개발 후보로 사용합니다. 빠른 Q4 자체는100개에서 빈 final11건이 있었고, 이를 성공 처리하지 않습니다. 선택 Mel 캐시는 비트/전사 동등성을 확인했지만 전체 지연 이득이 불분명해 기본 프로필에서 끕니다.
