@@ -1,0 +1,2865 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-17",
+  "kind": "qwen3_decoder_q4_kleidiai",
+  "source_commit": "51861570f7c8ab17d50e45df65f6c6d387714f1b",
+  "raw_path": "results/optimization/opt3/decoder-q4-20261117-01",
+  "status": "completed",
+  "plan": {
+    "models": {
+      "q8": {
+        "directory": "models/qwen3-opt/gguf-q8-20261109-01",
+        "quantization": "q8_0",
+        "model": "models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+        "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+      },
+      "q4km": {
+        "directory": "models/qwen3-opt/gguf-quant-20261110-01/derived",
+        "quantization": "q4_k_m",
+        "manifest": "q4_k_m.json",
+        "model": "models/qwen3-opt/gguf-quant-20261110-01/derived/Qwen3-ASR-0.6B-Q4_K_M.gguf",
+        "sha256": "3f711631ac7b81f223e08471838f8129b9716e4fe9935ebf99c58e320fc18633"
+      },
+      "q4": {
+        "directory": "models/qwen3-opt/decoder-q4-20261117-01/default",
+        "quantization": "q4_0",
+        "manifest": "q4_0.json",
+        "model": "models/qwen3-opt/decoder-q4-20261117-01/default/Qwen3-ASR-0.6B-Q4_0.gguf",
+        "sha256": "68e1a69c5b3f1b382e874735f5a6715fa46ed2bf222d1be81cb0068045fee75e"
+      },
+      "q4head": {
+        "directory": "models/qwen3-opt/decoder-q4-20261117-01/head-q4",
+        "quantization": "q4_0",
+        "manifest": "q4_0-head-q4_0.json",
+        "model": "models/qwen3-opt/decoder-q4-20261117-01/head-q4/Qwen3-ASR-0.6B-Q4_0-HEAD-Q4_0.gguf",
+        "sha256": "ca2f6ac6e7e4258206187b9c605b2443fdfa425cae82891da51377103fd4e383"
+      }
+    },
+    "configs": {
+      "q8-off": "results/optimization/opt3/decoder-q4-20261117-01/configs/q8-off.toml",
+      "q8-on": "results/optimization/opt3/decoder-q4-20261117-01/configs/q8-on.toml",
+      "q4km-off": "results/optimization/opt3/decoder-q4-20261117-01/configs/q4km-off.toml",
+      "q4km-on": "results/optimization/opt3/decoder-q4-20261117-01/configs/q4km-on.toml",
+      "q4-off": "results/optimization/opt3/decoder-q4-20261117-01/configs/q4-off.toml",
+      "q4-on": "results/optimization/opt3/decoder-q4-20261117-01/configs/q4-on.toml",
+      "q4head-off": "results/optimization/opt3/decoder-q4-20261117-01/configs/q4head-off.toml",
+      "q4head-on": "results/optimization/opt3/decoder-q4-20261117-01/configs/q4head-on.toml"
+    },
+    "bench_order": [
+      [
+        [
+          "q8",
+          "off"
+        ],
+        [
+          "q4km",
+          "off"
+        ],
+        [
+          "q4",
+          "off"
+        ],
+        [
+          "q4head",
+          "off"
+        ],
+        [
+          "q4head",
+          "on"
+        ],
+        [
+          "q4",
+          "on"
+        ],
+        [
+          "q4km",
+          "on"
+        ],
+        [
+          "q8",
+          "on"
+        ]
+      ],
+      [
+        [
+          "q8",
+          "on"
+        ],
+        [
+          "q4km",
+          "on"
+        ],
+        [
+          "q4",
+          "on"
+        ],
+        [
+          "q4head",
+          "on"
+        ],
+        [
+          "q4head",
+          "off"
+        ],
+        [
+          "q4",
+          "off"
+        ],
+        [
+          "q4km",
+          "off"
+        ],
+        [
+          "q8",
+          "off"
+        ]
+      ]
+    ],
+    "bench_threads": 2,
+    "bench_depth": 64,
+    "bench_generation": 32,
+    "bench_repetitions": 5,
+    "min_decode_improvement": 0.1,
+    "thread_sweep": {
+      "threads": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "depths": [
+        32,
+        64,
+        96
+      ],
+      "generations": [
+        16,
+        32
+      ],
+      "repetitions": 3,
+      "orders": [
+        [
+          1,
+          2,
+          3,
+          4
+        ],
+        [
+          4,
+          3,
+          2,
+          1
+        ]
+      ],
+      "reason": "열과 스레드 순서가 겹치지 않도록 정순/역순 합산"
+    },
+    "wait_policy": null,
+    "pcm_warmup_rounds": [
+      1,
+      2
+    ],
+    "pcm_measured_rounds": [
+      3,
+      4,
+      5
+    ],
+    "source_commit": "51861570f7c8ab17d50e45df65f6c6d387714f1b",
+    "scope": "합성 decode 선별 뒤 실제 ASR·연속 정확도 확인",
+    "engine_build_id": "decoder-q4-20261117-02"
+  },
+  "bench": {
+    "capability-q4head-on": {
+      "rows": [
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 31.82626503125,
+          "stddev_ns": 956862,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 56200,
+      "max_mc": 71050,
+      "current_limits": [
+        0
+      ],
+      "guard_ok": true
+    },
+    "bench-0-q8-off": {
+      "rows": [
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 57.6807676875,
+          "stddev_ns": 34830447,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 58950,
+      "max_mc": 76550,
+      "current_limits": [
+        0
+      ],
+      "guard_ok": true
+    },
+    "bench-0-q4km-off": {
+      "rows": [
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 38.187356875,
+          "stddev_ns": 17577224,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 59500,
+      "max_mc": 74350,
+      "current_limits": [
+        0
+      ],
+      "guard_ok": true
+    },
+    "bench-0-q4-off": {
+      "rows": [
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 35.55165009375,
+          "stddev_ns": 3137783,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 58400,
+      "max_mc": 72150,
+      "current_limits": [
+        0
+      ],
+      "guard_ok": true
+    },
+    "bench-0-q4head-off": {
+      "rows": [
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 31.11869371875,
+          "stddev_ns": 955020,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 58950,
+      "max_mc": 71600,
+      "current_limits": [
+        0
+      ],
+      "guard_ok": true
+    },
+    "bench-0-q4head-on": {
+      "rows": [
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 31.880794875,
+          "stddev_ns": 1140694,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 58400,
+      "max_mc": 74350,
+      "current_limits": [
+        0
+      ],
+      "guard_ok": true
+    },
+    "bench-0-q4-on": {
+      "rows": [
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 37.5073439375,
+          "stddev_ns": 1244241,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 57300,
+      "max_mc": 72150,
+      "current_limits": [
+        0
+      ],
+      "guard_ok": true
+    },
+    "bench-0-q4km-on": {
+      "rows": [
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 39.375251,
+          "stddev_ns": 1258432,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 58950,
+      "max_mc": 73250,
+      "current_limits": [
+        0
+      ],
+      "guard_ok": true
+    },
+    "bench-0-q8-on": {
+      "rows": [
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 54.3607930625,
+          "stddev_ns": 2355046,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 59500,
+      "max_mc": 71600,
+      "current_limits": [
+        0
+      ],
+      "guard_ok": true
+    },
+    "bench-1-q8-on": {
+      "rows": [
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 54.6117579375,
+          "stddev_ns": 27239758,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 59500,
+      "max_mc": 72700,
+      "current_limits": [
+        0
+      ],
+      "guard_ok": true
+    },
+    "bench-1-q4km-on": {
+      "rows": [
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 39.27987025,
+          "stddev_ns": 1815228,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 59500,
+      "max_mc": 72150,
+      "current_limits": [
+        0
+      ],
+      "guard_ok": true
+    },
+    "bench-1-q4-on": {
+      "rows": [
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 37.40028046875,
+          "stddev_ns": 3686028,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 58950,
+      "max_mc": 73250,
+      "current_limits": [
+        0
+      ],
+      "guard_ok": true
+    },
+    "bench-1-q4head-on": {
+      "rows": [
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 31.8272865625,
+          "stddev_ns": 1391479,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 57850,
+      "max_mc": 72150,
+      "current_limits": [
+        0
+      ],
+      "guard_ok": true
+    },
+    "bench-1-q4head-off": {
+      "rows": [
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 31.4065566875,
+          "stddev_ns": 1683852,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 57850,
+      "max_mc": 72700,
+      "current_limits": [
+        0
+      ],
+      "guard_ok": true
+    },
+    "bench-1-q4-off": {
+      "rows": [
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 35.47877978125,
+          "stddev_ns": 1287778,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 59500,
+      "max_mc": 73250,
+      "current_limits": [
+        0
+      ],
+      "guard_ok": true
+    },
+    "bench-1-q4km-off": {
+      "rows": [
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 37.99110946875,
+          "stddev_ns": 1707426,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 58950,
+      "max_mc": 76550,
+      "current_limits": [
+        0
+      ],
+      "guard_ok": true
+    },
+    "bench-1-q8-off": {
+      "rows": [
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 56.72542165625,
+          "stddev_ns": 30815023,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 59500,
+      "max_mc": 71600,
+      "current_limits": [
+        0
+      ],
+      "guard_ok": true
+    },
+    "threads-q4-off": {
+      "rows": [
+        {
+          "threads": 1,
+          "depth": 32,
+          "n_gen": 16,
+          "avg_ms_per_token": 47.1246573125,
+          "stddev_ns": 666175,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 32,
+          "n_gen": 32,
+          "avg_ms_per_token": 47.750088625,
+          "stddev_ns": 854904,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 64,
+          "n_gen": 16,
+          "avg_ms_per_token": 49.6998265625,
+          "stddev_ns": 216080,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 49.9268348125,
+          "stddev_ns": 414174,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 96,
+          "n_gen": 16,
+          "avg_ms_per_token": 51.5931526875,
+          "stddev_ns": 620324,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 96,
+          "n_gen": 32,
+          "avg_ms_per_token": 53.5476035,
+          "stddev_ns": 6718347,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 32,
+          "n_gen": 16,
+          "avg_ms_per_token": 35.14919975,
+          "stddev_ns": 3274486,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 32,
+          "n_gen": 32,
+          "avg_ms_per_token": 35.5166385,
+          "stddev_ns": 2019536,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 16,
+          "avg_ms_per_token": 36.352715625,
+          "stddev_ns": 2571188,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 36.7627965625,
+          "stddev_ns": 2500853,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 96,
+          "n_gen": 16,
+          "avg_ms_per_token": 37.75405925,
+          "stddev_ns": 1067946,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 96,
+          "n_gen": 32,
+          "avg_ms_per_token": 38.43474096875,
+          "stddev_ns": 18937524,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 32,
+          "n_gen": 16,
+          "avg_ms_per_token": 36.177671875,
+          "stddev_ns": 3170106,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 32,
+          "n_gen": 32,
+          "avg_ms_per_token": 37.11043046875,
+          "stddev_ns": 9802489,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 64,
+          "n_gen": 16,
+          "avg_ms_per_token": 38.1973804375,
+          "stddev_ns": 7469654,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 38.4722298125,
+          "stddev_ns": 11468162,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 96,
+          "n_gen": 16,
+          "avg_ms_per_token": 39.424818625,
+          "stddev_ns": 8697071,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 96,
+          "n_gen": 32,
+          "avg_ms_per_token": 40.10966553125,
+          "stddev_ns": 3211801,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 32,
+          "n_gen": 16,
+          "avg_ms_per_token": 37.802772875,
+          "stddev_ns": 8170255,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 32,
+          "n_gen": 32,
+          "avg_ms_per_token": 38.316291625,
+          "stddev_ns": 8749657,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 64,
+          "n_gen": 16,
+          "avg_ms_per_token": 38.6669673125,
+          "stddev_ns": 12555434,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 39.50356678125,
+          "stddev_ns": 4776947,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 96,
+          "n_gen": 16,
+          "avg_ms_per_token": 40.3528081875,
+          "stddev_ns": 8231424,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 96,
+          "n_gen": 32,
+          "avg_ms_per_token": 41.63613815625,
+          "stddev_ns": 32090677,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 59500,
+      "max_mc": 84800,
+      "current_limits": [
+        0,
+        6,
+        8
+      ],
+      "guard_ok": true
+    },
+    "threads-reverse-q4-off": {
+      "rows": [
+        {
+          "threads": 4,
+          "depth": 32,
+          "n_gen": 16,
+          "avg_ms_per_token": 34.2444559375,
+          "stddev_ns": 3384654,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 32,
+          "n_gen": 32,
+          "avg_ms_per_token": 35.6881218125,
+          "stddev_ns": 9017005,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 64,
+          "n_gen": 16,
+          "avg_ms_per_token": 36.4020106875,
+          "stddev_ns": 2892404,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 36.91521825,
+          "stddev_ns": 3600282,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 96,
+          "n_gen": 16,
+          "avg_ms_per_token": 38.251867375,
+          "stddev_ns": 9554642,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 96,
+          "n_gen": 32,
+          "avg_ms_per_token": 39.3152493125,
+          "stddev_ns": 10733179,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 32,
+          "n_gen": 16,
+          "avg_ms_per_token": 36.50574575,
+          "stddev_ns": 4805185,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 32,
+          "n_gen": 32,
+          "avg_ms_per_token": 36.77632253125,
+          "stddev_ns": 2279016,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 64,
+          "n_gen": 16,
+          "avg_ms_per_token": 37.6896386875,
+          "stddev_ns": 1753475,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 38.5356904375,
+          "stddev_ns": 4451705,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 96,
+          "n_gen": 16,
+          "avg_ms_per_token": 39.54713625,
+          "stddev_ns": 2066228,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 96,
+          "n_gen": 32,
+          "avg_ms_per_token": 39.96498459375,
+          "stddev_ns": 6652173,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 32,
+          "n_gen": 16,
+          "avg_ms_per_token": 35.917061125,
+          "stddev_ns": 2857355,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 32,
+          "n_gen": 32,
+          "avg_ms_per_token": 36.3146130625,
+          "stddev_ns": 16906045,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 16,
+          "avg_ms_per_token": 37.243263875,
+          "stddev_ns": 7585661,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 37.4878611875,
+          "stddev_ns": 4373307,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 96,
+          "n_gen": 16,
+          "avg_ms_per_token": 38.586386625,
+          "stddev_ns": 4548072,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 96,
+          "n_gen": 32,
+          "avg_ms_per_token": 39.148316375,
+          "stddev_ns": 2823259,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 32,
+          "n_gen": 16,
+          "avg_ms_per_token": 48.436295625,
+          "stddev_ns": 1892149,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 32,
+          "n_gen": 32,
+          "avg_ms_per_token": 49.0203284375,
+          "stddev_ns": 404349,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 64,
+          "n_gen": 16,
+          "avg_ms_per_token": 51.01512625,
+          "stddev_ns": 665795,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 51.6035786875,
+          "stddev_ns": 339859,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 96,
+          "n_gen": 16,
+          "avg_ms_per_token": 53.1474820625,
+          "stddev_ns": 847828,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 96,
+          "n_gen": 32,
+          "avg_ms_per_token": 53.6886871875,
+          "stddev_ns": 861179,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 58950,
+      "max_mc": 84800,
+      "current_limits": [
+        0,
+        6,
+        8
+      ],
+      "guard_ok": true
+    },
+    "threads-q4head-off": {
+      "rows": [
+        {
+          "threads": 1,
+          "depth": 32,
+          "n_gen": 16,
+          "avg_ms_per_token": 34.1740649375,
+          "stddev_ns": 1189820,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 32,
+          "n_gen": 32,
+          "avg_ms_per_token": 34.64461378125,
+          "stddev_ns": 195045,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 64,
+          "n_gen": 16,
+          "avg_ms_per_token": 36.713907,
+          "stddev_ns": 6631252,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 38.454082125,
+          "stddev_ns": 639381,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 96,
+          "n_gen": 16,
+          "avg_ms_per_token": 40.1071433125,
+          "stddev_ns": 10599641,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 96,
+          "n_gen": 32,
+          "avg_ms_per_token": 41.560595625,
+          "stddev_ns": 351826,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 32,
+          "n_gen": 16,
+          "avg_ms_per_token": 30.5025753125,
+          "stddev_ns": 1290018,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 32,
+          "n_gen": 32,
+          "avg_ms_per_token": 30.88561584375,
+          "stddev_ns": 804936,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 16,
+          "avg_ms_per_token": 31.987538375,
+          "stddev_ns": 699265,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 32.32865003125,
+          "stddev_ns": 581411,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 96,
+          "n_gen": 16,
+          "avg_ms_per_token": 33.4743531875,
+          "stddev_ns": 2122834,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 96,
+          "n_gen": 32,
+          "avg_ms_per_token": 34.01681509375,
+          "stddev_ns": 528799,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 32,
+          "n_gen": 16,
+          "avg_ms_per_token": 33.3840666875,
+          "stddev_ns": 25687780,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 32,
+          "n_gen": 32,
+          "avg_ms_per_token": 32.46604759375,
+          "stddev_ns": 484086,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 64,
+          "n_gen": 16,
+          "avg_ms_per_token": 33.5659400625,
+          "stddev_ns": 2874324,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 33.8767403125,
+          "stddev_ns": 5538684,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 96,
+          "n_gen": 16,
+          "avg_ms_per_token": 34.9612095,
+          "stddev_ns": 5202359,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 96,
+          "n_gen": 32,
+          "avg_ms_per_token": 35.391831375,
+          "stddev_ns": 5505496,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 32,
+          "n_gen": 16,
+          "avg_ms_per_token": 33.2721709375,
+          "stddev_ns": 12019491,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 32,
+          "n_gen": 32,
+          "avg_ms_per_token": 34.13618028125,
+          "stddev_ns": 7387634,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 64,
+          "n_gen": 16,
+          "avg_ms_per_token": 35.018146,
+          "stddev_ns": 6033927,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 34.8550833125,
+          "stddev_ns": 4719528,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 96,
+          "n_gen": 16,
+          "avg_ms_per_token": 36.1609488125,
+          "stddev_ns": 5993321,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 96,
+          "n_gen": 32,
+          "avg_ms_per_token": 36.3952420625,
+          "stddev_ns": 11740460,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 59500,
+      "max_mc": 84800,
+      "current_limits": [
+        0,
+        6,
+        8
+      ],
+      "guard_ok": true
+    },
+    "threads-reverse-q4head-off": {
+      "rows": [
+        {
+          "threads": 4,
+          "depth": 32,
+          "n_gen": 16,
+          "avg_ms_per_token": 30.6820930625,
+          "stddev_ns": 4570517,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 32,
+          "n_gen": 32,
+          "avg_ms_per_token": 31.41044303125,
+          "stddev_ns": 23651132,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 64,
+          "n_gen": 16,
+          "avg_ms_per_token": 32.8441861875,
+          "stddev_ns": 474383,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 33.16910696875,
+          "stddev_ns": 1707832,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 96,
+          "n_gen": 16,
+          "avg_ms_per_token": 33.869627375,
+          "stddev_ns": 971841,
+          "backend": "CPU"
+        },
+        {
+          "threads": 4,
+          "depth": 96,
+          "n_gen": 32,
+          "avg_ms_per_token": 34.17635415625,
+          "stddev_ns": 2449075,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 32,
+          "n_gen": 16,
+          "avg_ms_per_token": 32.589816875,
+          "stddev_ns": 1871008,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 32,
+          "n_gen": 32,
+          "avg_ms_per_token": 33.15515578125,
+          "stddev_ns": 32281481,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 64,
+          "n_gen": 16,
+          "avg_ms_per_token": 33.2433885625,
+          "stddev_ns": 2601235,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 33.70624909375,
+          "stddev_ns": 3401393,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 96,
+          "n_gen": 16,
+          "avg_ms_per_token": 34.465057875,
+          "stddev_ns": 3736473,
+          "backend": "CPU"
+        },
+        {
+          "threads": 3,
+          "depth": 96,
+          "n_gen": 32,
+          "avg_ms_per_token": 34.797268875,
+          "stddev_ns": 2834151,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 32,
+          "n_gen": 16,
+          "avg_ms_per_token": 31.066413375,
+          "stddev_ns": 5039931,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 32,
+          "n_gen": 32,
+          "avg_ms_per_token": 31.21896528125,
+          "stddev_ns": 1054592,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 16,
+          "avg_ms_per_token": 32.281476125,
+          "stddev_ns": 871817,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 32.69713015625,
+          "stddev_ns": 2025488,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 96,
+          "n_gen": 16,
+          "avg_ms_per_token": 33.53339325,
+          "stddev_ns": 1192979,
+          "backend": "CPU"
+        },
+        {
+          "threads": 2,
+          "depth": 96,
+          "n_gen": 32,
+          "avg_ms_per_token": 34.1554996875,
+          "stddev_ns": 4744542,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 32,
+          "n_gen": 16,
+          "avg_ms_per_token": 35.5168025625,
+          "stddev_ns": 1237978,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 32,
+          "n_gen": 32,
+          "avg_ms_per_token": 36.04456878125,
+          "stddev_ns": 192946,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 64,
+          "n_gen": 16,
+          "avg_ms_per_token": 37.9386815625,
+          "stddev_ns": 1135516,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 64,
+          "n_gen": 32,
+          "avg_ms_per_token": 38.446916125,
+          "stddev_ns": 768486,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 96,
+          "n_gen": 16,
+          "avg_ms_per_token": 40.2782453125,
+          "stddev_ns": 1245157,
+          "backend": "CPU"
+        },
+        {
+          "threads": 1,
+          "depth": 96,
+          "n_gen": 32,
+          "avg_ms_per_token": 40.8502985625,
+          "stddev_ns": 850089,
+          "backend": "CPU"
+        }
+      ],
+      "start_mc": 58950,
+      "max_mc": 82600,
+      "current_limits": [
+        0,
+        8
+      ],
+      "guard_ok": true
+    }
+  },
+  "bench_improvements": {
+    "q4-off": [
+      0.383648111509889,
+      0.3745523832991914
+    ],
+    "q4-on": [
+      0.34974263621619206,
+      0.3406786696907833
+    ],
+    "q4head-off": [
+      0.46050139472235674,
+      0.4463407098527997
+    ],
+    "q4head-on": [
+      0.4472889985146836,
+      0.43892375528964844
+    ],
+    "q4km-off": [
+      0.33795338713434664,
+      0.3302630750111992
+    ],
+    "q4km-on": [
+      0.31735910289326796,
+      0.3075437942439314
+    ]
+  },
+  "selected": [
+    "q4-off",
+    "q4head-off"
+  ],
+  "selected_threads": {
+    "q4-off": {
+      "threads": 2,
+      "ns_per_token": {
+        "1": 50671710.166666664,
+        "2": 37129589.97569445,
+        "3": 38304502.13194445,
+        "4": 38248336.347222224
+      }
+    },
+    "q4head-off": {
+      "threads": 2,
+      "ns_per_token": {
+        "1": 38040610.815972224,
+        "2": 32413950.100694444,
+        "3": 33833114.75694445,
+        "4": 33896221.777777776
+      }
+    }
+  },
+  "pcm": {
+    "pcm-q8-stock": {
+      "calls": 15,
+      "all_success": true,
+      "all_q8_equal": true,
+      "native_sum_s": 16.535779129999998,
+      "decode_ms": 59.40424614285715
+    },
+    "pcm-q8-off": {
+      "calls": 15,
+      "all_success": true,
+      "all_q8_equal": true,
+      "native_sum_s": 16.300225841,
+      "decode_ms": 59.01487654421768
+    },
+    "pcm-q4-off": {
+      "calls": 15,
+      "all_success": true,
+      "all_q8_equal": false,
+      "native_sum_s": 11.77651099,
+      "decode_ms": 36.97635525
+    },
+    "pcm-q4head-off": {
+      "calls": 15,
+      "all_success": true,
+      "all_q8_equal": false,
+      "native_sum_s": 11.156334031,
+      "decode_ms": 32.571065045454546
+    }
+  },
+  "cases": {
+    "pilot-q8-before": {
+      "raw_path": "results/optimization/opt3/decoder-q4-20261117-01/pilot-q8-before",
+      "source_commit": "51861570f7c8ab17d50e45df65f6c6d387714f1b",
+      "worker_sha256": "e6751ba4034ab2fb03f618ff40000be4a152ec6fa55dba179394528357cc7b60",
+      "complete": true,
+      "operational_valid": true,
+      "limit_verified": true,
+      "failed_calls": 0,
+      "input_drops": 0,
+      "source_count": 6,
+      "audio": {
+        "sha256": "532ab9a6a56f91e3d2a0ebd9b953ad4fce07dbbe197324580a057c537d02b779",
+        "frames": 969980,
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "duration_s": 60.62375
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 17,
+        "deletions": 29,
+        "insertions": 4,
+        "errors": 50,
+        "cer": 0.17857142857142858
+      },
+      "max_growth_gap_s": {
+        "n": 6,
+        "mean": 3.774633950812587,
+        "p50": 4.234115998027846,
+        "p95": 4.696583149954677,
+        "max": 4.696583149954677
+      },
+      "scheduler": {
+        "mode": "adaptive",
+        "policy": "budgeted",
+        "version": "budgeted-headroom-v2",
+        "cost_model": "audio",
+        "protect_short_followup": false,
+        "decisions": {
+          "minimum_audio": 673,
+          "first_offered": 14,
+          "offered": 5,
+          "busy": 284,
+          "call_budget": 258,
+          "cost_budget": 126
+        }
+      },
+      "first_s": {
+        "n": 6,
+        "mean": 2.327985385500981,
+        "p50": 2.4552830040454863,
+        "p95": 3.5279881709488095,
+        "max": 3.5279881709488095
+      },
+      "first4_s": {
+        "n": 6,
+        "mean": 2.8400350939969843,
+        "p50": 2.577879458037205,
+        "p95": 3.708044448960571,
+        "max": 3.708044448960571
+      },
+      "file_end_s": {
+        "n": 6,
+        "mean": 1.2890807669949713,
+        "p50": 1.08278951098211,
+        "p95": 2.4648116430100053,
+        "max": 2.4648116430100053
+      },
+      "source_delays": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_s": 1.2647534660063684,
+          "first4_s": 2.4776382070267573,
+          "file_end_s": 2.0937473780475555,
+          "max_growth_gap_s": 1.6623631059657784,
+          "growth_updates_during_input": 5
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_s": 2.4552830040454863,
+          "first4_s": 2.577879458037205,
+          "file_end_s": 2.3527169650113215,
+          "max_growth_gap_s": 4.580634088022634,
+          "growth_updates_during_input": 12
+        },
+        {
+          "id": "fleurs-14278025439467391857",
+          "first_s": 2.787118328960613,
+          "first4_s": 2.993075186961331,
+          "file_end_s": 2.4648116430100053,
+          "max_growth_gap_s": 2.787118328960613,
+          "growth_updates_during_input": 14
+        },
+        {
+          "id": "zeroth-137_003_2281",
+          "first_s": 2.8442046199990436,
+          "first4_s": 2.970265474991873,
+          "file_end_s": 0.7260146939428509,
+          "max_growth_gap_s": 4.696583149954677,
+          "growth_updates_during_input": 20
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_s": 3.5279881709488095,
+          "first4_s": 3.708044448960571,
+          "file_end_s": -0.9855955890240153,
+          "max_growth_gap_s": 4.234115998027846,
+          "growth_updates_during_input": 73
+        },
+        {
+          "id": "zeroth-104_003_1661",
+          "first_s": 1.0885647230455646,
+          "first4_s": 2.313307788004167,
+          "file_end_s": 1.08278951098211,
+          "max_growth_gap_s": 4.6869890339439735,
+          "growth_updates_during_input": 23
+        }
+      ],
+      "final_calls": 15,
+      "partial_calls": 15,
+      "submitted_requests": 34,
+      "coalesced_requests": 4,
+      "final_compute_s": 30.254119101678953,
+      "total_compute_s": 43.30842947855126,
+      "partial_compute_s": 13.054310376872309,
+      "same_previous_final": true,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 294,
+        "normalized_revisions": 9,
+        "retracted_suffix_characters": 18,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 54,
+        "segments_with_display": 15,
+        "revised_segments": 8,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 12,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 10,
+          "whole_partial_is_final_prefix": 6,
+          "partial_characters": 71,
+          "retained_prefix_characters": 63,
+          "retained_prefix_fraction": 0.8873239436619719
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 1.0051963230611622,
+          "p50": 0.0,
+          "p95": 4.633914364967495,
+          "max": 4.633914364967495
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "rss_max_mib": 1723.84375,
+      "thermal": {
+        "start_mc": 76550,
+        "max_mc": 84250,
+        "end_mc": 73800,
+        "current_limits": [
+          0,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 75,
+          "mean": 2351759633.0666666,
+          "p50": 2400020480,
+          "p95": 2400033792,
+          "max": 2400037120
+        }
+      },
+      "settings": {
+        "gap_s": 0.0,
+        "vad_preprocess": "rms26-floor80",
+        "vad_threshold": 0.3,
+        "vad_max_speech_s": 5,
+        "partial_after_s": 0.6,
+        "partial_interval_s": 4.0,
+        "partial_mode": "adaptive",
+        "partial_min_new_s": 0.8,
+        "partial_tail_margin_s": 0.2,
+        "adaptive_policy": "budgeted",
+        "partial_cost_model": "audio",
+        "partial_budget_s": 3.0,
+        "protect_short_followup": false,
+        "partial_max_calls": 2,
+        "partial_followup_s": null,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "token_stream": true,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "source_details": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_job_id": 0,
+          "first_job_kind": "partial",
+          "first_s": 1.2647534660063684,
+          "first4_s": 2.4776382070267573,
+          "file_end_s": 2.0937473780475555,
+          "max_growth_gap_s": 1.6623631059657784,
+          "first_owned_start_offset_s": 0.22,
+          "first_from_owned_start_s": 1.0447534660063684,
+          "first4_from_owned_start_s": 2.257638207026757,
+          "first_text": "어"
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_job_id": 3,
+          "first_job_kind": "partial",
+          "first_s": 2.4552830040454863,
+          "first4_s": 2.577879458037205,
+          "file_end_s": 2.3527169650113215,
+          "max_growth_gap_s": 4.580634088022634,
+          "first_owned_start_offset_s": 0.916,
+          "first_from_owned_start_s": 1.5392830040454863,
+          "first4_from_owned_start_s": 1.661879458037205,
+          "first_text": "체"
+        },
+        {
+          "id": "fleurs-14278025439467391857",
+          "first_job_id": 8,
+          "first_job_kind": "partial",
+          "first_s": 2.787118328960613,
+          "first4_s": 2.993075186961331,
+          "file_end_s": 2.4648116430100053,
+          "max_growth_gap_s": 2.787118328960613,
+          "first_owned_start_offset_s": 1.0124375,
+          "first_from_owned_start_s": 1.7746808289606129,
+          "first4_from_owned_start_s": 1.980637686961331,
+          "first_text": "지"
+        },
+        {
+          "id": "zeroth-137_003_2281",
+          "first_job_id": 12,
+          "first_job_kind": "partial",
+          "first_s": 2.8442046199990436,
+          "first4_s": 2.970265474991873,
+          "file_end_s": 0.7260146939428509,
+          "max_growth_gap_s": 4.696583149954677,
+          "first_owned_start_offset_s": 0.7844375,
+          "first_from_owned_start_s": 2.0597671199990435,
+          "first4_from_owned_start_s": 2.1858279749918728,
+          "first_text": "땅"
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_job_id": 16,
+          "first_job_kind": "partial",
+          "first_s": 3.5279881709488095,
+          "first4_s": 3.708044448960571,
+          "file_end_s": -0.9855955890240153,
+          "max_growth_gap_s": 4.234115998027846,
+          "first_owned_start_offset_s": 2.4640625,
+          "first_from_owned_start_s": 1.0639256709488096,
+          "first4_from_owned_start_s": 1.2439819489605712,
+          "first_text": "린"
+        },
+        {
+          "id": "zeroth-104_003_1661",
+          "first_job_id": 29,
+          "first_job_kind": "partial",
+          "first_s": 1.0885647230455646,
+          "first4_s": 2.313307788004167,
+          "file_end_s": 1.08278951098211,
+          "max_growth_gap_s": 4.6869890339439735,
+          "first_owned_start_offset_s": 0.0640625,
+          "first_from_owned_start_s": 1.0245022230455647,
+          "first4_from_owned_start_s": 2.249245288004167,
+          "first_text": "이"
+        }
+      ],
+      "first_owned_s": {
+        "n": 6,
+        "mean": 1.4178187188343143,
+        "p50": 1.0639256709488096,
+        "p95": 2.0597671199990435,
+        "max": 2.0597671199990435
+      },
+      "first4_owned_s": {
+        "n": 6,
+        "mean": 1.929868427330317,
+        "p50": 1.980637686961331,
+        "p95": 2.257638207026757,
+        "max": 2.257638207026757
+      },
+      "initial_partial_calls": 10,
+      "initial_pcm_s": {
+        "n": 10,
+        "mean": 0.612,
+        "p50": 0.612,
+        "p95": 0.612,
+        "max": 0.612
+      },
+      "initial_native_ttft_s": {
+        "n": 10,
+        "mean": 0.37378181580000003,
+        "p50": 0.3611126,
+        "p95": 0.433982114,
+        "max": 0.433982114
+      },
+      "initial_empty_outputs": 0,
+      "empty_partial_outputs": 0,
+      "final_queue_wait_s": {
+        "n": 15,
+        "mean": 0.5599567686750864,
+        "p50": 0.07052511093206704,
+        "p95": 3.1111384180840105,
+        "max": 3.1111384180840105
+      },
+      "replay_cpu_s": 116.579573107,
+      "final_native_s": 30.245566642,
+      "final_decode_s": 14.38309091,
+      "final_decode_calls": 229,
+      "final_token_count": 229,
+      "final_encoder_s": 9.062180282,
+      "final_prefill_s": 4.808587888000001,
+      "tpot": {
+        "mean_ms": 64.18942268691589,
+        "distribution_ms": {
+          "n": 214,
+          "mean": 64.18942268691586,
+          "p50": 63.230388000000026,
+          "p95": 73.10313199999996,
+          "max": 95.22785199999984
+        },
+        "calls": 15,
+        "scope": "최종 성공 호출의 첫 토큰 이후 native callback 간격. sampling/이전 callback 포함, EOG/첫 토큰 준비 제외. GUI 간격이 아님."
+      },
+      "final_signature_sha256": "5b73388f6919ff11951d85a71508a4e59184c645bd99d4f95fefa2c2b0e6fd08"
+    },
+    "pilot-q4-off": {
+      "raw_path": "results/optimization/opt3/decoder-q4-20261117-01/pilot-q4-off",
+      "source_commit": "51861570f7c8ab17d50e45df65f6c6d387714f1b",
+      "worker_sha256": "bedbbbb68bc5940b07300566e4abd4d23578e15562b3539216c77b1241326a5c",
+      "complete": true,
+      "operational_valid": false,
+      "limit_verified": true,
+      "failed_calls": 1,
+      "input_drops": 0,
+      "source_count": 6,
+      "audio": {
+        "sha256": "532ab9a6a56f91e3d2a0ebd9b953ad4fce07dbbe197324580a057c537d02b779",
+        "frames": 969980,
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "duration_s": 60.62375
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 24,
+        "deletions": 31,
+        "insertions": 3,
+        "errors": 58,
+        "cer": 0.20714285714285716
+      },
+      "max_growth_gap_s": {
+        "n": 6,
+        "mean": 3.8898709398228672,
+        "p50": 3.9942683710251004,
+        "p95": 4.6482922250870615,
+        "max": 4.6482922250870615
+      },
+      "scheduler": {
+        "mode": "adaptive",
+        "policy": "budgeted",
+        "version": "budgeted-headroom-v2",
+        "cost_model": "audio",
+        "protect_short_followup": false,
+        "decisions": {
+          "minimum_audio": 762,
+          "first_offered": 14,
+          "offered": 10,
+          "call_budget": 451,
+          "busy": 123
+        }
+      },
+      "first_s": {
+        "n": 6,
+        "mean": 2.0676551794849023,
+        "p50": 1.9154792419401927,
+        "p95": 3.5194532329682247,
+        "max": 3.5194532329682247
+      },
+      "first4_s": {
+        "n": 6,
+        "mean": 2.3483030534991993,
+        "p50": 2.088544314021245,
+        "p95": 3.708302410994655,
+        "max": 3.708302410994655
+      },
+      "file_end_s": {
+        "n": 6,
+        "mean": 0.49136543118224124,
+        "p50": 0.24496532304212337,
+        "p95": 1.5405417190166188,
+        "max": 1.5405417190166188
+      },
+      "source_delays": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_s": 1.2168885340215638,
+          "first4_s": 2.3368865669472143,
+          "file_end_s": 1.5405417190166188,
+          "max_growth_gap_s": 1.7859562850091608,
+          "growth_updates_during_input": 6
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_s": 1.9154792419401927,
+          "first4_s": 1.9918875200208275,
+          "file_end_s": 0.9732251480380079,
+          "max_growth_gap_s": 4.620230041909963,
+          "growth_updates_during_input": 26
+        },
+        {
+          "id": "fleurs-14278025439467391857",
+          "first_s": 1.9771788699943578,
+          "first4_s": 2.088544314021245,
+          "file_end_s": 0.9638039770135656,
+          "max_growth_gap_s": 3.6622445329558104,
+          "growth_updates_during_input": 13
+        },
+        {
+          "id": "zeroth-137_003_2281",
+          "first_s": 1.7311410979665816,
+          "first4_s": 1.8045561179816723,
+          "file_end_s": 0.21546321895439036,
+          "max_growth_gap_s": 4.628234182950109,
+          "growth_updates_during_input": 25
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_s": 3.5194532329682247,
+          "first4_s": 3.708302410994655,
+          "file_end_s": -0.9898067989712587,
+          "max_growth_gap_s": 3.9942683710251004,
+          "growth_updates_during_input": 70
+        },
+        {
+          "id": "zeroth-104_003_1661",
+          "first_s": 2.0457901000184933,
+          "first4_s": 2.159641391029581,
+          "file_end_s": 0.24496532304212337,
+          "max_growth_gap_s": 4.6482922250870615,
+          "growth_updates_during_input": 24
+        }
+      ],
+      "final_calls": 15,
+      "partial_calls": 21,
+      "submitted_requests": 39,
+      "coalesced_requests": 3,
+      "final_compute_s": 22.726322458824143,
+      "total_compute_s": 37.27115442790091,
+      "partial_compute_s": 14.544831969076768,
+      "same_previous_final": false,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 319,
+        "normalized_revisions": 11,
+        "retracted_suffix_characters": 32,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 1,
+        "suppressed_prefix_tokens": 87,
+        "segments_with_display": 15,
+        "revised_segments": 9,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 17,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 11,
+          "whole_partial_is_final_prefix": 7,
+          "partial_characters": 96,
+          "retained_prefix_characters": 87,
+          "retained_prefix_fraction": 0.90625
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.7128854534904738,
+          "p50": 0.0,
+          "p95": 2.7517819110071287,
+          "max": 2.7517819110071287
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "rss_max_mib": 1195.890625,
+      "thermal": {
+        "start_mc": 75450,
+        "max_mc": 84250,
+        "end_mc": 78200,
+        "current_limits": [
+          0,
+          8
+        ]
+      },
+      "final_native_s": 22.714953107000003,
+      "final_decode_s": 8.978979445,
+      "final_decode_calls": 231,
+      "final_encoder_s": 8.742516142000001,
+      "final_prefill_s": 3.5809598249999994,
+      "final_token_count": 231,
+      "failed_requests": [
+        {
+          "job_id": 34,
+          "kind": "partial",
+          "segment_id": 13,
+          "start_frame": 840640,
+          "end_frame": 850432,
+          "status": "failed",
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          }
+        }
+      ],
+      "analysis_scope": "부분 실패를 포함한 원시. 기존 공통 집계 사용, 실패 후보의 CER/지연은 진단값이며 채택 불가.",
+      "tpot": {
+        "mean_ms": 40.06291919444445,
+        "distribution_ms": {
+          "n": 216,
+          "mean": 40.062919194444426,
+          "p50": 39.59097499999986,
+          "p95": 42.78757600000005,
+          "max": 74.30928699999994
+        },
+        "calls": 15,
+        "scope": "최종 성공 호출의 첫 토큰 이후 native callback 간격. sampling/이전 callback 포함, EOG/첫 토큰 준비 제외. GUI 간격이 아님."
+      },
+      "final_signature_sha256": "c5aaa4a5fffd8b5ec7ece67ee46ff2aab58c9564926211c6259bb0c4838d8e0b"
+    },
+    "pilot-q4head-off": {
+      "raw_path": "results/optimization/opt3/decoder-q4-20261117-01/pilot-q4head-off",
+      "source_commit": "51861570f7c8ab17d50e45df65f6c6d387714f1b",
+      "worker_sha256": "69a02fa237137ae22ef1b4df340fa8601dad6e35f78655253ed78d0371a0e57b",
+      "complete": true,
+      "operational_valid": false,
+      "limit_verified": true,
+      "failed_calls": 1,
+      "input_drops": 0,
+      "source_count": 6,
+      "audio": {
+        "sha256": "532ab9a6a56f91e3d2a0ebd9b953ad4fce07dbbe197324580a057c537d02b779",
+        "frames": 969980,
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "duration_s": 60.62375
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 24,
+        "deletions": 31,
+        "insertions": 4,
+        "errors": 59,
+        "cer": 0.21071428571428572
+      },
+      "max_growth_gap_s": {
+        "n": 6,
+        "mean": 3.95459215134227,
+        "p50": 4.378974959021434,
+        "p95": 4.624644363997504,
+        "max": 4.624644363997504
+      },
+      "scheduler": {
+        "mode": "adaptive",
+        "policy": "budgeted",
+        "version": "budgeted-headroom-v2",
+        "cost_model": "audio",
+        "protect_short_followup": false,
+        "decisions": {
+          "minimum_audio": 776,
+          "first_offered": 14,
+          "offered": 10,
+          "call_budget": 471,
+          "busy": 89
+        }
+      },
+      "first_s": {
+        "n": 6,
+        "mean": 2.052689574183741,
+        "p50": 1.906608111062087,
+        "p95": 3.470438113994895,
+        "max": 3.470438113994895
+      },
+      "first4_s": {
+        "n": 6,
+        "mean": 2.3161163031960217,
+        "p50": 2.0564106240561237,
+        "p95": 3.626698877057059,
+        "max": 3.626698877057059
+      },
+      "file_end_s": {
+        "n": 6,
+        "mean": 0.2697885978220336,
+        "p50": 0.10239414896815902,
+        "p95": 1.4057112580165265,
+        "max": 1.4057112580165265
+      },
+      "source_delays": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_s": 1.2070334560703486,
+          "first4_s": 2.3129028769908473,
+          "file_end_s": 1.4057112580165265,
+          "max_growth_gap_s": 1.825081854988821,
+          "growth_updates_during_input": 6
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_s": 1.906608111062087,
+          "first4_s": 1.9690706240478901,
+          "file_end_s": 0.6869709310047334,
+          "max_growth_gap_s": 4.5995226700324565,
+          "growth_updates_during_input": 26
+        },
+        {
+          "id": "fleurs-14278025439467391857",
+          "first_s": 1.9629838289618498,
+          "first4_s": 2.0564106240561237,
+          "file_end_s": 0.8086950449571013,
+          "max_growth_gap_s": 3.707495100912638,
+          "growth_updates_during_input": 15
+        },
+        {
+          "id": "zeroth-137_003_2281",
+          "first_s": 1.7262011109916493,
+          "first4_s": 1.7892386060040444,
+          "file_end_s": -0.015577864041553369,
+          "max_growth_gap_s": 4.591833959100768,
+          "growth_updates_during_input": 29
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_s": 3.470438113994895,
+          "first4_s": 3.626698877057059,
+          "file_end_s": -1.369461931972765,
+          "max_growth_gap_s": 4.378974959021434,
+          "growth_updates_during_input": 72
+        },
+        {
+          "id": "zeroth-104_003_1661",
+          "first_s": 2.0428728240216145,
+          "first4_s": 2.1423762110201636,
+          "file_end_s": 0.10239414896815902,
+          "max_growth_gap_s": 4.624644363997504,
+          "growth_updates_during_input": 28
+        }
+      ],
+      "final_calls": 15,
+      "partial_calls": 22,
+      "submitted_requests": 39,
+      "coalesced_requests": 2,
+      "final_compute_s": 21.082955776131712,
+      "total_compute_s": 34.74973279819824,
+      "partial_compute_s": 13.666777022066526,
+      "same_previous_final": false,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 328,
+        "normalized_revisions": 13,
+        "retracted_suffix_characters": 39,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 1,
+        "suppressed_prefix_tokens": 82,
+        "segments_with_display": 15,
+        "revised_segments": 9,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 18,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 12,
+          "whole_partial_is_final_prefix": 6,
+          "partial_characters": 99,
+          "retained_prefix_characters": 82,
+          "retained_prefix_fraction": 0.8282828282828283
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.7557552678543809,
+          "p50": 0.0,
+          "p95": 2.759332860005088,
+          "max": 2.759332860005088
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "rss_max_mib": 1157.34375,
+      "thermal": {
+        "start_mc": 61150,
+        "max_mc": 84250,
+        "end_mc": 72150,
+        "current_limits": [
+          0,
+          8
+        ]
+      },
+      "final_native_s": 21.074273851999997,
+      "final_decode_s": 7.730876198000001,
+      "final_decode_calls": 232,
+      "final_encoder_s": 8.51165132,
+      "final_prefill_s": 3.5156820630000007,
+      "final_token_count": 232,
+      "failed_requests": [
+        {
+          "job_id": 34,
+          "kind": "partial",
+          "segment_id": 13,
+          "start_frame": 840640,
+          "end_frame": 850432,
+          "status": "failed",
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          }
+        }
+      ],
+      "analysis_scope": "부분 실패를 포함한 원시. 기존 공통 집계 사용, 실패 후보의 CER/지연은 진단값이며 채택 불가.",
+      "tpot": {
+        "mean_ms": 34.38708286635945,
+        "distribution_ms": {
+          "n": 217,
+          "mean": 34.387082866359435,
+          "p50": 34.2386480000001,
+          "p95": 36.71497499999998,
+          "max": 48.23053399999999
+        },
+        "calls": 15,
+        "scope": "최종 성공 호출의 첫 토큰 이후 native callback 간격. sampling/이전 callback 포함, EOG/첫 토큰 준비 제외. GUI 간격이 아님."
+      },
+      "final_signature_sha256": "83c4f5d53e6adbddc4020b0af6c0e79487cc8a31612b3737f1ab1e22ab9323c7"
+    },
+    "pilot-q8-after": {
+      "raw_path": "results/optimization/opt3/decoder-q4-20261117-01/pilot-q8-after",
+      "source_commit": "51861570f7c8ab17d50e45df65f6c6d387714f1b",
+      "worker_sha256": "334de8701f39ffc7a55478a7130a75ce7dbaaa97a9e3eaffee94055fd075986a",
+      "complete": true,
+      "operational_valid": true,
+      "limit_verified": true,
+      "failed_calls": 0,
+      "input_drops": 0,
+      "source_count": 6,
+      "audio": {
+        "sha256": "532ab9a6a56f91e3d2a0ebd9b953ad4fce07dbbe197324580a057c537d02b779",
+        "frames": 969980,
+        "sample_rate_hz": 16000,
+        "channels": 1,
+        "sample_width_bytes": 2,
+        "duration_s": 60.62375
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "substitutions": 17,
+        "deletions": 29,
+        "insertions": 4,
+        "errors": 50,
+        "cer": 0.17857142857142858
+      },
+      "max_growth_gap_s": {
+        "n": 6,
+        "mean": 3.758903495527804,
+        "p50": 4.222805113065988,
+        "p95": 4.677632678998634,
+        "max": 4.677632678998634
+      },
+      "scheduler": {
+        "mode": "adaptive",
+        "policy": "budgeted",
+        "version": "budgeted-headroom-v2",
+        "cost_model": "audio",
+        "protect_short_followup": false,
+        "decisions": {
+          "minimum_audio": 729,
+          "first_offered": 14,
+          "offered": 8,
+          "busy": 234,
+          "call_budget": 375
+        }
+      },
+      "first_s": {
+        "n": 6,
+        "mean": 2.1313407521328576,
+        "p50": 2.1270768459718674,
+        "p95": 3.52944863794837,
+        "max": 3.52944863794837
+      },
+      "first4_s": {
+        "n": 6,
+        "mean": 2.640678400455353,
+        "p50": 2.4794238290051,
+        "p95": 3.7096187869086847,
+        "max": 3.7096187869086847
+      },
+      "file_end_s": {
+        "n": 6,
+        "mean": 1.2882948392992835,
+        "p50": 1.0510024889651675,
+        "p95": 2.056691123009659,
+        "max": 2.056691123009659
+      },
+      "source_delays": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_s": 1.2624187999172136,
+          "first4_s": 2.4794238290051,
+          "file_end_s": 2.056691123009659,
+          "max_growth_gap_s": 1.66027410204988,
+          "growth_updates_during_input": 5
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_s": 2.4145432270132003,
+          "first4_s": 2.5377748799044637,
+          "file_end_s": 2.0088794239489367,
+          "max_growth_gap_s": 4.492174183018506,
+          "growth_updates_during_input": 14
+        },
+        {
+          "id": "fleurs-14278025439467391857",
+          "first_s": 2.365695836015046,
+          "first4_s": 2.550810158943758,
+          "file_end_s": 1.7551739219408482,
+          "max_growth_gap_s": 3.045477271073498,
+          "growth_updates_during_input": 12
+        },
+        {
+          "id": "zeroth-137_003_2281",
+          "first_s": 2.1270768459718674,
+          "first4_s": 2.249572657986544,
+          "file_end_s": 0.7992955699795843,
+          "max_growth_gap_s": 4.455057624960318,
+          "growth_updates_during_input": 20
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_s": 3.52944863794837,
+          "first4_s": 3.7096187869086847,
+          "file_end_s": 0.058726507951504914,
+          "max_growth_gap_s": 4.222805113065988,
+          "growth_updates_during_input": 73
+        },
+        {
+          "id": "zeroth-104_003_1661",
+          "first_s": 1.0888611659314478,
+          "first4_s": 2.316870089983567,
+          "file_end_s": 1.0510024889651675,
+          "max_growth_gap_s": 4.677632678998634,
+          "growth_updates_during_input": 23
+        }
+      ],
+      "final_calls": 15,
+      "partial_calls": 18,
+      "submitted_requests": 37,
+      "coalesced_requests": 4,
+      "final_compute_s": 29.025387158850208,
+      "total_compute_s": 44.71836885449011,
+      "partial_compute_s": 15.6929816956399,
+      "same_previous_final": true,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 296,
+        "normalized_revisions": 9,
+        "retracted_suffix_characters": 18,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 0,
+        "suppressed_prefix_tokens": 79,
+        "segments_with_display": 15,
+        "revised_segments": 8,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 15,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 10,
+          "whole_partial_is_final_prefix": 8,
+          "partial_characters": 85,
+          "retained_prefix_characters": 82,
+          "retained_prefix_fraction": 0.9647058823529412
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.5861075751516702,
+          "p50": 0.0,
+          "p95": 2.785974072990939,
+          "max": 2.785974072990939
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "rss_max_mib": 1724.28125,
+      "thermal": {
+        "start_mc": 72700,
+        "max_mc": 83700,
+        "end_mc": 77100,
+        "current_limits": [
+          0,
+          8
+        ],
+        "arm_clock_hz": {
+          "n": 74,
+          "mean": 2378202120.6486487,
+          "p50": 2400023808,
+          "p95": 2400033792,
+          "max": 2400033792
+        }
+      },
+      "settings": {
+        "gap_s": 0.0,
+        "vad_preprocess": "rms26-floor80",
+        "vad_threshold": 0.3,
+        "vad_max_speech_s": 5,
+        "partial_after_s": 0.6,
+        "partial_interval_s": 4.0,
+        "partial_mode": "adaptive",
+        "partial_min_new_s": 0.8,
+        "partial_tail_margin_s": 0.2,
+        "adaptive_policy": "budgeted",
+        "partial_cost_model": "audio",
+        "partial_budget_s": 3.0,
+        "protect_short_followup": false,
+        "partial_max_calls": 2,
+        "partial_followup_s": null,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "token_stream": true,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "source_details": [
+        {
+          "id": "fleurs-14945311428794587488",
+          "first_job_id": 0,
+          "first_job_kind": "partial",
+          "first_s": 1.2624187999172136,
+          "first4_s": 2.4794238290051,
+          "file_end_s": 2.056691123009659,
+          "max_growth_gap_s": 1.66027410204988,
+          "first_owned_start_offset_s": 0.22,
+          "first_from_owned_start_s": 1.0424187999172136,
+          "first4_from_owned_start_s": 2.2594238290050996,
+          "first_text": "어"
+        },
+        {
+          "id": "zeroth-121_003_2904",
+          "first_job_id": 3,
+          "first_job_kind": "partial",
+          "first_s": 2.4145432270132003,
+          "first4_s": 2.5377748799044637,
+          "file_end_s": 2.0088794239489367,
+          "max_growth_gap_s": 4.492174183018506,
+          "first_owned_start_offset_s": 0.916,
+          "first_from_owned_start_s": 1.4985432270132004,
+          "first4_from_owned_start_s": 1.6217748799044638,
+          "first_text": "체"
+        },
+        {
+          "id": "fleurs-14278025439467391857",
+          "first_job_id": 8,
+          "first_job_kind": "partial",
+          "first_s": 2.365695836015046,
+          "first4_s": 2.550810158943758,
+          "file_end_s": 1.7551739219408482,
+          "max_growth_gap_s": 3.045477271073498,
+          "first_owned_start_offset_s": 1.0124375,
+          "first_from_owned_start_s": 1.353258336015046,
+          "first4_from_owned_start_s": 1.5383726589437579,
+          "first_text": "지"
+        },
+        {
+          "id": "zeroth-137_003_2281",
+          "first_job_id": 12,
+          "first_job_kind": "partial",
+          "first_s": 2.1270768459718674,
+          "first4_s": 2.249572657986544,
+          "file_end_s": 0.7992955699795843,
+          "max_growth_gap_s": 4.455057624960318,
+          "first_owned_start_offset_s": 0.7844375,
+          "first_from_owned_start_s": 1.3426393459718673,
+          "first4_from_owned_start_s": 1.465135157986544,
+          "first_text": "땅"
+        },
+        {
+          "id": "fleurs-14941719265693149665",
+          "first_job_id": 17,
+          "first_job_kind": "partial",
+          "first_s": 3.52944863794837,
+          "first4_s": 3.7096187869086847,
+          "file_end_s": 0.058726507951504914,
+          "max_growth_gap_s": 4.222805113065988,
+          "first_owned_start_offset_s": 2.4640625,
+          "first_from_owned_start_s": 1.0653861379483702,
+          "first4_from_owned_start_s": 1.245556286908685,
+          "first_text": "린"
+        },
+        {
+          "id": "zeroth-104_003_1661",
+          "first_job_id": 32,
+          "first_job_kind": "partial",
+          "first_s": 1.0888611659314478,
+          "first4_s": 2.316870089983567,
+          "file_end_s": 1.0510024889651675,
+          "max_growth_gap_s": 4.677632678998634,
+          "first_owned_start_offset_s": 0.0640625,
+          "first_from_owned_start_s": 1.0247986659314479,
+          "first4_from_owned_start_s": 2.252807589983567,
+          "first_text": "이"
+        }
+      ],
+      "first_owned_s": {
+        "n": 6,
+        "mean": 1.221174085466191,
+        "p50": 1.0653861379483702,
+        "p95": 1.4985432270132004,
+        "max": 1.4985432270132004
+      },
+      "first4_owned_s": {
+        "n": 6,
+        "mean": 1.730511733788686,
+        "p50": 1.5383726589437579,
+        "p95": 2.2594238290050996,
+        "max": 2.2594238290050996
+      },
+      "initial_partial_calls": 10,
+      "initial_pcm_s": {
+        "n": 10,
+        "mean": 0.612,
+        "p50": 0.612,
+        "p95": 0.612,
+        "max": 0.612
+      },
+      "initial_native_ttft_s": {
+        "n": 10,
+        "mean": 0.3583257488,
+        "p50": 0.357318021,
+        "p95": 0.37113619,
+        "max": 0.37113619
+      },
+      "initial_empty_outputs": 0,
+      "empty_partial_outputs": 0,
+      "final_queue_wait_s": {
+        "n": 15,
+        "mean": 0.5565143645352995,
+        "p50": 0.07091925910208374,
+        "p95": 2.4457433419302106,
+        "max": 2.4457433419302106
+      },
+      "replay_cpu_s": 120.96379086099998,
+      "final_native_s": 29.016903223,
+      "final_decode_s": 14.112571924000001,
+      "final_decode_calls": 229,
+      "final_token_count": 229,
+      "final_encoder_s": 8.605114171999999,
+      "final_prefill_s": 4.456090016999999,
+      "tpot": {
+        "mean_ms": 62.988015257009344,
+        "distribution_ms": {
+          "n": 214,
+          "mean": 62.98801525700941,
+          "p50": 62.54906099999991,
+          "p95": 65.59694700000018,
+          "max": 94.30376900000014
+        },
+        "calls": 15,
+        "scope": "최종 성공 호출의 첫 토큰 이후 native callback 간격. sampling/이전 callback 포함, EOG/첫 토큰 준비 제외. GUI 간격이 아님."
+      },
+      "final_signature_sha256": "5b73388f6919ff11951d85a71508a4e59184c645bd99d4f95fefa2c2b0e6fd08"
+    }
+  },
+  "checks": {
+    "pilot": {
+      "q4-off": {
+        "q8-before": {
+          "complete": false,
+          "no_failure_drop_missing": false,
+          "same_audio": true,
+          "same_final_pcm": true,
+          "cer_not_worse": false,
+          "native_reduction_5pct": true,
+          "first_p95_within010": true,
+          "gap_p95_within010": true,
+          "first4_p95_within025": true,
+          "final_p95_within025": true
+        },
+        "q8-after": {
+          "complete": false,
+          "no_failure_drop_missing": false,
+          "same_audio": true,
+          "same_final_pcm": true,
+          "cer_not_worse": false,
+          "native_reduction_5pct": true,
+          "first_p95_within010": true,
+          "gap_p95_within010": true,
+          "first4_p95_within025": true,
+          "final_p95_within025": true
+        }
+      },
+      "q4head-off": {
+        "q8-before": {
+          "complete": false,
+          "no_failure_drop_missing": false,
+          "same_audio": true,
+          "same_final_pcm": true,
+          "cer_not_worse": false,
+          "native_reduction_5pct": true,
+          "first_p95_within010": true,
+          "gap_p95_within010": true,
+          "first4_p95_within025": true,
+          "final_p95_within025": true
+        },
+        "q8-after": {
+          "complete": false,
+          "no_failure_drop_missing": false,
+          "same_audio": true,
+          "same_final_pcm": true,
+          "cer_not_worse": false,
+          "native_reduction_5pct": true,
+          "first_p95_within010": true,
+          "gap_p95_within010": true,
+          "first4_p95_within025": true,
+          "final_p95_within025": true
+        }
+      }
+    }
+  },
+  "recorded_checks": {
+    "pilot": {
+      "q4-off": {
+        "q8-before": {
+          "complete": false,
+          "no_failure_drop_missing": false,
+          "same_audio": true,
+          "same_final_pcm": false,
+          "cer_not_worse": false,
+          "native_reduction_5pct": true,
+          "first_p95_within010": true,
+          "gap_p95_within010": true,
+          "first4_p95_within025": true,
+          "final_p95_within025": true
+        },
+        "q8-after": {
+          "complete": false,
+          "no_failure_drop_missing": false,
+          "same_audio": true,
+          "same_final_pcm": false,
+          "cer_not_worse": false,
+          "native_reduction_5pct": true,
+          "first_p95_within010": true,
+          "gap_p95_within010": true,
+          "first4_p95_within025": true,
+          "final_p95_within025": true
+        }
+      },
+      "q4head-off": {
+        "q8-before": {
+          "complete": false,
+          "no_failure_drop_missing": false,
+          "same_audio": true,
+          "same_final_pcm": false,
+          "cer_not_worse": false,
+          "native_reduction_5pct": true,
+          "first_p95_within010": true,
+          "gap_p95_within010": true,
+          "first4_p95_within025": true,
+          "final_p95_within025": true
+        },
+        "q8-after": {
+          "complete": false,
+          "no_failure_drop_missing": false,
+          "same_audio": true,
+          "same_final_pcm": false,
+          "cer_not_worse": false,
+          "native_reduction_5pct": true,
+          "first_p95_within010": true,
+          "gap_p95_within010": true,
+          "first4_p95_within025": true,
+          "final_p95_within025": true
+        }
+      }
+    }
+  },
+  "check_corrections": [
+    {
+      "size": "pilot",
+      "candidate": "q4-off",
+      "control": "q8-before",
+      "changes": {
+        "same_final_pcm": [
+          false,
+          true
+        ]
+      },
+      "reason": "실패 집계의 tuple과 성공 집계의 list 차이. 원시 좌표/PCM 해시는 동일하며 JSON 자료형 정규화 후 검산."
+    },
+    {
+      "size": "pilot",
+      "candidate": "q4-off",
+      "control": "q8-after",
+      "changes": {
+        "same_final_pcm": [
+          false,
+          true
+        ]
+      },
+      "reason": "실패 집계의 tuple과 성공 집계의 list 차이. 원시 좌표/PCM 해시는 동일하며 JSON 자료형 정규화 후 검산."
+    },
+    {
+      "size": "pilot",
+      "candidate": "q4head-off",
+      "control": "q8-before",
+      "changes": {
+        "same_final_pcm": [
+          false,
+          true
+        ]
+      },
+      "reason": "실패 집계의 tuple과 성공 집계의 list 차이. 원시 좌표/PCM 해시는 동일하며 JSON 자료형 정규화 후 검산."
+    },
+    {
+      "size": "pilot",
+      "candidate": "q4head-off",
+      "control": "q8-after",
+      "changes": {
+        "same_final_pcm": [
+          false,
+          true
+        ]
+      },
+      "reason": "실패 집계의 tuple과 성공 집계의 list 차이. 원시 좌표/PCM 해시는 동일하며 JSON 자료형 정규화 후 검산."
+    }
+  ],
+  "pilot_passed": [],
+  "full100_passed": [],
+  "full100_executed": false,
+  "protected_files": 1566,
+  "protected_assets_unchanged": true,
+  "head_only_verification": {
+    "tensor_count": 311,
+    "identical_tensors": 310,
+    "changed_tensors": [
+      "output.weight"
+    ],
+    "output_tensors": [
+      {
+        "type": "Q6_K",
+        "shape": [
+          1024,
+          151936
+        ],
+        "sha256": "e2bf2a34892d299eb4787bef8640606e10ef6f4f9eef83c7ed396a2003af6a1b"
+      },
+      {
+        "type": "Q4_0",
+        "shape": [
+          1024,
+          151936
+        ],
+        "sha256": "cf818fba0c969719ec8c3e2eb2a2c694e2634b8bdbca8653da05460d98a998f5"
+      }
+    ]
+  },
+  "build_failure": {
+    "status": "failed_before_configure",
+    "source_commit": "de20c8d757fd6af71cca30b15774de0fbc3067e1",
+    "error": "KleidiAI archive was present only on Host; RP5 source archive path absent",
+    "exit_code": 1,
+    "preserved_build_directory": "runtimes/qwen3-opt/decoder-q4-20261117-01",
+    "retry_build_directory": "runtimes/qwen3-opt/decoder-q4-20261117-02"
+  },
+  "recovery": {
+    "first_campaign_status": "failed",
+    "first_campaign_error": "AssertionError()",
+    "reason": "llama-bench suppresses INFO logs by default; preserve completed timings and verify capability separately with -v",
+    "candidate_failure_recovery": "기본 Q4_0의 빈 부분 전사 1건은 실패로 보존하고 남은 후보와 Q8 뒤 대조만 실행. 판정 기준/추론 계약 변경 없음.",
+    "reused_completed": [
+      "pcm-q8-stock",
+      "pcm-q8-off",
+      "bench-0-q8-off",
+      "bench-0-q4km-off",
+      "bench-0-q4-off",
+      "bench-0-q4head-off",
+      "bench-0-q4head-on"
+    ],
+    "capability_run_excluded_from_selection": "capability-q4head-on"
+  },
+  "bench_condition_rows": 113,
+  "bench_repetitions": 373,
+  "default_changed": false,
+  "verification": {
+    "independent_host_rp_analysis_equal": true,
+    "raw_files": 305,
+    "raw_hashes_equal": true,
+    "raw_hash_manifest_sha256": "ee551630e942051391bebca2d3b561d2603c3dda8ceee7e82327d4351c3497e1",
+    "host_tests": {
+      "total": 441,
+      "passed": 437,
+      "optional_skipped": 4
+    },
+    "ruff_format_files": 173,
+    "shared_config_valid": true,
+    "m1_hashes_preserved": true
+  },
+  "input_provenance": [
+    {
+      "id": "initial",
+      "origin_worker": "results/optimization/opt3/realtime-partial-budget-20261116-01/budget300/worker.json",
+      "job_id": 224,
+      "segment_id": 95,
+      "kind": "partial",
+      "start_frame": 6515648,
+      "end_frame": 6525440,
+      "input_s": 0.612,
+      "payload_float32_sha256": "bb3c1e9284b58135a2cb2e36f04db43003e977e9fbe9f9299d89c12097312be3",
+      "path": "results/optimization/opt3/omp-wait-20261117-01/inputs/initial.wav",
+      "sha256": "28ed80d308b846deaf406a1cd73697137f8aea51903c6e063bc5dd4aa5c9370d",
+      "hypothesis": ".",
+      "token_ids": [
+        13
+      ],
+      "origin_pcm_path": "results/optimization/opt3/reprofile-q8-20261116-01/inputs/initial.wav"
+    },
+    {
+      "id": "followup",
+      "origin_worker": "results/optimization/opt3/realtime-partial-budget-20261116-01/budget300/worker.json",
+      "job_id": 324,
+      "segment_id": 139,
+      "kind": "partial",
+      "start_frame": 9231808,
+      "end_frame": 9268224,
+      "input_s": 2.276,
+      "payload_float32_sha256": "e95c740ab74678759e6cd5740c71bdff3bce497d540b8e16966808be2db732f9",
+      "path": "results/optimization/opt3/omp-wait-20261117-01/inputs/followup.wav",
+      "sha256": "8f22bf83f010036a4b769788fa9688754206be209932ef700c475b12e4f19bcc",
+      "hypothesis": "20세기의 연구에 따르면 숨겨진.",
+      "token_ids": [
+        17,
+        15,
+        41429,
+        20487,
+        20401,
+        131698,
+        19391,
+        125686,
+        125548,
+        32290,
+        69192,
+        101,
+        132269,
+        85251,
+        13
+      ],
+      "origin_pcm_path": "results/optimization/opt3/reprofile-q8-20261116-01/inputs/followup.wav"
+    },
+    {
+      "id": "final",
+      "origin_worker": "results/optimization/opt3/realtime-partial-budget-20261116-01/budget300/worker.json",
+      "job_id": 223,
+      "segment_id": 94,
+      "kind": "final",
+      "start_frame": 6427072,
+      "end_frame": 6499136,
+      "input_s": 4.504,
+      "payload_float32_sha256": "8986843fa7a27b14e804581d2ee09412142214bd901e5dfad6c592b9076ce25c",
+      "path": "results/optimization/opt3/omp-wait-20261117-01/inputs/final.wav",
+      "sha256": "b63956ef8ab7a67610ad4e7147c936b274bbbc5c0b25eefd4b08b93c24497df9",
+      "hypothesis": "지각은 가까운 쪽이 약 70km, 먼 쪽이 약 100km 두께입니다.",
+      "token_ids": [
+        21329,
+        126317,
+        33704,
+        35509,
+        124667,
+        93672,
+        3315,
+        103,
+        121,
+        12802,
+        23872,
+        121,
+        220,
+        22,
+        15,
+        16017,
+        11,
+        137768,
+        3315,
+        103,
+        121,
+        12802,
+        23872,
+        121,
+        220,
+        16,
+        15,
+        15,
+        16017,
+        129419,
+        125705,
+        78952,
+        13
+      ],
+      "origin_pcm_path": "results/optimization/opt3/reprofile-q8-20261116-01/inputs/final.wav"
+    }
+  ],
+  "input_manifest_hashes": {
+    "pilot.jsonl": "b9dabb0e87600d49c6b9d07184eee5170497db7dd1f15fe6a52f186583444b80",
+    "full100.jsonl": "75ba1226dddfa0defb97f6fdbba89c31a762b541beb41299cdb0ac8490c45a06",
+    "evaluation.jsonl": "3786c1f0c4db495bb80fb43e59874a703cc30b864135707090644b6b5baa1c2e"
+  },
+  "builds": {
+    "off": {
+      "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+      "machine": "aarch64",
+      "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "library_sha256": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a",
+      "cmake_cache_sha256": "148889fcf775dd90252deb186cc13af748afa88c4fa8693bbd5d3174d941968f",
+      "cpu_build_options": {
+        "GGML_CPU_KLEIDIAI": "OFF",
+        "GGML_CPU_REPACK": "ON",
+        "GGML_OPENMP": "ON"
+      },
+      "engine_libraries": {
+        "libmtmd.so": "c61896e89406a4914e90c655c249923a59c92331cc9f2e173b07b8dc3c3406f2",
+        "libggml.so": "073f0532659bc16b8ce49f6880abad861775a56db1f5703afdefa9950f26ffdd",
+        "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+        "libllama-bench-impl.so": "eee7f2fb0f83de6158a65aae140038760979e09d32e2b3bd96a843932e6b644c",
+        "libllama.so": "b42accf26bc4ea65d0f0cdc9f5cff6a6c3967062abf81e97eb0c6d6c46247609",
+        "libggml-cpu.so": "fe01bf722d521962877dc5c23c7a851cae3413ac8ff2221c610ffba53493c82e",
+        "libllama-common.so": "dc802fa555e96f4d546ed059732f49a6a05873ce1c4876220d91dea4fbee8dd5"
+      }
+    },
+    "on": {
+      "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+      "machine": "aarch64",
+      "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "library_sha256": "7f87375abc8b8363b00e7a61e1827f0c1c54b0542271dccfcc2f35fa0946c5a5",
+      "cmake_cache_sha256": "b0098dd3e6851e32acd0b7ab6dd200bf0f7611a8babd42189619bd28baeac1a1",
+      "cpu_build_options": {
+        "GGML_CPU_KLEIDIAI": "ON",
+        "GGML_CPU_REPACK": "ON",
+        "GGML_OPENMP": "ON"
+      },
+      "engine_libraries": {
+        "libmtmd.so": "5f71d922586e45b128684a3fd4e75d9199a65aa4997fc1f2260390293a182b5f",
+        "libggml.so": "27dd8f03bf07dfb6aeae913ddc9307e26892f9854298e317b155466efcbcfb41",
+        "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+        "libllama-bench-impl.so": "87ef90ab30a381337ca5087d8b22e52d5134e2828238be9ac8eb127927e34332",
+        "libllama.so": "ef250803b8599782db8cb1aa352f86139367dcbfd38fd4f2597b499e358e6bac",
+        "libggml-cpu.so": "eaa22b7bb1edc26448f96f0cdc6164da351dcd8693219ec34cfcfadf18713a3d",
+        "libllama-common.so": "7dd472139aeb5b538b751e1d28418d40e9c109ac3ed2121ed47289b2f226eb21"
+      }
+    }
+  },
+  "compiler_comparison": {
+    "optimization_isa_flags": {
+      "original": [
+        "-O3",
+        "-fPIC",
+        "-mcpu=cortex-a76+crc+crypto+dotprod+noi8mm+nosve+nosme",
+        "-fopenmp"
+      ],
+      "off": [
+        "-O3",
+        "-fPIC",
+        "-mcpu=cortex-a76+crc+crypto+dotprod+noi8mm+nosve+nosme",
+        "-fopenmp"
+      ],
+      "on": [
+        "-O3",
+        "-fPIC",
+        "-mcpu=cortex-a76+crc+crypto+dotprod+noi8mm+nosve+nosme",
+        "-fopenmp"
+      ]
+    },
+    "same_optimization_isa_flags": true,
+    "initial_probe": "original uses Ninja/compile_commands.json; flags.make lookup did not apply"
+  },
+  "scope": "동일 6개 개발 자료·1배속·열/클럭 제한 포함. 두 후보 모두 CER 악화·부분 호출 실패로 탈락. 최종 PCM 15개는 같음. 실패 후보 지연은 진단값. GUI·독립 holdout·자연 대화·100개·OpenMP OFF/poll은 미측정."
+}

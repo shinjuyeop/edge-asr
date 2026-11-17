@@ -48,6 +48,8 @@ WAV 1배속 입력과 **RP5 USB 마이크**로 부분·확정 자막을 확인�
 
 [Q8 prefetch](results/summaries/optimization/prefetch-q8-20261117.md)와 [FP16 내적 결합](results/summaries/optimization/encoder-f16-20261117.md)은 선별 기준에 미달해 기본에 적용하지 않았습니다. 최신 [FP16 합성곱4×4 타일](results/summaries/optimization/conv-tile-20261117.md)은 원래 무계측 실행 대비 **encoder13.2~13.3%·전체4.0~4.5% 감소**와 전사/token 동등성을 확인해 후속 후보로 채택했습니다. 후속 [같은100개1배속 앞뒤 대조](results/summaries/optimization/conv-realtime-20261117.md)도 통과했습니다. 최종 전사·CER11.12%를 유지하며 확정 추론2.7~4.1% 감소, 첫4자 p95 **6.95~7.06→6.61초**, 갱신 공백 **5.16~5.17→4.84초**를 확인했습니다. 첫 자막 p95 개선은17~77ms로 작았고 열 제한을 포함한 순차 대조입니다. 선택 후보로 보존하며 공유 기본은 유지합니다.
 
+최신 [OpenMP 대기 정책](results/summaries/optimization/omp-wait-20261117.md)은 일관된 개선이 없어 미지정을 유지했습니다. 후속 [Q4_0·출력층·KleidiAI 비교](results/summaries/optimization/decoder-q4-20261117.md)는 실제 토큰 간격을 Q8 약63~64ms에서40ms/34ms로 줄였습니다. 그러나 같은6개에서 CER17.86→20.71/21.07%·빈 부분 전사 실패각1건으로 채택하지 않았습니다. 두 Q4 후보의 선택은 KleidiAI OFF·생성2T였으며 공유 Q8·2/3T를 유지합니다.
+
 문제 발견과 선택의 흐름은 [ASR 최적화 과정](docs/research/optimization_history.md), 현재 채택한 구성과 최신 결과는 [현재 상태](docs/status.md)에 정리했습니다. [자막 비교 영상](results/summaries/optimization/realtime-video-20261111.md)은 저장된 로그의 동기 재생 자료입니다.
 
 ## 처음 시작하기

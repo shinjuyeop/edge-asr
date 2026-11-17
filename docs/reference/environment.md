@@ -138,3 +138,9 @@ native ORT 버전 확인이 필요할 때만 `env --probe-runtime`을 사용합�
 `runtimes/qwen3-opt/conv-realtime-20261117-02/`는 원래 CPU 라이브러리·고정 upstream·컴파일 옵션을 재사용한 FP16 합성곱1~6청크/4×4 후보입니다. `build.json`의 원본/후보 SHA-256과 선택 명세를 검증하며 기존 엔진·모델·Python 패키지는 보존했습니다. 첫1~5청크 빌드는 `conv-realtime-20261117-01`에 별도로 남깁니다. [연속 입력 검증](../../results/summaries/optimization/conv-realtime-20261117.md).
 
 보호 파일의 실행 전후 대조는 RP5에서 수행합니다. Host/RP5 사이의 공유 자산 대조에서는 장비별 Python 버전·경로가 다른 `.venv/pyvenv.cfg`를 제외하며 이를 덮어쓰지 않습니다. 실측 소스는 해당 Git 커밋의 내용으로 검증하고 이후 종료 처리 보완과 구분합니다.
+
+## Q4_0·출력층·KleidiAI 비교 자산 — 2026-11-17
+
+기존 Host 양자화 환경과 고정 BF16 원본에서 `models/qwen3-opt/decoder-q4-20261117-01/`에 text Q4_0 두 모델을 만들었습니다. 기본 출력층은 Q6_K이며 다른 후보는 출력층만 Q4_0입니다. 311개 tensor 중 나머지310개의 바이트가 같고 기존 Q8 audio를 참조합니다. 원본·도구·후보 SHA와 실제 출력층 dtype·차원은 각 모델 명세에 기록합니다.
+
+RP5의 `runtimes/qwen3-opt/decoder-q4-20261117-02/{off,on}/{engine,bridge}/`는 고정 llama.cpp 커밋과 기존 O3·Cortex-A76 ISA·OpenMP/repack ON을 유지한 KleidiAI OFF/ON 대조입니다. ON은 보존한 KleidiAI1.32.0 archive를 검증해 사용했고 실제 DOTPROD Q4 커널·CPU_KLEIDIAI buffer 선택을 확인했습니다. 첫 `-01` 빌드 경로는 의존성 전송 누락으로 컴파일 전에 중단된 기록으로 보존합니다. 기존 가상환경·엔진·공유 설정은 교체하지 않았습니다. [실측·해시·판정](../../results/summaries/optimization/decoder-q4-20261117.md).
