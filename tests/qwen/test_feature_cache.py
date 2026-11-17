@@ -83,6 +83,13 @@ int main(){
     auto huge=signal(96000);std::vector<float> bigout(601*128);
     assert(cache.run(huge.data(),601,key,bigout.data(),1,original));assert(cache.frames==0);
     cache.release();assert(cache.bytes()==0);
+    // 이전 capacity의 두 배보다 조금 작은 성장도 영구 메모리 상한을 넘지 않는다.
+    for(int n:{24000,49000,79000,80000}){
+        auto pcm=signal(n);int frames=n/160+1;std::vector<float> out(frames*128);
+        assert(cache.run(pcm.data(),frames,key,out.data(),1,original));
+        assert(cache.bytes()<=690112);
+    }
+    cache.release();assert(cache.bytes()==0);
 }
 """
         with tempfile.TemporaryDirectory() as temporary:

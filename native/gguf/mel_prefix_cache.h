@@ -19,6 +19,11 @@ struct MelPrefixCache {
         if (!mode || count < 1 || count > max_frames || key.size() > 28000) {
             reset(); return compute(input, count, out);
         }
+        // 증분 assign의 기하급수 capacity 증가 대신 고정 상한을 한 번 예약한다.
+        // PCM 321600 + Mel 256512 + 설정 112000 = 690112 bytes 이하.
+        pcm.reserve(size_t(max_frames - 1) * hop + fft);
+        features.reserve(size_t(max_frames) * mel);
+        parameters.reserve(28000);
         const size_t length = size_t(count - 1) * hop + fft;
         if (parameters.size() != key.size() || std::memcmp(parameters.data(), key.data(), key.size()*4) || count < frames) reset();
         size_t common = 0;
