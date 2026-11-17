@@ -24,7 +24,8 @@ std::atomic<int> mode{0}, active{0};
 struct Totals {
     std::atomic<uint64_t> calls{0}, accepted{0}, cpu_ns{0}, wall_ns{0};
 };
-Totals totals[2][3]; // m800/m208, worker0/1/2
+constexpr int64_t shapes[] = {800, 2400, 4000, 208, 624, 1040}; // 합성곱2/3의 1/3/5청크
+Totals totals[6][3];
 std::atomic<uint64_t> other{0};
 uint64_t now(clockid_t clock) {
     timespec t{};
@@ -57,8 +58,10 @@ API int edge_conv_begin(int next) {
 
 API bool llamafile_sgemm(ARGS) {
     ++active;
+    int shape = -1;
+    for (int i = 0; i < 6; ++i) if (m == shapes[i]) shape = i;
     const bool target = p && !p->use_ref && p->nth == 3 && p->ith >= 0 && p->ith < 3 &&
-        (m == 800 || m == 208) && n == 480 && k == 4320 &&
+        shape >= 0 && n == 480 && k == 4320 &&
         lda == k && ldb == k && ldc == m &&
         at == GGML_TYPE_F16 && bt == GGML_TYPE_F16 && ct == GGML_TYPE_F32;
     if (!target) {
@@ -70,7 +73,7 @@ API bool llamafile_sgemm(ARGS) {
     const int selected = mode.load();
     const auto wall = now(CLOCK_MONOTONIC), cpu = now(CLOCK_THREAD_CPUTIME_ID);
     const bool ok = selected == 1 ? edge_conv6(PASS) : selected == 2 ? edge_conv4(PASS) : original()(PASS);
-    auto& t = totals[m == 800 ? 0 : 1][p->ith];
+    auto& t = totals[shape][p->ith];
     t.cpu_ns += now(CLOCK_THREAD_CPUTIME_ID) - cpu;
     t.wall_ns += now(CLOCK_MONOTONIC) - wall;
     ++t.calls;
@@ -84,12 +87,12 @@ API const char* edge_conv_result() {
     static std::string out;
     out = "{\"mode\":" + std::to_string(mode.load()) + ",\"other_forwarded\":" + std::to_string(other.load()) + ",\"groups\":[";
     bool first = true;
-    for (int s = 0; s < 2; ++s) for (int w = 0; w < 3; ++w) {
+    for (int s = 0; s < 6; ++s) for (int w = 0; w < 3; ++w) {
         const auto& t = totals[s][w];
         if (!t.calls.load()) continue;
         if (!first) out += ',';
         first = false;
-        out += "{\"m\":" + std::to_string(s == 0 ? 800 : 208) + ",\"n\":480,\"k\":4320,\"worker\":" + std::to_string(w) +
+        out += "{\"m\":" + std::to_string(shapes[s]) + ",\"n\":480,\"k\":4320,\"worker\":" + std::to_string(w) +
             ",\"calls\":" + std::to_string(t.calls.load()) + ",\"accepted\":" + std::to_string(t.accepted.load()) +
             ",\"cpu_ns\":" + std::to_string(t.cpu_ns.load()) + ",\"wall_ns\":" + std::to_string(t.wall_ns.load()) + "}";
     }
