@@ -510,3 +510,15 @@ Host ELF 모의 검사 뒤 main commit/push→RP5 동기화→별도 빌드 순�
 첫 `decode-q8-20261116-01`은 upstream 헤더의 미사용 static 함수 경고를 오류로 처리해 별도 라이브러리 빌드에서 중단됐습니다. 합성 커널/모델 추론은 실행하지 않았고 기존 자산 불변을 확인했습니다. 기존 엔진과 같은 `-Wno-unused-function`을 추가한 새 경로·실행 ID **`decode-q8-20261116-02`**에서 같은 수치·교차 선별 조건으로 다시 진행합니다. 후보 계산 코드와 운영 엔진은 변경하지 않습니다.
 
 [실측 결과](../../results/summaries/optimization/decode-q8-20261116.md): 새 빌드에서 합성 72조건 출력 비트/경계와 실제 36호출 전사/token 동등성을 확인했습니다. 두 교차 구간의 후속/확정 decode 감소 0.001%·0.414%, 전체 native 감소 −0.164%·0.286%로 선별 미달입니다. 최고 73.8°C·현재 열 제한 0이며 기본 적용·연속 확대는 하지 않았습니다. 다음은 CPU/캐시와 작업 분할 진단입니다.
+
+## Q8 CPU·캐시·작업자 진단 — 2026-11-17 사전 조건
+
+Q8 정수 누적 분리의 개선이 작아, 기존 `kernel_trace.cpp`에 선택 PMU 그룹과 작업자 집계를 추가합니다. 새 실행/빌드는 `pmu-q8-20261117-01`이며 기존 모델·엔진·bridge·설정은 보존합니다. RP5의 `armv8_cortex_a76` PMU type9·`perf_event_paranoid=2`에서 현재 스레드의 사용자 공간 cycle/instruction/L1D refill 계측이 가능했습니다. 이 사전 확인은 ASR 성능 측정이 아닙니다. 패키지 설치·권한 변경 없이 진행합니다.
+
+기존 최초0.612초·후속2.276초·확정4.504초 PCM/해시와 Q8 text/audio·생성2T/음성·prefill3T·고정 prefix KV를 유지합니다. 공통 reproduction 평가기에12라운드×3개=36호출을 공급합니다. 모드는 `off`(추적 끔), `timing`(시간/작업자), `cache`(PMU bank1), `stall`(bank2)이며 준비1~4라운드는 이 순서, 분석5~12는 **off/timing/cache/stall/stall/cache/timing/off**입니다. 모델1회 로딩·호출 타이머 밖2초 휴지이며 연속 입력 성능 평가가 아닙니다.
+
+기존 operator trace의 `output.weight` `[1024,151936,1,1]`와 고정 upstream GEMV의 `stride=ne01` 전달을 확인해 해당 shape를 분류합니다. 모든 호출의 전사/token ID를 원래 참조와 대조하고, 시간/PMU 모드의 같은 PCM별 함수 호출 수·MAC 합계·출력층 MAC·작업자 합계 동등성을 검사합니다. PMU 읽기 실패0·모든 커널 valid count 일치·각 그룹 running/enabled 99.9% 이상·집계 넘침0을 유효 조건으로 둡니다. 계측 오버헤드와 스레드별 작업량을 관측하며, 관측 순서/온도 차이 때문에 작은 시간 차이를 최적화 효과로 취급하지 않습니다.
+
+작업자별 cycle/stall·CPU 시간 합계는 wall time이나 사용자 지연이 아닙니다. PMU 읽기는 커널 타이머 밖, native 전체 타이머 안이며 PMU 구간에는 소량의 wrapper 계측 명령도 들어갑니다. 두 bank의 지표는 동시 관측이 아니고 frontend/backend stall은 합산 가능한 시간 분할이 아닙니다. L2 refill/bus는 cache hierarchy의 단서이며 DRAM 바이트·대역폭을 직접 측정하지 않습니다. [Linux 계측 ABI](https://man7.org/linux/man-pages/man2/perf_event_open.2.html), [권한 범위](https://docs.kernel.org/admin-guide/perf-security.html), [Arm Cortex-A76 이벤트 정의](https://github.com/ARM-software/data/blob/master/pmu/cortex-a76.json)를 근거로 해석합니다.
+
+Host ELF 전달·실패/회복·그룹 자원 정리·차분/coverage 검사 뒤 main push→RP5 동기화→별도 빌드/실측 순서입니다. 기존 단일 추론 잠금·600초/4GiB operational guard·시작 온도 대기 없는 관측·기본 열 보호·부팅/보존 해시 검사를 유지합니다. 실패는 원시로 보존하고, 미측정 새 CER/연속 표시 지연/가속률을 채우지 않습니다. 이번 진단만으로 운영 기본을 변경하지 않습니다.

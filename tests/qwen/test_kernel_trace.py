@@ -43,6 +43,8 @@ extern "C" void quant(const float* a,void* b,int64_t,int64_t n) {
 extern "C" void ggml_gemm_q4_K_8x4_q8_K(int n,float* out,size_t,const void*,const void*,int rows,int cols) {
     const auto reset=reinterpret_cast<int(*)(int)>(dlsym(RTLD_DEFAULT,"edge_kernel_trace_begin"));
     assert(reset(1)==-1); // 활성 단계/작업 중 초기화를 거부한다.
+    const auto pmu=reinterpret_cast<int(*)(int,int)>(dlsym(RTLD_DEFAULT,"edge_kernel_trace_set_pmu"));
+    assert(pmu(1,9)==-1);
     *out=float(n*rows*cols);
 }
 extern "C" int32_t llama_process(llama_context*,llama_process_type,llama_batch_ext*) {
@@ -61,6 +63,15 @@ extern "C" int32_t mtmd_helper_decode_image_chunk(mtmd_context*,llama_context* c
 }
 extern "C" int32_t fixture_drive() {
     return mtmd_helper_decode_image_chunk(nullptr,nullptr,nullptr,nullptr,0,0,512,nullptr,nullptr,nullptr);
+}
+extern "C" void ggml_gemv_q8_0_4x4_q8_0(int n,float* out,size_t,const void*,const void*,int rows,int cols) {
+    *out=float(n*rows*cols);
+}
+extern "C" int32_t fixture_output() {
+    float a=0,b=0;
+    ggml_gemv_q8_0_4x4_q8_0(1024,&a,151936,nullptr,nullptr,1,4);
+    ggml_gemv_q8_0_4x4_q8_0(1024,&b,1024,nullptr,nullptr,1,4);
+    return int(a+b);
 }
 """)
             trace = directory / "trace.so"
@@ -100,6 +111,26 @@ for on in (0,1,0,1):
     value=engine.fixture_drive()
     record=json.loads(t.edge_kernel_trace_result())
     records.append(dict(value=value,trace=record))
+assert t.edge_kernel_trace_set_pmu(3,9)==-1
+assert t.edge_kernel_trace_set_pmu(1,-1)==-1
+assert t.edge_kernel_trace_set_output_shape(0,151936)==-1
+assert t.edge_kernel_trace_set_output_shape(1024,151936)==0
+# 존재하지 않는 PMU type: 계측 실패를 0회/0비용으로 숨기지 않아야 한다.
+assert t.edge_kernel_trace_set_pmu(1,2147483647)==0
+assert t.edge_kernel_trace_begin(1)==0
+assert engine.fixture_output()==8192
+failed=json.loads(t.edge_kernel_trace_result())
+assert {g['function'] for g in failed['groups']}=={'q8_output_gemv4','ggml_gemv_q8_0_4x4_q8_0'}
+for g in failed['groups']:
+    assert g['pmu']['invalid_calls']==g['calls']==1 and g['pmu']['valid_calls']==0
+    assert g['pmu']['errno']>0
+assert t.edge_kernel_trace_set_pmu(0,0)==0
+assert t.edge_kernel_trace_set_output_shape(0,0)==0
+assert t.edge_kernel_trace_begin(1)==0
+assert engine.fixture_output()==8192
+recovered=json.loads(t.edge_kernel_trace_result())
+assert len(recovered['groups'])==1 and recovered['groups'][0]['calls']==2
+assert 'pmu' not in recovered['groups'][0]
 print(json.dumps(records))
 """
             completed = subprocess.run(
@@ -128,6 +159,9 @@ print(json.dumps(records))
                     self.assertGreater(row["worker_wall_ns"], 0)
                     self.assertGreater(row["worker_cpu_ns"], 0)
                     self.assertEqual(row["work"], 3072 if row["work_unit"] == "MAC" else 384)
+                    self.assertEqual(len(row["workers"]), 3)
+                    self.assertEqual(sum(w["work"] for w in row["workers"]), row["work"])
+                    self.assertEqual(sum(w["cpu_ns"] for w in row["workers"]), row["worker_cpu_ns"])
 
 
 if __name__ == "__main__":

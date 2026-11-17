@@ -76,6 +76,10 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 
 [실제96호출](../results/summaries/optimization/kernel-q4-20261113.md)에서 같은 모델의 기존 전사/token ID와 단계별 연산량을 유지했습니다.3T에서도 Q4 prefill의 입력 변환과 GEMM 비용 증가를 확인했으며, 커널 내부 unpack/scale/dot은 후속 계측 범위입니다.
 
+선택 PMU 진단은 [gguf/perf_counters.h](gguf/perf_counters.h)의 Linux `perf_event_open` 그룹을 사용합니다. `edge_kernel_trace_set_pmu(bank, type)`에서 bank 0은 끔, 1은 cycle/instruction/L1D·L2D access/refill, 2는 cycle/instruction/frontend·backend stall/bus/L1D TLB refill입니다. type은 장비 PMU sysfs에서 읽으며 권한·sysctl을 변경하지 않습니다. 현재 작업자 스레드의 사용자 공간만 세고, pinned 그룹의 enabled/running 시간·실패 횟수/errno를 함께 반환합니다. 실패·불완전 계측은 성능 0으로 해석하지 않습니다. 모드 변경 시 각 작업자는 다음 최상위 커널에서 이전 그룹을 닫습니다.
+
+`edge_kernel_trace_set_output_shape(width, stride)`는 별도로 확인한 출력층 모양의 Q8 GEMV만 분리하며 `(0, 0)`은 분류 끔입니다. 작업자별 호출·MAC·CPU 합계도 최대64개 슬롯까지 기록하고 초과를 표시합니다. PMU 읽기는 기존 커널 타이머 밖에 있지만 native 전체 비용에는 들어갑니다. 두 PMU bank는 서로 다른 호출에서 관측하며 cache/bus 횟수를 DRAM 대역폭으로 환산하지 않습니다. 기존 시간 전용·끔 API와 운영 설정은 유지합니다. [PMU 사전 조건](../docs/research/qwen_realtime.md#q8-cpu캐시작업자-진단--2026-11-17-사전-조건).
+
 ## Q8 GEMV 누적 분리 후보
 
 [gguf/q8_gemv.cpp](gguf/q8_gemv.cpp)는 고정 Q8 4x4 GEMV의 int32 누적을 둘로 나누는 선택 실험입니다. 기존 엔진·가중치 배치를 보존하며 decode와 prefill 잔여 행에 사용되는 해당 심볼만 대체합니다. 기본 모드는 원래 함수 전달입니다. `EDGE_ASR_Q8_CPU`에 이미 로딩된 기존 CPU 라이브러리 경로를 지정하고, 별도 실험 자식에만 새 라이브러리를 `LD_PRELOAD`로 지정합니다. `edge_q8_gemv_begin(0/1)`은 직렬 모델 호출 사이에서만 사용하며 미지원 ARM 빌드에서 켬을 거부합니다. 전달/대체 횟수는 `edge_q8_gemv_calls(0/1)`로 확인합니다.
