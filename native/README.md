@@ -89,4 +89,3 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 빌드는 기존 엔진의 `build.ninja`에 기록된 ARM ISA·`-O3` 조건과 고정 upstream의 `ggml/include`·`ggml/src`·`ggml/src/ggml-cpu` 헤더를 사용하며 output은 새 경로에 둡니다. 원래 라이브러리와 합성 입력의 float 비트 일치부터 검증합니다. 공유 설정에는 연결하지 않으며 [선별 조건](../docs/research/qwen_realtime.md#q8-gemv-정수-누적-분리--2026-11-16-사전-조건)에 따라 실제 전사/token 동등성과 비용을 비교합니다.
 
 [RP5 선별 결과](../results/summaries/optimization/decode-q8-20261116.md)는 합성72조건·실제36호출 동등성을 유지했지만 속도 기준에 미달했습니다. 운영 기본에는 적용하지 않으며 후보 소스·별도 빌드·부정적 결과를 재현용으로 보존합니다.
-
