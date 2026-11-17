@@ -427,4 +427,6 @@ class Qwen3GGUFAdapter:
         if self.handle is not None:
             self.library.edge_gguf_destroy(self.handle)
             self.handle = None
+        if self.convolution:
+            self.convolution.close()
         self.last_result_metadata = None

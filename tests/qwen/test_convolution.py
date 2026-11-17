@@ -66,3 +66,17 @@ class ConvolutionTests(unittest.TestCase):
             tile.library.edge_conv_result.return_value = value
             with self.assertRaises(RuntimeError):
                 tile.result()
+
+    def test_close_restores_default_and_can_be_retried_when_active(self):
+        tile = ConvolutionTile.__new__(ConvolutionTile)
+        library = tile.library = Mock()
+        library.edge_conv_begin.return_value = -1
+        with self.assertRaises(RuntimeError):
+            tile.close()
+        self.assertIs(tile.library, library)
+        library.edge_conv_begin.return_value = 0
+        tile.close()
+        library.edge_conv_begin.assert_called_with(0)
+        self.assertIsNone(tile.library)
+        tile.close()
+        self.assertEqual(library.edge_conv_begin.call_count, 2)

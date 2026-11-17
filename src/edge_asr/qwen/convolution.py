@@ -64,3 +64,10 @@ class ConvolutionTile:
         if result.get("mode") != 2 or any(g["calls"] != g["accepted"] for g in result["groups"]):
             raise RuntimeError("합성곱 후보 모드·커널 수락 검증 실패")
         return result
+
+    def close(self):
+        # 같은 프로세스에서 나중에 기본 어댑터를 열어도 선택 모드가 남지 않게 한다.
+        if self.library is not None:
+            if self.library.edge_conv_begin(0) != 0:
+                raise RuntimeError("실행 중인 합성곱 후보는 닫을 수 없습니다.")
+            self.library = None

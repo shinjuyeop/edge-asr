@@ -109,6 +109,8 @@ class GGUFTests(unittest.TestCase):
             self.assertEqual(adapter.last_result_metadata["convolution"], tile.result.return_value)
         self.assertEqual(tile.begin.call_count, 2)
         self.assertEqual(tile.result.call_count, 2)
+        adapter.close()
+        tile.close.assert_called_once()
 
     def enable_tokens(self):
         self.build["features"] = ["token_callback_v1"]
