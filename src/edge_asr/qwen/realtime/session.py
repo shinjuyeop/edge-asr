@@ -42,6 +42,8 @@ class CaptionSession:
         vad_preprocess="identity",
         token_stream=False,
         cancel_partial_for_final=False,
+        continuous_policy="latest",
+        partial_thermal_policy="pause",
     ):
         if partial_after_s <= 0 or partial_interval_s <= 0:
             raise ValueError("부분 전사 시작·갱신 간격은 양수여야 합니다.")
@@ -67,6 +69,15 @@ class CaptionSession:
                 "새 음성 최소량은 1프레임 이상, 끝 여유는 유한한 음수가 아닌 값이어야 합니다."
             )
         self.partial_mode = partial_mode
+        if (
+            continuous_policy not in ("latest", "paced")
+            or partial_thermal_policy not in ("pause", "pace")
+            or (
+                partial_mode != "continuous"
+                and (continuous_policy != "latest" or partial_thermal_policy != "pause")
+            )
+        ):
+            raise ValueError("연속 갱신·열 정책 선택은 continuous 모드에서만 사용합니다.")
         if type(cancel_partial_for_final) is not bool or (
             cancel_partial_for_final and (partial_mode != "continuous" or not token_stream)
         ):
@@ -138,8 +149,15 @@ class CaptionSession:
                 self.min_new_frames,
                 round(max_segment_s * 16000),
                 round(partial_tail_margin_s * 16000),
+                policy=continuous_policy,
+                thermal_policy=partial_thermal_policy,
             )
             self.scheduler_stats = self.continuous.stats
+            self.scheduler_stats["cancel_partial_grace_s"] = (
+                (0.35 if continuous_policy == "paced" else 0.0)
+                if cancel_partial_for_final
+                else None
+            )
         self.pipeline = SegmentPipeline(
             vad,
             "identity",
@@ -158,15 +176,22 @@ class CaptionSession:
             condition=condition if self.continuous else None,
             next_partial=self._continuous_next if self.continuous and partials else None,
             cancel_partial_for_final=cancel_partial_for_final,
+            cancel_partial_grace_s=0.35 if continuous_policy == "paced" else 0.0,
+            on_completed=self.continuous.completed if self.continuous else None,
         )
         if self.continuous:
             self.continuous.start()
 
     def _continuous_next(self):
-        candidate = self.continuous.choose()
+        estimate = None
+        if self.continuous.candidate and self.continuous.policy == "paced":
+            _, start, end, _ = self.continuous.candidate
+            estimate = self.worker.estimate_cost("partial", end - start, model="audio_scaled")
+        candidate = self.continuous.choose(estimate)
         if candidate:
             segment, start, end, pcm = candidate
             self._offer("partial", segment, start, end, pcm)
+        return self.continuous.wait_s()
 
     def _fresh_revision(self, event):
         """같은 작업의 토큰 순서와 결과 완료를 포함한다. 낡은 결과도 원시는 보존한다."""

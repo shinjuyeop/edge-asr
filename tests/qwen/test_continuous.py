@@ -38,10 +38,17 @@ class ControlledModel:
 
 
 class ContinuousTests(unittest.TestCase):
-    def policy(self):
+    def policy(self, **settings):
         now, events = [0.0], []
         p = ContinuousPolicy(
-            Condition(RLock()), events.append, 9600, 12800, 80000, 3200, clock=lambda: now[0]
+            Condition(RLock()),
+            events.append,
+            9600,
+            12800,
+            80000,
+            3200,
+            clock=lambda: now[0],
+            **settings,
         )
         return p, now, events
 
@@ -246,6 +253,94 @@ class ContinuousTests(unittest.TestCase):
         self.assertEqual(result["changed_events"], 3)
         self.assertEqual(result["interval_s"]["p50"], 0.5)
 
+    def test_pace_thermal_limits_allow_updates_but_voltage_missing_and_extreme_heat_wait(self):
+        p, _, _ = self.policy(thermal_policy="pace")
+        with p.condition:
+            p.observe({"temperature_mc": 85000, "current_limits": 8})
+            p.update(0, 0, 9600, lambda a, b: b - a)
+            self.assertIsNotNone(p.choose())  # 첫0.6초는 열 감속으로 미루지 않는다.
+            p.update(0, 0, 22400, lambda a, b: b - a)
+            self.assertIsNone(p.choose())  # 후속은 새 음성0.8 * 1.4초가 필요하다.
+            p.update(0, 0, 28800, lambda a, b: b - a)
+            self.assertIsNotNone(p.choose())
+            for temperature, flags in ((85000, 1), (None, None), (90000, 6), (86000, 8)):
+                p.observe({"temperature_mc": temperature, "current_limits": flags})
+                self.assertTrue(p.hot)
+            p.observe({"temperature_mc": 85000, "current_limits": 8, "history_limits": 15})
+            self.assertFalse(p.hot)  # 78°C·현재 열 제한0을 기다리지 않는다.
+
+    def test_pacing_charges_final_cancelled_work_and_keeps_debt_across_segments(self):
+        p, now, events = self.policy(policy="paced", thermal_policy="pace")
+        with p.condition:
+            p.observe({"temperature_mc": 60000, "current_limits": 0})
+            p.update(0, 0, 9600, lambda a, b: b - a)
+            self.assertIsNotNone(p.choose())
+            now[0] = 1
+            p.completed(
+                {
+                    "kind": "partial",
+                    "status": "cancelled",
+                    "started_monotonic_s": 0,
+                    "ended_monotonic_s": 1,
+                }
+            )
+            p.update(0, 0, 25600, lambda a, b: b - a)
+            self.assertIsNone(p.choose())
+            self.assertEqual(events[-1]["reason"], "compute_pacing")
+            now[0] += p.wait_s()
+            self.assertIsNotNone(p.choose())
+            started = now[0]
+            now[0] += 2
+            p.completed(
+                {
+                    "kind": "final",
+                    "status": "failed",
+                    "started_monotonic_s": started,
+                    "ended_monotonic_s": now[0],
+                }
+            )
+            p.update(1, 80000, 89600, lambda a, b: b - a)
+            self.assertIsNone(p.choose())  # 새 구간이어도 과부하 누적을 지우지 않는다.
+            now[0] += p.wait_s()
+            self.assertIsNotNone(p.choose())  # 첫 요청만0.35초의 제한된 여유.
+            self.assertAlmostEqual(p.stats["accounted_inference_s"], 3)
+
+    def test_final_admission_is_bounded_even_with_large_cost_estimate(self):
+        p, _, events = self.policy(policy="paced")
+        with p.condition:
+            p.observe({"temperature_mc": 60000, "current_limits": 0})
+            p.update(0, 0, 64000, lambda a, b: b - a)
+            self.assertIsNotNone(p.choose(estimated_s=10))
+            p.update(0, 0, 76800, lambda a, b: b - a)
+            self.assertIsNone(p.choose(estimated_s=10))
+            self.assertEqual(events[-1]["reason"], "near_final")
+            self.assertEqual(events[-1]["final_reserve_s"], 0.8)
+
+    def test_worker_wakes_paced_candidate_without_input_or_thermal_notification(self):
+        model, events, ready_at = ControlledModel(), [], time.perf_counter() + 0.05
+        offered = False
+
+        def offer():
+            nonlocal offered
+            if offered:
+                return None
+            if time.perf_counter() < ready_at:
+                return ready_at - time.perf_counter()
+            offered = True
+            w.submit("partial", 0, 0, 1600, array("f", [0.25] * 1600), 1600)
+
+        condition = Condition(RLock())
+        with condition:
+            w = DecodeWorker(model, events.append, condition=condition, next_partial=offer)
+        try:
+            self.assertEqual(len(model.started.get(timeout=2).samples), 1600)
+            model.release.put("최신 결과")
+            w.finish(2)
+            self.assertEqual(len([e for e in events if e["type"] == "result"]), 1)
+        finally:
+            model.release.put("정리")
+            w.abort()
+
     def test_thermal_recovery_wakes_latest_candidate_without_new_input(self):
         s, model, _ = self.session()
         s.continuous.observe({"temperature_mc": 83000, "current_limits": 8})
@@ -270,9 +365,14 @@ class ContinuousTests(unittest.TestCase):
             {"adaptive_policy": "budgeted"},
             {"partial_followup_s": 1},
             {"partial_tail_margin_s": 2},
+            {"continuous_policy": "unknown"},
+            {"partial_thermal_policy": "unknown"},
         ):
             with self.subTest(args=args), self.assertRaises(ValueError):
                 CaptionSession(None, None, 1, None, {}, partial_mode="continuous", **args)
+        for args in ({"continuous_policy": "paced"}, {"partial_thermal_policy": "pace"}):
+            with self.assertRaises(ValueError):
+                CaptionSession(None, None, 1, None, {}, **args)
 
     def test_optional_cancellation_only_when_final_waits_and_preserves_final(self):
         class Streaming:
@@ -289,11 +389,15 @@ class ContinuousTests(unittest.TestCase):
                 emit({"hypothesis": "토큰", "token_index": 1, "native_elapsed_s": 0.1})
                 return "확정 결과"
 
-        for enabled in (False, True):
-            with self.subTest(enabled=enabled):
+        for enabled, grace, age in ((False, 0, 0), (True, 0, 0), (True, 0.35, 0), (True, 0.35, 1)):
+            with self.subTest(enabled=enabled, grace=grace, age=age):
                 model, events = Streaming(), []
                 w = DecodeWorker(
-                    model, events.append, token_stream=True, cancel_partial_for_final=enabled
+                    model,
+                    events.append,
+                    token_stream=True,
+                    cancel_partial_for_final=enabled,
+                    cancel_partial_grace_s=grace,
                 )
                 try:
                     pcm = array("f", [0.25] * 1600)
@@ -305,12 +409,14 @@ class ContinuousTests(unittest.TestCase):
                         any(e["type"] == "partial_cancellation_requested" for e in events)
                     )
                     w.submit("final", 0, 0, 3200, pcm * 2, 3200)
+                    with w.condition:
+                        w.finals[0][0]["submitted_monotonic_s"] -= age
                     model.continue_token.set()
                     w.finish(3)
                     results = [e for e in events if e["type"] == "result"]
                     self.assertEqual(
                         [r["status"] for r in results],
-                        ["cancelled" if enabled else "success", "success"],
+                        ["cancelled" if enabled and age >= grace else "success", "success"],
                     )
                     self.assertEqual(results[-1]["hypothesis"], "확정 결과")
                 finally:

@@ -113,6 +113,7 @@ edge-asr/
 │   ├── gguf_realtime.toml               # 현재 개발용 GGUF 설정
 │   ├── listener.toml                    # 청취용 모델·음원·연속 옵션
 │   ├── listener_continuous.toml         # 최신 음성으로 연속 수정
+│   ├── listener_continuous_paced.toml    # 고정 냉각·지속 부하 조절
 │   ├── listener_continuous_priority.toml # 최종 대기 시 선택 부분 취소
 │   └── onnx.toml                        # ONNX 출발 참조
 ├── data/                                # 로컬 음원·정답

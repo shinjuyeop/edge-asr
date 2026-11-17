@@ -8,10 +8,27 @@ from edge_asr import thermal
 
 class ContinuousPolicy:
     def __init__(
-        self, condition, emit, minimum, min_new, maximum, tail, *, clock=time.perf_counter
+        self,
+        condition,
+        emit,
+        minimum,
+        min_new,
+        maximum,
+        tail,
+        *,
+        clock=time.perf_counter,
+        policy="latest",
+        thermal_policy="pause",
     ):
         self.condition, self.emit, self.clock = condition, emit, clock
         self.minimum, self.min_new, self.maximum, self.tail = minimum, min_new, maximum, tail
+        if policy not in ("latest", "paced") or thermal_policy not in ("pause", "pace"):
+            raise ValueError("연속 정책은 latest/paced, 열 정책은 pause/pace여야 합니다.")
+        self.policy, self.thermal_policy = policy, thermal_policy
+        self.thermal_factor = 1.0
+        self.overheated = False
+        self.work_debt_s, self.accounted_at = 0.0, clock()
+        self.wake_at = None
         self.candidate = None
         self.segment = None
         self.last_end = 0
@@ -24,8 +41,9 @@ class ContinuousPolicy:
         self.thread = None
         self.stats = {
             "mode": "continuous",
-            "policy": "latest",
-            "version": "latest-completion-v1",
+            "policy": policy,
+            "version": "paced-completion-v2" if policy == "paced" else "latest-completion-v1",
+            "thermal_policy": thermal_policy,
             "decisions": {},
             "candidate_updates": 0,
             "candidate_replacements": 0,
@@ -34,8 +52,15 @@ class ContinuousPolicy:
             "discarded_candidates": 0,
             "pending_peak": 0,
             "thermal_backoff_s": 0.0,
-            "thermal_pause_c": 82,
-            "thermal_resume_c": 78,
+            "thermal_pause_c": 82 if thermal_policy == "pause" else 90,
+            "thermal_resume_c": 78 if thermal_policy == "pause" else 85,
+            "thermal_pacing_start_c": 82 if thermal_policy == "pace" else None,
+            "thermal_factor_peak": 1.0,
+            "compute_duty_target": 0.7 if policy == "paced" else None,
+            "first_debt_allowance_s": 0.35 if policy == "paced" else None,
+            "final_reserve_max_s": 0.8 if policy == "paced" else tail / 16000,
+            "accounted_inference_s": 0.0,
+            "work_debt_peak_s": 0.0,
             "thermal_sample_s": 1.0,
             "tail_margin_s": tail / 16000,
             "deferred_s": {},
@@ -88,19 +113,49 @@ class ContinuousPolicy:
             self.stats["discarded_candidates"] += 1
             self.candidate = None
 
-    def choose(self):
+    def _account(self, now, work_s=0.0):
+        rate = 0.7 / self.thermal_factor
+        self.work_debt_s = max(
+            0.0, self.work_debt_s + work_s - max(0.0, now - self.accounted_at) * rate
+        )
+        self.accounted_at = now
+        self.stats["work_debt_peak_s"] = max(self.stats["work_debt_peak_s"], self.work_debt_s)
+        return rate
+
+    def completed(self, result):
+        """실패·취소·final도 소비한 wall 비용에 포함한다. 작업자의 락 안에서 호출한다."""
+        if self.policy == "paced":
+            cost = result["ended_monotonic_s"] - result["started_monotonic_s"]
+            self._account(self.clock(), cost)
+            self.stats["accounted_inference_s"] += cost
+
+    def wait_s(self):
+        return max(0.001, self.wake_at - self.clock()) if self.wake_at is not None else None
+
+    def choose(self, estimated_s=None):
+        self.wake_at = None
         if self.candidate is None:
             return None
         segment, start, end, read = self.candidate
+        now = self.clock()
+        rate = self._account(now) if self.policy == "paced" else None
+        first = self.last_end == start
+        reserve = self.tail / 16000
+        if self.policy == "paced" and estimated_s is not None:
+            reserve = min(0.8, max(reserve, estimated_s))
+        allowance = 0.35 if first else 0.0
         if end - start < self.minimum or (
-            self.last_end > start and end - self.last_end < self.min_new
+            not first and end - self.last_end < self.min_new * self.thermal_factor
         ):
             reason = "minimum_audio"
         elif not self.thermal_ready or self.hot:
             reason = "thermal_backoff"
-        elif self.maximum - (end - start) <= self.tail:
-            # 실제 종료까지 최대 tail만 합친다. 전체 호출 예상 비용을 미리 예약하지 않는다.
+        elif (self.maximum - (end - start)) / 16000 <= reserve:
+            # 긴 비용 추정이 발화 대부분을 막지 않도록 예약을 0.8초로 제한한다.
             reason = "near_final"
+        elif self.policy == "paced" and self.work_debt_s > allowance + 1e-6:
+            reason = "compute_pacing"
+            self.wake_at = now + (self.work_debt_s - allowance) / rate
         else:
             reason = "offered"
         self.stats["decisions"][reason] = self.stats["decisions"].get(reason, 0) + 1
@@ -117,6 +172,11 @@ class ContinuousPolicy:
                     "start_frame": start,
                     "end_frame": end,
                     "last_executed_end_frame": self.last_end,
+                    "estimated_inference_s": estimated_s,
+                    "final_reserve_s": reserve,
+                    "thermal_factor": self.thermal_factor,
+                    "work_debt_s": self.work_debt_s,
+                    "compute_duty_target": rate,
                     "at_monotonic_s": self.clock(),
                 }
             )
@@ -145,9 +205,22 @@ class ContinuousPolicy:
         with self.condition:
             temperature, flags = row.get("temperature_mc"), row.get("current_limits")
             unavailable = temperature is None or flags is None
-            hot = unavailable or bool(flags) or temperature >= 82000
-            if self.hot and not unavailable:
-                hot = bool(flags) or temperature > 78000
+            if self.thermal_policy == "pause":
+                hot = unavailable or bool(flags) or temperature >= 82000
+                if self.hot and not unavailable:
+                    hot = bool(flags) or temperature > 78000
+            else:
+                if not unavailable:
+                    self.overheated = temperature >= 90000 or (
+                        self.overheated and temperature > 85000
+                    )
+                    factor = 1 + min(1, max(0, (temperature - 82000) / 3000)) * 0.4
+                    # 현재 열 제한(2/4/8)은 완전 정지 대신 주기 조절에 사용한다.
+                    self.thermal_factor = max(factor, 1.2 if flags & 14 else 1.0)
+                    self.stats["thermal_factor_peak"] = max(
+                        self.stats["thermal_factor_peak"], self.thermal_factor
+                    )
+                hot = unavailable or bool(flags & 1) or self.overheated
             now = self.clock()
             if hot and self.blocked_since is None:
                 self.blocked_since = now

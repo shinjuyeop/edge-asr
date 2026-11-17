@@ -387,6 +387,18 @@ def argument_parser():
     )
     parser.add_argument("--partial-max-calls", type=int, default=2)
     parser.add_argument(
+        "--continuous-policy",
+        choices=("latest", "paced"),
+        default="latest",
+        help="continuous: paced는 실제 계산량 배분·최대0.8초 확정 예약·취소0.35초 유예",
+    )
+    parser.add_argument(
+        "--partial-thermal-policy",
+        choices=("pause", "pace"),
+        default="pause",
+        help="continuous: pace는82~85°C/열 감속에 점진적 갱신 감속. 저전압·계측결측·예외고온 보류",
+    )
+    parser.add_argument(
         "--cancel-partial-for-final",
         action="store_true",
         help="continuous 선택: final 대기 시 실행 중 partial을 다음 토큰 경계에서 취소",

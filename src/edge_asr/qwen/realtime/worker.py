@@ -21,6 +21,8 @@ class DecodeWorker:
         condition=None,
         next_partial=None,
         cancel_partial_for_final=False,
+        cancel_partial_grace_s=0.0,
+        on_completed=None,
     ):
         if type(capacity) is not int or capacity < 1:
             raise ValueError("최종 구간 큐 용량은 양의 정수여야 합니다.")
@@ -33,6 +35,8 @@ class DecodeWorker:
         self.condition = condition if condition is not None else Condition()
         self.next_partial = next_partial
         self.cancel_partial_for_final = cancel_partial_for_final
+        self.cancel_partial_grace_s = cancel_partial_grace_s
+        self.on_completed = on_completed
         self.finals, self.partial = deque(), None
         self.closing, self.error = False, None
         self.active, self.last_inference_s = False, 0.0
@@ -121,10 +125,11 @@ class DecodeWorker:
             while True:
                 with self.condition:
                     while not (self.finals or self.partial or self.closing):
+                        wait_s = None
                         if self.next_partial:
-                            self.next_partial()
+                            wait_s = self.next_partial()
                         if not self.partial:
-                            self.condition.wait()
+                            self.condition.wait(timeout=wait_s)
                     if self.finals:
                         job, samples = self.finals.popleft()
                     elif self.partial is not None:
@@ -150,6 +155,8 @@ class DecodeWorker:
                                 self.cancel_partial_for_final
                                 and job["kind"] == "partial"
                                 and self.finals
+                                and time.perf_counter() - self.finals[0][0]["submitted_monotonic_s"]
+                                >= self.cancel_partial_grace_s
                             ):
                                 self.emit(
                                     {
@@ -217,6 +224,8 @@ class DecodeWorker:
                             if measured <= self.last_inference_s:
                                 audio = measured
                         self.costs[job["kind"]].append((len(samples), self.last_inference_s, audio))
+                        if self.on_completed:
+                            self.on_completed(result)
                         self.active = False
                         self.condition.notify_all()
         except BaseException as error:
