@@ -1,6 +1,7 @@
 """실제 모델 없이 청취 시간축·실패·음원 보존·HTTP 경계를 검증한다."""
 
 import json
+import shutil
 import signal
 import subprocess
 import sys
@@ -39,6 +40,16 @@ def event(job, start, end, published, text, *, kind="final", status="success", t
 
 
 class ListenerTests(unittest.TestCase):
+    @unittest.skipUnless(shutil.which("node"), "원음별 재생 모의 검사에 Node.js 필요")
+    def test_source_review_transport(self):
+        result = subprocess.run(
+            [shutil.which("node"), "--test", str(Path(__file__).with_name("listener_review.mjs"))],
+            capture_output=True,
+            text=True,
+            timeout=20,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
     def test_microphone_recording_uses_own_hash_and_segment_metrics(self):
         self.worker.update(
             input={"kind": "microphone", "reference": ""},

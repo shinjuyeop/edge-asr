@@ -162,6 +162,7 @@ edge-asr/
 │       │   │   └── worker.py
 │       │   ├── viewer/                  # 라이브·기록 청취 도구
 │       │   │   ├── web/                  # 공통 음성·자막·지표 화면
+│       │   │   │   └── review.mjs        # 원음별 재생 경계·확정 결과 확인
 │       │   │   ├── analysis.py
 │       │   │   ├── runs.py
 │       │   │   └── server.py

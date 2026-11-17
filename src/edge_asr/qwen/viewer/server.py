@@ -75,7 +75,12 @@ def handler(library):
                         library.process and library.process.poll() is None
                     )
                     return self.json(value)
-                static = {"/": "index.html", "/app.js": "app.js", "/style.css": "style.css"}
+                static = {
+                    "/": "index.html",
+                    "/app.js": "app.js",
+                    "/review.mjs": "review.mjs",
+                    "/style.css": "style.css",
+                }
                 if url.path in static:
                     return self.file(ASSETS / static[url.path])
                 self.json({"error": "찾을 수 없습니다."}, 404)

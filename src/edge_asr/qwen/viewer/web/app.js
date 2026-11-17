@@ -1,3 +1,4 @@
+import {sourceReview, reviewTranscript} from './review.mjs';
 const $ = id => document.getElementById(id);
 const sec = value => value == null ? '—' : `${value.toFixed(2)}초`;
 const clock = value => `${Math.floor(Math.max(0,value)/60).toString().padStart(2,'0')}:${Math.floor(Math.max(0,value)%60).toString().padStart(2,'0')}`;
@@ -6,6 +7,8 @@ let context, gain, buffer, node, playing=false, baseContext=0, baseOffset=0, pos
 let calibration=null, clockSamples=[], observations=[], lastEventKey='', tableKey='';
 let lastArrival=null, follow=false, currentSource=-1, busy=false, selectionDirty=false;
 let audioEnded=false, completionNotified=false, resultsShown=false;
+let review=null, reviewDone=false;
+const reviewing = () => mode==='replay' && !isMic() && $('replayStyle').value==='source';
 const isMic = () => run?.input?.kind==='microphone';
 const isLive = () => mode!=='replay';
 
@@ -25,8 +28,22 @@ function nowPosition(){if(mode==='mic'&&run?.terminal)return Math.max(run.audio?
 function stopAudio(){position=nowPosition();if(node){try{node.stop();}catch{}node.disconnect();node=null;}playing=false;}
 function playAudio(offset=0,delay=0){
   stopAudio();const ctx=audioContext();baseContext=ctx.currentTime+Math.max(0,delay);baseOffset=offset;position=offset;
-  if(offset<buffer.duration){node=ctx.createBufferSource();node.buffer=buffer;node.connect(gain);node.start(baseContext,offset);}
+  const audioEnd=reviewing()&&review?review.audioEnd:buffer.duration;
+  if(offset<audioEnd){node=ctx.createBufferSource();node.buffer=buffer;node.connect(gain);node.start(baseContext,offset,audioEnd-offset);}
   playing=true;$('play').textContent=mode==='live'?'라이브 청취 중':'일시정지';
+}
+function selectReview(index){
+  stopAudio();review=sourceReview(run?.sources||[],events,index);reviewDone=false;
+  position=review?.start||0;lastEventKey='';resultsShown=false;$('finalResult').open=false;
+  $('play').textContent='재생';
+  if(review){$('seek').min=review.start;$('seek').max=review.end;notice(`원음 ${index+1}을 듣고 확정 결과에서 멈춥니다.`);}
+  updateControls();renderCaption(position);drawWave();
+}
+function finishReview(){
+  stopAudio();position=review.end;reviewDone=true;lastEventKey='';
+  $('play').textContent='이 음원 다시 듣기';$('finalResult').open=true;
+  notice(review.index+1<run.sources.length?'확정 결과를 확인한 뒤 다음 음원을 누르세요.':'마지막 원음입니다. 확정 결과를 확인하세요.');
+  updateControls();
 }
 async function synchronize(){
   const before=performance.now()/1000;const r=await api('/api/clock');const after=performance.now()/1000;
@@ -45,6 +62,10 @@ function updateControls(){
   $('profileSelect').disabled=busy||!catalog?.profiles.length;
   $('sourceSelect').disabled=busy||!catalog?.profiles.length;
   $('sort').disabled=busy||!run?.sources?.length;
+  $('replayStyle').disabled=busy||isMic();
+  $('nextSource').hidden=!reviewing();
+  $('nextSource').disabled=busy||!buffer||!review||review.index+1>=run.sources.length;
+  $('rewind').textContent=reviewing()?'이 음원 처음부터':'처음부터';
   $('micReference').disabled=busy||(mode==='mic'&&run&&!run.terminal);
   $('prepare').disabled=busy||!catalog?.profiles.length||Boolean(catalog?.active)||(mode==='mic'&&!$('deviceSelect').value);
   $('play').disabled=busy||selectionDirty||(mode==='mic'&&follow&&run?.status==='replaying')||(mode==='mic'?(!run||(!run.terminal&&!['ready','replaying'].includes(run.status))||(run.terminal&&!buffer)):(!buffer||(mode==='live'&&(run?.terminal||!['ready','replaying'].includes(run?.status)))));
@@ -55,6 +76,7 @@ function updateControls(){
 }
 function clearRun(){
   stopAudio();epoch++;run=null;events=[];buffer=null;cursor=0;position=0;lastEventKey='';tableKey='';
+  review=null;reviewDone=false;$('seek').min=0;
   currentSource=-2;loadingAudio=false;follow=false;selectionDirty=false;observations=[];lastArrival=null;calibration=null;clockSamples=[];
   audioEnded=false;completionNotified=false;resultsShown=false;$('finalResult').open=false;$('finalTranscript').textContent='확정 결과 대기';
   $('clockText').textContent='00:00 / 00:00';$('seek').value=0;$('seek').max=1;$('sync').textContent='음원 준비 전';
@@ -112,7 +134,8 @@ async function loadAudio(myEpoch){
     const decoded=await audioContext().decodeAudioData(await response.arrayBuffer());
     if(epoch!==myEpoch)return;
     buffer=decoded;updateControls();
-    $('seek').max=Math.max(buffer.duration,run.end_s+1);drawWave();
+    $('seek').max=Math.max(buffer.duration,run.end_s+1);
+    if(reviewing())selectReview(0);drawWave();
     notice(mode==='live'?'준비 완료. 시작을 누르면 3초 뒤 입력과 재생이 시작됩니다.':'음원 준비 완료. 재생하거나 원음 번호를 선택하세요.');
   }catch(e){if(epoch===myEpoch)notice(e.message,true);}finally{if(epoch===myEpoch)loadingAudio=false;}
 }
@@ -127,7 +150,7 @@ function renderMetrics(){
   const micMetrics=isMic()||(!run&&mode==='mic');
   $('firstScope').textContent=micMetrics?'완료 VAD 구간 시작 → 텍스트 발행':'원음 시작 → 텍스트 발행';
   $('finalScope').textContent=micMetrics?'VAD/ASR 구간 끝 → 최종 결과':'파일 끝 → 최종 결과';
-  $('sourceColumn').textContent=micMetrics?'구간':'원음';$('tableHelp').textContent=isLive()?run?.terminal?'기록 재생에서 원음·구간을 선택해 들을 수 있습니다.':'입력 중에는 위치를 이동할 수 없습니다. 종료 후 기록 재생에서 확인하세요.':isMic()?'완료된 발화 구간입니다. 구간 번호를 선택하면 녹음을 재생합니다.':'원음 번호를 선택하면 해당 위치부터 재생합니다.';
+  $('sourceColumn').textContent=micMetrics?'구간':'원음';$('tableHelp').textContent=isLive()?run?.terminal?'기록 재생에서 원음·구간을 선택해 들을 수 있습니다.':'입력 중에는 위치를 이동할 수 없습니다. 종료 후 기록 재생에서 확인하세요.':isMic()?'완료된 발화 구간입니다. 구간 번호를 선택하면 녹음을 재생합니다.':reviewing()?'원음 번호를 선택하면 그 음원만 듣고 확정 결과에서 멈춥니다.':'원음 번호를 선택하면 해당 위치부터 재생합니다.';
   $('measurementScope').textContent=micMetrics?'첫 표시·4자 표시는 완료된 VAD/ASR 구간 시작 기준입니다. 최종 반환은 해당 구간 끝부터 최종 결과까지입니다. 녹음 시작부터 첫 발화까지의 무음은 포함하지 않습니다.':'첫 표시·4자 표시는 원음 파일 시작 기준입니다. 성공 호출 중 한 원음에만 귀속된 표시를 집계합니다. 최종 반환은 파일 입력 끝부터 마지막으로 겹치는 최종 결과까지입니다.';
   $('tableTitle').textContent=micMetrics?'완료된 발화 구간별 지연':'원음별 지연';$('referenceColumn').textContent=micMetrics?'확정 전사':'정답';
   $('firstMetric').textContent=pair(summary?.first_s);$('fourMetric').textContent=pair(summary?.first4_s);$('finalMetric').textContent=sec(summary?.file_end_s?.p95);
@@ -156,15 +179,15 @@ function renderTable(){
     for(const text of values){const td=document.createElement('td');td.textContent=text;tr.append(td);}
     if(mode==='replay'){const button=document.createElement('button');button.className='source-play';button.textContent=values[0];button.setAttribute('aria-label',`${isMic()?'구간':'원음'} ${index+1} 재생`);tr.firstElementChild.replaceChildren(button);}
     tr.title=row.ambiguous_final?'최종 구간이 원음 경계를 넘습니다. 원음별 CER는 계산하지 않습니다.':row.id;
-    tr.onclick=()=>{if(mode==='replay'&&buffer&&!busy){position=Math.max(0,row.start/16000-.3);playAudio(position);audioContext().resume();lastEventKey='';renderCaption(position);}};
+    tr.onclick=()=>{if(mode==='replay'&&buffer&&!busy){if(reviewing())selectReview(index);else position=Math.max(0,row.start/16000-.3);playAudio(position);audioContext().resume();lastEventKey='';renderCaption(position);}};
     return tr;
   }));
   highlightSource();updateControls();
 }
-function displayEvents(at){return events.filter(e=>e.displayed&&e.published_s<=at&&(e.type==='token'||e.type==='result'));}
+function displayEvents(at){return (reviewing()&&review?review.events:events).filter(e=>e.displayed&&e.published_s<=at&&(e.type==='token'||e.type==='result'));}
 function renderCaption(at){
   const sources=run?.sources||[];
-  let sourceIndex=sources.findIndex(s=>s.start/16000<=at&&at<s.end/16000);
+  let sourceIndex=reviewing()&&review?review.index:sources.findIndex(s=>s.start/16000<=at&&at<s.end/16000);
   if(sourceIndex<0&&sources.length&&at>=sources.at(-1).end/16000)sourceIndex=sources.length-1;
   const source=sources[sourceIndex];
   if(sourceIndex!==currentSource||!run){currentSource=sourceIndex;$('referenceText').textContent=source?.reference||(sources.length?'원음 사이의 무음 구간입니다.':mode==='mic'?'정답을 입력하면 녹음 종료 후 CER를 계산합니다.':'음원을 불러오면 정답이 표시됩니다.');$('referenceText').classList.toggle('muted',!source);$('sourceTag').textContent=source?`${sourceIndex+1} / ${sources.length}`:'—';$('sourceName').textContent=source?.id||'';
@@ -179,16 +202,21 @@ function renderCaption(at){
     $('captionState').dataset.state=e?e.status==='failed'?'failed':e.type==='result'&&e.kind==='final'?'final':'partial':'waiting';
     const matches=e?sources.filter(s=>e.start_frame<s.end&&e.end_frame>s.start):[];
     $('captionTarget').textContent=e?`${isMic()?'발화 구간 '+(e.segment_id+1):'원음 '+(matches.map(s=>sources.indexOf(s)+1).join('·')||'—')} · 처리 ${e.start_frame/16000>=0?(e.start_frame/16000).toFixed(2):'—'}–${(e.end_frame/16000).toFixed(2)}초 · RP5 발행 +${e.published_s.toFixed(2)}초`:'';
-    const finals=shown.filter(e=>e.type==='result'&&e.kind==='final').sort((a,b)=>a.start_frame-b.start_frame);
+    const finals=reviewing()&&review?review.finals.filter(e=>e.published_s<=at):shown.filter(e=>e.type==='result'&&e.kind==='final').sort((a,b)=>a.start_frame-b.start_frame);
     $('finalTranscript').textContent=finals.map(e=>e.status==='failed'?'[전사 실패]':e.hypothesis||'[빈 전사]').join(' ')||'확정 결과 대기';
     $('history').replaceChildren(...finals.slice(-8).reverse().map(e=>{const div=document.createElement('div');div.className='history-row';const span=document.createElement('span'),p=document.createElement('p');span.textContent=`${clock(e.published_s)} · 구간 ${e.segment_id+1} · ${e.status==='failed'?'실패':'확정'}`;p.textContent=e.hypothesis||'빈 전사 · 실패 기록';div.append(span,p);return div;}));
+  }
+  if(reviewing()&&review&&reviewDone){
+    $('hypothesis').textContent=reviewTranscript(review);$('hypothesis').classList.remove('muted');
+    $('captionState').textContent='확정 전사';$('captionState').dataset.state='final';
+    $('captionTarget').textContent=`원음 ${review.index+1}의 확정 결과${review.crossesBoundary?' · 원음 경계를 걸친 구간 포함':''}`;
   }
   if(!resultsShown&&((buffer&&at>=buffer.duration)||(isLive()&&follow&&run?.terminal))){resultsShown=true;$('finalResult').open=true;}
   const heard=source?shown.filter(r=>r.hypothesis&&r.status!=='failed'&&r.start_frame<source.end&&r.end_frame>source.start&&sources.filter(s=>r.start_frame<s.end&&r.end_frame>s.start).length===1):[];
   const first=heard.find(r=>r.hypothesis.trim()),four=heard.find(r=>Array.from(r.hypothesis).filter(c=>/[\p{L}\p{N}]/u.test(c)).length>=4);
   $('sourceTiming').textContent=source?`이 ${isMic()?'발화 구간':'원음'} · 첫 표시 ${sec(first?first.published_s-source.start/16000:null)} · 4자 ${sec(four?four.published_s-source.start/16000:null)}${mode==='live'?' · 현재 관측':''}`:'';
   const targets=e?sources.filter(s=>e.start_frame<s.end&&e.end_frame>s.start):[];
-  const late=targets.length>0&&!(targets.length===1&&targets[0]===source);
+  const late=!(reviewing()&&reviewDone)&&targets.length>0&&!(targets.length===1&&targets[0]===source);
   $('lateReference').hidden=!late||isMic();$('targetReference').textContent=late?targets.map(s=>s.reference).join(' / '):'';
 }
 async function poll(){
@@ -224,7 +252,7 @@ async function play(){
   if(!buffer)return;const myEpoch=epoch;await audioContext().resume();if(epoch!==myEpoch)return;
   if(mode==='replay'){
     if(playing){stopAudio();$('play').textContent='이어 듣기';}
-    else{const end=Math.max(buffer.duration,run.end_s+1);playAudio(position>=end?0:position);}
+    else{if(reviewing()&&review){if(reviewDone)selectReview(review.index);playAudio(position);}else{const end=Math.max(buffer.duration,run.end_s+1);playAudio(position>=end?0:position);}}
     return;
   }
   if(playing){notice('라이브 입력은 계속 진행됩니다. 소리만 끄려면 음량을 0으로 조절하세요.');return;}
@@ -244,12 +272,13 @@ function drawWave(){
 }
 let lastDraw=0;
 function tick(ms){
-  const at=nowPosition(),end=buffer?Math.max(buffer.duration,run?.end_s+1||0):0;
+  let at=nowPosition();const end=buffer?Math.max(buffer.duration,run?.end_s+1||0):0;
   if(playing&&buffer&&at>=buffer.duration&&!audioEnded){
     audioEnded=true;
     if(mode==='live'&&!run?.terminal){$('runStatus').textContent='음원 종료 · 추론 결과 대기';$('play').textContent='결과 대기';notice('음원 재생이 끝났습니다. 남은 추론 결과를 기다립니다.');}
   }
-  if(playing&&mode==='replay'&&at>=end){stopAudio();position=end;$('play').textContent='다시 듣기';}
+  if(playing&&reviewing()&&review&&at>=review.end){finishReview();at=position;}
+  if(playing&&mode==='replay'&&!reviewing()&&at>=end){stopAudio();position=end;$('play').textContent='다시 듣기';}
   if(playing&&mode==='live'&&run?.terminal&&buffer&&at>=buffer.duration){stopAudio();$('play').textContent='추론 종료';}
   if(ms-lastDraw>80){lastDraw=ms;$('clockText').textContent=`${clock(Math.min(at,buffer?.duration||0))} / ${clock(buffer?.duration||0)}${mode==='live'&&audioEnded&&!run?.terminal?` · 결과 대기 ${sec(at-buffer.duration)}`:''}`;$('seek').value=at;renderCaption(at);drawWave();
     if(mode==='mic')$('clockText').textContent=run?.terminal?`녹음 ${clock(run.audio?.duration_s||0)} · 결과 보존`:`${clock(at)} / 최대 ${clock(run?.input?.duration_limit_s||0)}`;
@@ -257,7 +286,7 @@ function tick(ms){
       const drift=origin&&playing?at-(serverNow-origin):null;
       $('sync').textContent=`왕복 ${(calibration.rtt*1000).toFixed(0)}ms · 재생 차이 ${drift==null?'—':`${(drift*1000).toFixed(0)}ms`}`;
       $('network').textContent=`서버 발행→브라우저 수신 추정 ${lastArrival==null?'—':sec(lastArrival)} · 왕복/2 ${(calibration.rtt*500).toFixed(0)}ms (시계 추정 참고, 편도 실측 아님)`;
-    }else $('sync').textContent=buffer?'실측 시간축 재생 · 네트워크 지연 제외':'음원 준비 전';
+    }else $('sync').textContent=buffer?(reviewing()?'원음별 확인 · 측정값은 원래 연속 입력 기준':'실측 시간축 재생 · 네트워크 지연 제외'):'음원 준비 전';
   }
   requestAnimationFrame(tick);
 }
@@ -296,8 +325,10 @@ $('stopRun').onclick=action(async()=>{
   stopAudio();follow=false;epoch++;loadingAudio=false;selectionDirty=true;notice('평가 종료 중입니다.');
   await api('/api/stop',{id:run.id});await refreshCatalog();await poll();notice('평가가 종료되었습니다. 기록은 보존되며 다시 준비할 수 있습니다.');
 });
-$('rewind').onclick=()=>{stopAudio();position=0;lastEventKey='';renderCaption(0);$('play').textContent='재생';};
-$('seek').oninput=()=>{if(mode!=='replay')return;const was=playing;stopAudio();position=Number($('seek').value);lastEventKey='';if(was)playAudio(position);renderCaption(position);};
+$('replayStyle').onchange=()=>{if(!buffer)return;const index=Math.max(0,currentSource);stopAudio();if(reviewing())selectReview(index);else{review=null;reviewDone=false;$('seek').min=0;$('seek').max=Math.max(buffer.duration,run.end_s+1);lastEventKey='';renderCaption(position);updateControls();}};
+$('nextSource').onclick=action(async()=>{if(!review||review.index+1>=run.sources.length)return;await audioContext().resume();selectReview(review.index+1);playAudio(position);});
+$('rewind').onclick=()=>{if(reviewing()&&review){selectReview(review.index);return;}stopAudio();position=0;lastEventKey='';renderCaption(0);$('play').textContent='재생';};
+$('seek').oninput=()=>{if(mode!=='replay')return;const was=playing;stopAudio();position=Number($('seek').value);reviewDone=false;lastEventKey='';if(was)playAudio(position);renderCaption(position);};
 $('volume').oninput=()=>{if(gain)gain.gain.value=Number($('volume').value);};$('sort').onchange=renderTable;
 $('download').onclick=()=>{const blob=new Blob([JSON.stringify({run:run?.id,mode,userAgent:navigator.userAgent,audioOutputLatency:context?.outputLatency??null,scope:'브라우저 수신·재생 추정. 물리 화면/음향 실측 아님.',observations},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`listener-${run?.id||'session'}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);};
 window.addEventListener('resize',drawWave);
