@@ -524,3 +524,17 @@ Q8 정수 누적 분리의 개선이 작아, 기존 `kernel_trace.cpp`에 선택
 Host ELF 전달·실패/회복·그룹 자원 정리·차분/coverage 검사 뒤 main push→RP5 동기화→별도 빌드/실측 순서입니다. 기존 단일 추론 잠금·600초/4GiB operational guard·시작 온도 대기 없는 관측·기본 열 보호·부팅/보존 해시 검사를 유지합니다. 실패는 원시로 보존하고, 미측정 새 CER/연속 표시 지연/가속률을 채우지 않습니다. 이번 진단만으로 운영 기본을 변경하지 않습니다.
 
 [실측 결과](../../results/summaries/optimization/pmu-q8-20261117.md): 36/36호출 전사/token 동일·PMU997,038커널 valid·coverage100%·같은 PCM의 호출/MAC 및 작업자 합계 동등을 확인했습니다. 계산량은약50:50, Q8 GEMV backend stall/cycle 약81%·L2 refill/access 약30~32%였습니다. 최고71.05°C·관측 현재 제한0이며, 새 연속 지연/CER·운영 기본 변경은 없습니다. 가중치 prefetch를 다음 작은 후보로 두되 DRAM 대역폭 병목으로 확정하지 않습니다.
+
+## Q8 가중치 prefetch — 2026-11-17 사전 조건
+
+PMU 진단의 후속으로 기존 `q8_gemv.cpp`에 원래 정수 누적 순서와 prefetch0/4/8 packed 블록(0/544/1088바이트)을 선택하는 템플릿을 추가합니다. 기존 누적 분리와 새 prefetch를 동시에 켜지 않습니다. 원래 float 블록 누적·가중치 배치·Q8 모델·2/3T·고정 prefix KV를 유지하고 GEMV 심볼만 교체합니다. 적용은 decode와 prefill 잔여 행에 포함되며 GEMM은 그대로입니다. 같은 컴파일 코드의 prefetch0 대조를 두어 재컴파일/코드 배치의 차이를 분리합니다. 과거 실측 바이너리와 운영 기본은 보존합니다.
+
+GCC `__builtin_prefetch(addr,0,3)`의 읽기/높은 지역성 힌트를 사용하고, 136바이트 미래 블록 전체가 전달 범위 안일 때 주소0/64/128에 요청합니다. 포인터 주소식 자체도 범위를 넘지 않습니다. 바이너리의 PRFM 명령·범위 분기를 확인하며 힌트가 실제 cache hit나 가속을 보장한다고 가정하지 않습니다. [GCC 정의](https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html), [고정 원래 커널](https://github.com/ggml-org/llama.cpp/blob/7d7f0287530bc8981690f361d8c1627dbae1c99a/ggml/src/ggml-cpu/arch/arm/repack.cpp#L1771).
+
+실행/빌드 ID는 `prefetch-q8-20261117-01`입니다. Host 모의 검사→main commit/push→RP5 동기화→별도 빌드 뒤, 합성 packed84조건에서 원래/누적 분리/clone/prefetch4/prefetch8의 출력 float 비트·출력 경계·입력 불변·실제 선택 모드/호출 수를 검증합니다. 짧은 입력은 prefetch 거리보다 짧거나 같은 경계를 포함합니다. 하나라도 다르면 ASR 추론을 진행하지 않습니다.
+
+같은 최초0.612초·후속2.276초·확정4.504초 PCM을 공통 reproduction 평가기에20라운드×3개=60호출로 공급합니다. 모델1회 로딩·타이머 밖2초 휴지입니다. 모드 S=원래 함수, C=새 계산 코드/prefetch0, P4=4블록, P8=8블록입니다. 준비1~4는 S/C/P4/P8, 분석5~12는 **S/C/P4/P8/P8/P4/C/S**, 분석13~20은 **P8/P4/C/S/S/C/P4/P8**로 두 교차 구간을 둡니다. PMU/커널 시간 추적은 끄고 native 단계 시간·RSS·온도/클럭만 기록합니다.
+
+모든 전사/token ID·PCM은 기존 참조와 같아야 하고 실패0·모드/대체/전달 횟수 증거를 확인합니다. 각 후보는 두 구간 모두에서 S 대비 후속/확정 decode합계3% 이상·전체 native합계1% 이상 감소, 최초 native증가5% 이하·RSS증가32MiB 이하를 요구합니다. C 대비 decode도2% 이상 감소하고 native합계가 증가하지 않아야 prefetch 개선 후보로 봅니다. 모두 통과한 후보 중 전체 native합계가 작은 것을 선택하고 동률이면 짧은 거리를 선택합니다. 이 기준은 실용 선별이며 통계적 유의성 판정은 아닙니다.
+
+통과 후보가 있을 때만 원래100개·Qwen 단독1배속 연속 입력으로 확대하며, 없으면 운영 기본을 유지하고 encoder FP16 합성곱·투영으로 조사 대상을 옮깁니다. 기존 단일 추론 잠금·600초/4GiB operational guard·시작 온도 대기 없는 관측·firmware 열 보호·동일 부팅/자산 해시를 유지합니다. 고정 PCM의 성능을 새 CER·연속 표시 지연으로 사용하지 않습니다.

@@ -123,7 +123,7 @@ edge-asr/
 │   ├── gguf/                            # bridge·KV/연산·커널 계측·빌드·양자화
 │   │   ├── kernel_trace.cpp             # 선택 커널 시간·작업자·PMU 진단
 │   │   ├── perf_counters.h              # 작업자별 Linux PMU 그룹
-│   │   └── q8_gemv.cpp                  # 선택 Q8 GEMV 누적 분리 실험
+│   │   └── q8_gemv.cpp                  # 선택 Q8 GEMV 누적·prefetch 실험
 │   └── ort_trace/                       # ORT 호출 계측·빌드
 ├── results/
 │   ├── maintenance/                     # 로컬 검사·환경 스냅샷

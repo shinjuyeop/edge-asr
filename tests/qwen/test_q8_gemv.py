@@ -25,6 +25,8 @@ class Q8GEMVTests(unittest.TestCase):
 extern "C" void ggml_gemv_q8_0_4x4_q8_0(int n,float* out,size_t,const void*,const void*,int rows,int cols) {
     auto begin=reinterpret_cast<int(*)(int)>(dlsym(RTLD_DEFAULT,"edge_q8_gemv_begin"));
     assert(begin(0)==-1); // 전달된 커널 실행 중 모드 변경/집계 초기화 금지
+    auto prefetch=reinterpret_cast<int(*)(int)>(dlsym(RTLD_DEFAULT,"edge_q8_gemv_prefetch_begin"));
+    assert(prefetch(4)==-1);
     *out=float(n*rows*cols);
 }
 extern "C" float drive() {
@@ -60,6 +62,10 @@ import ctypes,json,sys
 p=ctypes.CDLL(None);e=ctypes.CDLL(sys.argv[1]);e.drive.restype=ctypes.c_float
 p.edge_q8_gemv_calls.argtypes=[ctypes.c_int];p.edge_q8_gemv_calls.restype=ctypes.c_uint64
 assert p.edge_q8_gemv_supported()==0
+assert p.edge_q8_gemv_mode()==0
+for distance in (-1,0,1,4,8,16):
+    assert p.edge_q8_gemv_prefetch_begin(distance)==-1
+    assert p.edge_q8_gemv_mode()==0
 assert p.edge_q8_gemv_begin(1)==-1 and p.edge_q8_gemv_begin(2)==-1
 assert p.edge_q8_gemv_begin(0)==0
 assert e.drive()==128 and e.drive()==128

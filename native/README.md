@@ -7,7 +7,7 @@ Python 실행 코드는 [src/edge_asr/qwen/](../src/edge_asr/qwen/), C++ 소스�
 | [gguf/bridge.cpp](gguf/bridge.cpp) | llama.cpp/libmtmd batch 입력 C ABI. 모델 상주·KV 초기화·오디오/prefill·토큰 decode·선택적 토큰 callback |
 | [gguf/build.py](gguf/build.py) | 고정 CPU 엔진에 bridge 연결, `build.json`에 소스/바이너리 해시 기록 |
 | [gguf/kernel_trace.cpp](gguf/kernel_trace.cpp) | 기존 엔진의 선택 ELF 함수 호출 추적. 운영 기본과 별도 |
-| [gguf/q8_gemv.cpp](gguf/q8_gemv.cpp) | Q8 GEMV 정수 누적 분리의 선택 실험. 원래 함수 전달/후보 대조 |
+| [gguf/q8_gemv.cpp](gguf/q8_gemv.cpp) | Q8 GEMV 누적 분리·prefetch 선택 실험. 원래 함수/계산 대조 |
 | [gguf/quantize.py](gguf/quantize.py) | 고정 BF16→Q6/Q5/Q4 독립 변환·자산 명세. 별도 변환 환경·빌드 사용 |
 | [ort_trace/ort_trace.cc](ort_trace/ort_trace.cc), [빌드 도구](ort_trace/build.py) | 기존 ORT1.28.2/API28의 Session.Run 호출 계측 |
 
@@ -89,3 +89,10 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 빌드는 기존 엔진의 `build.ninja`에 기록된 ARM ISA·`-O3` 조건과 고정 upstream의 `ggml/include`·`ggml/src`·`ggml/src/ggml-cpu` 헤더를 사용하며 output은 새 경로에 둡니다. 원래 라이브러리와 합성 입력의 float 비트 일치부터 검증합니다. 공유 설정에는 연결하지 않으며 [선별 조건](../docs/research/qwen_realtime.md#q8-gemv-정수-누적-분리--2026-11-16-사전-조건)에 따라 실제 전사/token 동등성과 비용을 비교합니다.
 
 [RP5 선별 결과](../results/summaries/optimization/decode-q8-20261116.md)는 합성72조건·실제36호출 동등성을 유지했지만 속도 기준에 미달했습니다. 운영 기본에는 적용하지 않으며 후보 소스·별도 빌드·부정적 결과를 재현용으로 보존합니다.
+
+
+## Q8 가중치 사전 읽기 후보
+
+같은 [gguf/q8_gemv.cpp](gguf/q8_gemv.cpp)의 계산 템플릿을 재사용합니다. 기존 `edge_q8_gemv_begin(0/1)`은 원래 함수/정수 누적 분리로 유지하고, 새 `edge_q8_gemv_prefetch_begin(0/4/8)`은 원래 정수 누적 순서에 사전 읽기0/4/8 packed 블록을 지정합니다. 한 블록은136바이트로, 거리0은 재컴파일된 무-prefetch 대조입니다. `edge_q8_gemv_mode()`는 실제 모드0/1/2/3/4를 반환합니다. 지원되지 않는 거리·ARM ISA·실행 중 전환은 거부하고 기존 값/집계를 보존합니다.
+
+미래 블록이 호출자의 가중치 범위 안에 있을 때만 주소0/64/128바이트에 읽기·locality3 힌트를 넣습니다. 계산 순서·가중치 배치·GEMM·스레드는 바꾸지 않습니다. 새 빌드/실험 자식에만 연결하며 공유 설정과 과거 바이너리는 보존합니다. [고정 PCM 선별 조건](../docs/research/qwen_realtime.md#q8-가중치-prefetch--2026-11-17-사전-조건).
