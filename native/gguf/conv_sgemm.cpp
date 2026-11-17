@@ -15,6 +15,8 @@
 #define API extern "C" __attribute__((visibility("default")))
 extern "C" bool edge_conv4(ARGS);
 extern "C" bool edge_conv6(ARGS);
+API int edge_conv_begin(int next);
+API const char* edge_conv_result();
 
 namespace {
 using Kernel = bool(*)(ARGS);
