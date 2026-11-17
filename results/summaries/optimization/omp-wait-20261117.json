@@ -1,0 +1,576 @@
+{
+  "cases": {
+    "00-unset": {
+      "groups": {
+        "initial": {
+          "calls": 3,
+          "native_s": 0.3969344043333333,
+          "decode_ms": 54.99424966666667,
+          "ttft_s": 0.34128374966666664,
+          "encoder_s": 0.16072747233333334,
+          "prefill_s": 0.09190963,
+          "process_cpu_s": 1.1267500789999971
+        },
+        "followup": {
+          "calls": 3,
+          "native_s": 1.6406716763333333,
+          "decode_ms": 55.71571122222222,
+          "ttft_s": 0.7953110513333334,
+          "encoder_s": 0.467092705,
+          "prefill_s": 0.235508916,
+          "process_cpu_s": 4.0661318039999985
+        },
+        "final": {
+          "calls": 3,
+          "native_s": 3.223102072,
+          "decode_ms": 57.34801856565657,
+          "ttft_s": 1.3091722736666667,
+          "encoder_s": 0.801869503,
+          "prefill_s": 0.410762719,
+          "process_cpu_s": 7.7249161666666675
+        }
+      },
+      "calls": 15,
+      "all_equivalent": true,
+      "long_decode_ms": 56.837922520833345,
+      "native_sum_s": 15.782124458,
+      "environment": {
+        "OMP_WAIT_POLICY": null,
+        "OMP_NUM_THREADS": null,
+        "OMP_DYNAMIC": null,
+        "OMP_PROC_BIND": null,
+        "OMP_PLACES": null,
+        "GOMP_SPINCOUNT": null,
+        "KMP_BLOCKTIME": null,
+        "OPENBLAS_NUM_THREADS": "1"
+      },
+      "thermal": {
+        "start_mc": 56200,
+        "max_mc": 77650,
+        "current_limits": [
+          0
+        ],
+        "clock_hz": [
+          1900019584,
+          2400017408,
+          2400020480,
+          2400023808,
+          2400027136,
+          2400030464,
+          2400033792,
+          2400037120
+        ]
+      },
+      "guard_ok": true
+    },
+    "01-active": {
+      "groups": {
+        "initial": {
+          "calls": 3,
+          "native_s": 0.401041175,
+          "decode_ms": 56.072262333333335,
+          "ttft_s": 0.34431485333333334,
+          "encoder_s": 0.160491841,
+          "prefill_s": 0.093200273,
+          "process_cpu_s": 1.1492536423333373
+        },
+        "followup": {
+          "calls": 3,
+          "native_s": 1.6400509196666666,
+          "decode_ms": 55.485696333333344,
+          "ttft_s": 0.7984175753333334,
+          "encoder_s": 0.46627841666666664,
+          "prefill_s": 0.23683820733333333,
+          "process_cpu_s": 4.085992315666665
+        },
+        "final": {
+          "calls": 3,
+          "native_s": 3.2430291996666667,
+          "decode_ms": 57.75806763636364,
+          "ttft_s": 1.3159715536666665,
+          "encoder_s": 0.7993187416666667,
+          "prefill_s": 0.41950365833333336,
+          "process_cpu_s": 7.817774690666666
+        }
+      },
+      "calls": 15,
+      "all_equivalent": true,
+      "long_decode_ms": 57.04795160416667,
+      "native_sum_s": 15.852363882999999,
+      "environment": {
+        "OMP_WAIT_POLICY": "ACTIVE",
+        "OMP_NUM_THREADS": null,
+        "OMP_DYNAMIC": null,
+        "OMP_PROC_BIND": null,
+        "OMP_PLACES": null,
+        "GOMP_SPINCOUNT": null,
+        "KMP_BLOCKTIME": null,
+        "OPENBLAS_NUM_THREADS": "1"
+      },
+      "thermal": {
+        "start_mc": 57850,
+        "max_mc": 79850,
+        "current_limits": [
+          0
+        ],
+        "clock_hz": [
+          1500016128,
+          2400017408,
+          2400020480,
+          2400023808,
+          2400027136,
+          2400030464,
+          2400033792
+        ]
+      },
+      "guard_ok": true
+    },
+    "02-passive": {
+      "groups": {
+        "initial": {
+          "calls": 3,
+          "native_s": 0.41105676366666666,
+          "decode_ms": 56.91759433333334,
+          "ttft_s": 0.353486122,
+          "encoder_s": 0.16447728966666667,
+          "prefill_s": 0.095672164,
+          "process_cpu_s": 1.1232408173333326
+        },
+        "followup": {
+          "calls": 3,
+          "native_s": 1.6708953263333333,
+          "decode_ms": 56.89965382222222,
+          "ttft_s": 0.807823735,
+          "encoder_s": 0.47022467966666665,
+          "prefill_s": 0.23936051866666666,
+          "process_cpu_s": 4.017966730333335
+        },
+        "final": {
+          "calls": 3,
+          "native_s": 3.2856078783333333,
+          "decode_ms": 58.79861637373738,
+          "ttft_s": 1.3239187233333334,
+          "encoder_s": 0.806694469,
+          "prefill_s": 0.41688563033333337,
+          "process_cpu_s": 7.642248527666666
+        }
+      },
+      "calls": 15,
+      "all_equivalent": true,
+      "long_decode_ms": 58.2051905763889,
+      "native_sum_s": 16.102679905,
+      "environment": {
+        "OMP_WAIT_POLICY": "PASSIVE",
+        "OMP_NUM_THREADS": null,
+        "OMP_DYNAMIC": null,
+        "OMP_PROC_BIND": null,
+        "OMP_PLACES": null,
+        "GOMP_SPINCOUNT": null,
+        "KMP_BLOCKTIME": null,
+        "OPENBLAS_NUM_THREADS": "1"
+      },
+      "thermal": {
+        "start_mc": 58950,
+        "max_mc": 81500,
+        "current_limits": [
+          0,
+          8
+        ],
+        "clock_hz": [
+          1500016128,
+          2311024640,
+          2400017408,
+          2400020480,
+          2400023808,
+          2400027136,
+          2400030464,
+          2400033792
+        ]
+      },
+      "guard_ok": true
+    },
+    "03-unset": {
+      "groups": {
+        "initial": {
+          "calls": 3,
+          "native_s": 0.406611016,
+          "decode_ms": 58.36463333333333,
+          "ttft_s": 0.3475579776666667,
+          "encoder_s": 0.160715836,
+          "prefill_s": 0.09499981433333334,
+          "process_cpu_s": 1.1534635213333313
+        },
+        "followup": {
+          "calls": 3,
+          "native_s": 1.6649062306666667,
+          "decode_ms": 56.80388615555555,
+          "ttft_s": 0.802812947,
+          "encoder_s": 0.46859371366666663,
+          "prefill_s": 0.23804714066666666,
+          "process_cpu_s": 4.12191736033333
+        },
+        "final": {
+          "calls": 3,
+          "native_s": 3.3065366413333335,
+          "decode_ms": 59.34411376767677,
+          "ttft_s": 1.3264674786666666,
+          "encoder_s": 0.807094509,
+          "prefill_s": 0.42015401366666666,
+          "process_cpu_s": 7.906334154333334
+        }
+      },
+      "calls": 15,
+      "all_equivalent": true,
+      "long_decode_ms": 58.55029263888889,
+      "native_sum_s": 16.134161664,
+      "environment": {
+        "OMP_WAIT_POLICY": null,
+        "OMP_NUM_THREADS": null,
+        "OMP_DYNAMIC": null,
+        "OMP_PROC_BIND": null,
+        "OMP_PLACES": null,
+        "GOMP_SPINCOUNT": null,
+        "KMP_BLOCKTIME": null,
+        "OPENBLAS_NUM_THREADS": "1"
+      },
+      "thermal": {
+        "start_mc": 59500,
+        "max_mc": 82050,
+        "current_limits": [
+          0
+        ],
+        "clock_hz": [
+          1500019456,
+          2311034624,
+          2366030080,
+          2400017408,
+          2400020480,
+          2400023808,
+          2400027136,
+          2400030464,
+          2400033792,
+          2400037120
+        ]
+      },
+      "guard_ok": true
+    },
+    "04-passive": {
+      "groups": {
+        "initial": {
+          "calls": 3,
+          "native_s": 0.41473637766666666,
+          "decode_ms": 57.98735333333334,
+          "ttft_s": 0.35608016833333334,
+          "encoder_s": 0.164016287,
+          "prefill_s": 0.097172018,
+          "process_cpu_s": 1.1386178830000044
+        },
+        "followup": {
+          "calls": 3,
+          "native_s": 1.6916993913333334,
+          "decode_ms": 57.97137315555555,
+          "ttft_s": 0.8120362966666667,
+          "encoder_s": 0.47082677633333336,
+          "prefill_s": 0.24232478866666668,
+          "process_cpu_s": 4.075467682333333
+        },
+        "final": {
+          "calls": 3,
+          "native_s": 3.322168769333333,
+          "decode_ms": 59.453310434343436,
+          "ttft_s": 1.3383163623333334,
+          "encoder_s": 0.8146381696666667,
+          "prefill_s": 0.42162878766666667,
+          "process_cpu_s": 7.727644707999997
+        }
+      },
+      "calls": 15,
+      "all_equivalent": true,
+      "long_decode_ms": 58.990205034722216,
+      "native_sum_s": 16.285813615000002,
+      "environment": {
+        "OMP_WAIT_POLICY": "PASSIVE",
+        "OMP_NUM_THREADS": null,
+        "OMP_DYNAMIC": null,
+        "OMP_PROC_BIND": null,
+        "OMP_PLACES": null,
+        "GOMP_SPINCOUNT": null,
+        "KMP_BLOCKTIME": null,
+        "OPENBLAS_NUM_THREADS": "1"
+      },
+      "thermal": {
+        "start_mc": 57850,
+        "max_mc": 82600,
+        "current_limits": [
+          0,
+          8
+        ],
+        "clock_hz": [
+          1500012800,
+          2311024640,
+          2400017408,
+          2400020480,
+          2400023808,
+          2400027136,
+          2400030464,
+          2400033792,
+          2400037120
+        ]
+      },
+      "guard_ok": true
+    },
+    "05-active": {
+      "groups": {
+        "initial": {
+          "calls": 3,
+          "native_s": 0.40931216766666667,
+          "decode_ms": 57.681913333333334,
+          "ttft_s": 0.35095841699999997,
+          "encoder_s": 0.16063989733333334,
+          "prefill_s": 0.09443251500000001,
+          "process_cpu_s": 1.165278129333333
+        },
+        "followup": {
+          "calls": 3,
+          "native_s": 1.700038039,
+          "decode_ms": 58.53390164444444,
+          "ttft_s": 0.812203551,
+          "encoder_s": 0.4727464353333333,
+          "prefill_s": 0.24222457866666666,
+          "process_cpu_s": 4.2217679016666665
+        },
+        "final": {
+          "calls": 3,
+          "native_s": 3.3145665893333334,
+          "decode_ms": 59.3057378888889,
+          "ttft_s": 1.3358401866666667,
+          "encoder_s": 0.8103237313333334,
+          "prefill_s": 0.424766763,
+          "process_cpu_s": 7.984831499666669
+        }
+      },
+      "calls": 15,
+      "all_equivalent": true,
+      "long_decode_ms": 59.0645390625,
+      "native_sum_s": 16.271750388,
+      "environment": {
+        "OMP_WAIT_POLICY": "ACTIVE",
+        "OMP_NUM_THREADS": null,
+        "OMP_DYNAMIC": null,
+        "OMP_PROC_BIND": null,
+        "OMP_PLACES": null,
+        "GOMP_SPINCOUNT": null,
+        "KMP_BLOCKTIME": null,
+        "OPENBLAS_NUM_THREADS": "1"
+      },
+      "thermal": {
+        "start_mc": 58950,
+        "max_mc": 83150,
+        "current_limits": [
+          0,
+          8
+        ],
+        "clock_hz": [
+          1500016128,
+          2256016128,
+          2311027968,
+          2366023424,
+          2366026496,
+          2366030080,
+          2400017408,
+          2400020480,
+          2400023808,
+          2400027136,
+          2400030464,
+          2400033792,
+          2400037120
+        ]
+      },
+      "guard_ok": true
+    },
+    "06-unset": {
+      "groups": {
+        "initial": {
+          "calls": 3,
+          "native_s": 0.4053811446666667,
+          "decode_ms": 58.010335000000005,
+          "ttft_s": 0.34668346566666663,
+          "encoder_s": 0.16069821833333334,
+          "prefill_s": 0.09413058733333333,
+          "process_cpu_s": 1.1508147423333313
+        },
+        "followup": {
+          "calls": 3,
+          "native_s": 1.6905316196666667,
+          "decode_ms": 57.96660904444445,
+          "ttft_s": 0.810481899,
+          "encoder_s": 0.474923812,
+          "prefill_s": 0.23966769366666665,
+          "process_cpu_s": 4.181003948
+        },
+        "final": {
+          "calls": 3,
+          "native_s": 3.3094839,
+          "decode_ms": 59.27835413131313,
+          "ttft_s": 1.330876159,
+          "encoder_s": 0.8100901436666667,
+          "prefill_s": 0.41937520699999997,
+          "process_cpu_s": 7.919924399999999
+        }
+      },
+      "calls": 15,
+      "all_equivalent": true,
+      "long_decode_ms": 58.868433791666654,
+      "native_sum_s": 16.216189993,
+      "environment": {
+        "OMP_WAIT_POLICY": null,
+        "OMP_NUM_THREADS": null,
+        "OMP_DYNAMIC": null,
+        "OMP_PROC_BIND": null,
+        "OMP_PLACES": null,
+        "GOMP_SPINCOUNT": null,
+        "KMP_BLOCKTIME": null,
+        "OPENBLAS_NUM_THREADS": "1"
+      },
+      "thermal": {
+        "start_mc": 58400,
+        "max_mc": 83150,
+        "current_limits": [
+          0,
+          8
+        ],
+        "clock_hz": [
+          1500012800,
+          2256026112,
+          2366036736,
+          2400017408,
+          2400020480,
+          2400023808,
+          2400027136,
+          2400030464,
+          2400033792
+        ]
+      },
+      "guard_ok": true
+    }
+  },
+  "comparisons": {
+    "ACTIVE": {
+      "blocks": [
+        {
+          "decode_improvement": 0.011199687503615996,
+          "native_improvement": 0.006628539272750089,
+          "initial_ttft_increase": -0.0003077930070924939,
+          "checks": {
+            "decode_ge_3pct": false,
+            "native_ge_1pct": false,
+            "initial_ttft_increase_le_5pct": true,
+            "all_equivalent": true,
+            "current_limits_zero": true,
+            "guards_valid": true
+          },
+          "passed": false
+        },
+        {
+          "decode_improvement": -0.006049730873759485,
+          "native_improvement": -0.005970541558493414,
+          "initial_ttft_increase": 0.011055794407510477,
+          "checks": {
+            "decode_ge_3pct": false,
+            "native_ge_1pct": false,
+            "initial_ttft_increase_le_5pct": true,
+            "all_equivalent": true,
+            "current_limits_zero": false,
+            "guards_valid": true
+          },
+          "passed": false
+        }
+      ],
+      "passed": false
+    },
+    "PASSIVE": {
+      "blocks": [
+        {
+          "decode_improvement": -0.00885849557201901,
+          "native_improvement": -0.009057247039803151,
+          "initial_ttft_increase": 0.026320293831289865,
+          "checks": {
+            "decode_ge_3pct": false,
+            "native_ge_1pct": false,
+            "initial_ttft_increase_le_5pct": true,
+            "all_equivalent": true,
+            "current_limits_zero": false,
+            "guards_valid": true
+          },
+          "passed": false
+        },
+        {
+          "decode_improvement": -0.004783595053052148,
+          "native_improvement": -0.006839974271257043,
+          "initial_ttft_increase": 0.02581075144015821,
+          "checks": {
+            "decode_ge_3pct": false,
+            "native_ge_1pct": false,
+            "initial_ttft_increase_le_5pct": true,
+            "all_equivalent": true,
+            "current_limits_zero": false,
+            "guards_valid": true
+          },
+          "passed": false
+        }
+      ],
+      "passed": false
+    }
+  },
+  "all_equivalent": true,
+  "scope": "고정 PCM; decode_ms는 모델 평가당 시간이며 표시 TPOT가 아님",
+  "source_commit": "8023583eb42974a54802e0fff75674bd2963d40e",
+  "protected_assets_unchanged": true,
+  "protected_files": 1234,
+  "plan": {
+    "policies": [
+      null,
+      "ACTIVE",
+      "PASSIVE",
+      null,
+      "PASSIVE",
+      "ACTIVE",
+      null
+    ],
+    "warmup_rounds": [
+      1,
+      2
+    ],
+    "measured_rounds": [
+      3,
+      4,
+      5
+    ],
+    "comparison_blocks": [
+      [
+        0,
+        1,
+        2,
+        3
+      ],
+      [
+        3,
+        4,
+        5,
+        6
+      ]
+    ],
+    "decode_improvement_min": 0.03,
+    "native_improvement_min": 0.01,
+    "initial_ttft_increase_max": 0.05,
+    "audio": "q8_0",
+    "threads": [
+      2,
+      3
+    ],
+    "preload": null,
+    "scope": "고정 PCM 선별; CER/연속 지연 미측정"
+  },
+  "boot_id": "db0f2e44-3c3f-4b8a-8472-e5618db2aeae",
+  "default_changed": false
+}
