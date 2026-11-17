@@ -14,7 +14,7 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def build(source, engine_build, output, *, profile_operators=False):
+def build(source, engine_build, output, *, profile_operators=False, kleidiai=False):
     head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=source, text=True).strip()
     if (
         head != COMMIT
@@ -26,7 +26,7 @@ def build(source, engine_build, output, *, profile_operators=False):
         "GGML_NATIVE:BOOL=ON",
         "GGML_CUDA:BOOL=OFF",
         "GGML_VULKAN:BOOL=OFF",
-        "GGML_CPU_KLEIDIAI:BOOL=OFF",
+        "GGML_CPU_KLEIDIAI:BOOL=" + ("ON" if kleidiai else "OFF"),
     ):
         if value not in cache:
             raise ValueError(f"초기 CPU 비교의 빌드 옵션이 다릅니다: {value}")
@@ -79,7 +79,20 @@ def build(source, engine_build, output, *, profile_operators=False):
         "exit_code": result.returncode,
         "stdout": result.stdout,
         "stderr": result.stderr,
-        "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model",
+        "cpu_configuration": "native CPU, GPU OFF, KleidiAI "
+        + ("ON" if kleidiai else "OFF")
+        + ", thread count supplied per model",
+        "cpu_build_options": {
+            name: next(
+                (
+                    line.split("=", 1)[1]
+                    for line in cache.splitlines()
+                    if line.startswith(name + ":BOOL=")
+                ),
+                None,
+            )
+            for name in ("GGML_CPU_KLEIDIAI", "GGML_CPU_REPACK", "GGML_OPENMP")
+        },
     }
     if profile_operators:
         receipt["features"].append("operator_profile_v1")
@@ -96,12 +109,14 @@ def main():
     parser.add_argument("--engine-build", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--profile-operators", action="store_true", help="별도 연산 진단 빌드")
+    parser.add_argument("--kleidiai", action="store_true", help="명시적인 KleidiAI ON 엔진 비교")
     args = parser.parse_args()
     build(
         args.source.resolve(),
         args.engine_build.resolve(),
         args.output.resolve(),
         profile_operators=args.profile_operators,
+        kleidiai=args.kleidiai,
     )
 
 

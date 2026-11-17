@@ -477,7 +477,7 @@ class GGUFTests(unittest.TestCase):
 
     def test_quantized_manifest_selects_assets_and_rejects_wrong_provenance(self):
         audio_name = "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf"
-        for quant in ("q6_k", "q5_k_m", "q4_k_m"):
+        for quant in ("q6_k", "q5_k_m", "q4_k_m", "q4_0"):
             text = self.root / "model" / (quant + ".gguf")
             text.write_bytes(b"fixture quantized weights")
             assets = {
@@ -514,7 +514,7 @@ class GGUFTests(unittest.TestCase):
 
     def test_lower_quantization_requires_manifest_in_config(self):
         original = (ROOT / "configs/gguf.toml").read_text()
-        for quant in ("q6_k", "q5_k_m", "q4_k_m"):
+        for quant in ("q6_k", "q5_k_m", "q4_k_m", "q4_0"):
             path = self.root / "quant.toml"
             text = original.replace('quantization = "q8_0"', f'quantization = "{quant}"')
             path.write_text(text)

@@ -10,7 +10,7 @@ Python 실행 코드는 [src/edge_asr/qwen/](../src/edge_asr/qwen/), C++ 소스�
 | [gguf/conv_sgemm.cpp](gguf/conv_sgemm.cpp), [패치](gguf/conv_sgemm.patch) | 고정 합성곱2/3의 원래/재컴파일6열/4열 비교. 원래 GGML 누적·threadpool 재사용 |
 | [gguf/f16_dot.cpp](gguf/f16_dot.cpp) | FP16×FP32 변환·내적 결합 선택 실험. 64의 배수만 대체하며 나머지는 원래 함수로 전달 |
 | [gguf/q8_gemv.cpp](gguf/q8_gemv.cpp) | Q8 GEMV 누적 분리·prefetch 선택 실험. 원래 함수/계산 대조 |
-| [gguf/quantize.py](gguf/quantize.py) | 고정 BF16→Q6/Q5/Q4 독립 변환·자산 명세. 별도 변환 환경·빌드 사용 |
+| [gguf/quantize.py](gguf/quantize.py) | 고정 BF16→Q6/Q5/Q4_K_M/Q4_0·출력층 독립 변환·자산 명세. 별도 변환 환경·빌드 사용 |
 | [ort_trace/ort_trace.cc](ort_trace/ort_trace.cc), [빌드 도구](ort_trace/build.py) | 기존 ORT1.28.2/API28의 Session.Run 호출 계측 |
 
 ## GGUF bridge
@@ -24,7 +24,7 @@ Python 실행 코드는 [src/edge_asr/qwen/](../src/edge_asr/qwen/), C++ 소스�
   --output "runtimes/qwen3-opt/<새빌드ID>/bridge"
 ```
 
-현재 검증 구성은 CPU native·GPU OFF·KleidiAI OFF입니다. 모델은1회 로딩하며 기본은 호출별 KV 초기화입니다. 현재 공유 개발 설정은 검증한 고정 text prefix KV만 유지하고 음성 KV의 청크 간 재사용은 미구현입니다. [Python 어댑터](../src/edge_asr/qwen/gguf.py)는 가중치와 연결 라이브러리의 해시를 확인합니다.
+공유 기본은 CPU native·GPU OFF·KleidiAI OFF입니다. 별도 KleidiAI ON 엔진에는 `build.py --kleidiai`를 명시해야 하며 CMake cache와 요청의 일치를 확인합니다. `build.json`은 KleidiAI/repack/OpenMP 실제 옵션을 기록합니다. 모델은1회 로딩하며 기본은 호출별 KV 초기화입니다. 현재 공유 개발 설정은 검증한 고정 text prefix KV만 유지하고 음성 KV의 청크 간 재사용은 미구현입니다. [Python 어댑터](../src/edge_asr/qwen/gguf.py)는 가중치와 연결 라이브러리의 해시를 확인합니다.
 
 새 bridge는 기존 ABI1 batch 호출을 유지하고 `edge_gguf_transcribe_tokens`를 추가합니다. `build.json`의 `features`에 `token_callback_v1`이 기록된 별도 빌드에서만 `replay-qwen3 --token-stream`을 사용할 수 있습니다. callback의 토큰 바이트는 완결된 UTF-8 접두부가 될 때까지 Python에서 보류하며 최종 EOG 결과와 일치하는지 확인합니다. 기존 라이브러리·`configs/gguf.toml`은 보존하고 새 실험 TOML에서 새 library/manifest 경로를 지정합니다. [실측 전 고정 조건](../docs/research/qwen_realtime.md).
 
@@ -38,7 +38,7 @@ Python 실행 코드는 [src/edge_asr/qwen/](../src/edge_asr/qwen/), C++ 소스�
 
 [100개 끔/켬 실측](../results/summaries/optimization/realtime-prefix-cache-20261112.md)에서9토큰 유지·전사 동등성·실패 후 복구를 확인했고 사전21조건을 통과했습니다. 공유 개발 설정은 해당 빌드와 `cache_text_prefix=true`를 사용합니다. native 기본값과 기존 빌드/설정은 보존하며 실사용·장시간 채택과 구분합니다.
 
-양자화 준비는 별도 환경에서 upstream `gguf-py`의 numpy·pyyaml·tqdm·requests 의존성을 준비하고, 고정 llama.cpp 소스의 `llama-quantize`를 새 빌드 경로에 만듭니다. 기존 추론 환경·엔진은 변경하지 않습니다. `quantize.py --help`의 source/tool/llama-source/audio-model/output을 지정하며 output은 새 폴더여야 합니다. 모델별 명세는 원본·도구·GGUF type·tensor dtype·SHA를 보존하고 Q8 오디오 파일은 기존 경로를 참조합니다. [실험 조건](../docs/research/qwen_realtime.md).
+양자화 준비는 별도 환경에서 upstream `gguf-py`의 numpy·pyyaml·tqdm·requests 의존성을 준비하고, 고정 llama.cpp 소스의 `llama-quantize`를 새 빌드 경로에 만듭니다. 기존 추론 환경·엔진은 변경하지 않습니다. `quantize.py --help`의 source/tool/llama-source/audio-model/output을 지정하며 output은 새 폴더여야 합니다. 기본 변환 목록은 이전 Q6/Q5/Q4_K_M이며 `--quantization q4_0`으로 Q4_0만 만들 수 있습니다. `--output-tensor-type q4_0`은 출력층만 명시적으로 바꾼 별도 이름의 후보를 만듭니다. 변환 후 `output.weight`의 실제 dtype·차원·바이트 수를 검증하고 명세에 기록합니다. 모델별 명세는 원본·도구·GGUF type·tensor dtype·SHA를 보존하고 Q8 오디오 파일은 기존 경로를 참조합니다. [실험 조건](../docs/research/qwen_realtime.md).
 
 오디오 Q4 실험은 같은 고정 `llama-quantize`의 `--tensor-type-file`을 사용합니다. 공식 BF16 mmproj에서 기존 Q8 배포본이 양자화한110개 행렬만 Q4_0으로 바꾸고 나머지192개 tensor의 dtype/바이트를 보존했습니다. 주요 폭896은 K 방식의256블록과 맞지 않아 audio는 Q4_0을 사용하며 text Q4_K_M과 구분합니다. 새 자산은 `models/qwen3-opt/gguf-audio-quant-20261113-01/`이며 원본·명령·tensor별 정밀도·해시는 해당 명세에 기록합니다. 기존 Q8을 입력으로 재양자화하지 않습니다. [text/audio 모두 Q4 비교 조건](../docs/research/qwen_realtime.md#textaudio-모두-q4-대조--2026-11-13-사전-조건).
 
@@ -64,7 +64,7 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 
 ## Q4 prefill의 repack 대조
 
-고정된 현재 CPU 경로에서 `GGML_CPU_REPACK`을 별도 엔진 빌드마다 비교합니다. 기존 CMake 옵션을 기록하고 새 빌드 경로에서 해당 항목만 바꿉니다. 기존 `build.py`는 같은 고정 소스·native CPU/GPU OFF/KleidiAI OFF 계약으로 새 엔진에 bridge를 연결합니다. 런타임/설정만 바꾸고 가중치는 유지하며, [고정 PCM→연속 입력 선별 조건](../docs/research/qwen_realtime.md#q4-prefill-실행-경로-선별--2026-11-13-사전-조건)을 따릅니다. 켬/끔의 성능·수치 동등성을 가정하지 않습니다.
+고정된 현재 CPU 경로에서 `GGML_CPU_REPACK`을 별도 엔진 빌드마다 비교합니다. 기존 CMake 옵션을 기록하고 새 빌드 경로에서 해당 항목만 바꿉니다. `build.py`는 같은 고정 소스·native CPU/GPU OFF와 명시한 KleidiAI 상태를 검사해 새 엔진에 bridge를 연결합니다. 아래 11월13일 비교는 KleidiAI OFF였습니다. 런타임/설정만 바꾸고 가중치는 유지하며, [고정 PCM→연속 입력 선별 조건](../docs/research/qwen_realtime.md#q4-prefill-실행-경로-선별--2026-11-13-사전-조건)을 따릅니다. 켬/끔의 성능·수치 동등성을 가정하지 않습니다.
 
 [이번 Q4 선별](../results/summaries/optimization/prefill-q4-20261113.md)에서는 repack OFF가 느려져 기존 ON을 유지했습니다. 선택된 음성/prefill4T는 기존 prefix bridge의 스레드 설정만 바꿉니다. 새 OFF 엔진은 부정적 결과의 자산으로 보존합니다.
 
