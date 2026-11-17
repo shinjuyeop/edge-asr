@@ -123,6 +123,7 @@ edge-asr/
 ├── models/                              # 로컬 가중치
 ├── native/
 │   ├── gguf/                            # bridge·KV/연산·커널 계측·빌드·양자화
+│   │   ├── f16_dot.cpp                  # 선택 FP16 변환·내적 결합 실험
 │   │   ├── kernel_trace.cpp             # 선택 커널 시간·작업자·PMU 진단
 │   │   ├── perf_counters.h              # 작업자별 Linux PMU 그룹
 │   │   └── q8_gemv.cpp                  # 선택 Q8 GEMV 누적·prefetch 실험

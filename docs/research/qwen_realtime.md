@@ -540,3 +540,13 @@ GCC `__builtin_prefetch(addr,0,3)`의 읽기/높은 지역성 힌트를 사용�
 통과 후보가 있을 때만 원래100개·Qwen 단독1배속 연속 입력으로 확대하며, 없으면 운영 기본을 유지하고 encoder FP16 합성곱·투영으로 조사 대상을 옮깁니다. 기존 단일 추론 잠금·600초/4GiB operational guard·시작 온도 대기 없는 관측·firmware 열 보호·동일 부팅/자산 해시를 유지합니다. 고정 PCM의 성능을 새 CER·연속 표시 지연으로 사용하지 않습니다.
 
 [실측 결과](../../results/summaries/optimization/prefetch-q8-20261117.md): 합성84조건/336비교 비트·경계/입력 동등, 실제60호출 전사/token 동일·실패0을 확인했습니다. 두 후보 모두 원래 함수와 무-prefetch 대조 대비 속도 조건에 미달했습니다. 최고73.8°C·관측 현재 제한0이며 기본 적용·100개 확대는 하지 않습니다. 다음은 encoder FP16 합성곱·투영·입력 변환 경로입니다.
+
+## Encoder FP16 변환·내적 결합 — 2026-11-17 사전 조건
+
+`encoder-f16-20261117-01`은 고정 llama.cpp의 `ggml_vec_dot_f16_f32` 중 길이가 양의64배수인 호출만 대체하는 선택 라이브러리입니다. 원래 ARM 경로의 FP16→임시 FP32 배열 변환·64개마다 별도 내적 호출을 레지스터 변환·FMA로 결합합니다. 네 FP32 누적기의 계산/축약 순서와64개별 FP64 합을 유지하며 합성곱 FP16 누적·가중치·그래프·Q8 text/audio·2/3T·prefix KV는 바꾸지 않습니다. 나머지 길이와 지원하지 않는 플랫폼은 원래 함수로 전달합니다. [고정 원래 구현](https://github.com/ggml-org/llama.cpp/blob/7d7f0287530bc8981690f361d8c1627dbae1c99a/ggml/src/ggml-cpu/vec.cpp#L380), [ARM SIMD 정의](https://github.com/ggml-org/llama.cpp/blob/7d7f0287530bc8981690f361d8c1627dbae1c99a/ggml/src/ggml-cpu/simd-mappings.h#L350).
+
+Host 전달/집계 모의 검사 후 main push·RP5 동기화·새 빌드를 합니다. RP5 합성 입력에서 길이0/1/9/16/63/64/65/128/896/1024/3072/4320/7680, 다섯 패턴(random/zero/alternating/extreme/subnormal)의 출력 비트·입력/출력 경계를 검사합니다. 실패 시 ASR 비교를 중단합니다. 호출 집계는 작업자별이며 제어/집계 읽기는 유휴 상태에서만 허용합니다.
+
+같은 최초0.612초·후속2.276초·확정4.504초 PCM을 공통 reproduction 평가기로12라운드×3개=36회 실행합니다. 모델1회·타이머 밖2초 휴지, 준비1~4는 S/F/S/F, 분석5~8은 S/F/F/S, 분석9~12는 F/S/S/F입니다. S는 같은 preload에서 원래 함수 전달, F는 후보 켬입니다. PMU/커널 시간 추적은 끄고 기존 native 단계·RSS·온도/클럭과 길이별 전달/대체 호출 수를 기록합니다.
+
+두 분석 구간 모두 encoder 합계3% 이상·전체 native합계1% 이상 감소, 최초 native증가5% 이하·RSS증가32MiB 이하를 요구합니다. 모든 PCM·전사/token은 참조와 같고 실패0이어야 합니다. 실제 대체 호출이0이거나 작업자 집계 overflow가 있으면 선별 무효입니다. 이는 작은 고정 PCM의 실용 선별이며 통계적 유의성·새 CER·연속 표시 개선을 뜻하지 않습니다. 통과해도 운영 적용 전 원래 무-preload 대조와 연속 입력 검증이 필요합니다. 최초 PCM의 출력은 문장부호1토큰이라 대표 발화 전체로 일반화하지 않습니다. 시작 온도 대기는 생략하되 operational guard·온도/클럭·현재 제한을 기록합니다.
