@@ -118,6 +118,21 @@ class Qwen3GGUFAdapter:
         self.handle, self.library, self.last_result_metadata = None, None, None
         self.operator_profile_enabled = False
         self.convolution = None
+        self.feature_cache = None
+        if model.get("audio_feature_cache_manifest"):
+            from edge_asr.qwen.feature_cache import AudioFeatureCache
+
+            self.feature_cache = AudioFeatureCache(
+                model["audio_feature_cache_manifest"],
+                model.get("audio_feature_cache_mode", "off"),
+                root,
+                LLAMA_COMMIT,
+            )
+            if self.feature_cache.build["mtmd_sha256"] != self.build.get(
+                "engine_libraries", {}
+            ).get("libmtmd.so"):
+                raise ValueError("특징 캐시의 mtmd가 이 GGUF bridge의 엔진과 다릅니다.")
+            self.model_files.update(self.feature_cache.files)
         if model.get("conv_kernel_manifest"):
             from edge_asr.qwen.convolution import ConvolutionTile
 
@@ -125,6 +140,10 @@ class Qwen3GGUFAdapter:
                 raise ValueError("합성곱 후보는 음성 Q8·3스레드에서 검증합니다.")
             self.convolution = ConvolutionTile(model["conv_kernel_manifest"], root, LLAMA_COMMIT)
             self.model_files.update(self.convolution.files)
+
+    def reset_audio_feature_cache(self):
+        if self.feature_cache:
+            self.feature_cache.reset()
 
     def set_operator_profile(self, enabled):
         """별도 진단 빌드에서만 켠다. 전사 호출 사이에 사용한다."""
@@ -182,6 +201,7 @@ class Qwen3GGUFAdapter:
             "input_policy": "동일 float32 PCM을 직접 전달. file codec/resampling 없음",
             "runtime_build": self.build,
             **({"convolution_build": self.convolution.build} if self.convolution else {}),
+            **({"feature_cache_build": self.feature_cache.build} if self.feature_cache else {}),
         }
 
     def load(self):
@@ -189,6 +209,8 @@ class Qwen3GGUFAdapter:
             raise RuntimeError("이미 로드한 GGUF 모델입니다.")
         if self.convolution:
             self.convolution.bind()
+        if self.feature_cache:
+            self.feature_cache.bind()
         self.library = ctypes.CDLL(str(self.library_path))
         lib = self.library
         lib.edge_gguf_abi.restype = ctypes.c_int
@@ -274,6 +296,7 @@ class Qwen3GGUFAdapter:
         try:
             return self._transcribe_once(audio, on_text)
         except BaseException as error:
+            self.reset_audio_feature_cache()
             if self.handle is not None and "cache_text_prefix" in self.model:
                 metadata = self.last_result_metadata
                 try:
@@ -334,6 +357,8 @@ class Qwen3GGUFAdapter:
         callback = TOKEN_CALLBACK(receive) if on_text is not None else None
         if self.convolution:
             self.convolution.begin()
+        if self.feature_cache:
+            self.feature_cache.begin()
         with capture_native_stderr(self.last_result_metadata):
             if callback is None:
                 blob = self.library.edge_gguf_transcribe(self.handle, pcm, len(audio.samples))
@@ -347,6 +372,13 @@ class Qwen3GGUFAdapter:
             raise RuntimeError("GGUF C ABI가 결과를 반환하지 않았습니다.")
         result = json.loads(blob)
         self.last_result_metadata["native_result"] = result
+        if self.feature_cache:
+            self.last_result_metadata["audio_feature_cache"] = self.feature_cache.result()
+            if (
+                result.get("status") == "success"
+                and self.last_result_metadata["audio_feature_cache"]["calls"] < 1
+            ):
+                raise RuntimeError("선택한 음성 특징 캐시 함수가 호출되지 않았습니다.")
         if result.get("schema_version") != 1 or result.get("input_samples") != len(audio.samples):
             raise ValueError("GGUF 반환 schema/입력 길이 불일치")
         if callback_errors and isinstance(callback_errors[0], InferenceCancelled):
@@ -437,4 +469,6 @@ class Qwen3GGUFAdapter:
             self.handle = None
         if self.convolution:
             self.convolution.close()
+        if self.feature_cache:
+            self.feature_cache.close()
         self.last_result_metadata = None

@@ -16,6 +16,7 @@ class ContinuousPolicy:
         self.segment = None
         self.last_end = 0
         self.last_reason = None
+        self.deferral = None
         self.blocked_since = None
         self.thermal_ready = False
         self.hot = False
@@ -37,7 +38,25 @@ class ContinuousPolicy:
             "thermal_resume_c": 78,
             "thermal_sample_s": 1.0,
             "tail_margin_s": tail / 16000,
+            "deferred_s": {},
         }
+
+    def _end_deferral(self):
+        if self.deferral is not None:
+            segment, reason, began = self.deferral
+            duration = self.clock() - began
+            totals = self.stats["deferred_s"]
+            totals[reason] = totals.get(reason, 0.0) + duration
+            self.emit(
+                {
+                    "type": "partial_deferral",
+                    "segment_id": segment,
+                    "reason": reason,
+                    "duration_s": duration,
+                    "at_monotonic_s": self.clock(),
+                }
+            )
+            self.deferral = None
 
     def update(self, segment, start, end, read):
         if self.segment != segment:
@@ -54,6 +73,7 @@ class ContinuousPolicy:
 
     def discard(self, reason, segment=None):
         if self.candidate and (segment is None or self.candidate[0] == segment):
+            self._end_deferral()
             sid, start, end, _ = self.candidate
             self.emit(
                 {
@@ -86,6 +106,9 @@ class ContinuousPolicy:
         self.stats["decisions"][reason] = self.stats["decisions"].get(reason, 0) + 1
         key = (segment, reason)
         if key != self.last_reason or reason == "offered":
+            self._end_deferral()
+            if reason != "offered":
+                self.deferral = (segment, reason, self.clock())
             self.emit(
                 {
                     "type": "partial_decision",
@@ -98,6 +121,16 @@ class ContinuousPolicy:
                 }
             )
             self.last_reason = key
+        if reason == "thermal_backoff" and not self.thermal_ready and self.blocked_since is None:
+            self.blocked_since = self.clock()
+            self.emit(
+                {
+                    "type": "thermal_backoff",
+                    "state": "paused",
+                    "reason": "first_sample_pending",
+                    "at_monotonic_s": self.blocked_since,
+                }
+            )
         if reason != "offered":
             return None
         # 선택·제출·시작은 같은 condition 안에서 수행해 새 final이 끼어들지 않는다.

@@ -38,6 +38,7 @@ class DecodeWorker:
         self.active, self.last_inference_s = False, 0.0
         self.costs = {kind: deque(maxlen=3) for kind in ("partial", "final")}
         self.index = self.queue_peak = 0
+        self.cache_segment = None
         self.thread = Thread(target=self._run, daemon=True)
         self.thread.start()
 
@@ -135,7 +136,12 @@ class DecodeWorker:
                 started = time.perf_counter()
                 self.emit({"type": "started", **job, "started_monotonic_s": started})
                 result = {"type": "result", **job, "status": "failed", "hypothesis": None}
+                reset_cache = None
                 try:
+                    reset_cache = getattr(self.adapter, "reset_audio_feature_cache", None)
+                    if reset_cache and self.cache_segment != job["segment_id"]:
+                        reset_cache()
+                        self.cache_segment = job["segment_id"]
                     audio = Audio(samples, 16000, job["payload_float32_sha256"])
 
                     def token(update):
@@ -193,6 +199,9 @@ class DecodeWorker:
                 try:
                     self.emit(result)
                 finally:
+                    if reset_cache and (job["kind"] == "final" or result["status"] != "success"):
+                        reset_cache()
+                        self.cache_segment = None
                     with self.condition:
                         self.last_inference_s = result["ended_monotonic_s"] - started
                         native = (result["adapter_result"] or {}).get("native_result") or {}

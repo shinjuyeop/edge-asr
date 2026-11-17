@@ -172,6 +172,7 @@ edge-asr/
 │       │   │   └── server.py
 │       │   ├── benchmark.py
 │       │   ├── convolution.py            # 선택 합성곱 후보 검증·호출 기록
+│       │   ├── feature_cache.py          # 선택 정규화 전 log-Mel 접두 캐시
 │       │   ├── gguf.py
 │       │   ├── onnx.py
 │       │   └── profiling.py

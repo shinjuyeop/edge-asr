@@ -116,3 +116,7 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 5초 입력은 전처리의 끝 프레임 패딩으로6청크를 사용합니다. 1~5청크 진단 빌드는 보존하며1~6청크 후보는 새 실행 ID/빌드 명세로 구분합니다.
 
 선택 어댑터를 `close()`하면 mode0으로 복원합니다. 같은 프로세스에서 후속 기본 어댑터를 열어도 후보 선택이 남지 않도록 하며 모드 변경과 모델 종료는 추론 호출이 끝난 유휴 상태에서만 수행합니다.
+
+## 정규화 전 log-Mel 접두 캐시 실험
+
+`gguf/mel_prefix_cache.h`는 반사 패딩을 포함한 같은 입력 창의 원시 log-Mel 프레임을 재사용합니다. `mel_prefix_cache.cpp`는 별도 preload로 원래 mtmd 계산을 호출하고, `mel_cache_build.py`가 고정 소스·기존 mtmd SHA를 기록한 새 라이브러리를 만듭니다. 기존 엔진·모델은 변경하지 않습니다. off/verify/on을 분리하며 verify의 불일치는 원래 전체 결과로 복귀합니다. 수명·메모리·실행 옵션은 [Qwen 실행 안내](../docs/guides/qwen3_optimization.md#정규화-전-특징-캐시-실험)를 확인합니다.

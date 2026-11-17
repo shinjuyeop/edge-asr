@@ -43,3 +43,5 @@ GGUF의 선택적 C++ 문법 검사에는 `EDGE_ASR_LLAMA_SOURCE`를 고정 upst
 원음별 기록 재생은 `test_listener.py`에서 Node.js가 있을 때 `listener_review.mjs`를 실행합니다. 실제 브라우저 없이 오디오 끝과 늦은 확정 시각의 분리, 다음 음원 오디오 차단, 자동 멈춤·다음/되감기·연속/라이브 전환, 경계를 넘는 전사 보존을 검사합니다. Node.js가 없으면 해당 검사만 사유를 표시해 생략하며 실제 화면·음향 출력 검증과 구분합니다.
 
 연속 수정 정책은 `qwen/test_continuous.py`에서 제어 가능한 모델·시계로 3회 이후 갱신, 최신 범위 한 개와 실행 시 snapshot, 완료 알림만으로 재실행, 동일 범위 재시도 방지, final 우선/EOF, 빈 partial 복구, 수정·삭제·낡은 revision 거부, 열 히스테리시스/결측을 검사합니다. `listener_review.mjs`는 연속 문맥 유지와 revision 보호도 검사합니다. 모델 없는 검사이며 RP5 성능·실제 브라우저 출력 검증과 구분합니다.
+
+정규화 전 특징 캐시는 `qwen/test_feature_cache.py`의 독립 C++ 검사로 반사 경계 재계산·증가한 전체 최대값 정규화·비트 동등성 실패 시 원래 출력 복귀·설정/오류 무효화·메모리 상한을 검증합니다. 실제 RP5 함수 interposition과 전사/token 동등성·비용은 별도 검사입니다.

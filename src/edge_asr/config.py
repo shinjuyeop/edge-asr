@@ -87,6 +87,8 @@ def load_evaluation_config(path: str | Path) -> dict:
             "cache_text_prefix",
             "audio_quantization",
             "conv_kernel_manifest",
+            "audio_feature_cache_manifest",
+            "audio_feature_cache_mode",
         }
     allowed = {
         "model": model_keys,
@@ -175,6 +177,16 @@ def load_evaluation_config(path: str | Path) -> dict:
             if audio_quant not in ("q8_0", "q4_0"):
                 raise ValueError("GGUF audio_quantization은 q8_0/q4_0입니다.")
             asset = config["model"].get("asset_manifest")
+            feature_cache = config["model"].get("audio_feature_cache_manifest")
+            if feature_cache is not None and (
+                not isinstance(feature_cache, str) or not feature_cache.strip()
+            ):
+                raise ValueError("audio_feature_cache_manifest는 파일 경로여야 합니다.")
+            if "audio_feature_cache_mode" in config["model"] and (
+                not feature_cache
+                or config["model"]["audio_feature_cache_mode"] not in ("off", "verify", "on")
+            ):
+                raise ValueError("음성 특징 캐시 manifest와 off/verify/on 모드가 필요합니다.")
             if "conv_kernel_manifest" in config["model"]:
                 conv = config["model"]["conv_kernel_manifest"]
                 if not isinstance(conv, str) or not conv.strip():

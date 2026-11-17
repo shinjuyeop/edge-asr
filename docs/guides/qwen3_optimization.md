@@ -229,3 +229,13 @@ flock -n results/listener/inference.lock env OPENBLAS_NUM_THREADS=1 PYTHONPATH=s
 선택 `--cancel-partial-for-final`은 최종 요청이 대기할 때만 실행 중인 partial을 다음 토큰 callback에서 중단합니다. 기본은 끔이며 `continuous`와 `--token-stream`이 필요합니다. 최종 요청 도착 전에는 부분 추론을 끝까지 수행합니다. 취소 원시의 `callback_error`·토큰/바이트와 `cancelled_calls`를 보존하고, 기존 모델 실패·빈 partial 수에서 구분합니다. 어댑터는 취소 후 prefix KV를 초기화하며 다음 final이 재계산합니다. 이미 실행 중인 encoder/prefill은 토큰 callback까지 기다리므로 즉시 선점을 보증하지 않습니다. 기존 bridge는 중도 취소의 decode 단계 시간을 반환하지 않아 취소 호출은 전체 wall 시간만 완전하게 집계합니다.
 
 청취용 선택 프로필은 `configs/listener_continuous_priority.toml`입니다. 최초 연속 모드 실측에서 실행 중 partial에 의한 final 대기가 관측되어 추가한 별도 옵션이며, 취소 없는 `listener_continuous.toml`은 비교용으로 유지합니다.
+
+### 정규화 전 특징 캐시 실험
+
+`audio_feature_cache_manifest`와 `audio_feature_cache_mode=off/verify/on`은 별도 preload 실험용입니다. 기본 프로필에는 지정하지 않습니다. 기존 `mtmd_audio_log_mel` 계산을 호출하며, 같은 설정·필터·창 함수·반사 패딩 포함 PCM 창과 일치하는 접두 프레임만 재사용합니다. 나머지 프레임과 입력 전체 최대값 정규화는 다시 계산합니다. Transformer 출력·음성 LLM KV·정규화 후 합성곱 출력은 캐시하지 않습니다.
+
+`verify`는 접두 재사용 결과와 원래 전체 계산을 모두 수행해 float 비트 동등성을 기록합니다. 불일치 때는 원래 결과를 반환하고 캐시를 비웁니다. 검증 실행의 시간은 캐시 성능으로 쓰지 않습니다. `on`은 동등성을 확인한 조건의 비용 비교용이며 공유 기본을 바꾸지 않습니다. 모델의 bridge가 사용하는 mtmd SHA와 preload/manifest를 검증합니다.
+
+최대 501 Mel 프레임(5초 PCM), 지속 캐시 1MiB 이하·임시 공간 1MiB 이하입니다. 입력 prefix/설정 변화·새 segment·final 종료·오류·취소·모델 close에서 무효화합니다. worker는 실행 직전/종료에 상태를 바꾸므로 실행 중 캐시를 외부에서 지우지 않습니다. 같은 입력의 강제 재요청은 스케줄러가 허용하지 않으며 캐시 적중으로 새 갱신을 만들어내지 않습니다.
+
+빌드는 `native/gguf/mel_cache_build.py --source <고정 엔진 소스> --mtmd <현재 libmtmd.so> --output <새 빌드 폴더>`를 사용합니다. 실행 프로세스에 그 `libedge_mel_cache.so`만 `LD_PRELOAD`, 기존 mtmd 경로를 `EDGE_ASR_MEL_MTMD`로 지정합니다. 계측은 `adapter_result.audio_feature_cache`에 원래/재계산 프레임 수·동등성·계산 시간·메모리를 남깁니다. 실제 채택 여부와 조건은 이번 실측 보고서를 따릅니다.
