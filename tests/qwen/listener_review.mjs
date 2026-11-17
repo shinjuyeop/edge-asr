@@ -40,5 +40,5 @@ test('transport stops audio at boundary, waits for final, then advances on Next 
  await get('nextSource').onclick();assert.equal(c.get().index,1);assert.equal(starts.at(-1)[1],2);assert.equal(starts.at(-1)[2],2);
  ctx.currentTime=7;c.tick(300);assert.equal(c.get().done,true);assert.equal(get('nextSource').disabled,true);assert.equal(get('hypothesis').textContent,'다음 문장');
  get('rewind').onclick();assert.equal(c.get().index,1);assert.equal(c.get().position,2);assert.equal(c.get().done,false);
- c.continuous();assert.equal(get('nextSource').hidden,true);assert.equal(get('seek').min,0);assert.equal(c.live(),false);
+ c.continuous();assert.equal(get('play').textContent,'재생');assert.equal(get('nextSource').hidden,true);assert.equal(get('seek').min,0);assert.equal(c.live(),false);
 });

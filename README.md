@@ -50,6 +50,8 @@ WAV 1배속 입력과 **RP5 USB 마이크**로 부분·확정 자막을 확인�
 
 최신 [OpenMP 대기 정책](results/summaries/optimization/omp-wait-20261117.md)은 일관된 개선이 없어 미지정을 유지했습니다. 후속 [Q4_0·출력층·KleidiAI 비교](results/summaries/optimization/decoder-q4-20261117.md)는 실제 토큰 간격을 Q8 약63~64ms에서40ms/34ms로 줄였습니다. 그러나 같은6개에서 CER17.86→20.71/21.07%·빈 부분 전사 실패각1건으로 채택하지 않았습니다. 두 Q4 후보의 선택은 KleidiAI OFF·생성2T였으며 공유 Q8·2/3T를 유지합니다.
 
+후속 [Q4 부분 요청3회 비교](results/summaries/optimization/realtime-q4-followup-20261117.md)는 같은 최종 전사·CER에서 갱신 공백 p95를4.61~4.63→3.59초로 줄였고 계산량은20~21% 늘었습니다. 청취 후보로 보존합니다. 기록 화면은 **한 원음 재생→확정 전사 확인·자동 정지→다음 음원**을 지원하며 원래 연속 재생도 선택할 수 있습니다.
+
 문제 발견과 선택의 흐름은 [ASR 최적화 과정](docs/research/optimization_history.md), 현재 채택한 구성과 최신 결과는 [현재 상태](docs/status.md)에 정리했습니다. [자막 비교 영상](results/summaries/optimization/realtime-video-20261111.md)은 저장된 로그의 동기 재생 자료입니다.
 
 ## 처음 시작하기

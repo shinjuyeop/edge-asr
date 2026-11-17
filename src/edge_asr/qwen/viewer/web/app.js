@@ -325,10 +325,10 @@ $('stopRun').onclick=action(async()=>{
   stopAudio();follow=false;epoch++;loadingAudio=false;selectionDirty=true;notice('평가 종료 중입니다.');
   await api('/api/stop',{id:run.id});await refreshCatalog();await poll();notice('평가가 종료되었습니다. 기록은 보존되며 다시 준비할 수 있습니다.');
 });
-$('replayStyle').onchange=()=>{if(!buffer)return;const index=Math.max(0,currentSource);stopAudio();if(reviewing())selectReview(index);else{review=null;reviewDone=false;$('seek').min=0;$('seek').max=Math.max(buffer.duration,run.end_s+1);lastEventKey='';renderCaption(position);updateControls();}};
+$('replayStyle').onchange=()=>{if(!buffer)return;const index=Math.max(0,currentSource);stopAudio();if(reviewing())selectReview(index);else{review=null;reviewDone=false;$('play').textContent='재생';$('seek').min=0;$('seek').max=Math.max(buffer.duration,run.end_s+1);lastEventKey='';renderCaption(position);updateControls();}};
 $('nextSource').onclick=action(async()=>{if(!review||review.index+1>=run.sources.length)return;await audioContext().resume();selectReview(review.index+1);playAudio(position);});
 $('rewind').onclick=()=>{if(reviewing()&&review){selectReview(review.index);return;}stopAudio();position=0;lastEventKey='';renderCaption(0);$('play').textContent='재생';};
-$('seek').oninput=()=>{if(mode!=='replay')return;const was=playing;stopAudio();position=Number($('seek').value);reviewDone=false;lastEventKey='';if(was)playAudio(position);renderCaption(position);};
+$('seek').oninput=()=>{if(mode!=='replay')return;const was=playing;stopAudio();position=Number($('seek').value);reviewDone=false;lastEventKey='';if(was)playAudio(position);else $('play').textContent='재생';renderCaption(position);};
 $('volume').oninput=()=>{if(gain)gain.gain.value=Number($('volume').value);};$('sort').onchange=renderTable;
 $('download').onclick=()=>{const blob=new Blob([JSON.stringify({run:run?.id,mode,userAgent:navigator.userAgent,audioOutputLatency:context?.outputLatency??null,scope:'브라우저 수신·재생 추정. 물리 화면/음향 실측 아님.',observations},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`listener-${run?.id||'session'}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);};
 window.addEventListener('resize',drawWave);
