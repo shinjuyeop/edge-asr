@@ -12,12 +12,19 @@ from unittest.mock import Mock, patch
 
 from edge_asr.diagnostics import observe_threads, thread_snapshot
 from edge_asr.resources import measure_process
-from edge_asr.runtime import capture_native_stderr, runtime_info
+from edge_asr.runtime import capture_native_stderr, environment, runtime_info
 
 ROOT = Path(__file__).resolve().parents[2]
 
 
 class RuntimeTests(unittest.TestCase):
+    def test_thread_environment_records_unset_without_exposing_other_variables(self):
+        with patch.dict(os.environ, {"OMP_WAIT_POLICY": "ACTIVE", "SECRET": "hidden"}, clear=True):
+            info = environment()
+        self.assertEqual(info["thread_environment"]["OMP_WAIT_POLICY"], "ACTIVE")
+        self.assertIsNone(info["thread_environment"]["GOMP_SPINCOUNT"])
+        self.assertNotIn("hidden", json.dumps(info))
+
     def test_measurement_excludes_sampler_boundaries_and_preserves_exception_resources(self):
         for error in (None, RuntimeError("fixture load failed"), KeyboardInterrupt()):
             with self.subTest(error=type(error).__name__):

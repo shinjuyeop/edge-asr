@@ -64,6 +64,19 @@ def environment() -> dict:
         "machine": platform.machine(),
         "platform": platform.platform(),
         "runtime": runtime_info(),
+        "thread_environment": {
+            name: os.environ.get(name)
+            for name in (
+                "OMP_WAIT_POLICY",
+                "OMP_NUM_THREADS",
+                "OMP_DYNAMIC",
+                "OMP_PROC_BIND",
+                "OMP_PLACES",
+                "GOMP_SPINCOUNT",
+                "KMP_BLOCKTIME",
+                "OPENBLAS_NUM_THREADS",
+            )
+        },
         "packages": sorted(
             [{"name": d.metadata["Name"], "version": d.version} for d in distributions()],
             key=lambda row: row["name"] or "",
