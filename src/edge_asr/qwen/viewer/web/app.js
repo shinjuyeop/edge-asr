@@ -158,7 +158,7 @@ function renderMetrics(){
   $('cerMetric').textContent=run?.score?.cer!=null?`${(run.score.cer*100).toFixed(2)}%`:run?.terminal||(isMic()&&!run.input.reference)?'미측정':run?'평가 대기':'—';
   $('cerDetail').textContent=run?.score?`치환 ${run.score.substitutions} · 삭제 ${run.score.deletions} · 삽입 ${run.score.insertions} / 정답 ${run.score.reference_characters}자`:isMic()?'입력한 정답이 있을 때 녹음 전체를 종료 후 채점':'전체 입력 배출 후 확정 전사만 채점';
   $('coverage').textContent=summary?`관측 수 / 전체 ${isMic()?'구간':'원음'} · 첫 표시 ${summary.first_s.n}/${run.sources.length} · 4자 ${summary.first4_s.n}/${run.sources.length}`:run?'입력 처리가 끝나면 전체 측정값을 표시합니다.':'실행을 불러오면 측정값을 확인할 수 있습니다.';
-  $('failures').textContent=`실패 ${run?.failed_calls??'—'} · 입력 드롭 ${run?.dropped_chunks??'—'}`;
+  $('failures').textContent=`실패 ${run?.failed_calls??'—'} · 최종 우선 취소 ${run?.cancelled_calls??0} · 입력 드롭 ${run?.dropped_chunks??'—'}`;
   for(const id of ['firstMetric','fourMetric','finalMetric','cerMetric'])$(id).dataset.empty=String(['—','미측정','평가 대기'].includes($(id).textContent));
   $('micTelemetry').hidden=!isMic();
   if(isMic()){const t=run.capture||{},d=run.device_status||{};$('micTelemetry').textContent=`입력 ${sec(t.captured_frames==null?null:t.captured_frames/16000)} · 레벨 ${t.rms_dbfs==null?'—':t.rms_dbfs.toFixed(1)+' dBFS'} · 클리핑 ${t.clipped_samples??'—'}샘플 · 하드웨어 넘침 ${t.hardware_overruns??'—'} · 온도 ${d.temperature_mc==null?'—':(d.temperature_mc/1000).toFixed(1)+'°C'} · 제한 플래그 ${d.current_limits??'—'}`;}

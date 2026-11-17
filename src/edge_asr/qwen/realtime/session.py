@@ -41,6 +41,7 @@ class CaptionSession:
         silence_policy="skip-zero",
         vad_preprocess="identity",
         token_stream=False,
+        cancel_partial_for_final=False,
     ):
         if partial_after_s <= 0 or partial_interval_s <= 0:
             raise ValueError("부분 전사 시작·갱신 간격은 양수여야 합니다.")
@@ -66,6 +67,10 @@ class CaptionSession:
                 "새 음성 최소량은 1프레임 이상, 끝 여유는 유한한 음수가 아닌 값이어야 합니다."
             )
         self.partial_mode = partial_mode
+        if type(cancel_partial_for_final) is not bool or (
+            cancel_partial_for_final and (partial_mode != "continuous" or not token_stream)
+        ):
+            raise ValueError("최종 우선 취소는 continuous·token_stream에서만 선택합니다.")
         if partial_mode == "continuous" and partial_tail_margin_s > 0.5:
             raise ValueError("continuous 끝 여유는 최대 0.5초입니다.")
         if adaptive_policy not in ("recent", "budgeted") or (
@@ -152,6 +157,7 @@ class CaptionSession:
             token_stream=token_stream,
             condition=condition if self.continuous else None,
             next_partial=self._continuous_next if self.continuous and partials else None,
+            cancel_partial_for_final=cancel_partial_for_final,
         )
         if self.continuous:
             self.continuous.start()

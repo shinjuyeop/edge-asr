@@ -8,7 +8,7 @@ from array import array
 
 from edge_asr.artifacts import digest
 from edge_asr.dataset import Audio, resolve_path
-from edge_asr.runtime import capture_native_stderr
+from edge_asr.runtime import InferenceCancelled, capture_native_stderr
 
 LLAMA_COMMIT = "7d7f0287530bc8981690f361d8c1627dbae1c99a"
 BF16_SHA256 = "12b2894d9a7c98cd8f26670f5a47ab738f42bcc98df21e109be493870c71ba50"
@@ -284,6 +284,8 @@ class Qwen3GGUFAdapter:
                         != 0
                     ):
                         raise RuntimeError("캐시 초기화 실패")
+                    if metadata is not None:
+                        metadata["prefix_reset_after_error"] = True
                 except Exception as reset_error:
                     self.close()
                     self.last_result_metadata = metadata
@@ -347,6 +349,12 @@ class Qwen3GGUFAdapter:
         self.last_result_metadata["native_result"] = result
         if result.get("schema_version") != 1 or result.get("input_samples") != len(audio.samples):
             raise ValueError("GGUF 반환 schema/입력 길이 불일치")
+        if callback_errors and isinstance(callback_errors[0], InferenceCancelled):
+            if result.get("termination") != "callback_error" or result.get("status") != "failed":
+                raise RuntimeError("요청한 협력적 취소를 native가 확인하지 않았습니다.")
+            self.last_result_metadata["cancellation"] = "final_pending"
+            # 토큰 경계가 UTF-8 문자 중간일 수 있다. 원시 바이트/토큰은 native_result에 보존한다.
+            raise callback_errors[0]
         try:
             text = bytes.fromhex(result["text_utf8_hex"]).decode("utf-8")
         except (KeyError, ValueError, UnicodeError) as error:

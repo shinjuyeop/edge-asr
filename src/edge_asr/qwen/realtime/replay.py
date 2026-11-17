@@ -259,7 +259,8 @@ def run(
                 [r["published_s"] - r["end_frame"] / 16000 for r in finals]
             ),
             inference_queue_wait_s=distribution([r["queue_wait_s"] for r in session.results]),
-            failed_calls=sum(r["status"] != "success" for r in session.results),
+            failed_calls=sum(r["status"] == "failed" for r in session.results),
+            cancelled_calls=sum(r["status"] == "cancelled" for r in session.results),
             empty_partial_calls=sum(
                 r.get("failure_kind") == "empty_partial" for r in session.results
             ),
@@ -385,6 +386,11 @@ def argument_parser():
         help="budgeted: 첫 성공 결과가4자 미만이면 후속1회의 비용 예산만 예외. 유휴/횟수/끝 여유 유지",
     )
     parser.add_argument("--partial-max-calls", type=int, default=2)
+    parser.add_argument(
+        "--cancel-partial-for-final",
+        action="store_true",
+        help="continuous 선택: final 대기 시 실행 중 partial을 다음 토큰 경계에서 취소",
+    )
     parser.add_argument(
         "--partial-followup-s",
         type=float,

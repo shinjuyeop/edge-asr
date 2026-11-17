@@ -69,6 +69,7 @@ def summarize(events):
         "prefix_replay_retracted_characters": 0,
         "within_call_revisions": 0,
         "failed_results": 0,
+        "cancelled_results": 0,
         "suppressed_prefix_tokens": 0,
     }
     for row in events:
@@ -79,7 +80,8 @@ def summarize(events):
             counts["suppressed_prefix_tokens"] += 1
             held_jobs.add(row["job_id"])
         if row["type"] == "result":
-            counts["failed_results"] += row["status"] != "success"
+            counts["failed_results"] += row["status"] == "failed"
+            counts["cancelled_results"] += row["status"] == "cancelled"
             if row["kind"] == "final":
                 finals[segment] = row
             elif row["status"] == "success":

@@ -12,6 +12,10 @@ from importlib.metadata import PackageNotFoundError, distributions, version
 from edge_asr import __version__
 
 
+class InferenceCancelled(Exception):
+    """명시적 우선순위 정책이 협력적으로 중단한 추론. 모델 실패와 별도 집계한다."""
+
+
 def package_version(name):
     try:
         return version(name)

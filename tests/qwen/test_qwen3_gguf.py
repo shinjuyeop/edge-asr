@@ -399,6 +399,36 @@ class GGUFTests(unittest.TestCase):
         self.library.edge_gguf_transcribe.return_value = self.result()
         self.assertEqual(adapter.transcribe(self.audio), "한 글!")
 
+    def test_final_priority_cancellation_preserves_incomplete_utf8_and_resets_kv(self):
+        from edge_asr.runtime import InferenceCancelled
+
+        self.enable_tokens()
+        self.enable_prefix_cache()
+        self.build["features"].append("token_callback_v1")
+        (self.root / "build.json").write_text(json.dumps(self.build))
+        self.model["cache_text_prefix"] = True
+        adapter = self.load()
+
+        def generate(_handle, _pcm, _count, callback, user):
+            raw = "한".encode()[:1]
+            buffer = ctypes.create_string_buffer(raw)
+            self.assertEqual(callback(user, ctypes.addressof(buffer), len(raw), 1, 0.1), 1)
+            row = json.loads(self.result(status="failed", termination="callback_error", ids=[1]))
+            row["text_utf8_hex"] = raw.hex()
+            return json.dumps(row).encode()
+
+        def cancel(_update):
+            raise InferenceCancelled("final_pending")
+
+        self.library.edge_gguf_transcribe_tokens.side_effect = generate
+        with self.assertRaises(InferenceCancelled):
+            adapter.transcribe_stream(self.audio, cancel)
+        self.assertTrue(adapter.last_result_metadata["prefix_reset_after_error"])
+        self.assertEqual(adapter.last_result_metadata["native_result"]["text_utf8_hex"], "ed")
+        self.assertEqual(self.library.edge_gguf_set_prefix_cache.call_count, 2)
+        self.library.edge_gguf_transcribe.return_value = json.dumps(self.prefix_result()).encode()
+        self.assertEqual(adapter.transcribe(self.audio), "한 글!")
+
     def test_token_stream_rejects_missing_capability_and_result_mismatch(self):
         adapter = self.load()
         with self.assertRaises(ValueError):

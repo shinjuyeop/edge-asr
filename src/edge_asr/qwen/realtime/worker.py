@@ -7,11 +7,20 @@ from copy import deepcopy
 from threading import Condition, Thread
 
 from edge_asr.dataset import Audio, float_digest
+from edge_asr.runtime import InferenceCancelled
 
 
 class DecodeWorker:
     def __init__(
-        self, adapter, emit, *, capacity=4, token_stream=False, condition=None, next_partial=None
+        self,
+        adapter,
+        emit,
+        *,
+        capacity=4,
+        token_stream=False,
+        condition=None,
+        next_partial=None,
+        cancel_partial_for_final=False,
     ):
         if type(capacity) is not int or capacity < 1:
             raise ValueError("최종 구간 큐 용량은 양의 정수여야 합니다.")
@@ -23,6 +32,7 @@ class DecodeWorker:
         self.adapter, self.emit, self.capacity = adapter, emit, capacity
         self.condition = condition if condition is not None else Condition()
         self.next_partial = next_partial
+        self.cancel_partial_for_final = cancel_partial_for_final
         self.finals, self.partial = deque(), None
         self.closing, self.error = False, None
         self.active, self.last_inference_s = False, 0.0
@@ -129,6 +139,21 @@ class DecodeWorker:
                     audio = Audio(samples, 16000, job["payload_float32_sha256"])
 
                     def token(update):
+                        with self.condition:
+                            if (
+                                self.cancel_partial_for_final
+                                and job["kind"] == "partial"
+                                and self.finals
+                            ):
+                                self.emit(
+                                    {
+                                        "type": "partial_cancellation_requested",
+                                        **job,
+                                        "reason": "final_pending",
+                                        "at_monotonic_s": time.perf_counter(),
+                                    }
+                                )
+                                raise InferenceCancelled("final_pending")
                         self.emit(
                             {
                                 "type": "token",
@@ -148,6 +173,9 @@ class DecodeWorker:
                     if not isinstance(text, str) or not text.strip():
                         raise ValueError("음성 구간에서 비어 있지 않은 문자열이 필요합니다.")
                     result.update(status="success", hypothesis=text)
+                except InferenceCancelled as error:
+                    result.update(status="cancelled", cancellation_reason=str(error))
+                    result["error"] = {"type": type(error).__name__, "message": str(error)}
                 except Exception as error:
                     result["error"] = {"type": type(error).__name__, "message": str(error)}
                 result.update(

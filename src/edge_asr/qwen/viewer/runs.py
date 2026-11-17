@@ -104,6 +104,9 @@ class Run:
                 "failed_calls": sum(
                     e.get("status") == "failed" for e in self.events if e["type"] == "result"
                 ),
+                "cancelled_calls": sum(
+                    e.get("status") == "cancelled" for e in self.events if e["type"] == "result"
+                ),
                 "clock": read(self.path / "clock.json"),
                 "scheduled": read(self.path / "viewer-start.json"),
                 "error": w.get("error"),

@@ -225,3 +225,7 @@ flock -n results/listener/inference.lock env OPENBLAS_NUM_THREADS=1 PYTHONPATH=s
 0.8초는 새 입력 최소량이며 표시 주기를 보증하지 않습니다. 새로운 입력과 작업 완료 시 다시 판단하며 최종 우선·열 backoff는 갱신을 늦출 수 있습니다. 횟수/누적 비용 예산과 `adaptive-policy budgeted`는 이 모드에 사용하지 않습니다. 빈 partial은 `failure_kind=empty_partial`, 실패 수 및 실행 실패 상태를 유지합니다. 새 입력으로 회복하며 같은 범위를 즉시 재시도하지 않습니다. `jobs.jsonl`에 후보 합침/폐기·결정·revision·열 변화와 실제 클럭 표본을 기록합니다.
 
 `content_updates`는 같은 문자열 재발행을 제외한 내용 변경 간격과 입력 범위 끝→발행 나이를 제공합니다. 기존 원음별 문자 증가 공백과 VAD 소유 구간의 변경 공백을 구분하며, 둘 다 서버 발행 기준입니다. 실제 브라우저 표시/음향 단어 지연은 아닙니다. 캐시·커널 변경을 섞지 않은 스케줄러 비교를 먼저 수행합니다.
+
+선택 `--cancel-partial-for-final`은 최종 요청이 대기할 때만 실행 중인 partial을 다음 토큰 callback에서 중단합니다. 기본은 끔이며 `continuous`와 `--token-stream`이 필요합니다. 최종 요청 도착 전에는 부분 추론을 끝까지 수행합니다. 취소 원시의 `callback_error`·토큰/바이트와 `cancelled_calls`를 보존하고, 기존 모델 실패·빈 partial 수에서 구분합니다. 어댑터는 취소 후 prefix KV를 초기화하며 다음 final이 재계산합니다. 이미 실행 중인 encoder/prefill은 토큰 callback까지 기다리므로 즉시 선점을 보증하지 않습니다. 기존 bridge는 중도 취소의 decode 단계 시간을 반환하지 않아 취소 호출은 전체 wall 시간만 완전하게 집계합니다.
+
+청취용 선택 프로필은 `configs/listener_continuous_priority.toml`입니다. 최초 연속 모드 실측에서 실행 중 partial에 의한 final 대기가 관측되어 추가한 별도 옵션이며, 취소 없는 `listener_continuous.toml`은 비교용으로 유지합니다.

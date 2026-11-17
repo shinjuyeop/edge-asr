@@ -4,13 +4,14 @@ import time
 import unittest
 from array import array
 from queue import Queue
-from threading import Condition, RLock
+from threading import Condition, Event, RLock
 from unittest.mock import patch
 
 from edge_asr.qwen.realtime.continuous import ContinuousPolicy
 from edge_asr.qwen.realtime.replay import argument_parser
 from edge_asr.qwen.realtime.session import CaptionSession
 from edge_asr.qwen.realtime.stability import content_updates
+from edge_asr.qwen.realtime.worker import DecodeWorker
 from edge_asr.vad_probability import BoundedProbabilityVad
 
 
@@ -269,6 +270,49 @@ class ContinuousTests(unittest.TestCase):
         ):
             with self.subTest(args=args), self.assertRaises(ValueError):
                 CaptionSession(None, None, 1, None, {}, partial_mode="continuous", **args)
+
+    def test_optional_cancellation_only_when_final_waits_and_preserves_final(self):
+        class Streaming:
+            supports_token_stream = True
+            last_result_metadata = None
+
+            def __init__(self):
+                self.entered, self.continue_token = Event(), Event()
+
+            def transcribe_stream(self, audio, emit):
+                self.entered.set()
+                if not self.continue_token.wait(2):
+                    raise TimeoutError("fixture")
+                emit({"hypothesis": "토큰", "token_index": 1, "native_elapsed_s": 0.1})
+                return "확정 결과"
+
+        for enabled in (False, True):
+            with self.subTest(enabled=enabled):
+                model, events = Streaming(), []
+                w = DecodeWorker(
+                    model, events.append, token_stream=True, cancel_partial_for_final=enabled
+                )
+                try:
+                    pcm = array("f", [0.25] * 1600)
+                    w.submit("partial", 0, 0, 1600, pcm, 1600)
+                    self.assertTrue(model.entered.wait(2))
+                    # 새 음성/부분 후보만으로는 취소하지 않는다.
+                    w.submit("partial", 0, 0, 3200, pcm * 2, 3200)
+                    self.assertFalse(
+                        any(e["type"] == "partial_cancellation_requested" for e in events)
+                    )
+                    w.submit("final", 0, 0, 3200, pcm * 2, 3200)
+                    model.continue_token.set()
+                    w.finish(3)
+                    results = [e for e in events if e["type"] == "result"]
+                    self.assertEqual(
+                        [r["status"] for r in results],
+                        ["cancelled" if enabled else "success", "success"],
+                    )
+                    self.assertEqual(results[-1]["hypothesis"], "확정 결과")
+                finally:
+                    model.continue_token.set()
+                    w.abort()
 
 
 if __name__ == "__main__":

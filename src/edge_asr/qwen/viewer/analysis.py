@@ -11,6 +11,7 @@ def compact_event(row):
         "stale_revision",
         "token_index",
         "failure_kind",
+        "cancellation_reason",
         "kind",
         "segment_id",
         "start_frame",
