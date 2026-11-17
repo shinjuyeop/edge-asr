@@ -36,6 +36,8 @@ WAV 1배속 입력과 **RP5 USB 마이크**로 부분·확정 자막을 확인�
 
 [Q8 재프로파일링](results/summaries/optimization/reprofile-q8-20261116.md)은 최신 850호출 재집계와 RP5 추가 48호출로 병목을 좁혔습니다. 전체 호출 비용은 decode 47%·encoder 29%·음성 prefill 16%였고, 긴 첫 4자 지연은 후속 요청 없이 확정까지 기다리는 경로도 컸습니다.
 
+[프로파일링 그래프 3장](results/summaries/optimization/profile-visuals-20261117.md)에서 **단계별 추론 시간·첫 자막 대기 경로·encoder/decode 내부 연산**을 볼 수 있습니다. 11월 16일 저장된 측정값을 그린 자료이며 합성곱 최적화 이후의 새 계측은 아닙니다.
+
 후속 [짧은 첫 결과 보호·100개 비교](results/summaries/optimization/realtime-short-followup-20261116.md)는 최종 전사·CER 11.12%·실패/드롭 0을 유지했지만 첫 4자 p95 6.60→6.70초·공백 p95 4.83→5.17초로 개선되지 않아 보호 기본은 끔으로 유지했습니다.
 
 최신 [Q8 GEMV 연산 선별](results/summaries/optimization/decode-q8-20261116.md)은 합성 72조건의 비트 일치·실제 36호출의 전사/token 동등성을 확인했습니다. 정수 누적을 분리해도 두 교차 구간의 decode 감소가 0.001%·0.414%여서 적용하지 않았습니다.

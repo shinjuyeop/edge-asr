@@ -1,0 +1,178 @@
+{
+  "source": "results/summaries/optimization/reprofile-q8-20261116.json",
+  "source_sha256": "a7b3cae1aebf579c3780f374fbbfe66de2989931421d61ff359dc96fdd45e87f",
+  "continuous_source_commit": "b85ba5ddbadf9ec9077fc8c1e04401043c5971f7",
+  "profiling_source_commit": "aef7b3559de09aa2f459c43c8a868fa96ab23e77",
+  "measured_date": "2026-11-16",
+  "rendered_date": "2026-11-17",
+  "new_inference": false,
+  "continuous_case": "budget300",
+  "continuous_stages_s": {
+    "음성 encoder": 192.71321016399995,
+    "음성 prefill": 102.45657373200004,
+    "text suffix": 44.33751826699998,
+    "토큰 decode": 310.53120130300044,
+    "기타": 6.994316681752821
+  },
+  "fixed_pcm_means": [
+    {
+      "id": "initial",
+      "input_s": 0.612,
+      "calls": 4,
+      "stages_s": {
+        "음성 encoder": 0.15958498325,
+        "음성 prefill": 0.09215383325000001,
+        "text suffix": 0.08912722149999999,
+        "토큰 decode": 0.05573241425,
+        "기타": 0.0019946947442442964
+      },
+      "total_s": 0.3985931469942443
+    },
+    {
+      "id": "followup",
+      "input_s": 2.276,
+      "calls": 4,
+      "stages_s": {
+        "음성 encoder": 0.46874849175,
+        "음성 prefill": 0.2340169735,
+        "text suffix": 0.09117550925000001,
+        "토큰 decode": 0.8468907505000001,
+        "기타": 0.01113517750013493
+      },
+      "total_s": 1.651966902500135
+    },
+    {
+      "id": "final",
+      "input_s": 4.504,
+      "calls": 4,
+      "stages_s": {
+        "음성 encoder": 0.8019642180000001,
+        "음성 prefill": 0.40937167575000005,
+        "text suffix": 0.09555830875,
+        "토큰 decode": 1.91303806725,
+        "기타": 0.023531766250659558
+      },
+      "total_s": 3.2434640360006597
+    }
+  ],
+  "display_paths": [
+    {
+      "n": 100,
+      "roles": {
+        "initial": 99,
+        "final": 1
+      },
+      "means_s": {
+        "before_request_s": 1.516237000704698,
+        "queue_s": 0.481763035042095,
+        "call_to_display_s": 0.3764407366793603
+      },
+      "latency_s": {
+        "n": 100,
+        "mean": 2.374440772426153,
+        "p50": 2.3173689560261437,
+        "p95": 3.643818511987547,
+        "max": 4.266132936977328
+      }
+    },
+    {
+      "n": 100,
+      "roles": {
+        "initial": 64,
+        "followup": 26,
+        "final": 10
+      },
+      "means_s": {
+        "before_request_s": 2.264786747471501,
+        "queue_s": 0.22636895120609551,
+        "call_to_display_s": 0.7601152524672216
+      },
+      "latency_s": {
+        "n": 100,
+        "mean": 3.251270951144818,
+        "p50": 2.7490848129866663,
+        "p95": 7.143497972028797,
+        "max": 8.427647687024432
+      }
+    },
+    {
+      "n": 12,
+      "roles": {
+        "final": 10,
+        "followup": 2
+      },
+      "means_s": {
+        "before_request_s": 5.234269490914535,
+        "queue_s": 0.0006190151664971685,
+        "call_to_display_s": 1.567879871086916
+      },
+      "latency_s": {
+        "n": 12,
+        "mean": 6.802768377167948,
+        "p50": 6.9005335439858015,
+        "p95": 8.427647687024432,
+        "max": 8.427647687024432
+      }
+    }
+  ],
+  "operator_fractions": {
+    "audio_encoder": [
+      {
+        "id": "initial",
+        "fractions": {
+          "FP16 합성곱·투영·IM2COL": 0.48780148913865556,
+          "Q8 행렬곱": 0.394588662082853,
+          "그 밖의 연산": 0.11760984877849151
+        }
+      },
+      {
+        "id": "followup",
+        "fractions": {
+          "FP16 합성곱·투영·IM2COL": 0.5142139437113238,
+          "Q8 행렬곱": 0.3522900308058711,
+          "그 밖의 연산": 0.1334960254828051
+        }
+      },
+      {
+        "id": "final",
+        "fractions": {
+          "FP16 합성곱·투영·IM2COL": 0.49476531733710993,
+          "Q8 행렬곱": 0.35334496133184146,
+          "그 밖의 연산": 0.1518897213310486
+        }
+      }
+    ],
+    "token_decode": [
+      {
+        "id": "initial",
+        "fractions": {
+          "Q8 출력 행렬 (output.weight)": 0.22807304224185376,
+          "나머지 Q8 행렬곱": 0.707964235635158,
+          "그 밖의 연산": 0.06396272212298826
+        }
+      },
+      {
+        "id": "followup",
+        "fractions": {
+          "Q8 출력 행렬 (output.weight)": 0.2241802140158457,
+          "나머지 Q8 행렬곱": 0.6901446841752206,
+          "그 밖의 연산": 0.08567510180893378
+        }
+      },
+      {
+        "id": "final",
+        "fractions": {
+          "Q8 출력 행렬 (output.weight)": 0.21979372340690737,
+          "나머지 Q8 행렬곱": 0.6737673030500358,
+          "그 밖의 연산": 0.10643897354305676
+        }
+      }
+    ]
+  },
+  "outputs": [
+    "profile-q8-20261117-cost",
+    "profile-q8-20261117-latency",
+    "profile-q8-20261117-operators"
+  ],
+  "render_script_sha256": "dde0892242ea1cfabf48004130b4780b0f7ccdda1959adff5d2a023070096b02"
+}
