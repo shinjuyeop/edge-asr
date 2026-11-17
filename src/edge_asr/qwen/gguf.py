@@ -117,6 +117,14 @@ class Qwen3GGUFAdapter:
         )
         self.handle, self.library, self.last_result_metadata = None, None, None
         self.operator_profile_enabled = False
+        self.convolution = None
+        if model.get("conv_kernel_manifest"):
+            from edge_asr.qwen.convolution import ConvolutionTile
+
+            if batch_threads != 3 or self.audio_quantization != "q8_0":
+                raise ValueError("합성곱 후보는 음성 Q8·3스레드에서 검증합니다.")
+            self.convolution = ConvolutionTile(model["conv_kernel_manifest"], root, LLAMA_COMMIT)
+            self.model_files.update(self.convolution.files)
 
     def set_operator_profile(self, enabled):
         """별도 진단 빌드에서만 켠다. 전사 호출 사이에 사용한다."""
@@ -173,11 +181,14 @@ class Qwen3GGUFAdapter:
             "context_policy": "mtmd_positions_plus_reserved_output_no_truncation_v1",
             "input_policy": "동일 float32 PCM을 직접 전달. file codec/resampling 없음",
             "runtime_build": self.build,
+            **({"convolution_build": self.convolution.build} if self.convolution else {}),
         }
 
     def load(self):
         if self.handle is not None:
             raise RuntimeError("이미 로드한 GGUF 모델입니다.")
+        if self.convolution:
+            self.convolution.bind()
         self.library = ctypes.CDLL(str(self.library_path))
         lib = self.library
         lib.edge_gguf_abi.restype = ctypes.c_int
@@ -319,6 +330,8 @@ class Qwen3GGUFAdapter:
                 return 1  # ctypes 경계를 통해 예외를 던지지 않는다.
 
         callback = TOKEN_CALLBACK(receive) if on_text is not None else None
+        if self.convolution:
+            self.convolution.begin()
         with capture_native_stderr(self.last_result_metadata):
             if callback is None:
                 blob = self.library.edge_gguf_transcribe(self.handle, pcm, len(audio.samples))
@@ -326,6 +339,8 @@ class Qwen3GGUFAdapter:
                 blob = self.library.edge_gguf_transcribe_tokens(
                     self.handle, pcm, len(audio.samples), callback, None
                 )
+        if self.convolution:
+            self.last_result_metadata["convolution"] = self.convolution.result()
         if not blob:
             raise RuntimeError("GGUF C ABI가 결과를 반환하지 않았습니다.")
         result = json.loads(blob)

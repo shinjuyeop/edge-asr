@@ -86,6 +86,7 @@ def load_evaluation_config(path: str | Path) -> dict:
             "num_threads_batch",
             "cache_text_prefix",
             "audio_quantization",
+            "conv_kernel_manifest",
         }
     allowed = {
         "model": model_keys,
@@ -174,6 +175,10 @@ def load_evaluation_config(path: str | Path) -> dict:
             if audio_quant not in ("q8_0", "q4_0"):
                 raise ValueError("GGUF audio_quantization은 q8_0/q4_0입니다.")
             asset = config["model"].get("asset_manifest")
+            if "conv_kernel_manifest" in config["model"]:
+                conv = config["model"]["conv_kernel_manifest"]
+                if not isinstance(conv, str) or not conv.strip():
+                    raise ValueError("conv_kernel_manifest는 파일 경로여야 합니다.")
             if asset is not None and (not isinstance(asset, str) or not asset.strip()):
                 raise ValueError("asset_manifest는 파일 경로여야 합니다.")
             if (config["model"]["quantization"] != "q8_0" or audio_quant != "q8_0") and not asset:

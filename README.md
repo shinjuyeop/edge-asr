@@ -160,6 +160,7 @@ edge-asr/
 │       │   │   ├── runs.py
 │       │   │   └── server.py
 │       │   ├── benchmark.py
+│       │   ├── convolution.py            # 선택 합성곱 후보 검증·호출 기록
 │       │   ├── gguf.py
 │       │   ├── onnx.py
 │       │   └── profiling.py

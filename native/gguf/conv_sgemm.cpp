@@ -24,8 +24,9 @@ std::atomic<int> mode{0}, active{0};
 struct Totals {
     std::atomic<uint64_t> calls{0}, accepted{0}, cpu_ns{0}, wall_ns{0};
 };
-constexpr int64_t shapes[] = {800, 2400, 4000, 208, 624, 1040}; // 합성곱2/3의 1/3/5청크
-Totals totals[6][3];
+constexpr int64_t shapes[] = {800, 1600, 2400, 3200, 4000, 208, 416, 624, 832, 1040}; // 1~5청크
+constexpr int shape_count = sizeof(shapes) / sizeof(shapes[0]);
+Totals totals[shape_count][3];
 std::atomic<uint64_t> other{0};
 uint64_t now(clockid_t clock) {
     timespec t{};
@@ -59,7 +60,7 @@ API int edge_conv_begin(int next) {
 API bool llamafile_sgemm(ARGS) {
     ++active;
     int shape = -1;
-    for (int i = 0; i < 6; ++i) if (m == shapes[i]) shape = i;
+    for (int i = 0; i < shape_count; ++i) if (m == shapes[i]) shape = i;
     const bool target = p && !p->use_ref && p->nth == 3 && p->ith >= 0 && p->ith < 3 &&
         shape >= 0 && n == 480 && k == 4320 &&
         lda == k && ldb == k && ldc == m &&
@@ -87,7 +88,7 @@ API const char* edge_conv_result() {
     static std::string out;
     out = "{\"mode\":" + std::to_string(mode.load()) + ",\"other_forwarded\":" + std::to_string(other.load()) + ",\"groups\":[";
     bool first = true;
-    for (int s = 0; s < 6; ++s) for (int w = 0; w < 3; ++w) {
+    for (int s = 0; s < shape_count; ++s) for (int w = 0; w < 3; ++w) {
         const auto& t = totals[s][w];
         if (!t.calls.load()) continue;
         if (!first) out += ',';

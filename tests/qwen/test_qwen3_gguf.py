@@ -95,6 +95,21 @@ class GGUFTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             adapter.transcribe(self.audio)
 
+    def test_selected_convolution_records_each_call_including_native_failure(self):
+        adapter = self.load()
+        tile = adapter.convolution = Mock()
+        tile.result.return_value = {"mode": 2, "groups": [{"calls": 1, "accepted": 1}]}
+        for status in ("success", "failed"):
+            self.library.edge_gguf_transcribe.return_value = self.result(status=status)
+            if status == "success":
+                self.assertEqual(adapter.transcribe(self.audio), "한 글!")
+            else:
+                with self.assertRaises(RuntimeError):
+                    adapter.transcribe(self.audio)
+            self.assertEqual(adapter.last_result_metadata["convolution"], tile.result.return_value)
+        self.assertEqual(tile.begin.call_count, 2)
+        self.assertEqual(tile.result.call_count, 2)
+
     def enable_tokens(self):
         self.build["features"] = ["token_callback_v1"]
         (self.root / "build.json").write_text(json.dumps(self.build))

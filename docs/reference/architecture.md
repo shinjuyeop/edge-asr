@@ -6,6 +6,7 @@
 | --- | --- |
 | `scripts/edge_asr.py` → `cli.py`, `tools/cli.py` | 공개 명령·선택 구현의 지연 import |
 | `qwen/onnx.py`, `qwen/gguf.py` | 모델 로딩·발화 상태·전사·출력 검사 |
+| `qwen/convolution.py` | 선택 FP16 합성곱 빌드·preload 계약과 호출별 적용 확인. 기본 경로에는 사용하지 않음 |
 | `qwen/benchmark.py` | 모델1회 로딩·첫 추론·워밍업·반복·고정 PCM 재현 |
 | `qwen/profiling.py` | ONNX Python/ORT 호출 경계·세션/시계 검증 |
 | `qwen/realtime/` | 1배속 실행·VAD 접두 부분 전사·유한 단일 작업자. `stability.py`로 접두부 재표시·문자 철회 집계. 공통 입력·구간 분할 재사용 |
