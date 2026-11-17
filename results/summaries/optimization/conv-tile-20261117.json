@@ -1,0 +1,847 @@
+{
+  "screening": {
+    "source_commit": "a75e528cf3d8f09793b2fc0c39ec0e5fc530af4e",
+    "raw_path": "results/optimization/opt3/conv-tile-20261117-03",
+    "plan": {
+      "modes_by_round": [
+        "stock",
+        "clone6",
+        "tile4",
+        "stock",
+        "clone6",
+        "tile4",
+        "stock",
+        "clone6",
+        "tile4",
+        "tile4",
+        "clone6",
+        "stock",
+        "tile4",
+        "clone6",
+        "stock",
+        "stock",
+        "clone6",
+        "tile4"
+      ],
+      "warmup_rounds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "measured_blocks": [
+        [
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        [
+          13,
+          14,
+          15,
+          16,
+          17,
+          18
+        ]
+      ],
+      "pause_s": 2,
+      "native_modes": {
+        "stock": 0,
+        "clone6": 1,
+        "tile4": 2
+      },
+      "scope": "고정 PCM 선별; 연속 지연·CER 미측정"
+    },
+    "synthetic_cases": 32,
+    "bit_equal_comparisons": 64,
+    "all_54_transcripts_and_tokens_equal_reference": true,
+    "actual_target_sgemm_accepted_and_same_counts": true,
+    "failures": 0,
+    "passed": true,
+    "thermal": {
+      "start_c": 68.3,
+      "guard_max_c": 74.9,
+      "end_c": 74.35,
+      "worker_observed_max_c": 74.9,
+      "current_limits": [
+        0
+      ],
+      "cpu0_freq_khz": [
+        1500000,
+        2400000
+      ]
+    },
+    "protected_files": 1079,
+    "boot_id": "db0f2e44-3c3f-4b8a-8472-e5618db2aeae",
+    "by_kind": {
+      "initial": {
+        "stock": {
+          "audio_encode_s": {
+            "sum": 0.643925916,
+            "mean": 0.160981479,
+            "min": 0.159913493,
+            "max": 0.163297457
+          },
+          "native_elapsed_s": {
+            "sum": 1.592436198,
+            "mean": 0.3981090495,
+            "min": 0.396375724,
+            "max": 0.401697507
+          },
+          "first_generated_token_s": {
+            "sum": 1.367300002,
+            "mean": 0.3418250005,
+            "min": 0.34061964,
+            "max": 0.344147213
+          },
+          "rss_max_mib": 1662.796875,
+          "calls": 4
+        },
+        "clone6": {
+          "audio_encode_s": {
+            "sum": 0.639709599,
+            "mean": 0.15992739975,
+            "min": 0.159598724,
+            "max": 0.160197064
+          },
+          "native_elapsed_s": {
+            "sum": 1.5896563559999999,
+            "mean": 0.39741408899999997,
+            "min": 0.396279157,
+            "max": 0.398384814
+          },
+          "first_generated_token_s": {
+            "sum": 1.366137251,
+            "mean": 0.34153431275,
+            "min": 0.340512354,
+            "max": 0.342572672
+          },
+          "rss_max_mib": 1662.796875,
+          "calls": 4
+        },
+        "tile4": {
+          "audio_encode_s": {
+            "sum": 0.5629561030000001,
+            "mean": 0.14073902575,
+            "min": 0.139255814,
+            "max": 0.143672577
+          },
+          "native_elapsed_s": {
+            "sum": 1.509533275,
+            "mean": 0.37738331875,
+            "min": 0.376305993,
+            "max": 0.379932014
+          },
+          "first_generated_token_s": {
+            "sum": 1.286073206,
+            "mean": 0.3215183015,
+            "min": 0.320428709,
+            "max": 0.32388799
+          },
+          "rss_max_mib": 1662.796875,
+          "calls": 4
+        }
+      },
+      "followup": {
+        "stock": {
+          "audio_encode_s": {
+            "sum": 1.972907069,
+            "mean": 0.49322676725000003,
+            "min": 0.488198917,
+            "max": 0.497404123
+          },
+          "native_elapsed_s": {
+            "sum": 6.6783859009999995,
+            "mean": 1.66959647525,
+            "min": 1.66385398,
+            "max": 1.673474733
+          },
+          "first_generated_token_s": {
+            "sum": 3.278656283,
+            "mean": 0.81966407075,
+            "min": 0.815178105,
+            "max": 0.823956756
+          },
+          "rss_max_mib": 1662.796875,
+          "calls": 4
+        },
+        "clone6": {
+          "audio_encode_s": {
+            "sum": 1.976492048,
+            "mean": 0.494123012,
+            "min": 0.491349641,
+            "max": 0.500058685
+          },
+          "native_elapsed_s": {
+            "sum": 6.672984089,
+            "mean": 1.66824602225,
+            "min": 1.665268236,
+            "max": 1.673908837
+          },
+          "first_generated_token_s": {
+            "sum": 3.283624424,
+            "mean": 0.820906106,
+            "min": 0.817224539,
+            "max": 0.827648415
+          },
+          "rss_max_mib": 1662.796875,
+          "calls": 4
+        },
+        "tile4": {
+          "audio_encode_s": {
+            "sum": 1.7446989229999998,
+            "mean": 0.43617473075,
+            "min": 0.429036891,
+            "max": 0.44346483
+          },
+          "native_elapsed_s": {
+            "sum": 6.440163139000001,
+            "mean": 1.61004078475,
+            "min": 1.605842842,
+            "max": 1.61592537
+          },
+          "first_generated_token_s": {
+            "sum": 3.0474997559999997,
+            "mean": 0.7618749389999999,
+            "min": 0.75500189,
+            "max": 0.769669277
+          },
+          "rss_max_mib": 1662.796875,
+          "calls": 4
+        }
+      },
+      "final": {
+        "stock": {
+          "audio_encode_s": {
+            "sum": 3.202097157,
+            "mean": 0.80052428925,
+            "min": 0.796112333,
+            "max": 0.803301513
+          },
+          "native_elapsed_s": {
+            "sum": 12.903386519,
+            "mean": 3.22584662975,
+            "min": 3.220689651,
+            "max": 3.237999303
+          },
+          "first_generated_token_s": {
+            "sum": 5.225714294,
+            "mean": 1.3064285735,
+            "min": 1.301204448,
+            "max": 1.308920381
+          },
+          "rss_max_mib": 1662.796875,
+          "calls": 4
+        },
+        "clone6": {
+          "audio_encode_s": {
+            "sum": 3.1980055060000003,
+            "mean": 0.7995013765000001,
+            "min": 0.79721482,
+            "max": 0.801347553
+          },
+          "native_elapsed_s": {
+            "sum": 12.925513722999998,
+            "mean": 3.23137843075,
+            "min": 3.218460569,
+            "max": 3.243674672
+          },
+          "first_generated_token_s": {
+            "sum": 5.224078313,
+            "mean": 1.30601957825,
+            "min": 1.303295263,
+            "max": 1.308727182
+          },
+          "rss_max_mib": 1662.796875,
+          "calls": 4
+        },
+        "tile4": {
+          "audio_encode_s": {
+            "sum": 2.795031949,
+            "mean": 0.69875798725,
+            "min": 0.69737888,
+            "max": 0.699750736
+          },
+          "native_elapsed_s": {
+            "sum": 12.500815760999998,
+            "mean": 3.12520394025,
+            "min": 3.117987264,
+            "max": 3.146142493
+          },
+          "first_generated_token_s": {
+            "sum": 4.816703641,
+            "mean": 1.20417591025,
+            "min": 1.202862277,
+            "max": 1.205257178
+          },
+          "rss_max_mib": 1663.296875,
+          "calls": 4
+        }
+      }
+    },
+    "crossed_blocks": [
+      {
+        "block": 1,
+        "rounds": [
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "comparisons": {
+          "stock": {
+            "encoder_reduction_fraction": 0.11834199300161152,
+            "native_reduction_fraction": 0.03344972785485001,
+            "initial_increase_fraction": -0.052729441841712466,
+            "rss_increase_mib": 0.0,
+            "checks": {
+              "encoder_reduction_at_least_3pct": true,
+              "native_reduction_at_least_1pct": true,
+              "initial_increase_at_most_5pct": true,
+              "rss_increase_at_most_32mib": true
+            },
+            "passed": true
+          },
+          "clone6": {
+            "encoder_reduction_fraction": 0.11695696524058552,
+            "native_reduction_fraction": 0.03324318495428724,
+            "initial_increase_fraction": -0.048381995508045006,
+            "rss_increase_mib": 0.0,
+            "checks": {
+              "encoder_reduction_at_least_3pct": true,
+              "native_reduction_at_least_1pct": true,
+              "initial_increase_at_most_5pct": true,
+              "rss_increase_at_most_32mib": true
+            },
+            "passed": true
+          }
+        },
+        "passed": true
+      },
+      {
+        "block": 2,
+        "rounds": [
+          13,
+          14,
+          15,
+          16,
+          17,
+          18
+        ],
+        "comparisons": {
+          "stock": {
+            "encoder_reduction_fraction": 0.12783055013925948,
+            "native_reduction_fraction": 0.034904709635334985,
+            "initial_increase_fraction": -0.051387346504354725,
+            "rss_increase_mib": 0.5,
+            "checks": {
+              "encoder_reduction_at_least_3pct": true,
+              "native_reduction_at_least_1pct": true,
+              "initial_increase_at_most_5pct": true,
+              "rss_increase_at_most_32mib": true
+            },
+            "passed": true
+          },
+          "clone6": {
+            "encoder_reduction_fraction": 0.1277821018618267,
+            "native_reduction_fraction": 0.03637761005332918,
+            "initial_increase_fraction": -0.0524243762399037,
+            "rss_increase_mib": 0.5,
+            "checks": {
+              "encoder_reduction_at_least_3pct": true,
+              "native_reduction_at_least_1pct": true,
+              "initial_increase_at_most_5pct": true,
+              "rss_increase_at_most_32mib": true
+            },
+            "passed": true
+          }
+        },
+        "passed": true
+      }
+    ],
+    "target_worker_cpu_s": {
+      "stock": 5.33913877,
+      "clone6": 5.362245412,
+      "tile4": 3.196692485
+    },
+    "target_worker_cpu_reduction_fraction": 0.40127188621471255
+  },
+  "plain_control": {
+    "source_commit": "d2467ee04387a925fc519d2f389ed7fa66964e52",
+    "raw_path": "results/optimization/opt3/conv-plain-20261117-01",
+    "plan": {
+      "conditions": [
+        "plain-a",
+        "tile4",
+        "plain-b"
+      ],
+      "warmup_rounds": [
+        1,
+        2
+      ],
+      "measured_rounds": [
+        3,
+        4
+      ],
+      "pause_s": 2,
+      "scope": "무-preload 앞뒤 고정 PCM 확인; 새 연속 지연·CER 미측정"
+    },
+    "comparisons": {
+      "plain-a": {
+        "encoder_reduction_fraction": 0.13216505457159855,
+        "native_reduction_fraction": 0.04026376756515393,
+        "initial_increase_fraction": -0.05434954827934502,
+        "rss_increase_mib": 0.65625,
+        "checks": {
+          "encoder_reduction_at_least_3pct": true,
+          "native_reduction_at_least_1pct": true,
+          "initial_increase_at_most_5pct": true,
+          "rss_increase_at_most_32mib": true
+        },
+        "passed": true
+      },
+      "plain-b": {
+        "encoder_reduction_fraction": 0.1331378704010494,
+        "native_reduction_fraction": 0.04500386026457859,
+        "initial_increase_fraction": -0.07404726207539791,
+        "rss_increase_mib": -0.171875,
+        "checks": {
+          "encoder_reduction_at_least_3pct": true,
+          "native_reduction_at_least_1pct": true,
+          "initial_increase_at_most_5pct": true,
+          "rss_increase_at_most_32mib": true
+        },
+        "passed": true
+      }
+    },
+    "passed": true,
+    "thermal": {
+      "plain-a": {
+        "start_c": 59.5,
+        "guard_max_c": 72.7,
+        "end_c": 70.5,
+        "worker_max_c": 73.8,
+        "current_limits": [
+          0
+        ],
+        "cpu0_freq_khz": [
+          1500000,
+          1700000,
+          2400000
+        ],
+        "operational_valid": true,
+        "limit_verified": true
+      },
+      "tile4": {
+        "start_c": 67.75,
+        "guard_max_c": 73.25,
+        "end_c": 71.05,
+        "worker_max_c": 74.35,
+        "current_limits": [
+          0
+        ],
+        "cpu0_freq_khz": [
+          1500000,
+          1700000,
+          2400000
+        ],
+        "operational_valid": true,
+        "limit_verified": true
+      },
+      "plain-b": {
+        "start_c": 67.2,
+        "guard_max_c": 74.9,
+        "end_c": 72.7,
+        "worker_max_c": 76.0,
+        "current_limits": [
+          0
+        ],
+        "cpu0_freq_khz": [
+          1500000,
+          2400000
+        ],
+        "operational_valid": true,
+        "limit_verified": true
+      }
+    },
+    "all_36_transcripts_tokens_equal": true,
+    "actual_target_accepted_and_plain_preload_absent": true,
+    "failures": 0,
+    "protected_files": 1113,
+    "boot_id": "db0f2e44-3c3f-4b8a-8472-e5618db2aeae",
+    "conditions": {
+      "plain-a": {
+        "all": {
+          "audio_encode_s": {
+            "mean": 0.485340587,
+            "sum": 2.9120435220000003,
+            "min": 0.159861453,
+            "max": 0.802212648
+          },
+          "native_elapsed_s": {
+            "mean": 1.765859472,
+            "sum": 10.595156832,
+            "min": 0.397200684,
+            "max": 3.227718922
+          },
+          "first_generated_token_s": {
+            "mean": 0.8246254431666666,
+            "sum": 4.947752659,
+            "min": 0.341233416,
+            "max": 1.310622519
+          },
+          "rss_max_mib": 1654.609375,
+          "calls": 6
+        },
+        "by_kind": {
+          "initial": {
+            "audio_encode_s": {
+              "mean": 0.15995392349999998,
+              "sum": 0.31990784699999997,
+              "min": 0.159861453,
+              "max": 0.160046394
+            },
+            "native_elapsed_s": {
+              "mean": 0.39861349700000004,
+              "sum": 0.7972269940000001,
+              "min": 0.397200684,
+              "max": 0.40002631
+            },
+            "first_generated_token_s": {
+              "mean": 0.34196307550000005,
+              "sum": 0.6839261510000001,
+              "min": 0.341233416,
+              "max": 0.342692735
+            },
+            "rss_max_mib": 1654.609375,
+            "calls": 2
+          },
+          "followup": {
+            "audio_encode_s": {
+              "mean": 0.495138323,
+              "sum": 0.990276646,
+              "min": 0.491328555,
+              "max": 0.498948091
+            },
+            "native_elapsed_s": {
+              "mean": 1.6742275505,
+              "sum": 3.348455101,
+              "min": 1.670097426,
+              "max": 1.678357675
+            },
+            "first_generated_token_s": {
+              "mean": 0.8233873835,
+              "sum": 1.646774767,
+              "min": 0.820059578,
+              "max": 0.826715189
+            },
+            "rss_max_mib": 1654.609375,
+            "calls": 2
+          },
+          "final": {
+            "audio_encode_s": {
+              "mean": 0.8009295144999999,
+              "sum": 1.6018590289999999,
+              "min": 0.799646381,
+              "max": 0.802212648
+            },
+            "native_elapsed_s": {
+              "mean": 3.2247373685,
+              "sum": 6.449474737,
+              "min": 3.221755815,
+              "max": 3.227718922
+            },
+            "first_generated_token_s": {
+              "mean": 1.3085258705,
+              "sum": 2.617051741,
+              "min": 1.306429222,
+              "max": 1.310622519
+            },
+            "rss_max_mib": 1654.609375,
+            "calls": 2
+          }
+        }
+      },
+      "tile4": {
+        "all": {
+          "audio_encode_s": {
+            "mean": 0.4211955218333333,
+            "sum": 2.527173131,
+            "min": 0.139841862,
+            "max": 0.696219791
+          },
+          "native_elapsed_s": {
+            "mean": 1.6947593166666666,
+            "sum": 10.1685559,
+            "min": 0.37637182,
+            "max": 3.110610349
+          },
+          "first_generated_token_s": {
+            "mean": 0.7593049975,
+            "sum": 4.555829984999999,
+            "min": 0.320646042,
+            "max": 1.201784781
+          },
+          "rss_max_mib": 1655.265625,
+          "calls": 6
+        },
+        "by_kind": {
+          "initial": {
+            "audio_encode_s": {
+              "mean": 0.14008757900000002,
+              "sum": 0.28017515800000004,
+              "min": 0.139841862,
+              "max": 0.140333296
+            },
+            "native_elapsed_s": {
+              "mean": 0.3769490335,
+              "sum": 0.753898067,
+              "min": 0.37637182,
+              "max": 0.377526247
+            },
+            "first_generated_token_s": {
+              "mean": 0.3211547095,
+              "sum": 0.642309419,
+              "min": 0.320646042,
+              "max": 0.321663377
+            },
+            "rss_max_mib": 1654.765625,
+            "calls": 2
+          },
+          "followup": {
+            "audio_encode_s": {
+              "mean": 0.427690708,
+              "sum": 0.855381416,
+              "min": 0.42624108,
+              "max": 0.429140336
+            },
+            "native_elapsed_s": {
+              "mean": 1.598678031,
+              "sum": 3.197356062,
+              "min": 1.597119148,
+              "max": 1.600236914
+            },
+            "first_generated_token_s": {
+              "mean": 0.7552957145,
+              "sum": 1.510591429,
+              "min": 0.753746145,
+              "max": 0.756845284
+            },
+            "rss_max_mib": 1654.765625,
+            "calls": 2
+          },
+          "final": {
+            "audio_encode_s": {
+              "mean": 0.6958082784999999,
+              "sum": 1.3916165569999999,
+              "min": 0.695396766,
+              "max": 0.696219791
+            },
+            "native_elapsed_s": {
+              "mean": 3.1086508855,
+              "sum": 6.217301771,
+              "min": 3.106691422,
+              "max": 3.110610349
+            },
+            "first_generated_token_s": {
+              "mean": 1.2014645685,
+              "sum": 2.402929137,
+              "min": 1.201144356,
+              "max": 1.201784781
+            },
+            "rss_max_mib": 1655.265625,
+            "calls": 2
+          }
+        }
+      },
+      "plain-b": {
+        "all": {
+          "audio_encode_s": {
+            "mean": 0.48588524916666664,
+            "sum": 2.9153114949999996,
+            "min": 0.159539502,
+            "max": 0.799817448
+          },
+          "native_elapsed_s": {
+            "mean": 1.7746242588333334,
+            "sum": 10.647745553,
+            "min": 0.399258566,
+            "max": 3.258748714
+          },
+          "first_generated_token_s": {
+            "mean": 0.8246678153333333,
+            "sum": 4.9480068919999995,
+            "min": 0.341556667,
+            "max": 1.307358352
+          },
+          "rss_max_mib": 1655.4375,
+          "calls": 6
+        },
+        "by_kind": {
+          "initial": {
+            "audio_encode_s": {
+              "mean": 0.1684017955,
+              "sum": 0.336803591,
+              "min": 0.159539502,
+              "max": 0.177264089
+            },
+            "native_elapsed_s": {
+              "mean": 0.40709316799999995,
+              "sum": 0.8141863359999999,
+              "min": 0.399258566,
+              "max": 0.41492777
+            },
+            "first_generated_token_s": {
+              "mean": 0.3493928515,
+              "sum": 0.698785703,
+              "min": 0.341556667,
+              "max": 0.357229036
+            },
+            "rss_max_mib": 1655.4375,
+            "calls": 2
+          },
+          "followup": {
+            "audio_encode_s": {
+              "mean": 0.490307068,
+              "sum": 0.980614136,
+              "min": 0.487301934,
+              "max": 0.493312202
+            },
+            "native_elapsed_s": {
+              "mean": 1.663142819,
+              "sum": 3.326285638,
+              "min": 1.658202422,
+              "max": 1.668083216
+            },
+            "first_generated_token_s": {
+              "mean": 0.8177957695,
+              "sum": 1.635591539,
+              "min": 0.814553583,
+              "max": 0.821037956
+            },
+            "rss_max_mib": 1655.4375,
+            "calls": 2
+          },
+          "final": {
+            "audio_encode_s": {
+              "mean": 0.798946884,
+              "sum": 1.597893768,
+              "min": 0.79807632,
+              "max": 0.799817448
+            },
+            "native_elapsed_s": {
+              "mean": 3.2536367895,
+              "sum": 6.507273579,
+              "min": 3.248524865,
+              "max": 3.258748714
+            },
+            "first_generated_token_s": {
+              "mean": 1.306814825,
+              "sum": 2.61362965,
+              "min": 1.306271298,
+              "max": 1.307358352
+            },
+            "rss_max_mib": 1655.4375,
+            "calls": 2
+          }
+        }
+      }
+    }
+  },
+  "build": {
+    "source_commit": "a75e528cf3d8f09793b2fc0c39ec0e5fc530af4e",
+    "upstream_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+    "library_sha256": "b21ffc66a294896d7c46429abe2147a3cd52e35083aaef8b43e98615cb8f4876",
+    "wrapper_sha256": "9e89f782855955731adbe01bd6736d66d1bd530d80f89045cfc03490c8fb2ae1",
+    "patch_sha256": "f6c2df015616721d954362ae53ee705281ce95b81c03222ce22e3367a5c2cfda",
+    "generated_source_sha256": "eb6cac79ed8d04a428cd6a4a3fd7fe9275e1ae9a42da5f4314295f685355d82d",
+    "upstream_source_sha256": "25c773b9b46dec168dcd3c45e8e99cbf7b0d21f95eedb9b3d18809eb8cd07958",
+    "original_cpu_sha256": "7b4ed5643e4ab80dc2a29e8049e2168541115409086621ae44084d9ea57df746",
+    "original_flags": "-O3 -DNDEBUG -std=gnu++17 -fPIC -Wmissing-declarations -Wmissing-noreturn -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wno-array-bounds -Wextra-semi -U__ARM_FEATURE_MATMUL_INT8 -U__ARM_FEATURE_SVE -U__ARM_FEATURE_SME -mcpu=cortex-a76+crc+crypto+dotprod+noi8mm+nosve+nosme -fopenmp",
+    "original_defines": "-DGGML_BACKEND_BUILD -DGGML_BACKEND_SHARED -DGGML_SCHED_MAX_COPIES=4 -DGGML_SHARED -DGGML_USE_CPU_REPACK -DGGML_USE_LLAMAFILE -DGGML_USE_OPENMP -D_GNU_SOURCE -D_XOPEN_SOURCE=600 -Dggml_cpu_EXPORTS"
+  },
+  "model_files": {
+    "Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+    },
+    "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+    },
+    "runtime_library": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+      "sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf"
+    },
+    "runtime_manifest": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+      "sha256": "a7fa6d9d6ffab5b5a0f7f98e3dc94cd7d751fe503a16f214936b5ff32fd3d113"
+    },
+    "experimental_kernel": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/conv-tile-20261117-03/libedge_conv_sgemm.so",
+      "sha256": "b21ffc66a294896d7c46429abe2147a3cd52e35083aaef8b43e98615cb8f4876"
+    },
+    "experimental_build": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/conv-tile-20261117-03/build.json",
+      "sha256": "04544cb403a61dd81738018c135416a1860197d8ee4d3738238c254d5cecfe60"
+    }
+  },
+  "excluded_attempts": {
+    "conv-tile-20261117-01": {
+      "status": "build_failed",
+      "asr_calls": 0,
+      "reason": "공개 API 사전 선언 누락을 -Wmissing-declarations로 검출"
+    },
+    "conv-tile-20261117-02": {
+      "all_54_transcripts_tokens_equal": true,
+      "speed_verdict_valid": false,
+      "reason": "단일 청크 m800/208만 대상; 긴 PCM은 m2400/624 및4000/1040으로 병합되어 후보가 적용되지 않음",
+      "shapes_seen_by_kind": {
+        "initial": [
+          208,
+          800
+        ],
+        "followup": [],
+        "final": []
+      }
+    }
+  },
+  "verification": {
+    "host_total": 436,
+    "host_passed": 432,
+    "host_skipped": 4,
+    "explicit_native_mock_passed_host_rp": true,
+    "raw_files_per_execution": {
+      "conv-tile-20261117-01": 10,
+      "conv-tile-20261117-02": 24,
+      "conv-tile-20261117-03": 24,
+      "conv-plain-20261117-01": 47
+    },
+    "independent_analysis_and_raw_hashes_equal": true,
+    "viewer_runs": 61,
+    "viewer_profiles": 23,
+    "viewer_idle": true
+  },
+  "default_changed": false,
+  "new_continuous_latency_cer_measured": false,
+  "assembly": {
+    "original_k_loop": {
+      "instructions": 70,
+      "fp16_fma": 24,
+      "stack_pair_stores": 12
+    },
+    "tile4_k_loop": {
+      "instructions": 44,
+      "fp16_fma": 16,
+      "stack_pair_stores": 0
+    },
+    "interpretation": "각각24/16출력의 8원소 반복. 스택 저장 제거는 관측 사실이나 성능 기여율/PMU/DRAM은 미분리."
+  }
+}

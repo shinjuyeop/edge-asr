@@ -128,3 +128,7 @@ native ORT 버전 확인이 필요할 때만 `env --probe-runtime`을 사용합�
 ## FP16 내적 선택 빌드 — 2026-11-17
 
 `runtimes/qwen3-opt/encoder-f16-20261117-{01,02}/libedge_f16_dot.so`를 기존 O3·Cortex-A76 ISA로 별도 빌드했습니다. 두 바이너리 SHA는 같고 기존 엔진·bridge·가중치·패키지를 교체하지 않았습니다. 합성65조건 및 실제36호출을 각 실행에서 확인했고, 첫 부하 혼입 실행은 제외했습니다. 유효 재비교에 작은 감소가 있었지만 encoder 기준 미달로 기본에 연결하지 않습니다. [빌드 해시·온도·실측](../../results/summaries/optimization/encoder-f16-20261117.md).
+
+## FP16 합성곱 타일 선택 빌드 — 2026-11-17
+
+고정 upstream 사본에 최소 패치를 적용해 별도 `runtimes/qwen3-opt/conv-tile-20261117-03/libedge_conv_sgemm.so`를 빌드했습니다. 원래 O3·Cortex-A76 ISA와 compiler를 유지하고 재컴파일6열/후보4열을 선택합니다. `-01` 빌드 실패·`-02` 단일 청크 적용 기록도 보존합니다. 유효54호출 및 같은 바이너리의 추가 무-preload36호출 대조를 통과했지만 운영 engine/bridge·패키지·설정에는 연결하지 않았습니다. [해시·온도·비교 범위](../../results/summaries/optimization/conv-tile-20261117.md).
