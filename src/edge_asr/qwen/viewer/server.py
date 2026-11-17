@@ -79,6 +79,7 @@ def handler(library):
                     "/": "index.html",
                     "/app.js": "app.js",
                     "/review.mjs": "review.mjs",
+                    "/captions.mjs": "captions.mjs",
                     "/style.css": "style.css",
                 }
                 if url.path in static:

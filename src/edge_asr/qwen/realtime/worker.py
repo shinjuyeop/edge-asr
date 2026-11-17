@@ -10,7 +10,9 @@ from edge_asr.dataset import Audio, float_digest
 
 
 class DecodeWorker:
-    def __init__(self, adapter, emit, *, capacity=4, token_stream=False):
+    def __init__(
+        self, adapter, emit, *, capacity=4, token_stream=False, condition=None, next_partial=None
+    ):
         if type(capacity) is not int or capacity < 1:
             raise ValueError("최종 구간 큐 용량은 양의 정수여야 합니다.")
         if type(token_stream) is not bool or (
@@ -19,7 +21,8 @@ class DecodeWorker:
             raise ValueError("토큰 배포에는 지원하는 GGUF adapter가 필요합니다.")
         self.token_stream = token_stream
         self.adapter, self.emit, self.capacity = adapter, emit, capacity
-        self.condition = Condition()
+        self.condition = condition if condition is not None else Condition()
+        self.next_partial = next_partial
         self.finals, self.partial = deque(), None
         self.closing, self.error = False, None
         self.active, self.last_inference_s = False, 0.0
@@ -78,6 +81,7 @@ class DecodeWorker:
                 raise RuntimeError("final_queue_full: 입력을 늦추거나 최종 구간을 버리지 않습니다.")
             job = {
                 "job_id": self.index,
+                "revision": self.index,
                 "kind": kind,
                 "segment_id": segment_id,
                 "start_frame": start,
@@ -105,7 +109,11 @@ class DecodeWorker:
         try:
             while True:
                 with self.condition:
-                    self.condition.wait_for(lambda: self.finals or self.partial or self.closing)
+                    while not (self.finals or self.partial or self.closing):
+                        if self.next_partial:
+                            self.next_partial()
+                        if not self.partial:
+                            self.condition.wait()
                     if self.finals:
                         job, samples = self.finals.popleft()
                     elif self.partial is not None:
@@ -147,6 +155,13 @@ class DecodeWorker:
                     ended_monotonic_s=time.perf_counter(),
                     adapter_result=deepcopy(getattr(self.adapter, "last_result_metadata", None)),
                 )
+                if (
+                    result["status"] == "failed"
+                    and job["kind"] == "partial"
+                    and result.get("error", {}).get("message")
+                    == "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+                ):
+                    result["failure_kind"] = "empty_partial"
                 try:
                     self.emit(result)
                 finally:

@@ -202,3 +202,26 @@ KSS 등 이전 실험 설정은 [설정 색인](../../configs/README.md)에 보�
 가변 `adaptive/budgeted` 명령에 선택 `--protect-short-followup`을 추가하면 첫 성공 부분 결과가 문자/숫자4자 미만인 구간의 후속1회에 비용 예산 예외를 둡니다. 기본은 끔이며 유휴·최소 새 음성·최대 횟수·끝 여유는 유지합니다. 예산3초의 일반 확대와 다르고 확정용5초 입력을 바꾸지 않습니다. 실제 예외는 `partial_decision.short_followup_budget_override`, 활성 정책은 `short-first-budget-v1`로 기록합니다. [사전 조건](../research/qwen_realtime.md#짧은-최초-결과의-후속-1회-보호--2026-11-16-사전-조건).
 
 [100개 끔/켬 실측](../../results/summaries/optimization/realtime-short-followup-20261116.md)에서 최종 정확도는 유지했지만 표시 개선 조건에 미달했습니다. 기본 끔을 유지하며 재현·청취 비교용 선택 옵션으로 보존합니다.
+
+## 빠른 Q4 연속 수정 후보
+
+별도 `configs/listener_continuous.toml`은 Q4_0 본체/출력층·audio Q8·KleidiAI OFF·생성 2T/음성 3T·기존 고정 prefix KV를 사용합니다. 기존 Q8 공유 설정과 Q4 최대 2/3회 프로필은 보존합니다. 다음은 준비된 RP5에서 단일 추론 잠금 안에 새 실행 ID로 실행하는 명령입니다.
+
+```bash
+flock -n results/listener/inference.lock env OPENBLAS_NUM_THREADS=1 PYTHONPATH=src \
+  .venv/bin/python scripts/edge_asr.py tools thermal-run \
+  --output results/optimization/opt3/continuous-example-01 --timeout-s 1800 \
+  --temperature-policy operational --skip-temperature-admission -- \
+  .venv/bin/python scripts/edge_asr.py tools replay-qwen3 \
+  --config configs/quantization/q4_0_head_realtime.toml \
+  --manifest data/evaluation/edge100-20261109-01/manifest.jsonl \
+  --output results/optimization/opt3/continuous-example-01 \
+  --gap-s 0 --vad-threshold 0.3 --vad-preprocess rms26-floor80 \
+  --vad-max-speech-s 5 --max-segment-s 5 --partial-after-s 0.6 \
+  --partial-mode continuous --partial-min-new-s 0.8 --partial-tail-margin-s 0.2 \
+  --token-stream
+```
+
+0.8초는 새 입력 최소량이며 표시 주기를 보증하지 않습니다. 새로운 입력과 작업 완료 시 다시 판단하며 최종 우선·열 backoff는 갱신을 늦출 수 있습니다. 횟수/누적 비용 예산과 `adaptive-policy budgeted`는 이 모드에 사용하지 않습니다. 빈 partial은 `failure_kind=empty_partial`, 실패 수 및 실행 실패 상태를 유지합니다. 새 입력으로 회복하며 같은 범위를 즉시 재시도하지 않습니다. `jobs.jsonl`에 후보 합침/폐기·결정·revision·열 변화와 실제 클럭 표본을 기록합니다.
+
+`content_updates`는 같은 문자열 재발행을 제외한 내용 변경 간격과 입력 범위 끝→발행 나이를 제공합니다. 기존 원음별 문자 증가 공백과 VAD 소유 구간의 변경 공백을 구분하며, 둘 다 서버 발행 기준입니다. 실제 브라우저 표시/음향 단어 지연은 아닙니다. 캐시·커널 변경을 섞지 않은 스케줄러 비교를 먼저 수행합니다.

@@ -22,6 +22,41 @@ def prefix_length(left, right):
     )
 
 
+def content_updates(events, segments):
+    """문자 증가/수정/삭제를 포함하며 같은 문자열 재발행은 제외한다. 서버 발행 시각이다."""
+    previous, times, ages, active_times = {}, [], [], []
+    spans = [(s["owned_start_frame"] / 16000, s["owned_end_frame"] / 16000) for s in segments]
+    for e in events:
+        if e.get("type") not in ("token", "result") or not e.get("displayed"):
+            continue
+        if e.get("status") == "failed":
+            continue
+        text, segment = e.get("hypothesis") or "", e["segment_id"]
+        if not text or text == previous.get(segment):
+            continue
+        previous[segment] = text
+        at = e["published_s"]
+        times.append(at)
+        ages.append(at - e["end_frame"] / 16000)
+        if any(a <= at <= b for a, b in spans):
+            active_times.append(at)
+    # VAD가 소유한 각 입력 구간 내부만 잰다. 시작/끝 대기는 별도 포함 지표로 남긴다.
+    active_gaps, bracketed = [], []
+    for start, end in spans:
+        at = [t for t in active_times if start <= t <= end]
+        active_gaps.extend(b - a for a, b in zip(at, at[1:]))
+        marks = [start, *at, end]
+        bracketed.append(max(b - a for a, b in zip(marks, marks[1:])))
+    return {
+        "changed_events": len(times),
+        "interval_s": distribution([b - a for a, b in zip(times, times[1:])]),
+        "active_between_changes_s": distribution(active_gaps),
+        "active_max_gap_with_edges_s": distribution(bracketed),
+        "input_age_at_publish_s": distribution(ages),
+        "scope": "정확한 문자열 변경·서버 발행 기준. 입력 나이는 해당 요청 end_frame부터 발행까지이며 음향 단어/브라우저 표시 지연이 아님. 활성 범위는 VAD 소유 구간으로 실제 음소 구간이 아님.",
+    }
+
+
 def summarize(events):
     """같은 구간의 표시 변경만 비교한다. 최종 전사와의 일치는 정답 정확도가 아니다."""
     previous, histories, partials, finals = {}, {}, {}, {}

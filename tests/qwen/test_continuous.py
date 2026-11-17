@@ -1,0 +1,275 @@
+"""제어 가능한 모델·시계로 최신 후보, 완료 알림, 확정 우선순위와 복구를 검사한다."""
+
+import time
+import unittest
+from array import array
+from queue import Queue
+from threading import Condition, RLock
+from unittest.mock import patch
+
+from edge_asr.qwen.realtime.continuous import ContinuousPolicy
+from edge_asr.qwen.realtime.replay import argument_parser
+from edge_asr.qwen.realtime.session import CaptionSession
+from edge_asr.qwen.realtime.stability import content_updates
+from edge_asr.vad_probability import BoundedProbabilityVad
+
+
+class Probability:
+    def reset(self):
+        pass
+
+    def __call__(self, samples):
+        return 1.0 if any(samples) else 0.0
+
+
+class ControlledModel:
+    last_result_metadata = None
+
+    def __init__(self):
+        self.started, self.release = Queue(), Queue()
+
+    def transcribe(self, audio):
+        self.started.put(audio)
+        value = self.release.get(timeout=4)
+        if isinstance(value, Exception):
+            raise value
+        return value
+
+
+class ContinuousTests(unittest.TestCase):
+    def policy(self):
+        now, events = [0.0], []
+        p = ContinuousPolicy(
+            Condition(RLock()), events.append, 9600, 12800, 80000, 3200, clock=lambda: now[0]
+        )
+        return p, now, events
+
+    def session(self):
+        model, events = ControlledModel(), []
+        with patch.object(ContinuousPolicy, "start"):
+            s = CaptionSession(
+                model,
+                BoundedProbabilityVad(Probability()),
+                None,
+                events.append,
+                {"t0_monotonic_ns": time.perf_counter_ns()},
+                partial_mode="continuous",
+                partial_after_s=0.6,
+            )
+        s.continuous.observe({"temperature_mc": 60000, "current_limits": 0})
+
+        def close():
+            for _ in range(20):
+                model.release.put("정리")
+            s.close()
+
+        self.addCleanup(close)
+        return s, model, events
+
+    def feed(self, s, until):
+        while s.position < until:
+            end = min(s.position + 1600, until)
+            s.accept_at(s, array("f", [0.25] * (end - s.position)), s.position, end)
+
+    def wait_results(self, s, n):
+        with s.worker.condition:
+            self.assertTrue(s.worker.condition.wait_for(lambda: len(s.results) >= n, timeout=3))
+
+    def test_unlimited_fresh_candidates_and_one_snapshot_per_execution(self):
+        s, model, events = self.session()
+        for n, end in enumerate((11200, 25600, 40000, 54400), 1):
+            self.feed(s, end)
+            audio = model.started.get(timeout=2)
+            self.assertLessEqual(len(audio.samples), end)
+            model.release.put(f"갱신 {n}")
+            self.wait_results(s, n)
+        self.assertEqual(len([e for e in events if e["type"] == "started"]), 4)
+        self.assertEqual(s.continuous.stats["snapshots"], 4)
+        self.assertGreater(s.continuous.stats["candidate_updates"], 4)
+        self.assertTrue(model.started.empty())
+        self.assertLessEqual(len(s.pipeline.ring.samples), s.pipeline.ring.capacity)
+
+    def test_completion_runs_latest_without_next_input_and_snapshot_is_immutable(self):
+        s, model, events = self.session()
+        self.feed(s, 11200)
+        first = model.started.get(timeout=2)
+        saved = bytes(first.samples)
+        self.feed(s, 48000)
+        self.assertEqual(s.continuous.candidate[2], s.pipeline.fed)
+        self.assertEqual(s.continuous.stats["snapshots"], 1)
+        self.assertTrue(model.started.empty())
+        model.release.put("첫 결과")
+        latest = model.started.get(timeout=2)
+        self.assertEqual(len(latest.samples), s.pipeline.fed)
+        self.assertEqual(bytes(first.samples), saved)
+        model.release.put("최신 결과")
+        self.wait_results(s, 2)
+        self.assertTrue(model.started.empty())
+        self.assertEqual(s.continuous.stats["pending_peak"], 1)
+
+    def test_final_priority_and_next_segment_after_final_then_eof(self):
+        s, model, events = self.session()
+        self.feed(s, 11200)
+        model.started.get(timeout=2)
+        self.feed(s, 96000)
+        model.release.put("이전 부분")
+        final = model.started.get(timeout=2)
+        self.assertEqual(len(final.samples), 80000)
+        model.release.put("확정")
+        following = model.started.get(timeout=2)
+        self.assertEqual(len(following.samples), s.pipeline.fed - 80000)
+        model.release.put("새 부분")
+        self.wait_results(s, 3)
+        model.release.put("다음 확정")
+        self.assertEqual(s.finish_stream(s), "확정 다음 확정")
+        self.assertEqual([r["kind"] for r in s.results], ["partial", "final", "partial", "final"])
+        self.assertTrue(
+            any(
+                e["type"] == "partial_candidate_discarded" and e["reason"] == "final"
+                for e in events
+            )
+        )
+        self.assertFalse(s.worker.thread.is_alive())
+        with self.assertRaisesRegex(RuntimeError, "종료된"):
+            s.worker.submit("partial", 3, 0, 1, array("f", [1]), 1)
+
+    def test_empty_partial_preserves_caption_recovers_only_on_new_audio_and_final_fails(self):
+        s, model, _ = self.session()
+        self.feed(s, 11200)
+        model.started.get(timeout=2)
+        model.release.put("남아야 하는 자막")
+        self.wait_results(s, 1)
+        self.feed(s, 25600)
+        model.started.get(timeout=2)
+        model.release.put("")
+        self.wait_results(s, 2)
+        self.assertEqual(s.text(), "남아야 하는 자막")
+        self.assertEqual(s.results[-1]["failure_kind"], "empty_partial")
+        self.assertFalse(s.results[-1]["displayed"])
+        self.assertTrue(model.started.empty())
+        self.feed(s, 40000)
+        model.started.get(timeout=2)
+        model.release.put("복구된 자막")
+        self.wait_results(s, 3)
+        self.assertEqual(s.text(), "복구된 자막")
+        model.release.put(RuntimeError("실제 final 실패"))
+        self.assertEqual(s.finish_stream(s), "")
+        self.assertEqual(s.results[-1]["status"], "failed")
+        self.assertTrue(s.results[-1]["displayed"])
+
+    def test_same_length_deletion_stale_tokens_and_final_are_revision_safe(self):
+        s, _, events = self.session()
+        base = {
+            "kind": "partial",
+            "segment_id": 0,
+            "start_frame": 0,
+            "end_frame": 16000,
+            "status": "provisional",
+            "started_monotonic_s": time.perf_counter(),
+            "received_monotonic_s": time.perf_counter(),
+            "native_elapsed_s": 0.1,
+        }
+
+        def token(job, index, text):
+            s._event(
+                {**base, "type": "token", "job_id": job, "token_index": index, "hypothesis": text}
+            )
+
+        token(0, 1, "한국")
+        token(0, 2, "한글")
+        token(0, 3, "한")
+        self.assertEqual(s.text(), "한")
+        token(1, 1, "한국어")
+        token(0, 4, "낡은 결과")
+        token(1, 1, "순서가 지난 토큰")
+        self.assertEqual(s.text(), "한국어")
+        now = time.perf_counter()
+        s._event(
+            {
+                **base,
+                "type": "result",
+                "job_id": 2,
+                "kind": "final",
+                "status": "success",
+                "hypothesis": "확정",
+                "submitted_monotonic_s": now,
+                "ended_monotonic_s": now,
+            }
+        )
+        token(3, 1, "확정 뒤 낡은 토큰")
+        self.assertEqual(s.text(), "확정")
+        self.assertEqual(sum(e.get("stale_revision", False) for e in events), 3)
+
+    def test_hysteresis_missing_telemetry_sticky_bits_and_bounded_tail(self):
+        p, now, events = self.policy()
+        with p.condition:
+            p.update(0, 0, 16000, lambda a, b: array("h", [1]) * (b - a))
+            self.assertIsNone(p.choose())
+            p.observe({"temperature_mc": 60000, "current_limits": 0, "history_limits": 15})
+            self.assertIsNotNone(p.choose())
+            p.update(0, 0, 32000, lambda a, b: array("h", [1]) * (b - a))
+            now[0] = 1
+            p.observe({"temperature_mc": 82000, "current_limits": 0})
+            self.assertIsNone(p.choose())
+            now[0] = 3
+            p.observe({"temperature_mc": 79000, "current_limits": 0})
+            self.assertIsNone(p.choose())
+            now[0] = 5
+            p.observe({"temperature_mc": 78000, "current_limits": 0})
+            self.assertIsNotNone(p.choose())
+            self.assertEqual(p.stats["thermal_backoff_s"], 4)
+            p.update(0, 0, 78000, lambda a, b: array("h", [1]) * (b - a))
+            self.assertIsNone(p.choose())
+            self.assertEqual(events[-1]["reason"], "near_final")
+            p.observe({"temperature_mc": None, "current_limits": None})
+            self.assertTrue(p.hot)
+            p.discard("final", 0)
+            self.assertIsNone(p.candidate)
+
+    def test_content_metric_counts_corrections_but_not_repeated_strings(self):
+        events = [
+            {
+                "type": "token",
+                "displayed": True,
+                "segment_id": 0,
+                "hypothesis": text,
+                "published_s": at,
+                "end_frame": 16000,
+            }
+            for at, text in [(1, "한국"), (1.1, "한국"), (1.5, "한글"), (2, "한")]
+        ]
+        result = content_updates(events, [{"owned_start_frame": 0, "owned_end_frame": 48000}])
+        self.assertEqual(result["changed_events"], 3)
+        self.assertEqual(result["interval_s"]["p50"], 0.5)
+
+    def test_thermal_recovery_wakes_latest_candidate_without_new_input(self):
+        s, model, _ = self.session()
+        s.continuous.observe({"temperature_mc": 83000, "current_limits": 8})
+        self.feed(s, 32000)
+        with s.worker.condition:
+            self.assertIsNotNone(s.continuous.candidate)
+            self.assertEqual(s.continuous.stats["snapshots"], 0)
+        s.continuous.observe({"temperature_mc": 77000, "current_limits": 0})
+        self.assertEqual(len(model.started.get(timeout=2).samples), s.pipeline.fed)
+        model.release.put("회복")
+        self.wait_results(s, 1)
+        self.assertTrue(model.started.empty())
+
+    def test_cli_preserves_default_and_rejects_conflicting_policy(self):
+        required = ["--manifest", "input.jsonl", "--output", "new"]
+        p = argument_parser()
+        self.assertEqual(p.parse_args(required).partial_mode, "fixed")
+        self.assertEqual(
+            p.parse_args([*required, "--partial-mode", "continuous"]).partial_mode, "continuous"
+        )
+        for args in (
+            {"adaptive_policy": "budgeted"},
+            {"partial_followup_s": 1},
+            {"partial_tail_margin_s": 2},
+        ):
+            with self.subTest(args=args), self.assertRaises(ValueError):
+                CaptionSession(None, None, 1, None, {}, partial_mode="continuous", **args)
+
+
+if __name__ == "__main__":
+    unittest.main()

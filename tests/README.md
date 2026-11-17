@@ -41,3 +41,5 @@ GGUF의 선택적 C++ 문법 검사에는 `EDGE_ASR_LLAMA_SOURCE`를 고정 upst
 `qwen/test_convolution.py`는 선택 합성곱 자산 해시·preload 누락/혼합·미로드·호출 수락 실패를 검사합니다. 어댑터는 성공과 native 실패 모두 선택 경로 기록을 보존합니다. `test_conv_sgemm.py`의 Host ELF 검사는 1~6청크 모의 shape·기본 전달·호출 중 초기화 거부를 다루며 실제 FP16 동등성은 RP5 별도 실행에서 확인합니다.
 
 원음별 기록 재생은 `test_listener.py`에서 Node.js가 있을 때 `listener_review.mjs`를 실행합니다. 실제 브라우저 없이 오디오 끝과 늦은 확정 시각의 분리, 다음 음원 오디오 차단, 자동 멈춤·다음/되감기·연속/라이브 전환, 경계를 넘는 전사 보존을 검사합니다. Node.js가 없으면 해당 검사만 사유를 표시해 생략하며 실제 화면·음향 출력 검증과 구분합니다.
+
+연속 수정 정책은 `qwen/test_continuous.py`에서 제어 가능한 모델·시계로 3회 이후 갱신, 최신 범위 한 개와 실행 시 snapshot, 완료 알림만으로 재실행, 동일 범위 재시도 방지, final 우선/EOF, 빈 partial 복구, 수정·삭제·낡은 revision 거부, 열 히스테리시스/결측을 검사합니다. `listener_review.mjs`는 연속 문맥 유지와 revision 보호도 검사합니다. 모델 없는 검사이며 RP5 성능·실제 브라우저 출력 검증과 구분합니다.

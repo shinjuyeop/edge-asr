@@ -7,6 +7,10 @@ def compact_event(row):
     keys = (
         "type",
         "job_id",
+        "revision",
+        "stale_revision",
+        "token_index",
+        "failure_kind",
         "kind",
         "segment_id",
         "start_frame",

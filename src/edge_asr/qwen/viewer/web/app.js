@@ -1,4 +1,5 @@
 import {sourceReview, reviewTranscript} from './review.mjs';
+import {continuousCaption} from './captions.mjs';
 const $ = id => document.getElementById(id);
 const sec = value => value == null ? '—' : `${value.toFixed(2)}초`;
 const clock = value => `${Math.floor(Math.max(0,value)/60).toString().padStart(2,'0')}:${Math.floor(Math.max(0,value)%60).toString().padStart(2,'0')}`;
@@ -141,7 +142,7 @@ async function loadAudio(myEpoch){
 }
 function renderConditions(){
   if(!run)return;const m=run.config?.model||{},s=run.settings||{};
-  const fields=[['모델',`${m.family||'준비 중'} · ${m.quantization||'—'}`],['스레드',`${m.num_threads??'—'} / ${m.num_threads_batch??m.num_threads??'—'}`],['고정 KV',m.cache_text_prefix?'사용':'미사용'],['부분 요청',s.partial_mode==='adaptive'?`가변${s.adaptive_policy==='budgeted'?`·첫 요청 보호 / ${s.partial_max_calls}회·${s.partial_budget_s}초 예산`:''} / 첫 ${s.partial_after_s}초 / 새 음성 ${s.partial_min_new_s}초 / 끝 여유 ${s.partial_tail_margin_s}초`:`첫 ${s.partial_after_s??'—'}초 / 다음 ${s.partial_followup_s??s.partial_interval_s??'—'}초 뒤 / 이후 ${s.partial_interval_s??'—'}초`],['짧은 첫 결과 후속',s.protect_short_followup?'4자 미만·1회 비용 예산 예외':'사용 안 함'],['구간',`${s.max_segment_s??'—'}초`],['VAD',`${s.vad_preprocess||'—'} / ${s.vad_threshold??'—'}`],['표시',s.token_stream?'생성 중 토큰':'완성 문자열'],['소스',(run.source_commit||'—').slice(0,8)]];
+  const fields=[['모델',`${m.family||'준비 중'} · ${m.quantization||'—'}`],['스레드',`${m.num_threads??'—'} / ${m.num_threads_batch??m.num_threads??'—'}`],['고정 KV',m.cache_text_prefix?'사용':'미사용'],['부분 요청',s.partial_mode==='continuous'?`연속 수정 / 첫 ${s.partial_after_s}초 / 새 음성 ${s.partial_min_new_s}초 / 열 상태에 따라 일시 대기`:s.partial_mode==='adaptive'?`가변${s.adaptive_policy==='budgeted'?`·첫 요청 보호 / ${s.partial_max_calls}회·${s.partial_budget_s}초 예산`:''} / 첫 ${s.partial_after_s}초 / 새 음성 ${s.partial_min_new_s}초 / 끝 여유 ${s.partial_tail_margin_s}초`:`첫 ${s.partial_after_s??'—'}초 / 다음 ${s.partial_followup_s??s.partial_interval_s??'—'}초 뒤 / 이후 ${s.partial_interval_s??'—'}초`],['짧은 첫 결과 후속',s.protect_short_followup?'4자 미만·1회 비용 예산 예외':'사용 안 함'],['구간',`${s.max_segment_s??'—'}초`],['VAD',`${s.vad_preprocess||'—'} / ${s.vad_threshold??'—'}`],['표시',s.token_stream?'생성 중 토큰':'완성 문자열'],['소스',(run.source_commit||'—').slice(0,8)]];
   if(m.family==='qwen3_gguf'){fields[0][0]='텍스트';fields.splice(1,0,['오디오',m.audio_quantization??'q8_0']);}
   $('conditions').replaceChildren(...fields.flatMap(([k,v])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=k;dd.textContent=v;return[dt,dd];}));
 }
@@ -194,10 +195,11 @@ function renderCaption(at){
     highlightSource();
   }
   if(isMic()){$('referenceText').textContent=run.input.reference||'자유 발화 · 정답 미입력';$('sourceName').textContent=`RP5 · ${run.input.device}`;$('sourceTag').textContent='마이크';}
-  const shown=displayEvents(isLive()&&follow?Infinity:at),e=shown.at(-1);
-  const eventKey=e?`${e.job_id}:${e.type}:${e.published_s}`:'';
+  const shown=displayEvents(isLive()&&follow?Infinity:at);
+  const continuous=run?.settings?.partial_mode==='continuous'?continuousCaption(shown):null,e=continuous?.last||shown.at(-1);
+  const eventKey=e?`${e.job_id}:${e.type}:${e.published_s}:${continuous?.text||''}`:'';
   if(eventKey!==lastEventKey||!e){
-    lastEventKey=eventKey;$('hypothesis').textContent=e?.status==='failed'?'이 구간의 전사에 실패했습니다.':e?.hypothesis||(isLive()?'입력이 시작되면 자막이 표시됩니다.':'재생하면 자막이 표시됩니다.');$('hypothesis').classList.toggle('muted',!e?.hypothesis);
+    lastEventKey=eventKey;$('hypothesis').textContent=continuous?.text||(e?.status==='failed'?'이 구간의 전사에 실패했습니다.':e?.hypothesis||(isLive()?'입력이 시작되면 자막이 표시됩니다.':'재생하면 자막이 표시됩니다.'));$('hypothesis').classList.toggle('muted',!e?.hypothesis);
     $('captionState').textContent=e?e.status==='failed'?'실패':e.type==='token'?'생성 중':e.kind==='final'?'확정':'부분 결과':'대기';
     $('captionState').dataset.state=e?e.status==='failed'?'failed':e.type==='result'&&e.kind==='final'?'final':'partial':'waiting';
     const matches=e?sources.filter(s=>e.start_frame<s.end&&e.end_frame>s.start):[];

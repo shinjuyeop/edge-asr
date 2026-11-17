@@ -4,9 +4,11 @@ import hashlib
 import math
 import time
 from array import array
-from threading import RLock
+from contextlib import nullcontext
+from threading import Condition, RLock
 
 from edge_asr.dataset import pcm_bytes
+from edge_asr.qwen.realtime.continuous import ContinuousPolicy
 from edge_asr.qwen.realtime.stability import replays_prefix
 from edge_asr.qwen.realtime.worker import DecodeWorker
 from edge_asr.segmentation import SegmentPipeline
@@ -48,11 +50,11 @@ class CaptionSession:
             raise ValueError("첫 후속 갱신 간격은 유한한 양수여야 합니다.")
         if type(partials) is not bool or silence_policy not in ("preserve", "skip-zero"):
             raise ValueError("부분 전사 bool·무음 preserve/skip-zero 정책이 필요합니다.")
-        if partial_mode not in ("fixed", "adaptive") or (
-            partial_mode == "adaptive" and partial_followup_s is not None
+        if partial_mode not in ("fixed", "adaptive", "continuous") or (
+            partial_mode != "fixed" and partial_followup_s is not None
         ):
             raise ValueError(
-                "부분 일정은 fixed/adaptive이며 adaptive는 첫 후속 옵션과 함께 쓰지 않습니다."
+                "부분 일정은 fixed/adaptive/continuous이며 가변 일정은 첫 후속 옵션과 함께 쓰지 않습니다."
             )
         if (
             not math.isfinite(partial_min_new_s)
@@ -64,6 +66,8 @@ class CaptionSession:
                 "새 음성 최소량은 1프레임 이상, 끝 여유는 유한한 음수가 아닌 값이어야 합니다."
             )
         self.partial_mode = partial_mode
+        if partial_mode == "continuous" and partial_tail_margin_s > 0.5:
+            raise ValueError("continuous 끝 여유는 최대 0.5초입니다.")
         if adaptive_policy not in ("recent", "budgeted") or (
             adaptive_policy == "budgeted" and partial_mode != "adaptive"
         ):
@@ -118,6 +122,19 @@ class CaptionSession:
         self.skipped, self.finalized = [], set()
         self.partial = None
         self.token_timings = {}
+        self.latest_revision = {}
+        self.continuous = None
+        condition = Condition(self.lock)
+        if partial_mode == "continuous":
+            self.continuous = ContinuousPolicy(
+                condition,
+                emit,
+                self.minimum,
+                self.min_new_frames,
+                round(max_segment_s * 16000),
+                round(partial_tail_margin_s * 16000),
+            )
+            self.scheduler_stats = self.continuous.stats
         self.pipeline = SegmentPipeline(
             vad,
             "identity",
@@ -129,8 +146,34 @@ class CaptionSession:
             vad_policy=vad_preprocess,
         )
         self.worker = DecodeWorker(
-            adapter, self._event, capacity=queue_capacity, token_stream=token_stream
+            adapter,
+            self._event,
+            capacity=queue_capacity,
+            token_stream=token_stream,
+            condition=condition if self.continuous else None,
+            next_partial=self._continuous_next if self.continuous and partials else None,
         )
+        if self.continuous:
+            self.continuous.start()
+
+    def _continuous_next(self):
+        candidate = self.continuous.choose()
+        if candidate:
+            segment, start, end, pcm = candidate
+            self._offer("partial", segment, start, end, pcm)
+
+    def _fresh_revision(self, event):
+        """같은 작업의 토큰 순서와 결과 완료를 포함한다. 낡은 결과도 원시는 보존한다."""
+        segment = event["segment_id"]
+        order = (event["job_id"], event["type"] == "result", event.get("token_index", 0))
+        fresh = segment not in self.finalized and order > self.latest_revision.get(
+            segment, (-1, False, -1)
+        )
+        if fresh:
+            self.latest_revision[segment] = order
+        event["revision"] = event["job_id"]
+        event["stale_revision"] = not fresh
+        return fresh
 
     def _event(self, event):
         if event["type"] == "token":
@@ -144,15 +187,25 @@ class CaptionSession:
                 )
                 event["inference_s"] = event["ended_monotonic_s"] - event["started_monotonic_s"]
                 self.results.append(event)
+                fresh = self._fresh_revision(event) if self.continuous else True
                 event["displayed"] = (
                     event["kind"] == "final" or event["segment_id"] not in self.finalized
-                )
-                if event["kind"] == "final":
+                ) and fresh
+                if self.continuous and event["kind"] == "partial" and event["status"] != "success":
+                    event["displayed"] = False
+                if (
+                    self.continuous
+                    and event["kind"] == "partial"
+                    and self.partial
+                    and self.partial["segment_id"] > event["segment_id"]
+                ):
+                    event["displayed"] = False
+                if event["kind"] == "final" and fresh:
                     self.finalized.add(event["segment_id"])
                     self.finals[event["segment_id"]] = event
                     if self.partial and self.partial["segment_id"] <= event["segment_id"]:
                         self.partial = None
-                elif event["segment_id"] not in self.finalized:
+                elif event["displayed"]:
                     self.partial = event
         self.emit(event)
 
@@ -179,12 +232,23 @@ class CaptionSession:
             )
             timing["token_events"] += 1
             text = event["hypothesis"]
+            fresh = self._fresh_revision(event) if self.continuous else True
             event["prefix_replay_suppressed"] = replays_prefix(self.partial, event)
             event["displayed"] = (
                 bool(text.strip())
-                and len(text) > timing["visible_characters"]
+                and (
+                    text != timing.get("visible_text")
+                    if self.continuous
+                    else len(text) > timing["visible_characters"]
+                )
                 and event["segment_id"] not in self.finalized
                 and not event["prefix_replay_suppressed"]
+                and fresh
+                and not (
+                    self.continuous
+                    and self.partial
+                    and self.partial["segment_id"] > event["segment_id"]
+                )
             )
             if event["displayed"]:
                 if timing["first_visible_published_s"] is None:
@@ -194,6 +258,8 @@ class CaptionSession:
                     )
                 timing["visible_events"] += 1
                 timing["visible_characters"] = len(text)
+                if self.continuous:
+                    timing["visible_text"] = text
                 self.partial = event
 
     def _offer(self, kind, segment_id, start, end, pcm, *, only_if_idle=False):
@@ -320,6 +386,9 @@ class CaptionSession:
     def _progress(self, start, end, read):
         if not self.partials:
             return
+        if self.continuous:
+            self.continuous.update(self.pipeline.segment_id, start, end, read)
+            return
         if self.partial_start != start:
             self.partial_start, self.last_partial_end = start, start
             self.partial_requests = 0
@@ -334,6 +403,8 @@ class CaptionSession:
             self._request_partial(start, end, read, only_if_idle=False)
 
     def _final(self, event, pcm):
+        if self.continuous:
+            self.continuous.discard("final", event["segment_id"])
         self.segments.append(dict(event))
         self._offer(
             "final", event["segment_id"], event["owned_start_frame"], event["owned_end_frame"], pcm
@@ -347,16 +418,20 @@ class CaptionSession:
             raise RuntimeError("capture_gap: 손실 음성을 이어 붙이지 않습니다.")
         if self.worker.error:
             raise RuntimeError(self.worker.error)
-        self.position = end
-        self.pipeline.accept(
-            samples, final=end == self.frames or (self.frames is None and len(samples) < 1600)
-        )
+        with self.lock if self.continuous else nullcontext():
+            self.position = end
+            self.pipeline.accept(
+                samples, final=end == self.frames or (self.frames is None and len(samples) < 1600)
+            )
         return self.text()
 
     def finish_stream(self, stream):
         if stream is not self or (self.frames is not None and self.position != self.frames):
             raise RuntimeError("입력이 완전하지 않습니다.")
-        self.pipeline.finish()
+        with self.lock if self.continuous else nullcontext():
+            self.pipeline.finish()
+            if self.continuous:
+                self.continuous.discard("eof")
         self.worker.finish(self.timeout)
         return self.text(final_only=True)
 
@@ -373,3 +448,5 @@ class CaptionSession:
 
     def close(self):
         self.worker.abort()
+        if self.continuous:
+            self.continuous.close()

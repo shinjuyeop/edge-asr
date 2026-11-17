@@ -17,6 +17,7 @@ from edge_asr.config import load_evaluation_config
 from edge_asr.dataset import load_audio, load_manifest, prepare_track
 from edge_asr.metrics import character_errors, distribution
 from edge_asr.qwen.realtime.session import CaptionSession
+from edge_asr.qwen.realtime.stability import content_updates
 from edge_asr.qwen.realtime.stability import summarize as summarize_stability
 from edge_asr.resources import measure_process
 from edge_asr.runtime import environment, limits_verified
@@ -245,6 +246,7 @@ def run(
         events = read_events(output / "jobs.jsonl")
         info.update(
             caption_stability=summarize_stability(events),
+            content_updates=content_updates(events, session.segments),
             submitted_requests=sum(e["type"] == "submitted" for e in events),
             coalesced_partial_requests=sum(e["type"] == "coalesced" for e in events),
             first_caption_from_track_start_s=min(
@@ -258,6 +260,9 @@ def run(
             ),
             inference_queue_wait_s=distribution([r["queue_wait_s"] for r in session.results]),
             failed_calls=sum(r["status"] != "success" for r in session.results),
+            empty_partial_calls=sum(
+                r.get("failure_kind") == "empty_partial" for r in session.results
+            ),
             final_count=len(finals),
             partial_count=len(partials),
             skipped_silence=session.skipped,
@@ -361,7 +366,9 @@ def argument_parser():
     )
     parser.add_argument("--partial-after-s", type=float, default=2, choices=(0.6, 0.8, 1, 2, 3))
     parser.add_argument("--partial-interval-s", type=float, default=1, choices=(0.5, 1, 2, 4))
-    parser.add_argument("--partial-mode", choices=("fixed", "adaptive"), default="fixed")
+    parser.add_argument(
+        "--partial-mode", choices=("fixed", "adaptive", "continuous"), default="fixed"
+    )
     parser.add_argument("--partial-min-new-s", type=float, default=0.8)
     parser.add_argument("--partial-tail-margin-s", type=float, default=0.2)
     parser.add_argument("--adaptive-policy", choices=("recent", "budgeted"), default="recent")

@@ -91,3 +91,9 @@ Q4 선별은 **Q8 가변 · Q4 대조6개**와 **Q4 가변 · 동일6개**입니
 양쪽 Q4 비교는 **Q8/Q8 가변 · 양쪽 Q4 대조6개**와 **Q4/Q4 가변 · 동일6개**입니다. 프로필은 `results/optimization/opt3/realtime-both-q4-20261113-01/configs/listener-both-{q8,q4}.toml`, 저장 기록은 같은 실행의 `q8-before`/`both-q4`/`q8-after`입니다. 실행 조건에서 텍스트·오디오 양자화를 따로 확인합니다. [실측](../../results/summaries/optimization/realtime-both-q4-20261113.md)은 메모리 이득·첫 표시 개선 없음·최종 오류 증가를 함께 기록합니다.
 
 Q4 스레드 대조의 새 프로필은 **Q4 prefill4T · 동일6개**이고, 저장 기록은 `prefill-q4-20261113-01/realtime2/{control-before,candidate,control-after}`입니다. 기존 Q4/Q4 가변 프로필은3T를 유지합니다. [4T 선별 결과](../../results/summaries/optimization/prefill-q4-20261113.md)는 첫 표시의 작은 개선·동일 CER·CPU 비용 증가를 함께 기록합니다.
+
+## 연속 수정 자막 후보
+
+청취 서버 실행 인자에 `--profile configs/listener_continuous.toml`을 추가하고 **빠른 Q4 · 연속 수정 자막**을 선택합니다. 파일 라이브와 RP5 마이크 모두 기존 실행 경로에 같은 정책을 적용합니다. 최신 활성 구간의 부분 자막을 교체하며 최근 확정 문맥은 남깁니다. 전체 확정 이력과 원음별 자동 정지·다음 음원·연속 기록 재생은 유지합니다.
+
+이 프로필의 코드 연결, 모의 검사, RP5 파일 입력 실측, 실제 마이크·브라우저 확인은 서로 다른 검증 범위입니다. 실제 완료 범위는 현재 상태와 실험 요약을 확인합니다. 저장 기록을 재생하는 동안 모델을 다시 실행하지 않습니다.
