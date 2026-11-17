@@ -1,0 +1,13 @@
+--- a/sgemm.cpp
++++ b/sgemm.cpp
+@@ -579,8 +579,8 @@
+         // compute RM for only need tile with size RM&RM-1
+ #if VECTOR_REGISTERS == 32
+         if (m % 16 == 0 && (m/16 >= params->nth)) {
+-            const int64_t SIZE_N = BLOCK_SIZE<6>(n);
+-            mnpack<4, 6, 4>(m, n, SIZE_N, 12);
++            const int64_t SIZE_N = BLOCK_SIZE<EDGE_CONV_COLUMNS>(n);
++            mnpack<4, EDGE_CONV_COLUMNS, 4>(m, n, SIZE_N, 72 / EDGE_CONV_COLUMNS);
+             return true;
+         }
+         if (m % 8 == 0 ) {

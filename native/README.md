@@ -7,6 +7,7 @@ Python 실행 코드는 [src/edge_asr/qwen/](../src/edge_asr/qwen/), C++ 소스�
 | [gguf/bridge.cpp](gguf/bridge.cpp) | llama.cpp/libmtmd batch 입력 C ABI. 모델 상주·KV 초기화·오디오/prefill·토큰 decode·선택적 토큰 callback |
 | [gguf/build.py](gguf/build.py) | 고정 CPU 엔진에 bridge 연결, `build.json`에 소스/바이너리 해시 기록 |
 | [gguf/kernel_trace.cpp](gguf/kernel_trace.cpp) | 기존 엔진의 선택 ELF 함수 호출 추적. 운영 기본과 별도 |
+| [gguf/conv_sgemm.cpp](gguf/conv_sgemm.cpp), [패치](gguf/conv_sgemm.patch) | 고정 합성곱2/3의 원래/재컴파일6열/4열 비교. 원래 GGML 누적·threadpool 재사용 |
 | [gguf/f16_dot.cpp](gguf/f16_dot.cpp) | FP16×FP32 변환·내적 결합 선택 실험. 64의 배수만 대체하며 나머지는 원래 함수로 전달 |
 | [gguf/q8_gemv.cpp](gguf/q8_gemv.cpp) | Q8 GEMV 누적 분리·prefetch 선택 실험. 원래 함수/계산 대조 |
 | [gguf/quantize.py](gguf/quantize.py) | 고정 BF16→Q6/Q5/Q4 독립 변환·자산 명세. 별도 변환 환경·빌드 사용 |
@@ -103,3 +104,9 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 ## FP16 변환·내적 선택 실험
 
 `gguf/f16_dot.cpp`는 고정 ARM NEON `ggml_vec_dot_f16_f32`의64배수 입력만 대체합니다. `EDGE_ASR_F16_CPU`에 이미 로딩한 원래 CPU 라이브러리 경로를 지정하고 실험 자식에만 `LD_PRELOAD`합니다. `edge_f16_dot_begin(0/1)`으로 전달/결합을 선택하며 기본은0입니다. `edge_f16_dot_calls(replaced,bucket)`의 bucket은9/4320/7680/기타 길이입니다. 제어·집계 조회는 추론이 끝난 유휴 상태에서만 하며 worker64개 초과는 overflow로 검출합니다. 기존 엔진/bridge에 설치하거나 공유 설정에서 자동 활성화하지 않습니다. [사전 검증 조건](../docs/research/qwen_realtime.md#encoder-fp16-변환내적-결합--2026-11-17-사전-조건).
+
+## FP16 합성곱 타일 선택 실험
+
+`conv_sgemm.patch`는 고정 upstream `ggml-cpu/llamafile/sgemm.cpp`의 첫 FP 타일 선택2줄만 바꿉니다. 원본에 적용하지 않고 `patch --fuzz=0 --output <새 사본> <원본> native/gguf/conv_sgemm.patch`로 새 빌드 경로에 생성합니다. 원래 컴파일 옵션으로 `EDGE_CONV_COLUMNS=6/4`·`llamafile_sgemm=edge_conv6/edge_conv4`를 각각 정의해 빌드한 뒤 선택 래퍼와 연결합니다. 원래 누적/축약·동적 작업 분배 코드는 그대로이며 열 타일에 따라 작업 묶음의 타일 수12→18로 조절해 약72열 단위를 유지합니다.
+
+`EDGE_ASR_CONV_CPU`는 이미 로딩한 원래 CPU 경로입니다. 실험 자식에만 preload하고 `edge_conv_begin(0/1/2)`로 원래 함수/재컴파일6열/4열을 선택합니다. FP16×FP16→FP32·3T·m800/208·n480·k4320·연속 행만 대상으로 하며 나머지는 원래 함수로 전달합니다. `edge_conv_result()`는 실제 accepted 호출·작업자별 CPU/wall 시간이며 병렬 wall 합을 단일 추론 지연으로 해석하지 않습니다. 제어/집계 조회는 유휴 상태에서만 합니다. [사전 조건](../docs/research/qwen_realtime.md#fp16-합성곱-타일-선별--2026-11-17-사전-조건).

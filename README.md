@@ -123,6 +123,8 @@ edge-asr/
 ├── models/                              # 로컬 가중치
 ├── native/
 │   ├── gguf/                            # bridge·KV/연산·커널 계측·빌드·양자화
+│   │   ├── conv_sgemm.cpp               # 선택 FP16 합성곱 타일 대조
+│   │   ├── conv_sgemm.patch             # 고정 upstream 사본의 최소 변경
 │   │   ├── f16_dot.cpp                  # 선택 FP16 변환·내적 결합 실험
 │   │   ├── kernel_trace.cpp             # 선택 커널 시간·작업자·PMU 진단
 │   │   ├── perf_counters.h              # 작업자별 Linux PMU 그룹
