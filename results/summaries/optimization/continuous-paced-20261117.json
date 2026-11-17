@@ -1,0 +1,4407 @@
+{
+  "phases": {
+    "pilot-baseline-after": {
+      "source_commit": "6b4e9483eef573fa339a9df31942c0ca8219b130",
+      "source_dirty": false,
+      "manifest_sha": "b9dabb0e87600d49c6b9d07184eee5170497db7dd1f15fe6a52f186583444b80",
+      "complete": true,
+      "drops": 0,
+      "limit_verified": true,
+      "guard": {
+        "exit_code": 1,
+        "operational_valid": false,
+        "rejection": null,
+        "error": null
+      },
+      "partial_calls": 28,
+      "final_calls": 15,
+      "cancelled_calls": 0,
+      "cancelled_native_missing_decode": 0,
+      "failed": [
+        {
+          "kind": "partial",
+          "start_frame": 840640,
+          "end_frame": 850432,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        }
+      ],
+      "total_compute_s": 42.255599491414614,
+      "stages": {
+        "partial": {
+          "native_elapsed_s": {
+            "measured_s": 21.137914037999998,
+            "measured_calls": 28,
+            "total_calls": 28
+          },
+          "preprocess_s": {
+            "measured_s": 0.00957163,
+            "measured_calls": 28,
+            "total_calls": 28
+          },
+          "audio_encode_s": {
+            "measured_s": 8.310850422000001,
+            "measured_calls": 28,
+            "total_calls": 28
+          },
+          "audio_embedding_eval_s": {
+            "measured_s": 3.3804261880000004,
+            "measured_calls": 28,
+            "total_calls": 28
+          },
+          "token_decode_s": {
+            "measured_s": 7.3027497430000015,
+            "measured_calls": 28,
+            "total_calls": 28
+          },
+          "prefix_eval_s": {
+            "measured_s": 0.0,
+            "measured_calls": 28,
+            "total_calls": 28
+          },
+          "suffix_eval_s": {
+            "measured_s": 1.8741362910000003,
+            "measured_calls": 28,
+            "total_calls": 28
+          },
+          "kv_reset_s": {
+            "measured_s": 0.000510429,
+            "measured_calls": 28,
+            "total_calls": 28
+          }
+        },
+        "final": {
+          "native_elapsed_s": {
+            "measured_s": 21.093889097,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "preprocess_s": {
+            "measured_s": 0.007916582,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "audio_encode_s": {
+            "measured_s": 8.538953356999999,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "audio_embedding_eval_s": {
+            "measured_s": 3.4926427920000007,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "token_decode_s": {
+            "measured_s": 7.729948439,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "prefix_eval_s": {
+            "measured_s": 0.0,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "suffix_eval_s": {
+            "measured_s": 1.0524898139999999,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "kv_reset_s": {
+            "measured_s": 0.000333428,
+            "measured_calls": 15,
+            "total_calls": 15
+          }
+        }
+      },
+      "cpu_s": 118.12018955,
+      "elapsed_s": 60.86633872205857,
+      "avg_cpu_cores": 1.940648838586903,
+      "avg_cpu_percent_of4": 48.51622096467258,
+      "rss_mib": 1158.28125,
+      "thermal": {
+        "start_c": 59.5,
+        "max_c": 83.15,
+        "end_c": 82.05,
+        "current_flags": [
+          0,
+          8
+        ],
+        "history_flags": [
+          14
+        ],
+        "arm_clock_hz": {
+          "n": 69,
+          "mean": 2379431846.9565215,
+          "p50": 2400027136,
+          "p95": 2400033792,
+          "max": 2400037120
+        }
+      },
+      "scheduler": {
+        "mode": "adaptive",
+        "policy": "budgeted",
+        "version": "budgeted-headroom-v2",
+        "cost_model": "audio",
+        "protect_short_followup": false,
+        "decisions": {
+          "minimum_audio": 915,
+          "first_offered": 14,
+          "offered": 16,
+          "busy": 176,
+          "call_budget": 239
+        }
+      },
+      "queue_wait_s": {
+        "n": 43,
+        "mean": 0.2562318853871507,
+        "p50": 0.0005132639780640602,
+        "p95": 1.1389024490490556,
+        "max": 1.6484665320022032
+      },
+      "queue_peak": 1,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 370,
+        "normalized_revisions": 16,
+        "retracted_suffix_characters": 63,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 1,
+        "cancelled_results": 0,
+        "suppressed_prefix_tokens": 130,
+        "segments_with_display": 15,
+        "revised_segments": 10,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 22,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 12,
+          "whole_partial_is_final_prefix": 7,
+          "partial_characters": 130,
+          "retained_prefix_characters": 109,
+          "retained_prefix_fraction": 0.8384615384615385
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.7545851750099766,
+          "p50": 0.0,
+          "p95": 3.375914706964977,
+          "max": 3.375914706964977
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "content": {
+        "changed_events": 327,
+        "interval_s": {
+          "n": 326,
+          "mean": 0.18245396871788233,
+          "p50": 0.03369132406078279,
+          "p95": 0.9775348550174385,
+          "max": 4.389621041947976
+        },
+        "active_between_changes_s": {
+          "n": 219,
+          "mean": 0.10066476961721126,
+          "p50": 0.03329782001674175,
+          "p95": 0.8161765950499102,
+          "max": 1.1550619630143046
+        },
+        "active_max_gap_with_edges_s": {
+          "n": 15,
+          "mean": 1.2137957349243267,
+          "p50": 1.1550619630143046,
+          "p95": 1.9806963790114978,
+          "max": 1.9806963790114978
+        },
+        "input_age_at_publish_s": {
+          "n": 327,
+          "mean": 1.3776385991074147,
+          "p50": 1.266328197073193,
+          "p95": 2.353079143018462,
+          "max": 2.557689896095546
+        },
+        "scope": "정확한 문자열 변경·서버 발행 기준. 입력 나이는 해당 요청 end_frame부터 발행까지이며 음향 단어/브라우저 표시 지연이 아님. 활성 범위는 VAD 소유 구간으로 실제 음소 구간이 아님."
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "errors": 59,
+        "cer": 0.21071428571428572,
+        "substitutions": 24,
+        "insertions": 4,
+        "deletions": 31
+      },
+      "metrics": {
+        "first_s": {
+          "n": 6,
+          "mean": 2.0554941493612713,
+          "p50": 1.907355102081783,
+          "p95": 3.4724371080286787,
+          "max": 3.4724371080286787
+        },
+        "first4_s": {
+          "n": 6,
+          "mean": 2.3203828583648427,
+          "p50": 2.069972607998178,
+          "p95": 3.631585727073251,
+          "max": 3.631585727073251
+        },
+        "file_end_s": {
+          "n": 6,
+          "mean": 0.2866267527327868,
+          "p50": 0.09636290607042497,
+          "p95": 1.3919272040482609,
+          "max": 1.3919272040482609
+        },
+        "max_growth_gap_s": {
+          "n": 6,
+          "mean": 2.996381870874514,
+          "p50": 3.4724371080286787,
+          "p95": 3.601919520064257,
+          "max": 3.601919520064257
+        },
+        "observed_first_s": {
+          "n": 6,
+          "mean": 2.0554941493612713,
+          "p50": 1.907355102081783,
+          "p95": 3.4724371080286787,
+          "max": 3.4724371080286787
+        },
+        "observed_first4_s": {
+          "n": 6,
+          "mean": 2.3203828583648427,
+          "p50": 2.069972607998178,
+          "p95": 3.631585727073251,
+          "max": 3.631585727073251
+        },
+        "max_content_gap_s": {
+          "n": 6,
+          "mean": 2.9617543262002677,
+          "p50": 3.4724371080286787,
+          "p95": 3.54554761108011,
+          "max": 3.54554761108011
+        }
+      },
+      "input_duration_s": 60.62375,
+      "final_signature_sha256": "80831324eb947903615af5049af488b0cbfcc15718e34591d51c3a00f9009898",
+      "failure_counts": {
+        "partial:empty_partial": 1
+      },
+      "sources_without_successful_visible": 0,
+      "sources_without_observed_visible": 0,
+      "native_prefix_reset_cancellations": 0,
+      "raw_sha256": {
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-after/admission.jsonl": "f3ac098a38207e59288231a8f675c2b2ff63eda18b533a4187e94f684f166b8e",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-after/console.log": "dad852765a58acfb9ea896865a470313fb2d5e8c4a3518a24a90963461292618",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-after/execution.json": "5ee75de8158239d5df6809fe3dcef8b008f3a260470926657549d0ae99b53ef5",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-after/jobs.jsonl": "da3bc090061ff7233517a3a2549ce6937866d819b9b68e30e4293e2c42b755f9",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-after/stream/backlog.jsonl": "0b74e24c91484d35d97caa9bc0d29d2d232656d129b710d20fc1a135cc53f5b4",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-after/stream/decoder.jsonl": "371e3a6e4a9b1582f84947089d69fb8c02520dc89381a1839ee615080e7242df",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-after/stream/producer.jsonl": "174333521e5e0f4d78b9e39d98ba3bc9683be458c68c5ef0383b2de2303e5c11",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-after/thermal.jsonl": "d2038dbd1b0d5b953449bb159be0385f42eb0df4eb0d7ac1108b1dd2620f435f",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-after/threads.jsonl": "2dda5074d46f6268585dbcd6d671e2901d2041887d93eb2ba2c235940be816c0",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-after/warnings.jsonl": "c6bbf0664f902d2079ee620cff63cd6717ed0c3a20d91afbca20eb2264dc15f5",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-after/worker.json": "772b0a217ccf8b1dc9f7d05e50bfbb3d3857865ce1ef2bed62d912f43959edab"
+      },
+      "models": {
+        "text": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/decoder-q4-20261117-01/head-q4/Qwen3-ASR-0.6B-Q4_0-HEAD-Q4_0.gguf",
+          "sha256": "ca2f6ac6e7e4258206187b9c605b2443fdfa425cae82891da51377103fd4e383"
+        },
+        "audio": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+        },
+        "asset_manifest": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/decoder-q4-20261117-01/head-q4/q4_0-head-q4_0.json",
+          "sha256": "e2a3d54360845f19eeede80dd0bef5ef9e899ac633da39cab4173f71f443d32e"
+        },
+        "runtime_library": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/libedge_asr_gguf.so",
+          "sha256": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a"
+        },
+        "runtime_manifest": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/build.json",
+          "sha256": "20c5b71f14575eddb703591ec0e3694bfdc22b56b0c89827acad2180e04ba810"
+        }
+      },
+      "build_sha256": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a",
+      "replay_start_temperature_c": 77.1,
+      "final_queue_wait_s": {
+        "n": 15,
+        "mean": 0.385996912055028,
+        "p50": 0.15185868903063238,
+        "p95": 1.5861289920285344,
+        "max": 1.5861289920285344
+      },
+      "actual_partial_ranges_unique": true,
+      "quarters": [
+        {
+          "start_s": 0.0,
+          "end_s": 15.1559375,
+          "sources": 3,
+          "file_end_s": {
+            "n": 3,
+            "mean": 0.9557110957332577,
+            "p50": 0.7796653960896656,
+            "p95": 1.3919272040482609,
+            "max": 1.3919272040482609
+          },
+          "max_content_gap_s": {
+            "n": 3,
+            "mean": 2.4078185440351567,
+            "p50": 2.491497793002054,
+            "p95": 3.5240453981095925,
+            "max": 3.5240453981095925
+          },
+          "final_queue_wait_s": {
+            "n": 3,
+            "mean": 0.3800829003254573,
+            "p50": 0.0007122099632397294,
+            "p95": 1.1389024490490556,
+            "max": 1.1389024490490556
+          },
+          "rss_mib": {
+            "n": 150,
+            "mean": 1140.7615625,
+            "p50": 1135.796875,
+            "p95": 1155.78125,
+            "max": 1155.78125
+          }
+        },
+        {
+          "start_s": 15.1559375,
+          "end_s": 30.311875,
+          "sources": 2,
+          "file_end_s": {
+            "n": 2,
+            "mean": -0.6218678384367387,
+            "p50": -1.234901411910542,
+            "p95": -0.008834264962935379,
+            "max": -0.008834264962935379
+          },
+          "max_content_gap_s": {
+            "n": 2,
+            "mean": 3.500761357008013,
+            "p50": 3.4724371080286787,
+            "p95": 3.5290856059873477,
+            "max": 3.5290856059873477
+          },
+          "final_queue_wait_s": {
+            "n": 4,
+            "mean": 0.4324532844766509,
+            "p50": 0.0005383200477808714,
+            "p95": 1.5861289920285344,
+            "max": 1.5861289920285344
+          },
+          "rss_mib": {
+            "n": 151,
+            "mean": 1156.5693294701987,
+            "p50": 1156.78125,
+            "p95": 1156.78125,
+            "max": 1156.78125
+          }
+        },
+        {
+          "start_s": 30.311875,
+          "end_s": 45.4678125,
+          "sources": 0,
+          "file_end_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "max_content_gap_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "final_queue_wait_s": {
+            "n": 4,
+            "mean": 0.450446206756169,
+            "p50": 0.2683103960007429,
+            "p95": 0.9318499779328704,
+            "max": 0.9318499779328704
+          },
+          "rss_mib": {
+            "n": 150,
+            "mean": 1156.78125,
+            "p50": 1156.78125,
+            "p95": 1156.78125,
+            "max": 1156.78125
+          }
+        },
+        {
+          "start_s": 45.4678125,
+          "end_s": 60.62375,
+          "sources": 1,
+          "file_end_s": {
+            "n": 1,
+            "mean": 0.09636290607042497,
+            "p50": null,
+            "p95": null,
+            "max": 0.09636290607042497
+          },
+          "max_content_gap_s": {
+            "n": 1,
+            "mean": 3.54554761108011,
+            "p50": null,
+            "p95": null,
+            "max": 3.54554761108011
+          },
+          "final_queue_wait_s": {
+            "n": 4,
+            "mean": 0.27952675372944213,
+            "p50": 0.15185868903063238,
+            "p95": 0.627357963938266,
+            "max": 0.627357963938266
+          },
+          "rss_mib": {
+            "n": 151,
+            "mean": 1157.2050910596026,
+            "p50": 1157.28125,
+            "p95": 1157.78125,
+            "max": 1157.78125
+          }
+        }
+      ]
+    },
+    "pilot-baseline-before": {
+      "source_commit": "6b4e9483eef573fa339a9df31942c0ca8219b130",
+      "source_dirty": false,
+      "manifest_sha": "b9dabb0e87600d49c6b9d07184eee5170497db7dd1f15fe6a52f186583444b80",
+      "complete": true,
+      "drops": 0,
+      "limit_verified": true,
+      "guard": {
+        "exit_code": 1,
+        "operational_valid": false,
+        "rejection": null,
+        "error": null
+      },
+      "partial_calls": 28,
+      "final_calls": 15,
+      "cancelled_calls": 0,
+      "cancelled_native_missing_decode": 0,
+      "failed": [
+        {
+          "kind": "partial",
+          "start_frame": 840640,
+          "end_frame": 850432,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        }
+      ],
+      "total_compute_s": 41.82477066665888,
+      "stages": {
+        "partial": {
+          "native_elapsed_s": {
+            "measured_s": 20.929982746999997,
+            "measured_calls": 28,
+            "total_calls": 28
+          },
+          "preprocess_s": {
+            "measured_s": 0.009703814,
+            "measured_calls": 28,
+            "total_calls": 28
+          },
+          "audio_encode_s": {
+            "measured_s": 8.26003794,
+            "measured_calls": 28,
+            "total_calls": 28
+          },
+          "audio_embedding_eval_s": {
+            "measured_s": 3.362122319999999,
+            "measured_calls": 28,
+            "total_calls": 28
+          },
+          "token_decode_s": {
+            "measured_s": 7.122366478000001,
+            "measured_calls": 28,
+            "total_calls": 28
+          },
+          "prefix_eval_s": {
+            "measured_s": 0.0,
+            "measured_calls": 28,
+            "total_calls": 28
+          },
+          "suffix_eval_s": {
+            "measured_s": 1.8395550409999997,
+            "measured_calls": 28,
+            "total_calls": 28
+          },
+          "kv_reset_s": {
+            "measured_s": 0.0005592270000000001,
+            "measured_calls": 28,
+            "total_calls": 28
+          }
+        },
+        "final": {
+          "native_elapsed_s": {
+            "measured_s": 20.856280133999995,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "preprocess_s": {
+            "measured_s": 0.008063879,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "audio_encode_s": {
+            "measured_s": 8.500956720000001,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "audio_embedding_eval_s": {
+            "measured_s": 3.479695080000001,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "token_decode_s": {
+            "measured_s": 7.552905305,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "prefix_eval_s": {
+            "measured_s": 0.0,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "suffix_eval_s": {
+            "measured_s": 1.030849396,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "kv_reset_s": {
+            "measured_s": 0.000363965,
+            "measured_calls": 15,
+            "total_calls": 15
+          }
+        }
+      },
+      "cpu_s": 116.555999335,
+      "elapsed_s": 60.86543424008414,
+      "avg_cpu_cores": 1.9149785225427625,
+      "avg_cpu_percent_of4": 47.87446306356906,
+      "rss_mib": 1157.84375,
+      "thermal": {
+        "start_c": 54.0,
+        "max_c": 78.75,
+        "end_c": 76.55,
+        "current_flags": [
+          0
+        ],
+        "history_flags": [
+          14
+        ],
+        "arm_clock_hz": {
+          "n": 69,
+          "mean": 2378288473.0434785,
+          "p50": 2400027136,
+          "p95": 2400037120,
+          "max": 2400037120
+        }
+      },
+      "scheduler": {
+        "mode": "adaptive",
+        "policy": "budgeted",
+        "version": "budgeted-headroom-v2",
+        "cost_model": "audio",
+        "protect_short_followup": false,
+        "decisions": {
+          "minimum_audio": 918,
+          "first_offered": 14,
+          "offered": 16,
+          "busy": 170,
+          "call_budget": 242
+        }
+      },
+      "queue_wait_s": {
+        "n": 43,
+        "mean": 0.2456650237449943,
+        "p50": 0.000501263071782887,
+        "p95": 1.127701991936192,
+        "max": 1.6246360299410298
+      },
+      "queue_peak": 1,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 372,
+        "normalized_revisions": 17,
+        "retracted_suffix_characters": 64,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 1,
+        "cancelled_results": 0,
+        "suppressed_prefix_tokens": 128,
+        "segments_with_display": 15,
+        "revised_segments": 10,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 22,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 12,
+          "whole_partial_is_final_prefix": 6,
+          "partial_characters": 129,
+          "retained_prefix_characters": 107,
+          "retained_prefix_fraction": 0.8294573643410853
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.7526269317271986,
+          "p50": 0.0,
+          "p95": 3.358882221044041,
+          "max": 3.358882221044041
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "content": {
+        "changed_events": 329,
+        "interval_s": {
+          "n": 328,
+          "mean": 0.18133452515545154,
+          "p50": 0.032811168930493295,
+          "p95": 0.986312762950547,
+          "max": 3.597601525951177
+        },
+        "active_between_changes_s": {
+          "n": 218,
+          "mean": 0.10051743910966202,
+          "p50": 0.03251062904018909,
+          "p95": 0.82257734995801,
+          "max": 1.1734741069376469
+        },
+        "active_max_gap_with_edges_s": {
+          "n": 15,
+          "mean": 1.2108900665982942,
+          "p50": 1.1734741069376469,
+          "p95": 1.9745116939675071,
+          "max": 1.9745116939675071
+        },
+        "input_age_at_publish_s": {
+          "n": 329,
+          "mean": 1.364585911400123,
+          "p50": 1.2541075520608587,
+          "p95": 2.34408491399698,
+          "max": 2.5198916139872765
+        },
+        "scope": "정확한 문자열 변경·서버 발행 기준. 입력 나이는 해당 요청 end_frame부터 발행까지이며 음향 단어/브라우저 표시 지연이 아님. 활성 범위는 VAD 소유 구간으로 실제 음소 구간이 아님."
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "errors": 59,
+        "cer": 0.21071428571428572,
+        "substitutions": 24,
+        "insertions": 4,
+        "deletions": 31
+      },
+      "metrics": {
+        "first_s": {
+          "n": 6,
+          "mean": 2.052990115335211,
+          "p50": 1.911162450048141,
+          "p95": 3.4710135049885125,
+          "max": 3.4710135049885125
+        },
+        "first4_s": {
+          "n": 6,
+          "mean": 2.3169002425180127,
+          "p50": 2.061771505039186,
+          "p95": 3.6264636160107315,
+          "max": 3.6264636160107315
+        },
+        "file_end_s": {
+          "n": 6,
+          "mean": 0.24144004818424536,
+          "p50": 0.09478388601448273,
+          "p95": 1.3936310549732296,
+          "max": 1.3936310549732296
+        },
+        "max_growth_gap_s": {
+          "n": 6,
+          "mean": 2.9951220211766967,
+          "p50": 3.4710135049885125,
+          "p95": 3.630526843946427,
+          "max": 3.630526843946427
+        },
+        "observed_first_s": {
+          "n": 6,
+          "mean": 2.052990115335211,
+          "p50": 1.911162450048141,
+          "p95": 3.4710135049885125,
+          "max": 3.4710135049885125
+        },
+        "observed_first4_s": {
+          "n": 6,
+          "mean": 2.3169002425180127,
+          "p50": 2.061771505039186,
+          "p95": 3.6264636160107315,
+          "max": 3.6264636160107315
+        },
+        "max_content_gap_s": {
+          "n": 6,
+          "mean": 2.961264474856822,
+          "p50": 3.4710135049885125,
+          "p95": 3.597601525951177,
+          "max": 3.597601525951177
+        }
+      },
+      "input_duration_s": 60.62375,
+      "final_signature_sha256": "80831324eb947903615af5049af488b0cbfcc15718e34591d51c3a00f9009898",
+      "failure_counts": {
+        "partial:empty_partial": 1
+      },
+      "sources_without_successful_visible": 0,
+      "sources_without_observed_visible": 0,
+      "native_prefix_reset_cancellations": 0,
+      "raw_sha256": {
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-before/admission.jsonl": "15b0e4b085dbaf94b5a999e2557af649649b43e22798c5f3803db1f74f9b1759",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-before/console.log": "202f95afde16c78c9565ff4764e9748746b3f8d42a7789d22cfa3fecad9bdc6a",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-before/execution.json": "1108fb8f61103f54a23ba255bfc0eb532f7da560748ec6da83d7ba1d7d78e6df",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-before/jobs.jsonl": "47d4be18005fee7a56ad8dd14e18e281c55797a3b05d9fe89be267030b1d0ada",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-before/stream/backlog.jsonl": "45e558999d67c6668d639cfeac030ff9a0517f6f7309285dc704fc471125d001",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-before/stream/decoder.jsonl": "aeab80d770e75a9b67b27ac856fb0c3bbb940621d74bceba4ac3aaaeb1e0e767",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-before/stream/producer.jsonl": "572b5ff57dda9a4920e7b956c80fc01d570af604c1b89b8a227361b0ee8cfa44",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-before/thermal.jsonl": "33d91725f87b0f39a0160f6e752ce9728cbbb92f065c2d5a6ce042e3fb264d5b",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-before/threads.jsonl": "e441d4d2c803434c57ebf1ac0e1ad5b7ed082ff096f2a719aafb262d6fdea174",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-before/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-baseline-before/worker.json": "9e322167c728633a290d7288327e9b1feb296e45e157ae437de13d5199ccdec0"
+      },
+      "models": {
+        "text": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/decoder-q4-20261117-01/head-q4/Qwen3-ASR-0.6B-Q4_0-HEAD-Q4_0.gguf",
+          "sha256": "ca2f6ac6e7e4258206187b9c605b2443fdfa425cae82891da51377103fd4e383"
+        },
+        "audio": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+        },
+        "asset_manifest": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/decoder-q4-20261117-01/head-q4/q4_0-head-q4_0.json",
+          "sha256": "e2a3d54360845f19eeede80dd0bef5ef9e899ac633da39cab4173f71f443d32e"
+        },
+        "runtime_library": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/libedge_asr_gguf.so",
+          "sha256": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a"
+        },
+        "runtime_manifest": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/build.json",
+          "sha256": "20c5b71f14575eddb703591ec0e3694bfdc22b56b0c89827acad2180e04ba810"
+        }
+      },
+      "build_sha256": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a",
+      "replay_start_temperature_c": 69.95,
+      "final_queue_wait_s": {
+        "n": 15,
+        "mean": 0.37097158571705224,
+        "p50": 0.11150008300319314,
+        "p95": 1.5843923080246896,
+        "max": 1.5843923080246896
+      },
+      "actual_partial_ranges_unique": true,
+      "quarters": [
+        {
+          "start_s": 0.0,
+          "end_s": 15.1559375,
+          "sources": 3,
+          "file_end_s": {
+            "n": 3,
+            "mean": 0.9496031860119354,
+            "p50": 0.7692975440360605,
+            "p95": 1.3936310549732296,
+            "max": 1.3936310549732296
+          },
+          "max_content_gap_s": {
+            "n": 3,
+            "mean": 2.3958553110715,
+            "p50": 2.4725243460852653,
+            "p95": 3.5076857660897076,
+            "max": 3.5076857660897076
+          },
+          "final_queue_wait_s": {
+            "n": 3,
+            "mean": 0.37632536426341784,
+            "p50": 0.0007144119590520859,
+            "p95": 1.127701991936192,
+            "max": 1.127701991936192
+          },
+          "rss_mib": {
+            "n": 150,
+            "mean": 1140.7170833333332,
+            "p50": 1135.453125,
+            "p95": 1156.34375,
+            "max": 1156.34375
+          }
+        },
+        {
+          "start_s": 15.1559375,
+          "end_s": 30.311875,
+          "sources": 2,
+          "file_end_s": {
+            "n": 2,
+            "mean": -0.7474765774724084,
+            "p50": -1.437694484936074,
+            "p95": -0.05725867000874274,
+            "max": -0.05725867000874274
+          },
+          "max_content_gap_s": {
+            "n": 2,
+            "mean": 3.491209694987628,
+            "p50": 3.4710135049885125,
+            "p95": 3.5114058849867433,
+            "max": 3.5114058849867433
+          },
+          "final_queue_wait_s": {
+            "n": 4,
+            "mean": 0.4242029512533918,
+            "p50": 0.0005309479311108589,
+            "p95": 1.5843923080246896,
+            "max": 1.5843923080246896
+          },
+          "rss_mib": {
+            "n": 151,
+            "mean": 1156.34375,
+            "p50": 1156.34375,
+            "p95": 1156.34375,
+            "max": 1156.34375
+          }
+        },
+        {
+          "start_s": 30.311875,
+          "end_s": 45.4678125,
+          "sources": 0,
+          "file_end_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "max_content_gap_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "final_queue_wait_s": {
+            "n": 4,
+            "mean": 0.4436315667408053,
+            "p50": 0.25941065594088286,
+            "p95": 0.9216615631012246,
+            "max": 0.9216615631012246
+          },
+          "rss_mib": {
+            "n": 151,
+            "mean": 1156.4364652317881,
+            "p50": 1156.34375,
+            "p95": 1156.84375,
+            "max": 1156.84375
+          }
+        },
+        {
+          "start_s": 45.4678125,
+          "end_s": 60.62375,
+          "sources": 1,
+          "file_end_s": {
+            "n": 1,
+            "mean": 0.09478388601448273,
+            "p50": null,
+            "p95": null,
+            "max": 0.09478388601448273
+          },
+          "max_content_gap_s": {
+            "n": 1,
+            "mean": 3.597601525951177,
+            "p50": null,
+            "p95": null,
+            "max": 3.597601525951177
+          },
+          "final_queue_wait_s": {
+            "n": 4,
+            "mean": 0.24106490524718538,
+            "p50": 0.0009701179806143045,
+            "p95": 0.6431767320027575,
+            "max": 0.6431767320027575
+          },
+          "rss_mib": {
+            "n": 150,
+            "mean": 1157.32375,
+            "p50": 1157.34375,
+            "p95": 1157.34375,
+            "max": 1157.34375
+          }
+        }
+      ]
+    },
+    "pilot-paced": {
+      "source_commit": "6b4e9483eef573fa339a9df31942c0ca8219b130",
+      "source_dirty": false,
+      "manifest_sha": "b9dabb0e87600d49c6b9d07184eee5170497db7dd1f15fe6a52f186583444b80",
+      "complete": true,
+      "drops": 0,
+      "limit_verified": true,
+      "guard": {
+        "exit_code": 1,
+        "operational_valid": false,
+        "rejection": null,
+        "error": null
+      },
+      "partial_calls": 22,
+      "final_calls": 15,
+      "cancelled_calls": 3,
+      "cancelled_native_missing_decode": 3,
+      "failed": [
+        {
+          "kind": "partial",
+          "start_frame": 840640,
+          "end_frame": 850944,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        }
+      ],
+      "total_compute_s": 40.74578703730367,
+      "stages": {
+        "partial": {
+          "native_elapsed_s": {
+            "measured_s": 19.606465933,
+            "measured_calls": 22,
+            "total_calls": 22
+          },
+          "preprocess_s": {
+            "measured_s": 0.007550282999999999,
+            "measured_calls": 22,
+            "total_calls": 22
+          },
+          "audio_encode_s": {
+            "measured_s": 8.184099100000001,
+            "measured_calls": 22,
+            "total_calls": 22
+          },
+          "audio_embedding_eval_s": {
+            "measured_s": 3.2218389479999994,
+            "measured_calls": 22,
+            "total_calls": 22
+          },
+          "token_decode_s": {
+            "measured_s": 5.574634966999999,
+            "measured_calls": 19,
+            "total_calls": 22
+          },
+          "prefix_eval_s": {
+            "measured_s": 0.0,
+            "measured_calls": 22,
+            "total_calls": 22
+          },
+          "suffix_eval_s": {
+            "measured_s": 1.482608136,
+            "measured_calls": 22,
+            "total_calls": 22
+          },
+          "kv_reset_s": {
+            "measured_s": 0.0004144480000000001,
+            "measured_calls": 22,
+            "total_calls": 22
+          }
+        },
+        "final": {
+          "native_elapsed_s": {
+            "measured_s": 21.088942684000006,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "preprocess_s": {
+            "measured_s": 0.007568579999999998,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "audio_encode_s": {
+            "measured_s": 8.498916551,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "audio_embedding_eval_s": {
+            "measured_s": 3.461158349,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "token_decode_s": {
+            "measured_s": 7.630746103000001,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "prefix_eval_s": {
+            "measured_s": 0.15937226799999998,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "suffix_eval_s": {
+            "measured_s": 1.0374855379999999,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "kv_reset_s": {
+            "measured_s": 0.020819909,
+            "measured_calls": 15,
+            "total_calls": 15
+          }
+        }
+      },
+      "cpu_s": 113.61817338900002,
+      "elapsed_s": 61.279252900974825,
+      "avg_cpu_cores": 1.8541050683598101,
+      "avg_cpu_percent_of4": 46.35262670899525,
+      "rss_mib": 1158.84375,
+      "thermal": {
+        "start_c": 60.05,
+        "max_c": 80.95,
+        "end_c": 79.85,
+        "current_flags": [
+          0
+        ],
+        "history_flags": [
+          14
+        ],
+        "arm_clock_hz": {
+          "n": 70,
+          "mean": 2385896184.6857142,
+          "p50": 2400023808,
+          "p95": 2400033792,
+          "max": 2400037120
+        }
+      },
+      "scheduler": {
+        "mode": "continuous",
+        "policy": "paced",
+        "version": "paced-completion-v2",
+        "thermal_policy": "pace",
+        "decisions": {
+          "minimum_audio": 54,
+          "offered": 22,
+          "compute_pacing": 116,
+          "near_final": 14
+        },
+        "candidate_updates": 1360,
+        "candidate_replacements": 1323,
+        "snapshots": 22,
+        "snapshot_frames": 664448,
+        "discarded_candidates": 15,
+        "pending_peak": 1,
+        "thermal_backoff_s": 0.0,
+        "thermal_pause_c": 90,
+        "thermal_resume_c": 85,
+        "thermal_pacing_start_c": 82,
+        "thermal_factor_peak": 1.2,
+        "compute_duty_target": 0.7,
+        "first_debt_allowance_s": 0.35,
+        "final_reserve_max_s": 0.8,
+        "accounted_inference_s": 40.74578703730367,
+        "work_debt_peak_s": 1.4204327824991196,
+        "thermal_sample_s": 1.0,
+        "tail_margin_s": 0.2,
+        "deferred_s": {
+          "minimum_audio": 4.422727712779306,
+          "compute_pacing": 9.495022658607922,
+          "near_final": 1.1590512180700898
+        },
+        "cancel_partial_grace_s": 0.35
+      },
+      "queue_wait_s": {
+        "n": 37,
+        "mean": 0.1600268298250346,
+        "p50": 0.00026998401153832674,
+        "p95": 1.5455713029950857,
+        "max": 2.041376759065315
+      },
+      "queue_peak": 1,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 326,
+        "normalized_revisions": 9,
+        "retracted_suffix_characters": 39,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 1,
+        "cancelled_results": 3,
+        "suppressed_prefix_tokens": 136,
+        "segments_with_display": 15,
+        "revised_segments": 5,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 19,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 10,
+          "whole_partial_is_final_prefix": 6,
+          "partial_characters": 126,
+          "retained_prefix_characters": 117,
+          "retained_prefix_fraction": 0.9285714285714286
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.34953540964384694,
+          "p50": 0.0,
+          "p95": 2.4373349730158225,
+          "max": 2.4373349730158225
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "content": {
+        "changed_events": 293,
+        "interval_s": {
+          "n": 292,
+          "mean": 0.20510762540403474,
+          "p50": 0.03360884392168373,
+          "p95": 1.282939280034043,
+          "max": 3.8446147489594296
+        },
+        "active_between_changes_s": {
+          "n": 189,
+          "mean": 0.12904292453331725,
+          "p50": 0.032982229022309184,
+          "p95": 0.9434755539987236,
+          "max": 2.0773257290711626
+        },
+        "active_max_gap_with_edges_s": {
+          "n": 15,
+          "mean": 1.3037796813407296,
+          "p50": 1.2652967589674518,
+          "p95": 2.0773257290711626,
+          "max": 2.0773257290711626
+        },
+        "input_age_at_publish_s": {
+          "n": 293,
+          "mean": 1.358283641115734,
+          "p50": 1.1160110680162916,
+          "p95": 2.725904875938781,
+          "max": 2.933193692965432
+        },
+        "scope": "정확한 문자열 변경·서버 발행 기준. 입력 나이는 해당 요청 end_frame부터 발행까지이며 음향 단어/브라우저 표시 지연이 아님. 활성 범위는 VAD 소유 구간으로 실제 음소 구간이 아님."
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "errors": 59,
+        "cer": 0.21071428571428572,
+        "substitutions": 24,
+        "insertions": 4,
+        "deletions": 31
+      },
+      "metrics": {
+        "first_s": {
+          "n": 6,
+          "mean": 2.508802415017504,
+          "p50": 2.2937167840544133,
+          "p95": 3.4779751150403158,
+          "max": 3.4779751150403158
+        },
+        "first4_s": {
+          "n": 6,
+          "mean": 2.777794228158736,
+          "p50": 2.357156834984198,
+          "p95": 3.634418987995012,
+          "max": 3.634418987995012
+        },
+        "file_end_s": {
+          "n": 6,
+          "mean": 0.44430402281678544,
+          "p50": 0.508431914988904,
+          "p95": 1.3895542020443825,
+          "max": 1.3895542020443825
+        },
+        "max_growth_gap_s": {
+          "n": 6,
+          "mean": 3.1659248740140655,
+          "p50": 3.4779751150403158,
+          "p95": 4.056962300091982,
+          "max": 4.056962300091982
+        },
+        "observed_first_s": {
+          "n": 6,
+          "mean": 2.508802415017504,
+          "p50": 2.2937167840544133,
+          "p95": 3.4779751150403158,
+          "max": 3.4779751150403158
+        },
+        "observed_first4_s": {
+          "n": 6,
+          "mean": 2.777794228158736,
+          "p50": 2.357156834984198,
+          "p95": 3.634418987995012,
+          "max": 3.634418987995012
+        },
+        "max_content_gap_s": {
+          "n": 6,
+          "mean": 2.8455965718487275,
+          "p50": 2.856133623986505,
+          "p95": 3.7248193320119753,
+          "max": 3.7248193320119753
+        }
+      },
+      "input_duration_s": 60.62375,
+      "final_signature_sha256": "80831324eb947903615af5049af488b0cbfcc15718e34591d51c3a00f9009898",
+      "failure_counts": {
+        "partial:empty_partial": 1
+      },
+      "sources_without_successful_visible": 0,
+      "sources_without_observed_visible": 0,
+      "native_prefix_reset_cancellations": 3,
+      "raw_sha256": {
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-paced/admission.jsonl": "f6e1efa26c382ec089a40035a2790a468152fbe556339292d798ef01708b73f4",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-paced/console.log": "e0cf052f89d48e9a938d0f35ebdddf8cc5a3c60bf7ff8d80913ef9b2b043b5f7",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-paced/execution.json": "90da4df9d70d132bc8600e9d20205a38dee5323e7af7d0fda28f766e2d21b056",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-paced/jobs.jsonl": "f6928e21fe4e5525e66d62aedd40d929fa8d4ca68e4698192ab38fc8e4875b99",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-paced/stream/backlog.jsonl": "b4eda3a01c9c0e97050fae543b6190390f4cde00fc5cc744d2cd113a51ee0e09",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-paced/stream/decoder.jsonl": "36858e43ebc35ed2b78850bf9846d636e0b2fe4eb69ff4506ec3b38d21065457",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-paced/stream/producer.jsonl": "dd0bc63eef22ecda2ca9478c22db86eb84812da7791044fd5f0bd51b8d5617a6",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-paced/thermal.jsonl": "7e71d45fc79eeebe1e81cab69e74e9b5ef4e5b3b92c0dc3d543f1d73ee756e92",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-paced/threads.jsonl": "0cf6819f31284d1667b5da636c2135e8ff2afd99d3821308160f76d8e0b8f0de",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-paced/warnings.jsonl": "f4f94e4a5c6744de04a9c313d2b231ed1e783b53f5acad6dbc94adb0aa7ac99b",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-paced/worker.json": "174553e4d6930646933c91640b0b73832285dd55f91b901867360b141b9ff5ab"
+      },
+      "models": {
+        "text": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/decoder-q4-20261117-01/head-q4/Qwen3-ASR-0.6B-Q4_0-HEAD-Q4_0.gguf",
+          "sha256": "ca2f6ac6e7e4258206187b9c605b2443fdfa425cae82891da51377103fd4e383"
+        },
+        "audio": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+        },
+        "asset_manifest": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/decoder-q4-20261117-01/head-q4/q4_0-head-q4_0.json",
+          "sha256": "e2a3d54360845f19eeede80dd0bef5ef9e899ac633da39cab4173f71f443d32e"
+        },
+        "runtime_library": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/libedge_asr_gguf.so",
+          "sha256": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a"
+        },
+        "runtime_manifest": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/build.json",
+          "sha256": "20c5b71f14575eddb703591ec0e3694bfdc22b56b0c89827acad2180e04ba810"
+        }
+      },
+      "build_sha256": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a",
+      "replay_start_temperature_c": 74.9,
+      "final_queue_wait_s": {
+        "n": 15,
+        "mean": 0.3944650135391081,
+        "p50": 0.0018382190028205514,
+        "p95": 2.041376759065315,
+        "max": 2.041376759065315
+      },
+      "actual_partial_ranges_unique": true,
+      "quarters": [
+        {
+          "start_s": 0.0,
+          "end_s": 15.1559375,
+          "sources": 3,
+          "file_end_s": {
+            "n": 3,
+            "mean": 1.2512140733341999,
+            "p50": 1.2338855899935588,
+            "p95": 1.3895542020443825,
+            "max": 1.3895542020443825
+          },
+          "max_content_gap_s": {
+            "n": 3,
+            "mean": 2.3382171200178563,
+            "p50": 2.2937167840544133,
+            "p95": 3.5124016679991037,
+            "max": 3.5124016679991037
+          },
+          "final_queue_wait_s": {
+            "n": 3,
+            "mean": 0.6386886189769333,
+            "p50": 0.3686563349328935,
+            "p95": 1.5455713029950857,
+            "max": 1.5455713029950857
+          },
+          "rss_mib": {
+            "n": 150,
+            "mean": 1141.218125,
+            "p50": 1135.96875,
+            "p95": 1157.34375,
+            "max": 1157.34375
+          }
+        },
+        {
+          "start_s": 15.1559375,
+          "end_s": 30.311875,
+          "sources": 2,
+          "file_end_s": {
+            "n": 2,
+            "mean": -0.7981249990453954,
+            "p50": -1.4274906860524794,
+            "p95": -0.1687593120383113,
+            "max": -0.1687593120383113
+          },
+          "max_content_gap_s": {
+            "n": 2,
+            "mean": 3.1670543695134104,
+            "p50": 2.856133623986505,
+            "p95": 3.4779751150403158,
+            "max": 3.4779751150403158
+          },
+          "final_queue_wait_s": {
+            "n": 4,
+            "mean": 0.6041640547628049,
+            "p50": 0.0004745780024677515,
+            "p95": 2.041376759065315,
+            "max": 2.041376759065315
+          },
+          "rss_mib": {
+            "n": 151,
+            "mean": 1157.549048013245,
+            "p50": 1157.34375,
+            "p95": 1158.34375,
+            "max": 1158.34375
+          }
+        },
+        {
+          "start_s": 30.311875,
+          "end_s": 45.4678125,
+          "sources": 0,
+          "file_end_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "max_content_gap_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "final_queue_wait_s": {
+            "n": 4,
+            "mean": 0.042231405270285904,
+            "p50": 0.0008054330246523023,
+            "p95": 0.16676063905470073,
+            "max": 0.16676063905470073
+          },
+          "rss_mib": {
+            "n": 151,
+            "mean": 1158.34375,
+            "p50": 1158.34375,
+            "p95": 1158.34375,
+            "max": 1158.34375
+          }
+        },
+        {
+          "start_s": 45.4678125,
+          "end_s": 60.62375,
+          "sources": 1,
+          "file_end_s": {
+            "n": 1,
+            "mean": 0.508431914988904,
+            "p50": null,
+            "p95": null,
+            "max": 0.508431914988904
+          },
+          "max_content_gap_s": {
+            "n": 1,
+            "mean": 3.7248193320119753,
+            "p50": null,
+            "p95": null,
+            "max": 3.7248193320119753
+          },
+          "final_queue_wait_s": {
+            "n": 4,
+            "mean": 0.3538318765058648,
+            "p50": 0.0015333270421251655,
+            "p95": 1.0400214329129085,
+            "max": 1.0400214329129085
+          },
+          "rss_mib": {
+            "n": 150,
+            "mean": 1158.34375,
+            "p50": 1158.34375,
+            "p95": 1158.34375,
+            "max": 1158.34375
+          }
+        }
+      ]
+    },
+    "pilot-thermal": {
+      "source_commit": "6b4e9483eef573fa339a9df31942c0ca8219b130",
+      "source_dirty": false,
+      "manifest_sha": "b9dabb0e87600d49c6b9d07184eee5170497db7dd1f15fe6a52f186583444b80",
+      "complete": true,
+      "drops": 0,
+      "limit_verified": true,
+      "guard": {
+        "exit_code": 1,
+        "operational_valid": false,
+        "rejection": null,
+        "error": null
+      },
+      "partial_calls": 33,
+      "final_calls": 15,
+      "cancelled_calls": 8,
+      "cancelled_native_missing_decode": 8,
+      "failed": [
+        {
+          "kind": "partial",
+          "start_frame": 840640,
+          "end_frame": 850944,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        }
+      ],
+      "total_compute_s": 50.87392452545464,
+      "stages": {
+        "partial": {
+          "native_elapsed_s": {
+            "measured_s": 29.150107083,
+            "measured_calls": 33,
+            "total_calls": 33
+          },
+          "preprocess_s": {
+            "measured_s": 0.011971803,
+            "measured_calls": 33,
+            "total_calls": 33
+          },
+          "audio_encode_s": {
+            "measured_s": 13.046823956999999,
+            "measured_calls": 33,
+            "total_calls": 33
+          },
+          "audio_embedding_eval_s": {
+            "measured_s": 5.143002427999999,
+            "measured_calls": 33,
+            "total_calls": 33
+          },
+          "token_decode_s": {
+            "measured_s": 7.478447511999998,
+            "measured_calls": 25,
+            "total_calls": 33
+          },
+          "prefix_eval_s": {
+            "measured_s": 0.0,
+            "measured_calls": 33,
+            "total_calls": 33
+          },
+          "suffix_eval_s": {
+            "measured_s": 2.234806931,
+            "measured_calls": 33,
+            "total_calls": 33
+          },
+          "kv_reset_s": {
+            "measured_s": 0.0006641719999999998,
+            "measured_calls": 33,
+            "total_calls": 33
+          }
+        },
+        "final": {
+          "native_elapsed_s": {
+            "measured_s": 21.634712109,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "preprocess_s": {
+            "measured_s": 0.007441562,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "audio_encode_s": {
+            "measured_s": 8.614302020999999,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "audio_embedding_eval_s": {
+            "measured_s": 3.5320763980000005,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "token_decode_s": {
+            "measured_s": 7.684729492,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "prefix_eval_s": {
+            "measured_s": 0.424231011,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "suffix_eval_s": {
+            "measured_s": 1.069363135,
+            "measured_calls": 15,
+            "total_calls": 15
+          },
+          "kv_reset_s": {
+            "measured_s": 0.054655301,
+            "measured_calls": 15,
+            "total_calls": 15
+          }
+        }
+      },
+      "cpu_s": 142.618881847,
+      "elapsed_s": 60.92075622000266,
+      "avg_cpu_cores": 2.3410556712717345,
+      "avg_cpu_percent_of4": 58.52639178179336,
+      "rss_mib": 1159.03125,
+      "thermal": {
+        "start_c": 57.3,
+        "max_c": 83.15,
+        "end_c": 77.1,
+        "current_flags": [
+          0,
+          8
+        ],
+        "history_flags": [
+          14
+        ],
+        "arm_clock_hz": {
+          "n": 70,
+          "mean": 2377112464.457143,
+          "p50": 2400023808,
+          "p95": 2400033792,
+          "max": 2400037120
+        }
+      },
+      "scheduler": {
+        "mode": "continuous",
+        "policy": "latest",
+        "version": "latest-completion-v1",
+        "thermal_policy": "pace",
+        "decisions": {
+          "minimum_audio": 63,
+          "offered": 33,
+          "near_final": 2
+        },
+        "candidate_updates": 1360,
+        "candidate_replacements": 1312,
+        "snapshots": 33,
+        "snapshot_frames": 1041472,
+        "discarded_candidates": 15,
+        "pending_peak": 1,
+        "thermal_backoff_s": 0.0,
+        "thermal_pause_c": 90,
+        "thermal_resume_c": 85,
+        "thermal_pacing_start_c": 82,
+        "thermal_factor_peak": 1.2266666666666666,
+        "compute_duty_target": null,
+        "first_debt_allowance_s": null,
+        "final_reserve_max_s": 0.2,
+        "accounted_inference_s": 0.0,
+        "work_debt_peak_s": 0.0,
+        "thermal_sample_s": 1.0,
+        "tail_margin_s": 0.2,
+        "deferred_s": {
+          "minimum_audio": 4.92284905386623,
+          "near_final": 0.11650444997940212
+        },
+        "cancel_partial_grace_s": 0.0
+      },
+      "queue_wait_s": {
+        "n": 48,
+        "mean": 0.1568377512982503,
+        "p50": 0.0002270760014653206,
+        "p95": 0.9740241080289707,
+        "max": 1.8947632960043848
+      },
+      "queue_peak": 1,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 354,
+        "normalized_revisions": 16,
+        "retracted_suffix_characters": 56,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 1,
+        "cancelled_results": 8,
+        "suppressed_prefix_tokens": 173,
+        "segments_with_display": 15,
+        "revised_segments": 10,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 25,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 9,
+          "whole_partial_is_final_prefix": 6,
+          "partial_characters": 128,
+          "retained_prefix_characters": 125,
+          "retained_prefix_fraction": 0.9765625
+        },
+        "finals_shorter_than4": 1,
+        "first4_to_final_consistent4_s": {
+          "n": 14,
+          "mean": 0.6004041086416692,
+          "p50": 0.0,
+          "p95": 3.4442473580129445,
+          "max": 3.4442473580129445
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "content": {
+        "changed_events": 315,
+        "interval_s": {
+          "n": 314,
+          "mean": 0.1895789069521751,
+          "p50": 0.033772054011933506,
+          "p95": 1.0973718970781192,
+          "max": 3.4886107619386166
+        },
+        "active_between_changes_s": {
+          "n": 211,
+          "mean": 0.11538750340806771,
+          "p50": 0.033307568985037506,
+          "p95": 0.9694824219914153,
+          "max": 1.3664919500006363
+        },
+        "active_max_gap_with_edges_s": {
+          "n": 15,
+          "mean": 1.2066266875897231,
+          "p50": 1.129148078034632,
+          "p95": 2.4239999999999995,
+          "max": 2.4239999999999995
+        },
+        "input_age_at_publish_s": {
+          "n": 315,
+          "mean": 1.406785446365149,
+          "p50": 1.2534983279192815,
+          "p95": 2.5870452339863403,
+          "max": 3.287133984913119
+        },
+        "scope": "정확한 문자열 변경·서버 발행 기준. 입력 나이는 해당 요청 end_frame부터 발행까지이며 음향 단어/브라우저 표시 지연이 아님. 활성 범위는 VAD 소유 구간으로 실제 음소 구간이 아님."
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 280,
+        "errors": 59,
+        "cer": 0.21071428571428572,
+        "substitutions": 24,
+        "insertions": 4,
+        "deletions": 31
+      },
+      "metrics": {
+        "first_s": {
+          "n": 6,
+          "mean": 2.1684323964778645,
+          "p50": 1.964804777984508,
+          "p95": 3.47330238400027,
+          "max": 3.47330238400027
+        },
+        "first4_s": {
+          "n": 6,
+          "mean": 2.4364459776263683,
+          "p50": 2.1409728470165277,
+          "p95": 3.632831632951273,
+          "max": 3.632831632951273
+        },
+        "file_end_s": {
+          "n": 6,
+          "mean": 0.555580641817301,
+          "p50": 0.6361077769892276,
+          "p95": 2.088904626970179,
+          "max": 2.088904626970179
+        },
+        "max_growth_gap_s": {
+          "n": 6,
+          "mean": 2.669976853974008,
+          "p50": 2.5571193509902805,
+          "p95": 3.47330238400027,
+          "max": 3.47330238400027
+        },
+        "observed_first_s": {
+          "n": 6,
+          "mean": 2.1684323964778645,
+          "p50": 1.964804777984508,
+          "p95": 3.47330238400027,
+          "max": 3.47330238400027
+        },
+        "observed_first4_s": {
+          "n": 6,
+          "mean": 2.4364459776263683,
+          "p50": 2.1409728470165277,
+          "p95": 3.632831632951273,
+          "max": 3.632831632951273
+        },
+        "max_content_gap_s": {
+          "n": 6,
+          "mean": 2.6419811829836104,
+          "p50": 2.5251212730007246,
+          "p95": 3.47330238400027,
+          "max": 3.47330238400027
+        }
+      },
+      "input_duration_s": 60.62375,
+      "final_signature_sha256": "80831324eb947903615af5049af488b0cbfcc15718e34591d51c3a00f9009898",
+      "failure_counts": {
+        "partial:empty_partial": 1
+      },
+      "sources_without_successful_visible": 0,
+      "sources_without_observed_visible": 0,
+      "native_prefix_reset_cancellations": 8,
+      "raw_sha256": {
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-thermal/admission.jsonl": "1f430b126c745ae15f9d8e2dee2751efba1192143eed889f643f99c6f05807c3",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-thermal/console.log": "5bf5c8803a6d91f075e642e16c581f965f385ec91e8cf3ee5073bc297a08d367",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-thermal/execution.json": "888db8ff8c8c17d9fe5a5dd0ff7e5b361f95ee2800e6c0ecfc6cedf8a268d17b",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-thermal/jobs.jsonl": "45ebff4a20c2124168edc16d7f05a67235b1015b2dacf8694cbe02c9a3dbd706",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-thermal/stream/backlog.jsonl": "de55ac61b68eac76db36795f5b740a619d1e8b84d27aac968a8107f678e1d6b3",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-thermal/stream/decoder.jsonl": "98791f17087d77b40348758d4d60029f8e014b6f332728530ad8ffacd050629d",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-thermal/stream/producer.jsonl": "fb23a461985ee8b21e1c462c023f8b9d30d57d9d65f30c3875524d0783e16bb6",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-thermal/thermal.jsonl": "9fae53f2eb689b973e721116138fca0570a841711c8da0cad5e3534c3bfca020",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-thermal/threads.jsonl": "9dee166dc578bab303fa518de7a7c0dc17fb04428227589d486e7f6fd7c02535",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-thermal/warnings.jsonl": "21a481ee8a784db9c461a1cf481fc683c4523f5bc31a1d13ce801b33a9fb0540",
+        "results/optimization/opt3/continuous-paced-20261117-01/pilot-thermal/worker.json": "a1a0cfbdab87f04abdb61b894e99d9fdaef023561ef25572922743303f5144ab"
+      },
+      "models": {
+        "text": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/decoder-q4-20261117-01/head-q4/Qwen3-ASR-0.6B-Q4_0-HEAD-Q4_0.gguf",
+          "sha256": "ca2f6ac6e7e4258206187b9c605b2443fdfa425cae82891da51377103fd4e383"
+        },
+        "audio": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+        },
+        "asset_manifest": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/decoder-q4-20261117-01/head-q4/q4_0-head-q4_0.json",
+          "sha256": "e2a3d54360845f19eeede80dd0bef5ef9e899ac633da39cab4173f71f443d32e"
+        },
+        "runtime_library": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/libedge_asr_gguf.so",
+          "sha256": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a"
+        },
+        "runtime_manifest": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/build.json",
+          "sha256": "20c5b71f14575eddb703591ec0e3694bfdc22b56b0c89827acad2180e04ba810"
+        }
+      },
+      "build_sha256": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a",
+      "replay_start_temperature_c": 74.35,
+      "final_queue_wait_s": {
+        "n": 15,
+        "mean": 0.5014578646126514,
+        "p50": 0.4325767969712615,
+        "p95": 1.8947632960043848,
+        "max": 1.8947632960043848
+      },
+      "actual_partial_ranges_unique": true,
+      "quarters": [
+        {
+          "start_s": 0.0,
+          "end_s": 15.1559375,
+          "sources": 3,
+          "file_end_s": {
+            "n": 3,
+            "mean": 1.3209320839801804,
+            "p50": 1.0988354269713163,
+            "p95": 2.088904626970179,
+            "max": 2.088904626970179
+          },
+          "max_content_gap_s": {
+            "n": 3,
+            "mean": 2.285206587982985,
+            "p50": 2.5251212730007246,
+            "p95": 3.121448080986738,
+            "max": 3.121448080986738
+          },
+          "final_queue_wait_s": {
+            "n": 3,
+            "mean": 0.6199514506928002,
+            "p50": 0.6361691009951755,
+            "p95": 1.2065056100254878,
+            "max": 1.2065056100254878
+          },
+          "rss_mib": {
+            "n": 150,
+            "mean": 1141.1827083333333,
+            "p50": 1135.90625,
+            "p95": 1157.53125,
+            "max": 1157.53125
+          }
+        },
+        {
+          "start_s": 15.1559375,
+          "end_s": 30.311875,
+          "sources": 2,
+          "file_end_s": {
+            "n": 2,
+            "mean": -0.3883759275241765,
+            "p50": -1.4128596320375806,
+            "p95": 0.6361077769892276,
+            "max": 0.6361077769892276
+          },
+          "max_content_gap_s": {
+            "n": 2,
+            "mean": 3.3801415869849727,
+            "p50": 3.2869807899696752,
+            "p95": 3.47330238400027,
+            "max": 3.47330238400027
+          },
+          "final_queue_wait_s": {
+            "n": 4,
+            "mean": 0.9700059725146275,
+            "p50": 0.7735205549979582,
+            "p95": 1.8947632960043848,
+            "max": 1.8947632960043848
+          },
+          "rss_mib": {
+            "n": 151,
+            "mean": 1157.53125,
+            "p50": 1157.53125,
+            "p95": 1157.53125,
+            "max": 1157.53125
+          }
+        },
+        {
+          "start_s": 30.311875,
+          "end_s": 45.4678125,
+          "sources": 0,
+          "file_end_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "max_content_gap_s": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "final_queue_wait_s": {
+            "n": 4,
+            "mean": 0.2763077852432616,
+            "p50": 0.008441939949989319,
+            "p95": 0.6563312840880826,
+            "max": 0.6563312840880826
+          },
+          "rss_mib": {
+            "n": 150,
+            "mean": 1157.6579166666668,
+            "p50": 1157.53125,
+            "p95": 1158.03125,
+            "max": 1158.03125
+          }
+        },
+        {
+          "start_s": 45.4678125,
+          "end_s": 60.62375,
+          "sources": 1,
+          "file_end_s": {
+            "n": 1,
+            "mean": 0.14743945401161795,
+            "p50": null,
+            "p95": null,
+            "max": 0.14743945401161795
+          },
+          "max_content_gap_s": {
+            "n": 1,
+            "mean": 2.2359841599827632,
+            "p50": null,
+            "p95": null,
+            "max": 2.2359841599827632
+          },
+          "final_queue_wait_s": {
+            "n": 4,
+            "mean": 0.16918964651995338,
+            "p50": 0.0016443839995190501,
+            "p95": 0.6653783820802346,
+            "max": 0.6653783820802346
+          },
+          "rss_mib": {
+            "n": 151,
+            "mean": 1158.03125,
+            "p50": 1158.03125,
+            "p95": 1158.03125,
+            "max": 1158.03125
+          }
+        }
+      ]
+    },
+    "stress-baseline": {
+      "source_commit": "6b4e9483eef573fa339a9df31942c0ca8219b130",
+      "source_dirty": false,
+      "manifest_sha": "73e99292b46536541985e57b1cde025666a8be8cd9edb287b8e41d89517d639c",
+      "complete": true,
+      "drops": 0,
+      "limit_verified": true,
+      "guard": {
+        "exit_code": 1,
+        "operational_valid": false,
+        "rejection": null,
+        "error": null
+      },
+      "partial_calls": 524,
+      "final_calls": 299,
+      "cancelled_calls": 0,
+      "cancelled_native_missing_decode": 0,
+      "failed": [
+        {
+          "kind": "partial",
+          "start_frame": 840640,
+          "end_frame": 850432,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 970688,
+          "end_frame": 980480,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "final",
+          "start_frame": 970688,
+          "end_frame": 977216,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": null
+        },
+        {
+          "kind": "partial",
+          "start_frame": 1810880,
+          "end_frame": 1820672,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 1940928,
+          "end_frame": 1950720,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 2781120,
+          "end_frame": 2790912,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 2911168,
+          "end_frame": 2920960,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "final",
+          "start_frame": 2911168,
+          "end_frame": 2916672,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": null
+        },
+        {
+          "kind": "final",
+          "start_frame": 3072064,
+          "end_frame": 3090880,
+          "error": {
+            "type": "ValueError",
+            "message": "GGUF 출력이 완전한 UTF-8이 아닙니다."
+          },
+          "failure_kind": null
+        },
+        {
+          "kind": "partial",
+          "start_frame": 3750848,
+          "end_frame": 3760640,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 4721088,
+          "end_frame": 4730880,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 4850624,
+          "end_frame": 4860416,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 5690816,
+          "end_frame": 5700608,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 5820864,
+          "end_frame": 5830656,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "final",
+          "start_frame": 5820864,
+          "end_frame": 5830464,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": null
+        },
+        {
+          "kind": "partial",
+          "start_frame": 6661056,
+          "end_frame": 6670848,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 6791104,
+          "end_frame": 6800896,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 7630784,
+          "end_frame": 7640576,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 7760832,
+          "end_frame": 7770624,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "final",
+          "start_frame": 8059456,
+          "end_frame": 8060352,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": null
+        },
+        {
+          "kind": "partial",
+          "start_frame": 8601024,
+          "end_frame": 8610816,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 8731072,
+          "end_frame": 8740864,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 9570752,
+          "end_frame": 9580544,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 9700800,
+          "end_frame": 9710592,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "final",
+          "start_frame": 9700800,
+          "end_frame": 9710400,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": null
+        },
+        {
+          "kind": "partial",
+          "start_frame": 10540480,
+          "end_frame": 10550272,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 10671040,
+          "end_frame": 10680832,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 11510720,
+          "end_frame": 11520512,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 11640768,
+          "end_frame": 11650560,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "final",
+          "start_frame": 11640768,
+          "end_frame": 11650368,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": null
+        },
+        {
+          "kind": "final",
+          "start_frame": 11939392,
+          "end_frame": 11940288,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": null
+        },
+        {
+          "kind": "partial",
+          "start_frame": 12480960,
+          "end_frame": 12490752,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 12610496,
+          "end_frame": 12620288,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 13450688,
+          "end_frame": 13460480,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 13580736,
+          "end_frame": 13590528,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 14420416,
+          "end_frame": 14430208,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 14550976,
+          "end_frame": 14560768,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 15391168,
+          "end_frame": 15400960,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 15520704,
+          "end_frame": 15530496,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "final",
+          "start_frame": 15520704,
+          "end_frame": 15530304,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": null
+        },
+        {
+          "kind": "partial",
+          "start_frame": 16360896,
+          "end_frame": 16370688,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 16490944,
+          "end_frame": 16500736,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "final",
+          "start_frame": 16490944,
+          "end_frame": 16497472,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": null
+        },
+        {
+          "kind": "partial",
+          "start_frame": 17330112,
+          "end_frame": 17339904,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 17460672,
+          "end_frame": 17470464,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 18300864,
+          "end_frame": 18310656,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 18430912,
+          "end_frame": 18440704,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 19270592,
+          "end_frame": 19280384,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        }
+      ],
+      "total_compute_s": 839.9056695931358,
+      "stages": {
+        "partial": {
+          "native_elapsed_s": {
+            "measured_s": 406.26766713100045,
+            "measured_calls": 524,
+            "total_calls": 524
+          },
+          "preprocess_s": {
+            "measured_s": 0.18084433499999997,
+            "measured_calls": 524,
+            "total_calls": 524
+          },
+          "audio_encode_s": {
+            "measured_s": 158.03089776300013,
+            "measured_calls": 524,
+            "total_calls": 524
+          },
+          "audio_embedding_eval_s": {
+            "measured_s": 65.58127189599996,
+            "measured_calls": 524,
+            "total_calls": 524
+          },
+          "token_decode_s": {
+            "measured_s": 140.28294150899998,
+            "measured_calls": 524,
+            "total_calls": 524
+          },
+          "prefix_eval_s": {
+            "measured_s": 0.054357495,
+            "measured_calls": 524,
+            "total_calls": 524
+          },
+          "suffix_eval_s": {
+            "measured_s": 36.73030198300001,
+            "measured_calls": 524,
+            "total_calls": 524
+          },
+          "kv_reset_s": {
+            "measured_s": 0.01802256400000001,
+            "measured_calls": 524,
+            "total_calls": 524
+          }
+        },
+        "final": {
+          "native_elapsed_s": {
+            "measured_s": 432.94645997699945,
+            "measured_calls": 299,
+            "total_calls": 299
+          },
+          "preprocess_s": {
+            "measured_s": 0.16620770000000007,
+            "measured_calls": 299,
+            "total_calls": 299
+          },
+          "audio_encode_s": {
+            "measured_s": 174.40594285199995,
+            "measured_calls": 299,
+            "total_calls": 299
+          },
+          "audio_embedding_eval_s": {
+            "measured_s": 72.49085463800004,
+            "measured_calls": 299,
+            "total_calls": 299
+          },
+          "token_decode_s": {
+            "measured_s": 157.87087430899982,
+            "measured_calls": 298,
+            "total_calls": 299
+          },
+          "prefix_eval_s": {
+            "measured_s": 0.0,
+            "measured_calls": 299,
+            "total_calls": 299
+          },
+          "suffix_eval_s": {
+            "measured_s": 22.39619520500002,
+            "measured_calls": 299,
+            "total_calls": 299
+          },
+          "kv_reset_s": {
+            "measured_s": 0.007666757,
+            "measured_calls": 299,
+            "total_calls": 299
+          }
+        }
+      },
+      "cpu_s": 2357.8718214879996,
+      "elapsed_s": 1213.2208115219837,
+      "avg_cpu_cores": 1.9434811858610082,
+      "avg_cpu_percent_of4": 48.58702964652521,
+      "rss_mib": 1260.421875,
+      "thermal": {
+        "start_c": 57.3,
+        "max_c": 85.9,
+        "end_c": 71.6,
+        "current_flags": [
+          0,
+          6,
+          8
+        ],
+        "history_flags": [
+          14
+        ],
+        "arm_clock_hz": {
+          "n": 1235,
+          "mean": 2326467107.34251,
+          "p50": 2400020480,
+          "p95": 2400033792,
+          "max": 2400040192
+        }
+      },
+      "scheduler": {
+        "mode": "adaptive",
+        "policy": "budgeted",
+        "version": "budgeted-headroom-v2",
+        "cost_model": "audio",
+        "protect_short_followup": false,
+        "decisions": {
+          "minimum_audio": 17707,
+          "first_offered": 296,
+          "offered": 294,
+          "busy": 3591,
+          "call_budget": 3731,
+          "cost_budget": 1482
+        }
+      },
+      "queue_wait_s": {
+        "n": 823,
+        "mean": 0.21371953145522773,
+        "p50": 0.000533430022187531,
+        "p95": 1.1172808050177991,
+        "max": 2.5097074129153043
+      },
+      "queue_peak": 2,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 6872,
+        "normalized_revisions": 272,
+        "retracted_suffix_characters": 946,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 48,
+        "cancelled_results": 0,
+        "suppressed_prefix_tokens": 2763,
+        "segments_with_display": 299,
+        "revised_segments": 193,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 437,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 217,
+          "whole_partial_is_final_prefix": 121,
+          "partial_characters": 2457,
+          "retained_prefix_characters": 2050,
+          "retained_prefix_fraction": 0.8343508343508343
+        },
+        "finals_shorter_than4": 10,
+        "first4_to_final_consistent4_s": {
+          "n": 279,
+          "mean": 0.6292224214153571,
+          "p50": 0.0,
+          "p95": 2.908420628053136,
+          "max": 5.551951261004433
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "content": {
+        "changed_events": 6049,
+        "interval_s": {
+          "n": 6048,
+          "mean": 0.20033089752181907,
+          "p50": 0.034862632979638875,
+          "p95": 1.0973839780781418,
+          "max": 4.612946214037947
+        },
+        "active_between_changes_s": {
+          "n": 4090,
+          "mean": 0.097623829881565,
+          "p50": 0.03437211096752435,
+          "p95": 0.7365822789724916,
+          "max": 2.00099863903597
+        },
+        "active_max_gap_with_edges_s": {
+          "n": 299,
+          "mean": 1.2621050722827796,
+          "p50": 1.2095772579777986,
+          "p95": 2.0381704479978,
+          "max": 2.6293373670550864
+        },
+        "input_age_at_publish_s": {
+          "n": 6049,
+          "mean": 1.3791995989490584,
+          "p50": 1.3058339780225197,
+          "p95": 2.3828002549912526,
+          "max": 2.736768439960656
+        },
+        "scope": "정확한 문자열 변경·서버 발행 기준. 입력 나이는 해당 요청 end_frame부터 발행까지이며 음향 단어/브라우저 표시 지연이 아님. 활성 범위는 VAD 소유 구간으로 실제 음소 구간이 아님."
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 5600,
+        "errors": 1201,
+        "cer": 0.21446428571428572,
+        "substitutions": 468,
+        "insertions": 117,
+        "deletions": 616
+      },
+      "metrics": {
+        "first_s": {
+          "n": 120,
+          "mean": 2.150007095804749,
+          "p50": 1.977195207948796,
+          "p95": 3.4628182019758924,
+          "max": 3.523157868972021
+        },
+        "first4_s": {
+          "n": 120,
+          "mean": 2.307624228867974,
+          "p50": 2.086470007943035,
+          "p95": 3.6223846639366855,
+          "max": 4.571965646022022
+        },
+        "file_end_s": {
+          "n": 120,
+          "mean": 0.33308876109623925,
+          "p50": 0.25528955997435787,
+          "p95": 1.4521330940211215,
+          "max": 2.0221432839240947
+        },
+        "max_growth_gap_s": {
+          "n": 120,
+          "mean": 3.1632592002107383,
+          "p50": 3.4816153559414715,
+          "p95": 3.7912565610679394,
+          "max": 4.610362985986285
+        },
+        "observed_first_s": {
+          "n": 120,
+          "mean": 2.150007095804749,
+          "p50": 1.977195207948796,
+          "p95": 3.4628182019758924,
+          "max": 3.523157868972021
+        },
+        "observed_first4_s": {
+          "n": 120,
+          "mean": 2.307624228867974,
+          "p50": 2.086470007943035,
+          "p95": 3.6223846639366855,
+          "max": 4.571965646022022
+        },
+        "max_content_gap_s": {
+          "n": 120,
+          "mean": 3.1111493039031908,
+          "p50": 3.458754291990772,
+          "p95": 3.7571985810138813,
+          "max": 4.5763871560338885
+        }
+      },
+      "input_duration_s": 1212.475,
+      "final_signature_sha256": "f654232151e30da111c00ea707f85cdd303f392c428fb9ed2c9b922e0030d219",
+      "failure_counts": {
+        "partial:empty_partial": 38,
+        "final:ValueError": 10
+      },
+      "sources_without_successful_visible": 0,
+      "sources_without_observed_visible": 0,
+      "native_prefix_reset_cancellations": 0,
+      "raw_sha256": {
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-baseline/admission.jsonl": "898f287dc4c588f0a48c175f70f78261e03bc22809b0c826825466bd313f7aa6",
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-baseline/console.log": "776e456f96a1181c5590eaa0c095255c605f29a66967b9a189a7affa2b16057c",
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-baseline/execution.json": "ff345bde4fa657f1f37535431a75dc53c337e184644ccc5d196c57a5981ed80b",
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-baseline/jobs.jsonl": "7fb893d2ef2e15f8a3533f5c3875267f914b167ce4952ac7c80ac8c8a5deb59d",
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-baseline/stream/backlog.jsonl": "bcd56c1f28ee35a805bc47f9636e448b4824beb018b393d4b40840eafcdce526",
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-baseline/stream/decoder.jsonl": "6306cf1b78cbf9b0df74e63fb969a594ee02eddc000b04305151209ae8cd804e",
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-baseline/stream/producer.jsonl": "d70c0d4816ad70329c2d2a9a0e6d3f63d3475cc787f6d6625e89cc91730f9a69",
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-baseline/thermal.jsonl": "e6e04353d834bdf0dba98a8d361e1385eca7c82d0c579e7a93c1452e57bfaa43",
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-baseline/threads.jsonl": "8b50049c0c991a7296a7ff0afbdebb211d8841dd45b9e3c5bb8ce236f95e9f48",
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-baseline/warnings.jsonl": "a62181e18bfcaea4ad6559286c04a149515a6b3aa5f1c300b7c30a8c723600b5",
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-baseline/worker.json": "4db46af596c91067ee345c1f13647e52d9606dcb53065b1889dc404cd4eb26a4"
+      },
+      "models": {
+        "text": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/decoder-q4-20261117-01/head-q4/Qwen3-ASR-0.6B-Q4_0-HEAD-Q4_0.gguf",
+          "sha256": "ca2f6ac6e7e4258206187b9c605b2443fdfa425cae82891da51377103fd4e383"
+        },
+        "audio": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+        },
+        "asset_manifest": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/decoder-q4-20261117-01/head-q4/q4_0-head-q4_0.json",
+          "sha256": "e2a3d54360845f19eeede80dd0bef5ef9e899ac633da39cab4173f71f443d32e"
+        },
+        "runtime_library": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/libedge_asr_gguf.so",
+          "sha256": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a"
+        },
+        "runtime_manifest": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/build.json",
+          "sha256": "20c5b71f14575eddb703591ec0e3694bfdc22b56b0c89827acad2180e04ba810"
+        }
+      },
+      "build_sha256": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a",
+      "replay_start_temperature_c": 76.0,
+      "final_queue_wait_s": {
+        "n": 299,
+        "mean": 0.3304491967113103,
+        "p50": 0.11374449403956532,
+        "p95": 1.1914887320017442,
+        "max": 2.5097074129153043
+      },
+      "actual_partial_ranges_unique": true,
+      "quarters": [
+        {
+          "start_s": 0.0,
+          "end_s": 303.11875,
+          "sources": 30,
+          "file_end_s": {
+            "n": 30,
+            "mean": 0.3107561232761177,
+            "p50": 0.1875239840243239,
+            "p95": 1.4089467339916153,
+            "max": 2.0221432839240947
+          },
+          "max_content_gap_s": {
+            "n": 30,
+            "mean": 2.9752029631265127,
+            "p50": 3.458754291990772,
+            "p95": 3.609407944022678,
+            "max": 3.680146159022115
+          },
+          "final_queue_wait_s": {
+            "n": 75,
+            "mean": 0.3405793668376282,
+            "p50": 0.13284772296901792,
+            "p95": 1.2019783959258348,
+            "max": 1.5829212190583348
+          },
+          "rss_mib": {
+            "n": 3011,
+            "mean": 1228.577740991365,
+            "p50": 1229.921875,
+            "p95": 1230.921875,
+            "max": 1231.421875
+          }
+        },
+        {
+          "start_s": 303.11875,
+          "end_s": 606.2375,
+          "sources": 30,
+          "file_end_s": {
+            "n": 30,
+            "mean": 0.3067205402889897,
+            "p50": 0.23119269691875388,
+            "p95": 1.563679353017335,
+            "max": 1.8321604300262493
+          },
+          "max_content_gap_s": {
+            "n": 30,
+            "mean": 3.0825583450073073,
+            "p50": 3.4371073260251706,
+            "p95": 3.996556261088699,
+            "max": 4.138036607066169
+          },
+          "final_queue_wait_s": {
+            "n": 75,
+            "mean": 0.34948631533576796,
+            "p50": 0.21541464002802968,
+            "p95": 1.176151265972294,
+            "max": 2.4780188309960067
+          },
+          "rss_mib": {
+            "n": 3011,
+            "mean": 1233.6518650365326,
+            "p50": 1233.421875,
+            "p95": 1235.421875,
+            "max": 1235.421875
+          }
+        },
+        {
+          "start_s": 606.2375,
+          "end_s": 909.3562499999999,
+          "sources": 30,
+          "file_end_s": {
+            "n": 30,
+            "mean": 0.3673035535812384,
+            "p50": 0.2720714709302001,
+            "p95": 1.6154652649955779,
+            "max": 1.8629109000246444
+          },
+          "max_content_gap_s": {
+            "n": 30,
+            "mean": 3.185366376817418,
+            "p50": 3.437403699965216,
+            "p95": 3.7571985810138813,
+            "max": 3.9698555329814553
+          },
+          "final_queue_wait_s": {
+            "n": 75,
+            "mean": 0.3437804307198773,
+            "p50": 0.18812064395751804,
+            "p95": 1.226139253936708,
+            "max": 2.5097074129153043
+          },
+          "rss_mib": {
+            "n": 3011,
+            "mean": 1238.364917178678,
+            "p50": 1238.421875,
+            "p95": 1239.921875,
+            "max": 1239.921875
+          }
+        },
+        {
+          "start_s": 909.3562499999999,
+          "end_s": 1212.475,
+          "sources": 30,
+          "file_end_s": {
+            "n": 30,
+            "mean": 0.34757482723861133,
+            "p50": 0.295937583972659,
+            "p95": 1.3149180439580732,
+            "max": 1.5156577780051066
+          },
+          "max_content_gap_s": {
+            "n": 30,
+            "mean": 3.2014695306615257,
+            "p50": 3.480038115987554,
+            "p95": 4.022891048924066,
+            "max": 4.5763871560338885
+          },
+          "final_queue_wait_s": {
+            "n": 74,
+            "mean": 0.287376369590355,
+            "p50": 0.03228490904439241,
+            "p95": 1.1566297819372267,
+            "max": 1.3071737319696695
+          },
+          "rss_mib": {
+            "n": 3012,
+            "mean": 1242.4615496347942,
+            "p50": 1242.421875,
+            "p95": 1244.421875,
+            "max": 1244.921875
+          }
+        }
+      ]
+    },
+    "stress-paced": {
+      "source_commit": "6b4e9483eef573fa339a9df31942c0ca8219b130",
+      "source_dirty": false,
+      "manifest_sha": "73e99292b46536541985e57b1cde025666a8be8cd9edb287b8e41d89517d639c",
+      "complete": true,
+      "drops": 0,
+      "limit_verified": true,
+      "guard": {
+        "exit_code": 1,
+        "operational_valid": false,
+        "rejection": null,
+        "error": null
+      },
+      "partial_calls": 342,
+      "final_calls": 299,
+      "cancelled_calls": 65,
+      "cancelled_native_missing_decode": 65,
+      "failed": [
+        {
+          "kind": "partial",
+          "start_frame": 840640,
+          "end_frame": 850944,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "final",
+          "start_frame": 970688,
+          "end_frame": 977216,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": null
+        },
+        {
+          "kind": "partial",
+          "start_frame": 1810880,
+          "end_frame": 1820672,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "final",
+          "start_frame": 2911168,
+          "end_frame": 2916672,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": null
+        },
+        {
+          "kind": "final",
+          "start_frame": 3072064,
+          "end_frame": 3090880,
+          "error": {
+            "type": "ValueError",
+            "message": "GGUF 출력이 완전한 UTF-8이 아닙니다."
+          },
+          "failure_kind": null
+        },
+        {
+          "kind": "partial",
+          "start_frame": 3750848,
+          "end_frame": 3761152,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 4721088,
+          "end_frame": 4730880,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 5690816,
+          "end_frame": 5700608,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "final",
+          "start_frame": 5820864,
+          "end_frame": 5830464,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": null
+        },
+        {
+          "kind": "final",
+          "start_frame": 8059456,
+          "end_frame": 8060352,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": null
+        },
+        {
+          "kind": "partial",
+          "start_frame": 8601024,
+          "end_frame": 8610816,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 9570752,
+          "end_frame": 9580544,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "final",
+          "start_frame": 9700800,
+          "end_frame": 9710400,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": null
+        },
+        {
+          "kind": "partial",
+          "start_frame": 10540480,
+          "end_frame": 10550272,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "final",
+          "start_frame": 11640768,
+          "end_frame": 11650368,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": null
+        },
+        {
+          "kind": "final",
+          "start_frame": 11939392,
+          "end_frame": 11940288,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": null
+        },
+        {
+          "kind": "partial",
+          "start_frame": 12480960,
+          "end_frame": 12490752,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 13450688,
+          "end_frame": 13460480,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "partial",
+          "start_frame": 14420416,
+          "end_frame": 14430208,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "final",
+          "start_frame": 15520704,
+          "end_frame": 15530304,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": null
+        },
+        {
+          "kind": "partial",
+          "start_frame": 16360896,
+          "end_frame": 16371200,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        },
+        {
+          "kind": "final",
+          "start_frame": 16490944,
+          "end_frame": 16497472,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": null
+        },
+        {
+          "kind": "partial",
+          "start_frame": 17330112,
+          "end_frame": 17340416,
+          "error": {
+            "type": "ValueError",
+            "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+          },
+          "failure_kind": "empty_partial"
+        }
+      ],
+      "total_compute_s": 760.0323668868514,
+      "stages": {
+        "partial": {
+          "native_elapsed_s": {
+            "measured_s": 320.42516453499985,
+            "measured_calls": 342,
+            "total_calls": 342
+          },
+          "preprocess_s": {
+            "measured_s": 0.13310546800000003,
+            "measured_calls": 342,
+            "total_calls": 342
+          },
+          "audio_encode_s": {
+            "measured_s": 137.34986516000006,
+            "measured_calls": 342,
+            "total_calls": 342
+          },
+          "audio_embedding_eval_s": {
+            "measured_s": 55.05439935000004,
+            "measured_calls": 342,
+            "total_calls": 342
+          },
+          "token_decode_s": {
+            "measured_s": 92.51200579799998,
+            "measured_calls": 277,
+            "total_calls": 342
+          },
+          "prefix_eval_s": {
+            "measured_s": 0.05531547,
+            "measured_calls": 342,
+            "total_calls": 342
+          },
+          "suffix_eval_s": {
+            "measured_s": 23.83489604300002,
+            "measured_calls": 342,
+            "total_calls": 342
+          },
+          "kv_reset_s": {
+            "measured_s": 0.014765141999999998,
+            "measured_calls": 342,
+            "total_calls": 342
+          }
+        },
+        "final": {
+          "native_elapsed_s": {
+            "measured_s": 438.5583764809998,
+            "measured_calls": 299,
+            "total_calls": 299
+          },
+          "preprocess_s": {
+            "measured_s": 0.16232372499999992,
+            "measured_calls": 299,
+            "total_calls": 299
+          },
+          "audio_encode_s": {
+            "measured_s": 174.77760286600002,
+            "measured_calls": 299,
+            "total_calls": 299
+          },
+          "audio_embedding_eval_s": {
+            "measured_s": 73.01980049599999,
+            "measured_calls": 299,
+            "total_calls": 299
+          },
+          "token_decode_s": {
+            "measured_s": 158.05500752800006,
+            "measured_calls": 298,
+            "total_calls": 299
+          },
+          "prefix_eval_s": {
+            "measured_s": 3.5748223749999997,
+            "measured_calls": 299,
+            "total_calls": 299
+          },
+          "suffix_eval_s": {
+            "measured_s": 22.099614736000007,
+            "measured_calls": 299,
+            "total_calls": 299
+          },
+          "kv_reset_s": {
+            "measured_s": 0.46669831800000006,
+            "measured_calls": 299,
+            "total_calls": 299
+          }
+        }
+      },
+      "cpu_s": 2138.789017907,
+      "elapsed_s": 1213.5417394579854,
+      "avg_cpu_cores": 1.7624354798560664,
+      "avg_cpu_percent_of4": 44.06088699640166,
+      "rss_mib": 1256.09375,
+      "thermal": {
+        "start_c": 59.5,
+        "max_c": 85.9,
+        "end_c": 73.25,
+        "current_flags": [
+          0,
+          6,
+          8
+        ],
+        "history_flags": [
+          14
+        ],
+        "arm_clock_hz": {
+          "n": 1237,
+          "mean": 2354328952.446241,
+          "p50": 2400023808,
+          "p95": 2400033792,
+          "max": 2400040192
+        }
+      },
+      "scheduler": {
+        "mode": "continuous",
+        "policy": "paced",
+        "version": "paced-completion-v2",
+        "thermal_policy": "pace",
+        "decisions": {
+          "minimum_audio": 823,
+          "offered": 342,
+          "compute_pacing": 2998,
+          "near_final": 363
+        },
+        "candidate_updates": 27101,
+        "candidate_replacements": 26463,
+        "snapshots": 342,
+        "snapshot_frames": 10845056,
+        "discarded_candidates": 296,
+        "pending_peak": 1,
+        "thermal_backoff_s": 0.0,
+        "thermal_pause_c": 90,
+        "thermal_resume_c": 85,
+        "thermal_pacing_start_c": 82,
+        "thermal_factor_peak": 1.4,
+        "compute_duty_target": 0.7,
+        "first_debt_allowance_s": 0.35,
+        "final_reserve_max_s": 0.8,
+        "accounted_inference_s": 760.0323668868514,
+        "work_debt_peak_s": 2.465613497448182,
+        "thermal_sample_s": 1.0,
+        "tail_margin_s": 0.2,
+        "deferred_s": {
+          "minimum_audio": 68.89437465777155,
+          "compute_pacing": 251.90267100383062,
+          "near_final": 32.05832816741895
+        },
+        "cancel_partial_grace_s": 0.35
+      },
+      "queue_wait_s": {
+        "n": 641,
+        "mean": 0.15050612335393349,
+        "p50": 0.0003077989676967263,
+        "p95": 1.1697803570423275,
+        "max": 2.54698195704259
+      },
+      "queue_peak": 1,
+      "stability": {
+        "normalization": "ko_cer_v1",
+        "displayed_updates": 6148,
+        "normalized_revisions": 136,
+        "retracted_suffix_characters": 742,
+        "prefix_replay_revisions": 0,
+        "prefix_replay_retracted_characters": 0,
+        "within_call_revisions": 0,
+        "failed_results": 23,
+        "cancelled_results": 65,
+        "suppressed_prefix_tokens": 2037,
+        "segments_with_display": 299,
+        "revised_segments": 98,
+        "prefix_replay_segments": 0,
+        "suppressed_prefix_jobs": 261,
+        "latest_completed_partial_vs_final": {
+          "paired_segments": 151,
+          "whole_partial_is_final_prefix": 87,
+          "partial_characters": 2113,
+          "retained_prefix_characters": 1682,
+          "retained_prefix_fraction": 0.7960246095598675
+        },
+        "finals_shorter_than4": 10,
+        "first4_to_final_consistent4_s": {
+          "n": 279,
+          "mean": 0.3596450243605047,
+          "p50": 0.0,
+          "p95": 2.1598800698993728,
+          "max": 5.353851106949151
+        },
+        "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+      },
+      "content": {
+        "changed_events": 5585,
+        "interval_s": {
+          "n": 5584,
+          "mean": 0.21703285905713082,
+          "p50": 0.03466028196271509,
+          "p95": 1.5771966620814055,
+          "max": 4.552972070989199
+        },
+        "active_between_changes_s": {
+          "n": 3603,
+          "mean": 0.11177338519383195,
+          "p50": 0.03414501703809947,
+          "p95": 0.6054781199200079,
+          "max": 3.4958320080768317
+        },
+        "active_max_gap_with_edges_s": {
+          "n": 299,
+          "mean": 1.5062071194921882,
+          "p50": 1.3571860260562971,
+          "p95": 2.5626254460624978,
+          "max": 3.4958320080768317
+        },
+        "input_age_at_publish_s": {
+          "n": 5585,
+          "mean": 1.5034145834918862,
+          "p50": 1.3487809429848596,
+          "p95": 2.733224261966541,
+          "max": 3.8648162970049214
+        },
+        "scope": "정확한 문자열 변경·서버 발행 기준. 입력 나이는 해당 요청 end_frame부터 발행까지이며 음향 단어/브라우저 표시 지연이 아님. 활성 범위는 VAD 소유 구간으로 실제 음소 구간이 아님."
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 5600,
+        "errors": 1201,
+        "cer": 0.21446428571428572,
+        "substitutions": 468,
+        "insertions": 117,
+        "deletions": 616
+      },
+      "metrics": {
+        "first_s": {
+          "n": 120,
+          "mean": 2.8463409897869765,
+          "p50": 2.9518884469662225,
+          "p95": 4.325183960941615,
+          "max": 5.816896490948295
+        },
+        "first4_s": {
+          "n": 120,
+          "mean": 3.202535763300296,
+          "p50": 3.1752202599748216,
+          "p95": 5.394571574004431,
+          "max": 5.816896490948295
+        },
+        "file_end_s": {
+          "n": 120,
+          "mean": 0.47937183189462046,
+          "p50": 0.698132726915162,
+          "p95": 1.8780872810091296,
+          "max": 2.2515476189153105
+        },
+        "max_growth_gap_s": {
+          "n": 120,
+          "mean": 3.4604840695202213,
+          "p50": 3.4484562249854207,
+          "p95": 4.298325345036574,
+          "max": 5.355600916926733
+        },
+        "observed_first_s": {
+          "n": 120,
+          "mean": 2.817880944612592,
+          "p50": 2.9518884469662225,
+          "p95": 4.219365084955456,
+          "max": 5.457669472950556
+        },
+        "observed_first4_s": {
+          "n": 120,
+          "mean": 3.1537074119937603,
+          "p50": 3.1752202599748216,
+          "p95": 4.425917369995261,
+          "max": 5.569085415964992
+        },
+        "max_content_gap_s": {
+          "n": 120,
+          "mean": 3.3393345525649796,
+          "p50": 3.421746942973698,
+          "p95": 4.2000000000000455,
+          "max": 5.355600916926733
+        }
+      },
+      "input_duration_s": 1212.475,
+      "final_signature_sha256": "f654232151e30da111c00ea707f85cdd303f392c428fb9ed2c9b922e0030d219",
+      "failure_counts": {
+        "partial:empty_partial": 13,
+        "final:ValueError": 10
+      },
+      "sources_without_successful_visible": 0,
+      "sources_without_observed_visible": 0,
+      "native_prefix_reset_cancellations": 65,
+      "raw_sha256": {
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-paced/admission.jsonl": "e1b8c24cec8d991c2d981abf61fcb85fbc0c62aa03841544c38c05c8142d2231",
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-paced/console.log": "9afae79a01cf3ce45d6e2da544ff86be2af95e78c392530747bb7c9c30bfc59d",
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-paced/execution.json": "5f683e452fe0dce67045030afa4451be08fb073c7db32c56a456ae9936e13350",
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-paced/jobs.jsonl": "48bc0463c109bd404da6ac6abec98b58e6318804b841b1c10be69544e5fc1503",
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-paced/stream/backlog.jsonl": "e65df12cc7711e0defae5843d9e234bb5f151edc5b57ddea6a85786049e01323",
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-paced/stream/decoder.jsonl": "76d39215f8fbfe241d9a1a0ea0d59a9dcb0e7ae6b3e0204317cb106753938111",
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-paced/stream/producer.jsonl": "0d627b908535e8ab4382008de768a23e2c3eb4ac84eb4323d23d7e1e106232be",
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-paced/thermal.jsonl": "ca6c283e93cdf35e24b219951aca5504257aa041def39c18755c0dd96fe546ec",
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-paced/threads.jsonl": "8010399abaec373c660a5c408943672ce0a5d6f9b3ec19dcaccbab133595e0aa",
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-paced/warnings.jsonl": "f339c6afd93d0a0a09f8a792a7005dfc34a83e57d357b0c33593bba501663b83",
+        "results/optimization/opt3/continuous-paced-20261117-01/stress-paced/worker.json": "56796b5acc35a5207fb67c6a61db47de2a9b06ef3607fcc0f9cee168fe8d1400"
+      },
+      "models": {
+        "text": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/decoder-q4-20261117-01/head-q4/Qwen3-ASR-0.6B-Q4_0-HEAD-Q4_0.gguf",
+          "sha256": "ca2f6ac6e7e4258206187b9c605b2443fdfa425cae82891da51377103fd4e383"
+        },
+        "audio": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+          "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+        },
+        "asset_manifest": {
+          "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/decoder-q4-20261117-01/head-q4/q4_0-head-q4_0.json",
+          "sha256": "e2a3d54360845f19eeede80dd0bef5ef9e899ac633da39cab4173f71f443d32e"
+        },
+        "runtime_library": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/libedge_asr_gguf.so",
+          "sha256": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a"
+        },
+        "runtime_manifest": {
+          "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/build.json",
+          "sha256": "20c5b71f14575eddb703591ec0e3694bfdc22b56b0c89827acad2180e04ba810"
+        }
+      },
+      "build_sha256": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a",
+      "replay_start_temperature_c": 77.65,
+      "final_queue_wait_s": {
+        "n": 299,
+        "mean": 0.3224292565074852,
+        "p50": 0.0021633210126310587,
+        "p95": 1.311755224945955,
+        "max": 2.54698195704259
+      },
+      "actual_partial_ranges_unique": true,
+      "quarters": [
+        {
+          "start_s": 0.0,
+          "end_s": 303.11875,
+          "sources": 30,
+          "file_end_s": {
+            "n": 30,
+            "mean": 0.46141981959870776,
+            "p50": 0.6781829929351773,
+            "p95": 2.0026743459235945,
+            "max": 2.0338709349837103
+          },
+          "max_content_gap_s": {
+            "n": 30,
+            "mean": 3.116887326147997,
+            "p50": 3.339989788914096,
+            "p95": 3.896443549077958,
+            "max": 4.219365084955456
+          },
+          "final_queue_wait_s": {
+            "n": 75,
+            "mean": 0.345156343759348,
+            "p50": 0.0023119059624150395,
+            "p95": 1.311755224945955,
+            "max": 2.097186045954004
+          },
+          "rss_mib": {
+            "n": 3012,
+            "mean": 1228.8649568393093,
+            "p50": 1230.125,
+            "p95": 1231.125,
+            "max": 1231.125
+          }
+        },
+        {
+          "start_s": 303.11875,
+          "end_s": 606.2375,
+          "sources": 30,
+          "file_end_s": {
+            "n": 30,
+            "mean": 0.4736410496568605,
+            "p50": 0.6915659150015472,
+            "p95": 1.9631935939285654,
+            "max": 2.2515476189153105
+          },
+          "max_content_gap_s": {
+            "n": 30,
+            "mean": 3.4984198474563946,
+            "p50": 3.4641679850127503,
+            "p95": 4.343764507011485,
+            "max": 5.355600916926733
+          },
+          "final_queue_wait_s": {
+            "n": 75,
+            "mean": 0.33053253711356473,
+            "p50": 0.0021633210126310587,
+            "p95": 1.4204111560247838,
+            "max": 2.54698195704259
+          },
+          "rss_mib": {
+            "n": 3013,
+            "mean": 1233.858488217723,
+            "p50": 1234.125,
+            "p95": 1236.125,
+            "max": 1237.125
+          }
+        },
+        {
+          "start_s": 606.2375,
+          "end_s": 909.3562499999999,
+          "sources": 30,
+          "file_end_s": {
+            "n": 30,
+            "mean": 0.5211271618266285,
+            "p50": 0.7104748589424617,
+            "p95": 1.8780872810091296,
+            "max": 1.920061823911965
+          },
+          "max_content_gap_s": {
+            "n": 30,
+            "mean": 3.461482590963264,
+            "p50": 3.461514957989607,
+            "p95": 4.177788627950463,
+            "max": 4.2000000000000455
+          },
+          "final_queue_wait_s": {
+            "n": 75,
+            "mean": 0.32356266926042737,
+            "p50": 0.0019902329659089446,
+            "p95": 1.2264475770061836,
+            "max": 2.523154178983532
+          },
+          "rss_mib": {
+            "n": 3013,
+            "mean": 1238.3173332227016,
+            "p50": 1238.125,
+            "p95": 1239.625,
+            "max": 1239.625
+          }
+        },
+        {
+          "start_s": 909.3562499999999,
+          "end_s": 1212.475,
+          "sources": 30,
+          "file_end_s": {
+            "n": 30,
+            "mean": 0.46129929649628515,
+            "p50": 0.628483896995931,
+            "p95": 1.733844516938575,
+            "max": 1.7573458479205328
+          },
+          "max_content_gap_s": {
+            "n": 30,
+            "mean": 3.2805484456922613,
+            "p50": 3.2863597969990224,
+            "p95": 4.26879977993849,
+            "max": 4.593832645012981
+          },
+          "final_queue_wait_s": {
+            "n": 74,
+            "mean": 0.2900335329153726,
+            "p50": 0.002360551035962999,
+            "p95": 1.2876236379379407,
+            "max": 1.6743547280784696
+          },
+          "rss_mib": {
+            "n": 3012,
+            "mean": 1242.074203187251,
+            "p50": 1242.625,
+            "p95": 1243.625,
+            "max": 1244.125
+          }
+        }
+      ]
+    }
+  },
+  "historical_continuous_stress": {
+    "source_commit": "c89e28e8496929bd52c7bfcac6cf2f7c21f5efaa",
+    "source_dirty": false,
+    "manifest_sha": "73e99292b46536541985e57b1cde025666a8be8cd9edb287b8e41d89517d639c",
+    "complete": true,
+    "drops": 0,
+    "limit_verified": true,
+    "guard": {
+      "exit_code": 1,
+      "operational_valid": false,
+      "rejection": null,
+      "error": null
+    },
+    "partial_calls": 392,
+    "final_calls": 299,
+    "cancelled_calls": 123,
+    "cancelled_native_missing_decode": 123,
+    "failed": [
+      {
+        "kind": "partial",
+        "start_frame": 840640,
+        "end_frame": 850944,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": "empty_partial"
+      },
+      {
+        "kind": "final",
+        "start_frame": 970688,
+        "end_frame": 977216,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": null
+      },
+      {
+        "kind": "partial",
+        "start_frame": 1810880,
+        "end_frame": 1820672,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": "empty_partial"
+      },
+      {
+        "kind": "final",
+        "start_frame": 2911168,
+        "end_frame": 2916672,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": null
+      },
+      {
+        "kind": "final",
+        "start_frame": 3072064,
+        "end_frame": 3090880,
+        "error": {
+          "type": "ValueError",
+          "message": "GGUF 출력이 완전한 UTF-8이 아닙니다."
+        },
+        "failure_kind": null
+      },
+      {
+        "kind": "partial",
+        "start_frame": 3750848,
+        "end_frame": 3761152,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": "empty_partial"
+      },
+      {
+        "kind": "partial",
+        "start_frame": 4721088,
+        "end_frame": 4730880,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": "empty_partial"
+      },
+      {
+        "kind": "final",
+        "start_frame": 5820864,
+        "end_frame": 5830464,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": null
+      },
+      {
+        "kind": "final",
+        "start_frame": 8059456,
+        "end_frame": 8060352,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": null
+      },
+      {
+        "kind": "partial",
+        "start_frame": 8601024,
+        "end_frame": 8610816,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": "empty_partial"
+      },
+      {
+        "kind": "partial",
+        "start_frame": 9570752,
+        "end_frame": 9580544,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": "empty_partial"
+      },
+      {
+        "kind": "final",
+        "start_frame": 9700800,
+        "end_frame": 9710400,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": null
+      },
+      {
+        "kind": "partial",
+        "start_frame": 10540480,
+        "end_frame": 10550272,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": "empty_partial"
+      },
+      {
+        "kind": "final",
+        "start_frame": 11640768,
+        "end_frame": 11650368,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": null
+      },
+      {
+        "kind": "final",
+        "start_frame": 11939392,
+        "end_frame": 11940288,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": null
+      },
+      {
+        "kind": "partial",
+        "start_frame": 12480960,
+        "end_frame": 12490752,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": "empty_partial"
+      },
+      {
+        "kind": "partial",
+        "start_frame": 13450688,
+        "end_frame": 13460480,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": "empty_partial"
+      },
+      {
+        "kind": "partial",
+        "start_frame": 14420416,
+        "end_frame": 14430208,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": "empty_partial"
+      },
+      {
+        "kind": "final",
+        "start_frame": 15520704,
+        "end_frame": 15530304,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": null
+      },
+      {
+        "kind": "partial",
+        "start_frame": 16360896,
+        "end_frame": 16371200,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": "empty_partial"
+      },
+      {
+        "kind": "final",
+        "start_frame": 16490944,
+        "end_frame": 16497472,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": null
+      },
+      {
+        "kind": "partial",
+        "start_frame": 17330112,
+        "end_frame": 17340416,
+        "error": {
+          "type": "ValueError",
+          "message": "음성 구간에서 비어 있지 않은 문자열이 필요합니다."
+        },
+        "failure_kind": "empty_partial"
+      }
+    ],
+    "total_compute_s": 845.2881999056553,
+    "stages": {
+      "partial": {
+        "native_elapsed_s": {
+          "measured_s": 382.9644169340001,
+          "measured_calls": 392,
+          "total_calls": 392
+        },
+        "preprocess_s": {
+          "measured_s": 0.15599604000000009,
+          "measured_calls": 392,
+          "total_calls": 392
+        },
+        "audio_encode_s": {
+          "measured_s": 177.77101531600013,
+          "measured_calls": 392,
+          "total_calls": 392
+        },
+        "audio_embedding_eval_s": {
+          "measured_s": 72.72664489399996,
+          "measured_calls": 392,
+          "total_calls": 392
+        },
+        "token_decode_s": {
+          "measured_s": 90.83976755899997,
+          "measured_calls": 269,
+          "total_calls": 392
+        },
+        "prefix_eval_s": {
+          "measured_s": 0.082999742,
+          "measured_calls": 392,
+          "total_calls": 392
+        },
+        "suffix_eval_s": {
+          "measured_s": 28.500822575000004,
+          "measured_calls": 392,
+          "total_calls": 392
+        },
+        "kv_reset_s": {
+          "measured_s": 0.015262534999999989,
+          "measured_calls": 392,
+          "total_calls": 392
+        }
+      },
+      "final": {
+        "native_elapsed_s": {
+          "measured_s": 460.92362915099994,
+          "measured_calls": 299,
+          "total_calls": 299
+        },
+        "preprocess_s": {
+          "measured_s": 0.15657322199999993,
+          "measured_calls": 299,
+          "total_calls": 299
+        },
+        "audio_encode_s": {
+          "measured_s": 184.98901631899994,
+          "measured_calls": 299,
+          "total_calls": 299
+        },
+        "audio_embedding_eval_s": {
+          "measured_s": 76.61007081799998,
+          "measured_calls": 299,
+          "total_calls": 299
+        },
+        "token_decode_s": {
+          "measured_s": 162.01356284799994,
+          "measured_calls": 298,
+          "total_calls": 299
+        },
+        "prefix_eval_s": {
+          "measured_s": 6.905081052000002,
+          "measured_calls": 299,
+          "total_calls": 299
+        },
+        "suffix_eval_s": {
+          "measured_s": 22.827864978000004,
+          "measured_calls": 299,
+          "total_calls": 299
+        },
+        "kv_reset_s": {
+          "measured_s": 0.8819154330000001,
+          "measured_calls": 299,
+          "total_calls": 299
+        }
+      }
+    },
+    "cpu_s": 2399.031051186,
+    "elapsed_s": 1214.1947209970094,
+    "avg_cpu_cores": 1.9758206897951984,
+    "avg_cpu_percent_of4": 49.39551724487996,
+    "rss_mib": 1259.03125,
+    "thermal": {
+      "start_c": 58.4,
+      "max_c": 85.9,
+      "end_c": 74.35,
+      "current_flags": [
+        0,
+        6,
+        8
+      ],
+      "history_flags": [
+        14
+      ],
+      "arm_clock_hz": {
+        "n": 1238,
+        "mean": 2285096118.694669,
+        "p50": 2366036736,
+        "p95": 2400033792,
+        "max": 2400037120
+      }
+    },
+    "scheduler": {
+      "mode": "continuous",
+      "policy": "latest",
+      "version": "latest-completion-v1",
+      "decisions": {
+        "minimum_audio": 651,
+        "offered": 392,
+        "thermal_backoff": 2572,
+        "near_final": 18
+      },
+      "candidate_updates": 27101,
+      "candidate_replacements": 26411,
+      "snapshots": 392,
+      "snapshot_frames": 13658624,
+      "discarded_candidates": 298,
+      "pending_peak": 1,
+      "thermal_backoff_s": 839.5881097994279,
+      "thermal_pause_c": 82,
+      "thermal_resume_c": 78,
+      "thermal_sample_s": 1.0,
+      "tail_margin_s": 0.2,
+      "deferred_s": {
+        "minimum_audio": 54.593034376506694,
+        "thermal_backoff": 227.4234112855047,
+        "near_final": 1.512022748705931
+      }
+    },
+    "queue_wait_s": {
+      "n": 691,
+      "mean": 0.20698065245820563,
+      "p50": 0.0003154269652441144,
+      "p95": 1.3079300209647045,
+      "max": 3.6894583499524742
+    },
+    "queue_peak": 2,
+    "stability": {
+      "normalization": "ko_cer_v1",
+      "displayed_updates": 6054,
+      "normalized_revisions": 142,
+      "retracted_suffix_characters": 656,
+      "prefix_replay_revisions": 0,
+      "prefix_replay_retracted_characters": 0,
+      "within_call_revisions": 0,
+      "failed_results": 22,
+      "cancelled_results": 123,
+      "suppressed_prefix_tokens": 2053,
+      "segments_with_display": 299,
+      "revised_segments": 103,
+      "prefix_replay_segments": 0,
+      "suppressed_prefix_jobs": 258,
+      "latest_completed_partial_vs_final": {
+        "paired_segments": 138,
+        "whole_partial_is_final_prefix": 67,
+        "partial_characters": 1877,
+        "retained_prefix_characters": 1555,
+        "retained_prefix_fraction": 0.8284496537027171
+      },
+      "finals_shorter_than4": 10,
+      "first4_to_final_consistent4_s": {
+        "n": 279,
+        "mean": 0.2654601963680057,
+        "p50": 0.0,
+        "p95": 2.234245268977247,
+        "max": 5.391754981013946
+      },
+      "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+    },
+    "content": {
+      "changed_events": 5498,
+      "interval_s": {
+        "n": 5497,
+        "mean": 0.22059140143661368,
+        "p50": 0.0354611249640584,
+        "p95": 1.5391753329895437,
+        "max": 4.853851683088578
+      },
+      "active_between_changes_s": {
+        "n": 3694,
+        "mean": 0.111285171395113,
+        "p50": 0.034845012007281184,
+        "p95": 0.8709161219885573,
+        "max": 3.350279223988764
+      },
+      "active_max_gap_with_edges_s": {
+        "n": 299,
+        "mean": 1.4967711208856767,
+        "p50": 1.467099042017935,
+        "p95": 2.4256321700522676,
+        "max": 3.350279223988764
+      },
+      "input_age_at_publish_s": {
+        "n": 5498,
+        "mean": 1.6677355344638223,
+        "p50": 1.4196752730412356,
+        "p95": 3.2772464720718517,
+        "max": 3.9079138050684605
+      },
+      "scope": "정확한 문자열 변경·서버 발행 기준. 입력 나이는 해당 요청 end_frame부터 발행까지이며 음향 단어/브라우저 표시 지연이 아님. 활성 범위는 VAD 소유 구간으로 실제 음소 구간이 아님."
+    },
+    "score": {
+      "normalization": "ko_cer_v1",
+      "reference_characters": 5600,
+      "errors": 1201,
+      "cer": 0.21446428571428572,
+      "substitutions": 468,
+      "insertions": 117,
+      "deletions": 616
+    },
+    "metrics": {
+      "first_s": {
+        "n": 120,
+        "mean": 2.958171893970421,
+        "p50": 3.023348371970428,
+        "p95": 4.708249589989009,
+        "max": 8.111549720047037
+      },
+      "first4_s": {
+        "n": 120,
+        "mean": 3.28141129992033,
+        "p50": 3.227214109054785,
+        "p95": 5.108433512994111,
+        "max": 8.111549720047037
+      },
+      "file_end_s": {
+        "n": 120,
+        "mean": 0.7446072886189999,
+        "p50": 0.9157458440400887,
+        "p95": 2.114830635052158,
+        "max": 3.064407551076272
+      },
+      "max_growth_gap_s": {
+        "n": 120,
+        "mean": 3.784261810661148,
+        "p50": 3.6469638500129804,
+        "p95": 4.887106301030144,
+        "max": 8.111549720047037
+      },
+      "observed_first_s": {
+        "n": 120,
+        "mean": 2.861781704610951,
+        "p50": 3.0204065950652534,
+        "p95": 4.534163261069921,
+        "max": 5.562396447986373
+      },
+      "observed_first4_s": {
+        "n": 120,
+        "mean": 3.163812489146794,
+        "p50": 3.191101804054341,
+        "p95": 4.606042444012132,
+        "max": 5.683354231060491
+      },
+      "max_content_gap_s": {
+        "n": 120,
+        "mean": 3.610102296716815,
+        "p50": 3.5398601960623637,
+        "p95": 4.708249589989009,
+        "max": 5.562396447986373
+      }
+    },
+    "input_duration_s": 1212.475,
+    "final_signature_sha256": "f654232151e30da111c00ea707f85cdd303f392c428fb9ed2c9b922e0030d219",
+    "failure_counts": {
+      "partial:empty_partial": 12,
+      "final:ValueError": 10
+    },
+    "sources_without_successful_visible": 0,
+    "sources_without_observed_visible": 0,
+    "native_prefix_reset_cancellations": 123,
+    "raw_sha256": {
+      "results/optimization/opt3/continuous-q4-20261117-02/stress20min/admission.jsonl": "30157ed0d21d1062f7c625925c32f4a1b309cee2fde90d45155996fd71f2c5e3",
+      "results/optimization/opt3/continuous-q4-20261117-02/stress20min/console.log": "f21ec9ecf35e986deed91eca1b1dcc8b9968eeccc51b0502567ca05afea8114d",
+      "results/optimization/opt3/continuous-q4-20261117-02/stress20min/execution.json": "f932c8d4a40d4a6ac8be1a4a2ae129b94245a4101c472adac4107e7cfc275772",
+      "results/optimization/opt3/continuous-q4-20261117-02/stress20min/jobs.jsonl": "337d0bad3b010207922f08d3402bffdaf76c346a1cef43721eb52100202780e3",
+      "results/optimization/opt3/continuous-q4-20261117-02/stress20min/stream/backlog.jsonl": "6118ae25cc9646de103822444d4f13528e1d9e369890f2b9139d1f70705f9961",
+      "results/optimization/opt3/continuous-q4-20261117-02/stress20min/stream/decoder.jsonl": "e6ed636d1f2d7053537c9e55390435a2040f8bc3fa163b48b6c21efac605cf3a",
+      "results/optimization/opt3/continuous-q4-20261117-02/stress20min/stream/producer.jsonl": "16b28473cecdad7fcaabacf92dbb154da6be53bb5c35835ac320b59c98c74135",
+      "results/optimization/opt3/continuous-q4-20261117-02/stress20min/thermal.jsonl": "730da30afbef8611b15fa46c18386f9f557fdf374766e3c38c3929144f6afccb",
+      "results/optimization/opt3/continuous-q4-20261117-02/stress20min/threads.jsonl": "1957669f1e39fe2045423dd5b841fad2b54ac2e337882b0b3f95267d69db257b",
+      "results/optimization/opt3/continuous-q4-20261117-02/stress20min/warnings.jsonl": "1462cf1ec8f0523833753eb0629c57a58fd548ab99168ba3e41b69d4842603f3",
+      "results/optimization/opt3/continuous-q4-20261117-02/stress20min/worker.json": "552cb0d4cb8a321f25117892e88cabe646137fe1bd0b27b75d7e9ef7a9f5dfda"
+    },
+    "models": {
+      "text": {
+        "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/decoder-q4-20261117-01/head-q4/Qwen3-ASR-0.6B-Q4_0-HEAD-Q4_0.gguf",
+        "sha256": "ca2f6ac6e7e4258206187b9c605b2443fdfa425cae82891da51377103fd4e383"
+      },
+      "audio": {
+        "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+        "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+      },
+      "asset_manifest": {
+        "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/decoder-q4-20261117-01/head-q4/q4_0-head-q4_0.json",
+        "sha256": "e2a3d54360845f19eeede80dd0bef5ef9e899ac633da39cab4173f71f443d32e"
+      },
+      "runtime_library": {
+        "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/libedge_asr_gguf.so",
+        "sha256": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a"
+      },
+      "runtime_manifest": {
+        "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/build.json",
+        "sha256": "20c5b71f14575eddb703591ec0e3694bfdc22b56b0c89827acad2180e04ba810"
+      }
+    },
+    "build_sha256": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a",
+    "replay_start_temperature_c": 78.75,
+    "final_queue_wait_s": {
+      "n": 299,
+      "mean": 0.47806120368131877,
+      "p50": 0.20826857001520693,
+      "p95": 1.7867402649717405,
+      "max": 3.6894583499524742
+    },
+    "actual_partial_ranges_unique": true,
+    "quarters": [
+      {
+        "start_s": 0.0,
+        "end_s": 303.11875,
+        "sources": 30,
+        "file_end_s": {
+          "n": 30,
+          "mean": 0.7587011219435379,
+          "p50": 0.9157458440400887,
+          "p95": 2.0974530240427782,
+          "max": 2.161030729021877
+        },
+        "max_content_gap_s": {
+          "n": 30,
+          "mean": 3.4545482632051834,
+          "p50": 3.4764519330719565,
+          "p95": 4.57628725504037,
+          "max": 4.66929347300902
+        },
+        "final_queue_wait_s": {
+          "n": 75,
+          "mean": 0.5228561826314156,
+          "p50": 0.40758768701925874,
+          "p95": 1.7013623550301418,
+          "max": 2.2474775310838595
+        },
+        "rss_mib": {
+          "n": 3011,
+          "mean": 1229.8342898953836,
+          "p50": 1231.53125,
+          "p95": 1232.53125,
+          "max": 1233.03125
+        }
+      },
+      {
+        "start_s": 303.11875,
+        "end_s": 606.2375,
+        "sources": 30,
+        "file_end_s": {
+          "n": 30,
+          "mean": 0.8000167122776607,
+          "p50": 0.9025521789882305,
+          "p95": 2.1730743820127145,
+          "max": 3.064407551076272
+        },
+        "max_content_gap_s": {
+          "n": 30,
+          "mean": 3.664435629611461,
+          "p50": 3.4605883579934016,
+          "p95": 4.770402484994406,
+          "max": 5.562396447986373
+        },
+        "final_queue_wait_s": {
+          "n": 75,
+          "mean": 0.5125365795986727,
+          "p50": 0.2086220890050754,
+          "p95": 2.015853463090025,
+          "max": 3.6894583499524742
+        },
+        "rss_mib": {
+          "n": 3011,
+          "mean": 1234.9005625207571,
+          "p50": 1235.03125,
+          "p95": 1237.03125,
+          "max": 1237.03125
+        }
+      },
+      {
+        "start_s": 606.2375,
+        "end_s": 909.3562499999999,
+        "sources": 30,
+        "file_end_s": {
+          "n": 30,
+          "mean": 0.6998071253305927,
+          "p50": 0.8880728240404778,
+          "p95": 1.9706217260024914,
+          "max": 2.4655069300159766
+        },
+        "max_content_gap_s": {
+          "n": 30,
+          "mean": 3.6206280901114836,
+          "p50": 3.4491304120263067,
+          "p95": 4.98037352196593,
+          "max": 5.438051140978928
+        },
+        "final_queue_wait_s": {
+          "n": 75,
+          "mean": 0.43220823335150876,
+          "p50": 0.08446525200270116,
+          "p95": 1.7867402649717405,
+          "max": 2.5996228309813887
+        },
+        "rss_mib": {
+          "n": 3012,
+          "mean": 1239.4480826693227,
+          "p50": 1240.03125,
+          "p95": 1240.53125,
+          "max": 1241.53125
+        }
+      },
+      {
+        "start_s": 909.3562499999999,
+        "end_s": 1212.475,
+        "sources": 30,
+        "file_end_s": {
+          "n": 30,
+          "mean": 0.7199041949242087,
+          "p50": 0.9575429529788835,
+          "p95": 2.1849101160066766,
+          "max": 2.5203284190408795
+        },
+        "max_content_gap_s": {
+          "n": 30,
+          "mean": 3.700797203939131,
+          "p50": 3.8563196311006323,
+          "p95": 4.627022517984642,
+          "max": 5.527768625053568
+        },
+        "final_queue_wait_s": {
+          "n": 74,
+          "mean": 0.44419223286614223,
+          "p50": 0.13230346201453358,
+          "p95": 1.7814999870024621,
+          "max": 2.1159657270181924
+        },
+        "rss_mib": {
+          "n": 3012,
+          "mean": 1243.1537599601593,
+          "p50": 1243.03125,
+          "p95": 1244.53125,
+          "max": 1244.53125
+        }
+      }
+    ]
+  },
+  "verification": {
+    "pilot": {
+      "same_final_pcm_status_text_tokens": true,
+      "same_manifest": true,
+      "same_cer": true,
+      "zero_input_drops": true
+    },
+    "stress": {
+      "same_final_pcm_status_text_tokens": true,
+      "same_manifest": true,
+      "same_cer": true,
+      "zero_input_drops": true
+    }
+  },
+  "validation": {
+    "source_commit": "6b4e9483eef573fa339a9df31942c0ca8219b130",
+    "host_clean": {
+      "total": 460,
+      "passed": 456,
+      "skipped": 4,
+      "log": "host-clean-tests-complete.log"
+    },
+    "host_with_preserved_user_work": {
+      "total": 465,
+      "passed": 461,
+      "skipped": 4,
+      "log": "host-tests.log"
+    },
+    "rp5_model_free": {
+      "total": 40,
+      "passed": 40,
+      "log": "rp5-sync-tests-complete.log"
+    },
+    "node_ui": {
+      "passed": 4
+    },
+    "ruff": "passed",
+    "excluded_attempts": [
+      {
+        "log": "host-clean-tests.log",
+        "reason": "worktree checkout had not completed; no tests executed; rerun after completion"
+      },
+      {
+        "log": "rp5-sync-tests.log",
+        "reason": "incorrect commit argument rejected before merge/inference; rerun with git rev-parse verified full commit"
+      }
+    ],
+    "browser": {
+      "available": false,
+      "reason": "The browser access host is unavailable",
+      "rendering_checked": false
+    },
+    "live_http": {
+      "browser_rendering_checked": false,
+      "microphone_tested": false,
+      "scope": "HTTP 준비/시작 gate/실제 RP5 추론/증분 토큰/확정/보존 WAV 검사",
+      "live_id": "5f89e3584e34f0ba",
+      "run": "results/optimization/opt3/listen-20261118-003146-ccfc8e",
+      "source_commit": "6b4e9483eef573fa339a9df31942c0ca8219b130",
+      "settings": {
+        "gap_s": 0.0,
+        "vad_preprocess": "rms26-floor80",
+        "vad_threshold": 0.3,
+        "vad_max_speech_s": 5,
+        "partial_after_s": 0.6,
+        "partial_interval_s": 4.0,
+        "partial_mode": "continuous",
+        "partial_min_new_s": 0.8,
+        "partial_tail_margin_s": 0.2,
+        "adaptive_policy": "recent",
+        "partial_cost_model": "total",
+        "partial_budget_s": 2.5,
+        "protect_short_followup": false,
+        "partial_max_calls": 2,
+        "continuous_policy": "paced",
+        "partial_thermal_policy": "pace",
+        "cancel_partial_for_final": true,
+        "partial_followup_s": null,
+        "max_segment_s": 5,
+        "drain_timeout_s": 30,
+        "queue_capacity": 4,
+        "token_stream": true,
+        "partials": true,
+        "silence_policy": "skip-zero"
+      },
+      "complete_input": true,
+      "dropped_chunks": 0,
+      "failed_calls": 0,
+      "cancelled_calls": 0,
+      "visible_tokens": 27,
+      "partial_results": 3,
+      "final_results": 1,
+      "audio_sha256": "c8dbd76e54473d30adcea9ee6405db4657d5af1f7f0b190d771a0850e5cb4faa",
+      "start": {
+        "start_monotonic_s": 631876.396724228
+      },
+      "clock": {
+        "t0_monotonic_s": 631876.396795113
+      },
+      "catalog_records": 92,
+      "catalog_profiles": 29
+    }
+  }
+}

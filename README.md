@@ -54,6 +54,8 @@ WAV 1배속 입력과 **RP5 USB 마이크**로 부분·확정 자막을 확인�
 
 최신 [연속 수정 자막·100개 대조](results/summaries/optimization/continuous-q4-20261117.md)는 횟수 제한 없는 최신 입력 재전사·수정/삭제·최종 우선 취소·열 backoff를 구현했습니다. 같은100개 최종 PCM/전사/token·CER12.42%는 유지했으나 열 backoff 상태622초·최종 반환 p95 2.02→2.64초여서 기본 채택을 보류합니다. 선택 청취 프로필을 제공하고, 작은 Mel 캐시는 반복 계산을 줄였지만 전체 지연 이득이 없어 비활성 실험으로 남깁니다.
 
+후속 [고정 냉각·연속 갱신 조절](results/summaries/optimization/continuous-paced-20261117.md)은 점진적 열 제어·실제 계산량 배분·확정 예약/취소 유예를 구현했습니다. 같은20분 최종299구간·CER21.4464%를 유지하고 추론9.51%를 줄였으나, Q4 3회 대비 첫 표시 p95 3.46→4.22초·최종 반환1.45→1.88초로 늘었습니다. 선택 청취 후보로 제공하며 기본 전환은 보류합니다.
+
 문제 발견과 선택의 흐름은 [ASR 최적화 과정](docs/research/optimization_history.md), 현재 채택한 구성과 최신 결과는 [현재 상태](docs/status.md)에 정리했습니다. [자막 비교 영상](results/summaries/optimization/realtime-video-20261111.md)은 저장된 로그의 동기 재생 자료입니다.
 
 ## 처음 시작하기
