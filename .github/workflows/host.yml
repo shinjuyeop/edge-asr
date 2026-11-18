@@ -33,6 +33,20 @@ jobs:
           ruff format --check src tests scripts native
       - name: 모델 없는 회귀 검사
         run: python -m unittest discover -s tests -v
+      - name: wheel 청취 자산 검사
+        run: |
+          python -m pip wheel --no-deps --wheel-dir "$RUNNER_TEMP/edge-asr-wheel" .
+          python - <<'PY'
+          import os
+          import zipfile
+          from pathlib import Path
+
+          wheel = next((Path(os.environ["RUNNER_TEMP"]) / "edge-asr-wheel").glob("*.whl"))
+          with zipfile.ZipFile(wheel) as archive:
+              for source in Path("src/edge_asr/qwen/viewer/web").iterdir():
+                  name = "edge_asr/qwen/viewer/web/" + source.name
+                  assert archive.read(name) == source.read_bytes(), name
+          PY
       - name: 보존 자산과 공유 설정 검사
         run: |
           sha256sum -c experiments/m1_zipformer/SHA256SUMS

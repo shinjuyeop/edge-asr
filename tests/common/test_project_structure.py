@@ -1,12 +1,14 @@
 """통합 명령·선택 런타임 분리·원자적 산출물·문서 경로 회귀 검사."""
 
 import ast
+import fnmatch
 import json
 import os
 import re
 import subprocess
 import sys
 import tempfile
+import tomllib
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -18,6 +20,19 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class ProjectStructureTests(unittest.TestCase):
+    def test_packaged_viewer_includes_static_entry_and_every_module_import(self):
+        metadata = tomllib.loads((ROOT / "pyproject.toml").read_text())
+        patterns = metadata["tool"]["setuptools"]["package-data"]["edge_asr.qwen.viewer"]
+        viewer = ROOT / "src/edge_asr/qwen/viewer"
+        for path in (viewer / "web").iterdir():
+            with self.subTest(asset=path.name):
+                self.assertTrue(
+                    any(fnmatch.fnmatch(path.relative_to(viewer).as_posix(), p) for p in patterns)
+                )
+                if path.suffix in (".js", ".mjs"):
+                    for target in re.findall(r"from ['\"](\./[^'\"]+)['\"]", path.read_text()):
+                        self.assertTrue((path.parent / target).is_file(), target)
+
     def test_each_tool_help_from_another_working_directory_without_models(self):
         env = {**os.environ, "PYTHONPATH": str(ROOT / "src"), "PYTHONDONTWRITEBYTECODE": "1"}
         with tempfile.TemporaryDirectory() as directory:

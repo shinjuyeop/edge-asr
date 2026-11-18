@@ -34,7 +34,7 @@ edge-asr = "edge_asr.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-"edge_asr.qwen.viewer" = ["web/*.html", "web/*.css", "web/*.js"]
+"edge_asr.qwen.viewer" = ["web/*.html", "web/*.css", "web/*.js", "web/*.mjs"]
 
 [tool.ruff]
 target-version = "py311"

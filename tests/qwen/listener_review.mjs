@@ -1,7 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import fs from 'node:fs';
-import vm from 'node:vm';
+import {createListener} from '../../src/edge_asr/qwen/viewer/web/listener.mjs';
 import {sourceReview, reviewTranscript} from '../../src/edge_asr/qwen/viewer/web/review.mjs';
 import {continuousCaption} from '../../src/edge_asr/qwen/viewer/web/captions.mjs';
 const sources=[{id:'a',start:0,end:32000,reference:'첫 문장'},{id:'b',start:32000,end:64000,reference:'다음 문장'}];
@@ -31,20 +30,27 @@ test('transport stops audio at boundary, waits for final, then advances on Next 
   get firstElementChild(){return this.children[0];} getContext(){return {scale(){},clearRect(){},fillRect(){}};}
  }
  const get=id=>{if(!elements.has(id))elements.set(id,new Element());return elements.get(id);};get('replayStyle').value='source';get('volume').value='0.8';get('sort').value='start';
- const starts=[];const ctx={currentTime:1,getOutputTimestamp(){return {contextTime:this.currentTime};},createGain(){return {gain:{},connect(){}};},createBufferSource(){return {connect(){},disconnect(){},stop(){},start(...args){starts.push(args);}};},resume:async()=>{}};
- const sandbox={sourceReview,reviewTranscript,continuousCaption,console,document:{getElementById:get,createElement:()=>new Element()},window:{addEventListener(){}},AudioContext:class{constructor(){return ctx;}},performance:{now:()=>0},devicePixelRatio:1,requestAnimationFrame(){},setTimeout(){},setInterval(){}};
- vm.createContext(sandbox);
- let code=fs.readFileSync(new URL('../../src/edge_asr/qwen/viewer/web/app.js',import.meta.url),'utf8');
- code=code.replace(/^import .*\n/gm,'').split('await refreshCatalog().catch')[0];
- code+=`\nglobalThis.control={setup(s,e){catalog={runs:[],profiles:[]};run={sources:s,terminal:true,status:'completed',end_s:4.5};events=e;buffer={duration:4,getChannelData(){return new Float32Array(64000);}};selectReview(0);},play,tick,get(){return {playing,position,done:reviewDone,index:review?.index};},continuous(){mode='replay';$('replayStyle').value='continuous';$('replayStyle').onchange();},live(){changeMode('live');return reviewing();}};`;
- vm.runInContext(code,sandbox);const c=sandbox.control;c.setup(sources,events);await c.play();
+ let frame,pollRun;const starts=[];const ctx={currentTime:1,getOutputTimestamp(){return {contextTime:this.currentTime};},createGain(){return {gain:{},connect(){}};},createBufferSource(){return {connect(){},disconnect(){},stop(){},start(...args){starts.push(args);}};},resume:async()=>{},decodeAudioData:async()=>({duration:4,getChannelData(){return new Float32Array(64000);}})};
+ const state={id:'fixture',sources,events,cursor:events.length,terminal:true,status:'completed',end_s:4.5,audio:{duration_s:4}};
+ const fetch=async path=>({ok:true,json:async()=>path==='/api/catalog'?{runs:[],profiles:[]}:path==='/api/clock'?{received_s:10,sent_s:10}:state,arrayBuffer:async()=>new ArrayBuffer(0)});
+ const listener=createListener({fetch,console,document:{getElementById:get,createElement:()=>new Element()},window:{addEventListener(){}},AudioContext:class{constructor(){return ctx;}},performance:{now:()=>0},devicePixelRatio:1,requestAnimationFrame(fn){frame=fn;},setTimeout(){},setInterval(fn,ms){if(ms===300)pollRun=fn;}});
+ await listener.start();await listener.selectRun('fixture');await get('play').onclick();
  assert.equal(starts.at(-1)[1],0);assert.equal(starts.at(-1)[2],2);
- ctx.currentTime=3.5;c.tick(100);assert.equal(c.get().playing,true);assert.equal(get('referenceText').textContent,'첫 문장');
- ctx.currentTime=4.3;c.tick(200);assert.equal(c.get().playing,false);assert.equal(c.get().position,3.2);assert.equal(get('hypothesis').textContent,'첫 문장');assert.equal(get('nextSource').disabled,false);
- await get('nextSource').onclick();assert.equal(c.get().index,1);assert.equal(starts.at(-1)[1],2);assert.equal(starts.at(-1)[2],2);
- ctx.currentTime=7;c.tick(300);assert.equal(c.get().done,true);assert.equal(get('nextSource').disabled,true);assert.equal(get('hypothesis').textContent,'다음 문장');
- get('rewind').onclick();assert.equal(c.get().index,1);assert.equal(c.get().position,2);assert.equal(c.get().done,false);
- c.continuous();assert.equal(get('play').textContent,'재생');assert.equal(get('nextSource').hidden,true);assert.equal(get('seek').min,0);assert.equal(c.live(),false);
+ ctx.currentTime=3.5;frame(100);assert.equal(get('play').textContent,'일시정지');assert.equal(get('referenceText').textContent,'첫 문장');
+ ctx.currentTime=4.3;frame(200);assert.equal(get('play').textContent,'이 음원 다시 듣기');assert.equal(get('seek').value,3.2);assert.equal(get('hypothesis').textContent,'첫 문장');assert.equal(get('nextSource').disabled,false);
+ await get('nextSource').onclick();assert.equal(get('seek').min,2);assert.equal(starts.at(-1)[1],2);assert.equal(starts.at(-1)[2],2);
+ ctx.currentTime=7;frame(300);assert.equal(get('play').textContent,'이 음원 다시 듣기');assert.equal(get('nextSource').disabled,true);assert.equal(get('hypothesis').textContent,'다음 문장');
+ get('rewind').onclick();assert.equal(get('seek').min,2);assert.equal(get('play').textContent,'재생');
+ get('replayStyle').value='continuous';get('replayStyle').onchange();assert.equal(get('play').textContent,'재생');assert.equal(get('nextSource').hidden,true);assert.equal(get('seek').min,0);await get('liveTab').onclick();assert.equal(get('nextSource').hidden,true);
+ // 원음이 끝난 라이브 입력은 늦은 final을 기다린 뒤 화면을 유지한다.
+ state.terminal=false;state.status='replaying';state.events=[];state.cursor=0;state.clock={t0_monotonic_s:10};
+ await listener.selectRun('fixture');await get('play').onclick();
+ ctx.currentTime=11.5;frame(400);
+ assert.equal(get('play').textContent,'결과 대기');assert.equal(get('runStatus').textContent,'음원 종료 · 추론 결과 대기');assert.equal(get('referenceText').textContent,'다음 문장');
+ state.terminal=true;state.status='completed';state.events=[events.at(-1)];state.cursor=1;
+ pollRun();await new Promise(resolve=>setImmediate(resolve));frame(500);
+ assert.equal(get('play').textContent,'추론 종료');assert.equal(get('hypothesis').textContent,'다음 문장');assert.equal(get('referenceText').textContent,'다음 문장');
+
 });
 
 test('continuous captions keep completed context, accept corrections and reject stale/empty updates',()=>{

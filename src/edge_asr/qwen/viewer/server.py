@@ -70,14 +70,11 @@ def handler(library):
                     cursor = int(query.get("cursor", ["0"])[0])
                     if cursor < 0:
                         raise ValueError("음수 cursor")
-                    value = run.snapshot(cursor)
-                    value["can_stop"] = run.id == library.active_id and bool(
-                        library.process and library.process.poll() is None
-                    )
-                    return self.json(value)
+                    return self.json(library.state(run.id, cursor))
                 static = {
                     "/": "index.html",
                     "/app.js": "app.js",
+                    "/listener.mjs": "listener.mjs",
                     "/review.mjs": "review.mjs",
                     "/captions.mjs": "captions.mjs",
                     "/style.css": "style.css",

@@ -131,6 +131,31 @@ def digest_text(text):
     return hashlib.sha256(text.encode()).hexdigest()
 
 
+def replay_args(root, profile, output, manifest):
+    args = [
+        "--config",
+        str(root / profile["config"]),
+        "--manifest",
+        str(manifest),
+        "--output",
+        str(output),
+        "--vad-model",
+        str(root / profile["vad_model"]),
+    ]
+    for key, value in profile.get("replay", {}).items():
+        if key in ("output", "config", "manifest", "start_signal", "vad_model"):
+            raise ValueError("replay 표에는 연속 입력 옵션만 지정합니다.")
+        if key == "partials":
+            if value is False:
+                args.append("--no-partials")
+        elif isinstance(value, bool):
+            if value:
+                args.append("--" + key.replace("_", "-"))
+        else:
+            args.extend(["--" + key.replace("_", "-"), str(value)])
+    return args
+
+
 class Library:
     def __init__(self, root, runs, profiles, manifests):
         self.root = root.resolve()
@@ -144,7 +169,7 @@ class Library:
         self.cache.mkdir(parents=True, exist_ok=True)
         for path in profiles:
             value = tomllib.loads(path.read_text())
-            args = self.replay_args(value, self.cache / "unused", self.cache / "unused.jsonl")
+            args = replay_args(self.root, value, self.cache / "unused", self.cache / "unused.jsonl")
             argument_parser().parse_args(args)
             self.profiles[path.stem] = value
             manifests = [*manifests, self.root / value["manifest"]]
@@ -161,29 +186,13 @@ class Library:
         self.runs[value.id] = value
         return value
 
-    def replay_args(self, profile, output, manifest):
-        args = [
-            "--config",
-            str(self.root / profile["config"]),
-            "--manifest",
-            str(manifest),
-            "--output",
-            str(output),
-            "--vad-model",
-            str(self.root / profile["vad_model"]),
-        ]
-        for key, value in profile.get("replay", {}).items():
-            if key in ("output", "config", "manifest", "start_signal", "vad_model"):
-                raise ValueError("replay 표에는 연속 입력 옵션만 지정합니다.")
-            if key == "partials":
-                if value is False:
-                    args.append("--no-partials")
-            elif isinstance(value, bool):
-                if value:
-                    args.append("--" + key.replace("_", "-"))
-            else:
-                args.extend(["--" + key.replace("_", "-"), str(value)])
-        return args
+    def state(self, run_id, cursor=0):
+        run = self.runs[run_id]
+        value = run.snapshot(cursor)
+        value["can_stop"] = run.id == self.active_id and bool(
+            self.process and self.process.poll() is None
+        )
+        return value
 
     def catalog(self):
         return {
@@ -308,7 +317,7 @@ class Library:
                     ],
                 )
                 output = self.root / "results/optimization/opt3" / identifier
-                args = self.replay_args(profile, output, manifest)
+                args = replay_args(self.root, profile, output, manifest)
                 args += ["--start-signal", str(output / "viewer-start.json")]
                 if microphone is not None:
                     args += [

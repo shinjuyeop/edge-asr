@@ -8,6 +8,7 @@ import sys
 import tempfile
 import threading
 import time
+import tomllib
 import unittest
 from array import array
 from http.server import ThreadingHTTPServer
@@ -17,10 +18,12 @@ from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 from edge_asr.artifacts import digest, write_json, write_jsonl
+from edge_asr.config import load_evaluation_config
 from edge_asr.dataset import Audio, load_audio, prepare_track, write_wav
+from edge_asr.qwen.realtime.replay import argument_parser
 from edge_asr.qwen.viewer.analysis import compact_event, source_metrics
-from edge_asr.qwen.viewer.runs import Library, Run
-from edge_asr.qwen.viewer.server import handler
+from edge_asr.qwen.viewer.runs import Library, Run, replay_args
+from edge_asr.qwen.viewer.server import ASSETS, handler
 from edge_asr.streaming import run_paced
 
 
@@ -40,6 +43,64 @@ def event(job, start, end, published, text, *, kind="final", status="success", t
 
 
 class ListenerTests(unittest.TestCase):
+    def test_shared_profiles_parse_with_tracked_model_configs_without_local_assets(self):
+        root = Path(__file__).resolve().parents[2]
+        tracked = set(
+            subprocess.check_output(
+                ["git", "ls-files", "configs"], cwd=root, text=True
+            ).splitlines()
+        )
+        profiles = sorted(name for name in tracked if Path(name).match("listener*.toml"))
+        self.assertTrue(profiles)
+        # 자산 없는 루트에서도 같은 변환기·parser를 사용한다. 모델 설정만 원본에서 읽는다.
+        with tempfile.TemporaryDirectory() as temporary:
+            missing_root = Path(temporary)
+            for name in profiles:
+                with self.subTest(profile=name):
+                    profile = tomllib.loads((root / name).read_text())
+                    self.assertIn(profile["config"], tracked)
+                    config = load_evaluation_config(root / profile["config"])
+                    self.assertIn(config["model"]["family"], ("qwen3_asr", "qwen3_gguf"))
+                    args = argument_parser().parse_args(
+                        replay_args(
+                            missing_root,
+                            profile,
+                            missing_root / "run",
+                            missing_root / profile["manifest"],
+                        )
+                    )
+                    self.assertEqual(args.config, missing_root / profile["config"])
+                    self.assertEqual(args.vad_model, missing_root / profile["vad_model"])
+                    self.assertFalse(args.config.exists())
+                    self.assertFalse(args.manifest.exists())
+                    self.assertFalse(args.vad_model.exists())
+                    for key, value in profile.get("replay", {}).items():
+                        self.assertEqual(getattr(args, key), value)
+
+    def test_profile_option_errors_are_not_reported_as_missing_assets(self):
+        profile = {"config": "absent.toml", "vad_model": "absent.onnx"}
+        for replay in ({"partial_mode": "typo"}, {"unknown_option": 1}):
+            profile["replay"] = replay
+            with self.subTest(replay=replay), patch("sys.stderr"), self.assertRaises(SystemExit):
+                argument_parser().parse_args(
+                    replay_args(self.root, profile, self.output, self.manifest)
+                )
+        profile["replay"] = {"config": "override.toml"}
+        with self.assertRaisesRegex(ValueError, "연속 입력 옵션"):
+            replay_args(self.root, profile, self.output, self.manifest)
+
+    def test_library_owns_process_state_for_http_snapshot(self):
+        self.assertFalse(self.library.state(self.run.id)["can_stop"])
+        self.library.active_id = self.run.id
+        self.library.process = Mock()
+        self.library.process.poll.return_value = None
+        self.assertTrue(self.library.state(self.run.id)["can_stop"])
+        self.library.active_id = "other"
+        self.assertFalse(self.library.state(self.run.id)["can_stop"])
+        self.library.active_id = self.run.id
+        self.library.process.poll.return_value = 0
+        self.assertFalse(self.library.state(self.run.id)["can_stop"])
+
     @unittest.skipUnless(shutil.which("node"), "원음별 재생 모의 검사에 Node.js 필요")
     def test_source_review_transport(self):
         result = subprocess.run(
@@ -347,6 +408,14 @@ class ListenerTests(unittest.TestCase):
         self.addCleanup(server.server_close)
         self.addCleanup(server.shutdown)
         url = f"http://127.0.0.1:{server.server_port}"
+        for source in ASSETS.iterdir():
+            target = "/" if source.name == "index.html" else "/" + source.name
+            with self.subTest(asset=source.name), urlopen(url + target) as response:
+                self.assertEqual(response.read(), source.read_bytes())
+                if source.suffix in (".js", ".mjs"):
+                    self.assertIn("javascript", response.headers["Content-Type"])
+        with urlopen(url + "/api/state?id=" + self.run.id) as response:
+            self.assertFalse(json.load(response)["can_stop"])
         with urlopen(url + "/api/clock") as response:
             value = json.load(response)
         self.assertLessEqual(value["received_s"], value["sent_s"])
