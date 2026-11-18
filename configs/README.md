@@ -45,3 +45,5 @@
 최종 목표는 발화 중 자막이 계속 갱신되고 수정되는 스트리밍입니다. 과거 최대2회/3회 조건은 [실행 안내](../docs/guides/qwen3_optimization.md)와 실행별 listener 설정에 비교·재현 조건으로 보존합니다. 공유 프로필 간 작은 TOML 반복은 독립적인 재현 조건을 명시하기 위해 유지하며 설정 상속을 사용하지 않습니다.
 
 `gguf_conv_realtime.toml`은 Q8 가변 갱신에서 기존 4×4 합성곱 후보만 비교하는 선택 설정입니다. 공유 Q8과의 차이는 `conv_kernel_manifest` 하나입니다. 후보 프로세스에만 명세의 `LD_PRELOAD`·`EDGE_ASR_CONV_CPU`가 필요하며 일반 listener에서 환경 없이 선택하지 않습니다. [대조 조건](../docs/research/qwen_realtime.md#q8-가변-갱신합성곱-대조--2026-11-18-사전-조건).
+
+[긴 음원 실측](../results/summaries/optimization/q8-conv-headroom-20261118.md)에서 합성곱 비용은 줄었지만 첫 표시/첫 4자 지연이 모두 개선되지는 않아, 이 설정은 선택 후보로 유지합니다.
