@@ -103,3 +103,5 @@ Q4 스레드 대조의 새 프로필은 **Q4 prefill4T · 동일6개**이고, �
 이 프로필의 코드 연결, 모의 검사, RP5 파일 입력 실측, 실제 마이크·브라우저 확인은 서로 다른 검증 범위입니다. 실제 완료 범위는 현재 상태와 실험 요약을 확인합니다. 저장 기록을 재생하는 동안 모델을 다시 실행하지 않습니다.
 
 부분 음성 창 실험은 **실험 Q4 · 1.99초 음성 창 캐시**(`configs/listener_partial_window.toml`)입니다. 기록은 `stream-cache-20261118-03/full100-window1990`과 `full100-baseline`이며 짧은 확인은 `pilot-window1990`을 사용합니다. 완료된 음성 창을 재사용하고 확정은 전체 구간을 계산합니다. 원음별 확정 확인·정지·다음 음원 흐름은 동일합니다. [갱신 공백 감소·확정 지연/자원 증가](../../results/summaries/optimization/audio-window-cache-20261118.md)를 함께 비교합니다.
+
+긴 음원은 **긴 음원 · 자연발화8개 · 1.99초 창 캐시**, **긴 음원 · 낭독연결4개 · 1.99초 창 캐시** 프로필입니다. 기록 재생에서 `longform-stream-20261118-02/natural-window1990` 또는 `reading-window1990`을 선택하고, 같은 폴더의 `natural-baseline`/`reading-baseline`과 비교합니다. 각 파일은 약 1분이며 원음별 확정 확인·다음 음원 흐름을 유지합니다. [정확도·확정 지연·원음 경계 해석](../../results/summaries/optimization/longform-stream-20261118.md).

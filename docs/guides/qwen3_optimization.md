@@ -277,3 +277,5 @@ flock -n results/listener/inference.lock env OPENBLAS_NUM_THREADS=1 PYTHONPATH=s
 `configs/listener_longform_natural.toml`은 약1분 자연발화8개, `configs/listener_longform_reading.toml`은 낭독 연결4개를1.99초 부분 창 캐시 구성으로 처리합니다. 입력은 기존 `data/evaluation/longform-20261117-01/`의 부분 목록이며, 원음 전체를1배속으로 받고 ASR/VAD 최대5초 구간으로 나눕니다. 자연발화와 낭독의 CER는 따로 집계하고 파일 내부 무음도 보존합니다.
 
 첫 추론/워밍업에는 첫 원음의 `max_segment_s` 이내 앞부분만 사용합니다. 긴 파일 전체가 워밍업의 모델 문맥을 넘는 문제를 막으며 실제 평가 입력·정답은 줄이지 않습니다. 원본 해시·프레임 수, 워밍업 시작/끝 프레임과 float PCM 해시는 `worker.json`의 `warmup_input`에 기록합니다. 짧은 원음은 그대로 사용합니다. 마이크 준비에 쓰는 manifest 워밍업에도 같은 상한이 적용됩니다.
+
+[12개 실제 대조](../../results/summaries/optimization/longform-stream-20261118.md)에서 최종233구간·합산 CER15.73%는 같았지만 ASR 구간 확정 지연과 계산량이 늘었습니다. 낭독의 파일별 갱신 공백 개선과 자연발화의 파일 경계 귀속 영향을 구분하며 기본 전환은 보류합니다.
