@@ -25,6 +25,75 @@ from edge_asr.streaming import read_events, run_paced
 from edge_asr.vad_probability import BoundedProbabilityVad, K2SileroProbability
 
 
+def session_snapshot(session):
+    """현재 세션 상태만 읽는다. 정상 배출 직후와 close 뒤의 호출 시점은 실행기가 정한다."""
+    return {
+        "results": session.results,
+        "segments": session.segments,
+        "pipeline": session.pipeline.metadata(),
+        "partial_scheduler": session.scheduler_stats,
+    }
+
+
+def collect_completed_metrics(info, session, events, sources, hypothesis, *, token_stream=False):
+    """정상 배출 직후 전체 시도를 단계별로 기록한다. 집계 도중 실패해도 앞선 지표를 보존한다."""
+    successes = [r for r in session.results if r["status"] == "success" and r["displayed"]]
+    partials = [r for r in successes if r["kind"] == "partial"]
+    finals = [r for r in session.results if r["kind"] == "final"]
+    info.update(
+        caption_stability=summarize_stability(events),
+        content_updates=content_updates(events, session.segments),
+        submitted_requests=sum(e["type"] == "submitted" for e in events),
+        coalesced_partial_requests=sum(e["type"] == "coalesced" for e in events),
+        first_caption_from_track_start_s=min((r["published_s"] for r in successes), default=None),
+        first_partial_from_track_start_s=min((r["published_s"] for r in partials), default=None),
+        final_from_owned_end_s=distribution(
+            [r["published_s"] - r["end_frame"] / 16000 for r in finals]
+        ),
+        inference_queue_wait_s=distribution([r["queue_wait_s"] for r in session.results]),
+        failed_calls=sum(r["status"] == "failed" for r in session.results),
+        cancelled_calls=sum(r["status"] == "cancelled" for r in session.results),
+        empty_partial_calls=sum(r.get("failure_kind") == "empty_partial" for r in session.results),
+        final_count=len(finals),
+        partial_count=len(partials),
+        skipped_silence=session.skipped,
+    )
+    native_ttft = []
+    for result in session.results:
+        native = (result.get("adapter_result") or {}).get("native_result") or {}
+        if native.get("first_generated_token_s") is not None:
+            native_ttft.append(native["first_generated_token_s"])
+    token_timings = list(session.token_timings.values())
+    first_visible = [
+        r["first_visible_published_s"]
+        for r in token_timings
+        if r["first_visible_published_s"] is not None
+    ]
+    info.update(
+        engine_ttft_s=distribution(native_ttft) if native_ttft else None,
+        engine_ttft_scope="native 호출 시작→첫 비EOG 생성 토큰. 음성 처리/prefill 포함, 큐·Python 표시는 제외. 전체 시도 범위.",
+        first_visible_caption_from_track_start_s=min(
+            [r["published_s"] for r in successes] + first_visible, default=None
+        ),
+        token_timings=token_timings,
+        token_display_policy="hold_replayed_prefix_v1" if token_stream else "completed_result",
+        token_output_scope="토큰은 UTF-8 접두 문자열의 임시 표시. 이후 실패도 원시/종료 result에 보존하며 임시 가설은 최종 CER에 더하지 않음.",
+    )
+    reference = " ".join(s["reference"] for s in sources)
+    info["final_transcript_score"] = (
+        character_errors(reference, hypothesis)
+        if all(s["reference"].strip() for s in sources)
+        else None
+    )
+    info["status"] = (
+        "completed"
+        if not info["failed_calls"]
+        and len(finals) + sum(r["kind"] == "final" for r in session.skipped)
+        == len(session.segments)
+        else "failed"
+    )
+
+
 def run(
     root,
     config_path,
@@ -248,79 +317,16 @@ def run(
                 )
         info.update(
             hypothesis=hypothesis,
-            pipeline=session.pipeline.metadata(),
+            **session_snapshot(session),
             vad=vad.metadata(),
             vad_probability=vad.probability.metadata()
             if hasattr(vad.probability, "metadata")
             else None,
-            segments=session.segments,
-            partial_scheduler=session.scheduler_stats,
-            results=session.results,
             inference_queue_peak=session.worker.queue_peak,
         )
-        successes = [r for r in session.results if r["status"] == "success" and r["displayed"]]
-        partials = [r for r in successes if r["kind"] == "partial"]
-        finals = [r for r in session.results if r["kind"] == "final"]
         events = read_events(output / "jobs.jsonl")
-        info.update(
-            caption_stability=summarize_stability(events),
-            content_updates=content_updates(events, session.segments),
-            submitted_requests=sum(e["type"] == "submitted" for e in events),
-            coalesced_partial_requests=sum(e["type"] == "coalesced" for e in events),
-            first_caption_from_track_start_s=min(
-                (r["published_s"] for r in successes), default=None
-            ),
-            first_partial_from_track_start_s=min(
-                (r["published_s"] for r in partials), default=None
-            ),
-            final_from_owned_end_s=distribution(
-                [r["published_s"] - r["end_frame"] / 16000 for r in finals]
-            ),
-            inference_queue_wait_s=distribution([r["queue_wait_s"] for r in session.results]),
-            failed_calls=sum(r["status"] == "failed" for r in session.results),
-            cancelled_calls=sum(r["status"] == "cancelled" for r in session.results),
-            empty_partial_calls=sum(
-                r.get("failure_kind") == "empty_partial" for r in session.results
-            ),
-            final_count=len(finals),
-            partial_count=len(partials),
-            skipped_silence=session.skipped,
-        )
-        native_ttft = []
-        for result in session.results:
-            native = (result.get("adapter_result") or {}).get("native_result") or {}
-            if native.get("first_generated_token_s") is not None:
-                native_ttft.append(native["first_generated_token_s"])
-        token_timings = list(session.token_timings.values())
-        first_visible = [
-            r["first_visible_published_s"]
-            for r in token_timings
-            if r["first_visible_published_s"] is not None
-        ]
-        info.update(
-            engine_ttft_s=distribution(native_ttft) if native_ttft else None,
-            engine_ttft_scope="native 호출 시작→첫 비EOG 생성 토큰. 음성 처리/prefill 포함, 큐·Python 표시는 제외. 전체 시도 범위.",
-            first_visible_caption_from_track_start_s=min(
-                [r["published_s"] for r in successes] + first_visible, default=None
-            ),
-            token_timings=token_timings,
-            token_display_policy="hold_replayed_prefix_v1"
-            if settings.get("token_stream")
-            else "completed_result",
-            token_output_scope="토큰은 UTF-8 접두 문자열의 임시 표시. 이후 실패도 원시/종료 result에 보존하며 임시 가설은 최종 CER에 더하지 않음.",
-        )
-        reference = " ".join(s["reference"] for s in sources)
-        info["final_transcript_score"] = (
-            character_errors(reference, hypothesis)
-            if all(s["reference"].strip() for s in sources)
-            else None
-        )
-        info["status"] = (
-            "completed"
-            if not info["failed_calls"]
-            and len(finals) + sum(r["kind"] == "final" for r in session.skipped)
-            == len(session.segments)
-            else "failed"
+        collect_completed_metrics(
+            info, session, events, sources, hypothesis, token_stream=settings.get("token_stream")
         )
     except Exception as error:
         info.update(status="failed", error={"type": type(error).__name__, "message": str(error)})
@@ -328,11 +334,8 @@ def run(
         if session is not None:
             session.close()
             info.update(
-                results=session.results,
-                segments=session.segments,
-                pipeline=session.pipeline.metadata(),
+                **session_snapshot(session),
                 skipped_silence=session.skipped,
-                partial_scheduler=session.scheduler_stats,
                 token_timings=list(session.token_timings.values()),
             )
         if adapter is not None and (session is None or not session.worker.thread.is_alive()):

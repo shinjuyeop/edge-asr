@@ -7,11 +7,12 @@ import unittest
 from array import array
 from pathlib import Path
 from threading import Event
-from unittest.mock import patch
+from types import SimpleNamespace
+from unittest.mock import Mock, patch
 
 from edge_asr.artifacts import digest
 from edge_asr.dataset import float_digest, load_audio, prepare_track, write_wav
-from edge_asr.qwen.realtime.replay import argument_parser, run
+from edge_asr.qwen.realtime.replay import argument_parser, collect_completed_metrics, run
 from edge_asr.qwen.realtime.session import CaptionSession
 from edge_asr.qwen.realtime.worker import DecodeWorker
 from edge_asr.streaming import run_paced
@@ -42,6 +43,194 @@ class Adapter:
 
 
 class RealtimeTests(unittest.TestCase):
+    def test_runner_takes_completion_metrics_before_close_and_failure_snapshot_after_close(self):
+        root = Path(__file__).resolve().parents[2]
+        for interrupted in (False, True):
+            with self.subTest(interrupted=interrupted), tempfile.TemporaryDirectory() as temporary:
+                directory = Path(temporary)
+                wav, manifest, vad_model = (
+                    directory / name for name in ("a.wav", "input.jsonl", "vad.onnx")
+                )
+                write_wav(wav, [1000] * 1600)
+                manifest.write_text(
+                    json.dumps(
+                        {
+                            "id": "a",
+                            "reference": "가",
+                            "audio_path": str(wav),
+                            "audio_sha256": digest(wav),
+                        }
+                    )
+                )
+                vad_model.write_bytes(b"fixture")
+                adapter = SimpleNamespace(
+                    model_files={},
+                    metadata={},
+                    load=Mock(),
+                    transcribe=Mock(return_value="가"),
+                    close=Mock(),
+                )
+                session = SimpleNamespace(
+                    pipeline=SimpleNamespace(metadata=lambda: {"closed": closed}),
+                    results=[],
+                    segments=[],
+                    skipped=[],
+                    scheduler_stats={},
+                    token_timings={},
+                    worker=SimpleNamespace(
+                        queue_peak=0, thread=SimpleNamespace(is_alive=lambda: False)
+                    ),
+                    accept_at=Mock(),
+                )
+                closed = False
+
+                def close():
+                    nonlocal closed
+                    closed = True
+                    session.results = [{"status": "cancelled", "kind": "partial"}]
+                    session.scheduler_stats = {"closed": True}
+                    session.token_timings = {1: {"first_visible_published_s": 99}}
+
+                session.close = close
+
+                def replay(*args, **kwargs):
+                    if interrupted:
+                        raise RuntimeError("fixture input interruption")
+                    return ""
+
+                with (
+                    patch("edge_asr.qwen.realtime.replay.limits_verified", return_value=True),
+                    patch("edge_asr.qwen.realtime.replay.CaptionSession", return_value=session),
+                    patch("edge_asr.qwen.realtime.replay.run_paced", side_effect=replay),
+                ):
+                    info = run(
+                        root,
+                        root / "configs/gguf.toml",
+                        manifest,
+                        directory / "run",
+                        vad_model,
+                        adapter_factory=lambda *_: adapter,
+                        vad_factory=lambda _: BoundedProbabilityVad(Probability()),
+                        gap_s=0,
+                    )
+                self.assertTrue(closed)
+                self.assertEqual(info["results"], session.results)
+                self.assertEqual(info["pipeline"], {"closed": True})
+                self.assertEqual(info["partial_scheduler"], {"closed": True})
+                self.assertEqual(info["token_timings"], [{"first_visible_published_s": 99}])
+                adapter.close.assert_called_once()
+                if interrupted:
+                    self.assertEqual(info["status"], "failed")
+                    self.assertNotIn("cancelled_calls", info)
+                    self.assertNotIn("final_transcript_score", info)
+                else:
+                    self.assertEqual(info["status"], "completed")
+                    self.assertEqual(info["cancelled_calls"], 0)
+                    self.assertIsNone(info["first_visible_caption_from_track_start_s"])
+                    self.assertEqual(info["final_transcript_score"]["cer"], 1)
+
+    def test_completed_metrics_keep_failed_cancelled_and_hidden_attempts_in_denominators(self):
+        def result(job, kind, status, at, displayed=True, **extra):
+            return {
+                "type": "result",
+                "job_id": job,
+                "segment_id": 0,
+                "kind": kind,
+                "status": status,
+                "displayed": displayed,
+                "start_frame": 0,
+                "end_frame": 32000,
+                "published_s": at,
+                "queue_wait_s": job + 1,
+                "hypothesis": "가나" if status == "success" else None,
+                **extra,
+            }
+
+        for status, failed, cancelled, median in (
+            ("success", 0, 0, 2),
+            ("failed", 1, 0, 2),
+            ("cancelled", 0, 1, 2),
+        ):
+            with self.subTest(status=status):
+                rows = [
+                    result(0, "partial", "success", 1),
+                    result(
+                        1,
+                        "partial",
+                        status,
+                        2,
+                        False,
+                        failure_kind="empty_partial" if failed else None,
+                        adapter_result={"native_result": {"first_generated_token_s": 0.25}},
+                    ),
+                    result(
+                        2,
+                        "final",
+                        "failed" if failed else "success",
+                        5,
+                        False,
+                        adapter_result={"native_result": {"first_generated_token_s": 0.5}},
+                    ),
+                ]
+                session = SimpleNamespace(
+                    results=rows,
+                    skipped=[],
+                    segments=[{"owned_start_frame": 0, "owned_end_frame": 32000}],
+                    token_timings={1: {"first_visible_published_s": 0.8}},
+                )
+                events = [{"type": "submitted"}] * 3 + [{"type": "coalesced"}] + rows
+                hypothesis = "" if failed else "가나"
+                summary = {}
+                collect_completed_metrics(
+                    summary,
+                    session,
+                    events,
+                    [{"reference": "가나다라"}],
+                    hypothesis,
+                    token_stream=True,
+                )
+                self.assertEqual(summary["failed_calls"], failed * 2)
+                self.assertEqual(summary["cancelled_calls"], cancelled)
+                self.assertEqual(summary["empty_partial_calls"], failed)
+                self.assertEqual(summary["final_count"], 1)
+                self.assertEqual(summary["partial_count"], 1)
+                self.assertEqual(summary["status"], "failed" if failed else "completed")
+                self.assertEqual(summary["final_transcript_score"]["reference_characters"], 4)
+                self.assertEqual(summary["final_transcript_score"]["cer"], 1 if failed else 0.5)
+                self.assertEqual(
+                    summary["inference_queue_wait_s"],
+                    {"n": 3, "mean": 2, "p50": median, "p95": 3, "max": 3},
+                )
+                self.assertEqual(
+                    summary["final_from_owned_end_s"],
+                    {"n": 1, "mean": 3, "p50": None, "p95": None, "max": 3},
+                )
+                self.assertEqual(
+                    summary["engine_ttft_s"],
+                    {"n": 2, "mean": 0.375, "p50": 0.25, "p95": 0.5, "max": 0.5},
+                )
+                self.assertEqual(summary["first_caption_from_track_start_s"], 1)
+                self.assertEqual(summary["first_partial_from_track_start_s"], 1)
+                self.assertEqual(summary["first_visible_caption_from_track_start_s"], 0.8)
+                self.assertEqual(summary["submitted_requests"], 3)
+                self.assertEqual(summary["coalesced_partial_requests"], 1)
+                self.assertEqual(summary["caption_stability"]["failed_results"], failed * 2)
+                self.assertEqual(summary["caption_stability"]["cancelled_results"], cancelled)
+                unscored = {}
+                collect_completed_metrics(
+                    unscored, session, events, [{"reference": ""}], hypothesis
+                )
+                self.assertIsNone(unscored["final_transcript_score"])
+                rows[1]["adapter_result"]["native_result"] = "invalid metadata"
+                interrupted = {}
+                with self.assertRaises(AttributeError):
+                    collect_completed_metrics(
+                        interrupted, session, events, [{"reference": "가"}], hypothesis
+                    )
+                self.assertEqual(interrupted["failed_calls"], failed * 2)
+                self.assertEqual(interrupted["cancelled_calls"], cancelled)
+                self.assertNotIn("final_transcript_score", interrupted)
+
     def test_cli_accepts_early_first_request_without_changing_followup_or_default(self):
         parser = argument_parser()
         required = ["--manifest", "input.jsonl", "--output", "new-run"]
