@@ -49,3 +49,5 @@
 [긴 음원 실측](../results/summaries/optimization/q8-conv-headroom-20261118.md)에서 합성곱 비용은 줄었지만 첫 표시/첫 4자 지연이 모두 개선되지는 않아, 이 설정은 선택 후보로 유지합니다.
 
 `quantization/q8_decoder_control.toml`은 세 decoder의 동일 빌드 대조용 Q8이며, 공유 Q8의 prefix bridge와 구분합니다. `quantization/q4_0_q6_head_realtime.toml`은 기존 Q4_0 본체/Q6_K 출력층 모델입니다. 두 설정은 현재 headroom 정책에서 출력층의 정확도·지연 영향을 확인하는 선택 평가용입니다. [조건](../docs/research/qwen_realtime.md#decoder-출력층과-가변-갱신--2026-11-18-사전-조건).
+
+[가변 스트리밍 실측](../results/summaries/optimization/decoder-headroom-20261118.md)에서 Q6_K 출력층은 빠른 Q4 대비 CER0.41%p 개선과 지연 증가·같은 최종 실패7건을 보였습니다. 공유 기본으로 채택하지 않고 재현용 설정으로 유지합니다.
