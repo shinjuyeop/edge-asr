@@ -14,7 +14,7 @@ from edge_asr.adapters import create_adapter
 from edge_asr.artifacts import digest, write_event, write_json
 from edge_asr.audio_policy import VAD_POLICIES
 from edge_asr.config import load_evaluation_config
-from edge_asr.dataset import load_audio, load_manifest, prepare_track
+from edge_asr.dataset import Audio, float_digest, load_audio, load_manifest, prepare_track
 from edge_asr.metrics import character_errors, distribution
 from edge_asr.qwen.realtime.session import CaptionSession
 from edge_asr.qwen.realtime.stability import content_updates
@@ -100,6 +100,24 @@ def run(
             info.update(sources=sources, input_manifest_sha256=manifest_sha, audio=audio.metadata())
         samples, _ = load_manifest(manifest, root)
         warmup = load_audio(samples[0].audio_path, 16000)
+        source_frames = len(warmup.samples)
+        maximum = settings.get("max_segment_s", 5)
+        if not math.isfinite(maximum) or maximum <= 0:
+            raise ValueError("워밍업의 ASR 최대 구간은 유한한 양수여야 합니다.")
+        end = min(source_frames, round(maximum * 16000))
+        if end < source_frames:
+            pcm = warmup.samples[:end]
+            warmup = Audio(pcm, 16000, float_digest(pcm))
+        info["warmup_input"] = {
+            "policy": "leading_max_segment_v1",
+            "source_id": samples[0].id,
+            "source_audio_sha256": samples[0].audio_sha256,
+            "source_frames": source_frames,
+            "start_frame": 0,
+            "end_frame": end,
+            "payload_float32_sha256": float_digest(warmup.samples),
+            "scope": "첫 원음의 ASR 최대 구간 이내 PCM만 워밍업. 평가 입력은 전체 원음 유지.",
+        }
         vad = (
             vad_factory
             or (

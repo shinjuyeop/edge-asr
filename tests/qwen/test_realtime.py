@@ -10,7 +10,7 @@ from threading import Event
 from unittest.mock import patch
 
 from edge_asr.artifacts import digest
-from edge_asr.dataset import load_audio, prepare_track, write_wav
+from edge_asr.dataset import float_digest, load_audio, prepare_track, write_wav
 from edge_asr.qwen.realtime.replay import argument_parser, run
 from edge_asr.qwen.realtime.session import CaptionSession
 from edge_asr.qwen.realtime.worker import DecodeWorker
@@ -719,6 +719,84 @@ class RealtimeTests(unittest.TestCase):
                     session._offer("final", 99, 16000, 17600, array("h", [0] * 1600))
             finally:
                 session.close()
+
+    def test_long_source_warmup_is_bounded_without_truncating_replay_input(self):
+        class Loaded:
+            model_files = {}
+            metadata = {"backend": "mock"}
+
+            def __init__(self):
+                self.calls = []
+                self.closed = False
+
+            def load(self):
+                pass
+
+            def close(self):
+                self.closed = True
+
+            def transcribe(self, audio):
+                self.calls.append(audio.samples)
+                return "워밍업"
+
+        root = Path(__file__).resolve().parents[2]
+        for seconds, maximum in ((1, 5), (60, 5), (60, 3)):
+            with self.subTest(seconds=seconds, maximum=maximum):
+                with tempfile.TemporaryDirectory() as temporary:
+                    directory = Path(temporary)
+                    wav = directory / "source.wav"
+                    write_wav(wav, array("h", (i % 5000 for i in range(seconds * 16000))))
+                    original = load_audio(wav, 16000)
+                    manifest = directory / "manifest.jsonl"
+                    manifest.write_text(
+                        json.dumps(
+                            {
+                                "id": "source",
+                                "reference": "전사",
+                                "audio_path": str(wav),
+                                "audio_sha256": digest(wav),
+                            }
+                        )
+                    )
+                    vad_model = directory / "vad.onnx"
+                    vad_model.write_bytes(b"fixture")
+                    adapter = Loaded()
+
+                    def inspect_replay(session, audio, *args, **kwargs):
+                        self.assertEqual(audio.samples, original.samples)
+                        raise RuntimeError("fixture: full replay input inspected")
+
+                    with (
+                        patch("edge_asr.qwen.realtime.replay.limits_verified", return_value=True),
+                        patch(
+                            "edge_asr.qwen.realtime.replay.run_paced", side_effect=inspect_replay
+                        ),
+                    ):
+                        info = run(
+                            root,
+                            root / "configs/gguf.toml",
+                            manifest,
+                            directory / "run",
+                            vad_model,
+                            adapter_factory=lambda *_: adapter,
+                            vad_factory=lambda _: BoundedProbabilityVad(Probability()),
+                            gap_s=0,
+                            max_segment_s=maximum,
+                        )
+                    expected = original.samples[: maximum * 16000]
+                    self.assertEqual(adapter.calls, [expected] * 4)
+                    self.assertTrue(adapter.closed)
+                    self.assertEqual(
+                        info["error"]["message"], "fixture: full replay input inspected"
+                    )
+                    self.assertTrue(all(r["status"] == "success" for r in info["warmup"]))
+                    self.assertEqual(info["warmup_input"]["source_frames"], seconds * 16000)
+                    self.assertEqual(info["warmup_input"]["end_frame"], len(expected))
+                    self.assertEqual(
+                        info["warmup_input"]["payload_float32_sha256"], float_digest(expected)
+                    )
+                    self.assertEqual(info["audio"]["frames"], seconds * 16000)
+                    self.assertEqual(digest(wav), original.sha256)
 
     def test_runner_preserves_failed_calls_and_refuses_existing_output(self):
         class Loaded(Adapter):

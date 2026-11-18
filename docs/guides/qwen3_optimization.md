@@ -271,3 +271,9 @@ flock -n results/listener/inference.lock env OPENBLAS_NUM_THREADS=1 PYTHONPATH=s
 청취 프로필은 **실험 Q4 · 1.99초 음성 창 캐시**(`configs/listener_partial_window.toml`)입니다. `continuous/latest`·첫0.6초·새 음성0.8초·끝 여유0.2초·확정 우선 즉시 취소·점진적 열 조절을 사용합니다. `paced` 계산량 배분/취소 유예와는 다른 조건이며 화면의 **부분 음성 창** 항목에서 크기·캐시 사용을 확인할 수 있습니다. 기록 재생의 원음별 확정 확인·정지·다음 음원 흐름은 같습니다.
 
 [100개 실측](../../results/summaries/optimization/audio-window-cache-20261118.md)에서 공백 중앙값은3.42→2.61초로 줄었지만 확정 p95는1.83→2.34초로 늘어 기본 전환을 보류했습니다. 기록 재생은 `stream-cache-20261118-03/full100-window1990`, 대조는 같은 폴더의 `full100-baseline`입니다.
+
+## 긴 음원 연속 평가
+
+`configs/listener_longform_natural.toml`은 약1분 자연발화8개, `configs/listener_longform_reading.toml`은 낭독 연결4개를1.99초 부분 창 캐시 구성으로 처리합니다. 입력은 기존 `data/evaluation/longform-20261117-01/`의 부분 목록이며, 원음 전체를1배속으로 받고 ASR/VAD 최대5초 구간으로 나눕니다. 자연발화와 낭독의 CER는 따로 집계하고 파일 내부 무음도 보존합니다.
+
+첫 추론/워밍업에는 첫 원음의 `max_segment_s` 이내 앞부분만 사용합니다. 긴 파일 전체가 워밍업의 모델 문맥을 넘는 문제를 막으며 실제 평가 입력·정답은 줄이지 않습니다. 원본 해시·프레임 수, 워밍업 시작/끝 프레임과 float PCM 해시는 `worker.json`의 `warmup_input`에 기록합니다. 짧은 원음은 그대로 사용합니다. 마이크 준비에 쓰는 manifest 워밍업에도 같은 상한이 적용됩니다.
