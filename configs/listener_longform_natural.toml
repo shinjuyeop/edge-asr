@@ -1,0 +1,23 @@
+# 선택 실험. 부분 인코더 창/음성 KV를 재사용하고 확정은 전체 구간을 다시 계산합니다.
+title = "긴 음원 · 자연발화8개 · 1.99초 창 캐시"
+config = "configs/quantization/q4_0_partial_window.toml"
+manifest = "data/evaluation/longform-20261117-01/natural.jsonl"
+vad_model = "models/silero-vad-k2-20261029/silero_vad.onnx"
+
+[replay]
+gap_s = 0
+vad_threshold = 0.3
+vad_preprocess = "rms26-floor80"
+vad_max_speech_s = 5
+max_segment_s = 5
+partial_after_s = 0.6
+partial_interval_s = 4
+drain_timeout_s = 30
+queue_capacity = 4
+silence_policy = "skip-zero"
+token_stream = true
+partial_mode = "continuous"
+partial_min_new_s = 0.8
+partial_tail_margin_s = 0.2
+cancel_partial_for_final = true
+partial_thermal_policy = "pace"
