@@ -9,6 +9,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
+from edge_asr.artifacts import digest, write_jsonl
 from edge_asr.tools.data import external as helper
 
 
@@ -92,11 +93,11 @@ class DataTests(unittest.TestCase):
                     {
                         "id": str(index),
                         "audio_path": str(path.relative_to(root)),
-                        "audio_sha256": helper.sha256(path),
+                        "audio_sha256": digest(path),
                         "reference": f"문장{index}",
                     }
                 )
-            helper.write_manifest(kss / "manifest.jsonl", rows)
+            write_jsonl(kss / "manifest.jsonl", rows)
             destination = root / "data/evaluation/stress"
             result = helper.prepare_stress(root, destination)
             self.assertEqual(helper.prepare_stress(root, destination), result)

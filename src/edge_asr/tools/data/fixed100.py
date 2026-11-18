@@ -14,18 +14,13 @@ from pathlib import Path, PurePosixPath
 from edge_asr.artifacts import digest, write_json, write_jsonl
 from edge_asr.dataset import load_audio, load_manifest
 from edge_asr.metrics import normalize
-from edge_asr.tools.data.external import finish, verify_existing
+from edge_asr.tools.data import zeroth
+from edge_asr.tools.data.external import checked_member, convert, finish, verify_existing
 
 FLEURS_REVISION = "70bb2e84b976b7e960aa89f1c648e09c59f894dd"
 HF = f"https://huggingface.co/datasets/google/fleurs/resolve/{FLEURS_REVISION}/"
-SLR = "https://www.openslr.org/resources/40/"
-ETAG = '"2684b9daa-567cdc82e7e00"'
 SOURCES = {
-    "zeroth-prefix.bin": (
-        SLR + "zeroth_korean.tar.gz",
-        "7cafae27a70315876bfea15406562e80a6f922d1fc437716a658020e64d97d41",
-        134217728,
-    ),
+    "zeroth-prefix.bin": zeroth.PREFIX_SOURCE,
     "fleurs-test.tar.gz": (
         HF + "data/ko_kr/audio/test.tar.gz",
         "3489e529f2aad18d3357b746c5f955941d258b79dc60d8a102d5bced2a223184",
@@ -42,17 +37,17 @@ SOURCES = {
         None,
     ),
     "ZEROTH_info.txt": (
-        SLR + "info.txt",
+        zeroth.SLR + "info.txt",
         "a6a9252ee4c93c0c18cf446ba41f82e260aaaf40447da0a3adffac71af3c16e2",
         None,
     ),
     "ZEROTH_about.html": (
-        SLR + "about.html",
+        zeroth.SLR + "about.html",
         "f367f9c7b73c70c5c5f4e5115d28133532f002857978098c7f9ad6f2864c5f92",
         None,
     ),
     "ZEROTH_checksum.md5": (
-        SLR + "checksum.md5",
+        zeroth.SLR + "checksum.md5",
         "8945b198864a404b8948d11ba5c5467597c991e56819acdd4bf9871de160faba",
         None,
     ),
@@ -98,7 +93,7 @@ def download_sources(cache):
             continue
         headers = {"User-Agent": "edge-asr-fixed100/1"}
         if name == "zeroth-prefix.bin":
-            headers.update(Range=f"bytes=0-{size - 1}", **{"If-Match": ETAG})
+            headers.update(Range=f"bytes=0-{size - 1}", **{"If-Match": zeroth.ETAG})
         temporary = path.with_suffix(path.suffix + ".part")
         with (
             urllib.request.urlopen(
@@ -108,7 +103,7 @@ def download_sources(cache):
         ):
             if name == "zeroth-prefix.bin" and (
                 response.status != 206
-                or response.headers.get("ETag") != ETAG
+                or response.headers.get("ETag") != zeroth.ETAG
                 or response.headers.get("Content-Range") != "bytes 0-134217727/10339720618"
             ):
                 raise ValueError("공식 Zeroth 부분 응답의 ETag/Range 불일치")
@@ -123,103 +118,6 @@ def download_sources(cache):
         temporary.rename(path)
         print(f"downloaded: {name}", flush=True)
     check_sources(cache)
-
-
-def checked_member(member):
-    path = PurePosixPath(member.name)
-    if path.is_absolute() or ".." in path.parts or member.issym() or member.islnk():
-        raise ValueError("안전하지 않은 원본 tar 경로")
-    if not member.isdir() and not member.isfile():
-        raise ValueError("원본 tar의 일반 파일/디렉터리만 허용합니다.")
-    if member.size > 16 * 1024**2:
-        raise ValueError("개별 원음/메타데이터 크기 상한 초과")
-    return path
-
-
-def zeroth_members(cache):
-    """전체 gzip의 앞부분에서 완전한 test만 읽는다. 전체 archive MD5 검증과 구분한다."""
-    files = {}
-    with tarfile.open(cache / "zeroth-prefix.bin", mode="r|gz") as archive:
-        for member in archive:
-            # 다음 train 디렉터리의 시작 헤더까지 읽어 test 수집의 완료를 확인한다.
-            if member.name == "train_data_01" and member.isdir():
-                break
-            path = checked_member(member)
-            if str(path) != "AUDIO_INFO" and path.parts[0] != "test_data_01":
-                raise ValueError("예상하지 않은 Zeroth test 원본 경로")
-            if member.isfile():
-                if member.name in files:
-                    raise ValueError("중복 tar member")
-                files[member.name] = archive.extractfile(member).read()
-        else:
-            raise ValueError(
-                "test 끝/train 시작 헤더가 없어 완전한 test 수집을 확인할 수 없습니다."
-            )
-    if sum(name.endswith(".flac") for name in files) != 457:
-        raise ValueError("공식 Zeroth test457개가 필요합니다.")
-    return files
-
-
-def flac_info(blob):
-    # FLAC STREAMINFO 첫 블록: sample rate20, channels3, bits5, total samples36 bits.
-    if (
-        len(blob) < 42
-        or blob[:4] != b"fLaC"
-        or blob[4] & 0x7F
-        or int.from_bytes(blob[5:8], "big") != 34
-    ):
-        raise ValueError("FLAC STREAMINFO가 필요합니다.")
-    packed = int.from_bytes(blob[18:26], "big")
-    rate, channels, bits, frames = (
-        packed >> 44,
-        ((packed >> 41) & 7) + 1,
-        ((packed >> 36) & 31) + 1,
-        packed & ((1 << 36) - 1),
-    )
-    if (rate, channels, bits) != (16000, 1, 16) or not 0 < frames < 30 * rate:
-        raise ValueError("30초 미만의 16kHz mono PCM16 원음이 필요합니다.")
-    return frames
-
-
-def zeroth_candidates(files):
-    speakers = {}
-    for line in files["AUDIO_INFO"].decode("utf-8").splitlines()[1:]:
-        speaker, _, sex, script, split = line.strip().split("|")
-        if split == "test_data_01":
-            speakers[speaker] = {"gender": {"m": "male", "f": "female"}[sex], "script": script}
-    if len(speakers) != 10:
-        raise ValueError("Zeroth test 화자10명이 필요합니다.")
-    references = {}
-    for name, blob in files.items():
-        if name.endswith(".trans.txt"):
-            for line in blob.decode("utf-8").splitlines():
-                key, text = line.split(maxsplit=1)
-                if key in references:
-                    raise ValueError("중복 Zeroth 전사 ID")
-                references[key] = text
-    rows = []
-    for name, blob in files.items():
-        if not name.endswith(".flac"):
-            continue
-        path = PurePosixPath(name)
-        speaker = path.parent.name
-        if speaker not in speakers or path.parts[1] != speakers[speaker]["script"]:
-            raise ValueError("Zeroth 음원과 화자/스크립트 정보 불일치")
-        rows.append(
-            {
-                "id": "zeroth-" + path.stem,
-                "source": "zeroth",
-                "member": name,
-                "reference": references[path.stem],
-                "frames": flac_info(blob),
-                "speaker_id": speaker,
-                "gender": speakers[speaker]["gender"],
-                "source_split": "test_data_01",
-            }
-        )
-    if len(rows) != len(references):
-        raise ValueError("Zeroth 음원과 전사 개수 불일치")
-    return rows
 
 
 def exclusions(root):
@@ -310,40 +208,6 @@ def select(candidates, excluded):
     return sorted(selected, key=lambda r: r["id"])
 
 
-def convert(original, output, frames):
-    subprocess.run(
-        [
-            "ffmpeg",
-            "-nostdin",
-            "-hide_banner",
-            "-loglevel",
-            "error",
-            "-xerror",
-            "-err_detect",
-            "explode",
-            "-n",
-            "-i",
-            str(original),
-            "-map_metadata",
-            "-1",
-            "-c:a",
-            "pcm_s16le",
-            "-fflags",
-            "+bitexact",
-            "-flags:a",
-            "+bitexact",
-            str(output),
-        ],
-        check=True,
-        capture_output=True,
-        timeout=30,
-    )
-    audio = load_audio(output, 16000)
-    if len(audio.samples) != frames:
-        raise ValueError("원본 metadata와 PCM 프레임 수 불일치")
-    return audio
-
-
 def verify(root, output):
     info = verify_existing(output, RECIPE)
     rows = [json.loads(line) for line in (output / "manifest.jsonl").read_text().splitlines()]
@@ -369,8 +233,8 @@ def prepare(root, cache, output):
     output.relative_to(root / "data/evaluation")
     check_sources(cache)
     old_texts, old_ids, excluded_hashes = exclusions(root)
-    files = zeroth_members(cache)
-    candidates = zeroth_candidates(files) + fleurs_candidates(cache, old_ids)
+    files = zeroth.members(cache)
+    candidates = zeroth.candidates(files) + fleurs_candidates(cache, old_ids)
     selected = select(candidates, old_texts)
     stage = output.with_name("." + output.name + ".preparing")
     stage.mkdir(parents=True, exist_ok=False)

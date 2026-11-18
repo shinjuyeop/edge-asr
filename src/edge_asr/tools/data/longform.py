@@ -16,8 +16,8 @@ from edge_asr.artifacts import digest, read_jsonl, write_json, write_jsonl
 from edge_asr.dataset import load_audio, load_manifest, write_wav
 from edge_asr.metrics import normalize
 from edge_asr.textgrid import read_textgrid
-from edge_asr.tools.data import fixed100
-from edge_asr.tools.data.external import finish, verify_existing
+from edge_asr.tools.data import zeroth
+from edge_asr.tools.data.external import convert, finish, verify_existing
 
 OUTPUT = Path("data/evaluation/longform-20261117-01")
 SEOUL = Path("data/sources/seoul-corpus-20261029-01")
@@ -306,14 +306,14 @@ def select_read(candidates, excluded):
 
 def prepare_read(root, stage, relative):
     cache = root / ZEROTH
-    if digest(cache / "zeroth-prefix.bin") != fixed100.SOURCES["zeroth-prefix.bin"][1]:
+    if digest(cache / "zeroth-prefix.bin") != zeroth.PREFIX_SOURCE[1]:
         raise ValueError("Zeroth 원본 prefix SHA-256 불일치")
-    files = fixed100.zeroth_members(cache)
+    files = zeroth.members(cache)
     excluded = {
         normalize(r["reference"])
         for r in read_jsonl(root / "data/evaluation/edge100-20261109-01/manifest.jsonl")
     }
-    selected = select_read(fixed100.zeroth_candidates(files), excluded)
+    selected = select_read(zeroth.candidates(files), excluded)
     rows = []
     for gender, gap, sources in selected:
         chunks, timeline, frames = [], [], 0
@@ -325,7 +325,7 @@ def prepare_read(root, stage, relative):
             original = stage / "original" / (source["id"] + ".flac")
             original.write_bytes(files[source["member"]])
             converted = stage / "part.wav"
-            fixed100.convert(original, converted, source["frames"])
+            convert(original, converted, source["frames"])
             pcm = read_pcm(converted)
             converted.unlink()
             chunks.append(pcm)
@@ -451,7 +451,7 @@ def prepare(root, output):
         {
             "recipe": RECIPE,
             "source_archives": ARCHIVES,
-            "zeroth_prefix_sha256": fixed100.SOURCES["zeroth-prefix.bin"][1],
+            "zeroth_prefix_sha256": zeroth.PREFIX_SOURCE[1],
             "excluded_fixed100_manifest_sha256": digest(
                 root / "data/evaluation/edge100-20261109-01/manifest.jsonl"
             ),

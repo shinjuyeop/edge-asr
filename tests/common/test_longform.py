@@ -77,6 +77,7 @@ class LongformTests(unittest.TestCase):
         ]
         excluded = {longform.normalize(rows[0]["reference"])}
         selected = longform.select_read(rows, excluded)
+        self.assertEqual(selected, longform.select_read(list(reversed(rows)), excluded))
         self.assertEqual(len({part[0]["speaker_id"] for _, _, part in selected}), 4)
         for _, _, parts in selected:
             self.assertFalse({longform.normalize(r["reference"]) for r in parts} & excluded)

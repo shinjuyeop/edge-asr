@@ -1,4 +1,4 @@
-"""Host에서 FLEURS ko_kr test 100개와 KSS 기반 길이/무음 스트레스 자료 준비."""
+"""공개 평가 자료 준비와 공통 archive 검사·무변형 PCM 변환·출처 영수증 처리."""
 
 import argparse
 import json
@@ -9,12 +9,11 @@ import urllib.parse
 import wave
 from collections import Counter
 from datetime import datetime, timezone
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
-from edge_asr.artifacts import write_json
-from edge_asr.artifacts import write_jsonl as write_manifest
+from edge_asr.artifacts import digest, write_json, write_jsonl
 from edge_asr.dataset import load_audio, load_manifest, write_wav
-from edge_asr.tools.data.kss import fetch, sha256
+from edge_asr.tools.data.kss import fetch
 
 DATASET = "google/fleurs"
 REVISION = "70bb2e84b976b7e960aa89f1c648e09c59f894dd"
@@ -68,6 +67,52 @@ def validate_rows(value, revision, *, source_split="test", offset=0, count=None)
     return value["rows"]
 
 
+def checked_member(member):
+    path = PurePosixPath(member.name)
+    if path.is_absolute() or ".." in path.parts or member.issym() or member.islnk():
+        raise ValueError("안전하지 않은 원본 tar 경로")
+    if not member.isdir() and not member.isfile():
+        raise ValueError("원본 tar의 일반 파일/디렉터리만 허용합니다.")
+    if member.size > 16 * 1024**2:
+        raise ValueError("개별 원음/메타데이터 크기 상한 초과")
+    return path
+
+
+def convert(original, output, frames):
+    """Zeroth FLAC·FLEURS WAV를 재표본화/절취 없이 PCM16으로 바꾸고 프레임 수를 확인한다."""
+    subprocess.run(
+        [
+            "ffmpeg",
+            "-nostdin",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-xerror",
+            "-err_detect",
+            "explode",
+            "-n",
+            "-i",
+            str(original),
+            "-map_metadata",
+            "-1",
+            "-c:a",
+            "pcm_s16le",
+            "-fflags",
+            "+bitexact",
+            "-flags:a",
+            "+bitexact",
+            str(output),
+        ],
+        check=True,
+        capture_output=True,
+        timeout=30,
+    )
+    audio = load_audio(output, 16000)
+    if len(audio.samples) != frames:
+        raise ValueError("원본 metadata와 PCM 프레임 수 불일치")
+    return audio
+
+
 def verify_existing(destination, recipe):
     provenance = json.loads((destination / "provenance.json").read_text())
     if provenance["recipe"] != recipe:
@@ -81,7 +126,7 @@ def verify_existing(destination, recipe):
         raise ValueError("기존 파일 목록 변경")
     for name, checksum in provenance["files"].items():
         path = destination / name
-        if path.is_symlink() or sha256(path) != checksum:
+        if path.is_symlink() or digest(path) != checksum:
             raise ValueError(f"기존 파일 변경: {name}")
     return provenance
 
@@ -89,7 +134,7 @@ def verify_existing(destination, recipe):
 def finish(stage, destination, provenance):
     provenance["prepared_at_utc"] = datetime.now(timezone.utc).isoformat()
     provenance["files"] = {
-        str(p.relative_to(stage)): sha256(p) for p in sorted(stage.rglob("*")) if p.is_file()
+        str(p.relative_to(stage)): digest(p) for p in sorted(stage.rglob("*")) if p.is_file()
     }
     write_json(stage / "provenance.json", provenance)
     if destination.exists():
@@ -182,11 +227,11 @@ def prepare_fleurs(root, destination):
                     "sentence_id": row["id"],
                     "gender": row["gender"],
                     **audio.metadata(),
-                    "original_sha256": sha256(original),
+                    "original_sha256": digest(original),
                 }
             )
             print(f"FLEURS {index + 1}/{COUNT}: {audio.duration_s:.3f}초", flush=True)
-        write_manifest(stage / "manifest.jsonl", manifest)
+        write_jsonl(stage / "manifest.jsonl", manifest)
         return finish(
             stage,
             destination,
@@ -244,15 +289,15 @@ def prepare_stress(root, destination):
                 {
                     "id": f"silence-{duration}s",
                     "audio_path": str(relative / "wav" / name),
-                    "audio_sha256": sha256(stage / "wav" / name),
+                    "audio_sha256": digest(stage / "wav" / name),
                     "reference": "",
                     "condition": "synthetic_zero_silence",
                     "split": "stress",
                 }
             )
-        write_manifest(stage / "silence.jsonl", silence)
+        write_jsonl(stage / "silence.jsonl", silence)
         short = sorted(samples, key=lambda s: (audio[s.id].duration_s, s.id))[:10]
-        write_manifest(
+        write_jsonl(
             stage / "short.jsonl",
             [
                 {
@@ -284,13 +329,13 @@ def prepare_stress(root, destination):
                 raise ValueError("긴 입력을 만들 원본 발화가 부족합니다.")
             name = f"long-{target}.wav"
             write_wav(stage / "wav" / name, b"".join(chunks))
-            write_manifest(
+            write_jsonl(
                 stage / f"long-{target}.jsonl",
                 [
                     {
                         "id": f"synthetic-long-{target}",
                         "audio_path": str(relative / "wav" / name),
-                        "audio_sha256": sha256(stage / "wav" / name),
+                        "audio_sha256": digest(stage / "wav" / name),
                         "reference": " ".join(references),
                         "split": "stress",
                         "condition": "synthetic_concatenated_kss",

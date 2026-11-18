@@ -2,18 +2,75 @@
 
 import random
 import shutil
+import subprocess
 import tarfile
 import tempfile
 import unittest
 import wave
+from io import BytesIO
 from pathlib import Path
 
+from edge_asr.artifacts import digest
 from edge_asr.dataset import write_wav
 from edge_asr.metrics import normalize
 from edge_asr.tools.data import fixed100 as prepare
+from edge_asr.tools.data import zeroth
+from edge_asr.tools.data.external import checked_member, convert
 
 
 class Fixed100Tests(unittest.TestCase):
+    def test_zeroth_archive_and_candidates_preserve_order_references_and_frames(self):
+        files = {
+            "AUDIO_INFO": (
+                "speaker|age|sex|script|split\n"
+                + "\n".join(
+                    f"s{i}|30|{'m' if i % 2 else 'f'}|script|test_data_01" for i in range(10)
+                )
+            ).encode(),
+        }
+        references, expected = [], []
+        for i in range(457):
+            speaker, key, frames = f"s{i % 10}", f"utt-{i:03d}", 16000 + i
+            name = f"test_data_01/script/{speaker}/{key}.flac"
+            packed = (16000 << 44) | (15 << 36) | frames
+            files[name] = (
+                b"fLaC\x80\x00\x00\x22" + b"\0" * 10 + packed.to_bytes(8, "big") + b"\0" * 16
+            )
+            references.append(f"{key} 원본 문장 {i}!")
+            expected.append(
+                {
+                    "id": "zeroth-" + key,
+                    "source": "zeroth",
+                    "member": name,
+                    "reference": f"원본 문장 {i}!",
+                    "frames": frames,
+                    "speaker_id": speaker,
+                    "gender": "male" if i % 2 else "female",
+                    "source_split": "test_data_01",
+                }
+            )
+        files["test_data_01/script/all.trans.txt"] = "\n".join(references).encode()
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            archive = root / "zeroth-prefix.bin"
+            with tarfile.open(archive, "w:gz") as stream:
+                for name, blob in files.items():
+                    member = tarfile.TarInfo(name)
+                    member.size = len(blob)
+                    stream.addfile(member, BytesIO(blob))
+                boundary = tarfile.TarInfo("train_data_01")
+                boundary.type = tarfile.DIRTYPE
+                stream.addfile(boundary)
+            original = archive.read_bytes()
+            collected = zeroth.members(root)
+            self.assertEqual(list(collected), list(files))
+            self.assertEqual(collected, files)
+            self.assertEqual(zeroth.candidates(collected), expected)
+            self.assertEqual(archive.read_bytes(), original)
+        files["test_data_01/script/duplicate.trans.txt"] = references[0].encode()
+        with self.assertRaisesRegex(ValueError, "중복 Zeroth 전사 ID"):
+            zeroth.candidates(files)
+
     def candidates(self):
         rows = []
         for speaker in range(10):
@@ -80,26 +137,26 @@ class Fixed100Tests(unittest.TestCase):
     def test_archive_traversal_symlinks_and_oversized_members_rejected(self):
         for name in ("../escape", "/absolute", "test_data_01/../../escape"):
             with self.subTest(name=name), self.assertRaises(ValueError):
-                prepare.checked_member(tarfile.TarInfo(name))
+                checked_member(tarfile.TarInfo(name))
         member = tarfile.TarInfo("test_data_01/link")
         member.type = tarfile.SYMTYPE
         member.linkname = "../../escape"
         with self.assertRaises(ValueError):
-            prepare.checked_member(member)
+            checked_member(member)
         member = tarfile.TarInfo("test_data_01/large")
         member.size = 17 * 1024**2
         with self.assertRaises(ValueError):
-            prepare.checked_member(member)
+            checked_member(member)
 
     def test_flac_format_rejects_truncation_and_wrong_rate(self):
         def blob(rate):
             packed = (rate << 44) | (15 << 36) | 123456
             return b"fLaC\x80\x00\x00\x22" + b"\0" * 10 + packed.to_bytes(8, "big") + b"\0" * 16
 
-        self.assertEqual(prepare.flac_info(blob(16000)), 123456)
+        self.assertEqual(zeroth.flac_info(blob(16000)), 123456)
         for value in (b"fLaC", blob(48000), b"bad header"):
             with self.assertRaises(ValueError):
-                prepare.flac_info(value)
+                zeroth.flac_info(value)
 
     @unittest.skipUnless(shutil.which("ffmpeg"), "원음 변환 검사는 기존 ffmpeg가 필요합니다.")
     def test_real_conversion_preserves_pcm_and_rejects_wrong_frame_count(self):
@@ -109,13 +166,17 @@ class Fixed100Tests(unittest.TestCase):
             payload = bytes(range(256)) * 8
             write_wav(original, payload)
             output = path / "converted.wav"
-            audio = prepare.convert(original, output, len(payload) // 2)
+            audio = convert(original, output, len(payload) // 2)
             self.assertEqual(len(audio.samples), len(payload) // 2)
             with wave.open(str(output)) as wav:
                 self.assertEqual(wav.readframes(wav.getnframes()), payload)
             with self.assertRaises(ValueError):
-                prepare.convert(original, path / "wrong.wav", len(payload) // 2 + 1)
+                convert(original, path / "wrong.wav", len(payload) // 2 + 1)
             self.assertEqual(original.read_bytes()[44:], payload)
+            before = digest(original), digest(output)
+            with self.assertRaises(subprocess.CalledProcessError):
+                convert(original, output, len(payload) // 2)
+            self.assertEqual((digest(original), digest(output)), before)
 
 
 if __name__ == "__main__":
