@@ -123,4 +123,4 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 
 ## 부분 음성 창 선택 실험
 
-`gguf/audio_window_cache.h`와 기존 `gguf/bridge.cpp`의 `partial_audio_window_v1`을 별도 빌드에서 사용합니다. 기존 엔진·가중치는 그대로 두고 새 bridge 경로에 빌드합니다. 창 캐시/음성 KV는 부분 요청에만 적용하며 확정은 원래 전체 구간을 계산합니다. 캐시 끔은 창 분할까지 취소하는 설정이 아니라 같은 창을 다시 계산하는 대조입니다. [적용 범위·제약](../docs/guides/qwen3_optimization.md#부분-음성-창-캐시-실험)을 확인합니다.
+`gguf/audio_window_cache.h`와 기존 `gguf/bridge.cpp`의 `partial_audio_window_v1`/`partial_audio_window_ms_v1`을 별도 빌드에서 사용합니다. 기존 엔진·가중치는 그대로 두고 새 bridge 경로에 빌드합니다. 창 캐시/음성 KV는 부분 요청에만 적용하며 확정은 원래 전체 구간을 계산합니다. 캐시 끔은 창 분할까지 취소하는 설정이 아니라 같은 창을 다시 계산하는 대조입니다. [적용 범위·제약](../docs/guides/qwen3_optimization.md#부분-음성-창-캐시-실험)을 확인합니다.

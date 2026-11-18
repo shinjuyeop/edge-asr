@@ -142,4 +142,4 @@ flowchart TD
 
 ## 선택 부분 음성 창
 
-`qwen/audio_windows.py`는 요청 단위로만 `partial_audio_window_v1` ABI를 활성화합니다. `realtime/worker.py`의 부분/확정 구분과 기존 구간별 캐시 수명을 재사용합니다. `native/gguf/audio_window_cache.h`는5초 이내 PCM의 완료 창을 바이트 비교하고 embedding을 보관합니다. bridge는 완료 창의 LLM KV 접두부만 유지하고 나머지를 재평가합니다. 일반/확정 호출에는 기존 전체 음성 경로를 적용합니다. 창별 처리로 모델 입력 의미가 달라지는 선택 실험이며 정확도 동등성은 전제하지 않습니다.
+`qwen/audio_windows.py`는 요청 단위로만 `partial_audio_window_v1`/`partial_audio_window_ms_v1` ABI를 활성화합니다. `realtime/worker.py`의 부분/확정 구분과 기존 구간별 캐시 수명을 재사용합니다. `native/gguf/audio_window_cache.h`는5초 이내 PCM의 완료 창을 바이트 비교하고 embedding을 보관합니다. bridge는 완료 창의 LLM KV 접두부만 유지하고 나머지를 재평가합니다. 일반/확정 호출에는 기존 전체 음성 경로를 적용합니다. 창별 처리로 모델 입력 의미가 달라지는 선택 실험이며 정확도 동등성은 전제하지 않습니다.
