@@ -1,0 +1,3341 @@
+{
+  "id": "longform-backends-20261118-01",
+  "schema_version": 1,
+  "source": "aa57ee0e1ce93b92669be132f0228b748ef307d7",
+  "baseline_scope": "고정 1배속 재생 및 기존 모델별 실행 설정. 자연발화·낭독의 연결 CER를 독립 산출한 뒤 오류 수와 분모를 합산.",
+  "timing_scope": "서버 발행. common_result는 완료 result 이벤트만 사용하고 q8_token_display는 실제 token+result 이벤트 사용. 파일 지연과 VAD 구간 지연을 구분.",
+  "resource_scope": "입력부터 배출까지 부모 및 producer CPU초 / (경과초 × 4). RSS는 부모 프로세스 샘플 최댓값. 제한 시간은 실제 입력 중 1초 표본 사이 직전 비트 유지로 근사.",
+  "execution": {
+    "source": "aa57ee0e1ce93b92669be132f0228b748ef307d7",
+    "order": [
+      [
+        "natural",
+        "onnx"
+      ],
+      [
+        "natural",
+        "q8"
+      ],
+      [
+        "reading",
+        "q8"
+      ],
+      [
+        "reading",
+        "onnx"
+      ]
+    ],
+    "status": "completed",
+    "phases": [
+      {
+        "label": "natural-onnx",
+        "command": [
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "thermal-run",
+          "--output",
+          "results/optimization/opt3/longform-backends-20261118-01/natural-onnx",
+          "--timeout-s",
+          "1800",
+          "--temperature-policy",
+          "operational",
+          "--admission-temperature-c",
+          "60",
+          "--",
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "replay-qwen3",
+          "--config",
+          "configs/onnx.toml",
+          "--manifest",
+          "data/evaluation/longform-20261117-01/natural.jsonl",
+          "--output",
+          "results/optimization/opt3/longform-backends-20261118-01/natural-onnx",
+          "--vad-model",
+          "models/silero-vad-k2-20261029/silero_vad.onnx",
+          "--gap-s",
+          "0",
+          "--vad-threshold",
+          "0.3",
+          "--vad-preprocess",
+          "rms26-floor80",
+          "--vad-max-speech-s",
+          "5",
+          "--max-segment-s",
+          "5",
+          "--partial-mode",
+          "fixed",
+          "--partial-after-s",
+          "1",
+          "--partial-interval-s",
+          "4",
+          "--queue-capacity",
+          "4",
+          "--silence-policy",
+          "skip-zero",
+          "--drain-timeout-s",
+          "30"
+        ],
+        "start_unix": 1794981614.7939036,
+        "exit": 0,
+        "complete": true,
+        "score": 0.14607797087834665,
+        "error": null,
+        "failures": 0,
+        "guard_error": null,
+        "guard_rejection": null,
+        "limit_verified": true,
+        "end_unix": 1794982119.6285021
+      },
+      {
+        "label": "natural-q8",
+        "command": [
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "thermal-run",
+          "--output",
+          "results/optimization/opt3/longform-backends-20261118-01/natural-q8",
+          "--timeout-s",
+          "1800",
+          "--temperature-policy",
+          "operational",
+          "--admission-temperature-c",
+          "60",
+          "--",
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "replay-qwen3",
+          "--config",
+          "configs/gguf_realtime.toml",
+          "--manifest",
+          "data/evaluation/longform-20261117-01/natural.jsonl",
+          "--output",
+          "results/optimization/opt3/longform-backends-20261118-01/natural-q8",
+          "--vad-model",
+          "models/silero-vad-k2-20261029/silero_vad.onnx",
+          "--gap-s",
+          "0",
+          "--vad-threshold",
+          "0.3",
+          "--vad-preprocess",
+          "rms26-floor80",
+          "--vad-max-speech-s",
+          "5",
+          "--max-segment-s",
+          "5",
+          "--partial-mode",
+          "fixed",
+          "--partial-after-s",
+          "1",
+          "--partial-interval-s",
+          "4",
+          "--queue-capacity",
+          "4",
+          "--silence-policy",
+          "skip-zero",
+          "--drain-timeout-s",
+          "30",
+          "--token-stream"
+        ],
+        "start_unix": 1794982119.629236,
+        "exit": 0,
+        "complete": true,
+        "score": 0.12071395021136684,
+        "error": null,
+        "failures": 0,
+        "guard_error": null,
+        "guard_rejection": null,
+        "limit_verified": true,
+        "end_unix": 1794982702.008097
+      },
+      {
+        "label": "reading-q8",
+        "command": [
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "thermal-run",
+          "--output",
+          "results/optimization/opt3/longform-backends-20261118-01/reading-q8",
+          "--timeout-s",
+          "1800",
+          "--temperature-policy",
+          "operational",
+          "--admission-temperature-c",
+          "60",
+          "--",
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "replay-qwen3",
+          "--config",
+          "configs/gguf_realtime.toml",
+          "--manifest",
+          "data/evaluation/longform-20261117-01/reading.jsonl",
+          "--output",
+          "results/optimization/opt3/longform-backends-20261118-01/reading-q8",
+          "--vad-model",
+          "models/silero-vad-k2-20261029/silero_vad.onnx",
+          "--gap-s",
+          "0",
+          "--vad-threshold",
+          "0.3",
+          "--vad-preprocess",
+          "rms26-floor80",
+          "--vad-max-speech-s",
+          "5",
+          "--max-segment-s",
+          "5",
+          "--partial-mode",
+          "fixed",
+          "--partial-after-s",
+          "1",
+          "--partial-interval-s",
+          "4",
+          "--queue-capacity",
+          "4",
+          "--silence-policy",
+          "skip-zero",
+          "--drain-timeout-s",
+          "30",
+          "--token-stream"
+        ],
+        "start_unix": 1794982702.0088909,
+        "exit": 0,
+        "complete": true,
+        "score": 0.11947318908748825,
+        "error": null,
+        "failures": 0,
+        "guard_error": null,
+        "guard_rejection": null,
+        "limit_verified": true,
+        "end_unix": 1794983103.5738864
+      },
+      {
+        "label": "reading-onnx",
+        "command": [
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "thermal-run",
+          "--output",
+          "results/optimization/opt3/longform-backends-20261118-01/reading-onnx",
+          "--timeout-s",
+          "1800",
+          "--temperature-policy",
+          "operational",
+          "--admission-temperature-c",
+          "60",
+          "--",
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "replay-qwen3",
+          "--config",
+          "configs/onnx.toml",
+          "--manifest",
+          "data/evaluation/longform-20261117-01/reading.jsonl",
+          "--output",
+          "results/optimization/opt3/longform-backends-20261118-01/reading-onnx",
+          "--vad-model",
+          "models/silero-vad-k2-20261029/silero_vad.onnx",
+          "--gap-s",
+          "0",
+          "--vad-threshold",
+          "0.3",
+          "--vad-preprocess",
+          "rms26-floor80",
+          "--vad-max-speech-s",
+          "5",
+          "--max-segment-s",
+          "5",
+          "--partial-mode",
+          "fixed",
+          "--partial-after-s",
+          "1",
+          "--partial-interval-s",
+          "4",
+          "--queue-capacity",
+          "4",
+          "--silence-policy",
+          "skip-zero",
+          "--drain-timeout-s",
+          "30"
+        ],
+        "start_unix": 1794983103.5746257,
+        "exit": 1,
+        "complete": true,
+        "score": 0.13264346190028223,
+        "error": null,
+        "failures": 1,
+        "guard_error": null,
+        "guard_rejection": null,
+        "limit_verified": true,
+        "end_unix": 1794983484.6737444
+      }
+    ],
+    "manifest_sha256": {
+      "natural": "4470f6bb32742d2a4370aead00bf3768accccbde822f0a9c375002ea4d5a65d8",
+      "reading": "746e437187ec35ebe7985d1e9f991d8028f10d2ec61db46017e2765668f659f5"
+    }
+  },
+  "phases": {
+    "natural-onnx": {
+      "input": {
+        "source_commit": "aa57ee0e1ce93b92669be132f0228b748ef307d7",
+        "input_manifest_sha256": "4470f6bb32742d2a4370aead00bf3768accccbde822f0a9c375002ea4d5a65d8",
+        "config_sha256": "c00ad9dbe154cecca8bd690e976c4694124e69246616800c9ca1928e8801780e",
+        "source_dirty": false,
+        "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+        "model_files": {
+          "conv_frontend.onnx": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/conv_frontend.onnx",
+            "sha256": "d22dc4423e0940e49884e903d2ea2f7e5567c14fc1aed97e4e26d6b8f208ef9e"
+          },
+          "encoder.int8.onnx": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/encoder.int8.onnx",
+            "sha256": "60748d3e6744a57c9c91e1b17424a6c2990567e8adceb0783940c03ed98fa9d9"
+          },
+          "decoder.int8.onnx": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/decoder.int8.onnx",
+            "sha256": "4f6885be5959ae26af3089d38ee7972c5fafbeeb1cf8d5e76eab6d8b61ca5771"
+          },
+          "tokenizer/vocab.json": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/tokenizer/vocab.json",
+            "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+          },
+          "tokenizer/merges.txt": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/tokenizer/merges.txt",
+            "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+          },
+          "tokenizer/tokenizer_config.json": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/tokenizer/tokenizer_config.json",
+            "sha256": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c"
+          }
+        },
+        "audio": {
+          "sha256": "a273c9a1e0c41a9388632eaf290e4cc37e4b0a25157807e78801525ab17ab491",
+          "frames": 7478849,
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "sample_width_bytes": 2,
+          "duration_s": 467.4280625
+        },
+        "settings": {
+          "gap_s": 0.0,
+          "vad_preprocess": "rms26-floor80",
+          "vad_threshold": 0.3,
+          "vad_max_speech_s": 5,
+          "partial_after_s": 1.0,
+          "partial_interval_s": 4.0,
+          "partial_mode": "fixed",
+          "partial_min_new_s": 0.8,
+          "partial_tail_margin_s": 0.2,
+          "adaptive_policy": "recent",
+          "partial_cost_model": "total",
+          "partial_budget_s": 2.5,
+          "protect_short_followup": false,
+          "partial_max_calls": 2,
+          "continuous_policy": "latest",
+          "partial_thermal_policy": "pause",
+          "cancel_partial_for_final": false,
+          "partial_followup_s": null,
+          "max_segment_s": 5,
+          "drain_timeout_s": 30,
+          "queue_capacity": 4,
+          "token_stream": false,
+          "partials": true,
+          "silence_policy": "skip-zero"
+        },
+        "warmup_input": {
+          "policy": "leading_max_segment_v1",
+          "source_id": "seoul-s02m16f3-u0590-0638",
+          "source_audio_sha256": "f38a5a5bf6a312751d0c929c6632554c8e1b7830e99edd0a928febf4f567fd0a",
+          "source_frames": 845611,
+          "start_frame": 0,
+          "end_frame": 80000,
+          "payload_float32_sha256": "b97f5397b9f37f50fb309dc678dd1a6d6c59e1f1180cb4b573398550a10ee90f",
+          "scope": "첫 원음의 ASR 최대 구간 이내 PCM만 워밍업. 평가 입력은 전체 원음 유지."
+        },
+        "processed_pcm_sha256": "a2d5bb9bcc104157488223e04a8c7f9e449e8d917a67b9e87a13475bbb1ffd32",
+        "warmup_successes": 4,
+        "environment": {
+          "machine": "aarch64",
+          "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+          "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+          "runtime": {
+            "sherpa_package_version": "2.0.1",
+            "sherpa_core_package_version": "2.0.1",
+            "python_onnxruntime_package_version": "1.31.1",
+            "sherpa_native_onnxruntime_version": null,
+            "native_version_source": "sherpa_onnx.onnxruntime_version",
+            "status": "not_imported",
+            "reason": "선택 런타임을 아직 import하지 않았습니다."
+          },
+          "thread_environment": {
+            "OMP_WAIT_POLICY": null,
+            "OMP_NUM_THREADS": null,
+            "OMP_DYNAMIC": null,
+            "OMP_PROC_BIND": null,
+            "OMP_PLACES": null,
+            "GOMP_SPINCOUNT": null,
+            "KMP_BLOCKTIME": null,
+            "OPENBLAS_NUM_THREADS": "1"
+          }
+        },
+        "engine_metadata": {
+          "backend": "sherpa_onnx",
+          "quantization": "int8",
+          "audio_quantization": null,
+          "thread_configuration": null,
+          "cache_text_prefix": null,
+          "provider": "cpu"
+        }
+      },
+      "score": {
+        "reference_characters": 2129,
+        "errors": 311,
+        "substitutions": 170,
+        "deletions": 104,
+        "insertions": 37,
+        "cer": 0.14607797087834665
+      },
+      "calls": {
+        "partial": {
+          "attempts": 76,
+          "statuses": {
+            "success": 76
+          },
+          "successes_without_normalized_characters": [],
+          "inference_sum_s": 88.99023448477965,
+          "inference_s": {
+            "n": 76,
+            "mean": 1.170924137957627,
+            "p50": 1.1769367730012164,
+            "p95": 1.515923437080346,
+            "max": 1.63322552095633
+          },
+          "queue_wait_s": {
+            "n": 76,
+            "mean": 1.276114522559127,
+            "p50": 1.118638203945011,
+            "p95": 3.6219301290111616,
+            "max": 3.7240327200852334
+          }
+        },
+        "final": {
+          "attempts": 167,
+          "statuses": {
+            "success": 167
+          },
+          "successes_without_normalized_characters": [],
+          "inference_sum_s": 324.8045728728175,
+          "inference_s": {
+            "n": 167,
+            "mean": 1.9449375621126797,
+            "p50": 1.5645241760648787,
+            "p95": 4.244268948095851,
+            "max": 4.954646558966488
+          },
+          "queue_wait_s": {
+            "n": 167,
+            "mean": 1.1582628178053318,
+            "p50": 0.7753211159724742,
+            "p95": 3.837804003036581,
+            "max": 4.725077982991934
+          }
+        }
+      },
+      "failures": [],
+      "source_pcm_signature": "dab995f501882cd68ba48a8b1860c61800ef05d51ae7d05609f4e2baed4f62dc",
+      "final_pcm_signature": "d719505f34eab6fa2abbdf1143ca547431c6b9aebb64655b572b6dcc95b02b0b",
+      "selected_submitted_partial_pcm_signature": "eb308a4446755b56da7c71c415cef3a2959f44727ce6649aa573f68bb05ac510",
+      "partials_coalesced": 52,
+      "skipped_silence": 0,
+      "common_result": {
+        "content_changes_with_older_end_than_previously_shown": 1,
+        "partial_displayed_before_own_segment_end": {
+          "segments": 167,
+          "with_partial": 35,
+          "segments_at_least_2s": 77,
+          "with_partial_at_least_2s": 35
+        },
+        "by_source": [
+          {
+            "id": "seoul-s02m16f3-u0590-0638",
+            "start": 0,
+            "end": 845611,
+            "first_s": 2.264234464033507,
+            "first4_s": 2.264234464033507,
+            "observed_first_s": 2.264234464033507,
+            "observed_first4_s": 2.264234464033507,
+            "file_end_s": 7.4403393090199685,
+            "max_content_gap_s": 7.756417733966373,
+            "content_updates_during_input": 25,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 2.264234464033507,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s06f18m4-u0173-0231",
+            "start": 845611,
+            "end": 1805806,
+            "first_s": 9.805403967943043,
+            "first4_s": 9.805403967943043,
+            "observed_first_s": 9.805403967943043,
+            "observed_first4_s": 9.805403967943043,
+            "file_end_s": 2.093043984021989,
+            "max_content_gap_s": 9.805403967943043,
+            "content_updates_during_input": 34,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 11.183050716036,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s15m22m5-u0465-0538",
+            "start": 1805806,
+            "end": 2765729,
+            "first_s": 5.704567134954033,
+            "first4_s": 5.704567134954033,
+            "observed_first_s": 5.704567134954033,
+            "observed_first4_s": 5.704567134954033,
+            "file_end_s": 5.6877079759901505,
+            "max_content_gap_s": 6.175837023067288,
+            "content_updates_during_input": 26,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 5.704567134954033,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s17f24f6-u0007-0084",
+            "start": 2765729,
+            "end": 3715102,
+            "first_s": 7.057210864982579,
+            "first4_s": 7.057210864982579,
+            "observed_first_s": 7.057210864982579,
+            "observed_first4_s": 7.057210864982579,
+            "file_end_s": 2.6770521369734865,
+            "max_content_gap_s": 7.057210864982579,
+            "content_updates_during_input": 27,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 10.933588266972464,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s22m37m4-u0522-0572",
+            "start": 3715102,
+            "end": 4714740,
+            "first_s": 3.6296511320369405,
+            "first4_s": 4.889258167936475,
+            "observed_first_s": 3.6296511320369405,
+            "observed_first4_s": 4.889258167936475,
+            "file_end_s": 5.300924722002833,
+            "max_content_gap_s": 5.627324835048057,
+            "content_updates_during_input": 27,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 3.6296511320369405,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s27f32f2-u0355-0383",
+            "start": 4714740,
+            "end": 5658702,
+            "first_s": 6.236402308000265,
+            "first4_s": 10.52490268800409,
+            "observed_first_s": 6.236402308000265,
+            "observed_first4_s": 10.52490268800409,
+            "file_end_s": 4.710046192022958,
+            "max_content_gap_s": 6.236402308000265,
+            "content_updates_during_input": 24,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 13.421369496979764,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s32m43m1-u0581-0645",
+            "start": 5658702,
+            "end": 6519001,
+            "first_s": 6.141256259029717,
+            "first4_s": 6.141256259029717,
+            "observed_first_s": 6.141256259029717,
+            "observed_first4_s": 6.141256259029717,
+            "file_end_s": 6.1724924240363634,
+            "max_content_gap_s": 6.642012858996168,
+            "content_updates_during_input": 26,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 7.615561414018259,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s39f43f2-u0500-0565",
+            "start": 6519001,
+            "end": 7478849,
+            "first_s": 7.40040716099179,
+            "first4_s": 7.40040716099179,
+            "observed_first_s": 7.40040716099179,
+            "observed_first4_s": 7.40040716099179,
+            "file_end_s": 1.0231230249293048,
+            "max_content_gap_s": 7.655975311994553,
+            "content_updates_during_input": 30,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 7.40040716099179,
+            "partial_before_source_end": true
+          }
+        ],
+        "source_distributions": {
+          "first_s": {
+            "n": 8,
+            "mean": 6.029891661496484,
+            "p50": 6.141256259029717,
+            "p95": 9.805403967943043,
+            "max": 9.805403967943043
+          },
+          "first4_s": {
+            "n": 8,
+            "mean": 6.723405088484404,
+            "p50": 6.141256259029717,
+            "p95": 10.52490268800409,
+            "max": 10.52490268800409
+          },
+          "file_end_s": {
+            "n": 8,
+            "mean": 4.388091221124632,
+            "p50": 4.710046192022958,
+            "p95": 7.4403393090199685,
+            "max": 7.4403393090199685
+          },
+          "observed_first_s": {
+            "n": 8,
+            "mean": 6.029891661496484,
+            "p50": 6.141256259029717,
+            "p95": 9.805403967943043,
+            "max": 9.805403967943043
+          },
+          "observed_first4_s": {
+            "n": 8,
+            "mean": 6.723405088484404,
+            "p50": 6.141256259029717,
+            "p95": 10.52490268800409,
+            "max": 10.52490268800409
+          },
+          "max_content_gap_s": {
+            "n": 8,
+            "mean": 7.119573112999791,
+            "p50": 6.642012858996168,
+            "p95": 9.805403967943043,
+            "max": 9.805403967943043
+          },
+          "first_completed_partial_s": {
+            "n": 8,
+            "mean": 7.769053723252845,
+            "p50": 7.40040716099179,
+            "p95": 13.421369496979764,
+            "max": 13.421369496979764
+          }
+        },
+        "content": {
+          "changed_events": 239,
+          "interval_s": {
+            "n": 238,
+            "mean": 1.958768701936537,
+            "p50": 1.318209448014386,
+            "p95": 5.138122402946465,
+            "max": 7.756417733966373
+          },
+          "active_between_changes_s": {
+            "n": 95,
+            "mean": 1.3049384905111143,
+            "p50": 1.2168294740840793,
+            "p95": 2.4742349479347467,
+            "max": 4.156579848960973
+          },
+          "active_max_gap_with_edges_s": {
+            "n": 167,
+            "mean": 1.463108795578407,
+            "p50": 1.3508275649510324,
+            "p95": 3.390417716983734,
+            "max": 4.616174722002825
+          },
+          "input_age_at_publish_s": {
+            "n": 239,
+            "mean": 3.1082216363417516,
+            "p50": 2.985256481008605,
+            "p95": 4.864743862934404,
+            "max": 5.711652308000225
+          },
+          "scope": "정확한 문자열 변경·서버 발행 기준. 입력 나이는 해당 요청 end_frame부터 발행까지이며 음향 단어/브라우저 표시 지연이 아님. 활성 범위는 VAD 소유 구간으로 실제 음소 구간이 아님."
+        },
+        "stability": {
+          "normalization": "ko_cer_v1",
+          "displayed_updates": 243,
+          "normalized_revisions": 33,
+          "retracted_suffix_characters": 145,
+          "prefix_replay_revisions": 0,
+          "prefix_replay_retracted_characters": 0,
+          "within_call_revisions": 0,
+          "failed_results": 0,
+          "cancelled_results": 0,
+          "suppressed_prefix_tokens": 0,
+          "segments_with_display": 167,
+          "revised_segments": 33,
+          "prefix_replay_segments": 0,
+          "suppressed_prefix_jobs": 0,
+          "latest_completed_partial_vs_final": {
+            "paired_segments": 76,
+            "whole_partial_is_final_prefix": 43,
+            "partial_characters": 458,
+            "retained_prefix_characters": 313,
+            "retained_prefix_fraction": 0.6834061135371179
+          },
+          "finals_shorter_than4": 34,
+          "first4_to_final_consistent4_s": {
+            "n": 133,
+            "mean": 0.38808108864114027,
+            "p50": 0.0,
+            "p95": 3.001613119035028,
+            "max": 5.725369698018767
+          },
+          "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+        }
+      },
+      "q8_token_display": null,
+      "final_return_all_s": {
+        "n": 167,
+        "mean": 3.371713598196858,
+        "p50": 3.2856491690138228,
+        "p95": 4.89665219799988,
+        "max": 5.711652308000225
+      },
+      "successful_final_return_s": {
+        "n": 167,
+        "mean": 3.371713598196858,
+        "p50": 3.2856491690138228,
+        "p95": 4.89665219799988,
+        "max": 5.711652308000225
+      },
+      "final_clip_duration_s": {
+        "n": 167,
+        "mean": 2.289533308383233,
+        "p50": 1.784,
+        "p95": 5.0,
+        "max": 5.0
+      },
+      "finals_under_1s": 46,
+      "transport": {
+        "captured_chunks": 4675,
+        "accepted_chunks": 4675,
+        "processed_chunks": 4675,
+        "planned_chunks": 4675,
+        "dropped_chunks": 0,
+        "dropped_audio_s": 0.0,
+        "finalization_from_audio_end_s": 1.0234863420000124,
+        "event_max_chunks": 1,
+        "event_max_audio_s": 0.1,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0,
+        "inference_queue_peak": 4
+      },
+      "resources": {
+        "elapsed_s": 468.451548842,
+        "cpu_seconds_replay_plus_producer": 889.1879546539999,
+        "mean_four_core_percent": 47.4535710711198,
+        "main_process_peak_rss_mib": 1906.9375,
+        "total_inference_s": 413.79480735759716,
+        "inference_s_per_input_s": 0.8852588035567445,
+        "thermal_guard_max_c": 84.8,
+        "admission_c": 57.3,
+        "current_limit_sample_counts": {
+          "0": 393,
+          "8": 96,
+          "6": 3
+        },
+        "current_limit_input_s_approx": 99.81215470217728,
+        "guard": {
+          "exit_code": 0,
+          "status": "completed",
+          "limit_verified": true,
+          "operational_valid": true,
+          "error": null,
+          "rejection": null
+        },
+        "quarters": [
+          {
+            "final_queue_wait_s": {
+              "n": 47,
+              "mean": 1.106294553201804,
+              "p50": 0.9269902609521523,
+              "p95": 2.8555911700241268,
+              "max": 3.9659491260536015
+            },
+            "final_return_s": {
+              "n": 47,
+              "mean": 3.0975174180249434,
+              "p50": 3.0324070979487203,
+              "p95": 4.633513685927726,
+              "max": 4.89665219799988
+            },
+            "rss_mib": {
+              "n": 1160,
+              "mean": 1884.5361799568966,
+              "p50": 1886.9375,
+              "p95": 1895.4375,
+              "max": 1895.4375
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 39,
+              "mean": 1.173444152642519,
+              "p50": 0.7477396939648315,
+              "p95": 4.113331903936341,
+              "max": 4.725077982991934
+            },
+            "final_return_s": {
+              "n": 39,
+              "mean": 3.406740367678042,
+              "p50": 3.209224593984885,
+              "p95": 5.010851880973206,
+              "max": 5.469026440016933
+            },
+            "rss_mib": {
+              "n": 1160,
+              "mean": 1896.364224137931,
+              "p50": 1895.9375,
+              "p95": 1897.9375,
+              "max": 1897.9375
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 37,
+              "mean": 1.3830600783442826,
+              "p50": 1.238521487917751,
+              "p95": 3.5977776519721374,
+              "max": 4.664278296986595
+            },
+            "final_return_s": {
+              "n": 37,
+              "mean": 4.03385891216993,
+              "p50": 4.093508771034891,
+              "p95": 5.02417472200284,
+              "max": 5.711652308000225
+            },
+            "rss_mib": {
+              "n": 1160,
+              "mean": 1898.480172413793,
+              "p50": 1898.4375,
+              "p95": 1898.9375,
+              "max": 1899.4375
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 44,
+              "mean": 1.0112841300274753,
+              "p50": 0.7705267110140994,
+              "p95": 3.166045516030863,
+              "max": 4.466079963953234
+            },
+            "final_return_s": {
+              "n": 44,
+              "mean": 3.076754503681178,
+              "p50": 2.9029211920229727,
+              "p95": 4.930173916952697,
+              "max": 5.423135716985939
+            },
+            "rss_mib": {
+              "n": 1160,
+              "mean": 1900.8271551724138,
+              "p50": 1901.4375,
+              "p95": 1901.4375,
+              "max": 1901.4375
+            }
+          }
+        ]
+      },
+      "source_ids": [
+        "seoul-s02m16f3-u0590-0638",
+        "seoul-s06f18m4-u0173-0231",
+        "seoul-s15m22m5-u0465-0538",
+        "seoul-s17f24f6-u0007-0084",
+        "seoul-s22m37m4-u0522-0572",
+        "seoul-s27f32f2-u0355-0383",
+        "seoul-s32m43m1-u0581-0645",
+        "seoul-s39f43f2-u0500-0565"
+      ]
+    },
+    "natural-q8": {
+      "input": {
+        "source_commit": "aa57ee0e1ce93b92669be132f0228b748ef307d7",
+        "input_manifest_sha256": "4470f6bb32742d2a4370aead00bf3768accccbde822f0a9c375002ea4d5a65d8",
+        "config_sha256": "fe87ae0570093045f40d6e99c505046366e9b619512c8cd9265454ce6443e069",
+        "source_dirty": false,
+        "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+        "model_files": {
+          "Qwen3-ASR-0.6B-Q8_0.gguf": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+          },
+          "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+          },
+          "runtime_library": {
+            "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+            "sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf"
+          },
+          "runtime_manifest": {
+            "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+            "sha256": "a7fa6d9d6ffab5b5a0f7f98e3dc94cd7d751fe503a16f214936b5ff32fd3d113"
+          }
+        },
+        "audio": {
+          "sha256": "a273c9a1e0c41a9388632eaf290e4cc37e4b0a25157807e78801525ab17ab491",
+          "frames": 7478849,
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "sample_width_bytes": 2,
+          "duration_s": 467.4280625
+        },
+        "settings": {
+          "gap_s": 0.0,
+          "vad_preprocess": "rms26-floor80",
+          "vad_threshold": 0.3,
+          "vad_max_speech_s": 5,
+          "partial_after_s": 1.0,
+          "partial_interval_s": 4.0,
+          "partial_mode": "fixed",
+          "partial_min_new_s": 0.8,
+          "partial_tail_margin_s": 0.2,
+          "adaptive_policy": "recent",
+          "partial_cost_model": "total",
+          "partial_budget_s": 2.5,
+          "protect_short_followup": false,
+          "partial_max_calls": 2,
+          "continuous_policy": "latest",
+          "partial_thermal_policy": "pause",
+          "cancel_partial_for_final": false,
+          "partial_followup_s": null,
+          "max_segment_s": 5,
+          "drain_timeout_s": 30,
+          "queue_capacity": 4,
+          "token_stream": true,
+          "partials": true,
+          "silence_policy": "skip-zero"
+        },
+        "warmup_input": {
+          "policy": "leading_max_segment_v1",
+          "source_id": "seoul-s02m16f3-u0590-0638",
+          "source_audio_sha256": "f38a5a5bf6a312751d0c929c6632554c8e1b7830e99edd0a928febf4f567fd0a",
+          "source_frames": 845611,
+          "start_frame": 0,
+          "end_frame": 80000,
+          "payload_float32_sha256": "b97f5397b9f37f50fb309dc678dd1a6d6c59e1f1180cb4b573398550a10ee90f",
+          "scope": "첫 원음의 ASR 최대 구간 이내 PCM만 워밍업. 평가 입력은 전체 원음 유지."
+        },
+        "processed_pcm_sha256": "a2d5bb9bcc104157488223e04a8c7f9e449e8d917a67b9e87a13475bbb1ffd32",
+        "warmup_successes": 4,
+        "environment": {
+          "machine": "aarch64",
+          "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+          "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+          "runtime": {
+            "sherpa_package_version": "2.0.1",
+            "sherpa_core_package_version": "2.0.1",
+            "python_onnxruntime_package_version": "1.31.1",
+            "sherpa_native_onnxruntime_version": null,
+            "native_version_source": "sherpa_onnx.onnxruntime_version",
+            "status": "not_imported",
+            "reason": "선택 런타임을 아직 import하지 않았습니다."
+          },
+          "thread_environment": {
+            "OMP_WAIT_POLICY": null,
+            "OMP_NUM_THREADS": null,
+            "OMP_DYNAMIC": null,
+            "OMP_PROC_BIND": null,
+            "OMP_PLACES": null,
+            "GOMP_SPINCOUNT": null,
+            "KMP_BLOCKTIME": null,
+            "OPENBLAS_NUM_THREADS": "1"
+          }
+        },
+        "engine_metadata": {
+          "backend": "llama_cpp_mtmd",
+          "quantization": "q8_0",
+          "audio_quantization": "q8_0",
+          "thread_configuration": {
+            "threads": 2,
+            "threads_batch": 3,
+            "audio_threads": 3
+          },
+          "cache_text_prefix": true,
+          "provider": "cpu"
+        }
+      },
+      "score": {
+        "reference_characters": 2129,
+        "errors": 257,
+        "substitutions": 141,
+        "deletions": 91,
+        "insertions": 25,
+        "cer": 0.12071395021136684
+      },
+      "calls": {
+        "partial": {
+          "attempts": 90,
+          "statuses": {
+            "success": 90
+          },
+          "successes_without_normalized_characters": [],
+          "inference_sum_s": 96.8202076345915,
+          "inference_s": {
+            "n": 90,
+            "mean": 1.0757800848287944,
+            "p50": 1.0629756830167025,
+            "p95": 1.3819938390515745,
+            "max": 1.4346950229955837
+          },
+          "queue_wait_s": {
+            "n": 90,
+            "mean": 0.8431954432925624,
+            "p50": 0.6574462549760938,
+            "p95": 2.608319315011613,
+            "max": 3.4369099349714816
+          }
+        },
+        "final": {
+          "attempts": 167,
+          "statuses": {
+            "success": 167
+          },
+          "successes_without_normalized_characters": [
+            74
+          ],
+          "inference_sum_s": 281.90275840379763,
+          "inference_s": {
+            "n": 167,
+            "mean": 1.6880404694838183,
+            "p50": 1.3492319110082462,
+            "p95": 3.754173796973191,
+            "max": 4.070234923041426
+          },
+          "queue_wait_s": {
+            "n": 167,
+            "mean": 0.8204254085145065,
+            "p50": 0.4793911499436945,
+            "p95": 3.112225802964531,
+            "max": 3.742261167964898
+          }
+        }
+      },
+      "failures": [],
+      "source_pcm_signature": "dab995f501882cd68ba48a8b1860c61800ef05d51ae7d05609f4e2baed4f62dc",
+      "final_pcm_signature": "d719505f34eab6fa2abbdf1143ca547431c6b9aebb64655b572b6dcc95b02b0b",
+      "selected_submitted_partial_pcm_signature": "a28a25df2188aa63d15c4a91fda53a985cf956172f2ba26888a0892afe2926fe",
+      "partials_coalesced": 38,
+      "skipped_silence": 0,
+      "common_result": {
+        "content_changes_with_older_end_than_previously_shown": 1,
+        "partial_displayed_before_own_segment_end": {
+          "segments": 167,
+          "with_partial": 52,
+          "segments_at_least_2s": 77,
+          "with_partial_at_least_2s": 52
+        },
+        "by_source": [
+          {
+            "id": "seoul-s02m16f3-u0590-0638",
+            "start": 0,
+            "end": 845611,
+            "first_s": 2.0911316099809483,
+            "first4_s": 2.0911316099809483,
+            "observed_first_s": 2.0911316099809483,
+            "observed_first4_s": 2.0911316099809483,
+            "file_end_s": 6.600846840973013,
+            "max_content_gap_s": 6.826318753068335,
+            "content_updates_during_input": 28,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 2.0911316099809483,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s06f18m4-u0173-0231",
+            "start": 845611,
+            "end": 1805806,
+            "first_s": 7.721919247969986,
+            "first4_s": 7.721919247969986,
+            "observed_first_s": 7.721919247969986,
+            "observed_first4_s": 7.721919247969986,
+            "file_end_s": 1.8775863379621853,
+            "max_content_gap_s": 7.721919247969986,
+            "content_updates_during_input": 34,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 7.721919247969986,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s15m22m5-u0465-0538",
+            "start": 1805806,
+            "end": 2765729,
+            "first_s": 5.478657727004958,
+            "first4_s": 5.478657727004958,
+            "observed_first_s": 5.478657727004958,
+            "observed_first4_s": 5.478657727004958,
+            "file_end_s": 5.226314289047394,
+            "max_content_gap_s": 5.478657727004958,
+            "content_updates_during_input": 26,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 5.478657727004958,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s17f24f6-u0007-0084",
+            "start": 2765729,
+            "end": 3715102,
+            "first_s": 6.448802841030073,
+            "first4_s": 6.448802841030073,
+            "observed_first_s": 6.448802841030073,
+            "observed_first4_s": 6.448802841030073,
+            "file_end_s": 2.1114318839944985,
+            "max_content_gap_s": 6.504179093055427,
+            "content_updates_during_input": 29,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 8.5078323079683,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s22m37m4-u0522-0572",
+            "start": 3715102,
+            "end": 4714740,
+            "first_s": 2.986813629043297,
+            "first4_s": 4.093214952034884,
+            "observed_first_s": 2.986813629043297,
+            "observed_first4_s": 4.093214952034884,
+            "file_end_s": 4.378731359974495,
+            "max_content_gap_s": 5.543689860962331,
+            "content_updates_during_input": 28,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 2.986813629043297,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s27f32f2-u0355-0383",
+            "start": 4714740,
+            "end": 5658702,
+            "first_s": 5.176706649027778,
+            "first4_s": 5.176706649027778,
+            "observed_first_s": 5.176706649027778,
+            "observed_first4_s": 5.176706649027778,
+            "file_end_s": 4.207177118022912,
+            "max_content_gap_s": 5.730460051912814,
+            "content_updates_during_input": 26,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 6.139890422010808,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s32m43m1-u0581-0645",
+            "start": 5658702,
+            "end": 6519001,
+            "first_s": 5.360807797961854,
+            "first4_s": 5.360807797961854,
+            "observed_first_s": 5.360807797961854,
+            "observed_first4_s": 5.360807797961854,
+            "file_end_s": 5.605722902003663,
+            "max_content_gap_s": 6.204346379963681,
+            "content_updates_during_input": 27,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 5.360807797961854,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s39f43f2-u0500-0565",
+            "start": 6519001,
+            "end": 7478849,
+            "first_s": 6.908259180966752,
+            "first4_s": 6.908259180966752,
+            "observed_first_s": 6.908259180966752,
+            "observed_first4_s": 6.908259180966752,
+            "file_end_s": 0.6581642420161415,
+            "max_content_gap_s": 7.0150810370687395,
+            "content_updates_during_input": 32,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 6.908259180966752,
+            "partial_before_source_end": true
+          }
+        ],
+        "source_distributions": {
+          "first_s": {
+            "n": 8,
+            "mean": 5.271637335373206,
+            "p50": 5.360807797961854,
+            "p95": 7.721919247969986,
+            "max": 7.721919247969986
+          },
+          "first4_s": {
+            "n": 8,
+            "mean": 5.409937500747154,
+            "p50": 5.360807797961854,
+            "p95": 7.721919247969986,
+            "max": 7.721919247969986
+          },
+          "file_end_s": {
+            "n": 8,
+            "mean": 3.833246871749288,
+            "p50": 4.207177118022912,
+            "p95": 6.600846840973013,
+            "max": 6.600846840973013
+          },
+          "observed_first_s": {
+            "n": 8,
+            "mean": 5.271637335373206,
+            "p50": 5.360807797961854,
+            "p95": 7.721919247969986,
+            "max": 7.721919247969986
+          },
+          "observed_first4_s": {
+            "n": 8,
+            "mean": 5.409937500747154,
+            "p50": 5.360807797961854,
+            "p95": 7.721919247969986,
+            "max": 7.721919247969986
+          },
+          "max_content_gap_s": {
+            "n": 8,
+            "mean": 6.378081518875784,
+            "p50": 6.204346379963681,
+            "p95": 7.721919247969986,
+            "max": 7.721919247969986
+          },
+          "first_completed_partial_s": {
+            "n": 8,
+            "mean": 5.649413990363363,
+            "p50": 5.478657727004958,
+            "p95": 8.5078323079683,
+            "max": 8.5078323079683
+          }
+        },
+        "content": {
+          "changed_events": 250,
+          "interval_s": {
+            "n": 249,
+            "mean": 1.8714662455101816,
+            "p50": 1.2373056520009413,
+            "p95": 5.439465181902051,
+            "max": 7.0150810370687395
+          },
+          "active_between_changes_s": {
+            "n": 105,
+            "mean": 1.0826653437600249,
+            "p50": 1.0314216619590297,
+            "p95": 1.9978200619807467,
+            "max": 2.32138891692739
+          },
+          "active_max_gap_with_edges_s": {
+            "n": 167,
+            "mean": 1.4000197640812064,
+            "p50": 1.2325412260498751,
+            "p95": 2.9799718720307453,
+            "max": 3.6939813599744866
+          },
+          "input_age_at_publish_s": {
+            "n": 250,
+            "mean": 2.5027338645336625,
+            "p50": 2.420950883028098,
+            "p95": 4.066780912040713,
+            "max": 4.651956649027738
+          },
+          "scope": "정확한 문자열 변경·서버 발행 기준. 입력 나이는 해당 요청 end_frame부터 발행까지이며 음향 단어/브라우저 표시 지연이 아님. 활성 범위는 VAD 소유 구간으로 실제 음소 구간이 아님."
+        },
+        "stability": {
+          "normalization": "ko_cer_v1",
+          "displayed_updates": 257,
+          "normalized_revisions": 28,
+          "retracted_suffix_characters": 86,
+          "prefix_replay_revisions": 1,
+          "prefix_replay_retracted_characters": 1,
+          "within_call_revisions": 0,
+          "failed_results": 0,
+          "cancelled_results": 0,
+          "suppressed_prefix_tokens": 0,
+          "segments_with_display": 167,
+          "revised_segments": 28,
+          "prefix_replay_segments": 1,
+          "suppressed_prefix_jobs": 0,
+          "latest_completed_partial_vs_final": {
+            "paired_segments": 90,
+            "whole_partial_is_final_prefix": 62,
+            "partial_characters": 528,
+            "retained_prefix_characters": 442,
+            "retained_prefix_fraction": 0.8371212121212122
+          },
+          "finals_shorter_than4": 35,
+          "first4_to_final_consistent4_s": {
+            "n": 132,
+            "mean": 0.2309116314916702,
+            "p50": 0.0,
+            "p95": 2.4759795950958505,
+            "max": 5.409134626039304
+          },
+          "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+        }
+      },
+      "q8_token_display": {
+        "content_changes_with_older_end_than_previously_shown": 1,
+        "partial_displayed_before_own_segment_end": {
+          "segments": 167,
+          "with_partial": 61,
+          "segments_at_least_2s": 77,
+          "with_partial_at_least_2s": 60
+        },
+        "by_source": [
+          {
+            "id": "seoul-s02m16f3-u0590-0638",
+            "start": 0,
+            "end": 845611,
+            "first_s": 1.7905392569955438,
+            "first4_s": 1.9716465859673917,
+            "observed_first_s": 1.7905392569955438,
+            "observed_first4_s": 1.9716465859673917,
+            "file_end_s": 6.600846840973013,
+            "max_content_gap_s": 5.0234897918999195,
+            "content_updates_during_input": 245,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 2.0911316099809483,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s06f18m4-u0173-0231",
+            "start": 845611,
+            "end": 1805806,
+            "first_s": 7.265984910978936,
+            "first4_s": 7.592701076037251,
+            "observed_first_s": 7.265984910978936,
+            "observed_first4_s": 7.592701076037251,
+            "file_end_s": 1.8775863379621853,
+            "max_content_gap_s": 7.265984910978936,
+            "content_updates_during_input": 197,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 7.721919247969986,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s15m22m5-u0465-0538",
+            "start": 1805806,
+            "end": 2765729,
+            "first_s": 4.931165970969943,
+            "first4_s": 5.1147241640053664,
+            "observed_first_s": 4.931165970969943,
+            "observed_first4_s": 5.1147241640053664,
+            "file_end_s": 5.226314289047394,
+            "max_content_gap_s": 4.931165970969943,
+            "content_updates_during_input": 263,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 5.478657727004958,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s17f24f6-u0007-0084",
+            "start": 2765729,
+            "end": 3715102,
+            "first_s": 5.905943651002843,
+            "first4_s": 6.032128406007786,
+            "observed_first_s": 5.905943651002843,
+            "observed_first4_s": 6.032128406007786,
+            "file_end_s": 2.1114318839944985,
+            "max_content_gap_s": 5.905943651002843,
+            "content_updates_during_input": 200,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 8.5078323079683,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s22m37m4-u0522-0572",
+            "start": 3715102,
+            "end": 4714740,
+            "first_s": 2.7835100840283644,
+            "first4_s": 3.955528368006469,
+            "observed_first_s": 2.7835100840283644,
+            "observed_first4_s": 3.955528368006469,
+            "file_end_s": 4.378731359974495,
+            "max_content_gap_s": 4.1905836400110275,
+            "content_updates_during_input": 294,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 2.986813629043297,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s27f32f2-u0355-0383",
+            "start": 4714740,
+            "end": 5658702,
+            "first_s": 4.782558107995442,
+            "first4_s": 5.049324444974786,
+            "observed_first_s": 4.782558107995442,
+            "observed_first4_s": 5.049324444974786,
+            "file_end_s": 4.207177118022912,
+            "max_content_gap_s": 4.782558107995442,
+            "content_updates_during_input": 271,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 6.139890422010808,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s32m43m1-u0581-0645",
+            "start": 5658702,
+            "end": 6519001,
+            "first_s": 4.896869676976451,
+            "first4_s": 5.089804560967707,
+            "observed_first_s": 4.896869676976451,
+            "observed_first4_s": 5.089804560967707,
+            "file_end_s": 5.605722902003663,
+            "max_content_gap_s": 4.974775226088241,
+            "content_updates_during_input": 178,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 5.360807797961854,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "seoul-s39f43f2-u0500-0565",
+            "start": 6519001,
+            "end": 7478849,
+            "first_s": 6.453711065008292,
+            "first4_s": 6.650641737050364,
+            "observed_first_s": 6.453711065008292,
+            "observed_first4_s": 6.650641737050364,
+            "file_end_s": 0.6581642420161415,
+            "max_content_gap_s": 6.453711065008292,
+            "content_updates_during_input": 223,
+            "ambiguous_final": true,
+            "score_unique_finals": null,
+            "first_completed_partial_s": 6.908259180966752,
+            "partial_before_source_end": true
+          }
+        ],
+        "source_distributions": {
+          "first_s": {
+            "n": 8,
+            "mean": 4.851285340494477,
+            "p50": 4.896869676976451,
+            "p95": 7.265984910978936,
+            "max": 7.265984910978936
+          },
+          "first4_s": {
+            "n": 8,
+            "mean": 5.18206241787714,
+            "p50": 5.089804560967707,
+            "p95": 7.592701076037251,
+            "max": 7.592701076037251
+          },
+          "file_end_s": {
+            "n": 8,
+            "mean": 3.833246871749288,
+            "p50": 4.207177118022912,
+            "p95": 6.600846840973013,
+            "max": 6.600846840973013
+          },
+          "observed_first_s": {
+            "n": 8,
+            "mean": 4.851285340494477,
+            "p50": 4.896869676976451,
+            "p95": 7.265984910978936,
+            "max": 7.265984910978936
+          },
+          "observed_first4_s": {
+            "n": 8,
+            "mean": 5.18206241787714,
+            "p50": 5.089804560967707,
+            "p95": 7.592701076037251,
+            "max": 7.592701076037251
+          },
+          "max_content_gap_s": {
+            "n": 8,
+            "mean": 5.4410265454943305,
+            "p50": 4.974775226088241,
+            "p95": 7.265984910978936,
+            "max": 7.265984910978936
+          },
+          "first_completed_partial_s": {
+            "n": 8,
+            "mean": 5.649413990363363,
+            "p50": 5.478657727004958,
+            "p95": 8.5078323079683,
+            "max": 8.5078323079683
+          }
+        },
+        "content": {
+          "changed_events": 2047,
+          "interval_s": {
+            "n": 2046,
+            "mean": 0.22787712737780205,
+            "p50": 0.06544857507105917,
+            "p95": 0.9682353829266503,
+            "max": 5.040195259964094
+          },
+          "active_between_changes_s": {
+            "n": 1561,
+            "mean": 0.11767322817361811,
+            "p50": 0.06527234497480094,
+            "p95": 0.7190273550804704,
+            "max": 2.282976540038362
+          },
+          "active_max_gap_with_edges_s": {
+            "n": 167,
+            "mean": 1.0905249315999779,
+            "p50": 0.9886752809910035,
+            "p95": 2.3937560699861535,
+            "max": 3.1524103240538466
+          },
+          "input_age_at_publish_s": {
+            "n": 2047,
+            "mean": 2.367802106571738,
+            "p50": 2.3683911789963012,
+            "p95": 3.6577422470301144,
+            "max": 4.586481338945191
+          },
+          "scope": "정확한 문자열 변경·서버 발행 기준. 입력 나이는 해당 요청 end_frame부터 발행까지이며 음향 단어/브라우저 표시 지연이 아님. 활성 범위는 VAD 소유 구간으로 실제 음소 구간이 아님."
+        },
+        "stability": {
+          "normalization": "ko_cer_v1",
+          "displayed_updates": 2301,
+          "normalized_revisions": 29,
+          "retracted_suffix_characters": 93,
+          "prefix_replay_revisions": 1,
+          "prefix_replay_retracted_characters": 1,
+          "within_call_revisions": 0,
+          "failed_results": 0,
+          "cancelled_results": 0,
+          "suppressed_prefix_tokens": 394,
+          "segments_with_display": 167,
+          "revised_segments": 29,
+          "prefix_replay_segments": 1,
+          "suppressed_prefix_jobs": 82,
+          "latest_completed_partial_vs_final": {
+            "paired_segments": 90,
+            "whole_partial_is_final_prefix": 62,
+            "partial_characters": 528,
+            "retained_prefix_characters": 442,
+            "retained_prefix_fraction": 0.8371212121212122
+          },
+          "finals_shorter_than4": 35,
+          "first4_to_final_consistent4_s": {
+            "n": 132,
+            "mean": 0.18699652552922172,
+            "p50": 0.0,
+            "p95": 1.8478200359968469,
+            "max": 4.3662054990418255
+          },
+          "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+        }
+      },
+      "final_return_all_s": {
+        "n": 167,
+        "mean": 2.777865062016141,
+        "p50": 2.725801860026081,
+        "p95": 4.101981359974502,
+        "max": 4.651956649027738
+      },
+      "successful_final_return_s": {
+        "n": 167,
+        "mean": 2.777865062016141,
+        "p50": 2.725801860026081,
+        "p95": 4.101981359974502,
+        "max": 4.651956649027738
+      },
+      "final_clip_duration_s": {
+        "n": 167,
+        "mean": 2.289533308383233,
+        "p50": 1.784,
+        "p95": 5.0,
+        "max": 5.0
+      },
+      "finals_under_1s": 46,
+      "transport": {
+        "captured_chunks": 4675,
+        "accepted_chunks": 4675,
+        "processed_chunks": 4675,
+        "planned_chunks": 4675,
+        "dropped_chunks": 0,
+        "dropped_audio_s": 0.0,
+        "finalization_from_audio_end_s": 0.6585682449999695,
+        "event_max_chunks": 1,
+        "event_max_audio_s": 0.1,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0,
+        "inference_queue_peak": 3
+      },
+      "resources": {
+        "elapsed_s": 468.086630745,
+        "cpu_seconds_replay_plus_producer": 1048.020140354,
+        "mean_four_core_percent": 55.97362066750262,
+        "main_process_peak_rss_mib": 1765.59375,
+        "total_inference_s": 378.72296603838913,
+        "inference_s_per_input_s": 0.810227276498593,
+        "thermal_guard_max_c": 86.45,
+        "admission_c": 58.4,
+        "current_limit_sample_counts": {
+          "0": 121,
+          "8": 271,
+          "6": 89
+        },
+        "current_limit_input_s_approx": 366.0512925507501,
+        "guard": {
+          "exit_code": 0,
+          "status": "completed",
+          "limit_verified": true,
+          "operational_valid": true,
+          "error": null,
+          "rejection": null
+        },
+        "quarters": [
+          {
+            "final_queue_wait_s": {
+              "n": 47,
+              "mean": 0.7995127919823566,
+              "p50": 0.6102143250172958,
+              "p95": 2.1963745639659464,
+              "max": 3.3150315519887954
+            },
+            "final_return_s": {
+              "n": 47,
+              "mean": 2.570101179889701,
+              "p50": 2.5936455999920156,
+              "p95": 3.793450363049284,
+              "max": 4.072264229977506
+            },
+            "rss_mib": {
+              "n": 1158,
+              "mean": 1755.5876511226252,
+              "p50": 1755.59375,
+              "p95": 1757.59375,
+              "max": 1757.59375
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 39,
+              "mean": 0.8046227891851837,
+              "p50": 0.12273104395717382,
+              "p95": 3.3782053620088845,
+              "max": 3.415151304914616
+            },
+            "final_return_s": {
+              "n": 39,
+              "mean": 2.802238026182931,
+              "p50": 2.7230628730468425,
+              "p95": 4.119426176003174,
+              "max": 4.153681719985798
+            },
+            "rss_mib": {
+              "n": 1159,
+              "mean": 1757.9022055651424,
+              "p50": 1757.59375,
+              "p95": 1758.59375,
+              "max": 1758.59375
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 37,
+              "mean": 0.9802911348194135,
+              "p50": 0.5889327930053696,
+              "p95": 3.1849259780719876,
+              "max": 3.742261167964898
+            },
+            "final_return_s": {
+              "n": 37,
+              "mean": 3.3207547424831527,
+              "p50": 3.3522451919773744,
+              "p95": 4.356873467942705,
+              "max": 4.651956649027738
+            },
+            "rss_mib": {
+              "n": 1158,
+              "mean": 1758.8817465457685,
+              "p50": 1759.09375,
+              "p95": 1759.59375,
+              "max": 1759.59375
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 44,
+              "mean": 0.7223382098229856,
+              "p50": 0.4269873630255461,
+              "p95": 2.904922162066214,
+              "max": 3.739743631100282
+            },
+            "final_return_s": {
+              "n": 44,
+              "mean": 2.5216704865651938,
+              "p50": 2.294050492968438,
+              "p95": 4.182273567029256,
+              "max": 4.542070919001503
+            },
+            "rss_mib": {
+              "n": 1159,
+              "mean": 1760.1502642364107,
+              "p50": 1760.09375,
+              "p95": 1760.59375,
+              "max": 1760.59375
+            }
+          }
+        ]
+      },
+      "source_ids": [
+        "seoul-s02m16f3-u0590-0638",
+        "seoul-s06f18m4-u0173-0231",
+        "seoul-s15m22m5-u0465-0538",
+        "seoul-s17f24f6-u0007-0084",
+        "seoul-s22m37m4-u0522-0572",
+        "seoul-s27f32f2-u0355-0383",
+        "seoul-s32m43m1-u0581-0645",
+        "seoul-s39f43f2-u0500-0565"
+      ]
+    },
+    "reading-q8": {
+      "input": {
+        "source_commit": "aa57ee0e1ce93b92669be132f0228b748ef307d7",
+        "input_manifest_sha256": "746e437187ec35ebe7985d1e9f991d8028f10d2ec61db46017e2765668f659f5",
+        "config_sha256": "fe87ae0570093045f40d6e99c505046366e9b619512c8cd9265454ce6443e069",
+        "source_dirty": false,
+        "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+        "model_files": {
+          "Qwen3-ASR-0.6B-Q8_0.gguf": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+          },
+          "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+          },
+          "runtime_library": {
+            "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+            "sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf"
+          },
+          "runtime_manifest": {
+            "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+            "sha256": "a7fa6d9d6ffab5b5a0f7f98e3dc94cd7d751fe503a16f214936b5ff32fd3d113"
+          }
+        },
+        "audio": {
+          "sha256": "08cdcbf78836e97f3cacb4af6df6a64ebc24f86cd895848ae0d1f1acbede29ac",
+          "frames": 4243660,
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "sample_width_bytes": 2,
+          "duration_s": 265.22875
+        },
+        "settings": {
+          "gap_s": 0.0,
+          "vad_preprocess": "rms26-floor80",
+          "vad_threshold": 0.3,
+          "vad_max_speech_s": 5,
+          "partial_after_s": 1.0,
+          "partial_interval_s": 4.0,
+          "partial_mode": "fixed",
+          "partial_min_new_s": 0.8,
+          "partial_tail_margin_s": 0.2,
+          "adaptive_policy": "recent",
+          "partial_cost_model": "total",
+          "partial_budget_s": 2.5,
+          "protect_short_followup": false,
+          "partial_max_calls": 2,
+          "continuous_policy": "latest",
+          "partial_thermal_policy": "pause",
+          "cancel_partial_for_final": false,
+          "partial_followup_s": null,
+          "max_segment_s": 5,
+          "drain_timeout_s": 30,
+          "queue_capacity": 4,
+          "token_stream": true,
+          "partials": true,
+          "silence_policy": "skip-zero"
+        },
+        "warmup_input": {
+          "policy": "leading_max_segment_v1",
+          "source_id": "read-male-tight",
+          "source_audio_sha256": "d1ed15738caafd7ef215cc47a2256de9dd71d3fc25b17e4e0704e7cbc2c7b329",
+          "source_frames": 1072184,
+          "start_frame": 0,
+          "end_frame": 80000,
+          "payload_float32_sha256": "8a6a299983f935613a07403b8ed71312dc545b223a1aa8c3458fb759e113c12f",
+          "scope": "첫 원음의 ASR 최대 구간 이내 PCM만 워밍업. 평가 입력은 전체 원음 유지."
+        },
+        "processed_pcm_sha256": "ed9791b52c1a203e787c5c21629d61a1525872657323c2d973e3a78ee186c5ca",
+        "warmup_successes": 4,
+        "environment": {
+          "machine": "aarch64",
+          "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+          "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+          "runtime": {
+            "sherpa_package_version": "2.0.1",
+            "sherpa_core_package_version": "2.0.1",
+            "python_onnxruntime_package_version": "1.31.1",
+            "sherpa_native_onnxruntime_version": null,
+            "native_version_source": "sherpa_onnx.onnxruntime_version",
+            "status": "not_imported",
+            "reason": "선택 런타임을 아직 import하지 않았습니다."
+          },
+          "thread_environment": {
+            "OMP_WAIT_POLICY": null,
+            "OMP_NUM_THREADS": null,
+            "OMP_DYNAMIC": null,
+            "OMP_PROC_BIND": null,
+            "OMP_PLACES": null,
+            "GOMP_SPINCOUNT": null,
+            "KMP_BLOCKTIME": null,
+            "OPENBLAS_NUM_THREADS": "1"
+          }
+        },
+        "engine_metadata": {
+          "backend": "llama_cpp_mtmd",
+          "quantization": "q8_0",
+          "audio_quantization": "q8_0",
+          "thread_configuration": {
+            "threads": 2,
+            "threads_batch": 3,
+            "audio_threads": 3
+          },
+          "cache_text_prefix": true,
+          "provider": "cpu"
+        }
+      },
+      "score": {
+        "reference_characters": 1063,
+        "errors": 127,
+        "substitutions": 60,
+        "deletions": 10,
+        "insertions": 57,
+        "cer": 0.11947318908748825
+      },
+      "calls": {
+        "partial": {
+          "attempts": 41,
+          "statuses": {
+            "success": 41
+          },
+          "successes_without_normalized_characters": [],
+          "inference_sum_s": 43.28575447422918,
+          "inference_s": {
+            "n": 41,
+            "mean": 1.055750109127541,
+            "p50": 1.0516112770419568,
+            "p95": 1.2730881220195442,
+            "max": 1.3250137439463288
+          },
+          "queue_wait_s": {
+            "n": 41,
+            "mean": 0.7192073835247401,
+            "p50": 0.5657959630480036,
+            "p95": 2.2915980049874634,
+            "max": 2.5106861799722537
+          }
+        },
+        "final": {
+          "attempts": 66,
+          "statuses": {
+            "success": 66
+          },
+          "successes_without_normalized_characters": [
+            36
+          ],
+          "inference_sum_s": 143.52310178638436,
+          "inference_s": {
+            "n": 66,
+            "mean": 2.174592451308854,
+            "p50": 2.343192557920702,
+            "p95": 3.9243700079387054,
+            "max": 4.4687685100361705
+          },
+          "queue_wait_s": {
+            "n": 66,
+            "mean": 0.9418416181455761,
+            "p50": 0.28453462407924235,
+            "p95": 3.346440276945941,
+            "max": 4.0780416739871725
+          }
+        }
+      },
+      "failures": [],
+      "source_pcm_signature": "f19bdeea1b7271ea535f37b49cad77de0c816a0f814b66320a9abebbb3e29f16",
+      "final_pcm_signature": "cd503baaf96705a85a8d23396abf9b297cf9351ae33fd755a243a4654571de7a",
+      "selected_submitted_partial_pcm_signature": "00d6d72fda3163d5f20c50f73ce885b2e20547c97ba0b190c94d7e1459b75c29",
+      "partials_coalesced": 12,
+      "skipped_silence": 0,
+      "common_result": {
+        "content_changes_with_older_end_than_previously_shown": 0,
+        "partial_displayed_before_own_segment_end": {
+          "segments": 66,
+          "with_partial": 27,
+          "segments_at_least_2s": 44,
+          "with_partial_at_least_2s": 27
+        },
+        "by_source": [
+          {
+            "id": "read-male-tight",
+            "start": 0,
+            "end": 1072184,
+            "first_s": 2.3080777178984135,
+            "first4_s": 2.3080777178984135,
+            "observed_first_s": 2.3080777178984135,
+            "observed_first4_s": 2.3080777178984135,
+            "file_end_s": 1.4595605489090104,
+            "max_content_gap_s": 6.813057251973078,
+            "content_updates_during_input": 25,
+            "ambiguous_final": false,
+            "score_unique_finals": {
+              "reference_characters": 316,
+              "errors": 18,
+              "substitutions": 9,
+              "deletions": 0,
+              "insertions": 9,
+              "cer": 0.056962025316455694
+            },
+            "first_completed_partial_s": 2.3080777178984135,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "read-male-pauses",
+            "start": 1072184,
+            "end": 2082066,
+            "first_s": 3.2970548939416204,
+            "first4_s": 3.2970548939416204,
+            "observed_first_s": 3.2970548939416204,
+            "observed_first4_s": 3.2970548939416204,
+            "file_end_s": 2.059179431969312,
+            "max_content_gap_s": 6.2712419799063355,
+            "content_updates_during_input": 26,
+            "ambiguous_final": false,
+            "score_unique_finals": {
+              "reference_characters": 240,
+              "errors": 19,
+              "substitutions": 18,
+              "deletions": 0,
+              "insertions": 1,
+              "cer": 0.07916666666666666
+            },
+            "first_completed_partial_s": 3.2970548939416204,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "read-female-tight",
+            "start": 2082066,
+            "end": 3110039,
+            "first_s": 3.0679167719567317,
+            "first4_s": 3.0679167719567317,
+            "observed_first_s": 3.0679167719567317,
+            "observed_first4_s": 3.0679167719567317,
+            "file_end_s": 1.216046541979523,
+            "max_content_gap_s": 6.143943323055282,
+            "content_updates_during_input": 27,
+            "ambiguous_final": false,
+            "score_unique_finals": {
+              "reference_characters": 206,
+              "errors": 66,
+              "substitutions": 16,
+              "deletions": 10,
+              "insertions": 40,
+              "cer": 0.32038834951456313
+            },
+            "first_completed_partial_s": 3.0679167719567317,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "read-female-pauses",
+            "start": 3110039,
+            "end": 4243660,
+            "first_s": 2.83452563994004,
+            "first4_s": 2.83452563994004,
+            "observed_first_s": 2.83452563994004,
+            "observed_first4_s": 2.83452563994004,
+            "file_end_s": 2.343181544924164,
+            "max_content_gap_s": 7.154802687931806,
+            "content_updates_during_input": 25,
+            "ambiguous_final": false,
+            "score_unique_finals": {
+              "reference_characters": 301,
+              "errors": 24,
+              "substitutions": 17,
+              "deletions": 0,
+              "insertions": 7,
+              "cer": 0.07973421926910298
+            },
+            "first_completed_partial_s": 2.83452563994004,
+            "partial_before_source_end": true
+          }
+        ],
+        "source_distributions": {
+          "first_s": {
+            "n": 4,
+            "mean": 2.8768937559342014,
+            "p50": 2.83452563994004,
+            "p95": 3.2970548939416204,
+            "max": 3.2970548939416204
+          },
+          "first4_s": {
+            "n": 4,
+            "mean": 2.8768937559342014,
+            "p50": 2.83452563994004,
+            "p95": 3.2970548939416204,
+            "max": 3.2970548939416204
+          },
+          "file_end_s": {
+            "n": 4,
+            "mean": 1.7694920169455024,
+            "p50": 1.4595605489090104,
+            "p95": 2.343181544924164,
+            "max": 2.343181544924164
+          },
+          "observed_first_s": {
+            "n": 4,
+            "mean": 2.8768937559342014,
+            "p50": 2.83452563994004,
+            "p95": 3.2970548939416204,
+            "max": 3.2970548939416204
+          },
+          "observed_first4_s": {
+            "n": 4,
+            "mean": 2.8768937559342014,
+            "p50": 2.83452563994004,
+            "p95": 3.2970548939416204,
+            "max": 3.2970548939416204
+          },
+          "max_content_gap_s": {
+            "n": 4,
+            "mean": 6.595761310716625,
+            "p50": 6.2712419799063355,
+            "p95": 7.154802687931806,
+            "max": 7.154802687931806
+          },
+          "first_completed_partial_s": {
+            "n": 4,
+            "mean": 2.8768937559342014,
+            "p50": 2.83452563994004,
+            "p95": 3.2970548939416204,
+            "max": 3.2970548939416204
+          }
+        },
+        "content": {
+          "changed_events": 107,
+          "interval_s": {
+            "n": 106,
+            "mean": 2.502489187047413,
+            "p50": 1.5682501090923324,
+            "p95": 6.511674204026349,
+            "max": 7.154802687931806
+          },
+          "active_between_changes_s": {
+            "n": 40,
+            "mean": 1.0879895411228062,
+            "p50": 1.0615726339165121,
+            "p95": 1.7560978379333392,
+            "max": 1.9661966039566323
+          },
+          "active_max_gap_with_edges_s": {
+            "n": 66,
+            "mean": 1.8943771660998756,
+            "p50": 1.9661966039566323,
+            "p95": 3.1599999999999966,
+            "max": 3.5760000000000005
+          },
+          "input_age_at_publish_s": {
+            "n": 107,
+            "mean": 2.7468332885954183,
+            "p50": 2.915060548909011,
+            "p95": 4.196954747954379,
+            "max": 4.746467159999526
+          },
+          "scope": "정확한 문자열 변경·서버 발행 기준. 입력 나이는 해당 요청 end_frame부터 발행까지이며 음향 단어/브라우저 표시 지연이 아님. 활성 범위는 VAD 소유 구간으로 실제 음소 구간이 아님."
+        },
+        "stability": {
+          "normalization": "ko_cer_v1",
+          "displayed_updates": 107,
+          "normalized_revisions": 20,
+          "retracted_suffix_characters": 85,
+          "prefix_replay_revisions": 0,
+          "prefix_replay_retracted_characters": 0,
+          "within_call_revisions": 0,
+          "failed_results": 0,
+          "cancelled_results": 0,
+          "suppressed_prefix_tokens": 0,
+          "segments_with_display": 66,
+          "revised_segments": 20,
+          "prefix_replay_segments": 0,
+          "suppressed_prefix_jobs": 0,
+          "latest_completed_partial_vs_final": {
+            "paired_segments": 41,
+            "whole_partial_is_final_prefix": 21,
+            "partial_characters": 237,
+            "retained_prefix_characters": 152,
+            "retained_prefix_fraction": 0.6413502109704642
+          },
+          "finals_shorter_than4": 13,
+          "first4_to_final_consistent4_s": {
+            "n": 53,
+            "mean": 1.112491532659404,
+            "p50": 0.0,
+            "p95": 6.2712419799063355,
+            "max": 6.3560856690164655
+          },
+          "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+        }
+      },
+      "q8_token_display": {
+        "content_changes_with_older_end_than_previously_shown": 0,
+        "partial_displayed_before_own_segment_end": {
+          "segments": 66,
+          "with_partial": 30,
+          "segments_at_least_2s": 44,
+          "with_partial_at_least_2s": 30
+        },
+        "by_source": [
+          {
+            "id": "read-male-tight",
+            "start": 0,
+            "end": 1072184,
+            "first_s": 1.8882328119361773,
+            "first4_s": 2.1291070429142565,
+            "observed_first_s": 1.8882328119361773,
+            "observed_first4_s": 2.1291070429142565,
+            "file_end_s": 1.4595605489090104,
+            "max_content_gap_s": 5.0328808890189976,
+            "content_updates_during_input": 295,
+            "ambiguous_final": false,
+            "score_unique_finals": {
+              "reference_characters": 316,
+              "errors": 18,
+              "substitutions": 9,
+              "deletions": 0,
+              "insertions": 9,
+              "cer": 0.056962025316455694
+            },
+            "first_completed_partial_s": 2.3080777178984135,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "read-male-pauses",
+            "start": 1072184,
+            "end": 2082066,
+            "first_s": 2.9825446459222604,
+            "first4_s": 3.1730695569645633,
+            "observed_first_s": 2.9825446459222604,
+            "observed_first4_s": 3.1730695569645633,
+            "file_end_s": 2.059179431969312,
+            "max_content_gap_s": 4.948032749933191,
+            "content_updates_during_input": 265,
+            "ambiguous_final": false,
+            "score_unique_finals": {
+              "reference_characters": 240,
+              "errors": 19,
+              "substitutions": 18,
+              "deletions": 0,
+              "insertions": 1,
+              "cer": 0.07916666666666666
+            },
+            "first_completed_partial_s": 3.2970548939416204,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "read-female-tight",
+            "start": 2082066,
+            "end": 3110039,
+            "first_s": 2.745979281934922,
+            "first4_s": 2.9355997779416043,
+            "observed_first_s": 2.745979281934922,
+            "observed_first4_s": 2.9355997779416043,
+            "file_end_s": 1.216046541979523,
+            "max_content_gap_s": 5.055804919917136,
+            "content_updates_during_input": 241,
+            "ambiguous_final": false,
+            "score_unique_finals": {
+              "reference_characters": 206,
+              "errors": 66,
+              "substitutions": 16,
+              "deletions": 10,
+              "insertions": 40,
+              "cer": 0.32038834951456313
+            },
+            "first_completed_partial_s": 3.0679167719567317,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "read-female-pauses",
+            "start": 3110039,
+            "end": 4243660,
+            "first_s": 2.3823078419584647,
+            "first4_s": 2.5873584939902514,
+            "observed_first_s": 2.3823078419584647,
+            "observed_first4_s": 2.5873584939902514,
+            "file_end_s": 2.343181544924164,
+            "max_content_gap_s": 5.083845724002458,
+            "content_updates_during_input": 314,
+            "ambiguous_final": false,
+            "score_unique_finals": {
+              "reference_characters": 301,
+              "errors": 24,
+              "substitutions": 17,
+              "deletions": 0,
+              "insertions": 7,
+              "cer": 0.07973421926910298
+            },
+            "first_completed_partial_s": 2.83452563994004,
+            "partial_before_source_end": true
+          }
+        ],
+        "source_distributions": {
+          "first_s": {
+            "n": 4,
+            "mean": 2.499766145437956,
+            "p50": 2.3823078419584647,
+            "p95": 2.9825446459222604,
+            "max": 2.9825446459222604
+          },
+          "first4_s": {
+            "n": 4,
+            "mean": 2.706283717952669,
+            "p50": 2.5873584939902514,
+            "p95": 3.1730695569645633,
+            "max": 3.1730695569645633
+          },
+          "file_end_s": {
+            "n": 4,
+            "mean": 1.7694920169455024,
+            "p50": 1.4595605489090104,
+            "p95": 2.343181544924164,
+            "max": 2.343181544924164
+          },
+          "observed_first_s": {
+            "n": 4,
+            "mean": 2.499766145437956,
+            "p50": 2.3823078419584647,
+            "p95": 2.9825446459222604,
+            "max": 2.9825446459222604
+          },
+          "observed_first4_s": {
+            "n": 4,
+            "mean": 2.706283717952669,
+            "p50": 2.5873584939902514,
+            "p95": 3.1730695569645633,
+            "max": 3.1730695569645633
+          },
+          "max_content_gap_s": {
+            "n": 4,
+            "mean": 5.030141070717946,
+            "p50": 5.0328808890189976,
+            "p95": 5.083845724002458,
+            "max": 5.083845724002458
+          },
+          "first_completed_partial_s": {
+            "n": 4,
+            "mean": 2.8768937559342014,
+            "p50": 2.83452563994004,
+            "p95": 3.2970548939416204,
+            "max": 3.2970548939416204
+          }
+        },
+        "content": {
+          "changed_events": 1175,
+          "interval_s": {
+            "n": 1174,
+            "mean": 0.22625421281946423,
+            "p50": 0.06467663298826665,
+            "p95": 0.7769868979230523,
+            "max": 5.083845724002458
+          },
+          "active_between_changes_s": {
+            "n": 695,
+            "mean": 0.11104736496232075,
+            "p50": 0.06423974200151861,
+            "p95": 0.4877008310286328,
+            "max": 1.6315525150857866
+          },
+          "active_max_gap_with_edges_s": {
+            "n": 66,
+            "mean": 1.634634851780792,
+            "p50": 1.5920000000000005,
+            "p95": 2.9862242460651203,
+            "max": 3.1223349900282926
+          },
+          "input_age_at_publish_s": {
+            "n": 1175,
+            "mean": 2.452570974234066,
+            "p50": 2.49120241189749,
+            "p95": 3.712311847893517,
+            "max": 4.685480129959984
+          },
+          "scope": "정확한 문자열 변경·서버 발행 기준. 입력 나이는 해당 요청 end_frame부터 발행까지이며 음향 단어/브라우저 표시 지연이 아님. 활성 범위는 VAD 소유 구간으로 실제 음소 구간이 아님."
+        },
+        "stability": {
+          "normalization": "ko_cer_v1",
+          "displayed_updates": 1282,
+          "normalized_revisions": 22,
+          "retracted_suffix_characters": 89,
+          "prefix_replay_revisions": 0,
+          "prefix_replay_retracted_characters": 0,
+          "within_call_revisions": 0,
+          "failed_results": 0,
+          "cancelled_results": 0,
+          "suppressed_prefix_tokens": 138,
+          "segments_with_display": 66,
+          "revised_segments": 22,
+          "prefix_replay_segments": 0,
+          "suppressed_prefix_jobs": 33,
+          "latest_completed_partial_vs_final": {
+            "paired_segments": 41,
+            "whole_partial_is_final_prefix": 21,
+            "partial_characters": 237,
+            "retained_prefix_characters": 152,
+            "retained_prefix_fraction": 0.6413502109704642
+          },
+          "finals_shorter_than4": 13,
+          "first4_to_final_consistent4_s": {
+            "n": 53,
+            "mean": 0.8669426548360618,
+            "p50": 0.0,
+            "p95": 4.888146398006938,
+            "max": 5.025586907053366
+          },
+          "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+        }
+      },
+      "final_return_all_s": {
+        "n": 66,
+        "mean": 3.3157537309066245,
+        "p50": 3.3172368489634323,
+        "p95": 4.376246025952497,
+        "max": 4.746467159999526
+      },
+      "successful_final_return_s": {
+        "n": 66,
+        "mean": 3.3157537309066245,
+        "p50": 3.3172368489634323,
+        "p95": 4.376246025952497,
+        "max": 4.746467159999526
+      },
+      "final_clip_duration_s": {
+        "n": 66,
+        "mean": 3.0107878787878786,
+        "p50": 3.224,
+        "p95": 5.0,
+        "max": 5.0
+      },
+      "finals_under_1s": 15,
+      "transport": {
+        "captured_chunks": 2653,
+        "accepted_chunks": 2653,
+        "processed_chunks": 2653,
+        "planned_chunks": 2653,
+        "dropped_chunks": 0,
+        "dropped_audio_s": 0.0,
+        "finalization_from_audio_end_s": 2.3435302700000307,
+        "event_max_chunks": 1,
+        "event_max_audio_s": 0.1,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0,
+        "inference_queue_peak": 2
+      },
+      "resources": {
+        "elapsed_s": 267.57228027,
+        "cpu_seconds_replay_plus_producer": 511.405035644,
+        "mean_four_core_percent": 47.781952144664885,
+        "main_process_peak_rss_mib": 1750.84375,
+        "total_inference_s": 186.80885626061354,
+        "inference_s_per_input_s": 0.7043310963106886,
+        "thermal_guard_max_c": 86.45,
+        "admission_c": 58.95,
+        "current_limit_sample_counts": {
+          "0": 128,
+          "8": 128,
+          "6": 24
+        },
+        "current_limit_input_s_approx": 149.81418532830662,
+        "guard": {
+          "exit_code": 0,
+          "status": "completed",
+          "limit_verified": true,
+          "operational_valid": true,
+          "error": null,
+          "rejection": null
+        },
+        "quarters": [
+          {
+            "final_queue_wait_s": {
+              "n": 17,
+              "mean": 1.0691682185416165,
+              "p50": 0.21110673900693655,
+              "p95": 3.346440276945941,
+              "max": 3.346440276945941
+            },
+            "final_return_s": {
+              "n": 17,
+              "mean": 3.482172170006067,
+              "p50": 3.537138375989162,
+              "p95": 4.177866379977203,
+              "max": 4.177866379977203
+            },
+            "rss_mib": {
+              "n": 658,
+              "mean": 1743.5822568389058,
+              "p50": 1743.84375,
+              "p95": 1744.34375,
+              "max": 1744.34375
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 14,
+              "mean": 0.24650585605663114,
+              "p50": 0.0006564490031450987,
+              "p95": 1.1967610110295936,
+              "max": 1.1967610110295936
+            },
+            "final_return_s": {
+              "n": 14,
+              "mean": 2.759300740660435,
+              "p50": 2.8356345599852517,
+              "p95": 3.393898029896434,
+              "max": 3.393898029896434
+            },
+            "rss_mib": {
+              "n": 657,
+              "mean": 1745.4480117960427,
+              "p50": 1745.84375,
+              "p95": 1745.84375,
+              "max": 1745.84375
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 17,
+              "mean": 0.7272640265496996,
+              "p50": 0.4597928390139714,
+              "p95": 2.5557831230107695,
+              "max": 2.5557831230107695
+            },
+            "final_return_s": {
+              "n": 17,
+              "mean": 2.9661860958405137,
+              "p50": 3.10764507999923,
+              "p95": 3.4705793519308656,
+              "max": 3.4705793519308656
+            },
+            "rss_mib": {
+              "n": 658,
+              "mean": 1746.1249050151976,
+              "p50": 1746.34375,
+              "p95": 1746.34375,
+              "max": 1746.34375
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 18,
+              "mean": 1.56506203590349,
+              "p50": 0.7238493530312553,
+              "p95": 4.0780416739871725,
+              "max": 4.0780416739871725
+            },
+            "final_return_s": {
+              "n": 18,
+              "mean": 3.9215247417332915,
+              "p50": 3.94584026297926,
+              "p95": 4.746467159999526,
+              "max": 4.746467159999526
+            },
+            "rss_mib": {
+              "n": 658,
+              "mean": 1746.722929331307,
+              "p50": 1746.34375,
+              "p95": 1747.34375,
+              "max": 1747.34375
+            }
+          }
+        ]
+      },
+      "source_ids": [
+        "read-male-tight",
+        "read-male-pauses",
+        "read-female-tight",
+        "read-female-pauses"
+      ]
+    },
+    "reading-onnx": {
+      "input": {
+        "source_commit": "aa57ee0e1ce93b92669be132f0228b748ef307d7",
+        "input_manifest_sha256": "746e437187ec35ebe7985d1e9f991d8028f10d2ec61db46017e2765668f659f5",
+        "config_sha256": "c00ad9dbe154cecca8bd690e976c4694124e69246616800c9ca1928e8801780e",
+        "source_dirty": false,
+        "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+        "model_files": {
+          "conv_frontend.onnx": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/conv_frontend.onnx",
+            "sha256": "d22dc4423e0940e49884e903d2ea2f7e5567c14fc1aed97e4e26d6b8f208ef9e"
+          },
+          "encoder.int8.onnx": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/encoder.int8.onnx",
+            "sha256": "60748d3e6744a57c9c91e1b17424a6c2990567e8adceb0783940c03ed98fa9d9"
+          },
+          "decoder.int8.onnx": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/decoder.int8.onnx",
+            "sha256": "4f6885be5959ae26af3089d38ee7972c5fafbeeb1cf8d5e76eab6d8b61ca5771"
+          },
+          "tokenizer/vocab.json": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/tokenizer/vocab.json",
+            "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+          },
+          "tokenizer/merges.txt": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/tokenizer/merges.txt",
+            "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+          },
+          "tokenizer/tokenizer_config.json": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-20261106-01/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25/tokenizer/tokenizer_config.json",
+            "sha256": "4942d005604266809309cabc9f4e9cb89ce855d59b14681fdc0e1cc62ea26c4c"
+          }
+        },
+        "audio": {
+          "sha256": "08cdcbf78836e97f3cacb4af6df6a64ebc24f86cd895848ae0d1f1acbede29ac",
+          "frames": 4243660,
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "sample_width_bytes": 2,
+          "duration_s": 265.22875
+        },
+        "settings": {
+          "gap_s": 0.0,
+          "vad_preprocess": "rms26-floor80",
+          "vad_threshold": 0.3,
+          "vad_max_speech_s": 5,
+          "partial_after_s": 1.0,
+          "partial_interval_s": 4.0,
+          "partial_mode": "fixed",
+          "partial_min_new_s": 0.8,
+          "partial_tail_margin_s": 0.2,
+          "adaptive_policy": "recent",
+          "partial_cost_model": "total",
+          "partial_budget_s": 2.5,
+          "protect_short_followup": false,
+          "partial_max_calls": 2,
+          "continuous_policy": "latest",
+          "partial_thermal_policy": "pause",
+          "cancel_partial_for_final": false,
+          "partial_followup_s": null,
+          "max_segment_s": 5,
+          "drain_timeout_s": 30,
+          "queue_capacity": 4,
+          "token_stream": false,
+          "partials": true,
+          "silence_policy": "skip-zero"
+        },
+        "warmup_input": {
+          "policy": "leading_max_segment_v1",
+          "source_id": "read-male-tight",
+          "source_audio_sha256": "d1ed15738caafd7ef215cc47a2256de9dd71d3fc25b17e4e0704e7cbc2c7b329",
+          "source_frames": 1072184,
+          "start_frame": 0,
+          "end_frame": 80000,
+          "payload_float32_sha256": "8a6a299983f935613a07403b8ed71312dc545b223a1aa8c3458fb759e113c12f",
+          "scope": "첫 원음의 ASR 최대 구간 이내 PCM만 워밍업. 평가 입력은 전체 원음 유지."
+        },
+        "processed_pcm_sha256": "ed9791b52c1a203e787c5c21629d61a1525872657323c2d973e3a78ee186c5ca",
+        "warmup_successes": 4,
+        "environment": {
+          "machine": "aarch64",
+          "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+          "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+          "runtime": {
+            "sherpa_package_version": "2.0.1",
+            "sherpa_core_package_version": "2.0.1",
+            "python_onnxruntime_package_version": "1.31.1",
+            "sherpa_native_onnxruntime_version": null,
+            "native_version_source": "sherpa_onnx.onnxruntime_version",
+            "status": "not_imported",
+            "reason": "선택 런타임을 아직 import하지 않았습니다."
+          },
+          "thread_environment": {
+            "OMP_WAIT_POLICY": null,
+            "OMP_NUM_THREADS": null,
+            "OMP_DYNAMIC": null,
+            "OMP_PROC_BIND": null,
+            "OMP_PLACES": null,
+            "GOMP_SPINCOUNT": null,
+            "KMP_BLOCKTIME": null,
+            "OPENBLAS_NUM_THREADS": "1"
+          }
+        },
+        "engine_metadata": {
+          "backend": "sherpa_onnx",
+          "quantization": "int8",
+          "audio_quantization": null,
+          "thread_configuration": null,
+          "cache_text_prefix": null,
+          "provider": "cpu"
+        }
+      },
+      "score": {
+        "reference_characters": 1063,
+        "errors": 141,
+        "substitutions": 76,
+        "deletions": 9,
+        "insertions": 56,
+        "cer": 0.13264346190028223
+      },
+      "calls": {
+        "partial": {
+          "attempts": 35,
+          "statuses": {
+            "success": 35
+          },
+          "successes_without_normalized_characters": [],
+          "inference_sum_s": 40.6842828624649,
+          "inference_s": {
+            "n": 35,
+            "mean": 1.1624080817847113,
+            "p50": 1.1726875369204208,
+            "p95": 1.4391887419624254,
+            "max": 1.570379376062192
+          },
+          "queue_wait_s": {
+            "n": 35,
+            "mean": 0.9743595522063385,
+            "p50": 0.8666737889871001,
+            "p95": 2.3270707519259304,
+            "max": 2.6285140350228176
+          }
+        },
+        "final": {
+          "attempts": 66,
+          "statuses": {
+            "success": 65,
+            "failed": 1
+          },
+          "successes_without_normalized_characters": [],
+          "inference_sum_s": 176.56113241158891,
+          "inference_s": {
+            "n": 66,
+            "mean": 2.6751686729028625,
+            "p50": 2.7104078830452636,
+            "p95": 4.753126750001684,
+            "max": 12.241757628973573
+          },
+          "queue_wait_s": {
+            "n": 66,
+            "mean": 1.6257432725308745,
+            "p50": 0.5063669129740447,
+            "p95": 5.4297396070323884,
+            "max": 12.861536860931665
+          }
+        }
+      },
+      "failures": [
+        {
+          "segment_id": 61,
+          "kind": "final",
+          "start_frame": 3907008,
+          "end_frame": 3913536,
+          "status": "failed",
+          "duration_s": 0.408,
+          "failure_kind": null,
+          "error": {
+            "type": "RuntimeError",
+            "message": "Qwen 출력 잘림/반복 경고 또는 token 상한 도달. raw 결과를 보존합니다."
+          }
+        }
+      ],
+      "source_pcm_signature": "f19bdeea1b7271ea535f37b49cad77de0c816a0f814b66320a9abebbb3e29f16",
+      "final_pcm_signature": "cd503baaf96705a85a8d23396abf9b297cf9351ae33fd755a243a4654571de7a",
+      "selected_submitted_partial_pcm_signature": "e988755dadeff92f0772df3ad99b377c28d5d91629efb0f6470e4aac7cc34861",
+      "partials_coalesced": 18,
+      "skipped_silence": 0,
+      "common_result": {
+        "content_changes_with_older_end_than_previously_shown": 0,
+        "partial_displayed_before_own_segment_end": {
+          "segments": 66,
+          "with_partial": 25,
+          "segments_at_least_2s": 44,
+          "with_partial_at_least_2s": 25
+        },
+        "by_source": [
+          {
+            "id": "read-male-tight",
+            "start": 0,
+            "end": 1072184,
+            "first_s": 2.4295855090022087,
+            "first4_s": 2.4295855090022087,
+            "observed_first_s": 2.4295855090022087,
+            "observed_first4_s": 2.4295855090022087,
+            "file_end_s": 2.6846651149904375,
+            "max_content_gap_s": 7.505550242960453,
+            "content_updates_during_input": 22,
+            "ambiguous_final": false,
+            "score_unique_finals": {
+              "reference_characters": 316,
+              "errors": 24,
+              "substitutions": 14,
+              "deletions": 0,
+              "insertions": 10,
+              "cer": 0.0759493670886076
+            },
+            "first_completed_partial_s": 2.4295855090022087,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "read-male-pauses",
+            "start": 1072184,
+            "end": 2082066,
+            "first_s": 3.741132856951097,
+            "first4_s": 3.741132856951097,
+            "observed_first_s": 3.741132856951097,
+            "observed_first4_s": 3.741132856951097,
+            "file_end_s": 2.3015048289448146,
+            "max_content_gap_s": 6.514030618942343,
+            "content_updates_during_input": 24,
+            "ambiguous_final": false,
+            "score_unique_finals": {
+              "reference_characters": 240,
+              "errors": 18,
+              "substitutions": 17,
+              "deletions": 0,
+              "insertions": 1,
+              "cer": 0.075
+            },
+            "first_completed_partial_s": 3.741132856951097,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "read-female-tight",
+            "start": 2082066,
+            "end": 3110039,
+            "first_s": 3.4234606319582213,
+            "first4_s": 3.4234606319582213,
+            "observed_first_s": 3.4234606319582213,
+            "observed_first4_s": 3.4234606319582213,
+            "file_end_s": 1.470942695908235,
+            "max_content_gap_s": 5.682203189004213,
+            "content_updates_during_input": 26,
+            "ambiguous_final": false,
+            "score_unique_finals": {
+              "reference_characters": 206,
+              "errors": 76,
+              "substitutions": 29,
+              "deletions": 7,
+              "insertions": 40,
+              "cer": 0.36893203883495146
+            },
+            "first_completed_partial_s": 3.4234606319582213,
+            "partial_before_source_end": true
+          },
+          {
+            "id": "read-female-pauses",
+            "start": 3110039,
+            "end": 4243660,
+            "first_s": 2.948734480006607,
+            "first4_s": 2.948734480006607,
+            "observed_first_s": 2.948734480006607,
+            "observed_first4_s": 2.948734480006607,
+            "file_end_s": 8.472215533964345,
+            "max_content_gap_s": 16.276335588064967,
+            "content_updates_during_input": 19,
+            "ambiguous_final": false,
+            "score_unique_finals": {
+              "reference_characters": 301,
+              "errors": 23,
+              "substitutions": 16,
+              "deletions": 2,
+              "insertions": 5,
+              "cer": 0.07641196013289037
+            },
+            "first_completed_partial_s": 2.948734480006607,
+            "partial_before_source_end": true
+          }
+        ],
+        "source_distributions": {
+          "first_s": {
+            "n": 4,
+            "mean": 3.1357283694795335,
+            "p50": 2.948734480006607,
+            "p95": 3.741132856951097,
+            "max": 3.741132856951097
+          },
+          "first4_s": {
+            "n": 4,
+            "mean": 3.1357283694795335,
+            "p50": 2.948734480006607,
+            "p95": 3.741132856951097,
+            "max": 3.741132856951097
+          },
+          "file_end_s": {
+            "n": 4,
+            "mean": 3.732332043451958,
+            "p50": 2.3015048289448146,
+            "p95": 8.472215533964345,
+            "max": 8.472215533964345
+          },
+          "observed_first_s": {
+            "n": 4,
+            "mean": 3.1357283694795335,
+            "p50": 2.948734480006607,
+            "p95": 3.741132856951097,
+            "max": 3.741132856951097
+          },
+          "observed_first4_s": {
+            "n": 4,
+            "mean": 3.1357283694795335,
+            "p50": 2.948734480006607,
+            "p95": 3.741132856951097,
+            "max": 3.741132856951097
+          },
+          "max_content_gap_s": {
+            "n": 4,
+            "mean": 8.994529909742994,
+            "p50": 6.514030618942343,
+            "p95": 16.276335588064967,
+            "max": 16.276335588064967
+          },
+          "first_completed_partial_s": {
+            "n": 4,
+            "mean": 3.1357283694795335,
+            "p50": 2.948734480006607,
+            "p95": 3.741132856951097,
+            "max": 3.741132856951097
+          }
+        },
+        "content": {
+          "changed_events": 100,
+          "interval_s": {
+            "n": 99,
+            "mean": 2.7401149497470922,
+            "p50": 1.6297735719708726,
+            "p95": 6.72087563702371,
+            "max": 16.715608616010286
+          },
+          "active_between_changes_s": {
+            "n": 37,
+            "mean": 1.1531078341995944,
+            "p50": 1.1354655019240454,
+            "p95": 2.0258624081034213,
+            "max": 2.1985460269497707
+          },
+          "active_max_gap_with_edges_s": {
+            "n": 66,
+            "mean": 1.916795577151884,
+            "p50": 1.9901296969540283,
+            "p95": 3.531585588064985,
+            "max": 5.0
+          },
+          "input_age_at_publish_s": {
+            "n": 100,
+            "mean": 3.5721641969749114,
+            "p50": 3.3981296969540438,
+            "p95": 5.45401398791094,
+            "max": 13.650268613993177
+          },
+          "scope": "정확한 문자열 변경·서버 발행 기준. 입력 나이는 해당 요청 end_frame부터 발행까지이며 음향 단어/브라우저 표시 지연이 아님. 활성 범위는 VAD 소유 구간으로 실제 음소 구간이 아님."
+        },
+        "stability": {
+          "normalization": "ko_cer_v1",
+          "displayed_updates": 101,
+          "normalized_revisions": 20,
+          "retracted_suffix_characters": 74,
+          "prefix_replay_revisions": 0,
+          "prefix_replay_retracted_characters": 0,
+          "within_call_revisions": 0,
+          "failed_results": 1,
+          "cancelled_results": 0,
+          "suppressed_prefix_tokens": 0,
+          "segments_with_display": 66,
+          "revised_segments": 20,
+          "prefix_replay_segments": 0,
+          "suppressed_prefix_jobs": 0,
+          "latest_completed_partial_vs_final": {
+            "paired_segments": 35,
+            "whole_partial_is_final_prefix": 15,
+            "partial_characters": 188,
+            "retained_prefix_characters": 114,
+            "retained_prefix_fraction": 0.6063829787234043
+          },
+          "finals_shorter_than4": 12,
+          "first4_to_final_consistent4_s": {
+            "n": 53,
+            "mean": 1.2882039525286946,
+            "p50": 0.0,
+            "p95": 6.639411749900319,
+            "max": 6.853774887975305
+          },
+          "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+        }
+      },
+      "q8_token_display": null,
+      "final_return_all_s": {
+        "n": 66,
+        "mean": 4.500227584620146,
+        "p50": 3.8275186189180204,
+        "p95": 9.926670715901992,
+        "max": 16.598432543008585
+      },
+      "successful_final_return_s": {
+        "n": 65,
+        "mean": 4.314101354491093,
+        "p50": 3.8275186189180204,
+        "p95": 9.800965533964359,
+        "max": 13.650268613993177
+      },
+      "final_clip_duration_s": {
+        "n": 66,
+        "mean": 3.0107878787878786,
+        "p50": 3.224,
+        "p95": 5.0,
+        "max": 5.0
+      },
+      "finals_under_1s": 15,
+      "transport": {
+        "captured_chunks": 2653,
+        "accepted_chunks": 2653,
+        "processed_chunks": 2653,
+        "planned_chunks": 2653,
+        "dropped_chunks": 0,
+        "dropped_audio_s": 0.0,
+        "finalization_from_audio_end_s": 8.472554019000029,
+        "event_max_chunks": 1,
+        "event_max_audio_s": 0.1,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0,
+        "inference_queue_peak": 3
+      },
+      "resources": {
+        "elapsed_s": 273.701304019,
+        "cpu_seconds_replay_plus_producer": 467.555183287,
+        "mean_four_core_percent": 42.70670037203612,
+        "main_process_peak_rss_mib": 1890.8125,
+        "total_inference_s": 217.2454152740538,
+        "inference_s_per_input_s": 0.819086977841029,
+        "thermal_guard_max_c": 86.45,
+        "admission_c": 59.5,
+        "current_limit_sample_counts": {
+          "0": 156,
+          "8": 124,
+          "6": 13
+        },
+        "current_limit_input_s_approx": 133.90625520969274,
+        "guard": {
+          "exit_code": 1,
+          "status": "failed_or_unverified",
+          "limit_verified": true,
+          "operational_valid": false,
+          "error": null,
+          "rejection": null
+        },
+        "quarters": [
+          {
+            "final_queue_wait_s": {
+              "n": 17,
+              "mean": 1.3635674090508152,
+              "p50": 0.3481312970397994,
+              "p95": 4.208413235028274,
+              "max": 4.208413235028274
+            },
+            "final_return_s": {
+              "n": 17,
+              "mean": 4.185934284711475,
+              "p50": 4.069133968948386,
+              "p95": 5.246664424906484,
+              "max": 5.246664424906484
+            },
+            "rss_mib": {
+              "n": 658,
+              "mean": 1860.216684080547,
+              "p50": 1865.3125,
+              "p95": 1865.8125,
+              "max": 1865.8125
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 14,
+              "mean": 0.3268444663678695,
+              "p50": 0.050693301018327475,
+              "p95": 1.4999824989354238,
+              "max": 1.4999824989354238
+            },
+            "final_return_s": {
+              "n": 14,
+              "mean": 3.0978100931140866,
+              "p50": 3.0807191559979685,
+              "p95": 3.8226033669905775,
+              "max": 3.8226033669905775
+            },
+            "rss_mib": {
+              "n": 659,
+              "mean": 1869.100815629742,
+              "p50": 1868.3125,
+              "p95": 1875.8125,
+              "max": 1875.8125
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 17,
+              "mean": 1.0356528438038795,
+              "p50": 0.7555085310013965,
+              "p95": 2.951508946949616,
+              "max": 2.951508946949616
+            },
+            "final_return_s": {
+              "n": 17,
+              "mean": 3.555116044121079,
+              "p50": 3.578334301914083,
+              "p95": 4.512091948959977,
+              "max": 4.512091948959977
+            },
+            "rss_mib": {
+              "n": 658,
+              "mean": 1880.6726823708207,
+              "p50": 1882.3125,
+              "p95": 1884.8125,
+              "max": 1884.8125
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 18,
+              "mean": 3.440916064408763,
+              "p50": 2.9342293080408126,
+              "p95": 12.861536860931665,
+              "max": 12.861536860931665
+            },
+            "final_return_s": {
+              "n": 18,
+              "mean": 6.780434649509947,
+              "p50": 4.806430714963,
+              "p95": 16.598432543008585,
+              "max": 16.598432543008585
+            },
+            "rss_mib": {
+              "n": 658,
+              "mean": 1884.8900075987842,
+              "p50": 1884.8125,
+              "p95": 1885.3125,
+              "max": 1885.3125
+            }
+          }
+        ]
+      },
+      "source_ids": [
+        "read-male-tight",
+        "read-male-pauses",
+        "read-female-tight",
+        "read-female-pauses"
+      ]
+    }
+  },
+  "paired": {
+    "natural": {
+      "same_sources_audio_vad_owned_segments_final_pcm_and_warmup": true,
+      "short_output_diagnostic": {
+        "onnx": {
+          "finals_under_500ms": 20,
+          "successful": 20,
+          "recurring_text_absent_from_entire_category_reference": [
+            {
+              "text": "시스템",
+              "count": 5,
+              "segment_ids": [
+                19,
+                62,
+                64,
+                74,
+                155
+              ]
+            }
+          ]
+        },
+        "q8": {
+          "finals_under_500ms": 20,
+          "successful": 20,
+          "recurring_text_absent_from_entire_category_reference": []
+        }
+      },
+      "finals": 167,
+      "final_normalized_text_differs": 76,
+      "returns_of_same_successful_finals_s": {
+        "onnx": {
+          "n": 167,
+          "mean": 3.371713598196858,
+          "p50": 3.2856491690138228,
+          "p95": 4.89665219799988,
+          "max": 5.711652308000225
+        },
+        "q8": {
+          "n": 167,
+          "mean": 2.777865062016141,
+          "p50": 2.725801860026081,
+          "p95": 4.101981359974502,
+          "max": 4.651956649027738
+        }
+      },
+      "file_boundary_crossing_finals": 7,
+      "paired_final_status_onnx_q8": {
+        "success/success": 167
+      },
+      "executed_partials_match": false,
+      "earlier_q4_matches_final_pcm_and_sources": true,
+      "earlier_q4": {
+        "score": {
+          "reference_characters": 2129,
+          "errors": 336,
+          "substitutions": 200,
+          "deletions": 111,
+          "insertions": 25,
+          "cer": 0.15782057303898545
+        },
+        "engine": "Q4_0 text/output + Q8 audio",
+        "offline_replace_only_failed_q4_final_with_paired_q8_score": {
+          "reference_characters": 2129,
+          "errors": 338,
+          "substitutions": 205,
+          "deletions": 106,
+          "insertions": 27,
+          "cer": 0.15875998121183654
+        },
+        "paired_both_success_normalized_text_differs": 72,
+        "old_partial_policy": {
+          "partial_mode": "adaptive",
+          "partial_after_s": 0.6,
+          "partial_max_calls": 3
+        },
+        "q4_failed_finals": [
+          {
+            "segment_id": 19,
+            "duration_s": 0.056,
+            "onnx_status": "success",
+            "q8_status": "success"
+          },
+          {
+            "segment_id": 62,
+            "duration_s": 0.056,
+            "onnx_status": "success",
+            "q8_status": "success"
+          },
+          {
+            "segment_id": 64,
+            "duration_s": 0.088,
+            "onnx_status": "success",
+            "q8_status": "success"
+          },
+          {
+            "segment_id": 74,
+            "duration_s": 0.344,
+            "onnx_status": "success",
+            "q8_status": "success"
+          },
+          {
+            "segment_id": 166,
+            "duration_s": 0.6800625,
+            "onnx_status": "success",
+            "q8_status": "success"
+          }
+        ]
+      }
+    },
+    "reading": {
+      "same_sources_audio_vad_owned_segments_final_pcm_and_warmup": true,
+      "short_output_diagnostic": {
+        "onnx": {
+          "finals_under_500ms": 12,
+          "successful": 11,
+          "recurring_text_absent_from_entire_category_reference": [
+            {
+              "text": "시스템",
+              "count": 2,
+              "segment_ids": [
+                36,
+                63
+              ]
+            }
+          ]
+        },
+        "q8": {
+          "finals_under_500ms": 12,
+          "successful": 12,
+          "recurring_text_absent_from_entire_category_reference": []
+        }
+      },
+      "finals": 66,
+      "final_normalized_text_differs": 40,
+      "returns_of_same_successful_finals_s": {
+        "onnx": {
+          "n": 65,
+          "mean": 4.314101354491093,
+          "p50": 3.8275186189180204,
+          "p95": 9.800965533964359,
+          "max": 13.650268613993177
+        },
+        "q8": {
+          "n": 65,
+          "mean": 3.301964690783261,
+          "p50": 3.3172368489634323,
+          "p95": 4.376246025952497,
+          "max": 4.746467159999526
+        }
+      },
+      "file_boundary_crossing_finals": 0,
+      "paired_final_status_onnx_q8": {
+        "success/success": 65,
+        "failed/success": 1
+      },
+      "executed_partials_match": false,
+      "earlier_q4_matches_final_pcm_and_sources": true,
+      "earlier_q4": {
+        "score": {
+          "reference_characters": 1063,
+          "errors": 166,
+          "substitutions": 87,
+          "deletions": 9,
+          "insertions": 70,
+          "cer": 0.1561618062088429
+        },
+        "engine": "Q4_0 text/output + Q8 audio",
+        "offline_replace_only_failed_q4_final_with_paired_q8_score": {
+          "reference_characters": 1063,
+          "errors": 167,
+          "substitutions": 87,
+          "deletions": 9,
+          "insertions": 71,
+          "cer": 0.1571025399811853
+        },
+        "paired_both_success_normalized_text_differs": 37,
+        "old_partial_policy": {
+          "partial_mode": "adaptive",
+          "partial_after_s": 0.6,
+          "partial_max_calls": 3
+        },
+        "q4_failed_finals": [
+          {
+            "segment_id": 36,
+            "duration_s": 0.472,
+            "onnx_status": "success",
+            "q8_status": "success"
+          },
+          {
+            "segment_id": 63,
+            "duration_s": 0.12,
+            "onnx_status": "success",
+            "q8_status": "success"
+          }
+        ]
+      }
+    }
+  },
+  "aggregate": {
+    "onnx": {
+      "score": {
+        "reference_characters": 3192,
+        "errors": 452,
+        "substitutions": 246,
+        "deletions": 113,
+        "insertions": 93,
+        "cer": 0.14160401002506265
+      },
+      "total_inference_s": 631.040222631651,
+      "input_s": 732.6568125,
+      "drops": 0,
+      "partial_failures": 0,
+      "final_failures": 1,
+      "total_final_attempts": 233
+    },
+    "q8": {
+      "score": {
+        "reference_characters": 3192,
+        "errors": 384,
+        "substitutions": 201,
+        "deletions": 101,
+        "insertions": 82,
+        "cer": 0.12030075187969924
+      },
+      "total_inference_s": 565.5318222990027,
+      "input_s": 732.6568125,
+      "drops": 0,
+      "partial_failures": 0,
+      "final_failures": 0,
+      "total_final_attempts": 233
+    }
+  },
+  "raw_file_count": 49,
+  "raw_sha256": {
+    "campaign.json": "1d1b1a2d7d073c5da67edb594b8ed6f5499933d614c4b0fe87747e5572dd4d59",
+    "natural-onnx/admission.jsonl": "72e511fb8dba28c2316d1114c4a50d84d433fab7a6136834d6e5851d5bb4696e",
+    "natural-onnx/console.log": "1e761aad6b23c281dca54cbbc3840f35314a731b6aeaf01d1722febf1a3e297b",
+    "natural-onnx/execution.json": "d680d90dd4a074d7abc36169d95b9d4fab7096520c76b62bb6ec837b06cc2167",
+    "natural-onnx/jobs.jsonl": "70b8fc764e8d59da23c4abbe64d298480f6c5d244d1669b26ce041cd7068b4ab",
+    "natural-onnx/stream/backlog.jsonl": "a39c329dcf429f817cdb056d22c9991160ebc4e8a63f3454443ffd83dcc8cb69",
+    "natural-onnx/stream/decoder.jsonl": "460230292cba61b6175ab56e57927d6eea4e3c4ac0ea134b65a62fa38c8b9f82",
+    "natural-onnx/stream/producer.jsonl": "83dd82b83d3e354052baafcfab0e5049f22b76336cc0780f07cc056000372dde",
+    "natural-onnx/thermal.jsonl": "5a73850a78d73be566e2f1b6776d6a93ce0e1bfe7f9e4838e4a6bac2e33e8ae0",
+    "natural-onnx/threads.jsonl": "3eb956ae649c8574af65488b31168c800bff6ff61f4522cbff4445b1e5285253",
+    "natural-onnx/warnings.jsonl": "784c161206775310f8688c3fc30caa0eaad9f209fe5b480d592f747a3bdd172d",
+    "natural-onnx/worker.json": "59734f8cdf47ecfcb523b09cff19d3a4a0bb2999c8196262b8a8de16bd915b2f",
+    "natural-onnx.log": "48ab82655fd61dcd720004574d88fa55321e8194d0eeef022d2a4e04f7805105",
+    "natural-q8/admission.jsonl": "08104b41c32384a07d8c0125a181122816f4c2a1004003d7ab23229cc7b0e210",
+    "natural-q8/console.log": "e4e2a406522998bc9605b9785e74dc0a16973cfaaacb4d1ba84a5df8a29c4eab",
+    "natural-q8/execution.json": "ee57863abe0dce5cacd91b5da8f5502340b1fd2d715bf47312ca302f633332d2",
+    "natural-q8/jobs.jsonl": "ea4c01872dd57cda6ccb2624c5c4a4590b4097a128047d4064e6823f7fc9b759",
+    "natural-q8/stream/backlog.jsonl": "49afc28f9c543d0821b06c33021cf8f8a2216b91e892b69e9f9147c919a9c0ab",
+    "natural-q8/stream/decoder.jsonl": "b5682e68d06c8f71b485700a782cd36feda7f0a5b6ab436485209883659e0ebe",
+    "natural-q8/stream/producer.jsonl": "bdbbf6d43e62144561e5976e0bf027ec9220568683aa5edc57ed4a34c0a6c450",
+    "natural-q8/thermal.jsonl": "79a9b77f3a2de39851e0da90df391c17c177a640a17c536c1aec648f2e5241f9",
+    "natural-q8/threads.jsonl": "bdb3d94392ec1f319d43bdbac94aebdcf956760ec8e77905df9498a8fc31b72b",
+    "natural-q8/warnings.jsonl": "99b33e5002f1a04999d1390d7c4470bcb7978fbbf8d90a1b9b920d5d9eaec5a0",
+    "natural-q8/worker.json": "f0ada000e9bdffab3066c07a105e60f51d6736047c7be850ea0952e27bae77ec",
+    "natural-q8.log": "87e57d05edeb6e32145bcf668de6104f64ae1b21092b6bd71cb425de91b134c5",
+    "reading-onnx/admission.jsonl": "18e2d2e94e41f2f99641714060ca219999bd0e4f7f3ad82e9d12e8024e10b03c",
+    "reading-onnx/console.log": "cfae5857a36896a7582881d9da441c08b8d261210c0f3a7bb9b7ae1482131a2e",
+    "reading-onnx/execution.json": "177429714c43f39fdf8bb397e3d8d1678bf53ed5319553a70867a5cc0e81c082",
+    "reading-onnx/jobs.jsonl": "8363a522079a558dc15d7b72e3aa7ffa66f1002a31dec43126276c9661cd7e2b",
+    "reading-onnx/stream/backlog.jsonl": "6129ff6e7c8e291b96ee97335aaa6b9f5196e1d257a86340483c4aadebbbb06d",
+    "reading-onnx/stream/decoder.jsonl": "0033f1b0ef14182ce1c0811b6f41c5795fb9837691950d8b01ed00d0faa53c5d",
+    "reading-onnx/stream/producer.jsonl": "e00379c45cb501ec482c435a4a9703960c4e4d0e08716195f9d684dc82a9eca9",
+    "reading-onnx/thermal.jsonl": "f1388479b8896180b2f16cf339605174f4be85156007e66fa31fd465237249fd",
+    "reading-onnx/threads.jsonl": "244f46dbace5803895e946868708c57625e6b267cd3100c50c5fa101bd718ed9",
+    "reading-onnx/warnings.jsonl": "956395802efe5f47943731b33040435b9b68d304e12d7b8b2fc545eb5966340c",
+    "reading-onnx/worker.json": "c7f5b84b0e5913b0dd1dc536e3f51cbc4a76a42790349b2a328a8ac37bf3413a",
+    "reading-onnx.log": "8284ce08d8801be3c98d71a04963c803240ed43371b9407f30a6937e5e28ecd7",
+    "reading-q8/admission.jsonl": "67a047d1da2997298f97000990379bcd6201a7cf8df358aafa7eba00351361de",
+    "reading-q8/console.log": "623381406dfd5ef227d4710257a05b48b599b20683df03e002150c914a119c72",
+    "reading-q8/execution.json": "567df530909e1a4ddd9c53c59380449655489a9c51a9b719aa00c61735bdc236",
+    "reading-q8/jobs.jsonl": "97ec39d0a6e94cadfbbd491157ee1f8f61aec1d1e8bbc6dcd17294c17306f573",
+    "reading-q8/stream/backlog.jsonl": "598a622beb5bfe3ce5c07122fe1c76b625621ee07e2bc5f25e1de9e422d90c96",
+    "reading-q8/stream/decoder.jsonl": "897196e3401313d499df23eab271790022bb30662133604e32ae51186e386411",
+    "reading-q8/stream/producer.jsonl": "76c84473351ea2d5861926de48346e2742a09b013ec97b6b77067210f10ecacb",
+    "reading-q8/thermal.jsonl": "5ec69ca2ef1b98c7cdb4dec2be3f4937317ea5328a14fc6f3ebfff9ec654c67f",
+    "reading-q8/threads.jsonl": "6066895970d0e5d04e50c7f21b1c242dda49bfc7002ee5302ed079a00bcffda9",
+    "reading-q8/warnings.jsonl": "44451f9259da18e0f6cf59a7580477318d60a6c0b53f3e72e0efe700e13bf733",
+    "reading-q8/worker.json": "091aaaa21e259bbb60cab34f5794f5338f73e41076d2dd670c436fdb97c0802f",
+    "reading-q8.log": "76e4b9799b15c33bc6b4f5392120245ed7fd0d9953dcfb6a015c300afe5c8848"
+  }
+}

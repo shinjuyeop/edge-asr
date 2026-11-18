@@ -2,6 +2,10 @@
 
 2026-11-18 갱신, 최신 완료 실측은2026-11-18입니다. 목표는 **RP5에서 Qwen3-ASR-0.6B의 한국어 정확도·완료율을 유지하면서 실제 인식 지연을 줄이는 것**입니다. [최적화 과정](research/optimization_history.md), [연구 계획](research/qwen3_optimization.md), [평가 조건](research/qwen_realtime.md), [최근100개 캐시 대조](../results/summaries/optimization/realtime-prefix-cache-20261112.md).
 
+## 긴 자연발화·낭독의 스트리밍 기준선
+
+RP5에서 같은 긴 음원 12개·확정 PCM 233구간을 비교했습니다. 배포 ONNX INT8은 CER 14.16%(452/3,192자), 현재 GGUF Q8은 12.03%(384/3,192자)였습니다. 양쪽 모두 입력 드롭 0건이었고 ONNX 낭독에서 확정 1건이 실패했습니다. 같은 성공 구간의 확정 지연 p95는 자연발화 ONNX 4.90초·Q8 4.10초, 낭독 ONNX 9.80초·Q8 4.38초였습니다. Q8은 자연발화 입력 약 467초 중 약 366초에서 성능 제한이 관측됐습니다. [조건·표시 지연·Q4 오류 분석](../results/summaries/optimization/longform-backends-20261118.md)
+
 ## 유지하는 연속 입력 기준
 
 **Qwen 단독1배속 연속 입력**이 주 평가입니다. 공유 고정 참조는 **GGUF Q8_0·생성2T/음성·prefill3T·VAD 보정·ASR/VAD 판정5초·첫1초/이후4초·토큰 표시/접두부 재표시 보류·고정 text prefix KV**입니다. [configs/gguf_realtime.toml](../configs/gguf_realtime.toml)과 [대표 명령](guides/qwen3_optimization.md#현재-개발용-대표-명령)을 사용합니다. 기존 캐시 끔2/3 원본 `results/optimization/opt3/realtime-split100-20261111-01/configs/split-2-3.toml`과 기본2T·모두3T 설정·모델·환경·bridge는 보존합니다. 실사용 채택은 보류합니다.
