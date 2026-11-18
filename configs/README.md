@@ -47,3 +47,5 @@
 `gguf_conv_realtime.toml`은 Q8 가변 갱신에서 기존 4×4 합성곱 후보만 비교하는 선택 설정입니다. 공유 Q8과의 차이는 `conv_kernel_manifest` 하나입니다. 후보 프로세스에만 명세의 `LD_PRELOAD`·`EDGE_ASR_CONV_CPU`가 필요하며 일반 listener에서 환경 없이 선택하지 않습니다. [대조 조건](../docs/research/qwen_realtime.md#q8-가변-갱신합성곱-대조--2026-11-18-사전-조건).
 
 [긴 음원 실측](../results/summaries/optimization/q8-conv-headroom-20261118.md)에서 합성곱 비용은 줄었지만 첫 표시/첫 4자 지연이 모두 개선되지는 않아, 이 설정은 선택 후보로 유지합니다.
+
+`quantization/q8_decoder_control.toml`은 세 decoder의 동일 빌드 대조용 Q8이며, 공유 Q8의 prefix bridge와 구분합니다. `quantization/q4_0_q6_head_realtime.toml`은 기존 Q4_0 본체/Q6_K 출력층 모델입니다. 두 설정은 현재 headroom 정책에서 출력층의 정확도·지연 영향을 확인하는 선택 평가용입니다. [조건](../docs/research/qwen_realtime.md#decoder-출력층과-가변-갱신--2026-11-18-사전-조건).

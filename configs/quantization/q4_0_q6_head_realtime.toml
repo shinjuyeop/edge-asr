@@ -1,0 +1,24 @@
+# Q4_0 본체 + Q6_K 출력층, Q8 음성, 동일 OFF bridge 대조.
+[model]
+family = "qwen3_gguf"
+path = "models/qwen3-opt/decoder-q4-20261117-01/default"
+runtime_library = "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/libedge_asr_gguf.so"
+runtime_manifest = "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/build.json"
+num_threads = 2
+num_threads_batch = 3
+cache_text_prefix = true
+language = "ko"
+quantization = "q4_0"
+max_total_len = 512
+max_new_tokens = 128
+
+asset_manifest = "q4_0.json"
+
+[audio]
+sample_rate_hz = 16000
+
+[evaluation]
+mode = "batch"
+warmup_runs = 3
+normalization = "ko_cer_v1"
+output_dir = "results/optimization/opt2"
