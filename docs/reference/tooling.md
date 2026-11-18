@@ -29,6 +29,8 @@
 
 현재 입력 준비는 `prepare-fixed100 --verify-only`, `prepare-baseline100 --output <새경로>`를 사용합니다. `prepare-opt0`는 이전 KSS/56ms 진단 입력의 재현 도구입니다.
 
+`prepare-longform`은 [약1분 긴 발화 세트](../research/longform.md)의 자연발화8개·낭독 연결4개를 기존 로컬 원본에서 준비합니다. `--verify-only`로 완성 폴더의 해시·PCM·원본 라벨/전사·부분 목록을 모델 없이 검사합니다. 새로운 조건은 `--output data/evaluation/<새ID>`로 분리하며 기존 고정100개는 유지합니다.
+
 ## 기존 연구·자료 명령
 
 | `tools` 명령 그룹 | 역할 |

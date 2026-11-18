@@ -11,7 +11,7 @@
 | 실행 준비 | [Qwen 최적화 시작](guides/qwen3_optimization.md), [설치](guides/setup.md), [배포](guides/deployment.md) |
 | 현재 평가 조건·결과 | [현재 상태](status.md), [고정 text prefix KV 100개 대조 — 2026-11-12](../results/summaries/optimization/realtime-prefix-cache-20261112.md), [batch 출발 기준선](research/fixed100_baseline.md) |
 | 현재 우선 검증 | [Qwen 단독1배속·부분 자막·양자화 계획](research/qwen_realtime.md) |
-| 평가 기반 | [고정100개 입력](research/fixed100.md), [데이터](guides/datasets.md), [공통 평가](guides/evaluation.md), [manifest](../benchmarks/manifest.md) |
+| 평가 기반 | [고정100개 입력](research/fixed100.md), [약1분 긴 발화](research/longform.md), [데이터](guides/datasets.md), [공통 평가](guides/evaluation.md), [manifest](../benchmarks/manifest.md) |
 | 코드·경로 | [아키텍처](reference/architecture.md), [이번 구조 이행](reference/structure_migration.md), [도구](reference/tooling.md), [테스트](../tests/README.md) |
 | 계측 정의 | [측정 계약](reference/benchmark_design.md) |
 | 새 OPT 요약 | [optimization 기록](../results/summaries/optimization/README.md) |

@@ -77,6 +77,8 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv/bin/python -m unittest discover -
 
 실제 추론에는 모델·음원·RP5용 native 빌드가 별도로 필요합니다. Git clone에는 이 자산이 포함되지 않습니다. [실제 평가 순서](docs/guides/qwen3_optimization.md#실제-평가-순서)를 따르며 기존 환경·모델·원음·결과는 보존합니다.
 
+고정100개를 보완하는 [약1분 긴 발화 세트](docs/research/longform.md)는 자연발화8개·낭독 연결4개, 총약12분13초입니다. 별도 입력 목록으로 준비했으며 배포 전사 기반 개발용입니다. 독립 청취 검수는 아직 하지 않았으며, RP5 성능은 [긴 음원 대조](results/summaries/optimization/longform-stream-20261118.md)에서 확인했습니다.
+
 ## 어디를 수정하나요?
 
 실행 흐름은 **CLI → Qwen 실행기 → ONNX/GGUF 어댑터 → native 런타임**입니다. 입력·채점·계측·기록은 공통 모듈을 재사용합니다.
@@ -124,7 +126,8 @@ edge-asr/
 │   └── onnx.toml                        # ONNX 출발 참조
 ├── data/                                # 로컬 음원·정답
 │   ├── evaluation/
-│   │   └── edge100-20261109-01/          # 고정100개·manifest.jsonl
+│   │   ├── edge100-20261109-01/          # 고정100개·manifest.jsonl
+│   │   └── longform-20261117-01/         # 약1분 자연발화8개·낭독 연결4개
 │   └── sources/                         # 원본 코퍼스·출처 캐시
 ├── docs/
 │   ├── archive/                         # 이전 연구·이행 기록
@@ -190,6 +193,7 @@ edge-asr/
 │       │   └── profiling.py
 │       ├── tools/
 │       │   ├── data/
+│       │   │   └── longform.py          # 긴 발화 선정·준비·재검증
 │       │   ├── maintenance/
 │       │   ├── probes/
 │       │   ├── reports/

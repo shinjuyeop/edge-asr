@@ -36,6 +36,8 @@ GGUF의 선택적 C++ 문법 검사에는 `EDGE_ASR_LLAMA_SOURCE`를 고정 upst
 
 `qwen/test_fixed100.py`는 고정 선정의 입력 순서 독립성·화자 할당량·정규화 중복 제외·할당량 부족 거부·원본 해시·tar 경로/링크·FLAC 형식 검사를 수행합니다. 기존 ffmpeg가 있으면 합성 PCM의 실제 변환·원음 보존·프레임 불일치 거부도 확인합니다. 공개 데이터 다운로드나 ASR 추론은 하지 않습니다. 실제100개 파일의 준비·검증은 [별도 기록](../results/summaries/optimization/fixed100-preparation-20261109.md)에 남깁니다.
 
+`common/test_longform.py`는 긴 발화 선정에서 면접자/불명확/개인정보/미지원 태그 포함 후보 거부, 완전한 발화 라벨·간투사 보존, 결정성·할당량 부족 거부, 기존100개 정답 제외·낭독 화자 분리, 정확한 PCM 프레임 절취를 검사합니다. 실제 준비한12개 WAV의 검증 범위는 [긴 발화 안내](../docs/research/longform.md)를 따릅니다.
+
 `qwen/test_q8_gemv.py`는 모델 없는 ELF 라이브러리로 선택 Q8 GEMV의 기본 전달·미지원 모드 거부·실행 중 초기화 거부·호출 집계를 확인합니다. ARM 수치 동등성이나 실제 추론 성능은 보장하지 않으며 RP5에서 별도로 검사합니다.
 
 `qwen/test_convolution.py`는 선택 합성곱 자산 해시·preload 누락/혼합·미로드·호출 수락 실패를 검사합니다. 어댑터는 성공과 native 실패 모두 선택 경로 기록을 보존합니다. `test_conv_sgemm.py`의 Host ELF 검사는 1~6청크 모의 shape·기본 전달·호출 중 초기화 거부를 다루며 실제 FP16 동등성은 RP5 별도 실행에서 확인합니다.

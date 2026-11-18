@@ -21,6 +21,8 @@
 | `adapters/`, `legacy/` | 공통 factory·이전 비교 모델과 자막/병합 재현 |
 | `legacy/benchmark_zipformer.py` | M1 Zipformer 전용 반복 프로브. 현재 Qwen의 `qwen/benchmark.py`와 구분 |
 
+긴 입력 준비는 `tools/data/longform.py`가 담당합니다. 공통 `textgrid.py`·`dataset.py`·`artifacts.py`와 기존 `tools/data/fixed100.py`의 Zeroth 원본 읽기/변환을 재사용하며, 결과 JSONL은 기존 연속 입력 평가기에 그대로 전달합니다. [구성·정답 범위](../research/longform.md).
+
 ```mermaid
 flowchart LR
   CLI[CLI] --> Q[Qwen 실행기]

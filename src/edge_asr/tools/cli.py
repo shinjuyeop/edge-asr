@@ -11,6 +11,7 @@ COMMANDS = {
     "prepare-external": "data.external",
     "prepare-validation": "data.validation",
     "prepare-fixed100": "data.fixed100",
+    "prepare-longform": "data.longform",
     "prepare-baseline100": "data.baseline100",
     "prepare-opt0": "data.opt0",
     "prepare-volume": "edge_asr.legacy.tools.data.volume",
