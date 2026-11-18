@@ -8,7 +8,7 @@ from contextlib import nullcontext
 from threading import Condition, RLock
 
 from edge_asr.dataset import pcm_bytes
-from edge_asr.qwen.realtime.continuous import ContinuousPolicy
+from edge_asr.qwen.realtime.continuous import POLICY_VERSIONS, ContinuousPolicy
 from edge_asr.qwen.realtime.stability import replays_prefix
 from edge_asr.qwen.realtime.worker import DecodeWorker
 from edge_asr.segmentation import SegmentPipeline
@@ -70,7 +70,7 @@ class CaptionSession:
             )
         self.partial_mode = partial_mode
         if (
-            continuous_policy not in ("latest", "paced")
+            continuous_policy not in POLICY_VERSIONS
             or partial_thermal_policy not in ("pause", "pace")
             or (
                 partial_mode != "continuous"
@@ -184,7 +184,7 @@ class CaptionSession:
 
     def _continuous_next(self):
         estimate = None
-        if self.continuous.candidate and self.continuous.policy == "paced":
+        if self.continuous.candidate and self.continuous.policy in ("paced", "headroom"):
             _, start, end, _ = self.continuous.candidate
             estimate = self.worker.estimate_cost("partial", end - start, model="audio_scaled")
         candidate = self.continuous.choose(estimate)

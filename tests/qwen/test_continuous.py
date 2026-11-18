@@ -316,6 +316,20 @@ class ContinuousTests(unittest.TestCase):
             self.assertEqual(events[-1]["reason"], "near_final")
             self.assertEqual(events[-1]["final_reserve_s"], 0.8)
 
+    def test_headroom_keeps_latest_candidate_with_time_for_inference_and_margin(self):
+        p, _, events = self.policy(policy="headroom", thermal_policy="pace")
+        with p.condition:
+            p.observe({"temperature_mc": 60000, "current_limits": 0})
+            p.update(0, 0, 9600, lambda a, b: b)
+            self.assertIsNotNone(p.choose())
+            p.update(0, 0, 44800, lambda a, b: b)
+            p.update(0, 0, 48000, lambda a, b: b)
+            self.assertIsNone(p.choose(estimated_s=1.8))  # 2초 여유에 0.2초 여백 포함
+            self.assertEqual(events[-1]["reason"], "near_final")
+            self.assertEqual(p.choose(estimated_s=1.2)[-1], 48000)
+            p.update(1, 80000, 147200, lambda a, b: b)
+            self.assertIsNone(p.choose())  # 이력 없이 끝에 도달한 새 구간
+
     def test_worker_wakes_paced_candidate_without_input_or_thermal_notification(self):
         model, events, ready_at = ControlledModel(), [], time.perf_counter() + 0.05
         offered = False

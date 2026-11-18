@@ -1,0 +1,22 @@
+title = "Q8 · 최신 음성 가변 갱신"
+config = "configs/gguf_realtime.toml"
+manifest = "data/evaluation/longform-20261117-01/natural.jsonl"
+vad_model = "models/silero-vad-k2-20261029/silero_vad.onnx"
+
+[replay]
+gap_s = 0
+vad_threshold = 0.3
+vad_preprocess = "rms26-floor80"
+vad_max_speech_s = 5
+max_segment_s = 5
+partial_mode = "continuous"
+continuous_policy = "headroom"
+partial_after_s = 0.6
+partial_min_new_s = 1.0
+partial_tail_margin_s = 0.2
+partial_thermal_policy = "pace"
+cancel_partial_for_final = true
+token_stream = true
+drain_timeout_s = 30
+queue_capacity = 4
+silence_policy = "skip-zero"

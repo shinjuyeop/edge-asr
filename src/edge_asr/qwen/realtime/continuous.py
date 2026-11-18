@@ -5,6 +5,12 @@ from threading import Event, Thread
 
 from edge_asr import thermal
 
+POLICY_VERSIONS = {
+    "latest": "latest-completion-v1",
+    "paced": "paced-completion-v2",
+    "headroom": "estimated-headroom-v1",
+}
+
 
 class ContinuousPolicy:
     def __init__(
@@ -22,8 +28,8 @@ class ContinuousPolicy:
     ):
         self.condition, self.emit, self.clock = condition, emit, clock
         self.minimum, self.min_new, self.maximum, self.tail = minimum, min_new, maximum, tail
-        if policy not in ("latest", "paced") or thermal_policy not in ("pause", "pace"):
-            raise ValueError("연속 정책은 latest/paced, 열 정책은 pause/pace여야 합니다.")
+        if policy not in POLICY_VERSIONS or thermal_policy not in ("pause", "pace"):
+            raise ValueError("지원하지 않는 연속 갱신 또는 열 정책입니다.")
         self.policy, self.thermal_policy = policy, thermal_policy
         self.thermal_factor = 1.0
         self.overheated = False
@@ -42,7 +48,7 @@ class ContinuousPolicy:
         self.stats = {
             "mode": "continuous",
             "policy": policy,
-            "version": "paced-completion-v2" if policy == "paced" else "latest-completion-v1",
+            "version": POLICY_VERSIONS[policy],
             "thermal_policy": thermal_policy,
             "decisions": {},
             "candidate_updates": 0,
@@ -65,6 +71,8 @@ class ContinuousPolicy:
             "tail_margin_s": tail / 16000,
             "deferred_s": {},
         }
+        if policy == "headroom":
+            self.stats["final_reserve_max_s"] = None
 
     def _end_deferral(self):
         if self.deferral is not None:
@@ -143,6 +151,9 @@ class ContinuousPolicy:
         reserve = self.tail / 16000
         if self.policy == "paced" and estimated_s is not None:
             reserve = min(0.8, max(reserve, estimated_s))
+        elif self.policy == "headroom":
+            # 이력이 없을 때는 한 번의 새 음성 간격을 확보한다.
+            reserve += self.min_new / 16000 if estimated_s is None else estimated_s
         allowance = 0.35 if first else 0.0
         if end - start < self.minimum or (
             not first and end - self.last_end < self.min_new * self.thermal_factor
@@ -151,7 +162,6 @@ class ContinuousPolicy:
         elif not self.thermal_ready or self.hot:
             reason = "thermal_backoff"
         elif (self.maximum - (end - start)) / 16000 <= reserve:
-            # 긴 비용 추정이 발화 대부분을 막지 않도록 예약을 0.8초로 제한한다.
             reason = "near_final"
         elif self.policy == "paced" and self.work_debt_s > allowance + 1e-6:
             reason = "compute_pacing"

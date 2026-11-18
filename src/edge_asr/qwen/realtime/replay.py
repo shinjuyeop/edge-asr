@@ -16,6 +16,7 @@ from edge_asr.audio_policy import VAD_POLICIES
 from edge_asr.config import load_evaluation_config
 from edge_asr.dataset import Audio, float_digest, load_audio, load_manifest, prepare_track
 from edge_asr.metrics import character_errors, distribution
+from edge_asr.qwen.realtime.continuous import POLICY_VERSIONS
 from edge_asr.qwen.realtime.session import CaptionSession
 from edge_asr.qwen.realtime.stability import content_updates
 from edge_asr.qwen.realtime.stability import summarize as summarize_stability
@@ -409,9 +410,9 @@ def argument_parser():
     parser.add_argument("--partial-max-calls", type=int, default=2)
     parser.add_argument(
         "--continuous-policy",
-        choices=("latest", "paced"),
+        choices=tuple(POLICY_VERSIONS),
         default="latest",
-        help="continuous: paced는 실제 계산량 배분·최대0.8초 확정 예약·취소0.35초 유예",
+        help="paced는 계산량 배분, headroom은 최근 부분 추론 예상 시간과 끝 여유를 확보",
     )
     parser.add_argument(
         "--partial-thermal-policy",

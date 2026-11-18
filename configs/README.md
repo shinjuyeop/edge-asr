@@ -40,5 +40,6 @@
 | [listener_longform_natural.toml](listener_longform_natural.toml) | Q4 1.99초 창 캐시·자연발화8개 |
 | [listener_longform_reading.toml](listener_longform_reading.toml) | Q4 1.99초 창 캐시·낭독 연결4개 |
 | [listener_partial_window.toml](listener_partial_window.toml) | Q4 1.99초 창 캐시·고정100개 |
+| [listener_q8_headroom.toml](listener_q8_headroom.toml) | Q8·긴 자연발화·첫 0.6초 이후 새 음성 1초부터 최신 구간 재전사. 열과 확정까지 남은 시간에 따라 후속 호출을 조절하는 실험 프로필 |
 
 최종 목표는 발화 중 자막이 계속 갱신되고 수정되는 스트리밍입니다. 과거 최대2회/3회 조건은 [실행 안내](../docs/guides/qwen3_optimization.md)와 실행별 listener 설정에 비교·재현 조건으로 보존합니다. 공유 프로필 간 작은 TOML 반복은 독립적인 재현 조건을 명시하기 위해 유지하며 설정 상속을 사용하지 않습니다.
