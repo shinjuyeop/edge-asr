@@ -1,0 +1,414 @@
+{
+  "id": "decoder-pair-pilot-20261118-FWwfDv",
+  "measured_on": "Raspberry Pi 5",
+  "source": "ac4cec75dcf9df11ed787c317d519d5d20faa129",
+  "pilot_sha256": "20d229e9537009756d1bc9f22844fe9605ec9fd9012cbfff21cf3f921b67f29c",
+  "scope": "실패·성공·숫자 표기·통제 사례 선별. 최종 PCM 개별 호출, 파일럿 CER 및 스트리밍 지연 미측정.",
+  "inputs": {
+    "pilot": [
+      "natural-012",
+      "natural-019",
+      "natural-092",
+      "natural-154",
+      "reading-017",
+      "reading-026",
+      "reading-028",
+      "reading-036"
+    ],
+    "corpora": {
+      "natural": {
+        "source_manifest": "data/evaluation/longform-20261117-01/natural.jsonl",
+        "manifest_sha256": "4470f6bb32742d2a4370aead00bf3768accccbde822f0a9c375002ea4d5a65d8",
+        "final_count": 167,
+        "reference_characters": 2129
+      },
+      "reading": {
+        "source_manifest": "data/evaluation/longform-20261117-01/reading.jsonl",
+        "manifest_sha256": "746e437187ec35ebe7985d1e9f991d8028f10d2ec61db46017e2765668f659f5",
+        "final_count": 66,
+        "reference_characters": 1063
+      }
+    },
+    "models": {
+      "q8": {
+        "config_sha256": "2b89b55613580941578c8f4cbc7cae41a24b2ff6d5294bc34d5dcf1d34016616",
+        "assets": {
+          "models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971",
+          "models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d",
+          "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/libedge_asr_gguf.so": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a",
+          "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/build.json": "20c5b71f14575eddb703591ec0e3694bfdc22b56b0c89827acad2180e04ba810"
+        }
+      },
+      "q4": {
+        "config_sha256": "1b4ca4b0f7a2550c20ded96159f9d7924b283355a7eb7f2908ca3cf761e68a7d",
+        "assets": {
+          "models/qwen3-opt/decoder-q4-20261117-01/head-q4/Qwen3-ASR-0.6B-Q4_0-HEAD-Q4_0.gguf": "ca2f6ac6e7e4258206187b9c605b2443fdfa425cae82891da51377103fd4e383",
+          "models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d",
+          "models/qwen3-opt/decoder-q4-20261117-01/head-q4/q4_0-head-q4_0.json": "e2a3d54360845f19eeede80dd0bef5ef9e899ac633da39cab4173f71f443d32e",
+          "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/libedge_asr_gguf.so": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a",
+          "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/build.json": "20c5b71f14575eddb703591ec0e3694bfdc22b56b0c89827acad2180e04ba810"
+        }
+      }
+    },
+    "pilot_scope": "출력 경로·실패 기록 검증. 선별 표본이며 구간별 CER 정답 없음."
+  },
+  "conditions": {
+    "q4": {
+      "cases": [
+        {
+          "id": "natural-012",
+          "float32_sha256": "390093f4bcb6ff15bb4c67670f842226e790ca13c32630f13835a49f0f14d2a2",
+          "frames": 54656,
+          "batch_status": "success",
+          "previous_stream_status": "success",
+          "nonblank": true,
+          "normalized_chars": 23,
+          "tokens": 21,
+          "termination": "eog",
+          "matches_prior_raw_text_and_tokens": true,
+          "adapter_elapsed_s": 1.6705421499209478
+        },
+        {
+          "id": "natural-019",
+          "float32_sha256": "41b91b77a889430703eb44e29617858988021133b525ed8cc404927b706097ff",
+          "frames": 896,
+          "batch_status": "success",
+          "previous_stream_status": "failed",
+          "nonblank": false,
+          "normalized_chars": 0,
+          "tokens": 0,
+          "termination": "eog",
+          "matches_prior_raw_text_and_tokens": true,
+          "adapter_elapsed_s": 0.350668894010596
+        },
+        {
+          "id": "natural-092",
+          "float32_sha256": "575ff2c2214493911e37824b86d4b9f0172b01044788f7593d5a85e37667a3c4",
+          "frames": 80000,
+          "batch_status": "success",
+          "previous_stream_status": "success",
+          "nonblank": true,
+          "normalized_chars": 34,
+          "tokens": 33,
+          "termination": "eog",
+          "matches_prior_raw_text_and_tokens": true,
+          "adapter_elapsed_s": 2.59759944898542
+        },
+        {
+          "id": "natural-154",
+          "float32_sha256": "c1ba7d6a62084559b1ebc0a91e5bc3d3891a676e4d0f41aadcb47564ed31af78",
+          "frames": 80000,
+          "batch_status": "success",
+          "previous_stream_status": "success",
+          "nonblank": true,
+          "normalized_chars": 32,
+          "tokens": 35,
+          "termination": "eog",
+          "matches_prior_raw_text_and_tokens": true,
+          "adapter_elapsed_s": 2.655585619970225
+        },
+        {
+          "id": "reading-017",
+          "float32_sha256": "5f51236cf18e5cf659ddfc09556f2d87f5dee4f73b3d3ba2f5ff7219b8b809c3",
+          "frames": 78848,
+          "batch_status": "success",
+          "previous_stream_status": "success",
+          "nonblank": true,
+          "normalized_chars": 22,
+          "tokens": 25,
+          "termination": "eog",
+          "matches_prior_raw_text_and_tokens": true,
+          "adapter_elapsed_s": 2.0771612559910864
+        },
+        {
+          "id": "reading-026",
+          "float32_sha256": "dd1fb1f3d4765b47cb43f91a9c7fccaeac1d87df7a8a2944daaa12eb456ee311",
+          "frames": 51584,
+          "batch_status": "success",
+          "previous_stream_status": "success",
+          "nonblank": true,
+          "normalized_chars": 15,
+          "tokens": 15,
+          "termination": "eog",
+          "matches_prior_raw_text_and_tokens": true,
+          "adapter_elapsed_s": 1.4767398010008037
+        },
+        {
+          "id": "reading-028",
+          "float32_sha256": "46f920c37aa8d3f3092dd2cd880af9c7ce8a7bc0f262fd19e8e4798483f3635f",
+          "frames": 31104,
+          "batch_status": "success",
+          "previous_stream_status": "success",
+          "nonblank": true,
+          "normalized_chars": 12,
+          "tokens": 9,
+          "termination": "eog",
+          "matches_prior_raw_text_and_tokens": true,
+          "adapter_elapsed_s": 0.8337440000614151
+        },
+        {
+          "id": "reading-036",
+          "float32_sha256": "28d3890e4351f6470175e4ac1c1bfb50836725d0c31b541563fff147e87e5c7d",
+          "frames": 7552,
+          "batch_status": "success",
+          "previous_stream_status": "failed",
+          "nonblank": false,
+          "normalized_chars": 0,
+          "tokens": 0,
+          "termination": "eog",
+          "matches_prior_raw_text_and_tokens": true,
+          "adapter_elapsed_s": 0.3516597340349108
+        }
+      ],
+      "config": {
+        "model": {
+          "num_threads": 2,
+          "quantization": "q4_0",
+          "max_total_len": 512,
+          "max_new_tokens": 128,
+          "family": "qwen3_gguf",
+          "path": "models/qwen3-opt/decoder-q4-20261117-01/head-q4",
+          "runtime_library": "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/libedge_asr_gguf.so",
+          "runtime_manifest": "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/build.json",
+          "num_threads_batch": 3,
+          "cache_text_prefix": false,
+          "language": "ko",
+          "asset_manifest": "q4_0-head-q4_0.json"
+        },
+        "audio": {
+          "sample_rate_hz": 16000
+        },
+        "evaluation": {
+          "mode": "batch",
+          "warmup_runs": 3,
+          "normalization": "ko_cer_v1",
+          "output_dir": "results/optimization/opt2"
+        }
+      },
+      "model_metadata_fields": {
+        "provider": "cpu",
+        "sampling": "greedy",
+        "thread_configuration": {
+          "threads": 2,
+          "threads_batch": 3,
+          "audio_threads": 3
+        },
+        "cache_text_prefix": false
+      },
+      "guard_command": [
+        ".venv/bin/python",
+        "scripts/edge_asr.py",
+        "tools",
+        "benchmark-qwen3",
+        "--protocol",
+        "reproduction",
+        "--repetitions",
+        "1",
+        "--config",
+        "results/maintenance/decoder-paired-20261118-01/inputs/q4.toml",
+        "--manifest",
+        "results/maintenance/decoder-paired-20261118-01/inputs/pilot.jsonl",
+        "--output",
+        "results/optimization/opt3/decoder-pair-pilot-20261118-FWwfDv/q4"
+      ],
+      "guard_exit": 0,
+      "guard_operational_valid": true,
+      "guard_start_c": 57.3,
+      "guard_max_c": 78.75,
+      "current_limit_samples": {
+        "0": 14
+      }
+    },
+    "q8": {
+      "cases": [
+        {
+          "id": "natural-012",
+          "float32_sha256": "390093f4bcb6ff15bb4c67670f842226e790ca13c32630f13835a49f0f14d2a2",
+          "frames": 54656,
+          "batch_status": "success",
+          "previous_stream_status": "success",
+          "nonblank": true,
+          "normalized_chars": 25,
+          "tokens": 23,
+          "termination": "eog",
+          "matches_prior_raw_text_and_tokens": true,
+          "adapter_elapsed_s": 2.457830148981884
+        },
+        {
+          "id": "natural-019",
+          "float32_sha256": "41b91b77a889430703eb44e29617858988021133b525ed8cc404927b706097ff",
+          "frames": 896,
+          "batch_status": "success",
+          "previous_stream_status": "success",
+          "nonblank": true,
+          "normalized_chars": 1,
+          "tokens": 2,
+          "termination": "eog",
+          "matches_prior_raw_text_and_tokens": true,
+          "adapter_elapsed_s": 0.5298475889721885
+        },
+        {
+          "id": "natural-092",
+          "float32_sha256": "575ff2c2214493911e37824b86d4b9f0172b01044788f7593d5a85e37667a3c4",
+          "frames": 80000,
+          "batch_status": "success",
+          "previous_stream_status": "success",
+          "nonblank": true,
+          "normalized_chars": 33,
+          "tokens": 32,
+          "termination": "eog",
+          "matches_prior_raw_text_and_tokens": true,
+          "adapter_elapsed_s": 3.474930168944411
+        },
+        {
+          "id": "natural-154",
+          "float32_sha256": "c1ba7d6a62084559b1ebc0a91e5bc3d3891a676e4d0f41aadcb47564ed31af78",
+          "frames": 80000,
+          "batch_status": "success",
+          "previous_stream_status": "success",
+          "nonblank": true,
+          "normalized_chars": 33,
+          "tokens": 34,
+          "termination": "eog",
+          "matches_prior_raw_text_and_tokens": true,
+          "adapter_elapsed_s": 3.597266774973832
+        },
+        {
+          "id": "reading-017",
+          "float32_sha256": "5f51236cf18e5cf659ddfc09556f2d87f5dee4f73b3d3ba2f5ff7219b8b809c3",
+          "frames": 78848,
+          "batch_status": "success",
+          "previous_stream_status": "success",
+          "nonblank": true,
+          "normalized_chars": 22,
+          "tokens": 23,
+          "termination": "eog",
+          "matches_prior_raw_text_and_tokens": true,
+          "adapter_elapsed_s": 2.714352202019654
+        },
+        {
+          "id": "reading-026",
+          "float32_sha256": "dd1fb1f3d4765b47cb43f91a9c7fccaeac1d87df7a8a2944daaa12eb456ee311",
+          "frames": 51584,
+          "batch_status": "success",
+          "previous_stream_status": "success",
+          "nonblank": true,
+          "normalized_chars": 15,
+          "tokens": 15,
+          "termination": "eog",
+          "matches_prior_raw_text_and_tokens": true,
+          "adapter_elapsed_s": 2.0099975790362805
+        },
+        {
+          "id": "reading-028",
+          "float32_sha256": "46f920c37aa8d3f3092dd2cd880af9c7ce8a7bc0f262fd19e8e4798483f3635f",
+          "frames": 31104,
+          "batch_status": "success",
+          "previous_stream_status": "success",
+          "nonblank": true,
+          "normalized_chars": 12,
+          "tokens": 9,
+          "termination": "eog",
+          "matches_prior_raw_text_and_tokens": true,
+          "adapter_elapsed_s": 1.1437930439133197
+        },
+        {
+          "id": "reading-036",
+          "float32_sha256": "28d3890e4351f6470175e4ac1c1bfb50836725d0c31b541563fff147e87e5c7d",
+          "frames": 7552,
+          "batch_status": "success",
+          "previous_stream_status": "success",
+          "nonblank": true,
+          "normalized_chars": 0,
+          "tokens": 1,
+          "termination": "eog",
+          "matches_prior_raw_text_and_tokens": true,
+          "adapter_elapsed_s": 0.4731546309776604
+        }
+      ],
+      "config": {
+        "model": {
+          "num_threads": 2,
+          "quantization": "q8_0",
+          "max_total_len": 512,
+          "max_new_tokens": 128,
+          "family": "qwen3_gguf",
+          "path": "models/qwen3-opt/gguf-q8-20261109-01",
+          "runtime_library": "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/libedge_asr_gguf.so",
+          "runtime_manifest": "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/build.json",
+          "num_threads_batch": 3,
+          "cache_text_prefix": false,
+          "language": "ko"
+        },
+        "audio": {
+          "sample_rate_hz": 16000
+        },
+        "evaluation": {
+          "mode": "batch",
+          "warmup_runs": 3,
+          "normalization": "ko_cer_v1",
+          "output_dir": "results/optimization/opt2"
+        }
+      },
+      "model_metadata_fields": {
+        "provider": "cpu",
+        "sampling": "greedy",
+        "thread_configuration": {
+          "threads": 2,
+          "threads_batch": 3,
+          "audio_threads": 3
+        },
+        "cache_text_prefix": false
+      },
+      "guard_command": [
+        ".venv/bin/python",
+        "scripts/edge_asr.py",
+        "tools",
+        "benchmark-qwen3",
+        "--protocol",
+        "reproduction",
+        "--repetitions",
+        "1",
+        "--config",
+        "results/maintenance/decoder-paired-20261118-01/inputs/q8.toml",
+        "--manifest",
+        "results/maintenance/decoder-paired-20261118-01/inputs/pilot.jsonl",
+        "--output",
+        "results/optimization/opt3/decoder-pair-pilot-20261118-FWwfDv/q8"
+      ],
+      "guard_exit": 0,
+      "guard_operational_valid": true,
+      "guard_start_c": 55.65,
+      "guard_max_c": 78.2,
+      "current_limit_samples": {
+        "0": 20
+      }
+    }
+  },
+  "raw_sha256": {
+    "q4/admission.jsonl": "89164842802e24970daee59c307c6a228ec8d32f702209371a8b603c019ae548",
+    "q4/console.log": "d62b2fa356f67c7cefa73757864c5cdda36e15834794bb4396519d3d98ef8115",
+    "q4/execution.json": "3847c739d6bf53b200f9d37839bb212bbf58435f83cc4e202ac7a0ec531940aa",
+    "q4/measurements.jsonl": "1f1f0da2fec5719388acdd1e434686d131d36f88074e802588b6835010565827",
+    "q4/predictions.jsonl": "a9879cd5cb68e095530bf8bc2d05512e967fac0a8d018ae21adcd66cfc1eb57a",
+    "q4/scores.jsonl": "56b84acdcbf67321fce29fcc2dc7e048da3fdac9e34df2c9efc6365d85764592",
+    "q4/summary.json": "2bb68f0b1dc22f892e3774baf4e473e0b8bb1b7e833916037a51fad151b4cd76",
+    "q4/summary.md": "8d2f0cb09c996fa71923902273963af134bbb09d9f51aaf9dcbccb2ce702bd05",
+    "q4/thermal.jsonl": "2450402363f6567301ae45a20eae09eb88904a0e26210ae17767e7eb872104fa",
+    "q4/threads.jsonl": "c50d60ff72ca7c42e4ba69e34974e93f1e21060d9d9a1e75f232b39745fa889b",
+    "q4/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "q4/worker.json": "99dc7ba877be13bb5614d18c2af9a78358f85ea48c8b36eb233244be8dcfbfd7",
+    "q8/admission.jsonl": "fe7c9868990bb614d0546b3262f79061ece938207b6eea88710092944143ee74",
+    "q8/console.log": "5cce9a41ee54e1565e2b0ba32477131e6ab7eb54bcb639eaad1f185df52ca575",
+    "q8/execution.json": "77d138e7c190dfb23e764323250aecba10483b4f13f1c73ec150ccc82d9a3de4",
+    "q8/measurements.jsonl": "c0cdfb57dd3343ffd3a28d287881155d3b8657a7a2145703a632c366b2e27afa",
+    "q8/predictions.jsonl": "00f09db4d7ec345b5fdecec401cd5093c08e96c71d8549b3293a9d0e88b4e923",
+    "q8/scores.jsonl": "7c5b9d8a803a40e1ba873554f21e734d8d5dc723669366d67fa3d922277675a7",
+    "q8/summary.json": "eb66c3144607f6a7923592ddf34cdf886c369d75a5e3ea253c3c2208f7e14a01",
+    "q8/summary.md": "1ec61b3bb283c10634821e1c800deb66d3ddc0067022781455e3525f9cddc5a5",
+    "q8/thermal.jsonl": "0bfd619467befa8b4abcda80b1795a6d4253552f2b9e4d29c7cf0e8e7de65b14",
+    "q8/threads.jsonl": "b4ccd12c3bc1a94f9f78665356dd7597282828b735ea307493f6083ea171380a",
+    "q8/warnings.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "q8/worker.json": "115f82e45a7a416f386a05b6de8c53b509c94857536ee32b0623aef75c54d29f"
+  }
+}

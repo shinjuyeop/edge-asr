@@ -322,7 +322,9 @@ Q4 [지연 경로 분석](../results/summaries/optimization/realtime-both-q4-lat
 
 긴 입력 보완 자료는 [약1분 긴 발화12개](research/longform.md)를 Host에서 준비했습니다. 자연발화8개·낭독 연결4개, 총732.6568125초이며 기존100개와 별도 목록입니다. WAV/PCM·원본 라벨/배포 전사·출처 해시를 확인했으며, 독립 청취 검수는 아직 미완료이며 RP5 CER/지연은 [긴 음원 대조](../results/summaries/optimization/longform-stream-20261118.md)에서 측정했습니다.
 
-우선 같은 bridge에서 확정 PCM 233개를 Q4와 Q8로 각각 전사해 구간 내부 오류와 숫자 표기 차이가 유지되는지 확인합니다. 이어 스트리밍에서는 첫 부분과 확정 사이의 실제 무갱신 시간과 후속 호출 비용을 평가합니다. [대조 조건과 판정 기준](../results/summaries/optimization/longform-diagnosis-20261118.md)
+같은 bridge에서 선별한 8개 PCM으로 실제 Q4·Q8 출력을 점검했습니다. 16호출 모두 과거 원시 전사·토큰 ID가 재현됐습니다. [파일럿 기록](../results/summaries/optimization/decoder-pair-pilot-20261118.md)
+
+다음은 같은 bridge에서 확정 PCM 233개를 Q4와 Q8로 각각 전사해 구간 내부 오류와 숫자 표기 차이가 유지되는지 확인합니다. 이어 스트리밍에서는 첫 부분과 확정 사이의 실제 무갱신 시간과 후속 호출 비용을 평가합니다. [대조 조건과 판정 기준](../results/summaries/optimization/longform-diagnosis-20261118.md)
 
 기존에 보존한 스트리밍·신뢰성 후보는 다음과 같습니다.
 
