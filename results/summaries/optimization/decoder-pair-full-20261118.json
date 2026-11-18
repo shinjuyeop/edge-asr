@@ -1,0 +1,1198 @@
+{
+  "id": "decoder-pair-full-20261118-01",
+  "type": "동일 확정 PCM 독립 호출. 자료별 연결 CER를 먼저 계산한 뒤 오류 수와 분모를 합산.",
+  "commit": "81293465cef187393ac25dbacac579d4ff93c94c",
+  "measurement_scope": "호출 지연은 준비된 PCM에서 adapter.transcribe의 반환/예외까지. 각 조합 1회·별도 워밍업 없음. 녹음·VAD·큐·자막 표시 제외.",
+  "followup_candidate_tensor_check_host": {
+    "tensor_count": 311,
+    "same": 310,
+    "differences": {
+      "output.weight": {
+        "default": [
+          [
+            1024,
+            151936
+          ],
+          "Q6_K",
+          "e2bf2a34892d299eb4787bef8640606e10ef6f4f9eef83c7ed396a2003af6a1b"
+        ],
+        "head_q4": [
+          [
+            1024,
+            151936
+          ],
+          "Q4_0",
+          "cf818fba0c969719ec8c3e2eb2a2c694e2634b8bdbca8653da05460d98a998f5"
+        ]
+      }
+    }
+  },
+  "order": [
+    "natural-q8",
+    "natural-q4",
+    "reading-q4",
+    "reading-q8"
+  ],
+  "arms": {
+    "natural-q8": {
+      "corpus": "natural",
+      "model": "q8",
+      "source_commit": "81293465cef187393ac25dbacac579d4ff93c94c",
+      "expected_manifest_sha256": "d6e44538f3ca9ba45d1e4379be5f78b0810cf2e5014cbfe363f7b5e84f831b81",
+      "original_manifest_sha256": "4470f6bb32742d2a4370aead00bf3768accccbde822f0a9c375002ea4d5a65d8",
+      "config_sha256": "2b89b55613580941578c8f4cbc7cae41a24b2ff6d5294bc34d5dcf1d34016616",
+      "historical_worker_sha256": "f0ada000e9bdffab3066c07a105e60f51d6736047c7be850ea0952e27bae77ec",
+      "historical_worker_path": "results/optimization/opt3/longform-backends-20261118-01/natural-q8/worker.json",
+      "assets": {
+        "models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971",
+        "models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d",
+        "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/libedge_asr_gguf.so": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a",
+        "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/build.json": "20c5b71f14575eddb703591ec0e3694bfdc22b56b0c89827acad2180e04ba810"
+      },
+      "environment": {
+        "edge_asr": "0.1.0",
+        "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+        "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+        "machine": "aarch64",
+        "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+        "runtime": {
+          "sherpa_package_version": "2.0.1",
+          "sherpa_core_package_version": "2.0.1",
+          "python_onnxruntime_package_version": "1.31.1",
+          "sherpa_native_onnxruntime_version": null,
+          "native_version_source": "sherpa_onnx.onnxruntime_version",
+          "status": "not_imported",
+          "reason": "선택 런타임을 아직 import하지 않았습니다."
+        },
+        "thread_environment": {
+          "OMP_WAIT_POLICY": null,
+          "OMP_NUM_THREADS": null,
+          "OMP_DYNAMIC": null,
+          "OMP_PROC_BIND": null,
+          "OMP_PLACES": null,
+          "GOMP_SPINCOUNT": null,
+          "KMP_BLOCKTIME": null,
+          "OPENBLAS_NUM_THREADS": "1"
+        },
+        "packages": [
+          {
+            "name": "cffi",
+            "version": "2.1.1"
+          },
+          {
+            "name": "flatbuffers",
+            "version": "25.12.19"
+          },
+          {
+            "name": "numpy",
+            "version": "2.4.6"
+          },
+          {
+            "name": "onnxruntime",
+            "version": "1.31.1"
+          },
+          {
+            "name": "packaging",
+            "version": "26.3"
+          },
+          {
+            "name": "protobuf",
+            "version": "7.36.2"
+          },
+          {
+            "name": "pycparser",
+            "version": "3.12"
+          },
+          {
+            "name": "sherpa-onnx-core",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sherpa_onnx",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sounddevice",
+            "version": "0.5.6"
+          },
+          {
+            "name": "soundfile",
+            "version": "0.14.0"
+          },
+          {
+            "name": "typing_extensions",
+            "version": "4.16.0"
+          }
+        ]
+      },
+      "config": {
+        "model": {
+          "num_threads": 2,
+          "quantization": "q8_0",
+          "max_total_len": 512,
+          "max_new_tokens": 128,
+          "family": "qwen3_gguf",
+          "path": "models/qwen3-opt/gguf-q8-20261109-01",
+          "runtime_library": "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/libedge_asr_gguf.so",
+          "runtime_manifest": "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/build.json",
+          "num_threads_batch": 3,
+          "cache_text_prefix": false,
+          "language": "ko"
+        },
+        "audio": {
+          "sample_rate_hz": 16000
+        },
+        "evaluation": {
+          "mode": "batch",
+          "warmup_runs": 3,
+          "normalization": "ko_cer_v1",
+          "output_dir": "results/optimization/opt2"
+        }
+      },
+      "score": {
+        "reference_characters": 2129,
+        "errors": 257,
+        "substitutions": 141,
+        "deletions": 91,
+        "insertions": 25,
+        "cer": 0.12071395021136684
+      },
+      "previous_score": {
+        "reference_characters": 2129,
+        "errors": 257,
+        "substitutions": 141,
+        "deletions": 91,
+        "insertions": 25,
+        "cer": 0.12071395021136684
+      },
+      "matching_scored_outputs_digest": "8797e1cb0adea7b3d6f3ae0376a9485a848da491acea2eaf4574e9c8863d6686",
+      "inputs_sha256": "ca572698ba6fec2d999a66c2d5b2546ef38bd93f6f171f82b60d28b32fe3b4e8",
+      "counts": {
+        "attempts": 167,
+        "returned": 167,
+        "exceptions": 0,
+        "blank": 0,
+        "nonblank": 167,
+        "normalized_empty_nonblank": 1,
+        "normalized_nonempty": 166,
+        "raw_match": 167,
+        "token_match": 167,
+        "scored_text_match": 167,
+        "stream_contract_match": 167
+      },
+      "terminations": {
+        "eog": 167
+      },
+      "anomalies": [
+        {
+          "segment": 74,
+          "duration_s": 0.344,
+          "kind": "normalized_empty",
+          "termination": "eog",
+          "tokens": 1,
+          "error": null,
+          "returned_text": ".",
+          "elapsed_s": 0.5521650289883837
+        }
+      ],
+      "changes_from_stream": [],
+      "elapsed_all_calls_s": 281.61681134731043,
+      "elapsed_s": {
+        "n": 167,
+        "mean": 1.6863282116605416,
+        "p50": 1.3350088169099763,
+        "p95": 3.6124767719302326,
+        "max": 4.137645115959458
+      },
+      "first_call_s": 3.5346828000620008,
+      "cpu_all_calls_s": 720.7250821150001,
+      "mean_cpu_percent_of_four_in_calls": 63.981006555229165,
+      "max_sampled_call_rss_mib": 1699.109375,
+      "stages_sum_s": {
+        "audio_encode_s": 87.62647875499998,
+        "audio_embedding_eval_s": 44.80637961000001,
+        "prefix_eval_s": 12.480430657999992,
+        "suffix_eval_s": 17.140148311999997,
+        "token_decode_s": 116.72523329599998,
+        "preprocess_s": 0.07491383600000001,
+        "sampling_s": 1.412314221,
+        "native_elapsed_s": 281.44669283300004
+      },
+      "stages_measured_calls": {
+        "audio_encode_s": 167,
+        "audio_embedding_eval_s": 167,
+        "prefix_eval_s": 167,
+        "suffix_eval_s": 167,
+        "token_decode_s": 167,
+        "preprocess_s": 167,
+        "sampling_s": 167,
+        "native_elapsed_s": 167
+      },
+      "guard": {
+        "command": [
+          ".venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "benchmark-qwen3",
+          "--protocol",
+          "reproduction",
+          "--repetitions",
+          "1",
+          "--config",
+          "results/maintenance/decoder-paired-20261118-01/inputs/q8.toml",
+          "--manifest",
+          "results/maintenance/decoder-paired-20261118-01/inputs/natural.jsonl",
+          "--output",
+          "results/optimization/opt3/decoder-pair-full-20261118-01/natural-q8"
+        ],
+        "started_utc": "2026-11-18T08:03:50.805683+00:00",
+        "finished_utc": "2026-11-18T08:08:47.886445+00:00",
+        "admission_c": 56.2,
+        "max_c": 86.45,
+        "current_limit_sample_counts": {
+          "0": 46,
+          "8": 202,
+          "6": 40
+        },
+        "current_limit_time_s_approx_guard": 246.83599253266584,
+        "guard_elapsed_sample_span_s": 293.9964709809283,
+        "exit_code": 0,
+        "operational_valid": true,
+        "worker_status": "completed",
+        "limit_verified": true
+      }
+    },
+    "natural-q4": {
+      "corpus": "natural",
+      "model": "q4",
+      "source_commit": "81293465cef187393ac25dbacac579d4ff93c94c",
+      "expected_manifest_sha256": "d6e44538f3ca9ba45d1e4379be5f78b0810cf2e5014cbfe363f7b5e84f831b81",
+      "original_manifest_sha256": "4470f6bb32742d2a4370aead00bf3768accccbde822f0a9c375002ea4d5a65d8",
+      "config_sha256": "1b4ca4b0f7a2550c20ded96159f9d7924b283355a7eb7f2908ca3cf761e68a7d",
+      "historical_worker_sha256": "e43c4f80868303e7f75fa08d191e49d5e93fa0828da8337e01bcf3eb9fa32f65",
+      "historical_worker_path": "results/optimization/opt3/longform-stream-20261118-02/natural-baseline/worker.json",
+      "assets": {
+        "models/qwen3-opt/decoder-q4-20261117-01/head-q4/Qwen3-ASR-0.6B-Q4_0-HEAD-Q4_0.gguf": "ca2f6ac6e7e4258206187b9c605b2443fdfa425cae82891da51377103fd4e383",
+        "models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d",
+        "models/qwen3-opt/decoder-q4-20261117-01/head-q4/q4_0-head-q4_0.json": "e2a3d54360845f19eeede80dd0bef5ef9e899ac633da39cab4173f71f443d32e",
+        "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/libedge_asr_gguf.so": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a",
+        "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/build.json": "20c5b71f14575eddb703591ec0e3694bfdc22b56b0c89827acad2180e04ba810"
+      },
+      "environment": {
+        "edge_asr": "0.1.0",
+        "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+        "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+        "machine": "aarch64",
+        "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+        "runtime": {
+          "sherpa_package_version": "2.0.1",
+          "sherpa_core_package_version": "2.0.1",
+          "python_onnxruntime_package_version": "1.31.1",
+          "sherpa_native_onnxruntime_version": null,
+          "native_version_source": "sherpa_onnx.onnxruntime_version",
+          "status": "not_imported",
+          "reason": "선택 런타임을 아직 import하지 않았습니다."
+        },
+        "thread_environment": {
+          "OMP_WAIT_POLICY": null,
+          "OMP_NUM_THREADS": null,
+          "OMP_DYNAMIC": null,
+          "OMP_PROC_BIND": null,
+          "OMP_PLACES": null,
+          "GOMP_SPINCOUNT": null,
+          "KMP_BLOCKTIME": null,
+          "OPENBLAS_NUM_THREADS": "1"
+        },
+        "packages": [
+          {
+            "name": "cffi",
+            "version": "2.1.1"
+          },
+          {
+            "name": "flatbuffers",
+            "version": "25.12.19"
+          },
+          {
+            "name": "numpy",
+            "version": "2.4.6"
+          },
+          {
+            "name": "onnxruntime",
+            "version": "1.31.1"
+          },
+          {
+            "name": "packaging",
+            "version": "26.3"
+          },
+          {
+            "name": "protobuf",
+            "version": "7.36.2"
+          },
+          {
+            "name": "pycparser",
+            "version": "3.12"
+          },
+          {
+            "name": "sherpa-onnx-core",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sherpa_onnx",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sounddevice",
+            "version": "0.5.6"
+          },
+          {
+            "name": "soundfile",
+            "version": "0.14.0"
+          },
+          {
+            "name": "typing_extensions",
+            "version": "4.16.0"
+          }
+        ]
+      },
+      "config": {
+        "model": {
+          "num_threads": 2,
+          "quantization": "q4_0",
+          "max_total_len": 512,
+          "max_new_tokens": 128,
+          "family": "qwen3_gguf",
+          "path": "models/qwen3-opt/decoder-q4-20261117-01/head-q4",
+          "runtime_library": "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/libedge_asr_gguf.so",
+          "runtime_manifest": "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/build.json",
+          "num_threads_batch": 3,
+          "cache_text_prefix": false,
+          "language": "ko",
+          "asset_manifest": "q4_0-head-q4_0.json"
+        },
+        "audio": {
+          "sample_rate_hz": 16000
+        },
+        "evaluation": {
+          "mode": "batch",
+          "warmup_runs": 3,
+          "normalization": "ko_cer_v1",
+          "output_dir": "results/optimization/opt2"
+        }
+      },
+      "score": {
+        "reference_characters": 2129,
+        "errors": 336,
+        "substitutions": 200,
+        "deletions": 111,
+        "insertions": 25,
+        "cer": 0.15782057303898545
+      },
+      "previous_score": {
+        "reference_characters": 2129,
+        "errors": 336,
+        "substitutions": 200,
+        "deletions": 111,
+        "insertions": 25,
+        "cer": 0.15782057303898545
+      },
+      "matching_scored_outputs_digest": "795d3f3cfb91f79ba765a6a3f4f73fbd42039b32918676da1d25e1310909ab88",
+      "inputs_sha256": "ca572698ba6fec2d999a66c2d5b2546ef38bd93f6f171f82b60d28b32fe3b4e8",
+      "counts": {
+        "attempts": 167,
+        "returned": 166,
+        "exceptions": 1,
+        "blank": 4,
+        "nonblank": 162,
+        "normalized_empty_nonblank": 0,
+        "normalized_nonempty": 162,
+        "raw_match": 167,
+        "token_match": 167,
+        "scored_text_match": 167,
+        "stream_contract_match": 167
+      },
+      "terminations": {
+        "eog": 166,
+        "repetition": 1
+      },
+      "anomalies": [
+        {
+          "segment": 19,
+          "duration_s": 0.056,
+          "kind": "blank",
+          "termination": "eog",
+          "tokens": 0,
+          "error": null,
+          "returned_text": "",
+          "elapsed_s": 0.3747629120480269
+        },
+        {
+          "segment": 62,
+          "duration_s": 0.056,
+          "kind": "blank",
+          "termination": "eog",
+          "tokens": 0,
+          "error": null,
+          "returned_text": "",
+          "elapsed_s": 0.432514209067449
+        },
+        {
+          "segment": 64,
+          "duration_s": 0.088,
+          "kind": "blank",
+          "termination": "eog",
+          "tokens": 0,
+          "error": null,
+          "returned_text": "",
+          "elapsed_s": 0.4097541590454057
+        },
+        {
+          "segment": 74,
+          "duration_s": 0.344,
+          "kind": "blank",
+          "termination": "eog",
+          "tokens": 0,
+          "error": null,
+          "returned_text": "",
+          "elapsed_s": 0.4350737810600549
+        },
+        {
+          "segment": 166,
+          "duration_s": 0.6800625,
+          "kind": "exception",
+          "termination": "repetition",
+          "tokens": 64,
+          "error": {
+            "type": "RuntimeError",
+            "message": "GGUF 전사 실패/잘림: repetition: generation did not terminate with eog"
+          },
+          "returned_text": null,
+          "elapsed_s": 2.6298159890575334
+        }
+      ],
+      "changes_from_stream": [],
+      "elapsed_all_calls_s": 222.38736443337984,
+      "elapsed_s": {
+        "n": 167,
+        "mean": 1.331660864870538,
+        "p50": 1.0173521670512855,
+        "p95": 2.8039087411016226,
+        "max": 3.1283138019498438
+      },
+      "first_call_s": 2.603878049994819,
+      "cpu_all_calls_s": 589.5719345509999,
+      "mean_cpu_percent_of_four_in_calls": 66.27758911271428,
+      "max_sampled_call_rss_mib": 1132.203125,
+      "stages_sum_s": {
+        "audio_encode_s": 90.75694181899996,
+        "audio_embedding_eval_s": 37.173045074,
+        "prefix_eval_s": 9.222415495,
+        "suffix_eval_s": 12.796936172999994,
+        "token_decode_s": 69.51723020000001,
+        "preprocess_s": 0.07596435899999997,
+        "sampling_s": 1.4797048280000002,
+        "native_elapsed_s": 222.22719513999994
+      },
+      "stages_measured_calls": {
+        "audio_encode_s": 167,
+        "audio_embedding_eval_s": 167,
+        "prefix_eval_s": 167,
+        "suffix_eval_s": 167,
+        "token_decode_s": 167,
+        "preprocess_s": 167,
+        "sampling_s": 167,
+        "native_elapsed_s": 167
+      },
+      "guard": {
+        "command": [
+          ".venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "benchmark-qwen3",
+          "--protocol",
+          "reproduction",
+          "--repetitions",
+          "1",
+          "--config",
+          "results/maintenance/decoder-paired-20261118-01/inputs/q4.toml",
+          "--manifest",
+          "results/maintenance/decoder-paired-20261118-01/inputs/natural.jsonl",
+          "--output",
+          "results/optimization/opt3/decoder-pair-full-20261118-01/natural-q4"
+        ],
+        "started_utc": "2026-11-18T08:08:47.974594+00:00",
+        "finished_utc": "2026-11-18T08:13:56.031139+00:00",
+        "admission_c": 58.4,
+        "max_c": 87.0,
+        "current_limit_sample_counts": {
+          "0": 21,
+          "8": 164,
+          "6": 44
+        },
+        "current_limit_time_s_approx_guard": 212.30151913885493,
+        "guard_elapsed_sample_span_s": 233.74802798603196,
+        "exit_code": 0,
+        "operational_valid": true,
+        "worker_status": "completed_with_model_failures",
+        "limit_verified": true
+      }
+    },
+    "reading-q4": {
+      "corpus": "reading",
+      "model": "q4",
+      "source_commit": "81293465cef187393ac25dbacac579d4ff93c94c",
+      "expected_manifest_sha256": "bc95a723d1c23e9e5c3be6398f832e2b88b1d71bf249adc7102f3bdd2f09e0c5",
+      "original_manifest_sha256": "746e437187ec35ebe7985d1e9f991d8028f10d2ec61db46017e2765668f659f5",
+      "config_sha256": "1b4ca4b0f7a2550c20ded96159f9d7924b283355a7eb7f2908ca3cf761e68a7d",
+      "historical_worker_sha256": "441e596324caf890edc9d224fe657c5f7734ea02accfff2c03222cbaa1333b50",
+      "historical_worker_path": "results/optimization/opt3/longform-stream-20261118-02/reading-baseline/worker.json",
+      "assets": {
+        "models/qwen3-opt/decoder-q4-20261117-01/head-q4/Qwen3-ASR-0.6B-Q4_0-HEAD-Q4_0.gguf": "ca2f6ac6e7e4258206187b9c605b2443fdfa425cae82891da51377103fd4e383",
+        "models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d",
+        "models/qwen3-opt/decoder-q4-20261117-01/head-q4/q4_0-head-q4_0.json": "e2a3d54360845f19eeede80dd0bef5ef9e899ac633da39cab4173f71f443d32e",
+        "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/libedge_asr_gguf.so": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a",
+        "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/build.json": "20c5b71f14575eddb703591ec0e3694bfdc22b56b0c89827acad2180e04ba810"
+      },
+      "environment": {
+        "edge_asr": "0.1.0",
+        "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+        "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+        "machine": "aarch64",
+        "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+        "runtime": {
+          "sherpa_package_version": "2.0.1",
+          "sherpa_core_package_version": "2.0.1",
+          "python_onnxruntime_package_version": "1.31.1",
+          "sherpa_native_onnxruntime_version": null,
+          "native_version_source": "sherpa_onnx.onnxruntime_version",
+          "status": "not_imported",
+          "reason": "선택 런타임을 아직 import하지 않았습니다."
+        },
+        "thread_environment": {
+          "OMP_WAIT_POLICY": null,
+          "OMP_NUM_THREADS": null,
+          "OMP_DYNAMIC": null,
+          "OMP_PROC_BIND": null,
+          "OMP_PLACES": null,
+          "GOMP_SPINCOUNT": null,
+          "KMP_BLOCKTIME": null,
+          "OPENBLAS_NUM_THREADS": "1"
+        },
+        "packages": [
+          {
+            "name": "cffi",
+            "version": "2.1.1"
+          },
+          {
+            "name": "flatbuffers",
+            "version": "25.12.19"
+          },
+          {
+            "name": "numpy",
+            "version": "2.4.6"
+          },
+          {
+            "name": "onnxruntime",
+            "version": "1.31.1"
+          },
+          {
+            "name": "packaging",
+            "version": "26.3"
+          },
+          {
+            "name": "protobuf",
+            "version": "7.36.2"
+          },
+          {
+            "name": "pycparser",
+            "version": "3.12"
+          },
+          {
+            "name": "sherpa-onnx-core",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sherpa_onnx",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sounddevice",
+            "version": "0.5.6"
+          },
+          {
+            "name": "soundfile",
+            "version": "0.14.0"
+          },
+          {
+            "name": "typing_extensions",
+            "version": "4.16.0"
+          }
+        ]
+      },
+      "config": {
+        "model": {
+          "num_threads": 2,
+          "quantization": "q4_0",
+          "max_total_len": 512,
+          "max_new_tokens": 128,
+          "family": "qwen3_gguf",
+          "path": "models/qwen3-opt/decoder-q4-20261117-01/head-q4",
+          "runtime_library": "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/libedge_asr_gguf.so",
+          "runtime_manifest": "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/build.json",
+          "num_threads_batch": 3,
+          "cache_text_prefix": false,
+          "language": "ko",
+          "asset_manifest": "q4_0-head-q4_0.json"
+        },
+        "audio": {
+          "sample_rate_hz": 16000
+        },
+        "evaluation": {
+          "mode": "batch",
+          "warmup_runs": 3,
+          "normalization": "ko_cer_v1",
+          "output_dir": "results/optimization/opt2"
+        }
+      },
+      "score": {
+        "reference_characters": 1063,
+        "errors": 166,
+        "substitutions": 87,
+        "deletions": 9,
+        "insertions": 70,
+        "cer": 0.1561618062088429
+      },
+      "previous_score": {
+        "reference_characters": 1063,
+        "errors": 166,
+        "substitutions": 87,
+        "deletions": 9,
+        "insertions": 70,
+        "cer": 0.1561618062088429
+      },
+      "matching_scored_outputs_digest": "8edefedad9a87c01e16c117fa1ab21b6285f98c111c11b4d642629211edd7a73",
+      "inputs_sha256": "d623cdf31a923b832d299d6fd2a9fd2de6ee5a554b3ee1a6c213a0b08af837f2",
+      "counts": {
+        "attempts": 66,
+        "returned": 66,
+        "exceptions": 0,
+        "blank": 2,
+        "nonblank": 64,
+        "normalized_empty_nonblank": 0,
+        "normalized_nonempty": 64,
+        "raw_match": 66,
+        "token_match": 66,
+        "scored_text_match": 66,
+        "stream_contract_match": 66
+      },
+      "terminations": {
+        "eog": 66
+      },
+      "anomalies": [
+        {
+          "segment": 36,
+          "duration_s": 0.472,
+          "kind": "blank",
+          "termination": "eog",
+          "tokens": 0,
+          "error": null,
+          "returned_text": "",
+          "elapsed_s": 0.4165400490164757
+        },
+        {
+          "segment": 63,
+          "duration_s": 0.12,
+          "kind": "blank",
+          "termination": "eog",
+          "tokens": 0,
+          "error": null,
+          "returned_text": "",
+          "elapsed_s": 0.41908246895764023
+        }
+      ],
+      "changes_from_stream": [],
+      "elapsed_all_calls_s": 112.56657185452059,
+      "elapsed_s": {
+        "n": 66,
+        "mean": 1.7055541190078878,
+        "p50": 1.7712403030600399,
+        "p95": 2.9048330639488995,
+        "max": 3.3601784779457375
+      },
+      "first_call_s": 2.4840820219833404,
+      "cpu_all_calls_s": 295.30041643699985,
+      "mean_cpu_percent_of_four_in_calls": 65.58350573619711,
+      "max_sampled_call_rss_mib": 1119.53125,
+      "stages_sum_s": {
+        "audio_encode_s": 45.260382798,
+        "audio_embedding_eval_s": 18.615896524,
+        "prefix_eval_s": 3.626887271999999,
+        "suffix_eval_s": 5.115051700000001,
+        "token_decode_s": 38.601161192,
+        "preprocess_s": 0.03719366400000002,
+        "sampling_s": 0.792300494,
+        "native_elapsed_s": 112.53264438999996
+      },
+      "stages_measured_calls": {
+        "audio_encode_s": 66,
+        "audio_embedding_eval_s": 66,
+        "prefix_eval_s": 66,
+        "suffix_eval_s": 66,
+        "token_decode_s": 66,
+        "preprocess_s": 66,
+        "sampling_s": 66,
+        "native_elapsed_s": 66
+      },
+      "guard": {
+        "command": [
+          ".venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "benchmark-qwen3",
+          "--protocol",
+          "reproduction",
+          "--repetitions",
+          "1",
+          "--config",
+          "results/maintenance/decoder-paired-20261118-01/inputs/q4.toml",
+          "--manifest",
+          "results/maintenance/decoder-paired-20261118-01/inputs/reading.jsonl",
+          "--output",
+          "results/optimization/opt3/decoder-pair-full-20261118-01/reading-q4"
+        ],
+        "started_utc": "2026-11-18T08:13:56.121847+00:00",
+        "finished_utc": "2026-11-18T08:17:04.793269+00:00",
+        "admission_c": 59.5,
+        "max_c": 86.45,
+        "current_limit_sample_counts": {
+          "0": 22,
+          "8": 72,
+          "6": 21
+        },
+        "current_limit_time_s_approx_guard": 94.38989015307743,
+        "guard_elapsed_sample_span_s": 117.1296697750222,
+        "exit_code": 0,
+        "operational_valid": true,
+        "worker_status": "completed",
+        "limit_verified": true
+      }
+    },
+    "reading-q8": {
+      "corpus": "reading",
+      "model": "q8",
+      "source_commit": "81293465cef187393ac25dbacac579d4ff93c94c",
+      "expected_manifest_sha256": "bc95a723d1c23e9e5c3be6398f832e2b88b1d71bf249adc7102f3bdd2f09e0c5",
+      "original_manifest_sha256": "746e437187ec35ebe7985d1e9f991d8028f10d2ec61db46017e2765668f659f5",
+      "config_sha256": "2b89b55613580941578c8f4cbc7cae41a24b2ff6d5294bc34d5dcf1d34016616",
+      "historical_worker_sha256": "091aaaa21e259bbb60cab34f5794f5338f73e41076d2dd670c436fdb97c0802f",
+      "historical_worker_path": "results/optimization/opt3/longform-backends-20261118-01/reading-q8/worker.json",
+      "assets": {
+        "models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971",
+        "models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d",
+        "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/libedge_asr_gguf.so": "65aaac0ad1bcaf0b9f655c3dfcb4b39f9730d43702c6ed44edd813b3515c530a",
+        "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/build.json": "20c5b71f14575eddb703591ec0e3694bfdc22b56b0c89827acad2180e04ba810"
+      },
+      "environment": {
+        "edge_asr": "0.1.0",
+        "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+        "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+        "machine": "aarch64",
+        "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+        "runtime": {
+          "sherpa_package_version": "2.0.1",
+          "sherpa_core_package_version": "2.0.1",
+          "python_onnxruntime_package_version": "1.31.1",
+          "sherpa_native_onnxruntime_version": null,
+          "native_version_source": "sherpa_onnx.onnxruntime_version",
+          "status": "not_imported",
+          "reason": "선택 런타임을 아직 import하지 않았습니다."
+        },
+        "thread_environment": {
+          "OMP_WAIT_POLICY": null,
+          "OMP_NUM_THREADS": null,
+          "OMP_DYNAMIC": null,
+          "OMP_PROC_BIND": null,
+          "OMP_PLACES": null,
+          "GOMP_SPINCOUNT": null,
+          "KMP_BLOCKTIME": null,
+          "OPENBLAS_NUM_THREADS": "1"
+        },
+        "packages": [
+          {
+            "name": "cffi",
+            "version": "2.1.1"
+          },
+          {
+            "name": "flatbuffers",
+            "version": "25.12.19"
+          },
+          {
+            "name": "numpy",
+            "version": "2.4.6"
+          },
+          {
+            "name": "onnxruntime",
+            "version": "1.31.1"
+          },
+          {
+            "name": "packaging",
+            "version": "26.3"
+          },
+          {
+            "name": "protobuf",
+            "version": "7.36.2"
+          },
+          {
+            "name": "pycparser",
+            "version": "3.12"
+          },
+          {
+            "name": "sherpa-onnx-core",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sherpa_onnx",
+            "version": "2.0.1"
+          },
+          {
+            "name": "sounddevice",
+            "version": "0.5.6"
+          },
+          {
+            "name": "soundfile",
+            "version": "0.14.0"
+          },
+          {
+            "name": "typing_extensions",
+            "version": "4.16.0"
+          }
+        ]
+      },
+      "config": {
+        "model": {
+          "num_threads": 2,
+          "quantization": "q8_0",
+          "max_total_len": 512,
+          "max_new_tokens": 128,
+          "family": "qwen3_gguf",
+          "path": "models/qwen3-opt/gguf-q8-20261109-01",
+          "runtime_library": "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/libedge_asr_gguf.so",
+          "runtime_manifest": "runtimes/qwen3-opt/decoder-q4-20261117-02/off/bridge/build.json",
+          "num_threads_batch": 3,
+          "cache_text_prefix": false,
+          "language": "ko"
+        },
+        "audio": {
+          "sample_rate_hz": 16000
+        },
+        "evaluation": {
+          "mode": "batch",
+          "warmup_runs": 3,
+          "normalization": "ko_cer_v1",
+          "output_dir": "results/optimization/opt2"
+        }
+      },
+      "score": {
+        "reference_characters": 1063,
+        "errors": 127,
+        "substitutions": 60,
+        "deletions": 10,
+        "insertions": 57,
+        "cer": 0.11947318908748825
+      },
+      "previous_score": {
+        "reference_characters": 1063,
+        "errors": 127,
+        "substitutions": 60,
+        "deletions": 10,
+        "insertions": 57,
+        "cer": 0.11947318908748825
+      },
+      "matching_scored_outputs_digest": "230b0a4f9dcb0dec09160b353f09fd70cf7e6a6306c376d6ebadf73b1300904e",
+      "inputs_sha256": "d623cdf31a923b832d299d6fd2a9fd2de6ee5a554b3ee1a6c213a0b08af837f2",
+      "counts": {
+        "attempts": 66,
+        "returned": 66,
+        "exceptions": 0,
+        "blank": 0,
+        "nonblank": 66,
+        "normalized_empty_nonblank": 1,
+        "normalized_nonempty": 65,
+        "raw_match": 66,
+        "token_match": 66,
+        "scored_text_match": 66,
+        "stream_contract_match": 66
+      },
+      "terminations": {
+        "eog": 66
+      },
+      "anomalies": [
+        {
+          "segment": 36,
+          "duration_s": 0.472,
+          "kind": "normalized_empty",
+          "termination": "eog",
+          "tokens": 1,
+          "error": null,
+          "returned_text": ".",
+          "elapsed_s": 0.5577567430445924
+        }
+      ],
+      "changes_from_stream": [],
+      "elapsed_all_calls_s": 147.8475376087008,
+      "elapsed_s": {
+        "n": 66,
+        "mean": 2.2401142061924366,
+        "p50": 2.3743411580799147,
+        "p95": 3.9470471979584545,
+        "max": 4.590813096961938
+      },
+      "first_call_s": 3.23239016905427,
+      "cpu_all_calls_s": 373.481917706,
+      "mean_cpu_percent_of_four_in_calls": 63.15321914499384,
+      "max_sampled_call_rss_mib": 1686.4375,
+      "stages_sum_s": {
+        "audio_encode_s": 45.01021128799999,
+        "audio_embedding_eval_s": 22.930646354999997,
+        "prefix_eval_s": 4.922822421,
+        "suffix_eval_s": 7.052626140999999,
+        "token_decode_s": 66.61248662800001,
+        "preprocess_s": 0.036104654,
+        "sampling_s": 0.7710147249999999,
+        "native_elapsed_s": 147.81316343600002
+      },
+      "stages_measured_calls": {
+        "audio_encode_s": 66,
+        "audio_embedding_eval_s": 66,
+        "prefix_eval_s": 66,
+        "suffix_eval_s": 66,
+        "token_decode_s": 66,
+        "preprocess_s": 66,
+        "sampling_s": 66,
+        "native_elapsed_s": 66
+      },
+      "guard": {
+        "command": [
+          ".venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "benchmark-qwen3",
+          "--protocol",
+          "reproduction",
+          "--repetitions",
+          "1",
+          "--config",
+          "results/maintenance/decoder-paired-20261118-01/inputs/q8.toml",
+          "--manifest",
+          "results/maintenance/decoder-paired-20261118-01/inputs/reading.jsonl",
+          "--output",
+          "results/optimization/opt3/decoder-pair-full-20261118-01/reading-q8"
+        ],
+        "started_utc": "2026-11-18T08:17:04.882380+00:00",
+        "finished_utc": "2026-11-18T08:20:49.132863+00:00",
+        "admission_c": 59.5,
+        "max_c": 87.0,
+        "current_limit_sample_counts": {
+          "0": 23,
+          "8": 111,
+          "6": 17
+        },
+        "current_limit_time_s_approx_guard": 130.33581986580975,
+        "guard_elapsed_sample_span_s": 153.85645810200367,
+        "exit_code": 0,
+        "operational_valid": true,
+        "worker_status": "completed",
+        "limit_verified": true
+      }
+    }
+  },
+  "paired": {
+    "natural": {
+      "same_normalized_all": 91,
+      "paired_nonblank": 162,
+      "same_normalized_when_nonblank": 90,
+      "q4_faster_when_both_nonblank": 161,
+      "same_nonempty_token_sequence": 57,
+      "q4": {
+        "paired_nonblank_elapsed_s": {
+          "n": 162,
+          "mean": 1.3463298974265516,
+          "p50": 1.0179639650741592,
+          "p95": 2.8039087411016226,
+          "max": 3.1283138019498438
+        },
+        "paired_nonblank_sum_s": 218.10544338310137,
+        "sum_s_for_same_nonempty_token_sequence": 61.86371053592302
+      },
+      "q8": {
+        "paired_nonblank_elapsed_s": {
+          "n": 162,
+          "mean": 1.7190862946258283,
+          "p50": 1.3528268249938264,
+          "p95": 3.6124767719302326,
+          "max": 4.137645115959458
+        },
+        "paired_nonblank_sum_s": 278.4919797293842,
+        "sum_s_for_same_nonempty_token_sequence": 78.86836190742906
+      }
+    },
+    "reading": {
+      "same_normalized_all": 28,
+      "paired_nonblank": 64,
+      "same_normalized_when_nonblank": 27,
+      "q4_faster_when_both_nonblank": 64,
+      "same_nonempty_token_sequence": 19,
+      "q4": {
+        "paired_nonblank_elapsed_s": {
+          "n": 64,
+          "mean": 1.7457960833835386,
+          "p50": 1.786845927941613,
+          "p95": 2.9048330639488995,
+          "max": 3.3601784779457375
+        },
+        "paired_nonblank_sum_s": 111.73094933654647,
+        "sum_s_for_same_nonempty_token_sequence": 22.036175480578095
+      },
+      "q8": {
+        "paired_nonblank_elapsed_s": {
+          "n": 64,
+          "mean": 2.2918288055261655,
+          "p50": 2.3761297420132905,
+          "p95": 3.9470471979584545,
+          "max": 4.590813096961938
+        },
+        "paired_nonblank_sum_s": 146.6770435536746,
+        "sum_s_for_same_nonempty_token_sequence": 29.412411831202917
+      }
+    },
+    "all": {
+      "same_normalized_all": 119,
+      "paired_nonblank": 226,
+      "same_normalized_when_nonblank": 117,
+      "q4_faster_when_both_nonblank": 225,
+      "same_nonempty_token_sequence": 76,
+      "q4": {
+        "paired_nonblank_elapsed_s": {
+          "n": 226,
+          "mean": 1.4594530651311852,
+          "p50": 1.2734703929163516,
+          "p95": 2.8799527920782566,
+          "max": 3.3601784779457375
+        },
+        "paired_nonblank_sum_s": 329.83639271964785,
+        "sum_s_for_same_nonempty_token_sequence": 83.89988601650111
+      },
+      "q8": {
+        "paired_nonblank_elapsed_s": {
+          "n": 226,
+          "mean": 1.881278864084331,
+          "p50": 1.6522765679983422,
+          "p95": 3.7811752510024235,
+          "max": 4.590813096961938
+        },
+        "paired_nonblank_sum_s": 425.1690232830588,
+        "sum_s_for_same_nonempty_token_sequence": 108.28077373863198
+      }
+    }
+  },
+  "totals": {
+    "q4": {
+      "score": {
+        "reference_characters": 3192,
+        "errors": 502,
+        "substitutions": 287,
+        "deletions": 120,
+        "insertions": 95,
+        "cer": 0.15726817042606517
+      },
+      "elapsed_all_calls_s": 334.95393628790043,
+      "counts": {
+        "attempts": 233,
+        "returned": 232,
+        "exceptions": 1,
+        "blank": 6,
+        "nonblank": 226,
+        "normalized_empty_nonblank": 0,
+        "normalized_nonempty": 226,
+        "raw_match": 233,
+        "token_match": 233,
+        "scored_text_match": 233,
+        "stream_contract_match": 233
+      }
+    },
+    "q8": {
+      "score": {
+        "reference_characters": 3192,
+        "errors": 384,
+        "substitutions": 201,
+        "deletions": 101,
+        "insertions": 82,
+        "cer": 0.12030075187969924
+      },
+      "elapsed_all_calls_s": 429.46434895601124,
+      "counts": {
+        "attempts": 233,
+        "returned": 233,
+        "exceptions": 0,
+        "blank": 0,
+        "nonblank": 233,
+        "normalized_empty_nonblank": 2,
+        "normalized_nonempty": 231,
+        "raw_match": 233,
+        "token_match": 233,
+        "scored_text_match": 233,
+        "stream_contract_match": 233
+      }
+    }
+  },
+  "raw_sha256": {
+    "natural-q4/admission.jsonl": "f224c10bf80ea922938df66ed279f25f907ab238ae88ca7b3561257666a5c252",
+    "natural-q4/console.log": "487edcbfd73b31df44a0d5cd9ea38c9a31a54619bdadb4007855a176b634eae2",
+    "natural-q4/execution.json": "65e983b8290908ba662e414dfcc4a8412164d07318a026eb130ec57a1eb744d3",
+    "natural-q4/measurements.jsonl": "bf5ebab1b177a5fb9045114a41d3b022aa9a86c2ab51943d4646016316ccaf5c",
+    "natural-q4/predictions.jsonl": "85fad8df1f07e5543a27c745c6b4ba7b3a8e66b434e0df39f0d06a96ce072cf8",
+    "natural-q4/scores.jsonl": "97343a2019c8c1181786e0b9e0e837485e741efd14f5796e72d9d54421bc1dd9",
+    "natural-q4/summary.json": "d3950a8e912fcb3334437a1e08116987571c585337c7ff1bedf797e414a1e83f",
+    "natural-q4/summary.md": "e796da323c7327fa93ac0d422dbf1d89e72410675c951803cbc0e88ca9dd19ba",
+    "natural-q4/thermal.jsonl": "ced848ebdfbf623f4f6c785a00775bdc3dc3df1a47002c3465322b84f2155cf3",
+    "natural-q4/threads.jsonl": "328c271cc737033cbda667dec76727b626d51dc297e2e1e613ec734bee2a3a8b",
+    "natural-q4/warnings.jsonl": "cf1bedafeeace1856b8854609d54363ae85525c9614b583de243b103fcf8a670",
+    "natural-q4/worker.json": "388b8b329f1e444e21b7b2c3e860bd4b93eaa79fc868b0796568879f6246f6cc",
+    "natural-q8/admission.jsonl": "b500b680a448547946d9ed5eb41b5eaf0def7300aa5742a2af14485ba3b25de2",
+    "natural-q8/console.log": "185898c30cce3c5cc976e1c82893d16ae07aff4ba1424203bc65db7c6ebe057a",
+    "natural-q8/execution.json": "8e7e367b19fcedb6b8a627d1bb26a1788bc04fa66ccf41989ddd2764feabe027",
+    "natural-q8/measurements.jsonl": "3ae0e3326891f1f694c1aa31c8906dee072e2b5bfc36cc5b1cb510c59626bb55",
+    "natural-q8/predictions.jsonl": "4bfe8224d37c720fcc2587ca0eba69a5bab3b089d5e03764a46448792eff8929",
+    "natural-q8/scores.jsonl": "b7aa56cddb56bae565f9652346a44fa3df0ebdc6e3e7905792adf92d782c947e",
+    "natural-q8/summary.json": "308c5db3c42d69011ac6ff1711363451fe137f2777f741c66ce517c6bf9e9246",
+    "natural-q8/summary.md": "386a90ef2777669e30948ab58d53589e0b60219999dcda109baa8efe041ed295",
+    "natural-q8/thermal.jsonl": "5262773e3d52b398cbfd9eb1818363238a79a512cf20f1be5f1e5a613920b354",
+    "natural-q8/threads.jsonl": "62ab19e9b2df1d4a404404b6331cc6305db7665486dcd8622155c654b5b5727a",
+    "natural-q8/warnings.jsonl": "75b434d1d49cc0858be8fc88037ebd536976beff1a56396b67ef9c95cdd450dc",
+    "natural-q8/worker.json": "45bd051acd44f75a8284f55e690b97a9d44b8ca4836df1c063b22ca27b8b6a85",
+    "reading-q4/admission.jsonl": "ae2e830a641f5ae0e7ec96d5bb0d42dc2510693ddc95b66245f84be85603a05b",
+    "reading-q4/console.log": "cdc464e06db31ff692fa034c4fe5e3a116aa1093c097bc1162a3219cadeb33f4",
+    "reading-q4/execution.json": "defc0fe62d3c32400d6899c96b5b24fd727e32d3d0be5a96e156a409e188aa13",
+    "reading-q4/measurements.jsonl": "31d584bca01e6ceb949da87a1d76a36e01558f04f163a3745a2ea4b9db3fc912",
+    "reading-q4/predictions.jsonl": "98538f80221c692d34c11a2e1d6fe9c5ebb19cff0b1582375ab212fb2d61d5b7",
+    "reading-q4/scores.jsonl": "5946ee5de6e067cb2d9f718c46c45032a2e04c5022a7557be866cd58785dba39",
+    "reading-q4/summary.json": "3f4e118c6adb502404ea9cd2fe7a885349993f29f5299aa16f12d15dcb0768ad",
+    "reading-q4/summary.md": "d00fa870a1936f3bfdfbf0d8840ba98256ac6e569b427cd7095e6f84fa12cdea",
+    "reading-q4/thermal.jsonl": "cc5642ca8ad3a79ff634e4a861cc68193fcebd0ecd903932086154a257117659",
+    "reading-q4/threads.jsonl": "35e32756a6a1a144b372e88e85ee4063ac88fb94c3f21b4247a38a4a187bc388",
+    "reading-q4/warnings.jsonl": "062f773068b4bc47482414a6ede2dacded4e7f5c6b2fd6574de7e0a7657d76f4",
+    "reading-q4/worker.json": "b580b4580c3a782b96e729eec0f867f98d55065efd6bd6bd33a19965555305c1",
+    "reading-q8/admission.jsonl": "de375cf7f07b41fffd4a39dcbfbf0beafc1259c6830d55e15d38e0554b985e34",
+    "reading-q8/console.log": "ee6db6ec4f50efd0e3aef390e3fcf72538463bde86939c28b548ae33c138646a",
+    "reading-q8/execution.json": "ab812fa866ca366aa73f904d4d36fc173437a9a28654b24413142c9fa11b2ee9",
+    "reading-q8/measurements.jsonl": "7ebf475ea9935644c66b320b5639f7981e0bd9b8ad7889edab6d6e65b4adb83e",
+    "reading-q8/predictions.jsonl": "8d637dd8bdc321eb431545437c4b6ab2e8d6b152bae26381edbb040ce5e000c2",
+    "reading-q8/scores.jsonl": "60812f7775025321d97f8dd93110c4a32281ac9b383c0d670453bc62af14e7eb",
+    "reading-q8/summary.json": "64c6a357397f7f19055ae03db0680677918db51d1565cb11b8998feff9ebe2fb",
+    "reading-q8/summary.md": "ed618c7ac28cb79c18567d5460950a8ac3f1f051c88e6e8fdaa216b16a6bebc1",
+    "reading-q8/thermal.jsonl": "445407eb79c3c78c2fad6f7d206c34e80998597c265745d19df6842fc411bbaf",
+    "reading-q8/threads.jsonl": "441473be43ecb8699373c87a3b3d657554d64277859bad88d4f869fdb2e9488d",
+    "reading-q8/warnings.jsonl": "3319a0066f3e6d8ac23e3616e83cc7990ca1a076d4d65c9ce10758d2daefa9a4",
+    "reading-q8/worker.json": "a107862887830b6ce8b30483f745dac62543c626529a3eb69dfec8de0744dace"
+  },
+  "raw_file_count": 48
+}
