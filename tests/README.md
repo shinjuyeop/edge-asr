@@ -42,7 +42,11 @@ GGUF의 선택적 C++ 문법 검사에는 `EDGE_ASR_LLAMA_SOURCE`를 고정 upst
 
 `qwen/test_convolution.py`는 선택 합성곱 자산 해시·preload 누락/혼합·미로드·호출 수락 실패를 검사합니다. 어댑터는 성공과 native 실패 모두 선택 경로 기록을 보존합니다. `test_conv_sgemm.py`의 Host ELF 검사는 1~6청크 모의 shape·기본 전달·호출 중 초기화 거부를 다루며 실제 FP16 동등성은 RP5 별도 실행에서 확인합니다.
 
-원음별 기록 재생은 `test_listener.py`에서 Node.js가 있을 때 `listener_review.mjs`를 실행합니다. 실제 브라우저 없이 오디오 끝과 늦은 확정 시각의 분리, 다음 음원 오디오 차단, 자동 멈춤·다음/되감기·연속/라이브 전환, 경계를 넘는 전사 보존을 검사합니다. Node.js가 없으면 해당 검사만 사유를 표시해 생략하며 실제 화면·음향 출력 검증과 구분합니다.
+원음별 기록 재생은 `test_listener.py`에서 Node.js가 있을 때 `listener_review.mjs`를 실행합니다. 화면 제어 `web/listener.mjs`를 직접 import하고 버튼·모의 HTTP/오디오 시계로 오디오 끝과 늦은 확정 시각의 분리, 다음 음원 오디오 차단, 자동 멈춤·다음/되감기·연속/라이브 전환, 경계를 넘는 전사 보존을 검사합니다. 소스 문자열 절취·코드 주입은 사용하지 않습니다. Node.js가 없으면 해당 검사만 사유를 표시해 생략하며 실제 화면·음향 출력 검증과 구분합니다.
+
+공유 `configs/listener*.toml`은 로컬 자산이 없는 임시 루트에서 기존 `replay_args()`·`argument_parser()`로 전부 파싱하고, 참조 모델 TOML이 Git 추적 대상이며 평가 설정 검사에 통과하는지 확인합니다. 모델·음원 누락과 설정/옵션 오류를 구분하며 실제 로딩은 하지 않습니다. HTTP 검사는 모든 정적 자산과 JS/MJS MIME을, 구조 검사는 package-data 포함 조건을 확인합니다. CI는 실제 wheel을 만들어 각 청취 자산 바이트를 소스와 대조합니다.
+
+`test_realtime.py`는 정상/실패/취소·숨긴 결과의 CER·실패 수·지연 집계 분모와 집계 도중 오류 시 앞선 지표 보존을 검사합니다. 완료 직후 지표와 `session.close()` 뒤 상태 수집을 분리하며 예외 경로에 완료 점수를 만들지 않습니다. `test_fixed100.py`는 합성 Zeroth archive의 457개 원음·전사·프레임·순서 및 원본 바이트 보존을 추가 확인합니다. 준비 도구의 기존 실패 산출물 보존/정리 정책과 실제 ffmpeg PCM 검사는 유지합니다.
 
 연속 수정 정책은 `qwen/test_continuous.py`에서 제어 가능한 모델·시계로 3회 이후 갱신, 최신 범위 한 개와 실행 시 snapshot, 완료 알림만으로 재실행, 동일 범위 재시도 방지, final 우선/EOF, 빈 partial 복구, 수정·삭제·낡은 revision 거부, 열 히스테리시스/결측을 검사합니다. `listener_review.mjs`는 연속 문맥 유지와 revision 보호도 검사합니다. 모델 없는 검사이며 RP5 성능·실제 브라우저 출력 검증과 구분합니다.
 

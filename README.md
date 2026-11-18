@@ -6,6 +6,8 @@ Qwen3-ASR-0.6B를 Raspberry Pi 5의 ARM64 CPU에서 실행하며 **한국어 정
 
 WAV 1배속 입력과 **RP5 USB 마이크**로 부분·확정 자막을 확인합니다. [측정 웹의 마이크 탭](docs/guides/listener.md#rp5-usb-마이크)에서 준비·시작·입력 종료·녹음 재생을 지원합니다. 개발에는 [공유 설정](configs/gguf_realtime.toml)과 VAD·갱신·토큰 표시 옵션을 포함한 [대표 명령](docs/guides/qwen3_optimization.md#현재-개발용-대표-명령)을 사용합니다. 서비스 자동 실행·마이크 정답 정확도·최종 장시간 안정성은 후속 검증입니다.
 
+공유 개발 입구 `gguf_realtime.toml`은 **Q8 회귀 참조**이며, 최근 연속 수정 실험의 **Q4 속도 대조군**과 구분합니다. 목표는 발화 중 자막이 계속 갱신·수정되는 스트리밍입니다. 과거 최대2회/3회는 비교·재현 조건으로 보존합니다. [모델 설정·listener 프로필 색인](configs/README.md)에서 역할과 채택 상태를 확인하세요.
+
 ## 주요 결과
 
 - **자막 누락:** 낮은 신호의 VAD 입력을 보정하고 ASR에는 원음을 유지해, 고정 100개 평가에서 자막 없는 원음을 없앴습니다.
@@ -113,16 +115,20 @@ edge-asr/
 │   ├── legacy/                          # 이전 모델 비교 설정
 │   ├── quantization/                    # Q6·Q5·Q4 후보
 │   │   ├── q4_0_head_realtime.toml     # 빠른 Q4_0 본체·출력층, audio Q8
+│   │   ├── q4_0_partial_window.toml    # 선택 1.99초 부분 음성 창 캐시
 │   │   ├── q4_both_realtime.toml        # text Q4_K_M + audio Q4_0 비교
 │   │   ├── q4_k_m_realtime.toml         # 현재 bridge·2/3·prefix KV의 Q4 비교
 │   │   └── q4_prefill_realtime.toml     # Q4 음성·prefill4T 선별 후보
 │   ├── eval_manifest.example.jsonl
 │   ├── gguf.toml                        # 보존한 Q8 2T 기준선
-│   ├── gguf_realtime.toml               # 현재 개발용 GGUF 설정
+│   ├── gguf_realtime.toml               # 공유 Q8 회귀 참조
 │   ├── listener.toml                    # 청취용 모델·음원·연속 옵션
 │   ├── listener_continuous.toml         # 최신 음성으로 연속 수정
 │   ├── listener_continuous_paced.toml    # 고정 냉각·지속 부하 조절
 │   ├── listener_continuous_priority.toml # 최종 대기 시 선택 부분 취소
+│   ├── listener_longform_natural.toml   # 창 캐시·자연발화8개
+│   ├── listener_longform_reading.toml   # 창 캐시·낭독 연결4개
+│   ├── listener_partial_window.toml     # 창 캐시·고정100개
 │   └── onnx.toml                        # ONNX 출발 참조
 ├── data/                                # 로컬 음원·정답
 │   ├── evaluation/
@@ -180,11 +186,14 @@ edge-asr/
 │       │   │   └── worker.py
 │       │   ├── viewer/                  # 라이브·기록 청취 도구
 │       │   │   ├── web/                  # 공통 음성·자막·지표 화면
+│       │   │   │   ├── app.js            # 브라우저 시작 진입점
 │       │   │   │   ├── captions.mjs      # 연속 수정 자막·revision 보호
+│       │   │   │   ├── listener.mjs       # 재생·결과 대기, 직접 import 가능한 화면 제어
 │       │   │   │   └── review.mjs        # 원음별 재생 경계·확정 결과 확인
 │       │   │   ├── analysis.py
 │       │   │   ├── runs.py
 │       │   │   └── server.py
+│       │   ├── audio_windows.py         # 선택 부분 음성 창의 요청별 ABI 수명
 │       │   ├── benchmark.py
 │       │   ├── convolution.py            # 선택 합성곱 후보 검증·호출 기록
 │       │   ├── feature_cache.py          # 선택 정규화 전 log-Mel 접두 캐시
@@ -193,7 +202,10 @@ edge-asr/
 │       │   └── profiling.py
 │       ├── tools/
 │       │   ├── data/
-│       │   │   └── longform.py          # 긴 발화 선정·준비·재검증
+│       │   │   ├── external.py          # 공통 archive·PCM 변환·출처 영수증
+│       │   │   ├── fixed100.py          # 고정100개 선정·준비·재검증
+│       │   │   ├── longform.py          # 긴 발화 선정·연결·재검증
+│       │   │   └── zeroth.py            # 공유 Zeroth 원본·전사·후보 처리
 │       │   ├── maintenance/
 │       │   ├── probes/
 │       │   ├── reports/

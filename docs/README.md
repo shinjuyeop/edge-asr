@@ -9,6 +9,7 @@
 | 문제 발견·선택의 흐름 | [ASR 최적화 과정](research/optimization_history.md) |
 | 음성·자막 청취 | [라이브·기록 청취 도구](guides/listener.md) |
 | 실행 준비 | [Qwen 최적화 시작](guides/qwen3_optimization.md), [설치](guides/setup.md), [배포](guides/deployment.md) |
+| 모델 설정·청취 프로필 구분 | [공유 설정 색인](../configs/README.md) — Q8 회귀 참조·Q4 속도 대조군·선택 캐시 |
 | 현재 평가 조건·결과 | [현재 상태](status.md), [고정 text prefix KV 100개 대조 — 2026-11-12](../results/summaries/optimization/realtime-prefix-cache-20261112.md), [batch 출발 기준선](research/fixed100_baseline.md) |
 | 현재 우선 검증 | [Qwen 단독1배속·부분 자막·양자화 계획](research/qwen_realtime.md) |
 | 평가 기반 | [고정100개 입력](research/fixed100.md), [약1분 긴 발화](research/longform.md), [데이터](guides/datasets.md), [공통 평가](guides/evaluation.md), [manifest](../benchmarks/manifest.md) |

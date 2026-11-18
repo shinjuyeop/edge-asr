@@ -9,6 +9,7 @@
 | `qwen/convolution.py` | 선택 FP16 합성곱 빌드·preload 계약과 호출별 적용 확인. 기본 경로에는 사용하지 않음 |
 | `qwen/benchmark.py` | 모델1회 로딩·첫 추론·워밍업·반복·고정 PCM 재현 |
 | `qwen/profiling.py` | ONNX Python/ORT 호출 경계·세션/시계 검증 |
+| `qwen/viewer/` | `runs.py`가 실행 상태·프로필 인자·음원 검증, `server.py`가 HTTP/SSH, `web/app.js`가 브라우저 시작, `web/listener.mjs`가 재생·표시를 담당 |
 | `qwen/realtime/` | 1배속 실행·VAD 접두 부분 전사·유한 단일 작업자. `stability.py`로 접두부 재표시·문자 철회 집계. 공통 입력·구간 분할 재사용 |
 | `native/gguf/`, `native/ort_trace/` | C ABI·ORT 계측과 빌드. [안내](../../native/README.md) |
 | `tools/data/` | 데이터 준비·검증·평가 순서 생성 |
@@ -21,7 +22,7 @@
 | `adapters/`, `legacy/` | 공통 factory·이전 비교 모델과 자막/병합 재현 |
 | `legacy/benchmark_zipformer.py` | M1 Zipformer 전용 반복 프로브. 현재 Qwen의 `qwen/benchmark.py`와 구분 |
 
-긴 입력 준비는 `tools/data/longform.py`가 담당합니다. 공통 `textgrid.py`·`dataset.py`·`artifacts.py`와 기존 `tools/data/fixed100.py`의 Zeroth 원본 읽기/변환을 재사용하며, 결과 JSONL은 기존 연속 입력 평가기에 그대로 전달합니다. [구성·정답 범위](../research/longform.md).
+고정100개 선정은 `tools/data/fixed100.py`, 긴 발화 선정·연결은 `tools/data/longform.py`가 담당합니다. 두 도구는 `tools/data/zeroth.py`의 고정 원본 정보·archive 읽기·화자/전사/FLAC 후보 생성을 공유합니다. FLEURS에도 쓰는 tar 검사·프레임 보존 PCM 변환과 출처 영수증은 기존 `tools/data/external.py`에 둡니다. 파일 해시·JSON·JSONL은 `artifacts.py`를 직접 사용하고, 입력·TextGrid는 `dataset.py`·`textgrid.py`를 재사용합니다. 각 도구의 선정/연결 규칙·실패 산출물 보존/정리 정책은 각 준비 경로에 유지하며 결과 JSONL은 기존 연속 입력 평가기에 전달합니다. [구성·정답 범위](../research/longform.md).
 
 ```mermaid
 flowchart LR
@@ -33,7 +34,7 @@ flowchart LR
   L --> C
 ```
 
-어댑터 계약은 `model_files`, `load()`, `transcribe(Audio) -> str`, `close()`입니다. 공통 factory는 선택 모델만 import합니다. GGUF는 ctypes로 별도 C ABI에 같은 float PCM을 전달합니다. `realtime/`은 도착한 접두 PCM을 반복 호출해 부분 자막을 갱신합니다. 새 GGUF bridge의 선택적 `transcribe_stream(Audio, on_text)`는 생성 중 텍스트를 임시 배포하며 기존 계약·최종 채점은 유지합니다. 음성 청크 간 KV 재사용·encoder 증분 실행은 아직 없습니다. [측정 범위](../research/qwen_realtime.md).
+어댑터 계약은 `model_files`, `load()`, `transcribe(Audio) -> str`, `close()`입니다. 공통 factory는 선택 모델만 import합니다. GGUF는 ctypes로 별도 C ABI에 같은 float PCM을 전달합니다. `realtime/`은 도착한 접두 PCM을 반복 호출해 부분 자막을 갱신합니다. 새 GGUF bridge의 선택적 `transcribe_stream(Audio, on_text)`는 생성 중 텍스트를 임시 배포하며 기존 계약·최종 채점은 유지합니다. 기본 전체 음성 경로는 음성 청크 간 KV를 재사용하지 않습니다. 선택 부분 음성 창은 아래 범위에서 embedding·음성 KV를 재사용하며 전체 encoder의 수치 동등 증분 계산과 구분합니다. [측정 범위](../research/qwen_realtime.md).
 
 GGUF의 선택 설정 `num_threads_batch`는 여러 토큰 prefill과 오디오 인코딩에 적용하고 `num_threads`는 토큰 생성에 적용합니다. 생략하면 기존처럼 같은 값을 쓰며 기존5인자 생성 ABI를 사용합니다. 명시할 때는 `split_threads_v1` 별도 빌드의6인자 생성 함수를 사용하고 반환된 설정을 검사합니다. `audio_threads`는 mtmd 초기화에 전달한 값의 기록이며 별도 runtime getter가 아닙니다.
 
@@ -52,6 +53,20 @@ GGUF의 text/audio 정밀도는 별도입니다. 기존 자산 명세 v1은 알�
 공통 코드와 Qwen은 `legacy`를 import하지 않습니다. CLI dispatch는 예외이며 보고서는 실행 probe에 의존하지 않습니다. `write_json`은 원자적 체크포인트, JSONL 이벤트는 행별 보존입니다. 입력·출력/실패·`ko_cer_v1` 계약을 유지하며 Host 모의 검사와 RP5 실제 추론을 구분합니다. [테스트](../../tests/README.md), [경로 이행](structure_migration.md).
 
 새 개발은 [공유 GGUF 설정](../../configs/gguf_realtime.toml)과 [개발 안내](../../CONTRIBUTING.md)에서 시작합니다. CLI 목록은 현재·이전 Qwen 진단·legacy·유지보수로 구분하지만 기존 명령은 같은 실행기로 전달합니다. 환경·외부 바이너리는 [환경 기록](environment.md)에, 모델 없는 자동 검사는 `.github/workflows/host.yml`에 있습니다.
+
+## 실행기·상태와 캐시 범위
+
+`realtime/replay.py`의 `run()`은 입력 준비·모델/세션 실행·종료 자원을 소유합니다. 같은 파일의 `session_snapshot()`은 상태를 읽고 `collect_completed_metrics()`는 기존 `metrics.py`·`stability.py`로 완료 지표를 집계합니다. 정상 입력 배출 직후 지표를 계산한 다음 `session.close()` 뒤 상태를 다시 수집합니다. 예외 경로는 종료 후 상태·실패를 보존하며 완료 지표를 새로 만들지 않습니다. 실패·취소·미표시 결과는 각 기존 지표의 분모를 유지합니다.
+
+`viewer/runs.py`의 `replay_args()`는 자산을 열지 않고 청취 프로필을 기존 replay 인자로 바꿉니다. `Library.state()`가 실행 프로세스의 중단 가능 여부를 판단하고 HTTP handler는 그 snapshot을 전달합니다. `web/listener.mjs`의 `createListener()`는 브라우저 상태와 오디오/화면 동작을 한 수명 안에 유지합니다. Node 테스트는 소스 문자열을 자르거나 코드를 주입하지 않고 이를 직접 import해 같은 버튼·HTTP 응답·오디오 시계 경로를 실행합니다. HTML/CSS/JS/MJS는 wheel에도 포함합니다.
+
+| 경로 | 재사용 범위 | 전체 음성과의 관계 |
+| --- | --- | --- |
+| 기본 전체 음성 + 고정 text prefix KV | 공유 Q8 설정에서 음성 앞 동일 text KV만 유지. 매 요청 음성 특징·encoder·embedding·음성 KV 재계산 | 원래 전체 음성 경로. 일반/확정 요청도 이 경로 |
+| 선택 log-Mel 특징 캐시 | `qwen/feature_cache.py`·`native/gguf/mel_prefix_cache.*`. 정규화 전 일치 특징 프레임만 재사용, 경계·전체 최대값 정규화 재계산 | 비트 동등 검증 대상. 공유 기본 비활성, encoder/음성 KV는 재계산 |
+| 선택 부분 음성 창 | `qwen/audio_windows.py`·`native/gguf/audio_window_cache.h`. 완료 창 embedding·음성 LLM KV 접두부 재사용 | 부분 요청만 창별 정규화/padding/attention 문맥을 사용해 부분 전사가 바뀔 수 있음. 일반/확정은 전체 음성 경로 |
+
+작업자·Python 어댑터·native의 cache reset은 각각 구간/요청·실패/취소·계산 상태의 수명을 관리합니다. 호출이 비슷해도 하나로 합치지 않습니다. [모델/청취 설정 색인](../../configs/README.md), [선택 실행 옵션](../guides/qwen3_optimization.md#부분-음성-창-캐시-실험)을 따릅니다.
 
 ## Q8 전처리·추론·후처리
 
@@ -78,7 +93,7 @@ flowchart TD
 
 1. **입력 형식:** 파일은 `dataset.load_audio()`가 모노 PCM16/16kHz WAV를 검증하고 float32 파형으로 바꿉니다. WAV 경로에서 리샘플링은 하지 않습니다. USB 마이크는 `microphone.py`가 ALSA `arecord`의 16kHz·모노·S16_LE 출력을 읽습니다. 현재 USB 장치는 직접 16kHz를 지원하지 않아 **ALSA `plughw`에서 변환**합니다. GGUF 어댑터가 리샘플링하지 않는다는 설명과 구분합니다. [환경 기록](environment.md#usb-입력-추가-확인--2026-11-13)
 2. **VAD와 ASR 파형 분리:** `CaptionSession` → `SegmentPipeline`이 100ms 블록을 처리하고, VAD에는 512샘플(32ms) 창을 공급합니다. 대표 명령의 `rms26-floor80`은 VAD용 분기에만 적용합니다. ASR 분기는 `identity`로 원래 PCM16 값을 보존하며 구간을 float32로 변환해 전달합니다. 이 음량 보정은 모델의 Mel 정규화와 다릅니다. [음량 정책](../../src/edge_asr/audio_policy.py), [구간 처리](../../src/edge_asr/segmentation.py)
-3. **부분/확정 요청:** VAD 좌표와 부분 갱신 정책으로 도착한 PCM 범위를 결정합니다. 직렬 작업자는 대기 중 확정 요청을 우선하고, 부분 요청은 최신 대기로 합칩니다. 실행 중인 호출을 선점하지 않습니다. 요청 시점·큐 대기는 전처리 연산 시간과 별도입니다. [세션](../../src/edge_asr/qwen/realtime/session.py), [작업자](../../src/edge_asr/qwen/realtime/worker.py)
+3. **부분/확정 요청:** VAD 좌표와 부분 갱신 정책으로 도착한 PCM 범위를 결정합니다. 직렬 작업자는 대기 중 확정 요청을 우선하고, 부분 요청은 최신 대기로 합칩니다. 기본 경로는 실행 중인 호출을 선점하지 않습니다. 선택 연속 모드의 최종 우선 취소는 토큰 callback 경계에서만 적용합니다. 요청 시점·큐 대기는 전처리 연산 시간과 별도입니다. [세션](../../src/edge_asr/qwen/realtime/session.py), [작업자](../../src/edge_asr/qwen/realtime/worker.py)
 4. **텍스트 토큰화:** bridge는 빈 system, 음성 marker가 있는 user, `language Korean<asr_text>`로 시작하는 assistant 프롬프트를 구성합니다. `mtmd_tokenize()`가 텍스트를 모델 어휘의 토큰 ID로 바꾸고 `<|audio_start|>`·`<|audio_end|>`를 붙입니다. **파형을 텍스트 토크나이저에 넣는 것은 아닙니다.** 음성 입력은 별도 파형·특징·임베딩 경로를 탑니다. 고정 prefix KV가 적중해도 현재 구현은 프롬프트 토큰화를 수행하고 모델의 앞 text 평가를 생략합니다. [bridge](../../native/gguf/bridge.cpp)
 5. **음성 특징 추출:** 고정 런타임은 16kHz, 400샘플 창(25ms), 160샘플 간격(10ms), 128 Mel 대역입니다. 양끝 반사 패딩 → Hann 창을 포함한 주파수 변환 → 파워 → Mel 필터 → log10 → `max(log_mel, 최대값−8)`과 `(값+4)/4` 정규화 → 100 특징 프레임 배수 패딩 순입니다. 마지막 정규화를 엄밀한 `[-1,1]` 범위 보장으로 해석하지 않습니다. 내부 추론 창은 최대 800 특징 프레임으로 나누며 현재 ASR 구간 상한 5초와는 다른 층위입니다.
 
@@ -126,7 +141,7 @@ flowchart TD
 
 선택 `protect_short_followup`은 같은 `CaptionSession`에서 현재 구간의 성공한 첫 부분 결과가4자 미만일 때만 두 번째 요청의 비용 예산 검사를 예외로 둡니다. token 중간 결과·실패·다른 구간에는 적용하지 않고 유휴/최소 새 음성/최대 횟수/끝 여유는 유지합니다. 메타데이터는 `short-first-budget-v1`, 실제 예외 요청은 `short_followup_budget_override`로 남깁니다. 기본 정책과 최종 음성 분할·native 어댑터는 유지합니다.
 
-기록 재생의 `web/review.mjs`는 원음과 겹치는 이벤트·오디오 종료·마지막 결과 시각을 묶습니다. `app.js`는 Web Audio 재생을 해당 원음 끝에서 중단하되 원래 발행 시각까지 화면 시간을 진행하고 확정 전사를 모아 표시한 뒤 멈춥니다. 다음 원음은 사용자가 선택하며 경계를 넘는 전사는 통째로 표시합니다. 이 기능은 원시·공통 지연 집계·실제 추론/라이브 입력을 변경하지 않습니다.
+기록 재생의 `web/review.mjs`는 원음과 겹치는 이벤트·오디오 종료·마지막 결과 시각을 묶습니다. `listener.mjs`는 Web Audio 재생을 해당 원음 끝에서 중단하되 원래 발행 시각까지 화면 시간을 진행하고 확정 전사를 모아 표시한 뒤 멈춥니다. 다음 원음은 사용자가 선택하며 경계를 넘는 전사는 통째로 표시합니다. 이 기능은 원시·공통 지연 집계·실제 추론/라이브 입력을 변경하지 않습니다.
 
 ## 선택 연속 수정 정책
 

@@ -42,7 +42,7 @@ ruff format --check src tests scripts native
 | CLI·경로 이동·공통 코드 | 관련 테스트와 전체 Host 회귀 검사·Ruff·보존 검사 |
 | 모델 호출·분할·계측·C++ | Host 검사 후 같은 main 커밋으로 RP5에서 필요한 실제 추론·출력/계측 비교 |
 
-[Host CI](.github/workflows/host.yml)는 PR과 main push에서 Python 3.11 테스트·Ruff·M1 원본 해시·설정 검사를 실행합니다. 이는 모델 없는 검사이며 ARM 추론 성능을 보증하지 않습니다. 선택 native 헤더 검사와 실제 추론의 범위는 [테스트 안내](tests/README.md)를 따릅니다.
+[Host CI](.github/workflows/host.yml)는 PR과 main push에서 Python 3.11 테스트·Ruff·M1 원본 해시·공유 설정 및 listener 프로필 검사·실제 wheel 청취 자산 검사를 실행합니다. 이는 모델 없는 검사이며 ARM 추론 성능을 보증하지 않습니다. 선택 native 헤더 검사와 실제 추론의 범위는 [테스트 안내](tests/README.md)를 따릅니다.
 
 ## RP5 실행과 결과 기록
 
