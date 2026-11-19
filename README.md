@@ -130,6 +130,7 @@ edge-asr/
 │   ├── eval_manifest.example.jsonl
 │   ├── gguf.toml                        # 보존한 Q8 2T 기준선
 │   ├── gguf_conv_realtime.toml          # Q8 가변·선택 4×4 합성곱 대조
+│   ├── gguf_final_draft.toml            # 선택 Q8 확정 토큰 후보 검증
 │   ├── gguf_realtime.toml               # 공유 Q8 회귀 참조
 │   ├── listener.toml                    # 청취용 모델·음원·연속 옵션
 │   ├── listener_continuous.toml         # 최신 음성으로 연속 수정
