@@ -1,0 +1,25 @@
+# 선택 실험: Q8 부분0.99초 독립 창/완료 창·음성 KV 재사용. 확정은 전체 음성.
+# 현재 headroom 정책의 비용·전사 변화를 검증하며 공유 기본은 유지한다.
+[model]
+family = "qwen3_gguf"
+path = "models/qwen3-opt/gguf-q8-20261109-01"
+runtime_library = "runtimes/qwen3-opt/stream-cache-20261118-03/bridge/libedge_asr_gguf.so"
+runtime_manifest = "runtimes/qwen3-opt/stream-cache-20261118-03/bridge/build.json"
+num_threads = 2
+num_threads_batch = 3
+cache_text_prefix = true
+partial_audio_window_ms = 990
+partial_audio_window_cache = true
+language = "ko"
+quantization = "q8_0"
+max_total_len = 512
+max_new_tokens = 128
+
+[audio]
+sample_rate_hz = 16000
+
+[evaluation]
+mode = "batch"
+warmup_runs = 3
+normalization = "ko_cer_v1"
+output_dir = "results/optimization/opt2"
