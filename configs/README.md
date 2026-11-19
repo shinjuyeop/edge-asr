@@ -53,3 +53,5 @@
 [가변 스트리밍 실측](../results/summaries/optimization/decoder-headroom-20261118.md)에서 Q6_K 출력층은 빠른 Q4 대비 CER0.41%p 개선과 지연 증가·같은 최종 실패7건을 보였습니다. 공유 기본으로 채택하지 않고 재현용 설정으로 유지합니다.
 
 [gguf_partial_window.toml](gguf_partial_window.toml)은 Q8·기존 부분 창 bridge·0.99초 독립 창 캐시의 선택 평가 설정입니다. 현재 headroom 정책을 유지하며 같은 bridge의 창 없음/창 재계산과 구분합니다. [사전 조건](../docs/research/qwen_realtime.md#q8-부분-창과-headroom--2026-11-19-사전-조건).
+
+[Q8 창 캐시 실측](../results/summaries/optimization/q8-cache-headroom-20261119.md)에서 최종 CER는 유지했지만 자연발화 갱신 공백과 철회가 늘어 기본으로 채택하지 않았습니다. `gguf_partial_window.toml`은 재현용 선택 설정으로 보존합니다.

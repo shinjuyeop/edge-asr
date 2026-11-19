@@ -1,6 +1,10 @@
 # 현재 상태 — Qwen3-ASR 최적화
 
-2026-11-18 갱신, 최신 완료 실측은2026-11-18입니다. 목표는 **RP5에서 Qwen3-ASR-0.6B의 한국어 정확도·완료율을 유지하면서 실제 인식 지연을 줄이는 것**입니다. [최적화 과정](research/optimization_history.md), [연구 계획](research/qwen3_optimization.md), [평가 조건](research/qwen_realtime.md), [최근100개 캐시 대조](../results/summaries/optimization/realtime-prefix-cache-20261112.md).
+2026-11-19 갱신, 최신 완료 실측은2026-11-19입니다. 목표는 **RP5에서 Qwen3-ASR-0.6B의 한국어 정확도·완료율을 유지하면서 실제 인식 지연을 줄이는 것**입니다. [최적화 과정](research/optimization_history.md), [연구 계획](research/qwen3_optimization.md), [평가 조건](research/qwen_realtime.md), [최근100개 캐시 대조](../results/summaries/optimization/realtime-prefix-cache-20261112.md).
+
+## Q8 가변 갱신·부분 창 캐시
+
+Q8·현재 가변 정책에서 0.99초 부분 창 캐시를 긴 음원 12개로 1배속 비교했습니다. CER 12.03%·최종 233구간 전사/토큰·실패/드롭 0을 유지했지만 총 추론 감소는 0.58%였습니다. 최신 음성 반영 공백 p95는 자연발화 4.05→4.52초·낭독 4.70→4.50초였고 문자 철회도 늘어 기본 채택을 보류합니다. 기존 1.99초 창은 직전 Q8 요청열에서 재사용 기회가 없었고, 이번 0.99초 창의 실측 재사용 비율도 부분 음성의 자연발화 7.55%·낭독 6.48%였습니다. 같은 창의 캐시 끔/켬 진단에서는 부분 비용 4.98% 절감을 확인했으나 실제 스트리밍 개선과 구분합니다. [조건·재사용 범위·검증](../results/summaries/optimization/q8-cache-headroom-20261119.md).
 
 ## Decoder 출력층·가변 갱신 대조
 
@@ -338,7 +342,7 @@ Q4 [지연 경로 분석](../results/summaries/optimization/realtime-both-q4-lat
 
 같은 bridge에서 선별한 8개 PCM으로 실제 Q4·Q8 출력을 점검했습니다. 16호출 모두 과거 원시 전사·토큰 ID가 재현됐습니다. [파일럿 기록](../results/summaries/optimization/decoder-pair-pilot-20261118.md)
 
-233구간에서 확인한 내부 오류와 숫자 표기 차이는 1배속 확정 전사에서도 재현됐습니다. GGUF 정확도 기준은 Q8, 속도 대조군은 Q4입니다. Q4_0 본체/Q6_K 출력층의 같은 가변 정책·긴 음원 대조를 완료했습니다. CER 개선은0.41%p였고 같은 최종 실패7건과 지연 증가가 남아 기본으로 채택하지 않았습니다. 후속은 기존 음성 창·캐시를 활용한 반복 계산 절감을 검토하며, 현재 Q8 정확도와 부분 전사의 의미 변화를 함께 봅니다. 분리한 PCM은 차이가 난 구간의 원인 진단에 사용합니다. [같은 조건의 1배속 기준값](../results/summaries/optimization/decoder-pair-stream-20261118.md)
+233구간에서 확인한 내부 오류와 숫자 표기 차이는 1배속 확정 전사에서도 재현됐습니다. GGUF 정확도 기준은 Q8, 속도 대조군은 Q4입니다. Q4_0 본체/Q6_K 출력층의 같은 가변 정책·긴 음원 대조를 완료했습니다. CER 개선은0.41%p였고 같은 최종 실패7건과 지연 증가가 남아 기본으로 채택하지 않았습니다. 후속 Q8 0.99초 부분 창·headroom 대조도 완료했습니다. 재사용 범위가 작고 자연발화 갱신 공백이 늘어 기본으로 채택하지 않았습니다. 다음은 전체 재계산하는 확정 추론과 다음 부분 표시의 대기를 구분해 줄이는 방향을 검토하며, 독립 창을 더 짧게 하거나 요청을 늘리는 실험은 우선하지 않습니다. 분리한 PCM은 차이가 난 구간의 원인 진단에 사용합니다. [같은 조건의 1배속 기준값](../results/summaries/optimization/decoder-pair-stream-20261118.md)
 
 기존에 보존한 스트리밍·신뢰성 후보는 다음과 같습니다.
 
