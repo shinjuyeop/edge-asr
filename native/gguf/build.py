@@ -14,7 +14,9 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def build(source, engine_build, output, *, profile_operators=False, kleidiai=False):
+def build(
+    source, engine_build, output, *, profile_operators=False, trace_tokens=False, kleidiai=False
+):
     head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=source, text=True).strip()
     if (
         head != COMMIT
@@ -64,6 +66,8 @@ def build(source, engine_build, output, *, profile_operators=False, kleidiai=Fal
     ]
     if profile_operators:
         command.insert(1, "-DEDGE_ASR_PROFILE_OPERATORS")
+    if trace_tokens:
+        command.insert(1, "-DEDGE_ASR_TRACE_TOKENS")
     result = subprocess.run(command, capture_output=True, text=True)
     receipt = {
         "llama_commit": head,
@@ -106,6 +110,9 @@ def build(source, engine_build, output, *, profile_operators=False, kleidiai=Fal
     if profile_operators:
         receipt["features"].append("operator_profile_v1")
         receipt["operator_profile_source_sha256"] = sha(cpp.with_name("operator_profile.h"))
+    if trace_tokens:
+        receipt["features"].append("token_trace_v1")
+        receipt["token_trace_source_sha256"] = sha(cpp.with_name("token_trace.h"))
     (output / "build.json").write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + "\n")
     if result.returncode:
         raise RuntimeError(result.stderr)
@@ -118,6 +125,9 @@ def main():
     parser.add_argument("--engine-build", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--profile-operators", action="store_true", help="별도 연산 진단 빌드")
+    parser.add_argument(
+        "--trace-tokens", action="store_true", help="별도 토큰 선택 logits 진단 빌드"
+    )
     parser.add_argument("--kleidiai", action="store_true", help="명시적인 KleidiAI ON 엔진 비교")
     args = parser.parse_args()
     build(
@@ -125,6 +135,7 @@ def main():
         args.engine_build.resolve(),
         args.output.resolve(),
         profile_operators=args.profile_operators,
+        trace_tokens=args.trace_tokens,
         kleidiai=args.kleidiai,
     )
 

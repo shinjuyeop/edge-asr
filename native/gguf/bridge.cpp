@@ -6,6 +6,9 @@
 #include "prefix_cache.h"
 #include "audio_window_cache.h"
 #include "token_draft.h"
+#ifdef EDGE_ASR_TRACE_TOKENS
+#include "token_trace.h"
+#endif
 #ifdef EDGE_ASR_PROFILE_OPERATORS
 #include "operator_profile.h"
 #endif
@@ -41,6 +44,9 @@ struct State {
     bool audio_window_reuse = false, audio_window_kv_valid = false;
     std::vector<int32_t> pending_token_draft;
     int token_draft_block = 1;
+#ifdef EDGE_ASR_TRACE_TOKENS
+    bool pending_token_trace = false;
+#endif
 #ifdef EDGE_ASR_PROFILE_OPERATORS
     OperatorProfile operators;
 #endif
@@ -274,6 +280,15 @@ __attribute__((visibility("default"))) int edge_gguf_set_token_draft(void* handl
     s->token_draft_block=block;
     return 0;
 }
+#ifdef EDGE_ASR_TRACE_TOKENS
+__attribute__((visibility("default"))) int edge_gguf_set_token_trace(void* handle,int enabled) {
+    auto* s=static_cast<State*>(handle);
+    if(!s) return -1;
+    s->pending_token_trace=false;
+    if(enabled!=0 && enabled!=1) return -1;
+    s->pending_token_trace=enabled!=0;return 0;
+}
+#endif
 #ifdef EDGE_ASR_PROFILE_OPERATORS
 __attribute__((visibility("default"))) int edge_gguf_set_operator_profile(void* handle,int enabled) {
     auto* s=static_cast<State*>(handle);
@@ -285,6 +300,11 @@ __attribute__((visibility("default"))) int edge_gguf_set_operator_profile(void* 
 typedef int (*edge_token_callback)(void*,const void*,size_t,int,double);
 __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(void* handle,const float* samples,size_t count,edge_token_callback callback,void* user) {
     auto* s=static_cast<State*>(handle); if (!s) return nullptr;
+#ifdef EDGE_ASR_TRACE_TOKENS
+    TokenTrace trace(s->pending_token_trace,size_t(s->max_new));
+    s->pending_token_trace=false;
+    int trace_batch_rows=0;
+#endif
 #ifdef EDGE_ASR_PROFILE_OPERATORS
     s->operators.reset();
 #endif
@@ -372,6 +392,10 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
         for(int i=0;i<s->max_new;++i) {
             stage=Clock::now();llama_token token=llama_sampler_sample(s->sampler,s->ctx,logit);llama_sampler_accept(s->sampler,token);sample_s+=since(stage);
             const auto observed=draft.observe(token,size_t(i));
+#ifdef EDGE_ASR_TRACE_TOKENS
+            if(trace.enabled) trace.record(i,past,logit,trace_batch_rows,decode_calls,token,
+                llama_get_logits_ith(s->ctx,logit),llama_vocab_n_tokens(vocab),observed.decoded,observed.trim);
+#endif
             if(observed.trim && !llama_memory_seq_rm(llama_get_memory(s->ctx),0,past,-1))
                 throw std::runtime_error("draft KV rollback failed");
             if(llama_vocab_is_eog(vocab,token)) { out["termination"]="eog";out["termination_token_id"]=token;break; }
@@ -397,6 +421,9 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
             }
             operator_phase(s,"token_decode");
             if(llama_process(s->ctx,LLAMA_PROCESS_TYPE_DECODE,s->batch)!=0) throw std::runtime_error("token decode failed");
+#ifdef EDGE_ASR_TRACE_TOKENS
+            trace_batch_rows=int(planned.size());
+#endif
             ++past;++decode_calls;decode_rows+=int(planned.size());logit=0;decode_s+=since(stage);
         }
         out["token_decode_s"]=decode_s;out["token_decode_calls"]=decode_calls;out["sampling_s"]=sample_s;
@@ -413,6 +440,21 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
     out["prefix_cache"]["valid_after_call"]=s->prefix_cache.valid();
     out["token_ids"]=ids;out["text_utf8_hex"]=hex(text);out["native_elapsed_s"]=since(began);
     out["token_callback_enabled"]=callback!=nullptr;out["token_callback_s"]=callback_s;
+#ifdef EDGE_ASR_TRACE_TOKENS
+    json decisions=json::array();
+    const auto* trace_vocab=llama_model_get_vocab(s->model);
+    for(const auto& row:trace.rows) decisions.push_back({{"index",row.index},{"position",row.position},
+        {"logit_row",row.logit_row},{"batch_rows",row.batch_rows},{"decode_calls",row.decode_calls},
+        {"token",row.token},{"token_piece_hex",row.valid?json(hex(piece(trace_vocab,row.token))):json(nullptr)},
+        {"score",row.valid?json(row.score):json(nullptr)},
+        {"runner",row.runner},{"runner_score",row.valid?json(row.runner_score):json(nullptr)},
+        {"runner_piece_hex",row.valid?json(hex(piece(trace_vocab,row.runner))):json(nullptr)},
+        {"margin",row.valid?json(double(row.score)-row.runner_score):json(nullptr)},
+        {"decoded_candidate",row.decoded},{"trimmed_candidate_tail",row.trim},{"valid",row.valid}});
+    out["token_trace"]={{"schema_version",1},{"enabled",trace.enabled},{"valid",trace.valid},
+        {"scope","read-only selected and strongest competing raw logits; includes EOG; diagnostic timing only"},
+        {"rows",decisions}};
+#endif
 #ifdef EDGE_ASR_PROFILE_OPERATORS
     out["operator_profile"]=profile_result(s->operators);
 #endif

@@ -825,10 +825,15 @@ class GGUFNativeSyntaxTests(unittest.TestCase):
         for path in ("include", "ggml/include", "tools/mtmd", "vendor/nlohmann"):
             command += ["-I", str(source / path)]
         command.append(str(ROOT / "native/gguf/bridge.cpp"))
-        for profile in (False, True):
-            with self.subTest(profile=profile):
+        for flags in (
+            [],
+            ["-DEDGE_ASR_PROFILE_OPERATORS"],
+            ["-DEDGE_ASR_TRACE_TOKENS"],
+            ["-DEDGE_ASR_PROFILE_OPERATORS", "-DEDGE_ASR_TRACE_TOKENS"],
+        ):
+            with self.subTest(flags=flags):
                 result = subprocess.run(
-                    command + (["-DEDGE_ASR_PROFILE_OPERATORS"] if profile else []),
+                    command + flags,
                     capture_output=True,
                     text=True,
                 )

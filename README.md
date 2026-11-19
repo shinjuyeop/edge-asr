@@ -163,7 +163,7 @@ edge-asr/
 │   └── m1_zipformer/                    # 초기 원본 보존
 ├── models/                              # 로컬 가중치
 ├── native/
-│   ├── gguf/                            # bridge·KV/토큰 후보 검증·계측·빌드·양자화
+│   ├── gguf/                            # bridge·KV/토큰 후보 검증·점수 진단·빌드·양자화
 │   │   ├── conv_sgemm.cpp               # 선택 FP16 합성곱 타일 대조
 │   │   ├── conv_sgemm.patch             # 고정 upstream 사본의 최소 변경
 │   │   ├── f16_dot.cpp                  # 선택 FP16 변환·내적 결합 실험

@@ -134,3 +134,9 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 `native_result.token_draft`에 후보 수·묶음·제안/수락/거부 수를 기록합니다. `token_decode_calls`는 native decode 호출 횟수이고 `token_decode_evaluated_tokens`는 오검증으로 버린 행까지 포함한 실제 평가 토큰 수입니다. 미소비 후보는 취소/상한 등으로 남을 수 있습니다. 출력 token 수로 바꾸어 해석하지 않습니다. CPU의 다중 행 처리 비용과 수치 차이는 RP5에서 확인하며, 지연 개선을 가정하지 않습니다.
 
 기존 benchmark의 요청 준비 hook으로 진단한 뒤, 선택 `final_token_draft_block`과 `qwen/token_drafts.py`로 실제 직전 부분 토큰 전달을 연결했습니다. 원래 전체 음성·Q8 정밀도·5초 확정·토큰 표시를 유지합니다. 공유 설정은 setter를 활성화하지 않습니다. 전체 PCM에서 원시 출력/CER 동등성은 성립하지 않았으며, 별도 [탐색적1배속 실측](../results/summaries/optimization/token-draft-stream-20261119.md)에 비용·지연·정확도 절충을 기록했습니다. 참고: [고정 llama.cpp 검증 예제](https://github.com/ggml-org/llama.cpp/blob/7d7f0287530bc8981690f361d8c1627dbae1c99a/examples/speculative-simple/speculative-simple.cpp). 별도 draft 모델은 로드하지 않습니다.
+
+## 토큰 선택 점수 진단
+
+`build.py --trace-tokens`는 별도 경로에 `token_trace_v1` 빌드를 만듭니다. 기본 빌드에는 해당 코드·setter가 들어가지 않습니다. 진단 setter `edge_gguf_set_token_trace(handle, enabled)`는 다음 한 호출에만 적용하며 잘못된 값은 대기를 지우고 거부합니다. `token_trace.h`는 EOG를 포함한 각 선택에서 원시 logits의 선택 토큰/가장 높은 경쟁 토큰·점수 차·출력 위치·batch 행·직전 decode 행 수·후보 수락/제거 상태를 최대 출력 상한만큼 기록합니다. 원시 logits·샘플러·KV·출력은 수정하지 않습니다.
+
+점수 배열 순회와 JSON 기록 비용이 있어 진단 시간을 성능 값으로 사용하지 않습니다. 동일 빌드의 계측 끔/켬 전사·토큰 일치와 이전 빌드의 원시 출력을 먼저 확인합니다. 같은 출력 접두부의 첫 분기에서 점수 순위가 바뀌었는지 확인하기 위한 관측이며, 어느 커널/레이어가 수치 차이를 만들었는지까지 자동으로 규명하지 않습니다.
