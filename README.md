@@ -10,7 +10,11 @@ WAV 1배속 입력과 **RP5 USB 마이크**로 부분·확정 자막을 확인�
 
 ## 주요 결과
 
-Q8 확정 토큰 후보를 전체233개 PCM과 긴 음원12개1배속으로 확대했습니다. 1배속에서 확정 native5.96%·총 추론1.70% 감소, 최신 반영 공백 p95 자연발화4.43→4.17초·낭독4.73→4.28초, 확정 p95 3.92→3.65초·4.26→3.72초였습니다. CER는12.03→12.12%(오류3자 증가), 실패/드롭0이며 철회 문자가199→248자로 늘었습니다. [선택 구성](configs/gguf_final_draft.toml)으로 보존하고 공유 기본은 유지합니다. [전체 PCM 진단](results/summaries/optimization/token-draft-full-20261119.md) · [1배속 실측·절충](results/summaries/optimization/token-draft-stream-20261119.md).
+Q8 확정 토큰 후보를 기존100개 원음에1배속으로 후속 대조했습니다. 확정 native4.61%·총 추론1.89% 감소, 최신 반영 공백 p95 4.72→4.54초·확정 p95 4.05→3.93초, CER10.89→10.86%(419→418/3,848자), 실패/드롭0입니다. 첫4자 p95는4.67→5.44초·철회 문자는296→327자로 늘어 [선택 구성](configs/gguf_final_draft.toml)으로 보존하며 공유 기본은 유지합니다. [100개 실측·지연 정의·자원](results/summaries/optimization/token-draft-fixed100-20261119.md).
+
+앞선 긴 음원12개1배속에서는 확정 native5.96%·총 추론1.70% 감소, CER12.03→12.12%(384→387/3,192자), 실패/드롭0을 확인했습니다. 자료별 갱신/확정 p95 개선과 철회 문자199→248자 증가를 함께 기록했습니다. 정답 분모와 입력이 달라 이번100개와 CER를 직접 대조하지 않습니다. [전체233개 PCM 진단](results/summaries/optimization/token-draft-full-20261119.md) · [긴 음원1배속 실측·절충](results/summaries/optimization/token-draft-stream-20261119.md).
+
+별도 점수 진단에서는 차이3구간의 최고/차순위 토큰 순위 반전을 확인했고,2건은 후보 끝 이후 직렬 생성 중에 분기했습니다. 2개 묶음은 이3건에서 직렬 토큰과 같지만 전체 정확도/속도 검증은 아닙니다. [출력 분기·27호출 검증](results/summaries/optimization/token-trace-20261119.md).
 
 앞선 native 경로 선별은 RP5 고정 PCM 8개로 진행했습니다. 여기서 4개 묶음은 decode 15.55~17.32%·호출 전체 native 7.25~8.77%를 줄였지만 한 구간에 마침표가 추가돼 기본 적용을 보류했습니다. 2개 묶음은 전사/토큰이 같았으나 비용 기준에 미달했습니다. 새 1배속 스트리밍·전체 CER 실측은 아닙니다. [진단·재현 결과](results/summaries/optimization/token-draft-20261119.md).
 

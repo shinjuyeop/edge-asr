@@ -1,0 +1,489 @@
+{
+  "scope": "fixed PCM selected-logit diagnostic; timings excluded",
+  "source": "0d8a2f149909a2068672566c2e7a75b5f1a23e87",
+  "cases": {
+    "reading-012": {
+      "candidate_tokens": 12,
+      "source": {
+        "job_id": 25,
+        "revision": 25,
+        "segment_id": 12,
+        "start_frame": 776128,
+        "end_frame": 815616,
+        "available_frame": 816000,
+        "kind": "partial",
+        "status": "success"
+      },
+      "serial_text": "다른 지역에서는 그곳이 아무리 넓다 하더라도 푸아라이몬디를 발견하기.",
+      "draft_text": "다른 지역에서는 그곳이 아무리 넓다 하더라도 푸아라이몬디를 발견하지 못한다.",
+      "original_outputs_reproduced": true,
+      "trace_on_off_outputs_equal": true,
+      "one_call_consumption_and_invalid_setter_reset": true,
+      "first_divergence_index": 23,
+      "same_output_prefix_tokens": [
+        13146,
+        82965,
+        131937,
+        129889,
+        54825,
+        130638,
+        12802,
+        134006,
+        28002,
+        65553,
+        241,
+        13146,
+        53900,
+        139595,
+        10764,
+        239,
+        116,
+        52959,
+        135628,
+        144208,
+        89235,
+        18411,
+        142300
+      ],
+      "divergence_after_candidate_end": true,
+      "serial_decision": {
+        "batch_rows": 1,
+        "decode_calls": 23,
+        "decoded_candidate": false,
+        "index": 23,
+        "logit_row": 0,
+        "margin": 0.03262138366699219,
+        "position": 119,
+        "runner": 87425,
+        "runner_piece_hex": "ed9598eca780",
+        "runner_score": 31.20207977294922,
+        "score": 31.23470115661621,
+        "token": 66425,
+        "token_piece_hex": "ed9598eab8b0",
+        "trimmed_candidate_tail": false,
+        "valid": true
+      },
+      "draft_decision": {
+        "batch_rows": 1,
+        "decode_calls": 15,
+        "decoded_candidate": false,
+        "index": 23,
+        "logit_row": 0,
+        "margin": 0.16584205627441406,
+        "position": 119,
+        "runner": 66425,
+        "runner_piece_hex": "ed9598eab8b0",
+        "runner_score": 31.117599487304688,
+        "score": 31.2834415435791,
+        "token": 87425,
+        "token_piece_hex": "ed9598eca780",
+        "trimmed_candidate_tail": false,
+        "valid": true
+      },
+      "rank_swapped_top_two": true,
+      "first_selected_score_difference_before_divergence": 1,
+      "prefill_top_two_equal": true,
+      "repeated_draft_trace_equal": true,
+      "block2": {
+        "text": "다른 지역에서는 그곳이 아무리 넓다 하더라도 푸아라이몬디를 발견하기.",
+        "tokens_equal_serial": true,
+        "first_divergence_index": null
+      }
+    },
+    "natural-145": {
+      "candidate_tokens": 4,
+      "source": {
+        "job_id": 249,
+        "revision": 249,
+        "segment_id": 145,
+        "start_frame": 6593472,
+        "end_frame": 6609408,
+        "available_frame": 6609600,
+        "kind": "partial",
+        "status": "cancelled"
+      },
+      "serial_text": "상년 선생님이.",
+      "draft_text": "상현 선생님이.",
+      "original_outputs_reproduced": true,
+      "trace_on_off_outputs_equal": true,
+      "one_call_consumption_and_invalid_setter_reset": true,
+      "first_divergence_index": 1,
+      "same_output_prefix_tokens": [
+        55902
+      ],
+      "divergence_after_candidate_end": false,
+      "serial_decision": {
+        "batch_rows": 1,
+        "decode_calls": 1,
+        "decoded_candidate": false,
+        "index": 1,
+        "logit_row": 0,
+        "margin": 0.07048606872558594,
+        "position": 45,
+        "runner": 126407,
+        "runner_piece_hex": "ed9884",
+        "runner_score": 22.167930603027344,
+        "score": 22.23841667175293,
+        "token": 126216,
+        "token_piece_hex": "eb8584",
+        "trimmed_candidate_tail": false,
+        "valid": true
+      },
+      "draft_decision": {
+        "batch_rows": 4,
+        "decode_calls": 1,
+        "decoded_candidate": false,
+        "index": 1,
+        "logit_row": 0,
+        "margin": 0.08667564392089844,
+        "position": 45,
+        "runner": 126216,
+        "runner_piece_hex": "eb8584",
+        "runner_score": 22.211164474487305,
+        "score": 22.297840118408203,
+        "token": 126407,
+        "token_piece_hex": "ed9884",
+        "trimmed_candidate_tail": true,
+        "valid": true
+      },
+      "rank_swapped_top_two": true,
+      "first_selected_score_difference_before_divergence": null,
+      "prefill_top_two_equal": true,
+      "repeated_draft_trace_equal": true,
+      "block2": {
+        "text": "상년 선생님이.",
+        "tokens_equal_serial": true,
+        "first_divergence_index": null
+      }
+    },
+    "natural-002": {
+      "candidate_tokens": 9,
+      "source": {
+        "job_id": 5,
+        "revision": 5,
+        "segment_id": 2,
+        "start_frame": 134592,
+        "end_frame": 162816,
+        "available_frame": 163200,
+        "kind": "partial",
+        "status": "success"
+      },
+      "serial_text": "어떤 스님들은 저희 같은 경우는 한 두 분 정도가",
+      "draft_text": "어떤 스님들은 저희 같은 경우는 한 두 분 정도가.",
+      "original_outputs_reproduced": true,
+      "trace_on_off_outputs_equal": true,
+      "one_call_consumption_and_invalid_setter_reset": true,
+      "first_divergence_index": 14,
+      "same_output_prefix_tokens": [
+        31079,
+        144661,
+        141767,
+        124683,
+        128901,
+        132301,
+        129381,
+        49052,
+        16560,
+        61298,
+        129419,
+        128618,
+        131219,
+        19969
+      ],
+      "divergence_after_candidate_end": true,
+      "serial_decision": {
+        "batch_rows": 1,
+        "decode_calls": 14,
+        "decoded_candidate": false,
+        "index": 14,
+        "logit_row": 0,
+        "margin": 0.2444171905517578,
+        "position": 84,
+        "runner": 13,
+        "runner_piece_hex": "2e",
+        "runner_score": 30.106386184692383,
+        "score": 30.35080337524414,
+        "token": 151645,
+        "token_piece_hex": "",
+        "trimmed_candidate_tail": false,
+        "valid": true
+      },
+      "draft_decision": {
+        "batch_rows": 1,
+        "decode_calls": 8,
+        "decoded_candidate": false,
+        "index": 14,
+        "logit_row": 0,
+        "margin": 0.023471832275390625,
+        "position": 84,
+        "runner": 151645,
+        "runner_piece_hex": "",
+        "runner_score": 30.273174285888672,
+        "score": 30.296646118164062,
+        "token": 13,
+        "token_piece_hex": "2e",
+        "trimmed_candidate_tail": false,
+        "valid": true
+      },
+      "rank_swapped_top_two": true,
+      "first_selected_score_difference_before_divergence": 1,
+      "prefill_top_two_equal": true,
+      "repeated_draft_trace_equal": true,
+      "block2": {
+        "text": "어떤 스님들은 저희 같은 경우는 한 두 분 정도가",
+        "tokens_equal_serial": true,
+        "first_divergence_index": null
+      }
+    }
+  },
+  "calls": 27,
+  "warmup_calls": 3,
+  "failed_calls": 0,
+  "runtime_build": {
+    "llama_commit": "7d7f0287530bc8981690f361d8c1627dbae1c99a",
+    "machine": "aarch64",
+    "command": [
+      "g++",
+      "-DEDGE_ASR_TRACE_TOKENS",
+      "-std=c++17",
+      "-O2",
+      "-fPIC",
+      "-shared",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/include",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/ggml/include",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/tools/mtmd",
+      "-I",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/llama-q8-20261109-01/src/vendor/nlohmann",
+      "/home/deepet/projects/edge-asr/native/gguf/bridge.cpp",
+      "-L",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/decoder-q4-20261117-02/off/engine/bin",
+      "-Wl,-rpath,/home/deepet/projects/edge-asr/runtimes/qwen3-opt/decoder-q4-20261117-02/off/engine/bin",
+      "-lllama",
+      "-lmtmd",
+      "-lggml",
+      "-lggml-base",
+      "-pthread",
+      "-o",
+      "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/token-trace-20261119-01/bridge/libedge_asr_gguf.so"
+    ],
+    "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "bridge_source_sha256": "4d51d4db919e042cee1029e92d01e0b27428a2622fc06eb1bcd4bb0fb98eb329",
+    "prefix_cache_source_sha256": "9d60e18b86bdb9371511829fc2eefe7ced2830ce4a0d79c1a0e650e827a8fcbd",
+    "audio_window_source_sha256": "c0e8f79a4e0157ff69f4421eb7c5ceab05e1824444b3ee65252fbce5af407889",
+    "token_draft_source_sha256": "8a2f1a78404d2fcb3bf9ea9a7f8d25e1d4d7714e5b17409781a0d5ed5b06de12",
+    "features": [
+      "token_callback_v1",
+      "split_threads_v1",
+      "text_prefix_cache_v1",
+      "partial_audio_window_v1",
+      "partial_audio_window_ms_v1",
+      "token_draft_v1",
+      "token_trace_v1"
+    ],
+    "cmake_cache_sha256": "148889fcf775dd90252deb186cc13af748afa88c4fa8693bbd5d3174d941968f",
+    "engine_libraries": {
+      "libmtmd.so": "c61896e89406a4914e90c655c249923a59c92331cc9f2e173b07b8dc3c3406f2",
+      "libggml.so": "073f0532659bc16b8ce49f6880abad861775a56db1f5703afdefa9950f26ffdd",
+      "libggml-base.so": "b86b6a7d4769d5a9ea39a611afe18ea67ba42560775e26f6d722def00228e2dd",
+      "libllama-bench-impl.so": "eee7f2fb0f83de6158a65aae140038760979e09d32e2b3bd96a843932e6b644c",
+      "libllama.so": "b42accf26bc4ea65d0f0cdc9f5cff6a6c3967062abf81e97eb0c6d6c46247609",
+      "libggml-cpu.so": "fe01bf722d521962877dc5c23c7a851cae3413ac8ff2221c610ffba53493c82e",
+      "libllama-common.so": "dc802fa555e96f4d546ed059732f49a6a05873ce1c4876220d91dea4fbee8dd5"
+    },
+    "library_sha256": "c633177443001900cb689fd8469295d3b1e171f9548df7c382f74795de049013",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "cpu_configuration": "native CPU, GPU OFF, KleidiAI OFF, thread count supplied per model",
+    "cpu_build_options": {
+      "GGML_CPU_KLEIDIAI": "OFF",
+      "GGML_CPU_REPACK": "ON",
+      "GGML_OPENMP": "ON"
+    },
+    "token_trace_source_sha256": "a9ccbb5f6be0e42e2de3a29b7940614d68147409bb149d52f58cfa184cee1bb1"
+  },
+  "execution": {
+    "source": "0d8a2f149909a2068672566c2e7a75b5f1a23e87",
+    "status": "completed",
+    "build_command": [
+      "/home/deepet/projects/edge-asr/.venv/bin/python",
+      "native/gguf/build.py",
+      "--source",
+      "runtimes/qwen3-opt/llama-q8-20261109-01/src",
+      "--engine-build",
+      "runtimes/qwen3-opt/decoder-q4-20261117-02/off/engine",
+      "--output",
+      "runtimes/qwen3-opt/token-trace-20261119-01/bridge",
+      "--trace-tokens"
+    ],
+    "helper_sha256": {
+      "/home/deepet/projects/edge-asr/results/maintenance/token-trace-20261119-01/analyze.py": "f22a27600e3abde50f7e9ddcd89f1c410a5528eb0856d42f99232514786a417f",
+      "/home/deepet/projects/edge-asr/results/maintenance/token-trace-20261119-01/run.py": "24c6c727f080e45aa31ff1d4b5cee548f95ce68fde295c03e1074c12936e20ce",
+      "/home/deepet/projects/edge-asr/results/maintenance/token-trace-20261119-01/probe.py": "dc42b1dcf7dbc9b823bec824598c6972717106a0747400d39b050681e6915e38"
+    },
+    "start_unix": 1795067161.3211768,
+    "command": [
+      "/home/deepet/projects/edge-asr/.venv/bin/python",
+      "scripts/edge_asr.py",
+      "tools",
+      "thermal-run",
+      "--output",
+      "results/optimization/opt3/token-trace-20261119-01/probe",
+      "--timeout-s",
+      "900",
+      "--temperature-policy",
+      "operational",
+      "--admission-temperature-c",
+      "60",
+      "--",
+      "/home/deepet/projects/edge-asr/.venv/bin/python",
+      "/home/deepet/projects/edge-asr/results/maintenance/token-trace-20261119-01/probe.py",
+      "run"
+    ],
+    "exit": 0,
+    "end_unix": 1795067265.0056627,
+    "worker_status": "completed",
+    "operational_valid": true
+  },
+  "model_files": {
+    "Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+    },
+    "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+      "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+      "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+    },
+    "runtime_library": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/token-trace-20261119-01/bridge/libedge_asr_gguf.so",
+      "sha256": "c633177443001900cb689fd8469295d3b1e171f9548df7c382f74795de049013"
+    },
+    "runtime_manifest": {
+      "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/token-trace-20261119-01/bridge/build.json",
+      "sha256": "97ea590120ea56a2ec73193e114e58f9df42421ca7a96dfd4392b75d576e3a3b"
+    }
+  },
+  "environment": {
+    "edge_asr": "0.1.0",
+    "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+    "executable": "/home/deepet/projects/edge-asr/.venv/bin/python",
+    "machine": "aarch64",
+    "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+    "runtime": {
+      "sherpa_package_version": "2.0.1",
+      "sherpa_core_package_version": "2.0.1",
+      "python_onnxruntime_package_version": "1.31.1",
+      "sherpa_native_onnxruntime_version": null,
+      "native_version_source": "sherpa_onnx.onnxruntime_version",
+      "status": "not_imported",
+      "reason": "선택 런타임을 아직 import하지 않았습니다."
+    },
+    "thread_environment": {
+      "OMP_WAIT_POLICY": null,
+      "OMP_NUM_THREADS": null,
+      "OMP_DYNAMIC": null,
+      "OMP_PROC_BIND": null,
+      "OMP_PLACES": null,
+      "GOMP_SPINCOUNT": null,
+      "KMP_BLOCKTIME": null,
+      "OPENBLAS_NUM_THREADS": "1"
+    },
+    "packages": [
+      {
+        "name": "cffi",
+        "version": "2.1.1"
+      },
+      {
+        "name": "flatbuffers",
+        "version": "25.12.19"
+      },
+      {
+        "name": "numpy",
+        "version": "2.4.6"
+      },
+      {
+        "name": "onnxruntime",
+        "version": "1.31.1"
+      },
+      {
+        "name": "packaging",
+        "version": "26.3"
+      },
+      {
+        "name": "protobuf",
+        "version": "7.36.2"
+      },
+      {
+        "name": "pycparser",
+        "version": "3.12"
+      },
+      {
+        "name": "sherpa-onnx-core",
+        "version": "2.0.1"
+      },
+      {
+        "name": "sherpa_onnx",
+        "version": "2.0.1"
+      },
+      {
+        "name": "sounddevice",
+        "version": "0.5.6"
+      },
+      {
+        "name": "soundfile",
+        "version": "0.14.0"
+      },
+      {
+        "name": "typing_extensions",
+        "version": "4.16.0"
+      }
+    ]
+  },
+  "guard": {
+    "exit": 0,
+    "limit_verified": true,
+    "operational_valid": true
+  },
+  "verification": {
+    "raw_files": 21,
+    "protected_files": 98,
+    "host_common_protected": 78,
+    "independent_host_rp5_summary_equal": true,
+    "raw_sha256": {
+      "protected-after.json": "f5ea09fb5a7a5031e6cc66dcc1563da481dbbcc9fdd18b59ae829b2e6f6addc8",
+      "cases.json": "a4b50ff01de22a28f9d3b1696a0715e458ed6c31dc3506f9da731f25ca0f3081",
+      "build.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "protected-before.json": "f5ea09fb5a7a5031e6cc66dcc1563da481dbbcc9fdd18b59ae829b2e6f6addc8",
+      "config.toml": "9a9a0d8ef14125d99abf43db8da59a2f5ac716f1c6b2ef07aebda79ab8972848",
+      "requests.json": "dc7c2347bda40fa432552e54ea18da3946b0243be46b20f32d6c8072db313d0c",
+      "probe.log": "908d37a486920f10bf76fb1d31313627a730c920611c62c54116a8516e02023e",
+      "campaign.json": "fe31b8b33837fc03a1ba2912a8345d69fcebd2529bfcc5d23fcab1f02c50e022",
+      "inputs/manifest.jsonl": "c4d3c8226064f94ccfad01a35de73cb1531ca42e97be9ceb5412cca2cf96a197",
+      "probe/measurements.jsonl": "815147b0a2c29e2c9a275afe9eb514f043781ed74b58f93aec27e0f994cb81fd",
+      "probe/scores.jsonl": "8308f3aea6a7919ac4ec4a3cee8f052ebef3956354ec02b65ee91ee684746879",
+      "probe/threads.jsonl": "5a3db24f4053de8aafda3697317c09974184e5641cc7320fa4837528bf7f5e8e",
+      "probe/execution.json": "67b0bec8886e16a0864774441090e03017e42eccb496b26abedc2ff3ceab32b2",
+      "probe/thermal.jsonl": "1d5dfb46684577678600028e34ded38b5d473975146183b15dfac23073764277",
+      "probe/summary.md": "0b231c58fe13086c2b6b2c080203f6dea3787b6ab99890e506b6554540f73430",
+      "probe/worker.json": "8aa77c507721d77dec717468fac5d8d1c666d2ebccf605242add5da141795318",
+      "probe/console.log": "5ca592b61cca27f8509f04ea8ec380c136f88d9a6515af4d00ff9cf156dbe68d",
+      "probe/warnings.jsonl": "3343128acfb7ac122e88d60214b2181130941e0e1301d12ab254821bfa7860fc",
+      "probe/admission.jsonl": "d930935aefb35237b3882b35eb8173d2dd960e6dec7a12e1961bd59f57e5ae74",
+      "probe/summary.json": "0aacf10ad5d81b447047844aef9de10838a184afccec1fa3c0da1dc47a98a7eb",
+      "probe/predictions.jsonl": "d3f98119ec444ea49d666c4129adc51f25e4e10d52f1d79b88af2adafcc96c6a"
+    },
+    "helpers": {
+      "results/maintenance/token-trace-20261119-01/run.py": "24c6c727f080e45aa31ff1d4b5cee548f95ce68fde295c03e1074c12936e20ce",
+      "results/maintenance/token-trace-20261119-01/analyze.py": "f22a27600e3abde50f7e9ddcd89f1c410a5528eb0856d42f99232514786a417f",
+      "results/maintenance/token-trace-20261119-01/probe.py": "dc42b1dcf7dbc9b823bec824598c6972717106a0747400d39b050681e6915e38",
+      "results/maintenance/token-trace-20261119-01/report.py": "33486352709c3b0dc796f0dddcf9d742a814600ad3ab78431db98d61214888f0",
+      "/d/shin/edge-asr/results/maintenance/token-draft-fixed100-20261119-01/verify.py": "64466c950d4c8bac0042d672e7a5b3bec9def9e2ccd3b86fa04d03adf40c7f91"
+    }
+  }
+}
