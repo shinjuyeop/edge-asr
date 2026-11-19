@@ -127,10 +127,10 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 
 ## 토큰 후보 묶음 검증 진단
 
-`token_draft.h`는 현재 Q8 greedy 생성에서 앞서 얻은 부분 토큰을 후보로 삼는 선택 상태 정책입니다. `edge_gguf_set_token_draft(handle, int32_tokens, count, block)`은 다음 한 호출에만 후보를 공급합니다. block은1(직렬)/2/4/8이며 잘못된 token ID·EOG 후보·길이 초과는 거부하고 이전 대기 후보도 지웁니다. 일반/공유 실행은 setter를 호출하지 않아 직렬 생성합니다.
+`token_draft.h`는 현재 Q8 greedy 생성에서 앞서 얻은 부분 토큰을 후보로 삼는 선택 상태 정책입니다. `edge_gguf_set_token_draft(handle, int32_tokens, count, block)`은 다음 한 호출에만 후보를 공급합니다. block은1(직렬)/2/4/8이며 잘못된 token ID·EOG 후보·길이 초과는 거부하고 이전 대기 후보도 지웁니다. 선택 설정이 없는 공유 실행은 setter를 호출하지 않아 직렬 생성합니다.
 
 첫 토큰은 원래 전체 음성 prefill 뒤 Q8으로 선택해 즉시 배포합니다. 이후 확정된 토큰과 후보를 한 causal batch로 계산하고 각 위치의 Q8 greedy 결과를 순서대로 검사합니다. 불일치 이후 KV는 제거하고 Q8이 고른 토큰부터 직렬 생성합니다. 후보 자체를 자막으로 발행하거나 확정하지 않습니다. `token_draft_v1` capability와 별도 새 빌드 경로를 사용하고 기존 빌드는 보존합니다.
 
 `native_result.token_draft`에 후보 수·묶음·제안/수락/거부 수를 기록합니다. `token_decode_calls`는 native decode 호출 횟수이고 `token_decode_evaluated_tokens`는 오검증으로 버린 행까지 포함한 실제 평가 토큰 수입니다. 미소비 후보는 취소/상한 등으로 남을 수 있습니다. 출력 token 수로 바꾸어 해석하지 않습니다. CPU의 다중 행 처리 비용과 수치 차이는 RP5에서 확인하며, 지연 개선을 가정하지 않습니다.
 
-현재는 기존 benchmark의 요청 준비 hook을 이용한 진단 ABI이며 실시간 어댑터의 자동 후보 전달은 연결하지 않았습니다. 원래 완전 음성 경로·Q8 정밀도·5초 확정·토큰 표시를 유지한 선별을 통과한 경우에만 별도 스트리밍 후보로 연결합니다. 참고: [고정 llama.cpp 검증 예제](https://github.com/ggml-org/llama.cpp/blob/7d7f0287530bc8981690f361d8c1627dbae1c99a/examples/speculative-simple/speculative-simple.cpp). 별도 draft 모델은 로드하지 않습니다.
+기존 benchmark의 요청 준비 hook으로 진단한 뒤, 선택 `final_token_draft_block`과 `qwen/token_drafts.py`로 실제 직전 부분 토큰 전달을 연결했습니다. 원래 전체 음성·Q8 정밀도·5초 확정·토큰 표시를 유지합니다. 공유 설정은 setter를 활성화하지 않습니다. 전체 PCM에서 원시 출력/CER 동등성은 성립하지 않았으며, 별도 [탐색적1배속 실측](../results/summaries/optimization/token-draft-stream-20261119.md)에 비용·지연·정확도 절충을 기록했습니다. 참고: [고정 llama.cpp 검증 예제](https://github.com/ggml-org/llama.cpp/blob/7d7f0287530bc8981690f361d8c1627dbae1c99a/examples/speculative-simple/speculative-simple.cpp). 별도 draft 모델은 로드하지 않습니다.

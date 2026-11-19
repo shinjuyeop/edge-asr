@@ -1,0 +1,680 @@
+{
+  "phases": {
+    "natural-before": {
+      "source": "f017adc585cccac8951375db0139557165b706a1",
+      "counts": {
+        "calls": 167,
+        "success": 167,
+        "failed": 0,
+        "empty": 0,
+        "raw_equal": 167,
+        "normalized_equal": 167,
+        "tokens_equal": 167
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 2129,
+        "substitutions": 141,
+        "deletions": 91,
+        "insertions": 25,
+        "errors": 257,
+        "cer": 0.12071395021136684
+      },
+      "changes_from_historic": [],
+      "stages_s": {
+        "native_elapsed_s": 253.24090104299995,
+        "token_decode_s": 112.71410351199998,
+        "audio_encode_s": 80.91602476899996,
+        "audio_embedding_eval_s": 41.787042821000014,
+        "prefix_eval_s": 0.0,
+        "suffix_eval_s": 16.353061100999994,
+        "preprocess_s": 0.07469844199999999,
+        "sampling_s": 1.376474882
+      },
+      "stage_calls": {
+        "native_elapsed_s": 167,
+        "token_decode_s": 167,
+        "audio_encode_s": 167,
+        "audio_embedding_eval_s": 167,
+        "prefix_eval_s": 167,
+        "suffix_eval_s": 167,
+        "preprocess_s": 167,
+        "sampling_s": 167
+      },
+      "draft": {
+        "batches": 0,
+        "proposed": 0,
+        "accepted": 0,
+        "rejected": 0,
+        "output_tokens": 1917,
+        "decode_calls": 1917,
+        "evaluated_tokens": 1917
+      },
+      "elapsed_s": 253.3231810228899,
+      "cpu_s": 642.9142509989999,
+      "guard": {
+        "exit": 0,
+        "operational_valid": true,
+        "limit_verified": true,
+        "max_c": 85.9,
+        "current_limits": {
+          "0": 160,
+          "8": 104,
+          "6": 6
+        },
+        "limited_s": 111.85391908953898,
+        "span_s": 275.96856221102644
+      },
+      "reference_sha256": "4470f6bb32742d2a4370aead00bf3768accccbde822f0a9c375002ea4d5a65d8"
+    },
+    "natural-block4": {
+      "source": "f017adc585cccac8951375db0139557165b706a1",
+      "counts": {
+        "calls": 167,
+        "success": 167,
+        "failed": 0,
+        "empty": 0,
+        "raw_equal": 159,
+        "normalized_equal": 162,
+        "tokens_equal": 159
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 2129,
+        "substitutions": 144,
+        "deletions": 86,
+        "insertions": 25,
+        "errors": 255,
+        "cer": 0.11977454203851573
+      },
+      "changes_from_historic": [
+        {
+          "id": "natural-002",
+          "old": "어떤 스님들은 저희 같은 경우는 한 두 분 정도가",
+          "new": "어떤 스님들은 저희 같은 경우는 한 두 분 정도가.",
+          "normalized_equal": true,
+          "token_equal": false,
+          "draft_status": "cancelled"
+        },
+        {
+          "id": "natural-036",
+          "old": "많고 그런 것 같고, 솔직히 말해서 그거는 이제 그런",
+          "new": "많고 그런 것 같고, 그 솔직히 말해서 그거는 이제 그런",
+          "normalized_equal": false,
+          "token_equal": false,
+          "draft_status": "success"
+        },
+        {
+          "id": "natural-050",
+          "old": "축구 하나 이제 어떤",
+          "new": "축구 하나 어디 어떤",
+          "normalized_equal": false,
+          "token_equal": false,
+          "draft_status": "success"
+        },
+        {
+          "id": "natural-099",
+          "old": "구랑 배구는 다 할 수 있는 공간이 있거든요 프로팀들이 있어서 인천 전자랜드 하는 경기장.",
+          "new": "구랑 배구는 다 할 수 있는 공간이 있거든요 프로팀들이 있어서 인천 전자랜드 하는 경기장",
+          "normalized_equal": true,
+          "token_equal": false,
+          "draft_status": "success"
+        },
+        {
+          "id": "natural-115",
+          "old": "어떻게 문장이 생성되는가 사람이 어떤 의미를 중심으로 아 내가 이런 말을 하려고",
+          "new": "어떻게 문장이 생성되는가? 사람이 어떤 의미를 중심으로 아 내가 이런 말을 하려고",
+          "normalized_equal": true,
+          "token_equal": false,
+          "draft_status": "success"
+        },
+        {
+          "id": "natural-145",
+          "old": "상년 선생님이.",
+          "new": "상현 선생님이.",
+          "normalized_equal": false,
+          "token_equal": false,
+          "draft_status": "cancelled"
+        },
+        {
+          "id": "natural-154",
+          "old": "아 이게 무슨 냄새일까? 근데 하루는 내가 오더니, 어머 선생님이 이상해 이러이러이.",
+          "new": "아 이게 무슨 냄새일까? 근데 하루는 내가 오더니, 어머 선생님이 이상해 이러이러이 왜",
+          "normalized_equal": false,
+          "token_equal": false,
+          "draft_status": "success"
+        },
+        {
+          "id": "natural-159",
+          "old": "얘는 발표하는 거 너무 좋아하는 애니까, 그러니까 애들이.",
+          "new": "얘는 발표하는 거 너무 좋아하는 애니까, 어쨌고, 그러니까 애들이.",
+          "normalized_equal": false,
+          "token_equal": false,
+          "draft_status": "cancelled"
+        }
+      ],
+      "stages_s": {
+        "native_elapsed_s": 250.684185045,
+        "token_decode_s": 100.454843722,
+        "audio_encode_s": 86.901371481,
+        "audio_embedding_eval_s": 44.809203028000006,
+        "prefix_eval_s": 0.0,
+        "suffix_eval_s": 17.05925431,
+        "preprocess_s": 0.07393170300000002,
+        "sampling_s": 1.3666840700000011
+      },
+      "stage_calls": {
+        "native_elapsed_s": 167,
+        "token_decode_s": 167,
+        "audio_encode_s": 167,
+        "audio_embedding_eval_s": 167,
+        "prefix_eval_s": 167,
+        "suffix_eval_s": 167,
+        "preprocess_s": 167,
+        "sampling_s": 167
+      },
+      "draft": {
+        "batches": 122,
+        "proposed": 333,
+        "accepted": 307,
+        "rejected": 26,
+        "output_tokens": 1924,
+        "decode_calls": 1617,
+        "evaluated_tokens": 1950
+      },
+      "elapsed_s": 250.77119133784436,
+      "cpu_s": 656.4651260500005,
+      "guard": {
+        "exit": 0,
+        "operational_valid": true,
+        "limit_verified": true,
+        "max_c": 87.0,
+        "current_limits": {
+          "0": 52,
+          "8": 187,
+          "6": 29
+        },
+        "limited_s": 221.12192449416034,
+        "span_s": 274.34394935995806
+      },
+      "reference_sha256": "4470f6bb32742d2a4370aead00bf3768accccbde822f0a9c375002ea4d5a65d8"
+    },
+    "reading-before": {
+      "source": "f017adc585cccac8951375db0139557165b706a1",
+      "counts": {
+        "calls": 66,
+        "success": 66,
+        "failed": 0,
+        "empty": 0,
+        "raw_equal": 66,
+        "normalized_equal": 66,
+        "tokens_equal": 66
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 1063,
+        "substitutions": 60,
+        "deletions": 10,
+        "insertions": 57,
+        "errors": 127,
+        "cer": 0.11947318908748825
+      },
+      "changes_from_historic": [],
+      "stages_s": {
+        "native_elapsed_s": 139.225496007,
+        "token_decode_s": 65.33695402200001,
+        "audio_encode_s": 43.847211819000016,
+        "audio_embedding_eval_s": 22.230240195000004,
+        "prefix_eval_s": 0.0,
+        "suffix_eval_s": 7.004900086000001,
+        "preprocess_s": 0.035976656999999995,
+        "sampling_s": 0.7610401039999998
+      },
+      "stage_calls": {
+        "native_elapsed_s": 66,
+        "token_decode_s": 66,
+        "audio_encode_s": 66,
+        "audio_embedding_eval_s": 66,
+        "prefix_eval_s": 66,
+        "suffix_eval_s": 66,
+        "preprocess_s": 66,
+        "sampling_s": 66
+      },
+      "draft": {
+        "batches": 0,
+        "proposed": 0,
+        "accepted": 0,
+        "rejected": 0,
+        "output_tokens": 1070,
+        "decode_calls": 1070,
+        "evaluated_tokens": 1070
+      },
+      "elapsed_s": 139.2572745118523,
+      "cpu_s": 349.92910482499997,
+      "guard": {
+        "exit": 0,
+        "operational_valid": true,
+        "limit_verified": true,
+        "max_c": 85.9,
+        "current_limits": {
+          "0": 43,
+          "8": 95,
+          "6": 14
+        },
+        "limited_s": 110.82119293999858,
+        "span_s": 154.94868615909945
+      },
+      "reference_sha256": "746e437187ec35ebe7985d1e9f991d8028f10d2ec61db46017e2765668f659f5"
+    },
+    "reading-block4": {
+      "source": "f017adc585cccac8951375db0139557165b706a1",
+      "counts": {
+        "calls": 66,
+        "success": 66,
+        "failed": 0,
+        "empty": 0,
+        "raw_equal": 63,
+        "normalized_equal": 65,
+        "tokens_equal": 63
+      },
+      "score": {
+        "normalization": "ko_cer_v1",
+        "reference_characters": 1063,
+        "substitutions": 61,
+        "deletions": 10,
+        "insertions": 60,
+        "errors": 131,
+        "cer": 0.12323612417685795
+      },
+      "changes_from_historic": [
+        {
+          "id": "reading-012",
+          "old": "다른 지역에서는 그곳이 아무리 넓다 하더라도 푸아라이몬디를 발견하기.",
+          "new": "다른 지역에서는 그곳이 아무리 넓다 하더라도 푸아라이몬디를 발견하지 못한다.",
+          "normalized_equal": false,
+          "token_equal": false,
+          "draft_status": "success"
+        },
+        {
+          "id": "reading-021",
+          "old": "대한주택보증 입장에서는 손실 가능성을 최소화하기 위해.",
+          "new": "대한주택보증입장에서는 손실 가능성을 최소화하기 위해.",
+          "normalized_equal": true,
+          "token_equal": false,
+          "draft_status": "success"
+        },
+        {
+          "id": "reading-025",
+          "old": "부인은 7일 이 후보자는 9일 각각 귀국했다.",
+          "new": "부인은 7일, 이 후보자는 9일 각각 귀국했다.",
+          "normalized_equal": true,
+          "token_equal": false,
+          "draft_status": "cancelled"
+        }
+      ],
+      "stages_s": {
+        "native_elapsed_s": 129.89517851000002,
+        "token_decode_s": 55.89426762400003,
+        "audio_encode_s": 43.97287331099999,
+        "audio_embedding_eval_s": 22.346089848,
+        "prefix_eval_s": 0.0,
+        "suffix_eval_s": 6.886517845999998,
+        "preprocess_s": 0.03582868500000001,
+        "sampling_s": 0.7502259270000001
+      },
+      "stage_calls": {
+        "native_elapsed_s": 66,
+        "token_decode_s": 66,
+        "audio_encode_s": 66,
+        "audio_embedding_eval_s": 66,
+        "prefix_eval_s": 66,
+        "suffix_eval_s": 66,
+        "preprocess_s": 66,
+        "sampling_s": 66
+      },
+      "draft": {
+        "batches": 74,
+        "proposed": 208,
+        "accepted": 182,
+        "rejected": 26,
+        "output_tokens": 1074,
+        "decode_calls": 892,
+        "evaluated_tokens": 1100
+      },
+      "elapsed_s": 129.92750195239205,
+      "cpu_s": 336.95712728300015,
+      "guard": {
+        "exit": 0,
+        "operational_valid": true,
+        "limit_verified": true,
+        "max_c": 85.9,
+        "current_limits": {
+          "0": 42,
+          "8": 93,
+          "6": 8
+        },
+        "limited_s": 103.23609244485851,
+        "span_s": 146.24705248500686
+      },
+      "reference_sha256": "746e437187ec35ebe7985d1e9f991d8028f10d2ec61db46017e2765668f659f5"
+    }
+  },
+  "pairs": {
+    "natural": {
+      "changes": [
+        {
+          "id": "natural-002",
+          "before": "어떤 스님들은 저희 같은 경우는 한 두 분 정도가",
+          "block4": "어떤 스님들은 저희 같은 경우는 한 두 분 정도가.",
+          "normalized_equal": true,
+          "tokens_equal": false
+        },
+        {
+          "id": "natural-036",
+          "before": "많고 그런 것 같고, 솔직히 말해서 그거는 이제 그런",
+          "block4": "많고 그런 것 같고, 그 솔직히 말해서 그거는 이제 그런",
+          "normalized_equal": false,
+          "tokens_equal": false
+        },
+        {
+          "id": "natural-050",
+          "before": "축구 하나 이제 어떤",
+          "block4": "축구 하나 어디 어떤",
+          "normalized_equal": false,
+          "tokens_equal": false
+        },
+        {
+          "id": "natural-099",
+          "before": "구랑 배구는 다 할 수 있는 공간이 있거든요 프로팀들이 있어서 인천 전자랜드 하는 경기장.",
+          "block4": "구랑 배구는 다 할 수 있는 공간이 있거든요 프로팀들이 있어서 인천 전자랜드 하는 경기장",
+          "normalized_equal": true,
+          "tokens_equal": false
+        },
+        {
+          "id": "natural-115",
+          "before": "어떻게 문장이 생성되는가 사람이 어떤 의미를 중심으로 아 내가 이런 말을 하려고",
+          "block4": "어떻게 문장이 생성되는가? 사람이 어떤 의미를 중심으로 아 내가 이런 말을 하려고",
+          "normalized_equal": true,
+          "tokens_equal": false
+        },
+        {
+          "id": "natural-145",
+          "before": "상년 선생님이.",
+          "block4": "상현 선생님이.",
+          "normalized_equal": false,
+          "tokens_equal": false
+        },
+        {
+          "id": "natural-154",
+          "before": "아 이게 무슨 냄새일까? 근데 하루는 내가 오더니, 어머 선생님이 이상해 이러이러이.",
+          "block4": "아 이게 무슨 냄새일까? 근데 하루는 내가 오더니, 어머 선생님이 이상해 이러이러이 왜",
+          "normalized_equal": false,
+          "tokens_equal": false
+        },
+        {
+          "id": "natural-159",
+          "before": "얘는 발표하는 거 너무 좋아하는 애니까, 그러니까 애들이.",
+          "block4": "얘는 발표하는 거 너무 좋아하는 애니까, 어쨌고, 그러니까 애들이.",
+          "normalized_equal": false,
+          "tokens_equal": false
+        }
+      ],
+      "non_normalized_changes": 5,
+      "native_reduction_pct": 1.0095983656154495,
+      "decode_reduction_pct": 10.876420437212463
+    },
+    "reading": {
+      "changes": [
+        {
+          "id": "reading-012",
+          "before": "다른 지역에서는 그곳이 아무리 넓다 하더라도 푸아라이몬디를 발견하기.",
+          "block4": "다른 지역에서는 그곳이 아무리 넓다 하더라도 푸아라이몬디를 발견하지 못한다.",
+          "normalized_equal": false,
+          "tokens_equal": false
+        },
+        {
+          "id": "reading-021",
+          "before": "대한주택보증 입장에서는 손실 가능성을 최소화하기 위해.",
+          "block4": "대한주택보증입장에서는 손실 가능성을 최소화하기 위해.",
+          "normalized_equal": true,
+          "tokens_equal": false
+        },
+        {
+          "id": "reading-025",
+          "before": "부인은 7일 이 후보자는 9일 각각 귀국했다.",
+          "block4": "부인은 7일, 이 후보자는 9일 각각 귀국했다.",
+          "normalized_equal": true,
+          "tokens_equal": false
+        }
+      ],
+      "non_normalized_changes": 1,
+      "native_reduction_pct": 6.701586824679628,
+      "decode_reduction_pct": 14.452290498299746
+    }
+  },
+  "scope": "fixed PCM diagnostic, not 1x streaming",
+  "complete": true,
+  "aggregate": {
+    "before": {
+      "errors": 384,
+      "reference_characters": 3192,
+      "native_s": 392.46639704999996,
+      "decode_s": 178.051057534,
+      "failed": 0,
+      "cer": 0.12030075187969924
+    },
+    "block4": {
+      "errors": 386,
+      "reference_characters": 3192,
+      "native_s": 380.579363555,
+      "decode_s": 156.34911134600003,
+      "failed": 0,
+      "cer": 0.12092731829573934
+    }
+  },
+  "expand_to_1x": false,
+  "native_reduction_pct": 3.0288028693283398,
+  "decode_reduction_pct": 12.18860841860253,
+  "run_id": "token-draft-full-20261119-01",
+  "source": "f017adc585cccac8951375db0139557165b706a1",
+  "execution": {
+    "source": "f017adc585cccac8951375db0139557165b706a1",
+    "status": "completed",
+    "phases": [
+      {
+        "group": "natural",
+        "label": "before",
+        "command": [
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "thermal-run",
+          "--output",
+          "results/optimization/opt3/token-draft-full-20261119-01/natural/before",
+          "--timeout-s",
+          "1200",
+          "--temperature-policy",
+          "operational",
+          "--admission-temperature-c",
+          "60",
+          "--",
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "results/maintenance/token-draft-full-20261119-01/probe.py",
+          "natural",
+          "before"
+        ],
+        "start_unix": 1795060773.0337946,
+        "exit": 0,
+        "end_unix": 1795061052.1326907
+      },
+      {
+        "group": "natural",
+        "label": "block4",
+        "command": [
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "thermal-run",
+          "--output",
+          "results/optimization/opt3/token-draft-full-20261119-01/natural/block4",
+          "--timeout-s",
+          "1200",
+          "--temperature-policy",
+          "operational",
+          "--admission-temperature-c",
+          "60",
+          "--",
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "results/maintenance/token-draft-full-20261119-01/probe.py",
+          "natural",
+          "block4"
+        ],
+        "start_unix": 1795061052.1338873,
+        "exit": 0,
+        "end_unix": 1795061364.7422314
+      },
+      {
+        "group": "reading",
+        "label": "block4",
+        "command": [
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "thermal-run",
+          "--output",
+          "results/optimization/opt3/token-draft-full-20261119-01/reading/block4",
+          "--timeout-s",
+          "1200",
+          "--temperature-policy",
+          "operational",
+          "--admission-temperature-c",
+          "60",
+          "--",
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "results/maintenance/token-draft-full-20261119-01/probe.py",
+          "reading",
+          "block4"
+        ],
+        "start_unix": 1795061364.7434754,
+        "exit": 0,
+        "end_unix": 1795061565.6681352
+      },
+      {
+        "group": "reading",
+        "label": "before",
+        "command": [
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "thermal-run",
+          "--output",
+          "results/optimization/opt3/token-draft-full-20261119-01/reading/before",
+          "--timeout-s",
+          "1200",
+          "--temperature-policy",
+          "operational",
+          "--admission-temperature-c",
+          "60",
+          "--",
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "results/maintenance/token-draft-full-20261119-01/probe.py",
+          "reading",
+          "before"
+        ],
+        "start_unix": 1795061565.6693127,
+        "exit": 0,
+        "end_unix": 1795061774.0186415
+      }
+    ],
+    "helper_sha256": {
+      "results/maintenance/token-draft-full-20261119-01/probe.py": "1c2e87d0b2df72c950d61fc86e35cf7c6337a693bce7309c9280a141da8d6342",
+      "results/maintenance/token-draft-full-20261119-01/run.py": "156ceb389fbbd48150d515faaa85142e04090c7425b63b34fa2b59fda19fdf3a",
+      "results/maintenance/token-draft-20261119-01/probe.py": "1f8199fa79188094f27fb360b1c2ead2eb61f645defdebcf00409648f2ebf939"
+    },
+    "all_exit_zero": true
+  },
+  "verification": {
+    "raw_files": 62,
+    "raw_sha256": {
+      "protected-after.json": "29f273958c715f2f015be0cf7fea4b964e4107cd2db63be349748f7c494ff7ac",
+      "reading-block4.log": "10d0ac7f6c6e87608aad83a08da415cbe0e591d49995bdecc0b16b5254dcae9e",
+      "natural-block4.log": "ccfff2f9c647416c92d6f8e45e5239a56b24918a5140f57ceb3d0e4343668f0b",
+      "protected-before.json": "29f273958c715f2f015be0cf7fea4b964e4107cd2db63be349748f7c494ff7ac",
+      "natural-before.log": "661ec52795033676558d56476d50046fcad93ac3fffae0cde71f9bb3249120d0",
+      "reading-before.log": "7e8a310198a7872608c43fbdf9dbccdfed88e52cbd22330274a90e019daf13be",
+      "preparation.json": "27251ed46276e4650f7d9c5c2f6a96d4bfe0a017bea67b4d6e293e9a385c752f",
+      "campaign.json": "56a6367fd48fc20d2e9d45362968692c41b97f262380234341e43c1af62bf00e",
+      "natural/config.toml": "ca35f43225825188460e6983549fc2482ae69ad03ec7f4c67bcff9fd6f5c44d8",
+      "natural/requests.json": "bdb78e642bb947f1312a884f05eb14f6657948ad832eb4d58157b871b5737d22",
+      "natural/inputs/finals.jsonl": "96d56fdaa1175d9acc696456e89a37c908fccadb150762ba48e00fef4758946c",
+      "natural/block4/measurements.jsonl": "8f639ee6680ba34ec0510cf1c043cfb11be0961410c8734a9caa75b4bf78ea37",
+      "natural/block4/scores.jsonl": "05f21ca05c1e3fd44a0af430c965e1b1d794d605150a94bfb1ac0895b5c1d00c",
+      "natural/block4/threads.jsonl": "ff8e0bb866fcf366cac28544d49946d0ed2a310850943b0d068fe3dcc789a701",
+      "natural/block4/execution.json": "e8e0e443f9cd73853b66404584a79a8f19f471756a03f101601d48a911cb8eb0",
+      "natural/block4/thermal.jsonl": "00efa0250efb071fb28380ea94d9ebf3b53f53716166ac385bc64c26e71eee3d",
+      "natural/block4/summary.md": "0d60d4929a5cc78b6b7f4aa7bcb4d81b8210726efe5dd484cc697003077bdb2f",
+      "natural/block4/worker.json": "ed87e213025398ce79ba42d6de4347d5e1a309f95613ecf76b91242ac4ff401e",
+      "natural/block4/console.log": "0782572434171c672a77a1ac853907adee950e9fc62beba3b714625779829a1c",
+      "natural/block4/warnings.jsonl": "8abde06665fcf5a4d685bd016dfe409c2307cac0e7455f0cb097d65b07490b71",
+      "natural/block4/admission.jsonl": "c7bfb07c180915c72f89e08fe731783f8e73ca0c1f0c861c2fccf3ba4e6c9bc9",
+      "natural/block4/summary.json": "e2463d4c2d164a911a958d7c6c208000136eb8c84cb383597c30cd893747727e",
+      "natural/block4/predictions.jsonl": "c5e69fe67ebf2add6e934a0c2c246c192f6a77f8d964f85bf0c3392027c6aa79",
+      "natural/before/measurements.jsonl": "805ad8715a37a404c39bb196d4e0a744d7dc6b9a03781aa253b58d4fda9d949b",
+      "natural/before/scores.jsonl": "f75847fa6cb043546f77fd3bf8ae52f3a568019a1643e391905ccd9cbc838e7e",
+      "natural/before/threads.jsonl": "006a1bb0d161c5966429fcbeeb36dc6c7dddc5e1f5064c31ee03f8deb6999c90",
+      "natural/before/execution.json": "6f3f1325e379f6b568f6de6f5fb6140dac98e14d5e75fb97cd1aaaf24e29fef6",
+      "natural/before/thermal.jsonl": "4f216f84daa8933047293e4bc3818686329f1c3fb0bd4eb762f59d47f6d55700",
+      "natural/before/summary.md": "3aea46cfd5d291d9540a39b5bc67d97074663b6d25979436e64b67860684721a",
+      "natural/before/worker.json": "d6001cc4f6270dff92cd1baa634e01bf87f0fac1c0d33ea4ab94bd706cd06598",
+      "natural/before/console.log": "95ce94eb4158d162a3aa5d3505dd26ecba18278b6d8ffadea1d624c0c23b2123",
+      "natural/before/warnings.jsonl": "07361f6d9e45d9c40f1089f95fb3b6ff536b0998aeb25c48f7b1b1ca3eee1861",
+      "natural/before/admission.jsonl": "1549cf54192dc6b232ee3d16f6de91fb37149c62aa7a5fb72fba9c9b4d1a5a60",
+      "natural/before/summary.json": "da77e18d67f80ed4afbc2b0d3e8773a98c283dd3be7ee4bd48a6328991edd608",
+      "natural/before/predictions.jsonl": "a22d69849bee5c26181d5c2d59cf280b8ae089006971b6ffad3ac6676d48258e",
+      "reading/config.toml": "ca35f43225825188460e6983549fc2482ae69ad03ec7f4c67bcff9fd6f5c44d8",
+      "reading/requests.json": "2f35413b8129af0b01b730af0c657b6ae65b90480e06b18934797a5272cc680f",
+      "reading/inputs/finals.jsonl": "10ceb4464548c0d04f6cd09c4b9537c6128200cd93ff60d12578e692c315e5a3",
+      "reading/block4/measurements.jsonl": "4c00556fdffd32b914ed408f05c479fd32001c3f082b621287034e95e876515a",
+      "reading/block4/scores.jsonl": "5aaca6f7b5097c62e685cf32b758bccc09e82dcb494f5db33c7bce45b91607b9",
+      "reading/block4/threads.jsonl": "6abc7d21d3a908cfe23851bede7c91c06d7a419b2ddeaa725d8fe3f28abeb304",
+      "reading/block4/execution.json": "09a6e133b3da9bacbd82d80358863f4f2ff0050cd5704dc98c087858081f4e24",
+      "reading/block4/thermal.jsonl": "e73f3cf94ca0b49e7f065cfe0d2044f0ef7a2770ee730e91010919304bf6e999",
+      "reading/block4/summary.md": "62ad9c790870c89e06da5873a168fd2563ef0116cccc32215201c4c069ad14b5",
+      "reading/block4/worker.json": "610c106b9f11cf40093a8c1072a6bb1a5c830df699e0cda04b36717275058ee7",
+      "reading/block4/console.log": "62aebb2f61ad1fcdd06b9f9e38c077841884372819c9abae5ad4d51d32c0756b",
+      "reading/block4/warnings.jsonl": "0a3c51d7d46681325aa36c9d864623c32c70009ddcbcf69624acf22fff617a6d",
+      "reading/block4/admission.jsonl": "a9f19641a246bd9a8cbc4c7de2742cdcb9e34acfa8481cd1f004fa7cb5ed2650",
+      "reading/block4/summary.json": "ea738fdfdcb277d883a07019676708d6fb8767195c588d36dd4770d857a7cd7c",
+      "reading/block4/predictions.jsonl": "ade356b9d94c77e1086723d180eef46e642c1c4f76204af493d788aa88284b4f",
+      "reading/before/measurements.jsonl": "393420ffe50fde29b35a15f29d0f907956a687869a5c1a6178599d0eea58106a",
+      "reading/before/scores.jsonl": "a9b51c9fdb4a7bbcdfa63f979f94128039bf567f399d380c50d7aaf5c6ac67a5",
+      "reading/before/threads.jsonl": "9e53ea90c712a1fd5e8202e44f8d6af4bea6419ea485a603954e6f300ca389a9",
+      "reading/before/execution.json": "6ef6254d53389f5169609a0fde77b08b385007e47cbe47e06dac7510dc33522c",
+      "reading/before/thermal.jsonl": "8e74d6f51edb9ba9c159e0205ec316fcd07c498701faa15e2dc80c246eba4eac",
+      "reading/before/summary.md": "f1bc9a433648a5f9f29a49e6c319238ccfe21b7f8e8bcff450713531431ffcfc",
+      "reading/before/worker.json": "5b6a1d6b2ffbda10b5d4a9ca8cdc979f542f211df6b8cc844874f41538986ab5",
+      "reading/before/console.log": "3a1836709c2bb7157fbc816461e19a99148d285949a4a906160ef569a9798356",
+      "reading/before/warnings.jsonl": "67328eddd57da70981ba8ffb9449a31fd74315d673c48a0f9ea7b06348897ecf",
+      "reading/before/admission.jsonl": "3c864c3a1df57010060a2c9bc495b0abcc823c2c3c05ab78b32bd03bfca1121b",
+      "reading/before/summary.json": "9d903b88931f2a2aa6969efd7b3a2bc6f4d829906940169f0734501372b5c994",
+      "reading/before/predictions.jsonl": "22ab7fa7278b60dfe63ed5457b642eca1695b0af58deeb4d2777595593a4f030"
+    },
+    "protected_files": 328,
+    "host_common_protected": 308,
+    "helpers": {
+      "results/maintenance/token-draft-full-20261119-01/run.py": "156ceb389fbbd48150d515faaa85142e04090c7425b63b34fa2b59fda19fdf3a",
+      "results/maintenance/token-draft-full-20261119-01/analyze.py": "32777dfb6337352aab37686c380facf5474eb66dfb89322effd5df9d06821017",
+      "results/maintenance/token-draft-full-20261119-01/prepare.py": "35bebe5894dc4cd0784f9c3a5dc7a475294c6c0707459059e25ba1c972db537b",
+      "results/maintenance/token-draft-full-20261119-01/probe.py": "1c2e87d0b2df72c950d61fc86e35cf7c6337a693bce7309c9280a141da8d6342",
+      "results/maintenance/token-draft-full-20261119-01/report.py": "4112cf74e055590760d300ca283504476d14493ac8cc364a7f5c4416d356b5a6"
+    },
+    "pre_inference_note": "첫 실행은 짧은 SHA 전달로 추론 전 검증에서 중단. 전체 SHA로 재실행했고 기존 측정은 덮어쓰지 않음.",
+    "independent_host_rp5_summary_equal": true
+  },
+  "host_tests": {
+    "passed": 485,
+    "skipped": 0
+  },
+  "implementation_commit": "d49520e4d2574f55062b3083f6266fad77a9fb52",
+  "decision": "정확도 유지 조건 미통과. 공유 기본 유지, 별도 탐색적 1배속 절충 측정으로 진행."
+}
