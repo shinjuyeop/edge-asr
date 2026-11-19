@@ -208,7 +208,8 @@ edge-asr/
 │       │   ├── feature_cache.py          # 선택 정규화 전 log-Mel 접두 캐시
 │       │   ├── gguf.py
 │       │   ├── onnx.py
-│       │   └── profiling.py
+│       │   ├── profiling.py
+│       │   └── token_drafts.py          # 같은 구간의 직전 부분 토큰을 확정 후보로 전달
 │       ├── tools/
 │       │   ├── data/
 │       │   │   ├── external.py          # 공통 archive·PCM 변환·출처 영수증
@@ -253,4 +254,4 @@ README는 프로젝트 소개와 시작 경로, `docs/research/optimization_hist
 
 선택 부분 음성 창 실험은 `native/gguf/audio_window_cache.h`·`src/edge_asr/qwen/audio_windows.py`에 있으며 기존 bridge/worker를 확장합니다. [동작·설정](docs/guides/qwen3_optimization.md#부분-음성-창-캐시-실험)을 참고하세요.
 
-선택 토큰 후보 검증의 상태 정책은 `native/gguf/token_draft.h`, 진단 ABI는 기존 `bridge.cpp`에 있습니다. 현재 greedy Q8의 판정이 후보와 일치한 토큰만 채택하며, 공유 설정에서는 비활성입니다. [진단 범위](native/README.md#토큰-후보-묶음-검증-진단).
+선택 토큰 후보 검증의 상태 정책은 `native/gguf/token_draft.h`, ABI는 기존 `bridge.cpp`에 있습니다. `qwen/token_drafts.py`는 같은 구간에서 앞서 끝난 부분 호출의 토큰만 확정 후보로 전달합니다. 현재 greedy Q8의 판정이 후보와 일치한 토큰만 채택하며, 공유 설정에서는 비활성입니다. [진단 범위](native/README.md#토큰-후보-묶음-검증-진단) · [후속 평가](docs/research/token_draft_followup.md).

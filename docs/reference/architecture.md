@@ -165,4 +165,6 @@ flowchart TD
 
 ## 선택 토큰 후보 검증
 
-`native/gguf/token_draft.h`는 음성 cache와 별개로 이전 부분 토큰을 Q8 greedy 생성의 후보로 검증합니다. 별도 진단 setter에서 다음 호출의 후보를 공급하고 바로 소비하며, 새 전체 음성 prefill·Q8 logits로 수락 여부를 결정합니다. 불일치 뒤 KV를 제거하고 원래 생성으로 복귀합니다. 기본 bridge 호출과 Python 실시간 어댑터는 자동 후보를 공급하지 않습니다. [진단 ABI·계측](../../native/README.md#토큰-후보-묶음-검증-진단).
+`native/gguf/token_draft.h`는 음성 cache와 별개로 이전 부분 토큰을 Q8 greedy 생성의 후보로 검증합니다. setter에서 다음 호출의 후보를 공급하고 바로 소비하며, 새 전체 음성 prefill·Q8 logits로 수락 여부를 결정합니다. 불일치 뒤 KV를 제거하고 원래 생성으로 복귀합니다. [진단 ABI·계측](../../native/README.md#토큰-후보-묶음-검증-진단).
+
+선택 `final_token_draft_block`은 `qwen/token_drafts.py`의 bounded 한 항목 후보 수명을 활성화합니다. `realtime/worker.py`가 기존 작업 메타데이터의 복사본을 어댑터에 전달하며, 같은 segment/start·더 이전 job/revision·도착 음성 범위를 확인합니다. 성공 또는 native가 확인한 협력적 취소 부분 호출만 저장하고, 확정/일반 batch/오류/종료 뒤에는 비웁니다. VAD가 종료점을 과거로 보정한 경우 부분 PCM 끝은 확정 끝보다 길 수 있지만 현재 도착 프레임보다 미래일 수 없습니다. 후보 문자열을 자막에 복사하지 않습니다. 음성·prefix KV 초기화와 후보 토큰 수명은 별개이며, 부분 음성 창이나 이중 모델은 요구하지 않습니다. 묶음1은 같은 전달 비용을 포함한 직렬 대조, 2/4/8은 선택 검증입니다. 공유 설정에서는 비활성이고 수치 동등성·CER·지연은 별도 RP5 평가 대상입니다.

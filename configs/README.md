@@ -7,6 +7,7 @@
 | 파일 | 용도·채택 상태 |
 | --- | --- |
 | [gguf_realtime.toml](gguf_realtime.toml) | 공유 Q8 회귀 참조·생성2T/음성·prefill3T·고정 text prefix KV. 연속 옵션은 별도 지정 |
+| [gguf_final_draft.toml](gguf_final_draft.toml) | 선택 Q8 확정 토큰 후보4개 묶음·같은 구간의 직전 부분 토큰만 전달. 공유 기본 채택 전 후속 평가 |
 | [onnx.toml](onnx.toml) | ONNX INT8 2T 출발 참조 |
 | [gguf.toml](gguf.toml) | GGUF Q8_0 2T 최적화 기준선 |
 | [quantization/q6_k.toml](quantization/q6_k.toml), [q5_k_m.toml](quantization/q5_k_m.toml), [q4_k_m.toml](quantization/q4_k_m.toml) | 보존한 batch 양자화 후보 |

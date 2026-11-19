@@ -119,6 +119,13 @@ class ContinuousTests(unittest.TestCase):
         s, model, events = self.session()
         resets = []
         model.reset_audio_feature_cache = lambda: resets.append(True)
+        jobs = []
+
+        def prepare(job):
+            jobs.append(dict(job))
+            job["segment_id"] = -1  # 어댑터가 변경해도 작업자의 원본은 보존한다.
+
+        model.prepare_realtime_job = prepare
         self.feed(s, 11200)
         model.started.get(timeout=2)
         self.feed(s, 96000)
@@ -141,6 +148,9 @@ class ContinuousTests(unittest.TestCase):
         )
         self.assertFalse(s.worker.thread.is_alive())
         self.assertEqual(len(resets), 4)
+        self.assertEqual([j["kind"] for j in jobs], ["partial", "final", "partial", "final"])
+        self.assertEqual([j["segment_id"] for j in jobs], [0, 0, 1, 1])
+        self.assertEqual([j["job_id"] for j in jobs], [r["job_id"] for r in s.results])
         with self.assertRaisesRegex(RuntimeError, "종료된"):
             s.worker.submit("partial", 3, 0, 1, array("f", [1]), 1)
 

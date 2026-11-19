@@ -151,6 +151,9 @@ class DecodeWorker:
                     prepare_request = getattr(self.adapter, "prepare_realtime_request", None)
                     if prepare_request:
                         prepare_request(job["kind"])
+                    prepare_job = getattr(self.adapter, "prepare_realtime_job", None)
+                    if prepare_job:
+                        prepare_job(deepcopy(job))
 
                     def token(update):
                         with self.condition:

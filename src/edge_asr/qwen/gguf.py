@@ -120,6 +120,11 @@ class Qwen3GGUFAdapter:
         self.convolution = None
         self.feature_cache = None
         self.audio_windows = None
+        self.token_drafts = None
+        if "final_token_draft_block" in model:
+            from edge_asr.qwen.token_drafts import FinalTokenDrafts
+
+            self.token_drafts = FinalTokenDrafts(model, self.build)
         if model.get("partial_audio_window_s") or model.get("partial_audio_window_ms"):
             from edge_asr.qwen.audio_windows import PartialAudioWindows
 
@@ -156,6 +161,10 @@ class Qwen3GGUFAdapter:
         if self.audio_windows:
             self.audio_windows.prepare(kind)
 
+    def prepare_realtime_job(self, job):
+        if self.token_drafts:
+            self.token_drafts.prepare(job)
+
     def set_operator_profile(self, enabled):
         """별도 진단 빌드에서만 켠다. 전사 호출 사이에 사용한다."""
         if type(enabled) is not bool:
@@ -187,6 +196,7 @@ class Qwen3GGUFAdapter:
             "token_output_callback": self.supports_token_stream,
             "thread_configuration": self.thread_configuration,
             "cache_text_prefix": self.cache_text_prefix,
+            "final_token_draft_block": self.model.get("final_token_draft_block"),
             "partial_audio_window_s": self.model.get("partial_audio_window_s"),
             "partial_audio_window_ms": self.model.get("partial_audio_window_ms"),
             "partial_audio_window_cache": self.model.get("partial_audio_window_cache"),
@@ -297,9 +307,12 @@ class Qwen3GGUFAdapter:
             if lib.edge_gguf_set_prefix_cache(self.handle, int(self.cache_text_prefix)) != 0:
                 self.close()
                 raise RuntimeError("GGUF text prefix 캐시 설정 실패")
-        if self.audio_windows:
+        if self.audio_windows or self.token_drafts:
             try:
-                self.audio_windows.bind(lib, self.handle)
+                if self.audio_windows:
+                    self.audio_windows.bind(lib, self.handle)
+                if self.token_drafts:
+                    self.token_drafts.bind(lib, self.handle)
             except Exception:
                 self.close()
                 raise
@@ -313,9 +326,14 @@ class Qwen3GGUFAdapter:
         return self._transcribe(audio, on_text)
 
     def _transcribe(self, audio, on_text=None):
+        status = "failed"
         try:
-            return self._transcribe_once(audio, on_text)
+            text = self._transcribe_once(audio, on_text)
+            status = "success" if text.strip() else "failed"
+            return text
         except BaseException as error:
+            if isinstance(error, InferenceCancelled):
+                status = "cancelled"
             self.reset_audio_feature_cache()
             if self.handle is not None and "cache_text_prefix" in self.model:
                 metadata = self.last_result_metadata
@@ -334,6 +352,9 @@ class Qwen3GGUFAdapter:
                     self.last_result_metadata = metadata
                     error.add_note(f"text prefix 캐시 복구 실패로 모델 닫음: {reset_error}")
             raise
+        finally:
+            if self.token_drafts:
+                self.token_drafts.finish(self.last_result_metadata, status)
 
     def _transcribe_once(self, audio, on_text=None):
         self.last_result_metadata = None
@@ -349,6 +370,10 @@ class Qwen3GGUFAdapter:
             raise ValueError("16000Hz·최소 320프레임 입력이 필요합니다.")
         pcm = (ctypes.c_float * len(audio.samples)).from_buffer(audio.samples)
         self.last_result_metadata = {"output_policy": "gguf_raw_utf8_until_eog_v1"}
+        if self.token_drafts:
+            self.last_result_metadata["token_draft_source"] = self.token_drafts.begin(
+                len(audio.samples)
+            )
         decoder = codecs.getincrementaldecoder("utf-8")("strict")
         prefix, callback_errors = "", []
         token_index, last_elapsed = 0, 0.0
@@ -394,6 +419,8 @@ class Qwen3GGUFAdapter:
             raise RuntimeError("GGUF C ABI가 결과를 반환하지 않았습니다.")
         result = json.loads(blob)
         self.last_result_metadata["native_result"] = result
+        if self.token_drafts:
+            self.token_drafts.verify(result)
         if self.audio_windows:
             self.audio_windows.verify(result)
         if self.feature_cache:
@@ -497,4 +524,6 @@ class Qwen3GGUFAdapter:
             self.feature_cache.close()
         if self.audio_windows:
             self.audio_windows.close()
+        if self.token_drafts:
+            self.token_drafts.close()
         self.last_result_metadata = None

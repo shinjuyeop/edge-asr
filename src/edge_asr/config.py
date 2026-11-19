@@ -92,6 +92,7 @@ def load_evaluation_config(path: str | Path) -> dict:
             "partial_audio_window_s",
             "partial_audio_window_ms",
             "partial_audio_window_cache",
+            "final_token_draft_block",
         }
     allowed = {
         "model": model_keys,
@@ -174,8 +175,10 @@ def load_evaluation_config(path: str | Path) -> dict:
         if family == "qwen3_gguf":
             from edge_asr.qwen.audio_windows import validate_audio_windows
             from edge_asr.qwen.gguf import QUANTIZATIONS
+            from edge_asr.qwen.token_drafts import validate_token_drafts
 
             validate_audio_windows(config["model"])
+            validate_token_drafts(config["model"])
 
             if config["model"]["quantization"] not in QUANTIZATIONS:
                 raise ValueError(f"GGUF 양자화는 {QUANTIZATIONS}입니다.")

@@ -399,6 +399,87 @@ class GGUFTests(unittest.TestCase):
         self.library.edge_gguf_transcribe.return_value = self.result()
         self.assertEqual(adapter.transcribe(self.audio), "한 글!")
 
+    def test_realtime_draft_survives_cooperative_cancel_and_audio_cache_reset(self):
+        from edge_asr.runtime import InferenceCancelled
+
+        self.enable_tokens()
+        self.build["features"].append("token_draft_v1")
+        (self.root / "build.json").write_text(json.dumps(self.build))
+        self.model["final_token_draft_block"] = 4
+        self.library.edge_gguf_set_token_draft.return_value = 0
+        adapter = self.load()
+        job = dict(
+            job_id=0,
+            revision=0,
+            kind="partial",
+            segment_id=0,
+            start_frame=0,
+            end_frame=1600,
+            available_frame=1600,
+        )
+
+        def generate(_handle, _pcm, _count, callback, user):
+            raw = "한".encode()[:1]
+            buffer = ctypes.create_string_buffer(raw)
+            self.assertEqual(callback(user, ctypes.addressof(buffer), len(raw), 1, 0.1), 1)
+            row = json.loads(self.result(status="failed", termination="callback_error", ids=[1]))
+            row.update(text_utf8_hex=raw.hex(), token_draft={"candidate_tokens": 0, "block": 1})
+            return json.dumps(row).encode()
+
+        def cancel(_update):
+            raise InferenceCancelled("final_pending")
+
+        self.library.edge_gguf_transcribe_tokens.side_effect = generate
+        adapter.prepare_realtime_job(job)
+        with self.assertRaises(InferenceCancelled):
+            adapter.transcribe_stream(self.audio, cancel)
+        adapter.reset_audio_feature_cache()
+        adapter.prepare_realtime_job({**job, "job_id": 1, "revision": 1, "kind": "final"})
+        row = json.loads(self.result())
+        row["token_draft"] = {"candidate_tokens": 1, "block": 4}
+        self.library.edge_gguf_transcribe.return_value = json.dumps(row).encode()
+        self.assertEqual(adapter.transcribe(self.audio), "한 글!")
+        source = adapter.last_result_metadata["token_draft_source"]
+        self.assertEqual((source["source"]["job_id"], source["source"]["status"]), (0, "cancelled"))
+        _, tokens, count, block = self.library.edge_gguf_set_token_draft.call_args.args
+        self.assertEqual((list(tokens), count, block), ([1], 1, 4))
+        row["token_draft"] = {"candidate_tokens": 0, "block": 1}
+        self.library.edge_gguf_transcribe.return_value = json.dumps(row).encode()
+        adapter.transcribe(self.audio)
+        self.assertIsNone(adapter.last_result_metadata["token_draft_source"]["source"])
+
+    def test_realtime_draft_failed_partial_invalidates_candidate_and_config_is_explicit(self):
+        self.model["final_token_draft_block"] = 4
+        with self.assertRaisesRegex(ValueError, "별도 빌드"):
+            self.load()
+        self.build["features"] = ["token_draft_v1"]
+        (self.root / "build.json").write_text(json.dumps(self.build))
+        self.library.edge_gguf_set_token_draft.return_value = 0
+        adapter = self.load()
+        for index, text in enumerate(("한 글", "", "다른")):
+            adapter.prepare_realtime_job(
+                dict(
+                    job_id=index,
+                    revision=index,
+                    kind="partial",
+                    segment_id=0,
+                    start_frame=0,
+                    end_frame=1600,
+                    available_frame=1600,
+                )
+            )
+            row = json.loads(self.result(text=text))
+            row["token_draft"] = {"candidate_tokens": 0, "block": 1}
+            if index == 2:
+                row["termination"] = "repetition"
+            self.library.edge_gguf_transcribe.return_value = json.dumps(row).encode()
+            if index == 2:
+                with self.assertRaises(RuntimeError):
+                    adapter.transcribe(self.audio)
+            else:
+                adapter.transcribe(self.audio)
+            self.assertEqual(adapter.token_drafts.previous is not None, index == 0)
+
     def test_final_priority_cancellation_preserves_incomplete_utf8_and_resets_kv(self):
         from edge_asr.runtime import InferenceCancelled
 
