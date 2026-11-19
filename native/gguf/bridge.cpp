@@ -5,6 +5,7 @@
 #include "mtmd-helper.h"
 #include "prefix_cache.h"
 #include "audio_window_cache.h"
+#include "token_draft.h"
 #ifdef EDGE_ASR_PROFILE_OPERATORS
 #include "operator_profile.h"
 #endif
@@ -38,6 +39,8 @@ struct State {
     AudioWindowCache audio_windows;
     int audio_window_ms = 0;
     bool audio_window_reuse = false, audio_window_kv_valid = false;
+    std::vector<int32_t> pending_token_draft;
+    int token_draft_block = 1;
 #ifdef EDGE_ASR_PROFILE_OPERATORS
     OperatorProfile operators;
 #endif
@@ -258,6 +261,19 @@ __attribute__((visibility("default"))) int edge_gguf_set_audio_window(void* hand
     if(window!=0 && window!=1 && window!=2 && window!=4 && window!=8) return -1;
     return edge_gguf_set_audio_window_ms(handle,window*1000,reuse,reset);
 }
+// 한 호출에만 공급하는 진단 ABI. 토큰 후보는 출력/확정으로 취급하지 않는다.
+__attribute__((visibility("default"))) int edge_gguf_set_token_draft(void* handle,const int32_t* tokens,size_t count,int block) {
+    auto* s=static_cast<State*>(handle);
+    if(!s) return -1;
+    s->pending_token_draft.clear(); s->token_draft_block=1;
+    if((block!=1 && block!=2 && block!=4 && block!=8) || count>size_t(s->max_new) || (count && !tokens)) return -1;
+    const auto* vocab=llama_model_get_vocab(s->model);
+    for(size_t i=0;i<count;++i)
+        if(tokens[i]<0 || tokens[i]>=llama_vocab_n_tokens(vocab) || llama_vocab_is_eog(vocab,tokens[i])) return -1;
+    if(count) s->pending_token_draft.assign(tokens,tokens+count);
+    s->token_draft_block=block;
+    return 0;
+}
 #ifdef EDGE_ASR_PROFILE_OPERATORS
 __attribute__((visibility("default"))) int edge_gguf_set_operator_profile(void* handle,int enabled) {
     auto* s=static_cast<State*>(handle);
@@ -283,6 +299,8 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
         {"policy","independent_windows_partial_only_v1"}};
     for (const char* key : {"prefix_eval_s","suffix_eval_s","audio_encode_s","audio_embedding_eval_s"}) out[key]=0.0;
     std::vector<int32_t> prefix;
+    TokenDraft draft(std::move(s->pending_token_draft),s->token_draft_block);
+    s->pending_token_draft.clear(); s->token_draft_block=1;
     std::vector<llama_token> ids; std::string text;
     double callback_s=0;
     const auto began=Clock::now();
@@ -349,10 +367,13 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
         llama_pos past=eval_prompt(s,chunks.get(),hit,prefix.size(),out,window_embeds,reused_audio);
         out["audio_and_prefill_s"]=since(stage)+(s->audio_window_ms?out["audio_encode_s"].get<double>():0);
         if (past!=positions) throw std::runtime_error("prompt position mismatch after prefix reuse");
-        double decode_s=0,sample_s=0;int decode_calls=0;
+        double decode_s=0,sample_s=0;int decode_calls=0,decode_rows=0,logit=-1;
         const auto* vocab=llama_model_get_vocab(s->model);
         for(int i=0;i<s->max_new;++i) {
-            stage=Clock::now();llama_token token=llama_sampler_sample(s->sampler,s->ctx,-1);llama_sampler_accept(s->sampler,token);sample_s+=since(stage);
+            stage=Clock::now();llama_token token=llama_sampler_sample(s->sampler,s->ctx,logit);llama_sampler_accept(s->sampler,token);sample_s+=since(stage);
+            const auto observed=draft.observe(token,size_t(i));
+            if(observed.trim && !llama_memory_seq_rm(llama_get_memory(s->ctx),0,past,-1))
+                throw std::runtime_error("draft KV rollback failed");
             if(llama_vocab_is_eog(vocab,token)) { out["termination"]="eog";out["termination_token_id"]=token;break; }
             if(ids.empty()) out["first_generated_token_s"]=since(began);
             ids.push_back(token);const auto bytes=piece(vocab,token);text+=bytes;
@@ -365,18 +386,27 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
             if(i>0 && repetition(ids)) { out["termination"]="repetition";break; }
             if(i+1==s->max_new) { out["termination"]="token_limit";break; }
             if(past>=int(llama_n_ctx(s->ctx))) { out["termination"]="context_limit";break; }
+            if(observed.decoded) { ++past;logit=observed.next_logit;continue; }
             stage=Clock::now();llama_batch_ext_clear(s->batch);
-            int idx=llama_batch_ext_add_token(s->batch,0,token);
-            if(idx<0 || !llama_batch_ext_set_pos(s->batch,idx,&past) || !llama_batch_ext_set_output_logits(s->batch,idx,true))
-                throw std::runtime_error("token batch preparation failed");
+            const auto planned=draft.plan(token,size_t(i),size_t(std::min(s->max_new-i,int(llama_n_ctx(s->ctx))-past)));
+            for(size_t row=0;row<planned.size();++row) {
+                int idx=llama_batch_ext_add_token(s->batch,0,planned[row]);
+                llama_pos pos=past+llama_pos(row);
+                if(idx<0 || !llama_batch_ext_set_pos(s->batch,idx,&pos) || !llama_batch_ext_set_output_logits(s->batch,idx,true))
+                    throw std::runtime_error("token batch preparation failed");
+            }
             operator_phase(s,"token_decode");
             if(llama_process(s->ctx,LLAMA_PROCESS_TYPE_DECODE,s->batch)!=0) throw std::runtime_error("token decode failed");
-            ++past;++decode_calls;decode_s+=since(stage);
+            ++past;++decode_calls;decode_rows+=int(planned.size());logit=0;decode_s+=since(stage);
         }
         out["token_decode_s"]=decode_s;out["token_decode_calls"]=decode_calls;out["sampling_s"]=sample_s;
+        out["token_decode_evaluated_tokens"]=decode_rows;
         if(out["termination"]=="eog") out["status"]="success";
         else out["error"]="generation did not terminate with eog";
     } catch (const std::exception& e) { out["error"]=e.what(); }
+    out["token_draft"]={{"policy","q8_greedy_verify_prefix_v1"},{"candidate_tokens",draft.size()},
+        {"block",draft.block()},{"batches",draft.batches},{"proposed",draft.proposed},
+        {"accepted",draft.accepted},{"rejected",draft.rejected}};
     s->prefix_cache.complete(prefix,out["status"]=="success");
     s->audio_window_kv_valid=s->audio_window_ms>0 && s->audio_window_reuse && out["status"]=="success";
     if(out["status"]!="success") s->audio_windows.reset();

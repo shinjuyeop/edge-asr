@@ -55,3 +55,5 @@ GGUF의 선택적 C++ 문법 검사에는 `EDGE_ASR_LLAMA_SOURCE`를 고정 upst
 정규화 전 특징 캐시는 `qwen/test_feature_cache.py`의 독립 C++ 검사로 반사 경계 재계산·증가한 전체 최대값 정규화·비트 동등성 실패 시 원래 출력 복귀·설정/오류 무효화·메모리 상한을 검증합니다. 실제 RP5 함수 interposition과 전사/token 동등성·비용은 별도 검사입니다.
 
 `qwen/test_audio_windows.py`는 창 경계·짧은 잔여 음성·PCM 변경·입력 축소·실패 뒤 초기화에서 캐시/재계산 출력이 같은지 합성 encoder로 검사합니다. 부분 설정이 확정/일반 호출로 새지 않는 ABI 수명도 확인합니다. 실제 Qwen 출력·ARM 성능은 별도 RP5 측정 대상입니다.
+
+`qwen/test_token_draft.py`는 실제 C++ 후보 상태 정책을 causal KV/logits 모의 실행에 연결합니다. 후보 없음·전체 일치·모든 위치 불일치·잘못된 긴 후보·EOG·출력 상한과 묶음1/2/4/8을 대조해 출력과 KV rollback을 확인합니다. 모델 없는 검사이며 RP5의 수치 동등성/비용은 별도 진단입니다.

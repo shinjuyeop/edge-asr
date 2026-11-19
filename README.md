@@ -158,7 +158,7 @@ edge-asr/
 │   └── m1_zipformer/                    # 초기 원본 보존
 ├── models/                              # 로컬 가중치
 ├── native/
-│   ├── gguf/                            # bridge·KV/연산·커널 계측·빌드·양자화
+│   ├── gguf/                            # bridge·KV/토큰 후보 검증·계측·빌드·양자화
 │   │   ├── conv_sgemm.cpp               # 선택 FP16 합성곱 타일 대조
 │   │   ├── conv_sgemm.patch             # 고정 upstream 사본의 최소 변경
 │   │   ├── f16_dot.cpp                  # 선택 FP16 변환·내적 결합 실험
@@ -250,3 +250,5 @@ README는 프로젝트 소개와 시작 경로, `docs/research/optimization_hist
 [전체 문서](docs/README.md) · [평가 조건](docs/research/qwen_realtime.md) · [전체 측정 요약](results/summaries/optimization/README.md) · [경로 이행표](docs/reference/structure_migration.md)
 
 선택 부분 음성 창 실험은 `native/gguf/audio_window_cache.h`·`src/edge_asr/qwen/audio_windows.py`에 있으며 기존 bridge/worker를 확장합니다. [동작·설정](docs/guides/qwen3_optimization.md#부분-음성-창-캐시-실험)을 참고하세요.
+
+선택 토큰 후보 검증의 상태 정책은 `native/gguf/token_draft.h`, 진단 ABI는 기존 `bridge.cpp`에 있습니다. 현재 greedy Q8의 판정이 후보와 일치한 토큰만 채택하며, 공유 설정에서는 비활성입니다. [진단 범위](native/README.md#토큰-후보-묶음-검증-진단).
