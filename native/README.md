@@ -56,9 +56,11 @@ Python 실행 코드는 [src/edge_asr/qwen/](../src/edge_asr/qwen/), C++ 소스�
 
 Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다. `EDGE_ASR_LLAMA_SOURCE`와 `EDGE_ASR_ORT_HEADERS`를 지정하면 고정 헤더의 C++ 검사도 실행합니다. 실제 모델 성능은 RP5 실측으로만 확인합니다.
 
-## Hailo-8L Qwen 합성곱 실험
+## Hailo-8L Qwen 합성곱·CNN 출력 투영 실험
 
 [ONNX 추출](gguf/export_audio_boundaries.py)은 고정 Q8 GGUF의 가중치를 검증합니다. [선택 합성곱](gguf/hailo_conv.cpp)은 Linux CPU 엔진의 지정 Conv 한 개를 무편향 HEF로 바꿉니다. 원래 노드가 bias·GELU를 적용합니다. HailoRT 헤더와 라이브러리로 별도 빌드한 뒤 실험 자식에서만 preload합니다. `EDGE_ASR_HAILO_LAYER`는 `a.conv2d.1.weight` 또는 `a.conv2d.2.weight`, `EDGE_ASR_HAILO_HEF`는 그 층의 검증한 무편향 HEF 절대 경로입니다. HEF 및 가중치 해시와 실제 호출의 `edge_hailo_conv` 기록을 대조합니다. 장치 오류는 실험 자식의 실패로 기록합니다.
+
+CNN 출력 투영만 선택하려면 실험 자식에 같은 preload와 `EDGE_ASR_HAILO_PROJECTION_HEF=/절대/경로/conv_out_row.hef`를 지정합니다. 위 Conv2 환경변수를 함께 지정하면 두 HEF가 하나의 Hailo 장치와 round-robin 스케줄러를 공유합니다. 투영 입력은 원래 GGML 그래프가 준비한 시간 행당 7,680개 FP32 값이고 출력은 같은 순서의 896개 FP32 값입니다. HailoRT가 호스트 FP32와 HEF INT8 사이의 변환을 수행합니다. 호출마다 `edge_hailo_projection`의 행 수와 동기 시간, 레이아웃 처리 시간을 남깁니다. 최종 음성 임베딩 투영과 LLM은 CPU가 계속 실행합니다.
 
 ## GGUF 연산별 진단
 

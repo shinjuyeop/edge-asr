@@ -35,19 +35,24 @@ bool uses_both_networks() {
     return std::getenv("EDGE_ASR_HAILO_LAYER") && std::getenv("EDGE_ASR_HAILO_PROJECTION_HEF");
 }
 
-VDevice& qwen_device() {
-    static auto device = [] {
-        hailo_vdevice_params_t params{};
-        if (hailo_init_vdevice_params(&params) != HAILO_SUCCESS)
-            throw std::runtime_error("Hailo device parameters missing");
-        params.scheduling_algorithm = uses_both_networks()
-            ? HAILO_SCHEDULING_ALGORITHM_ROUND_ROBIN : HAILO_SCHEDULING_ALGORITHM_NONE;
-        return VDevice::create(params).expect("Hailo device");
-    }();
-    return *device;
+std::shared_ptr<VDevice> qwen_device() {
+    static std::mutex lock;
+    static std::weak_ptr<VDevice> shared;
+    std::lock_guard<std::mutex> guard(lock);
+    if (auto existing = shared.lock()) return existing;
+    hailo_vdevice_params_t params{};
+    if (hailo_init_vdevice_params(&params) != HAILO_SUCCESS)
+        throw std::runtime_error("Hailo device parameters missing");
+    params.scheduling_algorithm = uses_both_networks()
+        ? HAILO_SCHEDULING_ALGORITHM_ROUND_ROBIN : HAILO_SCHEDULING_ALGORITHM_NONE;
+    std::shared_ptr<VDevice> device = VDevice::create(params).expect("Hailo device");
+    shared = device;
+    return device;
 }
 
 class QwenNetwork {
+    // 두 네트워크 중 마지막 네트워크가 스트림과 그룹을 해제한 뒤 장치를 닫는다.
+    std::shared_ptr<VDevice> device;
     std::shared_ptr<ConfiguredNetworkGroup> group;
     std::unique_ptr<ActivatedNetworkGroup> active;
     std::unique_ptr<InferVStreams> pipeline;
@@ -56,12 +61,11 @@ class QwenNetwork {
     std::mutex lock;
     std::vector<float> packed_input, packed_output;
 public:
-    explicit QwenNetwork(const char* file) {
+    explicit QwenNetwork(const char* file) : device(qwen_device()) {
         if (!file) throw std::runtime_error("missing Qwen HEF");
-        auto& device = qwen_device();
         auto hef = Hef::create(file).expect("Hailo HEF");
-        auto config = device.create_configure_params(hef).expect("Hailo configuration");
-        auto groups = device.configure(hef, config).expect("Hailo configure");
+        auto config = device->create_configure_params(hef).expect("Hailo configuration");
+        auto groups = device->configure(hef, config).expect("Hailo configure");
         if (groups.size() != 1) throw std::runtime_error("expected one Qwen network group");
         group = groups.front();
         auto inputs = group->make_input_vstream_params(false, HAILO_FORMAT_TYPE_FLOAT32, 10000, 2).expect("inputs");
