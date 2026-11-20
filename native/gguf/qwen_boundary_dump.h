@@ -3,7 +3,6 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <memory>
 #include <string>
 #include <vector>
 #include "ggml-backend.h"
@@ -24,10 +23,10 @@ inline bool dump_qwen_boundary(const ggml_tensor* t) {
     if (t->type != GGML_TYPE_F32 || !ggml_is_contiguous(t)) return false;
     std::string path = std::string(directory) + "/" + name;
     for (int i = 3; i >= 0; --i) path += "_" + std::to_string(t->ne[i]);
-    std::unique_ptr<FILE, decltype(&std::fclose)> file(std::fopen((path + ".f32").c_str(), "wbx"), std::fclose);
-    if (!file) return false;
     std::vector<float> data(ggml_nelements(t));
     ggml_backend_tensor_get(t, data.data(), 0, data.size() * sizeof(float));
-    return std::fwrite(data.data(), sizeof(float), data.size(), file.get()) == data.size() &&
-           std::fclose(file.release()) == 0;
+    FILE* file = std::fopen((path + ".f32").c_str(), "wbx");
+    if (!file) return false;
+    const bool written = std::fwrite(data.data(), sizeof(float), data.size(), file) == data.size();
+    return std::fclose(file) == 0 && written;
 }
