@@ -56,6 +56,10 @@ Python 실행 코드는 [src/edge_asr/qwen/](../src/edge_asr/qwen/), C++ 소스�
 
 Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다. `EDGE_ASR_LLAMA_SOURCE`와 `EDGE_ASR_ORT_HEADERS`를 지정하면 고정 헤더의 C++ 검사도 실행합니다. 실제 모델 성능은 RP5 실측으로만 확인합니다.
 
+## Hailo-8L Qwen 합성곱 실험
+
+[ONNX 추출](gguf/export_audio_boundaries.py)은 고정 Q8 GGUF의 가중치를 검증합니다. [선택 합성곱](gguf/hailo_conv.cpp)은 Linux CPU 엔진의 지정 Conv 한 개를 무편향 HEF로 바꿉니다. 원래 노드가 bias·GELU를 적용합니다. HailoRT 헤더와 라이브러리로 별도 빌드한 뒤 실험 자식에서만 preload합니다. `EDGE_ASR_HAILO_LAYER`는 `a.conv2d.1.weight` 또는 `a.conv2d.2.weight`, `EDGE_ASR_HAILO_HEF`는 그 층의 검증한 무편향 HEF 절대 경로입니다. HEF 및 가중치 해시와 실제 호출의 `edge_hailo_conv` 기록을 대조합니다. 장치 오류는 실험 자식의 실패로 기록합니다.
+
 ## GGUF 연산별 진단
 
 2026-11-20 이후 새로 만든 계측 빌드는 그룹별 최초 관측 순서와 모든 작업 스레드를 합친 프로세스 CPU 초를 함께 기록합니다. 기존 빌드의 기록에는 이 필드가 없습니다. 별도 `--profile-operators --capture-boundaries` 빌드에만 `EDGE_ASR_QWEN_BOUNDARY_DIR`로 단일 창·단일 호출의 빈 출력 폴더를 지정할 수 있습니다. 계측을 켜면 Qwen의 DFT·Mel 계수와 입출력, 합성곱·첫 Transformer 블록·최종 투영, 각 LLM 단계에서 첫 FFN up 행렬곱의 첫 입출력을 GGML 차원 역순의 파일명과 연속 FP32 바이트로 보존합니다. 같은 이름 충돌·형식 오류는 유효하지 않은 trace로 처리합니다. 복사·파일 쓰기가 있는 호출은 지연 대조에서 제외합니다.

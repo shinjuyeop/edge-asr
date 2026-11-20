@@ -45,13 +45,13 @@ def export(weights, kind, tokens, path):
         one = constant("one", np.float32(1))
         return op("Mul", op("Mul", x, half), op("Add", one, op("Erf", op("Div", x, root))))
 
-    def conv(x, i):
+    def conv(x, i, bias=True):
         prefix = f"a.conv2d.{i}"
         return op(
             "Conv",
             x,
             weight(prefix + ".weight"),
-            weight(prefix + ".bias", flatten=True),
+            *([weight(prefix + ".bias", flatten=True)] if bias else []),
             kernel_shape=[3, 3],
             strides=[2, 2],
             pads=[1, 1, 1, 1],
@@ -79,18 +79,18 @@ def export(weights, kind, tokens, path):
         )
 
     x = "input"
-    if kind in ("conv1", "cnn_projection"):
+    if kind in ("conv1", "conv1_linear", "cnn_projection"):
         input_shape = [1, 1, 128, 100]
-        x = conv(x, 1)
+        x = conv(x, 1, bias=kind != "conv1_linear")
         output_shape = [1, 480, 64, 50]
         if kind == "cnn_projection":
             x = projection(gelu(conv(gelu(conv(gelu(x), 2)), 3)))
             output_shape = [1, 13, 896]
-    elif kind in ("conv2", "conv3"):
-        second = kind == "conv2"
+    elif kind in ("conv2", "conv3", "conv2_linear"):
+        second = kind.startswith("conv2")
         input_shape = [1, 480, 64, 50] if second else [1, 480, 32, 25]
         output_shape = [1, 480, 32, 25] if second else [1, 480, 16, 13]
-        x = conv(x, 2 if second else 3)
+        x = conv(x, 2 if second else 3, bias=kind != "conv2_linear")
     elif kind == "conv_out":
         input_shape, output_shape = [1, 480, 16, 13], [1, 13, 896]
         x = projection(x)
@@ -174,7 +174,15 @@ def main():
     if args.linear_reference:
         export_frame_matrices(args.linear_reference, args.text_gguf, args.output)
     weights = {w.name: w for w in gguf.GGUFReader(args.audio_gguf).tensors}
-    for kind in ("conv1", "conv2", "conv3", "conv_out", "cnn_projection"):
+    for kind in (
+        "conv1",
+        "conv2",
+        "conv3",
+        "conv1_linear",
+        "conv2_linear",
+        "conv_out",
+        "cnn_projection",
+    ):
         export(weights, kind, None, args.output / f"{kind}.onnx")
     for tokens in sorted(set(args.tokens)):
         for kind in ("block0", "ffn0", "projector"):
