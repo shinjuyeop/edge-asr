@@ -58,7 +58,7 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 
 ## GGUF 연산별 진단
 
-2026-11-20 이후 새로 만든 계측 빌드는 그룹별 최초 관측 순서와 모든 작업 스레드를 합친 프로세스 CPU 초를 함께 기록합니다. 기존 빌드의 기록에는 이 필드가 없습니다. 별도 `--profile-operators --capture-boundaries` 빌드에만 `EDGE_ASR_QWEN_BOUNDARY_DIR`로 단일 창·단일 호출의 빈 출력 폴더를 지정할 수 있습니다. 계측을 켜면 Qwen의 합성곱·첫 Transformer 블록·최종 투영 경계를 GGML 차원 역순의 파일명과 연속 FP32 바이트로 보존합니다. 같은 이름 충돌·형식 오류는 유효하지 않은 trace로 처리합니다. 복사·파일 쓰기가 있는 호출은 지연 대조에서 제외합니다.
+2026-11-20 이후 새로 만든 계측 빌드는 그룹별 최초 관측 순서와 모든 작업 스레드를 합친 프로세스 CPU 초를 함께 기록합니다. 기존 빌드의 기록에는 이 필드가 없습니다. 별도 `--profile-operators --capture-boundaries` 빌드에만 `EDGE_ASR_QWEN_BOUNDARY_DIR`로 단일 창·단일 호출의 빈 출력 폴더를 지정할 수 있습니다. 계측을 켜면 Qwen의 DFT·Mel 계수와 입출력, 합성곱·첫 Transformer 블록·최종 투영, 각 LLM 단계에서 첫 FFN up 행렬곱의 첫 입출력을 GGML 차원 역순의 파일명과 연속 FP32 바이트로 보존합니다. 같은 이름 충돌·형식 오류는 유효하지 않은 trace로 처리합니다. 복사·파일 쓰기가 있는 호출은 지연 대조에서 제외합니다.
 
 
 `build.py --profile-operators`로 새 경로에 빌드하면 `operator_profile_v1`과 `edge_gguf_set_operator_profile(handle, 0/1)`을 추가합니다. Python 어댑터의 `set_operator_profile(bool)`로 호출 사이에 켜고 끕니다. 기본 빌드와 공유 실행 설정은 그대로입니다. [operator_profile.h](gguf/operator_profile.h)는 단계·연산·tensor 이름·입력 dtype별 시간과 횟수를8192그룹까지 모으며, 콜백 불일치·역전 시계·용량 초과를 실패로 드러냅니다. 같은 그룹의 shape 변화도 표시하고 tensor payload는 읽지 않습니다.

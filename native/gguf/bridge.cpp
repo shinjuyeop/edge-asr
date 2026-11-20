@@ -89,7 +89,8 @@ bool profile_callback(ggml_tensor* t, bool ask, void* user) {
     }
     profile.after(t,ended,cpu_ended,node);
 #ifdef EDGE_ASR_QWEN_BOUNDARIES
-    if (profile.phase == "audio_encoder" && !dump_qwen_boundary(t)) {
+    const auto group = profile.groups.find({profile.phase, node.key()});
+    if (group != profile.groups.end() && group->second.count == 1 && !dump_qwen_boundary(t, profile.phase)) {
         profile.valid = false;
         return false;
     }

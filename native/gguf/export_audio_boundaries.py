@@ -1,4 +1,4 @@
-"""고정 Qwen audio GGUF에서 검산할 정적 ONNX 경계들을 내보낸다. Host 전용 선택 도구."""
+"""고정 Qwen GGUF와 실제 특징 계수에서 검산할 정적 ONNX 경계들을 내보낸다. Host 전용 선택 도구."""
 
 import argparse
 from pathlib import Path
@@ -126,17 +126,48 @@ def export(weights, kind, tokens, path):
         file.write(model.SerializeToString())
 
 
+def export_frame_matrices(directory, text_gguf, output):
+    """DFT·Mel·LLM FFN up은 행별 독립 선형 변환이다. 실제 GGML 방향을 유지한다."""
+    if digest(text_gguf) != MODEL_FILES["Qwen3-ASR-0.6B-Q8_0.gguf"]:
+        raise ValueError("현재 Q8 text GGUF 해시와 일치해야 합니다.")
+    reader = gguf.GGUFReader(text_gguf)
+    up = next(t for t in reader.tensors if t.name == "blk.0.ffn_up.weight")
+    matrices = {"llm_up": gguf.dequantize(up.data, up.tensor_type).reshape(3072, 1024)}
+    for name, rows, columns in (("dft_basis", 402, 400), ("mel_filters", 128, 201)):
+        file = directory / f"{name}_1_1_{rows}_{columns}.f32"
+        matrices[name] = np.fromfile(file, dtype="<f4").reshape(rows, columns)
+    for name, matrix in matrices.items():
+        rows, columns = matrix.shape
+        graph = helper.make_graph(
+            [helper.make_node("MatMul", ["input", "weight"], ["output"], name=name)],
+            name,
+            [helper.make_tensor_value_info("input", TensorProto.FLOAT, [1, columns])],
+            [helper.make_tensor_value_info("output", TensorProto.FLOAT, [1, rows])],
+            [numpy_helper.from_array(matrix.T.copy(), "weight")],
+        )
+        model = helper.make_model(graph, opset_imports=[helper.make_opsetid("", 17)], ir_version=9)
+        onnx.checker.check_model(model, full_check=True)
+        with (output / f"{name}.onnx").open("xb") as file:
+            file.write(model.SerializeToString())
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--audio-gguf", required=True, type=Path)
     p.add_argument("--tokens", required=True, type=int, nargs="+")
     p.add_argument("--output", required=True, type=Path)
+    p.add_argument("--linear-reference", type=Path, help="실제 DFT·Mel 계수를 추출한 호출 디렉터리")
+    p.add_argument("--text-gguf", type=Path, help="첫 LLM FFN up 투영의 원래 Q8 가중치")
     args = p.parse_args()
+    if bool(args.linear_reference) != bool(args.text_gguf):
+        p.error("--linear-reference와 --text-gguf를 함께 지정하세요.")
     if digest(args.audio_gguf) != MODEL_FILES["mmproj-Qwen3-ASR-0.6B-Q8_0.gguf"]:
         p.error("현재 Q8 mmproj 해시와 일치해야 합니다.")
     if any(n <= 0 or n % 13 or n > 104 for n in args.tokens):
         p.error("한 encoder 창에서 패딩을 포함한 실제 13~104 토큰 수를 지정하세요.")
     args.output.mkdir(parents=True, exist_ok=False)
+    if args.linear_reference:
+        export_frame_matrices(args.linear_reference, args.text_gguf, args.output)
     weights = {w.name: w for w in gguf.GGUFReader(args.audio_gguf).tensors}
     for kind in ("conv1", "conv_out", "cnn_projection"):
         export(weights, kind, None, args.output / f"{kind}.onnx")
