@@ -1,0 +1,3179 @@
+{
+  "run_id": "near-final-stream-20261120-01",
+  "source": "a5fa52e5841f4701f2ac91961016ee7861955541",
+  "execution": {
+    "source": "a5fa52e5841f4701f2ac91961016ee7861955541",
+    "status": "completed",
+    "phases": [
+      {
+        "label": "fixed-baseline",
+        "command": [
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "thermal-run",
+          "--output",
+          "results/optimization/opt3/near-final-stream-20261120-01/fixed-baseline",
+          "--timeout-s",
+          "1800",
+          "--temperature-policy",
+          "operational",
+          "--admission-temperature-c",
+          "60",
+          "--",
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "replay-qwen3",
+          "--config",
+          "configs/gguf_final_draft.toml",
+          "--manifest",
+          "results/optimization/opt3/near-final-stream-20261120-01/inputs/fixed.jsonl",
+          "--output",
+          "results/optimization/opt3/near-final-stream-20261120-01/fixed-baseline",
+          "--vad-model",
+          "models/silero-vad-k2-20261029/silero_vad.onnx",
+          "--gap-s",
+          "0",
+          "--vad-threshold",
+          "0.3",
+          "--vad-preprocess",
+          "rms26-floor80",
+          "--vad-max-speech-s",
+          "5",
+          "--max-segment-s",
+          "5",
+          "--partial-mode",
+          "continuous",
+          "--continuous-policy",
+          "headroom",
+          "--partial-after-s",
+          "0.6",
+          "--partial-min-new-s",
+          "1.0",
+          "--partial-tail-margin-s",
+          "0.2",
+          "--partial-thermal-policy",
+          "pace",
+          "--cancel-partial-for-final",
+          "--token-stream",
+          "--drain-timeout-s",
+          "30",
+          "--queue-capacity",
+          "4",
+          "--silence-policy",
+          "skip-zero"
+        ],
+        "start_unix": 1795147974.3494625,
+        "exit": 0,
+        "end_unix": 1795148902.5050778,
+        "complete": true,
+        "score": 0.10862785862785863,
+        "failures": 0,
+        "limit_verified": true,
+        "operational_valid": true
+      },
+      {
+        "label": "fixed-followup",
+        "command": [
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "thermal-run",
+          "--output",
+          "results/optimization/opt3/near-final-stream-20261120-01/fixed-followup",
+          "--timeout-s",
+          "1800",
+          "--temperature-policy",
+          "operational",
+          "--admission-temperature-c",
+          "60",
+          "--",
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "replay-qwen3",
+          "--config",
+          "configs/gguf_final_draft.toml",
+          "--manifest",
+          "results/optimization/opt3/near-final-stream-20261120-01/inputs/fixed.jsonl",
+          "--output",
+          "results/optimization/opt3/near-final-stream-20261120-01/fixed-followup",
+          "--vad-model",
+          "models/silero-vad-k2-20261029/silero_vad.onnx",
+          "--gap-s",
+          "0",
+          "--vad-threshold",
+          "0.3",
+          "--vad-preprocess",
+          "rms26-floor80",
+          "--vad-max-speech-s",
+          "5",
+          "--max-segment-s",
+          "5",
+          "--partial-mode",
+          "continuous",
+          "--continuous-policy",
+          "headroom_followup",
+          "--partial-after-s",
+          "0.6",
+          "--partial-min-new-s",
+          "1.0",
+          "--partial-tail-margin-s",
+          "0.2",
+          "--partial-thermal-policy",
+          "pace",
+          "--cancel-partial-for-final",
+          "--token-stream",
+          "--drain-timeout-s",
+          "30",
+          "--queue-capacity",
+          "4",
+          "--silence-policy",
+          "skip-zero"
+        ],
+        "start_unix": 1795148902.5059602,
+        "exit": 0,
+        "end_unix": 1795149867.1186023,
+        "complete": true,
+        "score": 0.10914760914760915,
+        "failures": 0,
+        "limit_verified": true,
+        "operational_valid": true
+      }
+    ],
+    "manifest_sha256": "f693163f3d0d11a09873d3d5dbbd8a68aea6ebd1897cc051fd99dd076f8b76ab",
+    "runner_sha256": "4aee1f2f089957c26572166865e2e91c83afaccdee7c2f1230b3d2010e1682b6"
+  },
+  "protected_files": 246,
+  "raw_sha256": {
+    "protected-after.json": "358afd945dd54fdeca7ed8616980b6e08573e4fef95949f0edb8b9e476205c2d",
+    "fixed-baseline.log": "c2c5e55c8a6725a8f523b7f07ff5ead51546a9a48bb2c8896fb08ef1cb4014db",
+    "protected-before.json": "358afd945dd54fdeca7ed8616980b6e08573e4fef95949f0edb8b9e476205c2d",
+    "fixed-followup.log": "5ae5a899052aa154d6a2e780ed07c78dbb29b6b9622194566b3a2e3b6de4fd66",
+    "campaign.json": "5f093ae9f47bf86c15976b4d94806b7132018a9750a004d909449ea51a7e8747",
+    "inputs/fixed.jsonl": "f693163f3d0d11a09873d3d5dbbd8a68aea6ebd1897cc051fd99dd076f8b76ab",
+    "fixed-followup/threads.jsonl": "962b4afc4f99315c757dcc1c61cce020c8808ff73820e173f64c1d6ab3eae4cd",
+    "fixed-followup/execution.json": "1dbe7bcde890d4efd736cc16137284858ca075a5329beb09fd763407f24c0194",
+    "fixed-followup/thermal.jsonl": "2a9bb96af9b11336daebb1f9ca4b34735869db64decc86a8b1022dfc26c19236",
+    "fixed-followup/worker.json": "98274089dc992be2bacaa2fa2f120a932547fbd4cb0833471d9df942bf8d352a",
+    "fixed-followup/jobs.jsonl": "04e7f8e768aa816802464bec0c7c9db0578292003be72b4b305b1b8d36a26aaa",
+    "fixed-followup/console.log": "c0523c2e651d763240f80fab1401f56a83c439dd4d725ec10cadbe6352d134eb",
+    "fixed-followup/warnings.jsonl": "f642530a4845736d45797890be56ad8d9eff368a254f1220ad35a840a1629b47",
+    "fixed-followup/admission.jsonl": "32259275b6c26551395fb6d780d37f1998353ce958bff4a9f6b460c2bd504e66",
+    "fixed-followup/stream/decoder.jsonl": "8a171484ae4519d11002fb331b87dce2bf4107a8dbe2e59a80255d05079fecdf",
+    "fixed-followup/stream/producer.jsonl": "43522778e754efb80de502bce931ccf47a42d4a76b102cee30a7804790cafbb9",
+    "fixed-followup/stream/backlog.jsonl": "1fc1374139ab76b24c8a627ddc18144e818e406002d798d3a7d3398bd5ee1ebb",
+    "fixed-baseline/threads.jsonl": "834ccaf179b090474576b4382055b27a0d77e22d8cde051761fe426a290fe445",
+    "fixed-baseline/execution.json": "5c6b5e51bec2851dd9723c163effdbb5697f7ba23db0428fde16215251e724ca",
+    "fixed-baseline/thermal.jsonl": "2cb5afac976f4f0038968170d965c57fa575fd29917b145a22e6b26efd7c6415",
+    "fixed-baseline/worker.json": "269809e532e5bb23b9bffeeb233d27def6e1c94fd4158b9fdc895cc81869836e",
+    "fixed-baseline/jobs.jsonl": "b4986f6786fbf56167b8e3ff013caf9139886bbd2c0f493595f74405be7efe6e",
+    "fixed-baseline/console.log": "093a8e0a7b60ec6e7a21dc31b3e252e0779e8b9ae10c1ba3c0b5e42f9e766d34",
+    "fixed-baseline/warnings.jsonl": "0934f64f956b4f04b2b6b061c105ee6a142a107141000c9c34d8887576f2f9f1",
+    "fixed-baseline/admission.jsonl": "8dad3f5bdb27b430d4cbd48ab3edb078b9ebebfa4b6a56a1df9d31cdbe755a4b",
+    "fixed-baseline/stream/decoder.jsonl": "1f163795ca5d56bc53ea8161f2f5225ec6c81220877e3a874e957c545594de54",
+    "fixed-baseline/stream/producer.jsonl": "3f0274a6cfb64818795f41f51ddb5319bd6d78e54589dbafecf39b97667ee39c",
+    "fixed-baseline/stream/backlog.jsonl": "d67603f5dba459d5409d7cc1339afc352db00875df7959f2e6d3983f5c8dca41"
+  },
+  "paired": {
+    "same_final_pcm": 210,
+    "both_success": 210,
+    "per_arm_end_to_final_s": {
+      "fixed-baseline": {
+        "n": 210,
+        "mean": 2.81043578582125,
+        "p50": 2.8130246450305094,
+        "p95": 3.7584388300189744,
+        "max": 4.54298643897846
+      },
+      "fixed-followup": {
+        "n": 210,
+        "mean": 2.9158950724186297,
+        "p50": 2.9479688879958985,
+        "p95": 3.8475216750306913,
+        "max": 4.622722935998809
+      }
+    },
+    "paired_final_delta_s": {
+      "n": 210,
+      "mean": 0.10545928659737996,
+      "p50": 0.09128641604911536,
+      "p95": 0.38557915308047086,
+      "max": 1.4118573621381074
+    },
+    "changed_raw": 3,
+    "changed_normalized": 2,
+    "changed": [
+      {
+        "segment_id": 9,
+        "baseline": "이 이야기에 관계된 두 명의 성인 자녀를 둔 기혼자인 뷰발은.",
+        "followup": "이 이야기에 관계된 두 명의 성인 자녀를 둔 기혼자인 뒤발은.",
+        "normalized_changed": true
+      },
+      {
+        "segment_id": 100,
+        "baseline": "몽둥이와 함께 변시의 가게에선 수에 파이프와 곡괭이 자로 가.",
+        "followup": "몽둥이와 함께 변시의 가게에선 수에 파이프와 곶갱이 자로가.",
+        "normalized_changed": true
+      },
+      {
+        "segment_id": 170,
+        "baseline": "노유동 특파원 미국 최대의 방산 업체인 로킷마틴이 지난 이십구 일",
+        "followup": "노유동 특파원 미국 최대의 방산 업체인 로킷 마틴이 지난 이십구 일",
+        "normalized_changed": false
+      }
+    ]
+  },
+  "mechanism": {
+    "fixed-baseline": {
+      "long_gaps": {
+        "interior_ge4": 45,
+        "edge_ge4": 0,
+        "partial_to_final_same_ge4": 41,
+        "same_partial_to_final_ge4_with_extra": 0,
+        "same_partial_to_final_gap_decisions": {
+          "near_final_without_offer": 41
+        }
+      },
+      "normalized_fresh_gap_s": {
+        "n": 420,
+        "mean": 2.121773363095238,
+        "p50": 1.6949320810381323,
+        "p95": 4.370744232088327,
+        "max": 4.9537433800287545
+      },
+      "normalized_fresh_ge4": 45,
+      "followups": 0,
+      "followup_statuses": {},
+      "followup_inference_s": 0,
+      "partial_inference_s": 239.98637868335936,
+      "final_inference_s": 413.1311338052619,
+      "old_end_content_changes": 0,
+      "changed_before_final_submit": 0,
+      "improved_prefix_before_submit": 0,
+      "completed_before_final_submit": 0,
+      "changed_any": 0,
+      "rows": []
+    },
+    "fixed-followup": {
+      "long_gaps": {
+        "interior_ge4": 14,
+        "edge_ge4": 0,
+        "partial_to_final_same_ge4": 11,
+        "same_partial_to_final_ge4_with_extra": 2,
+        "same_partial_to_final_gap_decisions": {
+          "offered": 2,
+          "near_final_without_offer": 9
+        }
+      },
+      "normalized_fresh_gap_s": {
+        "n": 444,
+        "mean": 2.007082911036036,
+        "p50": 1.7674095219699666,
+        "p95": 3.8453174870228395,
+        "max": 4.671465554041788
+      },
+      "normalized_fresh_ge4": 14,
+      "followups": 53,
+      "followup_statuses": {
+        "cancelled": 26,
+        "success": 27
+      },
+      "followup_inference_s": 92.46462922764476,
+      "partial_inference_s": 313.1856485269964,
+      "final_inference_s": 428.8734092480736,
+      "old_end_content_changes": 0,
+      "changed_before_final_submit": 42,
+      "improved_prefix_before_submit": 36,
+      "completed_before_final_submit": 27,
+      "changed_any": 42,
+      "rows": [
+        {
+          "segment_id": 2,
+          "job_id": 6,
+          "status": "cancelled",
+          "inference_s": 1.5290719290496781,
+          "predicted_s": 1.548019536018711,
+          "remaining_at_offer_s": 1.764,
+          "actual_to_submit_s": 1.4967127459822223,
+          "first_change_from_start_s": null,
+          "changed_before_final_submit": false,
+          "changed_any": false,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": false,
+          "final_queue_s": 0.03281616803724319,
+          "previous": "비슈케크가 무정부 상태.",
+          "new_before": null,
+          "final": "비슈케크가 무정부 상태로 빠지고 있다고 묘사하였습니다."
+        },
+        {
+          "segment_id": 5,
+          "job_id": 15,
+          "status": "cancelled",
+          "inference_s": 1.382647310034372,
+          "predicted_s": 1.7194660512909932,
+          "remaining_at_offer_s": 1.948,
+          "actual_to_submit_s": 1.3349835129920393,
+          "first_change_from_start_s": null,
+          "changed_before_final_submit": false,
+          "changed_any": false,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": false,
+          "final_queue_s": 0.047862317063845694,
+          "previous": "지구가 마치 움직이지 않은 것처럼",
+          "new_before": null,
+          "final": "지구가 마치 움직이지 않은 것처럼 느껴지기에 언뜻보기에 맞는 말 같기."
+        },
+        {
+          "segment_id": 9,
+          "job_id": 28,
+          "status": "success",
+          "inference_s": 1.7315836290363222,
+          "predicted_s": 1.3710422236858513,
+          "remaining_at_offer_s": 2.232,
+          "actual_to_submit_s": 1.8023205400677398,
+          "first_change_from_start_s": 1.3052616820205003,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0011134529486298561,
+          "previous": "이 이야기에 관계된 두 명",
+          "new_before": "이 이야기에 관계된 두 명의 성인 자녀를.",
+          "final": "이 이야기에 관계된 두 명의 성인 자녀를 둔 기혼자인 뒤발은."
+        },
+        {
+          "segment_id": 15,
+          "job_id": 45,
+          "status": "cancelled",
+          "inference_s": 2.072916263015941,
+          "predicted_s": 1.65790574377951,
+          "remaining_at_offer_s": 1.904,
+          "actual_to_submit_s": 2.016532938927412,
+          "first_change_from_start_s": 1.7909621979342774,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.056594696012325585,
+          "previous": "그들은 에릭 더 웨드가 살인.",
+          "new_before": "그들은 에릭 더 웨드가 살인죄로 아이슬",
+          "final": "그들은 에릭 더 웨드가 살인죄로 아이슬란드에서 추방당했다고 말한다."
+        },
+        {
+          "segment_id": 22,
+          "job_id": 61,
+          "status": "success",
+          "inference_s": 1.8076545060612261,
+          "predicted_s": 1.790069131,
+          "remaining_at_offer_s": 2.212,
+          "actual_to_submit_s": 2.2787829129956663,
+          "first_change_from_start_s": 1.4414757629856467,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.001929847989231348,
+          "previous": "인터넷은 집단적인 커뮤니티.",
+          "new_before": "인터넷은 집단적인 커뮤니케이션과 사람.",
+          "final": "인터넷은 집단적인 커뮤니케이션과 사람과 사람간의 커뮤니케이션 요소를 모두."
+        },
+        {
+          "segment_id": 24,
+          "job_id": 66,
+          "status": "cancelled",
+          "inference_s": 2.0426973910070956,
+          "predicted_s": 1.6192040739792148,
+          "remaining_at_offer_s": 2.052,
+          "actual_to_submit_s": 2.0309437670512125,
+          "first_change_from_start_s": 1.584744414081797,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.011965070036239922,
+          "previous": "20세기의 연구에 따르면.",
+          "new_before": "20세기의 연구에 따르면 숨겨지거나 나타나는",
+          "final": "20세기의 연구에 따르면 숨겨지거나 나타나는 두 가지 유전적 변이 집단이 있습니다."
+        },
+        {
+          "segment_id": 29,
+          "job_id": 75,
+          "status": "cancelled",
+          "inference_s": 1.3175332909449935,
+          "predicted_s": 1.526089179295612,
+          "remaining_at_offer_s": 2.052,
+          "actual_to_submit_s": 1.309633843949996,
+          "first_change_from_start_s": null,
+          "changed_before_final_submit": false,
+          "changed_any": false,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": false,
+          "final_queue_s": 0.008122022962197661,
+          "previous": "이것은 몇몇 동사와.",
+          "new_before": null,
+          "final": "이것은 몇몇 동사와 사물을 구별하는 중요한 방법이다."
+        },
+        {
+          "segment_id": 34,
+          "job_id": 89,
+          "status": "cancelled",
+          "inference_s": 2.0845821999246255,
+          "predicted_s": 1.7069649926141175,
+          "remaining_at_offer_s": 1.984,
+          "actual_to_submit_s": 2.075357391964644,
+          "first_change_from_start_s": 1.7232696230057627,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": false,
+          "final_queue_s": 0.009441105998121202,
+          "previous": "처음에 그는 그레이트 야마.",
+          "new_before": "처음에 그는 그레이트 야모스에 있는 제",
+          "final": "처음에 그는 그리트 야머스에 있는 제임스 페이지 병원에 입원했습니다."
+        },
+        {
+          "segment_id": 39,
+          "job_id": 102,
+          "status": "cancelled",
+          "inference_s": 0.8919048130046576,
+          "predicted_s": 1.616228870760192,
+          "remaining_at_offer_s": 2.032,
+          "actual_to_submit_s": 0.4000594379613176,
+          "first_change_from_start_s": null,
+          "changed_before_final_submit": false,
+          "changed_any": false,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": false,
+          "final_queue_s": 0.49372031504753977,
+          "previous": "서쪽은 사일 남쪽과 서쪽은",
+          "new_before": null,
+          "final": "서쪽은 사일, 남쪽과 서쪽은 대서양에 접해 있습니다."
+        },
+        {
+          "segment_id": 42,
+          "job_id": 110,
+          "status": "cancelled",
+          "inference_s": 1.1074872019235045,
+          "predicted_s": 1.40706080912,
+          "remaining_at_offer_s": 2.196,
+          "actual_to_submit_s": 1.0988513599149883,
+          "first_change_from_start_s": null,
+          "changed_before_final_submit": false,
+          "changed_any": false,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": false,
+          "final_queue_s": 0.008847103104926646,
+          "previous": "그래서 단순히 라벨",
+          "new_before": null,
+          "final": "그래서 단순히 라벨로 표기했을 가능성이 높다."
+        },
+        {
+          "segment_id": 44,
+          "job_id": 118,
+          "status": "cancelled",
+          "inference_s": 1.7132735309423879,
+          "predicted_s": 1.6140376725600907,
+          "remaining_at_offer_s": 1.908,
+          "actual_to_submit_s": 1.7044882989721373,
+          "first_change_from_start_s": null,
+          "changed_before_final_submit": false,
+          "changed_any": false,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": false,
+          "final_queue_s": 0.008978251949883997,
+          "previous": "뇌 병리와 행동 사이의 상관.",
+          "new_before": null,
+          "final": "뇌 병리와 행동 사이의 상관관계가 과학자들의 연구를 돕습니다."
+        },
+        {
+          "segment_id": 45,
+          "job_id": 122,
+          "status": "cancelled",
+          "inference_s": 1.97907545696944,
+          "predicted_s": 1.678723094628118,
+          "remaining_at_offer_s": 1.912,
+          "actual_to_submit_s": 1.9703155780443922,
+          "first_change_from_start_s": 1.8287148650269955,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.008986158994957805,
+          "previous": "이 법칙은 주요 피사체를 위.",
+          "new_before": "이 법칙은 주요 피사체를 위치시키",
+          "final": "이 법칙은 주요 피사체를 위치시키기에 가장 효과적인 위치는 이미지."
+        },
+        {
+          "segment_id": 49,
+          "job_id": 129,
+          "status": "success",
+          "inference_s": 1.7077514900593087,
+          "predicted_s": 1.585920574312941,
+          "remaining_at_offer_s": 2.084,
+          "actual_to_submit_s": 2.149581884033978,
+          "first_change_from_start_s": 1.4613434100756422,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": false,
+          "final_queue_s": 0.0017499389359727502,
+          "previous": "바래 표면은 돌과 먼지로.",
+          "new_before": "바래 표면은 돌과 먼지로 이루어져 있는데.",
+          "final": "달의 표면은 돌과 먼지로 이루어져 있는데 달의 바깥층은 크러스트라고 불."
+        },
+        {
+          "segment_id": 52,
+          "job_id": 137,
+          "status": "cancelled",
+          "inference_s": 1.9115389209473506,
+          "predicted_s": 1.4992418834969818,
+          "remaining_at_offer_s": 1.792,
+          "actual_to_submit_s": 1.885052114026621,
+          "first_change_from_start_s": 1.650862216949463,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.026730104931630194,
+          "previous": "여행자들은 여행 계획에 찾.",
+          "new_before": "여행자들은 여행 계획에 차질이 생",
+          "final": "여행자들은 여행 계획에 차질이 생기지 않도록 현지 날씨에 대해 미리."
+        },
+        {
+          "segment_id": 54,
+          "job_id": 142,
+          "status": "success",
+          "inference_s": 1.5593975600786507,
+          "predicted_s": 1.249011652325167,
+          "remaining_at_offer_s": 2.104,
+          "actual_to_submit_s": 2.20255231205374,
+          "first_change_from_start_s": 1.0620438660262153,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0017986060120165348,
+          "previous": "가상현대.",
+          "new_before": "가상 현장 학습은 현장",
+          "final": "가상 현장 학습은 현장 학습을 되돌아보고 미래 학급과."
+        },
+        {
+          "segment_id": 65,
+          "job_id": 162,
+          "status": "cancelled",
+          "inference_s": 2.053764545940794,
+          "predicted_s": 1.620460774265306,
+          "remaining_at_offer_s": 2.016,
+          "actual_to_submit_s": 2.0191115129273385,
+          "first_change_from_start_s": 1.3632027219282463,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.03490677603986114,
+          "previous": "아피아는 사모아의 수도다.",
+          "new_before": "아피아는 사모아이스 도다 이 마을은 우플루",
+          "final": "아피아는 사모아이스 도다. 이 마을은 우플루 섬에 있으며 인구는 4만 명이 조금 안 된다."
+        },
+        {
+          "segment_id": 68,
+          "job_id": 169,
+          "status": "cancelled",
+          "inference_s": 1.9135366210248321,
+          "predicted_s": 1.620534395236324,
+          "remaining_at_offer_s": 1.868,
+          "actual_to_submit_s": 1.9055935620563105,
+          "first_change_from_start_s": 1.31747060501948,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0081521529937163,
+          "previous": "악천오는 피해 심각한 사회.",
+          "new_before": "악천후는 피해 심각한 사회의",
+          "final": "악천후는 피해 심각한 사회의 혼란 또는 인명 손실을 초래할 수 있는 위험한 기상 현상."
+        },
+        {
+          "segment_id": 70,
+          "job_id": 174,
+          "status": "cancelled",
+          "inference_s": 0.8684663240564987,
+          "predicted_s": 1.6026359840658824,
+          "remaining_at_offer_s": 2.076,
+          "actual_to_submit_s": 0.32670354295987636,
+          "first_change_from_start_s": null,
+          "changed_before_final_submit": false,
+          "changed_any": false,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": false,
+          "final_queue_s": 0.541982505004853,
+          "previous": "한 발이 총독 집무실.",
+          "new_before": null,
+          "final": "탄 한 발이 총독 집무실 밖에서 폭발했다."
+        },
+        {
+          "segment_id": 73,
+          "job_id": 182,
+          "status": "success",
+          "inference_s": 1.882719467044808,
+          "predicted_s": 1.6636224707977838,
+          "remaining_at_offer_s": 2.248,
+          "actual_to_submit_s": 2.3025458289775997,
+          "first_change_from_start_s": 1.5099826760124415,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": false,
+          "final_queue_s": 0.0012136379955336452,
+          "previous": "다른 모사 사우루스 외",
+          "new_before": "다른 모사 사우루스 외에는 두려울 것이.",
+          "final": "다른 모사 사우르스 외에는 두려울 것이 아무것도 없었습니다."
+        },
+        {
+          "segment_id": 74,
+          "job_id": 186,
+          "status": "success",
+          "inference_s": 1.7050520810298622,
+          "predicted_s": 1.373019067736211,
+          "remaining_at_offer_s": 2.228,
+          "actual_to_submit_s": 2.303651393041946,
+          "first_change_from_start_s": 1.272963979979977,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0012884719762951136,
+          "previous": "이러한 결정의 구성은.",
+          "new_before": "이러한 결정의 구성은 적외선 분광법.",
+          "final": "이러한 결정의 구성은 적외선 분광법과 비교했을 때 영향을 받은 애안동."
+        },
+        {
+          "segment_id": 77,
+          "job_id": 191,
+          "status": "success",
+          "inference_s": 1.629211482941173,
+          "predicted_s": 1.302588930585034,
+          "remaining_at_offer_s": 2.008,
+          "actual_to_submit_s": 2.1036960260244086,
+          "first_change_from_start_s": 1.0631976149743423,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0018061059527099133,
+          "previous": "오 십 시",
+          "new_before": "오후 열 시에서 열 한 시 MD.",
+          "final": "오후 10시에서 11시 MDT 사이에 수감자들이 교도소"
+        },
+        {
+          "segment_id": 79,
+          "job_id": 196,
+          "status": "cancelled",
+          "inference_s": 1.600610067951493,
+          "predicted_s": 1.6170492915798689,
+          "remaining_at_offer_s": 1.86,
+          "actual_to_submit_s": 1.54373305500485,
+          "first_change_from_start_s": null,
+          "changed_before_final_submit": false,
+          "changed_any": false,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": false,
+          "final_queue_s": 0.057107014930807054,
+          "previous": "그것은 기차와 자동차 및",
+          "new_before": null,
+          "final": "그것은 기차와 자동차 및 여러 교통 수단을 가져다 주었습니다."
+        },
+        {
+          "segment_id": 82,
+          "job_id": 204,
+          "status": "success",
+          "inference_s": 1.7626557459589094,
+          "predicted_s": 1.5303888082609702,
+          "remaining_at_offer_s": 2.04,
+          "actual_to_submit_s": 2.0991659369319677,
+          "first_change_from_start_s": 1.4574872319353744,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0012763610575348139,
+          "previous": "1920년대 대부분의 시.",
+          "new_before": "1920년대 대부분의 시민과 국가에서.",
+          "final": "1920년대 대부분의 시민과 국가에서 우세했던 성향은 평화주의와."
+        },
+        {
+          "segment_id": 84,
+          "job_id": 209,
+          "status": "success",
+          "inference_s": 1.9632806370500475,
+          "predicted_s": 1.5714887766681516,
+          "remaining_at_offer_s": 2.004,
+          "actual_to_submit_s": 2.0608976170187816,
+          "first_change_from_start_s": 1.5279094569850713,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0017708840314298868,
+          "previous": "박 씨는 지난 오일에도.",
+          "new_before": "박 씨는 지난 오일에도 본보드 언론과.",
+          "final": "박 씨는 지난 오일에도 본보드 언론과 장시간 전화 인터뷰를 할 정도로 증거가 많았다."
+        },
+        {
+          "segment_id": 91,
+          "job_id": 225,
+          "status": "cancelled",
+          "inference_s": 2.076216230983846,
+          "predicted_s": 1.6680069054829931,
+          "remaining_at_offer_s": 1.912,
+          "actual_to_submit_s": 2.018260116921738,
+          "first_change_from_start_s": 1.8997353150043637,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": false,
+          "final_queue_s": 0.05816794803831726,
+          "previous": "견인이 관고로운 고급 수입차와",
+          "new_before": "견인이 관고로운 고급 수입차와 사륜",
+          "final": "견인이 번거로운 고급 수입차와 사륜구동차는 견인하지 않는다는 불문율이 공공연히."
+        },
+        {
+          "segment_id": 95,
+          "job_id": 232,
+          "status": "success",
+          "inference_s": 1.6613732759142295,
+          "predicted_s": 1.4835122397431422,
+          "remaining_at_offer_s": 2.168,
+          "actual_to_submit_s": 2.2040777310030535,
+          "first_change_from_start_s": 1.2953177569434047,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0005397999193519354,
+          "previous": "약권은 여당에서.",
+          "new_before": "약권은 여당에서 분명한 입장을.",
+          "final": "약권은 여당에서 분명한 입장을 표해야 한다고 연희."
+        },
+        {
+          "segment_id": 98,
+          "job_id": 238,
+          "status": "success",
+          "inference_s": 1.6459149019792676,
+          "predicted_s": 1.2668665387817373,
+          "remaining_at_offer_s": 2.096,
+          "actual_to_submit_s": 2.202899240073748,
+          "first_change_from_start_s": 1.220559278037399,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.00175303197465837,
+          "previous": "젠슨 황은.",
+          "new_before": "젠슨 황은 N B D A 에서.",
+          "final": "젠슨 황은 N B D A 에서 매출의 삼십 퍼센트 이상"
+        },
+        {
+          "segment_id": 102,
+          "job_id": 248,
+          "status": "cancelled",
+          "inference_s": 1.9501380389556289,
+          "predicted_s": 1.348228203079002,
+          "remaining_at_offer_s": 1.848,
+          "actual_to_submit_s": 1.913740215008147,
+          "first_change_from_start_s": 1.625121729914099,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.03663289989344776,
+          "previous": "이마섭 특파원 미국",
+          "new_before": "이마섭 특파원 미국 내부의 스카",
+          "final": "이마섭 특파원 미국 내부레스카주 오마하의 동물원"
+        },
+        {
+          "segment_id": 105,
+          "job_id": 254,
+          "status": "success",
+          "inference_s": 1.6209658480947837,
+          "predicted_s": 1.3631330948728606,
+          "remaining_at_offer_s": 2.064,
+          "actual_to_submit_s": 2.1053191490937024,
+          "first_change_from_start_s": 1.2405878700083122,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0005915230140089989,
+          "previous": "이미 알려진대로.",
+          "new_before": "이미 알려진대로 미국은 한반도에",
+          "final": "이미 알려진대로 미군은 한반도의 세계 사드 포드 기지 배."
+        },
+        {
+          "segment_id": 107,
+          "job_id": 259,
+          "status": "success",
+          "inference_s": 1.8593445350416005,
+          "predicted_s": 1.616085200082353,
+          "remaining_at_offer_s": 1.996,
+          "actual_to_submit_s": 2.1020480500301346,
+          "first_change_from_start_s": 1.4717550780624151,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0018600510666146874,
+          "previous": "꽤 추천이라고 했으니까.",
+          "new_before": "꽤 추천이라고 했으니까 새누리당은.",
+          "final": "꽤 추천이라고 했으니까 새누리당은 사사 껀 껀 단지를 걸며."
+        },
+        {
+          "segment_id": 109,
+          "job_id": 264,
+          "status": "cancelled",
+          "inference_s": 1.916871014982462,
+          "predicted_s": 1.5460905129852007,
+          "remaining_at_offer_s": 1.796,
+          "actual_to_submit_s": 1.907209147932008,
+          "first_change_from_start_s": 1.7159714379813522,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0098887390922755,
+          "previous": "해수부는 선수 들기가.",
+          "new_before": "해수부는 선수 들기가 중단된",
+          "final": "해수부는 선수 들기가 중단된 건 예측할 수 없었던 너울 때문이요."
+        },
+        {
+          "segment_id": 115,
+          "job_id": 273,
+          "status": "success",
+          "inference_s": 1.3924922519363463,
+          "predicted_s": 1.3730586729274377,
+          "remaining_at_offer_s": 2.02,
+          "actual_to_submit_s": 2.1041938440175727,
+          "first_change_from_start_s": 1.1344385489355773,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0013042689533904195,
+          "previous": "목적은 다르지.",
+          "new_before": "목적은 다르지만 결국 모두.",
+          "final": "목적은 다르지만 결국 모두 명품이 주는 보상 심리에서."
+        },
+        {
+          "segment_id": 118,
+          "job_id": 279,
+          "status": "success",
+          "inference_s": 1.890589321963489,
+          "predicted_s": 1.326001384138833,
+          "remaining_at_offer_s": 1.784,
+          "actual_to_submit_s": 1.9028813759796321,
+          "first_change_from_start_s": 1.4980128839379176,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0022399049485102296,
+          "previous": "신노 개파가.",
+          "new_before": "신노 개파가 인사권 전회.",
+          "final": "신노 개파가 인사권 전횡을 할 수 없는 그런 보조."
+        },
+        {
+          "segment_id": 120,
+          "job_id": 283,
+          "status": "success",
+          "inference_s": 1.4948482679901645,
+          "predicted_s": 1.3461259454986152,
+          "remaining_at_offer_s": 2.236,
+          "actual_to_submit_s": 2.3041798770427704,
+          "first_change_from_start_s": 1.0338458979967982,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0013101210352033377,
+          "previous": "검고다",
+          "new_before": "검고 당시 정씨 아들로.",
+          "final": "검고 당시 정씨 아들로 추정되는 이천십오년생"
+        },
+        {
+          "segment_id": 122,
+          "job_id": 288,
+          "status": "cancelled",
+          "inference_s": 1.4357857760041952,
+          "predicted_s": 1.2565009853810625,
+          "remaining_at_offer_s": 1.948,
+          "actual_to_submit_s": 1.410052493098192,
+          "first_change_from_start_s": null,
+          "changed_before_final_submit": false,
+          "changed_any": false,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": false,
+          "final_queue_s": 0.025956783909350634,
+          "previous": "정씨는.",
+          "new_before": null,
+          "final": "정 씨는 금메달을 보여드려도 될까요 라며."
+        },
+        {
+          "segment_id": 125,
+          "job_id": 296,
+          "status": "cancelled",
+          "inference_s": 2.0514637880260125,
+          "predicted_s": 1.7968338145395684,
+          "remaining_at_offer_s": 2.016,
+          "actual_to_submit_s": 2.0401728899450973,
+          "first_change_from_start_s": 1.6382334569934756,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.01159110409207642,
+          "previous": "반면 이천구 년 연예계와",
+          "new_before": "반면 이천구 년 연예계와 재계 인사들이 성",
+          "final": "반면 이천구 년 연예계와 재계 인사들이 성상납과 솔접대를 받았다는 의혹을."
+        },
+        {
+          "segment_id": 132,
+          "job_id": 309,
+          "status": "success",
+          "inference_s": 2.134660494979471,
+          "predicted_s": 1.7941924755555556,
+          "remaining_at_offer_s": 2.2,
+          "actual_to_submit_s": 2.289199711056426,
+          "first_change_from_start_s": 1.4969498940045014,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0016928089316934347,
+          "previous": "집에 아무도 없는 것을 의아해.",
+          "new_before": "집에 아무도 없는 것을 의아하던 두 시에 여동생은.",
+          "final": "집에 아무도 없는 것을 의아하던 두 시에 여동생은 거실에 생긴 구멍을 보고는 소실하."
+        },
+        {
+          "segment_id": 135,
+          "job_id": 314,
+          "status": "success",
+          "inference_s": 1.984839406912215,
+          "predicted_s": 1.7625595076531986,
+          "remaining_at_offer_s": 2.512,
+          "actual_to_submit_s": 2.6041980939917266,
+          "first_change_from_start_s": 1.2852058109128848,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0014791589928790927,
+          "previous": "수업 시간이 아닌 어면.",
+          "new_before": "수업 시간이 아닌 엄연히 쉬는 시간이었지만.",
+          "final": "수업 시간이 아닌 엄연히 쉬는 시간이었지만 학교 규정은 학생들의 교내 휴대전화 소."
+        },
+        {
+          "segment_id": 137,
+          "job_id": 318,
+          "status": "success",
+          "inference_s": 1.930526393931359,
+          "predicted_s": 1.7124180263807829,
+          "remaining_at_offer_s": 2.564,
+          "actual_to_submit_s": 2.6046229490311816,
+          "first_change_from_start_s": 1.4092869689920917,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0005842819809913635,
+          "previous": "대통령 측은.",
+          "new_before": "대통령 측은 녹취 파일의 내용에 따라.",
+          "final": "대통령 측은 녹취 파일의 내용에 따라 박 대통령의 탄핵 사유를 부정할 증거로 활용."
+        },
+        {
+          "segment_id": 143,
+          "job_id": 329,
+          "status": "success",
+          "inference_s": 1.9016307919519022,
+          "predicted_s": 1.534383186664122,
+          "remaining_at_offer_s": 2.224,
+          "actual_to_submit_s": 2.237052769982256,
+          "first_change_from_start_s": 1.0888263969682157,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": false,
+          "final_queue_s": 0.0013346029445528984,
+          "previous": "국내에서 1년 동안",
+          "new_before": "국내에서 일 년 동안 재활용되는 가전제.",
+          "final": "국내에서 1년 동안 재활용되는 가전제품이 16만 톤에 이르는데."
+        },
+        {
+          "segment_id": 148,
+          "job_id": 340,
+          "status": "success",
+          "inference_s": 2.0133284690091386,
+          "predicted_s": 1.5359848856077096,
+          "remaining_at_offer_s": 2.016,
+          "actual_to_submit_s": 2.103234541020356,
+          "first_change_from_start_s": 1.4480727550107986,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0013343979371711612,
+          "previous": "스트레스를 받을 때.",
+          "new_before": "스트레스를 받을 때 치킨을 사 먹는다.",
+          "final": "스트레스를 받을 때 치킨을 사 먹는다든지 여행을 가기도 할."
+        },
+        {
+          "segment_id": 153,
+          "job_id": 351,
+          "status": "cancelled",
+          "inference_s": 2.0007233200594783,
+          "predicted_s": 1.429186436444668,
+          "remaining_at_offer_s": 1.784,
+          "actual_to_submit_s": 1.9426327609689906,
+          "first_change_from_start_s": 1.6432484380202368,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.05831007903907448,
+          "previous": "올해 가계 소득과.",
+          "new_before": "올해 가계 소득과 소비 전망에",
+          "final": "올해 가계 소득과 소비 전망에 대해서도 부정적인 의견이."
+        },
+        {
+          "segment_id": 155,
+          "job_id": 355,
+          "status": "success",
+          "inference_s": 1.376348466030322,
+          "predicted_s": 1.388382237457971,
+          "remaining_at_offer_s": 2.292,
+          "actual_to_submit_s": 2.4036178520182148,
+          "first_change_from_start_s": 0.9965334550943226,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0017831060104072094,
+          "previous": "청소년들을.",
+          "new_before": "청소년들을 보호하기 위해서는.",
+          "final": "청소년들을 보호하기 위해서는 아청법이 꼭 필요한 법임을."
+        },
+        {
+          "segment_id": 157,
+          "job_id": 359,
+          "status": "cancelled",
+          "inference_s": 1.2036088559543714,
+          "predicted_s": 1.5660477184726478,
+          "remaining_at_offer_s": 1.944,
+          "actual_to_submit_s": 0.42024895700160414,
+          "first_change_from_start_s": null,
+          "changed_before_final_submit": false,
+          "changed_any": false,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": false,
+          "final_queue_s": 0.7835954199545085,
+          "previous": "이에 따른 피해자도 함께 발생.",
+          "new_before": null,
+          "final": "이에 따른 피해자도 함께 발생하고 있어 문제다."
+        },
+        {
+          "segment_id": 166,
+          "job_id": 378,
+          "status": "success",
+          "inference_s": 2.0600083509925753,
+          "predicted_s": 1.8635882215826087,
+          "remaining_at_offer_s": 2.192,
+          "actual_to_submit_s": 2.2840864319587126,
+          "first_change_from_start_s": 1.5383356439415365,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0016992910532280803,
+          "previous": "국내 경기가 여전히 침체.",
+          "new_before": "국내 경기가 여전히 침체된 상태에서 금리 맞.",
+          "final": "국내 경기가 여전히 침체된 상태에서 금리마저 올라가면 경기 회복 국면에."
+        },
+        {
+          "segment_id": 168,
+          "job_id": 383,
+          "status": "success",
+          "inference_s": 2.001405213959515,
+          "predicted_s": 1.6207085983569682,
+          "remaining_at_offer_s": 2.064,
+          "actual_to_submit_s": 2.1110443939687684,
+          "first_change_from_start_s": 1.4837432960048318,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": false,
+          "final_queue_s": 0.000602486077696085,
+          "previous": "무수 등급은 지금 현재 완.",
+          "new_before": "무수 등급은 지금 현재 완전히 성능 개량을.",
+          "final": "무수 당급은 지금 현재 완전히 성능 개량을 하지는 못하는 것으로 추정하고 있죠."
+        },
+        {
+          "segment_id": 173,
+          "job_id": 392,
+          "status": "cancelled",
+          "inference_s": 0.8943566639209166,
+          "predicted_s": 1.5444154657294118,
+          "remaining_at_offer_s": 1.996,
+          "actual_to_submit_s": 0.8080089699942619,
+          "first_change_from_start_s": null,
+          "changed_before_final_submit": false,
+          "changed_any": false,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": false,
+          "final_queue_s": 0.08699579094536602,
+          "previous": "그녀가 사실을 이야기할 수 있도록",
+          "new_before": null,
+          "final": "그녀가 사실을 이야기할 수 있도록 설득하는 것이 중요하다."
+        },
+        {
+          "segment_id": 177,
+          "job_id": 403,
+          "status": "success",
+          "inference_s": 1.8125485220225528,
+          "predicted_s": 1.5415329146870416,
+          "remaining_at_offer_s": 2.06,
+          "actual_to_submit_s": 2.0032382280332968,
+          "first_change_from_start_s": 1.3979535520775244,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0012862130533903837,
+          "previous": "이들 작품은 그의 인생.",
+          "new_before": "이들 작품은 그의 인생을 바꿨고 오늘.",
+          "final": "이들 작품은 그의 인생을 바꿨고 오늘의 그를 있게 했다."
+        },
+        {
+          "segment_id": 180,
+          "job_id": 410,
+          "status": "success",
+          "inference_s": 1.9924508050316945,
+          "predicted_s": 1.5191316714986738,
+          "remaining_at_offer_s": 2.084,
+          "actual_to_submit_s": 2.2029178669909015,
+          "first_change_from_start_s": 1.2848745000083,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.001929961028508842,
+          "previous": "해수대상은.",
+          "new_before": "해수대상은 2016년 10월이.",
+          "final": "해수대상은 2016년 10월 1일에서 2016년 11."
+        },
+        {
+          "segment_id": 182,
+          "job_id": 415,
+          "status": "cancelled",
+          "inference_s": 2.058283307007514,
+          "predicted_s": 1.4512888340566894,
+          "remaining_at_offer_s": 1.936,
+          "actual_to_submit_s": 2.0110911979572847,
+          "first_change_from_start_s": 1.6666029429761693,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.04742879408877343,
+          "previous": "땅콩 부트 운영업체와",
+          "new_before": "땅콩 부트 운영업체와 모터 부트 운전",
+          "final": "땅콩 부트 운영업체와 모터 부트 운전자는 운영허가와 운전명."
+        },
+        {
+          "segment_id": 185,
+          "job_id": 421,
+          "status": "success",
+          "inference_s": 1.8731507150223479,
+          "predicted_s": 1.5344287519411766,
+          "remaining_at_offer_s": 2.0,
+          "actual_to_submit_s": 2.103614788968116,
+          "first_change_from_start_s": 1.246685405028984,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": true,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.0017052029725164175,
+          "previous": "실제로 의회 예상.",
+          "new_before": "실제로 의회 예산국의 통계에 따르면.",
+          "final": "실제로 의회 예산국의 통계에 따르면 이천십삼년 한 해 동안."
+        },
+        {
+          "segment_id": 193,
+          "job_id": 435,
+          "status": "cancelled",
+          "inference_s": 1.8799270699964836,
+          "predicted_s": 1.5994697721339493,
+          "remaining_at_offer_s": 2.052,
+          "actual_to_submit_s": 1.8569108840310946,
+          "first_change_from_start_s": 1.4763553449884057,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.023366056964732707,
+          "previous": "이들 회사는 텐센트.",
+          "new_before": "이들 회사는 텐센트 거액 투자",
+          "final": "이들 회사는 텐센트 거액 투자 후 호실적을 기록 중이다."
+        },
+        {
+          "segment_id": 196,
+          "job_id": 442,
+          "status": "cancelled",
+          "inference_s": 2.1324166629929096,
+          "predicted_s": 1.6604266046047056,
+          "remaining_at_offer_s": 1.98,
+          "actual_to_submit_s": 2.093514414038509,
+          "first_change_from_start_s": 1.7380390720209107,
+          "changed_before_final_submit": true,
+          "changed_any": true,
+          "completed_before_final_submit": false,
+          "improved_prefix_before_submit": true,
+          "final_queue_s": 0.03912378696259111,
+          "previous": "정부는 비슷한 생활.",
+          "new_before": "정부는 비슷한 생활권인 인접 ",
+          "final": "정부는 비슷한 생활권인 인접 광역 자치단체를 묶어 일곱 개의."
+        }
+      ]
+    }
+  },
+  "verification": {
+    "raw_files": 28,
+    "protected_files": 246,
+    "host_common_protected": 226,
+    "independent_host_rp5_summary_equal": true,
+    "helpers": {
+      "results/maintenance/near-final-stream-20261120-01/progress.py": "a7895b50a4ed78284bf2f0fcb361c13383d7479cb84e707d22af604ccde5d29d",
+      "results/maintenance/near-final-stream-20261120-01/run.py": "4aee1f2f089957c26572166865e2e91c83afaccdee7c2f1230b3d2010e1682b6",
+      "results/maintenance/near-final-stream-20261120-01/listen.py": "7d3e29806997dc047006446226ae58d2d6cb25d1a0a6bf86f3454b3724e1c3d9",
+      "results/maintenance/near-final-stream-20261120-01/watch.py": "73f888b3261167310f777bb5ab157192242ecfd600348f87595a14828b7f94de",
+      "results/maintenance/near-final-stream-20261120-01/analyze.py": "3be40e3e55b00a05610193398b54e9554d230d7d74e31c04f1ed453a057bb1f1",
+      "results/maintenance/near-final-stream-20261120-01/partial_progress.py": "d163cc34ca2e3ad764588750062665c031a4536ae89ef0120c0b1350ebdceed5",
+      "results/maintenance/near-final-stream-20261120-01/tables.py": "4f8e983eecd4c21059b3ad494e42bb98fa7d94487d54b8a3e6566b8989244902",
+      "results/maintenance/near-final-stream-20261120-01/compact.py": "6b00af0a429e63a8a77e5ce2e47ad97ecabd871be2ea819a55892aed53dbc284",
+      "results/maintenance/near-final-stream-20261120-01/targeting.py": "1188a6edf3629e533dd7fd0948d4d73944739dd3c93f3fbf8a1132c4fcf4980d",
+      "/d/shin/edge-asr/results/maintenance/token-draft-fixed100-20261119-01/verify.py": "64466c950d4c8bac0042d672e7a5b3bec9def9e2ccd3b86fa04d03adf40c7f91"
+    }
+  },
+  "matched_long_gaps": {
+    "baseline_long_segments": 41,
+    "candidate_long_segments": 11,
+    "long_in_both": 9,
+    "baseline_long_with_candidate_extra": 24,
+    "candidate_extra_outside_baseline_long": 29,
+    "baseline_long_extra_gone": 24,
+    "baseline_long_gone_without_extra": 8,
+    "new_long_only": 2
+  },
+  "groups": {
+    "fixed-baseline": {
+      "input": {
+        "source_commit": "a5fa52e5841f4701f2ac91961016ee7861955541",
+        "input_manifest_sha256": "f693163f3d0d11a09873d3d5dbbd8a68aea6ebd1897cc051fd99dd076f8b76ab",
+        "config_sha256": "841012b8f418d9966cc9046cae93b2ef31852696cd94d809112ed084c9bc4fc0",
+        "source_dirty": false,
+        "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+        "model_files": {
+          "Qwen3-ASR-0.6B-Q8_0.gguf": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+          },
+          "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+          },
+          "runtime_library": {
+            "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/token-draft-20261119-01/bridge/libedge_asr_gguf.so",
+            "sha256": "1cc11d27276af2eb4bb863dcb62cd8ee670175c3b622408523d5f317f5170b14"
+          },
+          "runtime_manifest": {
+            "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/token-draft-20261119-01/bridge/build.json",
+            "sha256": "ff517313176cc9caf4f90f3de0da2ccc280677acaf54c633854cd629aff652a9"
+          }
+        },
+        "audio": {
+          "sha256": "5008e9154b14533a72326f1745665a7bb8a031508fcda427398fd2a1c24a65cd",
+          "frames": 14258317,
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "sample_width_bytes": 2,
+          "duration_s": 891.1448125
+        },
+        "settings": {
+          "gap_s": 0.0,
+          "vad_preprocess": "rms26-floor80",
+          "vad_threshold": 0.3,
+          "vad_max_speech_s": 5,
+          "partial_after_s": 0.6,
+          "partial_interval_s": 1,
+          "partial_mode": "continuous",
+          "partial_min_new_s": 1.0,
+          "partial_tail_margin_s": 0.2,
+          "adaptive_policy": "recent",
+          "partial_cost_model": "total",
+          "partial_budget_s": 2.5,
+          "protect_short_followup": false,
+          "partial_max_calls": 2,
+          "continuous_policy": "headroom",
+          "partial_thermal_policy": "pace",
+          "cancel_partial_for_final": true,
+          "partial_followup_s": null,
+          "max_segment_s": 5,
+          "drain_timeout_s": 30,
+          "queue_capacity": 4,
+          "token_stream": true,
+          "partials": true,
+          "silence_policy": "skip-zero"
+        },
+        "warmup_input": {
+          "policy": "leading_max_segment_v1",
+          "source_id": "fleurs-13962545215242501803",
+          "source_audio_sha256": "e7b0fd9527a0e3f31922280410f5939d4b9da0a619d1546921cd6957212904de",
+          "source_frames": 235200,
+          "start_frame": 0,
+          "end_frame": 80000,
+          "payload_float32_sha256": "c4128f45d74c47f1175b0adea8dae7e6e2acd400fad95a7b526849841f35e43f",
+          "scope": "첫 원음의 ASR 최대 구간 이내 PCM만 워밍업. 평가 입력은 전체 원음 유지."
+        },
+        "processed_pcm_sha256": "273529b8a519b3b2dab6cd2a1e941633a21e6f4ac3995619967446df77be4dd7",
+        "warmup_successes": 4,
+        "environment": {
+          "machine": "aarch64",
+          "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+          "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+          "runtime": {
+            "sherpa_package_version": "2.0.1",
+            "sherpa_core_package_version": "2.0.1",
+            "python_onnxruntime_package_version": "1.31.1",
+            "sherpa_native_onnxruntime_version": null,
+            "native_version_source": "sherpa_onnx.onnxruntime_version",
+            "status": "not_imported",
+            "reason": "선택 런타임을 아직 import하지 않았습니다."
+          },
+          "thread_environment": {
+            "OMP_WAIT_POLICY": null,
+            "OMP_NUM_THREADS": null,
+            "OMP_DYNAMIC": null,
+            "OMP_PROC_BIND": null,
+            "OMP_PLACES": null,
+            "GOMP_SPINCOUNT": null,
+            "KMP_BLOCKTIME": null,
+            "OPENBLAS_NUM_THREADS": "1"
+          }
+        },
+        "engine_metadata": {
+          "backend": "llama_cpp_mtmd",
+          "quantization": "q8_0",
+          "audio_quantization": "q8_0",
+          "thread_configuration": {
+            "threads": 2,
+            "threads_batch": 3,
+            "audio_threads": 3
+          },
+          "cache_text_prefix": true,
+          "provider": "cpu"
+        }
+      },
+      "score": {
+        "reference_characters": 3848,
+        "errors": 418,
+        "substitutions": 184,
+        "deletions": 160,
+        "insertions": 74,
+        "cer": 0.10862785862785863
+      },
+      "calls": {
+        "partial": {
+          "attempts": 225,
+          "statuses": {
+            "success": 199,
+            "cancelled": 26
+          },
+          "successes_without_normalized_characters": [],
+          "inference_sum_s": 239.98637868335936,
+          "inference_s": {
+            "n": 225,
+            "mean": 1.0666061274815972,
+            "p50": 1.082914708997123,
+            "p95": 1.7999018389964476,
+            "max": 2.0732400990091264
+          },
+          "queue_wait_s": {
+            "n": 225,
+            "mean": 0.000173267077965041,
+            "p50": 0.00017411308363080025,
+            "p95": 0.00026135402731597424,
+            "max": 0.0004747820785269141
+          }
+        },
+        "final": {
+          "attempts": 210,
+          "statuses": {
+            "success": 210
+          },
+          "successes_without_normalized_characters": [
+            114,
+            142,
+            209
+          ],
+          "inference_sum_s": 413.1311338052619,
+          "inference_s": {
+            "n": 210,
+            "mean": 1.9672911133583901,
+            "p50": 2.138484127004631,
+            "p95": 3.5173258549766615,
+            "max": 4.354901738930494
+          },
+          "queue_wait_s": {
+            "n": 210,
+            "mean": 0.6413477264577523,
+            "p50": 0.002981300000101328,
+            "p95": 2.8592582680284977,
+            "max": 3.6198578809853643
+          }
+        }
+      },
+      "failures": [
+        {
+          "segment_id": 6,
+          "kind": "partial",
+          "start_frame": 567232,
+          "end_frame": 612352,
+          "status": "cancelled",
+          "duration_s": 2.82,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 10,
+          "kind": "partial",
+          "start_frame": 956352,
+          "end_frame": 996352,
+          "status": "cancelled",
+          "duration_s": 2.5,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 11,
+          "kind": "partial",
+          "start_frame": 1066432,
+          "end_frame": 1111552,
+          "status": "cancelled",
+          "duration_s": 2.82,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 12,
+          "kind": "partial",
+          "start_frame": 1124288,
+          "end_frame": 1158144,
+          "status": "cancelled",
+          "duration_s": 2.116,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 13,
+          "kind": "partial",
+          "start_frame": 1244096,
+          "end_frame": 1271808,
+          "status": "cancelled",
+          "duration_s": 1.732,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 16,
+          "kind": "partial",
+          "start_frame": 1417664,
+          "end_frame": 1447936,
+          "status": "cancelled",
+          "duration_s": 1.892,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 17,
+          "kind": "partial",
+          "start_frame": 1465280,
+          "end_frame": 1487872,
+          "status": "cancelled",
+          "duration_s": 1.412,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 19,
+          "kind": "partial",
+          "start_frame": 1573824,
+          "end_frame": 1617408,
+          "status": "cancelled",
+          "duration_s": 2.724,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 20,
+          "kind": "partial",
+          "start_frame": 1657792,
+          "end_frame": 1705472,
+          "status": "cancelled",
+          "duration_s": 2.98,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 30,
+          "kind": "partial",
+          "start_frame": 2316224,
+          "end_frame": 2342400,
+          "status": "cancelled",
+          "duration_s": 1.636,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 32,
+          "kind": "partial",
+          "start_frame": 2436160,
+          "end_frame": 2475008,
+          "status": "cancelled",
+          "duration_s": 2.428,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 37,
+          "kind": "partial",
+          "start_frame": 2807744,
+          "end_frame": 2838016,
+          "status": "cancelled",
+          "duration_s": 1.892,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 39,
+          "kind": "partial",
+          "start_frame": 2994112,
+          "end_frame": 3039744,
+          "status": "cancelled",
+          "duration_s": 2.852,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 42,
+          "kind": "partial",
+          "start_frame": 3225536,
+          "end_frame": 3270144,
+          "status": "cancelled",
+          "duration_s": 2.788,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 47,
+          "kind": "partial",
+          "start_frame": 3673024,
+          "end_frame": 3709952,
+          "status": "cancelled",
+          "duration_s": 2.308,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 64,
+          "kind": "partial",
+          "start_frame": 4720576,
+          "end_frame": 4730880,
+          "status": "cancelled",
+          "duration_s": 0.644,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 72,
+          "kind": "partial",
+          "start_frame": 5274048,
+          "end_frame": 5300736,
+          "status": "cancelled",
+          "duration_s": 1.668,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 79,
+          "kind": "partial",
+          "start_frame": 5735360,
+          "end_frame": 5780480,
+          "status": "cancelled",
+          "duration_s": 2.82,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 103,
+          "kind": "partial",
+          "start_frame": 7445568,
+          "end_frame": 7488000,
+          "status": "cancelled",
+          "duration_s": 2.652,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 117,
+          "kind": "partial",
+          "start_frame": 8178624,
+          "end_frame": 8223744,
+          "status": "cancelled",
+          "duration_s": 2.82,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 121,
+          "kind": "partial",
+          "start_frame": 8435776,
+          "end_frame": 8475136,
+          "status": "cancelled",
+          "duration_s": 2.46,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 122,
+          "kind": "partial",
+          "start_frame": 8491968,
+          "end_frame": 8534016,
+          "status": "cancelled",
+          "duration_s": 2.628,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 123,
+          "kind": "partial",
+          "start_frame": 8562624,
+          "end_frame": 8601600,
+          "status": "cancelled",
+          "duration_s": 2.436,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 150,
+          "kind": "partial",
+          "start_frame": 10380224,
+          "end_frame": 10390016,
+          "status": "cancelled",
+          "duration_s": 0.612,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 173,
+          "kind": "partial",
+          "start_frame": 11750336,
+          "end_frame": 11794944,
+          "status": "cancelled",
+          "duration_s": 2.788,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 208,
+          "kind": "partial",
+          "start_frame": 14178240,
+          "end_frame": 14211072,
+          "status": "cancelled",
+          "duration_s": 2.052,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        }
+      ],
+      "source_pcm_signature": "2565bc0491e662124df6888493104aa2d0437c640158c92bf3cc303a5086c0c2",
+      "final_pcm_signature": "2baf78be5c5c6c90e0c6d9ff65c5d5f8a8dea72a407f47d2dfa6a91e1ed04986",
+      "selected_submitted_partial_pcm_signature": "7f7b761b16d39b13ae3d9ae518570b2c3d7d86ea9e107b7166be0f0ec510de22",
+      "stale_displayed_events": 0,
+      "active": {
+        "owned_s": 651.6160000000004,
+        "own_advancing_publish_in_last_1s_percent": 29.302094225715518,
+        "own_displayed_audio_end_in_last_1s_percent": 9.952138730037134,
+        "own_advancing_max_gap_for_segments_ge2s_s": {
+          "n": 140,
+          "mean": 2.347924916809769,
+          "p50": 2.269949460059422,
+          "p95": 3.41599999999994,
+          "max": 5.0
+        }
+      },
+      "pacing": {
+        "chunk_ms": 100,
+        "last_scheduled_s": 891.1448125,
+        "last_observed_s": 891.145006158,
+        "chunk_types": {
+          "enqueue": 8912
+        },
+        "release_lag_s": {
+          "n": 8912,
+          "mean": 0.0001939826787472909,
+          "p50": 0.00012724399999797242,
+          "p95": 0.00033171500001571985,
+          "max": 0.007884388999968905
+        }
+      },
+      "track_while_input": {
+        "displayed_content_changes": {
+          "events_during_input": 3926,
+          "interval_with_edges_s": {
+            "n": 3927,
+            "mean": 0.226927632416603,
+            "p50": 0.06288989097811282,
+            "p95": 1.3047105690930039,
+            "max": 4.392953431932256
+          },
+          "max_s": 4.392953431932256,
+          "max_from_s": 51.76451920601539,
+          "max_to_s": 56.15747263794765
+        },
+        "audio_end_advances": {
+          "events_during_input": 421,
+          "interval_with_edges_s": {
+            "n": 422,
+            "mean": 2.111717565165877,
+            "p50": 1.6889797990443185,
+            "p95": 4.370744232088327,
+            "max": 4.9537433800287545
+          },
+          "max_s": 4.9537433800287545,
+          "max_from_s": 323.8286721969489,
+          "max_to_s": 328.78241557697766
+        }
+      },
+      "transport": {
+        "captured_chunks": 8912,
+        "accepted_chunks": 8912,
+        "processed_chunks": 8912,
+        "planned_chunks": 8912,
+        "dropped_chunks": 0,
+        "dropped_audio_s": 0.0,
+        "finalization_from_audio_end_s": 1.2907285470000716,
+        "event_max_chunks": 1,
+        "event_max_audio_s": 0.1,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0,
+        "inference_queue_peak": 2
+      },
+      "resources": {
+        "elapsed_s": 892.435541047,
+        "cpu_seconds_replay_plus_producer": 1806.372265355,
+        "mean_four_core_percent": 50.60231754205393,
+        "main_process_peak_rss_mib": 1801.203125,
+        "total_inference_s": 653.1175124886213,
+        "inference_s_per_input_s": 0.7328971715117528,
+        "thermal_guard_max_c": 85.35,
+        "admission_c": 55.1,
+        "current_limit_sample_counts": {
+          "0": 650,
+          "8": 238,
+          "6": 18
+        },
+        "current_limit_input_s_approx": 259.98704747158376,
+        "guard": {
+          "exit_code": 0,
+          "status": "completed",
+          "limit_verified": true,
+          "operational_valid": true,
+          "error": null,
+          "rejection": null
+        },
+        "quarters": [
+          {
+            "final_queue_wait_s": {
+              "n": 45,
+              "mean": 0.3720746270044603,
+              "p50": 0.009219141909852624,
+              "p95": 1.9359773159958422,
+              "max": 2.916300213080831
+            },
+            "final_return_s": {
+              "n": 45,
+              "mean": 2.465356740265155,
+              "p50": 2.5189233590010645,
+              "p95": 3.16999428603053,
+              "max": 3.5865594469783844
+            },
+            "rss_mib": {
+              "n": 2211,
+              "mean": 1779.239717605156,
+              "p50": 1779.703125,
+              "p95": 1781.703125,
+              "max": 1781.703125
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 53,
+              "mean": 0.7806797733460114,
+              "p50": 0.0020627189660444856,
+              "p95": 2.9619918019743636,
+              "max": 3.4252703960519284
+            },
+            "final_return_s": {
+              "n": 53,
+              "mean": 2.851190840463772,
+              "p50": 2.8296792799411605,
+              "p95": 3.7712229569843316,
+              "max": 4.037744760999431
+            },
+            "rss_mib": {
+              "n": 2210,
+              "mean": 1782.3832154977376,
+              "p50": 1782.203125,
+              "p95": 1783.703125,
+              "max": 1783.703125
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 57,
+              "mean": 0.6695538967472028,
+              "p50": 0.00934553297702223,
+              "p95": 2.63582555600442,
+              "max": 2.810276973992586
+            },
+            "final_return_s": {
+              "n": 57,
+              "mean": 2.8193429286579006,
+              "p50": 2.8844718139516203,
+              "p95": 3.627273678931374,
+              "max": 3.6473223429518384
+            },
+            "rss_mib": {
+              "n": 2210,
+              "mean": 1785.701315045249,
+              "p50": 1785.703125,
+              "p95": 1787.703125,
+              "max": 1787.703125
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 55,
+              "mean": 0.6981648043454202,
+              "p50": 0.002609277958981693,
+              "p95": 3.061699477955699,
+              "max": 3.6198578809853643
+            },
+            "final_return_s": {
+              "n": 55,
+              "mean": 3.044269095135459,
+              "p50": 3.0126401400156055,
+              "p95": 4.30018757198286,
+              "max": 4.54298643897846
+            },
+            "rss_mib": {
+              "n": 2210,
+              "mean": 1788.6121747737557,
+              "p50": 1788.703125,
+              "p95": 1789.203125,
+              "max": 1789.703125
+            }
+          }
+        ]
+      },
+      "cancelled_calls": 26,
+      "partial_scheduler": {
+        "mode": "continuous",
+        "policy": "headroom",
+        "version": "estimated-headroom-v1",
+        "thermal_policy": "pace",
+        "decisions": {
+          "minimum_audio": 686,
+          "offered": 225,
+          "near_final": 1578
+        },
+        "candidate_updates": 20491,
+        "candidate_replacements": 20057,
+        "snapshots": 225,
+        "snapshot_frames": 5640896,
+        "discarded_candidates": 209,
+        "pending_peak": 1,
+        "thermal_backoff_s": 0.0,
+        "thermal_pause_c": 90,
+        "thermal_resume_c": 85,
+        "thermal_pacing_start_c": 82,
+        "thermal_factor_peak": 1.4,
+        "compute_duty_target": null,
+        "first_debt_allowance_s": null,
+        "final_reserve_max_s": null,
+        "accounted_inference_s": 0.0,
+        "work_debt_peak_s": 0.0,
+        "thermal_sample_s": 1.0,
+        "tail_margin_s": 0.2,
+        "deferred_s": {
+          "minimum_audio": 57.39817131496966,
+          "near_final": 140.77672112197615
+        },
+        "cancel_partial_grace_s": 0.0
+      },
+      "display": {
+        "partial_displayed_before_own_segment_end": {
+          "segments": 210,
+          "with_partial": 112,
+          "segments_at_least_2s": 140,
+          "with_partial_at_least_2s": 109
+        },
+        "source_distributions": {
+          "first_s": {
+            "n": 100,
+            "mean": 2.4422328918653298,
+            "p50": 2.22216683397437,
+            "p95": 3.7512039789818346,
+            "max": 8.326141911998434
+          },
+          "first4_s": {
+            "n": 100,
+            "mean": 2.974629261532588,
+            "p50": 2.7097666319943983,
+            "p95": 5.388343032025716,
+            "max": 8.452738348019352
+          },
+          "file_end_s": {
+            "n": 100,
+            "mean": 1.385588724743942,
+            "p50": 1.438251060970174,
+            "p95": 2.8245770749291523,
+            "max": 7.727979380029296
+          },
+          "observed_first_s": {
+            "n": 100,
+            "mean": 2.4422328918653298,
+            "p50": 2.22216683397437,
+            "p95": 3.7512039789818346,
+            "max": 8.326141911998434
+          },
+          "observed_first4_s": {
+            "n": 100,
+            "mean": 2.9380540781927054,
+            "p50": 2.7097666319943983,
+            "p95": 4.590867969956207,
+            "max": 8.452738348019352
+          },
+          "max_content_gap_s": {
+            "n": 100,
+            "mean": 3.336920341568424,
+            "p50": 3.3926119340071637,
+            "p95": 4.25747263794765,
+            "max": 8.326141911998434
+          },
+          "first_completed_partial_s": {
+            "n": 99,
+            "mean": 2.788730493901047,
+            "p50": 2.583366995919505,
+            "p95": 4.429242741921918,
+            "max": 9.81522626892854
+          }
+        },
+        "stability": {
+          "normalization": "ko_cer_v1",
+          "displayed_updates": 4350,
+          "normalized_revisions": 75,
+          "retracted_suffix_characters": 312,
+          "prefix_replay_revisions": 0,
+          "prefix_replay_retracted_characters": 0,
+          "within_call_revisions": 0,
+          "failed_results": 0,
+          "cancelled_results": 26,
+          "suppressed_prefix_tokens": 1312,
+          "segments_with_display": 210,
+          "revised_segments": 57,
+          "prefix_replay_segments": 0,
+          "suppressed_prefix_jobs": 199,
+          "latest_completed_partial_vs_final": {
+            "paired_segments": 110,
+            "whole_partial_is_final_prefix": 77,
+            "partial_characters": 1184,
+            "retained_prefix_characters": 993,
+            "retained_prefix_fraction": 0.8386824324324325
+          },
+          "finals_shorter_than4": 26,
+          "first4_to_final_consistent4_s": {
+            "n": 184,
+            "mean": 0.4264231078863225,
+            "p50": 0.0,
+            "p95": 3.67773032898549,
+            "max": 5.722386084962636
+          },
+          "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+        },
+        "content_changes_with_older_end_than_previously_shown": 0
+      }
+    },
+    "fixed-followup": {
+      "input": {
+        "source_commit": "a5fa52e5841f4701f2ac91961016ee7861955541",
+        "input_manifest_sha256": "f693163f3d0d11a09873d3d5dbbd8a68aea6ebd1897cc051fd99dd076f8b76ab",
+        "config_sha256": "841012b8f418d9966cc9046cae93b2ef31852696cd94d809112ed084c9bc4fc0",
+        "source_dirty": false,
+        "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+        "model_files": {
+          "Qwen3-ASR-0.6B-Q8_0.gguf": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+          },
+          "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+          },
+          "runtime_library": {
+            "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/token-draft-20261119-01/bridge/libedge_asr_gguf.so",
+            "sha256": "1cc11d27276af2eb4bb863dcb62cd8ee670175c3b622408523d5f317f5170b14"
+          },
+          "runtime_manifest": {
+            "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/token-draft-20261119-01/bridge/build.json",
+            "sha256": "ff517313176cc9caf4f90f3de0da2ccc280677acaf54c633854cd629aff652a9"
+          }
+        },
+        "audio": {
+          "sha256": "5008e9154b14533a72326f1745665a7bb8a031508fcda427398fd2a1c24a65cd",
+          "frames": 14258317,
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "sample_width_bytes": 2,
+          "duration_s": 891.1448125
+        },
+        "settings": {
+          "gap_s": 0.0,
+          "vad_preprocess": "rms26-floor80",
+          "vad_threshold": 0.3,
+          "vad_max_speech_s": 5,
+          "partial_after_s": 0.6,
+          "partial_interval_s": 1,
+          "partial_mode": "continuous",
+          "partial_min_new_s": 1.0,
+          "partial_tail_margin_s": 0.2,
+          "adaptive_policy": "recent",
+          "partial_cost_model": "total",
+          "partial_budget_s": 2.5,
+          "protect_short_followup": false,
+          "partial_max_calls": 2,
+          "continuous_policy": "headroom_followup",
+          "partial_thermal_policy": "pace",
+          "cancel_partial_for_final": true,
+          "partial_followup_s": null,
+          "max_segment_s": 5,
+          "drain_timeout_s": 30,
+          "queue_capacity": 4,
+          "token_stream": true,
+          "partials": true,
+          "silence_policy": "skip-zero"
+        },
+        "warmup_input": {
+          "policy": "leading_max_segment_v1",
+          "source_id": "fleurs-13962545215242501803",
+          "source_audio_sha256": "e7b0fd9527a0e3f31922280410f5939d4b9da0a619d1546921cd6957212904de",
+          "source_frames": 235200,
+          "start_frame": 0,
+          "end_frame": 80000,
+          "payload_float32_sha256": "c4128f45d74c47f1175b0adea8dae7e6e2acd400fad95a7b526849841f35e43f",
+          "scope": "첫 원음의 ASR 최대 구간 이내 PCM만 워밍업. 평가 입력은 전체 원음 유지."
+        },
+        "processed_pcm_sha256": "273529b8a519b3b2dab6cd2a1e941633a21e6f4ac3995619967446df77be4dd7",
+        "warmup_successes": 4,
+        "environment": {
+          "machine": "aarch64",
+          "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+          "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+          "runtime": {
+            "sherpa_package_version": "2.0.1",
+            "sherpa_core_package_version": "2.0.1",
+            "python_onnxruntime_package_version": "1.31.1",
+            "sherpa_native_onnxruntime_version": null,
+            "native_version_source": "sherpa_onnx.onnxruntime_version",
+            "status": "not_imported",
+            "reason": "선택 런타임을 아직 import하지 않았습니다."
+          },
+          "thread_environment": {
+            "OMP_WAIT_POLICY": null,
+            "OMP_NUM_THREADS": null,
+            "OMP_DYNAMIC": null,
+            "OMP_PROC_BIND": null,
+            "OMP_PLACES": null,
+            "GOMP_SPINCOUNT": null,
+            "KMP_BLOCKTIME": null,
+            "OPENBLAS_NUM_THREADS": "1"
+          }
+        },
+        "engine_metadata": {
+          "backend": "llama_cpp_mtmd",
+          "quantization": "q8_0",
+          "audio_quantization": "q8_0",
+          "thread_configuration": {
+            "threads": 2,
+            "threads_batch": 3,
+            "audio_threads": 3
+          },
+          "cache_text_prefix": true,
+          "provider": "cpu"
+        }
+      },
+      "score": {
+        "reference_characters": 3848,
+        "errors": 420,
+        "substitutions": 186,
+        "deletions": 160,
+        "insertions": 74,
+        "cer": 0.10914760914760915
+      },
+      "calls": {
+        "partial": {
+          "attempts": 256,
+          "statuses": {
+            "success": 211,
+            "cancelled": 45
+          },
+          "successes_without_normalized_characters": [],
+          "inference_sum_s": 313.1856485269964,
+          "inference_s": {
+            "n": 256,
+            "mean": 1.2233814395585796,
+            "p50": 1.2036088559543714,
+            "p95": 2.0426973910070956,
+            "max": 2.2255828890483826
+          },
+          "queue_wait_s": {
+            "n": 256,
+            "mean": 0.00018431619128023158,
+            "p50": 0.00018055702093988657,
+            "p95": 0.000287742936052382,
+            "max": 0.0005113189108669758
+          }
+        },
+        "final": {
+          "attempts": 210,
+          "statuses": {
+            "success": 210
+          },
+          "successes_without_normalized_characters": [
+            114,
+            142,
+            209
+          ],
+          "inference_sum_s": 428.8734092480736,
+          "inference_s": {
+            "n": 210,
+            "mean": 2.0422543297527316,
+            "p50": 2.1987734510330483,
+            "p95": 3.498798555927351,
+            "max": 4.44010069896467
+          },
+          "queue_wait_s": {
+            "n": 210,
+            "mean": 0.6708389297016852,
+            "p50": 0.027629444957710803,
+            "p95": 2.7807466770755127,
+            "max": 3.7124408970121294
+          }
+        }
+      },
+      "failures": [
+        {
+          "segment_id": 2,
+          "kind": "partial",
+          "start_frame": 127424,
+          "end_frame": 179200,
+          "status": "cancelled",
+          "duration_s": 3.236,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 5,
+          "kind": "partial",
+          "start_frame": 427968,
+          "end_frame": 476672,
+          "status": "cancelled",
+          "duration_s": 3.044,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 6,
+          "kind": "partial",
+          "start_frame": 567232,
+          "end_frame": 612352,
+          "status": "cancelled",
+          "duration_s": 2.82,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 10,
+          "kind": "partial",
+          "start_frame": 956352,
+          "end_frame": 994816,
+          "status": "cancelled",
+          "duration_s": 2.404,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 11,
+          "kind": "partial",
+          "start_frame": 1066432,
+          "end_frame": 1111552,
+          "status": "cancelled",
+          "duration_s": 2.82,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 12,
+          "kind": "partial",
+          "start_frame": 1124288,
+          "end_frame": 1159680,
+          "status": "cancelled",
+          "duration_s": 2.212,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 13,
+          "kind": "partial",
+          "start_frame": 1244096,
+          "end_frame": 1271808,
+          "status": "cancelled",
+          "duration_s": 1.732,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 15,
+          "kind": "partial",
+          "start_frame": 1328064,
+          "end_frame": 1377280,
+          "status": "cancelled",
+          "duration_s": 3.076,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 16,
+          "kind": "partial",
+          "start_frame": 1417664,
+          "end_frame": 1451008,
+          "status": "cancelled",
+          "duration_s": 2.084,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 19,
+          "kind": "partial",
+          "start_frame": 1573824,
+          "end_frame": 1617408,
+          "status": "cancelled",
+          "duration_s": 2.724,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 24,
+          "kind": "partial",
+          "start_frame": 1898432,
+          "end_frame": 1945600,
+          "status": "cancelled",
+          "duration_s": 2.948,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 29,
+          "kind": "partial",
+          "start_frame": 2205632,
+          "end_frame": 2252800,
+          "status": "cancelled",
+          "duration_s": 2.948,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 30,
+          "kind": "partial",
+          "start_frame": 2316224,
+          "end_frame": 2342400,
+          "status": "cancelled",
+          "duration_s": 1.636,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 32,
+          "kind": "partial",
+          "start_frame": 2436160,
+          "end_frame": 2478080,
+          "status": "cancelled",
+          "duration_s": 2.62,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 33,
+          "kind": "partial",
+          "start_frame": 2494912,
+          "end_frame": 2530816,
+          "status": "cancelled",
+          "duration_s": 2.244,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 34,
+          "kind": "partial",
+          "start_frame": 2628544,
+          "end_frame": 2676736,
+          "status": "cancelled",
+          "duration_s": 3.012,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 37,
+          "kind": "partial",
+          "start_frame": 2807744,
+          "end_frame": 2838016,
+          "status": "cancelled",
+          "duration_s": 1.892,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 39,
+          "kind": "partial",
+          "start_frame": 2994112,
+          "end_frame": 3041280,
+          "status": "cancelled",
+          "duration_s": 2.948,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 42,
+          "kind": "partial",
+          "start_frame": 3225536,
+          "end_frame": 3270144,
+          "status": "cancelled",
+          "duration_s": 2.788,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 44,
+          "kind": "partial",
+          "start_frame": 3451328,
+          "end_frame": 3500544,
+          "status": "cancelled",
+          "duration_s": 3.076,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 45,
+          "kind": "partial",
+          "start_frame": 3577792,
+          "end_frame": 3627008,
+          "status": "cancelled",
+          "duration_s": 3.076,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 52,
+          "kind": "partial",
+          "start_frame": 4033472,
+          "end_frame": 4084736,
+          "status": "cancelled",
+          "duration_s": 3.204,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 63,
+          "kind": "partial",
+          "start_frame": 4638656,
+          "end_frame": 4672000,
+          "status": "cancelled",
+          "duration_s": 2.084,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 64,
+          "kind": "partial",
+          "start_frame": 4720576,
+          "end_frame": 4730880,
+          "status": "cancelled",
+          "duration_s": 0.644,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 65,
+          "kind": "partial",
+          "start_frame": 4753856,
+          "end_frame": 4801536,
+          "status": "cancelled",
+          "duration_s": 2.98,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 67,
+          "kind": "partial",
+          "start_frame": 4867008,
+          "end_frame": 4903936,
+          "status": "cancelled",
+          "duration_s": 2.308,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 68,
+          "kind": "partial",
+          "start_frame": 4964288,
+          "end_frame": 5014016,
+          "status": "cancelled",
+          "duration_s": 3.108,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 70,
+          "kind": "partial",
+          "start_frame": 5114816,
+          "end_frame": 5161472,
+          "status": "cancelled",
+          "duration_s": 2.916,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 72,
+          "kind": "partial",
+          "start_frame": 5274048,
+          "end_frame": 5300736,
+          "status": "cancelled",
+          "duration_s": 1.668,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 79,
+          "kind": "partial",
+          "start_frame": 5735360,
+          "end_frame": 5785600,
+          "status": "cancelled",
+          "duration_s": 3.14,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 91,
+          "kind": "partial",
+          "start_frame": 6688192,
+          "end_frame": 6737408,
+          "status": "cancelled",
+          "duration_s": 3.076,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 102,
+          "kind": "partial",
+          "start_frame": 7365568,
+          "end_frame": 7415808,
+          "status": "cancelled",
+          "duration_s": 3.14,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 109,
+          "kind": "partial",
+          "start_frame": 7846336,
+          "end_frame": 7897600,
+          "status": "cancelled",
+          "duration_s": 3.204,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 117,
+          "kind": "partial",
+          "start_frame": 8178624,
+          "end_frame": 8223744,
+          "status": "cancelled",
+          "duration_s": 2.82,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 122,
+          "kind": "partial",
+          "start_frame": 8491968,
+          "end_frame": 8540672,
+          "status": "cancelled",
+          "duration_s": 3.044,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 123,
+          "kind": "partial",
+          "start_frame": 8562624,
+          "end_frame": 8610816,
+          "status": "cancelled",
+          "duration_s": 3.012,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 125,
+          "kind": "partial",
+          "start_frame": 8747456,
+          "end_frame": 8795136,
+          "status": "cancelled",
+          "duration_s": 2.98,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 150,
+          "kind": "partial",
+          "start_frame": 10380224,
+          "end_frame": 10391552,
+          "status": "cancelled",
+          "duration_s": 0.708,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 153,
+          "kind": "partial",
+          "start_frame": 10513344,
+          "end_frame": 10564608,
+          "status": "cancelled",
+          "duration_s": 3.204,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 157,
+          "kind": "partial",
+          "start_frame": 10733504,
+          "end_frame": 10782208,
+          "status": "cancelled",
+          "duration_s": 3.044,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 173,
+          "kind": "partial",
+          "start_frame": 11750336,
+          "end_frame": 11798016,
+          "status": "cancelled",
+          "duration_s": 2.98,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 182,
+          "kind": "partial",
+          "start_frame": 12426176,
+          "end_frame": 12474880,
+          "status": "cancelled",
+          "duration_s": 3.044,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 193,
+          "kind": "partial",
+          "start_frame": 13060032,
+          "end_frame": 13107200,
+          "status": "cancelled",
+          "duration_s": 2.948,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 196,
+          "kind": "partial",
+          "start_frame": 13292480,
+          "end_frame": 13340672,
+          "status": "cancelled",
+          "duration_s": 3.012,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 208,
+          "kind": "partial",
+          "start_frame": 14178240,
+          "end_frame": 14217216,
+          "status": "cancelled",
+          "duration_s": 2.436,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        }
+      ],
+      "source_pcm_signature": "2565bc0491e662124df6888493104aa2d0437c640158c92bf3cc303a5086c0c2",
+      "final_pcm_signature": "2baf78be5c5c6c90e0c6d9ff65c5d5f8a8dea72a407f47d2dfa6a91e1ed04986",
+      "selected_submitted_partial_pcm_signature": "e1da4aca59feb0ea63d62cbcc6fba1f47b9042f66bbc0c024726d713ce30181d",
+      "stale_displayed_events": 0,
+      "active": {
+        "owned_s": 651.6160000000004,
+        "own_advancing_publish_in_last_1s_percent": 30.51121923876292,
+        "own_displayed_audio_end_in_last_1s_percent": 9.001510932310817,
+        "own_advancing_max_gap_for_segments_ge2s_s": {
+          "n": 140,
+          "mean": 2.2958710961594586,
+          "p50": 2.187117827939801,
+          "p95": 3.4480000000000075,
+          "max": 5.0
+        }
+      },
+      "pacing": {
+        "chunk_ms": 100,
+        "last_scheduled_s": 891.1448125,
+        "last_observed_s": 891.1450238,
+        "chunk_types": {
+          "enqueue": 8912
+        },
+        "release_lag_s": {
+          "n": 8912,
+          "mean": 0.0002027954736309992,
+          "p50": 0.00014825700000642428,
+          "p95": 0.0003513970000028621,
+          "max": 0.007124642999997377
+        }
+      },
+      "track_while_input": {
+        "displayed_content_changes": {
+          "events_during_input": 3986,
+          "interval_with_edges_s": {
+            "n": 3987,
+            "mean": 0.22351261913719586,
+            "p50": 0.06386702798772603,
+            "p95": 1.403702204930596,
+            "max": 4.349951126030646
+          },
+          "max_s": 4.349951126030646,
+          "max_from_s": 51.84914790804032,
+          "max_to_s": 56.19909903407097
+        },
+        "audio_end_advances": {
+          "events_during_input": 447,
+          "interval_with_edges_s": {
+            "n": 448,
+            "mean": 1.9891625279017855,
+            "p50": 1.7623982640216127,
+            "p95": 3.8453174870228395,
+            "max": 4.671465554041788
+          },
+          "max_s": 4.671465554041788,
+          "max_from_s": 610.7659040340222,
+          "max_to_s": 615.437369588064
+        }
+      },
+      "transport": {
+        "captured_chunks": 8912,
+        "accepted_chunks": 8912,
+        "processed_chunks": 8912,
+        "planned_chunks": 8912,
+        "dropped_chunks": 0,
+        "dropped_audio_s": 0.0,
+        "finalization_from_audio_end_s": 1.676283493000028,
+        "event_max_chunks": 1,
+        "event_max_audio_s": 0.1,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0,
+        "inference_queue_peak": 2
+      },
+      "resources": {
+        "elapsed_s": 892.821095993,
+        "cpu_seconds_replay_plus_producer": 2057.470942134,
+        "mean_four_core_percent": 57.611512299831766,
+        "main_process_peak_rss_mib": 1799.25,
+        "total_inference_s": 742.05905777507,
+        "inference_s_per_input_s": 0.8327031110615033,
+        "thermal_guard_max_c": 86.45,
+        "admission_c": 59.5,
+        "current_limit_sample_counts": {
+          "0": 355,
+          "8": 475,
+          "6": 75
+        },
+        "current_limit_input_s_approx": 560.0675745060555,
+        "guard": {
+          "exit_code": 0,
+          "status": "completed",
+          "limit_verified": true,
+          "operational_valid": true,
+          "error": null,
+          "rejection": null
+        },
+        "quarters": [
+          {
+            "final_queue_wait_s": {
+              "n": 45,
+              "mean": 0.4083775206391389,
+              "p50": 0.020012425957247615,
+              "p95": 2.0709426919929683,
+              "max": 3.0518343839794397
+            },
+            "final_return_s": {
+              "n": 45,
+              "mean": 2.628804480201876,
+              "p50": 2.581160067054441,
+              "p95": 3.5125676629869282,
+              "max": 3.736309369986884
+            },
+            "rss_mib": {
+              "n": 2210,
+              "mean": 1779.1083569004525,
+              "p50": 1779.75,
+              "p95": 1781.25,
+              "max": 1781.25
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 53,
+              "mean": 0.8298668318630179,
+              "p50": 0.039054121007211506,
+              "p95": 2.9666427919873968,
+              "max": 3.69807599298656
+            },
+            "final_return_s": {
+              "n": 53,
+              "mean": 2.995222796798774,
+              "p50": 3.091787523977473,
+              "p95": 4.113525649986229,
+              "max": 4.344275728004959
+            },
+            "rss_mib": {
+              "n": 2209,
+              "mean": 1782.4908329560888,
+              "p50": 1782.25,
+              "p95": 1783.75,
+              "max": 1783.75
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 57,
+              "mean": 0.6730421287632596,
+              "p50": 0.03663289989344776,
+              "p95": 2.5809254039777443,
+              "max": 2.7468701109755784
+            },
+            "final_return_s": {
+              "n": 57,
+              "mean": 2.8756648721961313,
+              "p50": 2.963751957013301,
+              "p95": 3.435887470968055,
+              "max": 3.630672391992107
+            },
+            "rss_mib": {
+              "n": 2208,
+              "mean": 1785.9789402173913,
+              "p50": 1786.75,
+              "p95": 1787.25,
+              "max": 1787.25
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 55,
+              "mean": 0.730051697824489,
+              "p50": 0.023366056964732707,
+              "p95": 3.142714385059662,
+              "max": 3.7124408970121294
+            },
+            "final_return_s": {
+              "n": 55,
+              "mean": 3.116037411878423,
+              "p50": 3.003912817973628,
+              "p95": 4.402596597986303,
+              "max": 4.622722935998809
+            },
+            "rss_mib": {
+              "n": 2207,
+              "mean": 1789.276733121885,
+              "p50": 1789.75,
+              "p95": 1790.25,
+              "max": 1790.25
+            }
+          }
+        ]
+      },
+      "cancelled_calls": 45,
+      "partial_scheduler": {
+        "mode": "continuous",
+        "policy": "headroom_followup",
+        "version": "prefix-time-followup-v1",
+        "thermal_policy": "pace",
+        "decisions": {
+          "minimum_audio": 638,
+          "offered": 256,
+          "near_final": 737
+        },
+        "candidate_updates": 20491,
+        "candidate_replacements": 20025,
+        "snapshots": 256,
+        "snapshot_frames": 7366528,
+        "discarded_candidates": 210,
+        "pending_peak": 1,
+        "thermal_backoff_s": 0.0,
+        "thermal_pause_c": 90,
+        "thermal_resume_c": 85,
+        "thermal_pacing_start_c": 82,
+        "thermal_factor_peak": 1.4,
+        "compute_duty_target": null,
+        "first_debt_allowance_s": null,
+        "final_reserve_max_s": null,
+        "accounted_inference_s": 0.0,
+        "work_debt_peak_s": 0.0,
+        "thermal_sample_s": 1.0,
+        "tail_margin_s": 0.2,
+        "deferred_s": {
+          "minimum_audio": 51.43055158853531,
+          "near_final": 63.277779008843936
+        },
+        "near_final_followups": 53,
+        "cancel_partial_grace_s": 0.0
+      },
+      "display": {
+        "partial_displayed_before_own_segment_end": {
+          "segments": 210,
+          "with_partial": 110,
+          "segments_at_least_2s": 140,
+          "with_partial_at_least_2s": 107
+        },
+        "source_distributions": {
+          "first_s": {
+            "n": 100,
+            "mean": 2.551298869099025,
+            "p50": 2.2485836449731096,
+            "p95": 3.889705100062315,
+            "max": 8.348963850035375
+          },
+          "first4_s": {
+            "n": 100,
+            "mean": 3.074009299910882,
+            "p50": 2.764883204062471,
+            "p95": 5.555221574986355,
+            "max": 8.479104662986515
+          },
+          "file_end_s": {
+            "n": 100,
+            "mean": 1.5286000635338894,
+            "p50": 1.5352430820772724,
+            "p95": 2.9418739900812625,
+            "max": 7.709073511042675
+          },
+          "observed_first_s": {
+            "n": 100,
+            "mean": 2.5253703941689096,
+            "p50": 2.2485836449731096,
+            "p95": 3.889705100062315,
+            "max": 8.348963850035375
+          },
+          "observed_first4_s": {
+            "n": 100,
+            "mean": 3.036280297041427,
+            "p50": 2.764883204062471,
+            "p95": 5.389023997979223,
+            "max": 8.479104662986515
+          },
+          "max_content_gap_s": {
+            "n": 100,
+            "mean": 2.923321168180055,
+            "p50": 2.7144197690691954,
+            "p95": 3.943376214010641,
+            "max": 8.348963850035375
+          },
+          "first_completed_partial_s": {
+            "n": 97,
+            "mean": 2.820876605576839,
+            "p50": 2.6688686989788266,
+            "p95": 4.2168233960354655,
+            "max": 9.890563665979585
+          }
+        },
+        "stability": {
+          "normalization": "ko_cer_v1",
+          "displayed_updates": 4426,
+          "normalized_revisions": 86,
+          "retracted_suffix_characters": 377,
+          "prefix_replay_revisions": 0,
+          "prefix_replay_retracted_characters": 0,
+          "within_call_revisions": 0,
+          "failed_results": 0,
+          "cancelled_results": 45,
+          "suppressed_prefix_tokens": 1697,
+          "segments_with_display": 210,
+          "revised_segments": 66,
+          "prefix_replay_segments": 0,
+          "suppressed_prefix_jobs": 227,
+          "latest_completed_partial_vs_final": {
+            "paired_segments": 107,
+            "whole_partial_is_final_prefix": 74,
+            "partial_characters": 1299,
+            "retained_prefix_characters": 1079,
+            "retained_prefix_fraction": 0.8306389530408006
+          },
+          "finals_shorter_than4": 26,
+          "first4_to_final_consistent4_s": {
+            "n": 184,
+            "mean": 0.45032243178992876,
+            "p50": 0.0,
+            "p95": 3.3209114091005176,
+            "max": 5.949192478088662
+          },
+          "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+        },
+        "content_changes_with_older_end_than_previously_shown": 0
+      }
+    }
+  }
+}
