@@ -415,6 +415,12 @@ def argument_parser():
         help="paced는 계산량 배분, headroom은 호출 종료 여유 확보, headroom_followup은 끝에서 새 토큰을 표시할 여유가 있으면 1회 추가",
     )
     parser.add_argument(
+        "--followup-gap-target-s",
+        type=float,
+        default=argparse.SUPPRESS,
+        help="headroom_followup의 추가 요청을 생략했을 때 예상되는 표시 공백의 최소 초",
+    )
+    parser.add_argument(
         "--partial-thermal-policy",
         choices=("pause", "pace"),
         default="pause",

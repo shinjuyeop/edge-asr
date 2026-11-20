@@ -27,12 +27,22 @@ class ContinuousPolicy:
         clock=time.perf_counter,
         policy="latest",
         thermal_policy="pause",
+        followup_gap_target_s=None,
     ):
         self.condition, self.emit, self.clock = condition, emit, clock
         self.minimum, self.min_new, self.maximum, self.tail = minimum, min_new, maximum, tail
         if policy not in POLICY_VERSIONS or thermal_policy not in ("pause", "pace"):
             raise ValueError("지원하지 않는 연속 갱신 또는 열 정책입니다.")
         self.policy, self.thermal_policy = policy, thermal_policy
+        if followup_gap_target_s is not None and (
+            policy != "headroom_followup"
+            or not math.isfinite(followup_gap_target_s)
+            or followup_gap_target_s <= 0
+        ):
+            raise ValueError("예상 공백 기준은 headroom_followup에서 유한한 양수로 지정합니다.")
+        self.followup_gap_target_s = followup_gap_target_s
+        self.last_display_end = -1
+        self.last_display_at = None
         self.thermal_factor = 1.0
         self.overheated = False
         self.work_debt_s, self.accounted_at = 0.0, clock()
@@ -78,6 +88,29 @@ class ContinuousPolicy:
             self.stats["final_reserve_max_s"] = None
         if policy == "headroom_followup":
             self.stats["near_final_followups"] = 0
+
+        if followup_gap_target_s is not None:
+            self.stats.update(
+                version="projected-gap-followup-v1", followup_gap_target_s=followup_gap_target_s
+            )
+
+    def record_display(self, event, previous, t0):
+        """표시 내용과 PCM 끝이 함께 전진한 서버 발행 시각만 보존한다. 세션 락 안에서 호출."""
+        if (
+            self.followup_gap_target_s is None
+            or event["end_frame"] <= self.last_display_end
+            or not event["displayed"]
+            or event["status"] == "failed"
+            or not (event["hypothesis"] or "").strip()
+            or (
+                previous
+                and event["segment_id"] == previous["segment_id"]
+                and event["hypothesis"] == previous["hypothesis"]
+            )
+        ):
+            return
+        self.last_display_end = event["end_frame"]
+        self.last_display_at = t0 + event["published_s"]
 
     def _end_deferral(self):
         if self.deferral is not None:
@@ -192,6 +225,7 @@ class ContinuousPolicy:
         allowance = 0.35 if first else 0.0
         prefix_time = None
         followup = False
+        display_age = projected_gap = None
         remaining = (self.maximum - (end - start)) / 16000
         if end - start < self.minimum or (
             not first and end - self.last_end < self.min_new * self.thermal_factor
@@ -206,8 +240,13 @@ class ContinuousPolicy:
                 # VAD가 넘긴 PCM 끝보다 실제 입력이 앞섰다면 그만큼 대기 여유를 줄인다.
                 remaining = (start + self.maximum - max(end, available_frame or end)) / 16000
                 if prefix_time is not None and prefix_time + self.tail / 16000 < remaining:
-                    reason = "offered"
-                    followup = True
+                    if self.followup_gap_target_s is not None and self.last_display_at is not None:
+                        display_age = max(0.0, now - self.last_display_at)
+                        projected_gap = display_age + remaining + prefix_time
+                    followup = self.followup_gap_target_s is None or (
+                        projected_gap is not None and projected_gap >= self.followup_gap_target_s
+                    )
+                    reason = "offered" if followup else "projected_gap_below_target"
         elif self.policy == "paced" and self.work_debt_s > allowance + 1e-6:
             reason = "compute_pacing"
             self.wake_at = now + (self.work_debt_s - allowance) / rate
@@ -227,6 +266,11 @@ class ContinuousPolicy:
                     "start_frame": start,
                     "end_frame": end,
                     "last_executed_end_frame": self.last_end,
+                    **(
+                        {"display_age_s": display_age, "projected_gap_s": projected_gap}
+                        if self.followup_gap_target_s is not None
+                        else {}
+                    ),
                     "estimated_inference_s": estimated_s,
                     "final_reserve_s": reserve,
                     "thermal_factor": self.thermal_factor,

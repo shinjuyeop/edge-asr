@@ -386,6 +386,82 @@ class ContinuousTests(unittest.TestCase):
                 )
             self.assertEqual(policy.stats["near_final_followups"], 2)
 
+    def test_projected_gap_uses_first_changed_display_with_a_new_audio_end(self):
+        policy, now, events = self.policy(policy="headroom_followup", followup_gap_target_s=4.0)
+        previous = dict(
+            kind="partial",
+            status="success",
+            displayed=True,
+            segment_id=0,
+            start_frame=0,
+            end_frame=16000,
+            hypothesis="한글",
+            adapter_result={
+                "native_result": dict(
+                    first_generated_token_s=0.45,
+                    token_decode_s=0.2,
+                    audio_encode_s=0.24,
+                    audio_embedding_eval_s=0.06,
+                )
+            },
+        )
+        with policy.condition:
+            policy.observe({"temperature_mc": 60000, "current_limits": 0})
+            policy.update(0, 0, 16000, lambda a, b: b)
+            self.assertIsNotNone(policy.choose(1))
+            policy.update(0, 0, 48000, lambda a, b: b)
+            now[0] = 10.5
+            self.assertIsNone(policy.choose(2.3, previous=previous))
+            event = {**previous, "published_s": 1.0}
+            policy.record_display(event, None, 9.0)
+            for changes in (
+                {"end_frame": 8000},
+                {"hypothesis": "한글"},
+                {"displayed": False},
+                {"status": "failed"},
+                {"hypothesis": " "},
+            ):
+                policy.record_display(
+                    {
+                        **event,
+                        "end_frame": 32000,
+                        "hypothesis": "한글입니다",
+                        "published_s": 1.4,
+                        **changes,
+                    },
+                    previous,
+                    9.0,
+                )
+            policy.record_display(
+                {**event, "hypothesis": "수정", "published_s": 1.4}, previous, 9.0
+            )
+            self.assertEqual(policy.last_display_at, 10.0)
+            self.assertIsNone(policy.choose(2.3, previous=previous))
+            # 0.75초 경과 + 2초 남은 음성 + 문구 재생 1.25초가 정확히 기준에 도달한다.
+            now[0] = 10.75
+            self.assertIsNotNone(policy.choose(2.3, previous=previous))
+            self.assertEqual(events[-1]["projected_gap_s"], 4.0)
+            self.assertEqual(events[-1]["display_age_s"], 0.75)
+            self.assertEqual(policy.stats["near_final_followups"], 1)
+            policy.update(1, 80000, 96000, lambda a, b: b)
+            self.assertEqual(policy.last_display_at, 10.0)
+            policy.record_display(
+                {**event, "segment_id": 1, "end_frame": 96000, "published_s": 2}, previous, 9.0
+            )
+            self.assertEqual(policy.last_display_at, 11.0)
+
+    def test_projected_gap_requires_followup_policy_and_positive_target(self):
+        for policy, target in (
+            ("headroom", 4),
+            ("headroom_followup", 0),
+            ("headroom_followup", float("nan")),
+            ("headroom_followup", float("inf")),
+        ):
+            with self.subTest(policy=policy, target=target), self.assertRaises(ValueError):
+                self.policy(policy=policy, followup_gap_target_s=target)
+        with self.assertRaises(ValueError):
+            CaptionSession(None, None, 1, None, {}, followup_gap_target_s=4)
+
     def test_worker_wakes_paced_candidate_without_input_or_thermal_notification(self):
         model, events, ready_at = ControlledModel(), [], time.perf_counter() + 0.05
         offered = False

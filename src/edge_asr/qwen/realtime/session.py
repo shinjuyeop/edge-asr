@@ -43,6 +43,7 @@ class CaptionSession:
         token_stream=False,
         cancel_partial_for_final=False,
         continuous_policy="latest",
+        followup_gap_target_s=None,
         partial_thermal_policy="pause",
     ):
         if partial_after_s <= 0 or partial_interval_s <= 0:
@@ -82,6 +83,8 @@ class CaptionSession:
             cancel_partial_for_final and (partial_mode != "continuous" or not token_stream)
         ):
             raise ValueError("최종 우선 취소는 continuous·token_stream에서만 선택합니다.")
+        if followup_gap_target_s is not None and partial_mode != "continuous":
+            raise ValueError("예상 공백 기준에는 continuous 모드가 필요합니다.")
         if continuous_policy == "headroom_followup" and not cancel_partial_for_final:
             raise ValueError("headroom_followup은 토큰 표시와 최종 우선 취소가 필요합니다.")
         if partial_mode == "continuous" and partial_tail_margin_s > 0.5:
@@ -153,6 +156,7 @@ class CaptionSession:
                 round(partial_tail_margin_s * 16000),
                 policy=continuous_policy,
                 thermal_policy=partial_thermal_policy,
+                followup_gap_target_s=followup_gap_target_s,
             )
             self.scheduler_stats = self.continuous.stats
             self.scheduler_stats["cancel_partial_grace_s"] = (
@@ -239,6 +243,8 @@ class CaptionSession:
                     and self.partial["segment_id"] > event["segment_id"]
                 ):
                     event["displayed"] = False
+                if self.continuous:
+                    self.continuous.record_display(event, self.partial, t0)
                 if event["kind"] == "final" and fresh:
                     self.finalized.add(event["segment_id"])
                     self.finals[event["segment_id"]] = event
@@ -289,6 +295,8 @@ class CaptionSession:
                     and self.partial["segment_id"] > event["segment_id"]
                 )
             )
+            if self.continuous:
+                self.continuous.record_display(event, self.partial, t0)
             if event["displayed"]:
                 if timing["first_visible_published_s"] is None:
                     timing["first_visible_published_s"] = event["published_s"]

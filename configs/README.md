@@ -41,6 +41,7 @@
 | [listener_longform_natural.toml](listener_longform_natural.toml) | Q4 1.99초 창 캐시·자연발화8개 |
 | [listener_longform_reading.toml](listener_longform_reading.toml) | Q4 1.99초 창 캐시·낭독 연결4개 |
 | [listener_partial_window.toml](listener_partial_window.toml) | Q4 1.99초 창 캐시·고정100개 |
+| [listener_q8_followup_gap.toml](listener_q8_followup_gap.toml) | Q8 확정 4개 묶음·추가 갱신. 다음 최신 음성 반영까지 4초 이상 공백이 예상될 때 허용 |
 | [listener_q8_headroom.toml](listener_q8_headroom.toml) | Q8·긴 자연발화·첫 0.6초 이후 새 음성 1초부터 최신 구간 재전사. 열과 확정까지 남은 시간에 따라 후속 호출을 조절하는 실험 프로필 |
 | [listener_q8_headroom_followup.toml](listener_q8_headroom_followup.toml) | Q8 확정 4개 묶음·가변 갱신. 직전 부분 문구 재생과 다음 토큰을 위한 시간이 남으면 확정 전 추가 요청을 구간당 1회 허용. [고정 100개](../results/summaries/optimization/near-final-stream-20261120.md)에서 긴 공백 감소·계산량 증가로 선택 제공 |
 
