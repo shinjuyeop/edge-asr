@@ -771,18 +771,19 @@ int main() {
     OperatorProfile p; OperatorNode n; n.name="layer.0"; n.op="MUL_MAT";
     n.lhs_type="q4_0"; n.shape={2,3,1,1}; int tensor=0;
     p.enabled=true; p.phase="audio_encoder";
-    p.before(&tensor,100); p.after(&tensor,130,n);
-    n.shape[1]=4; p.before(&tensor,200); p.after(&tensor,250,n);
+    p.before(&tensor,100,200); p.after(&tensor,130,270,n);
+    n.shape[1]=4; p.before(&tensor,200,200); p.after(&tensor,250,270,n);
     assert(p.complete() && p.groups.size()==1);
     const auto& sample=p.groups.begin()->second;
     assert(sample.count==2 && sample.total_ns==80 && sample.max_ns==50 && sample.shape_changed);
-    p.before(&tensor,300); assert(!p.complete());
-    p.after(nullptr,400,n); assert(!p.complete());
+    assert(sample.process_cpu_ns==140 && sample.first_seen==0);
+    p.before(&tensor,300,200); assert(!p.complete());
+    p.after(nullptr,400,270,n); assert(!p.complete());
     p.reset(); assert(p.complete() && p.enabled && p.groups.empty());
-    p.before(&tensor,100); p.after(&tensor,99,n); assert(!p.complete());
+    p.before(&tensor,100,200); p.after(&tensor,99,270,n); assert(!p.complete());
     p.reset();
     for(int i=0;i<8193;++i) {
-        n.name=std::to_string(i); p.before(&tensor,100); p.after(&tensor,110,n);
+        n.name=std::to_string(i); p.before(&tensor,100,200); p.after(&tensor,110,270,n);
     }
     assert(p.groups.size()==8192 && p.overflow==1 && !p.complete());
 }

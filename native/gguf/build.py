@@ -15,7 +15,14 @@ def sha(path):
 
 
 def build(
-    source, engine_build, output, *, profile_operators=False, trace_tokens=False, kleidiai=False
+    source,
+    engine_build,
+    output,
+    *,
+    profile_operators=False,
+    trace_tokens=False,
+    kleidiai=False,
+    capture_boundaries=False,
 ):
     head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=source, text=True).strip()
     if (
@@ -64,6 +71,10 @@ def build(
         "-o",
         str(library),
     ]
+    if capture_boundaries:
+        if not profile_operators:
+            raise ValueError("경계 텐서 검산에는 --profile-operators가 필요합니다.")
+        command.insert(1, "-DEDGE_ASR_QWEN_BOUNDARIES")
     if profile_operators:
         command.insert(1, "-DEDGE_ASR_PROFILE_OPERATORS")
     if trace_tokens:
@@ -110,6 +121,9 @@ def build(
     if profile_operators:
         receipt["features"].append("operator_profile_v1")
         receipt["operator_profile_source_sha256"] = sha(cpp.with_name("operator_profile.h"))
+    if capture_boundaries:
+        receipt["features"].append("qwen_boundary_capture_v1")
+        receipt["boundary_source_sha256"] = sha(cpp.with_name("qwen_boundary_dump.h"))
     if trace_tokens:
         receipt["features"].append("token_trace_v1")
         receipt["token_trace_source_sha256"] = sha(cpp.with_name("token_trace.h"))
@@ -124,6 +138,9 @@ def main():
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument("--engine-build", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--capture-boundaries", action="store_true", help="고정 Qwen 경계 검산 빌드"
+    )
     parser.add_argument("--profile-operators", action="store_true", help="별도 연산 진단 빌드")
     parser.add_argument(
         "--trace-tokens", action="store_true", help="별도 토큰 선택 logits 진단 빌드"
@@ -136,6 +153,7 @@ def main():
         args.output.resolve(),
         profile_operators=args.profile_operators,
         trace_tokens=args.trace_tokens,
+        capture_boundaries=args.capture_boundaries,
         kleidiai=args.kleidiai,
     )
 

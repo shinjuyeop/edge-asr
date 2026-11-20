@@ -11,6 +11,10 @@
 #endif
 #ifdef EDGE_ASR_PROFILE_OPERATORS
 #include "operator_profile.h"
+#ifdef EDGE_ASR_QWEN_BOUNDARIES
+#include "qwen_boundary_dump.h"
+#endif
+#include <ctime>
 #endif
 #include "json.hpp"
 #include <algorithm>
@@ -62,11 +66,17 @@ struct State {
 uint64_t profile_now() {
     return std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now().time_since_epoch()).count();
 }
+uint64_t profile_cpu_now() {
+    timespec value{};
+    if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &value) != 0)
+        throw std::runtime_error("process CPU clock unavailable");
+    return uint64_t(value.tv_sec) * 1000000000 + value.tv_nsec;
+}
 bool profile_callback(ggml_tensor* t, bool ask, void* user) {
     auto& profile=*static_cast<OperatorProfile*>(user);
     if (!profile.enabled) return !ask;
-    if (ask) { profile.before(t,profile_now()); return true; }
-    const auto ended=profile_now();
+    if (ask) { profile.before(t,profile_now(),profile_cpu_now()); return true; }
+    const auto ended=profile_now(), cpu_ended=profile_cpu_now();
     OperatorNode node; node.name=t->name; node.op=ggml_op_name(t->op);
     std::copy_n(t->ne,4,node.shape.begin());
     if (t->src[0]) {
@@ -77,7 +87,14 @@ bool profile_callback(ggml_tensor* t, bool ask, void* user) {
         node.rhs_type=ggml_type_name(t->src[1]->type);
         std::copy_n(t->src[1]->ne,4,node.rhs_shape.begin());
     }
-    profile.after(t,ended,node); return true;
+    profile.after(t,ended,cpu_ended,node);
+#ifdef EDGE_ASR_QWEN_BOUNDARIES
+    if (profile.phase == "audio_encoder" && !dump_qwen_boundary(t)) {
+        profile.valid = false;
+        return false;
+    }
+#endif
+    return true;
 }
 json profile_result(const OperatorProfile& p) {
     json groups=json::array();
@@ -86,7 +103,7 @@ json profile_result(const OperatorProfile& p) {
         groups.push_back({{"stage",entry.first.first},{"name",n.name},{"op",n.op},{"lhs_name",n.lhs_name},
             {"lhs_type",n.lhs_type},{"rhs_type",n.rhs_type},{"shape",n.shape},{"lhs_shape",n.lhs_shape},
             {"rhs_shape",n.rhs_shape},{"shape_changed",a.shape_changed},{"count",a.count},
-            {"total_s",a.total_ns/1e9},{"max_s",a.max_ns/1e9}});
+            {"first_seen",a.first_seen},{"process_cpu_s",a.process_cpu_ns/1e9},{"total_s",a.total_ns/1e9},{"max_s",a.max_ns/1e9}});
     }
     return {{"schema_version",1},{"enabled",p.enabled},{"valid",p.complete()},
         {"overflow_groups",p.overflow},{"groups",groups},
