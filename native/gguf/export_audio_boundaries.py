@@ -86,6 +86,11 @@ def export(weights, kind, tokens, path):
         if kind == "cnn_projection":
             x = projection(gelu(conv(gelu(conv(gelu(x), 2)), 3)))
             output_shape = [1, 13, 896]
+    elif kind in ("conv2", "conv3"):
+        second = kind == "conv2"
+        input_shape = [1, 480, 64, 50] if second else [1, 480, 32, 25]
+        output_shape = [1, 480, 32, 25] if second else [1, 480, 16, 13]
+        x = conv(x, 2 if second else 3)
     elif kind == "conv_out":
         input_shape, output_shape = [1, 480, 16, 13], [1, 13, 896]
         x = projection(x)
@@ -169,7 +174,7 @@ def main():
     if args.linear_reference:
         export_frame_matrices(args.linear_reference, args.text_gguf, args.output)
     weights = {w.name: w for w in gguf.GGUFReader(args.audio_gguf).tensors}
-    for kind in ("conv1", "conv_out", "cnn_projection"):
+    for kind in ("conv1", "conv2", "conv3", "conv_out", "cnn_projection"):
         export(weights, kind, None, args.output / f"{kind}.onnx")
     for tokens in sorted(set(args.tokens)):
         for kind in ("block0", "ffn0", "projector"):

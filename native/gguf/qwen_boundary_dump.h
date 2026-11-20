@@ -48,5 +48,11 @@ inline bool dump_qwen_boundary(const ggml_tensor* t, const std::string& phase) {
         name = "block_input";
     if (t->op == GGML_OP_ADD && t->ne[0] == 50 && t->ne[1] == 64 && t->ne[2] == 480)
         name = "conv1_bias";
+    if (t->ne[2] == 480) {
+        if (t->op == GGML_OP_UNARY && t->ne[0] == 50 && t->ne[1] == 64) name = "conv2_input";
+        if (t->op == GGML_OP_ADD && t->ne[0] == 25 && t->ne[1] == 32) name = "conv2_bias";
+        if (t->op == GGML_OP_UNARY && t->ne[0] == 25 && t->ne[1] == 32) name = "conv3_input";
+        if (t->op == GGML_OP_ADD && t->ne[0] == 13 && t->ne[1] == 16) name = "conv3_bias";
+    }
     return !name || write_qwen_tensor(directory, name, t);
 }
