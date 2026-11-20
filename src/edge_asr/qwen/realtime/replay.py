@@ -412,7 +412,7 @@ def argument_parser():
         "--continuous-policy",
         choices=tuple(POLICY_VERSIONS),
         default="latest",
-        help="paced는 계산량 배분, headroom은 최근 부분 추론 예상 시간과 끝 여유를 확보",
+        help="paced는 계산량 배분, headroom은 호출 종료 여유 확보, headroom_followup은 끝에서 새 토큰을 표시할 여유가 있으면 1회 추가",
     )
     parser.add_argument(
         "--partial-thermal-policy",

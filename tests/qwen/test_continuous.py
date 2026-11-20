@@ -340,6 +340,52 @@ class ContinuousTests(unittest.TestCase):
             p.update(1, 80000, 147200, lambda a, b: b)
             self.assertIsNone(p.choose())  # 이력 없이 끝에 도달한 새 구간
 
+    def test_followup_uses_displayed_prefix_time_and_current_input_once_per_segment(self):
+        policy, _, events = self.policy(policy="headroom_followup")
+        native = dict(
+            first_generated_token_s=0.45,
+            token_decode_s=0.20,
+            audio_encode_s=0.24,
+            audio_embedding_eval_s=0.06,
+        )
+        with policy.condition:
+            policy.observe({"temperature_mc": 60000, "current_limits": 0})
+            for segment, start in ((0, 0), (1, 80000)):
+                previous = dict(
+                    kind="partial",
+                    status="success",
+                    displayed=True,
+                    segment_id=segment,
+                    start_frame=start,
+                    end_frame=start + 16000,
+                    adapter_result={"native_result": native},
+                )
+                policy.update(segment, start, start + 16000, lambda a, b: b)
+                self.assertIsNotNone(policy.choose(1))
+                policy.update(segment, start, start + 48000, lambda a, b: b)
+                for changes in (
+                    {"displayed": False},
+                    {"end_frame": start + 15000},
+                    {"segment_id": segment - 1},
+                    {"status": "cancelled"},
+                    {"adapter_result": None},
+                ):
+                    self.assertIsNone(policy.choose(2.3, previous={**previous, **changes}))
+                self.assertIsNone(
+                    policy.choose(2.3, previous=previous, available_frame=start + 64000)
+                )
+                policy.observe({"temperature_mc": 83000, "current_limits": 0})
+                self.assertIsNone(policy.choose(2.3, previous=previous))
+                policy.observe({"temperature_mc": 60000, "current_limits": 0})
+                self.assertIsNotNone(policy.choose(2.3, previous=previous))
+                self.assertTrue(events[-1]["near_final_followup"])
+                self.assertAlmostEqual(events[-1]["prefix_time_s"], 1.25)
+                policy.update(segment, start, start + 60800, lambda a, b: b)
+                self.assertIsNone(
+                    policy.choose(2.3, previous={**previous, "end_frame": start + 48000})
+                )
+            self.assertEqual(policy.stats["near_final_followups"], 2)
+
     def test_worker_wakes_paced_candidate_without_input_or_thermal_notification(self):
         model, events, ready_at = ControlledModel(), [], time.perf_counter() + 0.05
         offered = False
@@ -390,6 +436,7 @@ class ContinuousTests(unittest.TestCase):
             {"partial_followup_s": 1},
             {"partial_tail_margin_s": 2},
             {"continuous_policy": "unknown"},
+            {"continuous_policy": "headroom_followup"},
             {"partial_thermal_policy": "unknown"},
         ):
             with self.subTest(args=args), self.assertRaises(ValueError):

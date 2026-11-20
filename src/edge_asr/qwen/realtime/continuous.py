@@ -1,5 +1,6 @@
 """최신 범위 하나를 실행 직전에 선택한다. 모든 상태는 작업자의 공통 condition으로 보호한다."""
 
+import math
 import time
 from threading import Event, Thread
 
@@ -9,6 +10,7 @@ POLICY_VERSIONS = {
     "latest": "latest-completion-v1",
     "paced": "paced-completion-v2",
     "headroom": "estimated-headroom-v1",
+    "headroom_followup": "prefix-time-followup-v1",
 }
 
 
@@ -38,6 +40,7 @@ class ContinuousPolicy:
         self.candidate = None
         self.segment = None
         self.last_end = 0
+        self.followup_used = False
         self.last_reason = None
         self.deferral = None
         self.blocked_since = None
@@ -71,8 +74,10 @@ class ContinuousPolicy:
             "tail_margin_s": tail / 16000,
             "deferred_s": {},
         }
-        if policy == "headroom":
+        if policy in ("headroom", "headroom_followup"):
             self.stats["final_reserve_max_s"] = None
+        if policy == "headroom_followup":
+            self.stats["near_final_followups"] = 0
 
     def _end_deferral(self):
         if self.deferral is not None:
@@ -95,6 +100,7 @@ class ContinuousPolicy:
         if self.segment != segment:
             self.discard("segment_change")
             self.segment, self.last_end = segment, start
+            self.followup_used = False
         if end <= self.last_end:
             return
         if self.candidate:
@@ -140,7 +146,36 @@ class ContinuousPolicy:
     def wait_s(self):
         return max(0.001, self.wake_at - self.clock()) if self.wake_at is not None else None
 
-    def choose(self, estimated_s=None):
+    def _prefix_time(self, previous, start, end):
+        """직전 표시를 다시 생성하고 다음 토큰을 선택할 때까지의 추정 시간."""
+        if (
+            not previous
+            or previous["kind"] != "partial"
+            or previous["status"] != "success"
+            or not previous["displayed"]
+            or previous["segment_id"] != self.segment
+            or previous["start_frame"] != start
+            or previous["end_frame"] != self.last_end
+        ):
+            return None
+        native = (previous.get("adapter_result") or {}).get("native_result") or {}
+        keys = (
+            "first_generated_token_s",
+            "token_decode_s",
+            "audio_encode_s",
+            "audio_embedding_eval_s",
+        )
+        stages = [native.get(key) for key in keys]
+        if not all(type(v) in (int, float) and math.isfinite(v) and v >= 0 for v in stages):
+            return None
+        first, decode, encode, embeddings = stages
+        # 직렬 부분 호출은 마지막 텍스트 토큰 뒤의 EOG 선택까지 decode한다.
+        # 이전 토큰열을 재생한다고 가정하고, 새로 늘어난 PCM의 음성 단계 비용을 더한다.
+        return (
+            first + decode + (encode + embeddings) * (end - self.last_end) / (self.last_end - start)
+        )
+
+    def choose(self, estimated_s=None, *, previous=None, available_frame=None):
         self.wake_at = None
         if self.candidate is None:
             return None
@@ -151,18 +186,28 @@ class ContinuousPolicy:
         reserve = self.tail / 16000
         if self.policy == "paced" and estimated_s is not None:
             reserve = min(0.8, max(reserve, estimated_s))
-        elif self.policy == "headroom":
+        elif self.policy in ("headroom", "headroom_followup"):
             # 이력이 없을 때는 한 번의 새 음성 간격을 확보한다.
             reserve += self.min_new / 16000 if estimated_s is None else estimated_s
         allowance = 0.35 if first else 0.0
+        prefix_time = None
+        followup = False
+        remaining = (self.maximum - (end - start)) / 16000
         if end - start < self.minimum or (
             not first and end - self.last_end < self.min_new * self.thermal_factor
         ):
             reason = "minimum_audio"
         elif not self.thermal_ready or self.hot:
             reason = "thermal_backoff"
-        elif (self.maximum - (end - start)) / 16000 <= reserve:
+        elif remaining <= reserve:
             reason = "near_final"
+            if self.policy == "headroom_followup" and not first and not self.followup_used:
+                prefix_time = self._prefix_time(previous, start, end)
+                # VAD가 넘긴 PCM 끝보다 실제 입력이 앞섰다면 그만큼 대기 여유를 줄인다.
+                remaining = (start + self.maximum - max(end, available_frame or end)) / 16000
+                if prefix_time is not None and prefix_time + self.tail / 16000 < remaining:
+                    reason = "offered"
+                    followup = True
         elif self.policy == "paced" and self.work_debt_s > allowance + 1e-6:
             reason = "compute_pacing"
             self.wake_at = now + (self.work_debt_s - allowance) / rate
@@ -188,6 +233,15 @@ class ContinuousPolicy:
                     "work_debt_s": self.work_debt_s,
                     "compute_duty_target": rate,
                     "at_monotonic_s": self.clock(),
+                    **(
+                        {
+                            "near_final_followup": followup,
+                            "prefix_time_s": prefix_time,
+                            "remaining_s": remaining,
+                        }
+                        if self.policy == "headroom_followup"
+                        else {}
+                    ),
                 }
             )
             self.last_reason = key
@@ -205,6 +259,9 @@ class ContinuousPolicy:
             return None
         # 선택·제출·시작은 같은 condition 안에서 수행해 새 final이 끼어들지 않는다.
         self.last_end = end
+        if followup:
+            self.followup_used = True
+            self.stats["near_final_followups"] += 1
         self.candidate = None
         self.stats["snapshots"] += 1
         self.stats["snapshot_frames"] += end - start

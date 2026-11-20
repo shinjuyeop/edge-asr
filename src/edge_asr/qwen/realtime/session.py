@@ -82,6 +82,8 @@ class CaptionSession:
             cancel_partial_for_final and (partial_mode != "continuous" or not token_stream)
         ):
             raise ValueError("최종 우선 취소는 continuous·token_stream에서만 선택합니다.")
+        if continuous_policy == "headroom_followup" and not cancel_partial_for_final:
+            raise ValueError("headroom_followup은 토큰 표시와 최종 우선 취소가 필요합니다.")
         if partial_mode == "continuous" and partial_tail_margin_s > 0.5:
             raise ValueError("continuous 끝 여유는 최대 0.5초입니다.")
         if adaptive_policy not in ("recent", "budgeted") or (
@@ -184,10 +186,16 @@ class CaptionSession:
 
     def _continuous_next(self):
         estimate = None
-        if self.continuous.candidate and self.continuous.policy in ("paced", "headroom"):
+        if self.continuous.candidate and self.continuous.policy in (
+            "paced",
+            "headroom",
+            "headroom_followup",
+        ):
             _, start, end, _ = self.continuous.candidate
             estimate = self.worker.estimate_cost("partial", end - start, model="audio_scaled")
-        candidate = self.continuous.choose(estimate)
+        candidate = self.continuous.choose(
+            estimate, previous=self.partial, available_frame=self.position
+        )
         if candidate:
             segment, start, end, pcm = candidate
             self._offer("partial", segment, start, end, pcm)
