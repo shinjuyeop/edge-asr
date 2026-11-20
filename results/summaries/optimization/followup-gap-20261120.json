@@ -1,0 +1,4327 @@
+{
+  "run_id": "followup-gap-20261120-01",
+  "source": "1f98e932ae397304c5626e3231d23fa8cb2e12d8",
+  "campaign": {
+    "source": "1f98e932ae397304c5626e3231d23fa8cb2e12d8",
+    "status": "completed",
+    "phases": [
+      {
+        "label": "fixed-gated",
+        "command": [
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "thermal-run",
+          "--output",
+          "results/optimization/opt3/followup-gap-20261120-01/fixed-gated",
+          "--timeout-s",
+          "1800",
+          "--temperature-policy",
+          "operational",
+          "--admission-temperature-c",
+          "60",
+          "--",
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "replay-qwen3",
+          "--config",
+          "configs/gguf_final_draft.toml",
+          "--manifest",
+          "results/optimization/opt3/followup-gap-20261120-01/inputs/fixed.jsonl",
+          "--output",
+          "results/optimization/opt3/followup-gap-20261120-01/fixed-gated",
+          "--vad-model",
+          "models/silero-vad-k2-20261029/silero_vad.onnx",
+          "--gap-s",
+          "0",
+          "--vad-threshold",
+          "0.3",
+          "--vad-preprocess",
+          "rms26-floor80",
+          "--vad-max-speech-s",
+          "5",
+          "--max-segment-s",
+          "5",
+          "--partial-mode",
+          "continuous",
+          "--continuous-policy",
+          "headroom_followup",
+          "--followup-gap-target-s",
+          "4.0",
+          "--partial-after-s",
+          "0.6",
+          "--partial-min-new-s",
+          "1.0",
+          "--partial-tail-margin-s",
+          "0.2",
+          "--partial-thermal-policy",
+          "pace",
+          "--cancel-partial-for-final",
+          "--token-stream",
+          "--drain-timeout-s",
+          "30",
+          "--queue-capacity",
+          "4",
+          "--silence-policy",
+          "skip-zero"
+        ],
+        "start_unix": 1795150614.944933,
+        "exit": 0,
+        "end_unix": 1795151543.0349915,
+        "complete": true,
+        "score": 0.10862785862785863,
+        "failures": 0,
+        "limit_verified": true,
+        "operational_valid": true
+      },
+      {
+        "label": "fixed-followup",
+        "command": [
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "thermal-run",
+          "--output",
+          "results/optimization/opt3/followup-gap-20261120-01/fixed-followup",
+          "--timeout-s",
+          "1800",
+          "--temperature-policy",
+          "operational",
+          "--admission-temperature-c",
+          "60",
+          "--",
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "replay-qwen3",
+          "--config",
+          "configs/gguf_final_draft.toml",
+          "--manifest",
+          "results/optimization/opt3/followup-gap-20261120-01/inputs/fixed.jsonl",
+          "--output",
+          "results/optimization/opt3/followup-gap-20261120-01/fixed-followup",
+          "--vad-model",
+          "models/silero-vad-k2-20261029/silero_vad.onnx",
+          "--gap-s",
+          "0",
+          "--vad-threshold",
+          "0.3",
+          "--vad-preprocess",
+          "rms26-floor80",
+          "--vad-max-speech-s",
+          "5",
+          "--max-segment-s",
+          "5",
+          "--partial-mode",
+          "continuous",
+          "--continuous-policy",
+          "headroom_followup",
+          "--partial-after-s",
+          "0.6",
+          "--partial-min-new-s",
+          "1.0",
+          "--partial-tail-margin-s",
+          "0.2",
+          "--partial-thermal-policy",
+          "pace",
+          "--cancel-partial-for-final",
+          "--token-stream",
+          "--drain-timeout-s",
+          "30",
+          "--queue-capacity",
+          "4",
+          "--silence-policy",
+          "skip-zero"
+        ],
+        "start_unix": 1795151543.0359898,
+        "exit": 0,
+        "end_unix": 1795152518.5886323,
+        "complete": true,
+        "score": 0.1094074844074844,
+        "failures": 0,
+        "limit_verified": true,
+        "operational_valid": true
+      },
+      {
+        "label": "fixed-baseline",
+        "command": [
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "thermal-run",
+          "--output",
+          "results/optimization/opt3/followup-gap-20261120-01/fixed-baseline",
+          "--timeout-s",
+          "1800",
+          "--temperature-policy",
+          "operational",
+          "--admission-temperature-c",
+          "60",
+          "--",
+          "/home/deepet/projects/edge-asr/.venv/bin/python",
+          "scripts/edge_asr.py",
+          "tools",
+          "replay-qwen3",
+          "--config",
+          "configs/gguf_final_draft.toml",
+          "--manifest",
+          "results/optimization/opt3/followup-gap-20261120-01/inputs/fixed.jsonl",
+          "--output",
+          "results/optimization/opt3/followup-gap-20261120-01/fixed-baseline",
+          "--vad-model",
+          "models/silero-vad-k2-20261029/silero_vad.onnx",
+          "--gap-s",
+          "0",
+          "--vad-threshold",
+          "0.3",
+          "--vad-preprocess",
+          "rms26-floor80",
+          "--vad-max-speech-s",
+          "5",
+          "--max-segment-s",
+          "5",
+          "--partial-mode",
+          "continuous",
+          "--continuous-policy",
+          "headroom",
+          "--partial-after-s",
+          "0.6",
+          "--partial-min-new-s",
+          "1.0",
+          "--partial-tail-margin-s",
+          "0.2",
+          "--partial-thermal-policy",
+          "pace",
+          "--cancel-partial-for-final",
+          "--token-stream",
+          "--drain-timeout-s",
+          "30",
+          "--queue-capacity",
+          "4",
+          "--silence-policy",
+          "skip-zero"
+        ],
+        "start_unix": 1795152518.5896337,
+        "exit": 0,
+        "end_unix": 1795153510.1582427,
+        "complete": true,
+        "score": 0.10862785862785863,
+        "failures": 0,
+        "limit_verified": true,
+        "operational_valid": true
+      }
+    ],
+    "manifest_sha256": "f693163f3d0d11a09873d3d5dbbd8a68aea6ebd1897cc051fd99dd076f8b76ab",
+    "runner_sha256": "9763dc80d3745c124c8806b3a909fa9a9c0819cfc59a31c646e5c9269512a164"
+  },
+  "groups": {
+    "fixed-gated": {
+      "input": {
+        "source_commit": "1f98e932ae397304c5626e3231d23fa8cb2e12d8",
+        "input_manifest_sha256": "f693163f3d0d11a09873d3d5dbbd8a68aea6ebd1897cc051fd99dd076f8b76ab",
+        "config_sha256": "841012b8f418d9966cc9046cae93b2ef31852696cd94d809112ed084c9bc4fc0",
+        "source_dirty": false,
+        "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+        "model_files": {
+          "Qwen3-ASR-0.6B-Q8_0.gguf": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+          },
+          "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+          },
+          "runtime_library": {
+            "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/token-draft-20261119-01/bridge/libedge_asr_gguf.so",
+            "sha256": "1cc11d27276af2eb4bb863dcb62cd8ee670175c3b622408523d5f317f5170b14"
+          },
+          "runtime_manifest": {
+            "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/token-draft-20261119-01/bridge/build.json",
+            "sha256": "ff517313176cc9caf4f90f3de0da2ccc280677acaf54c633854cd629aff652a9"
+          }
+        },
+        "audio": {
+          "sha256": "5008e9154b14533a72326f1745665a7bb8a031508fcda427398fd2a1c24a65cd",
+          "frames": 14258317,
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "sample_width_bytes": 2,
+          "duration_s": 891.1448125
+        },
+        "settings": {
+          "gap_s": 0.0,
+          "vad_preprocess": "rms26-floor80",
+          "vad_threshold": 0.3,
+          "vad_max_speech_s": 5,
+          "partial_after_s": 0.6,
+          "partial_interval_s": 1,
+          "partial_mode": "continuous",
+          "partial_min_new_s": 1.0,
+          "partial_tail_margin_s": 0.2,
+          "adaptive_policy": "recent",
+          "partial_cost_model": "total",
+          "partial_budget_s": 2.5,
+          "protect_short_followup": false,
+          "partial_max_calls": 2,
+          "continuous_policy": "headroom_followup",
+          "partial_thermal_policy": "pace",
+          "cancel_partial_for_final": true,
+          "partial_followup_s": null,
+          "max_segment_s": 5,
+          "drain_timeout_s": 30,
+          "queue_capacity": 4,
+          "token_stream": true,
+          "partials": true,
+          "silence_policy": "skip-zero",
+          "followup_gap_target_s": 4.0
+        },
+        "warmup_input": {
+          "policy": "leading_max_segment_v1",
+          "source_id": "fleurs-13962545215242501803",
+          "source_audio_sha256": "e7b0fd9527a0e3f31922280410f5939d4b9da0a619d1546921cd6957212904de",
+          "source_frames": 235200,
+          "start_frame": 0,
+          "end_frame": 80000,
+          "payload_float32_sha256": "c4128f45d74c47f1175b0adea8dae7e6e2acd400fad95a7b526849841f35e43f",
+          "scope": "첫 원음의 ASR 최대 구간 이내 PCM만 워밍업. 평가 입력은 전체 원음 유지."
+        },
+        "processed_pcm_sha256": "273529b8a519b3b2dab6cd2a1e941633a21e6f4ac3995619967446df77be4dd7",
+        "warmup_successes": 4,
+        "environment": {
+          "machine": "aarch64",
+          "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+          "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+          "runtime": {
+            "sherpa_package_version": "2.0.1",
+            "sherpa_core_package_version": "2.0.1",
+            "python_onnxruntime_package_version": "1.31.1",
+            "sherpa_native_onnxruntime_version": null,
+            "native_version_source": "sherpa_onnx.onnxruntime_version",
+            "status": "not_imported",
+            "reason": "선택 런타임을 아직 import하지 않았습니다."
+          },
+          "thread_environment": {
+            "OMP_WAIT_POLICY": null,
+            "OMP_NUM_THREADS": null,
+            "OMP_DYNAMIC": null,
+            "OMP_PROC_BIND": null,
+            "OMP_PLACES": null,
+            "GOMP_SPINCOUNT": null,
+            "KMP_BLOCKTIME": null,
+            "OPENBLAS_NUM_THREADS": "1"
+          }
+        },
+        "engine_metadata": {
+          "backend": "llama_cpp_mtmd",
+          "quantization": "q8_0",
+          "audio_quantization": "q8_0",
+          "thread_configuration": {
+            "threads": 2,
+            "threads_batch": 3,
+            "audio_threads": 3
+          },
+          "cache_text_prefix": true,
+          "provider": "cpu"
+        }
+      },
+      "score": {
+        "reference_characters": 3848,
+        "errors": 418,
+        "substitutions": 184,
+        "deletions": 160,
+        "insertions": 74,
+        "cer": 0.10862785862785863
+      },
+      "calls": {
+        "partial": {
+          "attempts": 248,
+          "statuses": {
+            "success": 212,
+            "cancelled": 36
+          },
+          "successes_without_normalized_characters": [],
+          "inference_sum_s": 288.1712594644632,
+          "inference_s": {
+            "n": 248,
+            "mean": 1.1619808849373516,
+            "p50": 1.1406528980005533,
+            "p95": 1.9773544040508568,
+            "max": 2.1812192909419537
+          },
+          "queue_wait_s": {
+            "n": 248,
+            "mean": 0.000178851967868996,
+            "p50": 0.00017861207015812397,
+            "p95": 0.00027781608514487743,
+            "max": 0.0004774840781465173
+          }
+        },
+        "final": {
+          "attempts": 210,
+          "statuses": {
+            "success": 210
+          },
+          "successes_without_normalized_characters": [
+            114,
+            142,
+            209
+          ],
+          "inference_sum_s": 415.6717391242273,
+          "inference_s": {
+            "n": 210,
+            "mean": 1.979389233924892,
+            "p50": 2.1048028169898316,
+            "p95": 3.372742236009799,
+            "max": 4.3203183700097725
+          },
+          "queue_wait_s": {
+            "n": 210,
+            "mean": 0.6419026019539507,
+            "p50": 0.017119211959652603,
+            "p95": 2.7664611641084775,
+            "max": 3.595924081047997
+          }
+        }
+      },
+      "source_pcm_signature": "2565bc0491e662124df6888493104aa2d0437c640158c92bf3cc303a5086c0c2",
+      "final_pcm_signature": "2baf78be5c5c6c90e0c6d9ff65c5d5f8a8dea72a407f47d2dfa6a91e1ed04986",
+      "stale_displayed_events": 0,
+      "active": {
+        "owned_s": 651.6160000000004,
+        "own_advancing_publish_in_last_1s_percent": 30.930976258811228,
+        "own_displayed_audio_end_in_last_1s_percent": 9.831809095734688,
+        "own_advancing_max_gap_for_segments_ge2s_s": {
+          "n": 140,
+          "mean": 2.2760266439630854,
+          "p50": 2.140788797987625,
+          "p95": 3.41599999999994,
+          "max": 5.0
+        }
+      },
+      "pacing": {
+        "chunk_ms": 100,
+        "last_scheduled_s": 891.1448125,
+        "last_observed_s": 891.145511886,
+        "chunk_types": {
+          "enqueue": 8912
+        },
+        "release_lag_s": {
+          "n": 8912,
+          "mean": 0.00019839597262137867,
+          "p50": 0.00013734600000248065,
+          "p95": 0.0003563170000120408,
+          "max": 0.004605717000004006
+        }
+      },
+      "track_while_input": {
+        "displayed_content_changes": {
+          "events_during_input": 4029,
+          "interval_with_edges_s": {
+            "n": 4030,
+            "mean": 0.22112774503722082,
+            "p50": 0.0631223269738257,
+            "p95": 1.3390416409820318,
+            "max": 4.436484694015235
+          },
+          "max_s": 4.436484694015235,
+          "max_from_s": 51.753038688912056,
+          "max_to_s": 56.18952338292729
+        },
+        "audio_end_advances": {
+          "events_during_input": 442,
+          "interval_with_edges_s": {
+            "n": 443,
+            "mean": 2.011613572234763,
+            "p50": 1.7242357110371813,
+            "p95": 3.945254642982036,
+            "max": 4.802923707058653
+          },
+          "max_s": 4.802923707058653,
+          "max_from_s": 610.7451499769231,
+          "max_to_s": 615.5480736839818
+        }
+      },
+      "transport": {
+        "captured_chunks": 8912,
+        "accepted_chunks": 8912,
+        "processed_chunks": 8912,
+        "planned_chunks": 8912,
+        "dropped_chunks": 0,
+        "dropped_audio_s": 0.0,
+        "finalization_from_audio_end_s": 1.083357058000047,
+        "event_max_chunks": 1,
+        "event_max_audio_s": 0.1,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0,
+        "inference_queue_peak": 2
+      },
+      "resources": {
+        "elapsed_s": 892.228169558,
+        "cpu_seconds_replay_plus_producer": 1948.979253911,
+        "mean_four_core_percent": 54.60988905104013,
+        "main_process_peak_rss_mib": 1799.734375,
+        "total_inference_s": 703.8429985886905,
+        "inference_s_per_input_s": 0.7898188809674416,
+        "thermal_guard_max_c": 85.9,
+        "admission_c": 53.45,
+        "current_limit_sample_counts": {
+          "0": 520,
+          "8": 358,
+          "6": 28
+        },
+        "current_limit_input_s_approx": 392.6754130573365,
+        "guard": {
+          "exit_code": 0,
+          "status": "completed",
+          "limit_verified": true,
+          "operational_valid": true,
+          "error": null,
+          "rejection": null
+        },
+        "quarters": [
+          {
+            "final_queue_wait_s": {
+              "n": 45,
+              "mean": 0.3747377954294077,
+              "p50": 0.01897558500058949,
+              "p95": 1.8629207579651847,
+              "max": 3.078588588978164
+            },
+            "final_return_s": {
+              "n": 45,
+              "mean": 2.467485692362613,
+              "p50": 2.5156214269874617,
+              "p95": 3.302114582954914,
+              "max": 3.757824814955711
+            },
+            "rss_mib": {
+              "n": 2210,
+              "mean": 1779.3404623868778,
+              "p50": 1779.234375,
+              "p95": 1781.234375,
+              "max": 1781.234375
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 53,
+              "mean": 0.7875346817572618,
+              "p50": 0.024645379977300763,
+              "p95": 2.9418954140273854,
+              "max": 3.4287476409226656
+            },
+            "final_return_s": {
+              "n": 53,
+              "mean": 2.8903914070410224,
+              "p50": 2.966247724023674,
+              "p95": 4.046414523988005,
+              "max": 4.095765779005376
+            },
+            "rss_mib": {
+              "n": 2208,
+              "mean": 1782.9692028985507,
+              "p50": 1782.734375,
+              "p95": 1784.234375,
+              "max": 1784.234375
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 57,
+              "mean": 0.6783027686464617,
+              "p50": 0.028323297039605677,
+              "p95": 2.4637434310279787,
+              "max": 2.9008308079792187
+            },
+            "final_return_s": {
+              "n": 57,
+              "mean": 2.8597776970364066,
+              "p50": 2.923234103939535,
+              "p95": 3.433607580990497,
+              "max": 3.532878554917829
+            },
+            "rss_mib": {
+              "n": 2209,
+              "mean": 1786.2762491511996,
+              "p50": 1786.234375,
+              "p95": 1787.734375,
+              "max": 1787.734375
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 55,
+              "mean": 0.6824318121822381,
+              "p50": 0.0019170120358467102,
+              "p95": 3.026452742051333,
+              "max": 3.595924081047997
+            },
+            "final_return_s": {
+              "n": 55,
+              "mean": 3.0131448781146033,
+              "p50": 2.932802097925901,
+              "p95": 4.3055443859966545,
+              "max": 4.536978506968353
+            },
+            "rss_mib": {
+              "n": 2208,
+              "mean": 1789.1829710144928,
+              "p50": 1789.234375,
+              "p95": 1790.234375,
+              "max": 1790.734375
+            }
+          }
+        ]
+      },
+      "cancelled_calls": 36,
+      "partial_scheduler": {
+        "mode": "continuous",
+        "policy": "headroom_followup",
+        "version": "projected-gap-followup-v1",
+        "thermal_policy": "pace",
+        "decisions": {
+          "minimum_audio": 675,
+          "offered": 248,
+          "near_final": 998,
+          "projected_gap_below_target": 49
+        },
+        "candidate_updates": 20491,
+        "candidate_replacements": 20034,
+        "snapshots": 248,
+        "snapshot_frames": 6708864,
+        "discarded_candidates": 209,
+        "pending_peak": 1,
+        "thermal_backoff_s": 0.0,
+        "thermal_pause_c": 90,
+        "thermal_resume_c": 85,
+        "thermal_pacing_start_c": 82,
+        "thermal_factor_peak": 1.4,
+        "compute_duty_target": null,
+        "first_debt_allowance_s": null,
+        "final_reserve_max_s": null,
+        "accounted_inference_s": 0.0,
+        "work_debt_peak_s": 0.0,
+        "thermal_sample_s": 1.0,
+        "tail_margin_s": 0.2,
+        "deferred_s": {
+          "minimum_audio": 56.72885967732873,
+          "near_final": 88.95680910919327,
+          "projected_gap_below_target": 4.095323232933879
+        },
+        "near_final_followups": 30,
+        "followup_gap_target_s": 4.0,
+        "cancel_partial_grace_s": 0.0
+      },
+      "failures": [
+        {
+          "segment_id": 5,
+          "kind": "partial",
+          "start_frame": 427968,
+          "end_frame": 476672,
+          "status": "cancelled",
+          "duration_s": 3.044,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 6,
+          "kind": "partial",
+          "start_frame": 567232,
+          "end_frame": 612352,
+          "status": "cancelled",
+          "duration_s": 2.82,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 10,
+          "kind": "partial",
+          "start_frame": 956352,
+          "end_frame": 993280,
+          "status": "cancelled",
+          "duration_s": 2.308,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 11,
+          "kind": "partial",
+          "start_frame": 1066432,
+          "end_frame": 1111552,
+          "status": "cancelled",
+          "duration_s": 2.82,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 12,
+          "kind": "partial",
+          "start_frame": 1124288,
+          "end_frame": 1158144,
+          "status": "cancelled",
+          "duration_s": 2.116,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 13,
+          "kind": "partial",
+          "start_frame": 1244096,
+          "end_frame": 1271808,
+          "status": "cancelled",
+          "duration_s": 1.732,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 16,
+          "kind": "partial",
+          "start_frame": 1417664,
+          "end_frame": 1444352,
+          "status": "cancelled",
+          "duration_s": 1.668,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 17,
+          "kind": "partial",
+          "start_frame": 1465280,
+          "end_frame": 1484800,
+          "status": "cancelled",
+          "duration_s": 1.22,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 19,
+          "kind": "partial",
+          "start_frame": 1573824,
+          "end_frame": 1617408,
+          "status": "cancelled",
+          "duration_s": 2.724,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 28,
+          "kind": "partial",
+          "start_frame": 2125248,
+          "end_frame": 2156544,
+          "status": "cancelled",
+          "duration_s": 1.956,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 29,
+          "kind": "partial",
+          "start_frame": 2205632,
+          "end_frame": 2255872,
+          "status": "cancelled",
+          "duration_s": 3.14,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 30,
+          "kind": "partial",
+          "start_frame": 2316224,
+          "end_frame": 2342400,
+          "status": "cancelled",
+          "duration_s": 1.636,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 32,
+          "kind": "partial",
+          "start_frame": 2436160,
+          "end_frame": 2475008,
+          "status": "cancelled",
+          "duration_s": 2.428,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 34,
+          "kind": "partial",
+          "start_frame": 2628544,
+          "end_frame": 2676736,
+          "status": "cancelled",
+          "duration_s": 3.012,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 39,
+          "kind": "partial",
+          "start_frame": 2994112,
+          "end_frame": 3039744,
+          "status": "cancelled",
+          "duration_s": 2.852,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 42,
+          "kind": "partial",
+          "start_frame": 3225536,
+          "end_frame": 3270144,
+          "status": "cancelled",
+          "duration_s": 2.788,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 47,
+          "kind": "partial",
+          "start_frame": 3673024,
+          "end_frame": 3709952,
+          "status": "cancelled",
+          "duration_s": 2.308,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 56,
+          "kind": "partial",
+          "start_frame": 4311488,
+          "end_frame": 4359680,
+          "status": "cancelled",
+          "duration_s": 3.012,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 63,
+          "kind": "partial",
+          "start_frame": 4638656,
+          "end_frame": 4672000,
+          "status": "cancelled",
+          "duration_s": 2.084,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 64,
+          "kind": "partial",
+          "start_frame": 4720576,
+          "end_frame": 4730880,
+          "status": "cancelled",
+          "duration_s": 0.644,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 65,
+          "kind": "partial",
+          "start_frame": 4753856,
+          "end_frame": 4801536,
+          "status": "cancelled",
+          "duration_s": 2.98,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 70,
+          "kind": "partial",
+          "start_frame": 5114816,
+          "end_frame": 5161472,
+          "status": "cancelled",
+          "duration_s": 2.916,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 72,
+          "kind": "partial",
+          "start_frame": 5274048,
+          "end_frame": 5300736,
+          "status": "cancelled",
+          "duration_s": 1.668,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 74,
+          "kind": "partial",
+          "start_frame": 5453248,
+          "end_frame": 5504000,
+          "status": "cancelled",
+          "duration_s": 3.172,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 77,
+          "kind": "partial",
+          "start_frame": 5588928,
+          "end_frame": 5639680,
+          "status": "cancelled",
+          "duration_s": 3.172,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 79,
+          "kind": "partial",
+          "start_frame": 5735360,
+          "end_frame": 5782016,
+          "status": "cancelled",
+          "duration_s": 2.916,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 91,
+          "kind": "partial",
+          "start_frame": 6688192,
+          "end_frame": 6737408,
+          "status": "cancelled",
+          "duration_s": 3.076,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 103,
+          "kind": "partial",
+          "start_frame": 7445568,
+          "end_frame": 7488000,
+          "status": "cancelled",
+          "duration_s": 2.652,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 105,
+          "kind": "partial",
+          "start_frame": 7551424,
+          "end_frame": 7601152,
+          "status": "cancelled",
+          "duration_s": 3.108,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 112,
+          "kind": "partial",
+          "start_frame": 7974848,
+          "end_frame": 8027136,
+          "status": "cancelled",
+          "duration_s": 3.268,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 121,
+          "kind": "partial",
+          "start_frame": 8435776,
+          "end_frame": 8475136,
+          "status": "cancelled",
+          "duration_s": 2.46,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 122,
+          "kind": "partial",
+          "start_frame": 8491968,
+          "end_frame": 8534016,
+          "status": "cancelled",
+          "duration_s": 2.628,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 123,
+          "kind": "partial",
+          "start_frame": 8562624,
+          "end_frame": 8603136,
+          "status": "cancelled",
+          "duration_s": 2.532,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 143,
+          "kind": "partial",
+          "start_frame": 9845184,
+          "end_frame": 9894400,
+          "status": "cancelled",
+          "duration_s": 3.076,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 150,
+          "kind": "partial",
+          "start_frame": 10380224,
+          "end_frame": 10390016,
+          "status": "cancelled",
+          "duration_s": 0.612,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 157,
+          "kind": "partial",
+          "start_frame": 10733504,
+          "end_frame": 10766336,
+          "status": "cancelled",
+          "duration_s": 2.052,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        }
+      ],
+      "successful_final_return_s": {
+        "n": 210,
+        "mean": 2.823609036937477,
+        "p50": 2.8362933350065873,
+        "p95": 3.757824814955711,
+        "max": 4.536978506968353
+      },
+      "display": {
+        "content_changes_with_older_end_than_previously_shown": 0,
+        "partial_displayed_before_own_segment_end": {
+          "segments": 210,
+          "with_partial": 113,
+          "segments_at_least_2s": 140,
+          "with_partial_at_least_2s": 110
+        },
+        "source_distributions": {
+          "first_s": {
+            "n": 100,
+            "mean": 2.4479274127835167,
+            "p50": 2.213341297998113,
+            "p95": 3.758083699003805,
+            "max": 8.57519912298028
+          },
+          "first4_s": {
+            "n": 100,
+            "mean": 3.025252197308488,
+            "p50": 2.7283291940065055,
+            "p95": 5.544695843965748,
+            "max": 8.698323118940039
+          },
+          "file_end_s": {
+            "n": 100,
+            "mean": 1.4202400730949774,
+            "p50": 1.3774057660093604,
+            "p95": 2.637211347972027,
+            "max": 7.909355878920337
+          },
+          "observed_first_s": {
+            "n": 100,
+            "mean": 2.4479274127835167,
+            "p50": 2.213341297998113,
+            "p95": 3.758083699003805,
+            "max": 8.57519912298028
+          },
+          "observed_first4_s": {
+            "n": 100,
+            "mean": 2.9634064675674536,
+            "p50": 2.7283291940065055,
+            "p95": 4.742689449931504,
+            "max": 8.698323118940039
+          },
+          "max_content_gap_s": {
+            "n": 100,
+            "mean": 3.0442434778014404,
+            "p50": 2.840607956983149,
+            "p95": 3.95863428292796,
+            "max": 8.57519912298028
+          },
+          "first_completed_partial_s": {
+            "n": 97,
+            "mean": 2.677569800688427,
+            "p50": 2.607572183008301,
+            "p95": 4.1391908769682,
+            "max": 4.786711906958374
+          }
+        },
+        "stability": {
+          "normalization": "ko_cer_v1",
+          "displayed_updates": 4462,
+          "normalized_revisions": 95,
+          "retracted_suffix_characters": 399,
+          "prefix_replay_revisions": 0,
+          "prefix_replay_retracted_characters": 0,
+          "within_call_revisions": 0,
+          "failed_results": 0,
+          "cancelled_results": 36,
+          "suppressed_prefix_tokens": 1575,
+          "segments_with_display": 210,
+          "revised_segments": 70,
+          "prefix_replay_segments": 0,
+          "suppressed_prefix_jobs": 216,
+          "latest_completed_partial_vs_final": {
+            "paired_segments": 108,
+            "whole_partial_is_final_prefix": 69,
+            "partial_characters": 1294,
+            "retained_prefix_characters": 1075,
+            "retained_prefix_fraction": 0.8307573415765069
+          },
+          "finals_shorter_than4": 26,
+          "first4_to_final_consistent4_s": {
+            "n": 184,
+            "mean": 0.4798495337378446,
+            "p50": 0.0,
+            "p95": 3.1414868870051578,
+            "max": 5.856586941983551
+          },
+          "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+        }
+      },
+      "audit": {
+        "fresh_gaps_ge4": 21,
+        "normalized_gaps_ge4": 21,
+        "normalized_gap_s": {
+          "n": 441,
+          "mean": 2.020736536281179,
+          "p50": 1.735717543051578,
+          "p95": 3.945254642982036,
+          "max": 4.802923707058653
+        },
+        "long_partial_final_segments": [
+          40,
+          80,
+          82,
+          93,
+          98,
+          100,
+          115,
+          128,
+          141,
+          153,
+          158,
+          160,
+          170,
+          182,
+          185,
+          198,
+          205
+        ],
+        "followups": 30,
+        "extra_changed": 27,
+        "extra_cost_s": 55.323668290511705,
+        "extra_statuses": {
+          "cancelled": 12,
+          "success": 18
+        },
+        "extra_cancelled_changed": 9,
+        "held_segments": [
+          2,
+          20,
+          29,
+          40,
+          44,
+          52,
+          74,
+          77,
+          82,
+          98,
+          100,
+          112,
+          115,
+          128,
+          153,
+          158,
+          160,
+          173,
+          182,
+          185
+        ],
+        "held_then_extra_segments": [
+          29,
+          74,
+          77,
+          112
+        ],
+        "age_error_max_s": 0.00011355592869222164,
+        "rows": [
+          {
+            "segment_id": 5,
+            "job_id": 14,
+            "end_frame": 476672,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.204517869014389,
+            "changed_before_final": false,
+            "cost_s": 1.398684654966928
+          },
+          {
+            "segment_id": 9,
+            "job_id": 27,
+            "end_frame": 926208,
+            "status": "success",
+            "est_gap_at_decision_s": 4.038814151309609,
+            "changed_before_final": true,
+            "cost_s": 1.71493473299779
+          },
+          {
+            "segment_id": 15,
+            "job_id": 44,
+            "end_frame": 1375744,
+            "status": "success",
+            "est_gap_at_decision_s": 4.053751351636544,
+            "changed_before_final": true,
+            "cost_s": 1.8753289779415354
+          },
+          {
+            "segment_id": 24,
+            "job_id": 66,
+            "end_frame": 1945600,
+            "status": "success",
+            "est_gap_at_decision_s": 4.284807201609892,
+            "changed_before_final": true,
+            "cost_s": 1.9972420550184324
+          },
+          {
+            "segment_id": 26,
+            "job_id": 70,
+            "end_frame": 2052608,
+            "status": "success",
+            "est_gap_at_decision_s": 4.860357644637279,
+            "changed_before_final": true,
+            "cost_s": 1.7720380499958992
+          },
+          {
+            "segment_id": 29,
+            "job_id": 77,
+            "end_frame": 2255872,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.0780795063170565,
+            "changed_before_final": false,
+            "cost_s": 1.0698461970314384
+          },
+          {
+            "segment_id": 34,
+            "job_id": 91,
+            "end_frame": 2676736,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.411741451208582,
+            "changed_before_final": true,
+            "cost_s": 2.0824167139362544
+          },
+          {
+            "segment_id": 45,
+            "job_id": 123,
+            "end_frame": 3627008,
+            "status": "success",
+            "est_gap_at_decision_s": 4.051017700071526,
+            "changed_before_final": true,
+            "cost_s": 2.0025809260550886
+          },
+          {
+            "segment_id": 56,
+            "job_id": 148,
+            "end_frame": 4359680,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.033742591406132,
+            "changed_before_final": true,
+            "cost_s": 2.0307272489881143
+          },
+          {
+            "segment_id": 65,
+            "job_id": 164,
+            "end_frame": 4801536,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.012848929793831,
+            "changed_before_final": true,
+            "cost_s": 2.080201621982269
+          },
+          {
+            "segment_id": 68,
+            "job_id": 171,
+            "end_frame": 5010944,
+            "status": "success",
+            "est_gap_at_decision_s": 4.191537446453701,
+            "changed_before_final": true,
+            "cost_s": 1.9296820069430396
+          },
+          {
+            "segment_id": 70,
+            "job_id": 176,
+            "end_frame": 5161472,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.135872096287407,
+            "changed_before_final": false,
+            "cost_s": 0.8279402739135548
+          },
+          {
+            "segment_id": 74,
+            "job_id": 188,
+            "end_frame": 5504000,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.031129471145472,
+            "changed_before_final": true,
+            "cost_s": 1.8798212009714916
+          },
+          {
+            "segment_id": 77,
+            "job_id": 193,
+            "end_frame": 5639680,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.058823458697329,
+            "changed_before_final": true,
+            "cost_s": 1.842673858976923
+          },
+          {
+            "segment_id": 79,
+            "job_id": 198,
+            "end_frame": 5782016,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.164158975002567,
+            "changed_before_final": true,
+            "cost_s": 1.7405893309041858
+          },
+          {
+            "segment_id": 84,
+            "job_id": 210,
+            "end_frame": 6188544,
+            "status": "success",
+            "est_gap_at_decision_s": 4.0635484922800424,
+            "changed_before_final": true,
+            "cost_s": 1.8375410289736465
+          },
+          {
+            "segment_id": 89,
+            "job_id": 222,
+            "end_frame": 6599680,
+            "status": "success",
+            "est_gap_at_decision_s": 4.045221901897916,
+            "changed_before_final": true,
+            "cost_s": 1.973645402933471
+          },
+          {
+            "segment_id": 91,
+            "job_id": 227,
+            "end_frame": 6737408,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.371254506382123,
+            "changed_before_final": true,
+            "cost_s": 1.9756579319946468
+          },
+          {
+            "segment_id": 95,
+            "job_id": 234,
+            "end_frame": 6980608,
+            "status": "success",
+            "est_gap_at_decision_s": 4.2281540616944016,
+            "changed_before_final": true,
+            "cost_s": 1.6018812180263922
+          },
+          {
+            "segment_id": 107,
+            "job_id": 260,
+            "end_frame": 7753216,
+            "status": "success",
+            "est_gap_at_decision_s": 4.083147923134631,
+            "changed_before_final": true,
+            "cost_s": 1.8361771050840616
+          },
+          {
+            "segment_id": 112,
+            "job_id": 269,
+            "end_frame": 8027136,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.017348505011093,
+            "changed_before_final": true,
+            "cost_s": 1.82190369698219
+          },
+          {
+            "segment_id": 125,
+            "job_id": 295,
+            "end_frame": 8793600,
+            "status": "success",
+            "est_gap_at_decision_s": 4.458747772142988,
+            "changed_before_final": true,
+            "cost_s": 2.044065246009268
+          },
+          {
+            "segment_id": 135,
+            "job_id": 313,
+            "end_frame": 9353216,
+            "status": "success",
+            "est_gap_at_decision_s": 4.846397346325287,
+            "changed_before_final": true,
+            "cost_s": 1.9773544040508568
+          },
+          {
+            "segment_id": 143,
+            "job_id": 328,
+            "end_frame": 9894400,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.243077491148396,
+            "changed_before_final": true,
+            "cost_s": 2.001726539921947
+          },
+          {
+            "segment_id": 145,
+            "job_id": 332,
+            "end_frame": 10063872,
+            "status": "success",
+            "est_gap_at_decision_s": 4.927156020171223,
+            "changed_before_final": true,
+            "cost_s": 2.1812192909419537
+          },
+          {
+            "segment_id": 148,
+            "job_id": 339,
+            "end_frame": 10304000,
+            "status": "success",
+            "est_gap_at_decision_s": 4.249160312614013,
+            "changed_before_final": true,
+            "cost_s": 2.011736412998289
+          },
+          {
+            "segment_id": 166,
+            "job_id": 375,
+            "end_frame": 11334144,
+            "status": "success",
+            "est_gap_at_decision_s": 4.789219388694555,
+            "changed_before_final": true,
+            "cost_s": 1.990295566036366
+          },
+          {
+            "segment_id": 168,
+            "job_id": 380,
+            "end_frame": 11489280,
+            "status": "success",
+            "est_gap_at_decision_s": 4.148154984253267,
+            "changed_before_final": true,
+            "cost_s": 1.999265945982188
+          },
+          {
+            "segment_id": 180,
+            "job_id": 405,
+            "end_frame": 12297216,
+            "status": "success",
+            "est_gap_at_decision_s": 4.381714122534735,
+            "changed_before_final": true,
+            "cost_s": 1.8857691290322691
+          },
+          {
+            "segment_id": 196,
+            "job_id": 434,
+            "end_frame": 13339136,
+            "status": "success",
+            "est_gap_at_decision_s": 4.128804244382993,
+            "changed_before_final": true,
+            "cost_s": 1.9407215209212154
+          }
+        ]
+      }
+    },
+    "fixed-followup": {
+      "input": {
+        "source_commit": "1f98e932ae397304c5626e3231d23fa8cb2e12d8",
+        "input_manifest_sha256": "f693163f3d0d11a09873d3d5dbbd8a68aea6ebd1897cc051fd99dd076f8b76ab",
+        "config_sha256": "841012b8f418d9966cc9046cae93b2ef31852696cd94d809112ed084c9bc4fc0",
+        "source_dirty": false,
+        "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+        "model_files": {
+          "Qwen3-ASR-0.6B-Q8_0.gguf": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+          },
+          "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+          },
+          "runtime_library": {
+            "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/token-draft-20261119-01/bridge/libedge_asr_gguf.so",
+            "sha256": "1cc11d27276af2eb4bb863dcb62cd8ee670175c3b622408523d5f317f5170b14"
+          },
+          "runtime_manifest": {
+            "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/token-draft-20261119-01/bridge/build.json",
+            "sha256": "ff517313176cc9caf4f90f3de0da2ccc280677acaf54c633854cd629aff652a9"
+          }
+        },
+        "audio": {
+          "sha256": "5008e9154b14533a72326f1745665a7bb8a031508fcda427398fd2a1c24a65cd",
+          "frames": 14258317,
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "sample_width_bytes": 2,
+          "duration_s": 891.1448125
+        },
+        "settings": {
+          "gap_s": 0.0,
+          "vad_preprocess": "rms26-floor80",
+          "vad_threshold": 0.3,
+          "vad_max_speech_s": 5,
+          "partial_after_s": 0.6,
+          "partial_interval_s": 1,
+          "partial_mode": "continuous",
+          "partial_min_new_s": 1.0,
+          "partial_tail_margin_s": 0.2,
+          "adaptive_policy": "recent",
+          "partial_cost_model": "total",
+          "partial_budget_s": 2.5,
+          "protect_short_followup": false,
+          "partial_max_calls": 2,
+          "continuous_policy": "headroom_followup",
+          "partial_thermal_policy": "pace",
+          "cancel_partial_for_final": true,
+          "partial_followup_s": null,
+          "max_segment_s": 5,
+          "drain_timeout_s": 30,
+          "queue_capacity": 4,
+          "token_stream": true,
+          "partials": true,
+          "silence_policy": "skip-zero"
+        },
+        "warmup_input": {
+          "policy": "leading_max_segment_v1",
+          "source_id": "fleurs-13962545215242501803",
+          "source_audio_sha256": "e7b0fd9527a0e3f31922280410f5939d4b9da0a619d1546921cd6957212904de",
+          "source_frames": 235200,
+          "start_frame": 0,
+          "end_frame": 80000,
+          "payload_float32_sha256": "c4128f45d74c47f1175b0adea8dae7e6e2acd400fad95a7b526849841f35e43f",
+          "scope": "첫 원음의 ASR 최대 구간 이내 PCM만 워밍업. 평가 입력은 전체 원음 유지."
+        },
+        "processed_pcm_sha256": "273529b8a519b3b2dab6cd2a1e941633a21e6f4ac3995619967446df77be4dd7",
+        "warmup_successes": 4,
+        "environment": {
+          "machine": "aarch64",
+          "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+          "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+          "runtime": {
+            "sherpa_package_version": "2.0.1",
+            "sherpa_core_package_version": "2.0.1",
+            "python_onnxruntime_package_version": "1.31.1",
+            "sherpa_native_onnxruntime_version": null,
+            "native_version_source": "sherpa_onnx.onnxruntime_version",
+            "status": "not_imported",
+            "reason": "선택 런타임을 아직 import하지 않았습니다."
+          },
+          "thread_environment": {
+            "OMP_WAIT_POLICY": null,
+            "OMP_NUM_THREADS": null,
+            "OMP_DYNAMIC": null,
+            "OMP_PROC_BIND": null,
+            "OMP_PLACES": null,
+            "GOMP_SPINCOUNT": null,
+            "KMP_BLOCKTIME": null,
+            "OPENBLAS_NUM_THREADS": "1"
+          }
+        },
+        "engine_metadata": {
+          "backend": "llama_cpp_mtmd",
+          "quantization": "q8_0",
+          "audio_quantization": "q8_0",
+          "thread_configuration": {
+            "threads": 2,
+            "threads_batch": 3,
+            "audio_threads": 3
+          },
+          "cache_text_prefix": true,
+          "provider": "cpu"
+        }
+      },
+      "score": {
+        "reference_characters": 3848,
+        "errors": 421,
+        "substitutions": 187,
+        "deletions": 161,
+        "insertions": 73,
+        "cer": 0.1094074844074844
+      },
+      "calls": {
+        "partial": {
+          "attempts": 248,
+          "statuses": {
+            "success": 204,
+            "cancelled": 44
+          },
+          "successes_without_normalized_characters": [],
+          "inference_sum_s": 308.1971399782924,
+          "inference_s": {
+            "n": 248,
+            "mean": 1.2427304031382758,
+            "p50": 1.2246741380076855,
+            "p95": 2.0182812330313027,
+            "max": 2.241767243016511
+          },
+          "queue_wait_s": {
+            "n": 248,
+            "mean": 0.00017921058761496698,
+            "p50": 0.0001772049581632018,
+            "p95": 0.00027624203357845545,
+            "max": 0.0003717989893630147
+          }
+        },
+        "final": {
+          "attempts": 210,
+          "statuses": {
+            "success": 210
+          },
+          "successes_without_normalized_characters": [
+            114,
+            142,
+            209
+          ],
+          "inference_sum_s": 434.70800574403256,
+          "inference_s": {
+            "n": 210,
+            "mean": 2.0700381225906312,
+            "p50": 2.2550246689934283,
+            "p95": 3.578194587957114,
+            "max": 4.4623191660502926
+          },
+          "queue_wait_s": {
+            "n": 210,
+            "mean": 0.6917788815740052,
+            "p50": 0.02735618909355253,
+            "p95": 2.8943274070043117,
+            "max": 3.7359893560642377
+          }
+        }
+      },
+      "source_pcm_signature": "2565bc0491e662124df6888493104aa2d0437c640158c92bf3cc303a5086c0c2",
+      "final_pcm_signature": "2baf78be5c5c6c90e0c6d9ff65c5d5f8a8dea72a407f47d2dfa6a91e1ed04986",
+      "stale_displayed_events": 0,
+      "active": {
+        "owned_s": 651.6160000000004,
+        "own_advancing_publish_in_last_1s_percent": 29.471298919192627,
+        "own_displayed_audio_end_in_last_1s_percent": 8.516636222611396,
+        "own_advancing_max_gap_for_segments_ge2s_s": {
+          "n": 140,
+          "mean": 2.3221366636951717,
+          "p50": 2.1983688009828484,
+          "p95": 3.41599999999994,
+          "max": 5.0
+        }
+      },
+      "pacing": {
+        "chunk_ms": 100,
+        "last_scheduled_s": 891.1448125,
+        "last_observed_s": 891.145048281,
+        "chunk_types": {
+          "enqueue": 8912
+        },
+        "release_lag_s": {
+          "n": 8912,
+          "mean": 0.00018130107529142712,
+          "p50": 0.00014266000000162649,
+          "p95": 0.0003228639999974803,
+          "max": 0.005820801999959713
+        }
+      },
+      "track_while_input": {
+        "displayed_content_changes": {
+          "events_during_input": 4014,
+          "interval_with_edges_s": {
+            "n": 4015,
+            "mean": 0.22195387608966374,
+            "p50": 0.0642681960016489,
+            "p95": 1.4185357160167769,
+            "max": 4.22659907292109
+          },
+          "max_s": 4.22659907292109,
+          "max_from_s": 51.961988438037224,
+          "max_to_s": 56.188587510958314
+        },
+        "audio_end_advances": {
+          "events_during_input": 443,
+          "interval_with_edges_s": {
+            "n": 444,
+            "mean": 2.007082911036036,
+            "p50": 1.7824838480446488,
+            "p95": 3.8184220000403,
+            "max": 4.783192081027664
+          },
+          "max_s": 4.783192081027664,
+          "max_from_s": 707.9837454520166,
+          "max_to_s": 712.7669375330443
+        }
+      },
+      "transport": {
+        "captured_chunks": 8912,
+        "accepted_chunks": 8912,
+        "processed_chunks": 8912,
+        "planned_chunks": 8912,
+        "dropped_chunks": 0,
+        "dropped_audio_s": 0.0,
+        "finalization_from_audio_end_s": 1.6758377030000702,
+        "event_max_chunks": 1,
+        "event_max_audio_s": 0.1,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0,
+        "inference_queue_peak": 2
+      },
+      "resources": {
+        "elapsed_s": 892.820650203,
+        "cpu_seconds_replay_plus_producer": 2060.3879700590005,
+        "mean_four_core_percent": 57.693221185871195,
+        "main_process_peak_rss_mib": 1801.125,
+        "total_inference_s": 742.905145722325,
+        "inference_s_per_input_s": 0.8336525504066995,
+        "thermal_guard_max_c": 87.0,
+        "admission_c": 58.95,
+        "current_limit_sample_counts": {
+          "0": 327,
+          "8": 508,
+          "6": 71
+        },
+        "current_limit_input_s_approx": 591.145553091553,
+        "guard": {
+          "exit_code": 0,
+          "status": "completed",
+          "limit_verified": true,
+          "operational_valid": true,
+          "error": null,
+          "rejection": null
+        },
+        "quarters": [
+          {
+            "final_queue_wait_s": {
+              "n": 45,
+              "mean": 0.41745728831479534,
+              "p50": 0.02089149900712073,
+              "p95": 2.0304691760102287,
+              "max": 3.2706973139429465
+            },
+            "final_return_s": {
+              "n": 45,
+              "mean": 2.655541988920318,
+              "p50": 2.6368383750375344,
+              "p95": 3.4943870630664833,
+              "max": 4.0323121819719745
+            },
+            "rss_mib": {
+              "n": 2209,
+              "mean": 1778.474606722499,
+              "p50": 1779.125,
+              "p95": 1780.125,
+              "max": 1780.625
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 53,
+              "mean": 0.8409590917345101,
+              "p50": 0.02812542102765292,
+              "p95": 3.011751384008676,
+              "max": 3.53501634800341
+            },
+            "final_return_s": {
+              "n": 53,
+              "mean": 3.014269089081011,
+              "p50": 3.0338591919783653,
+              "p95": 3.928970708956001,
+              "max": 4.18533722604343
+            },
+            "rss_mib": {
+              "n": 2209,
+              "mean": 1782.147634676324,
+              "p50": 1781.625,
+              "p95": 1783.625,
+              "max": 1783.625
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 57,
+              "mean": 0.7070185617327265,
+              "p50": 0.02735618909355253,
+              "p95": 2.7035388000076637,
+              "max": 2.85191532690078
+            },
+            "final_return_s": {
+              "n": 57,
+              "mean": 2.944222898201221,
+              "p50": 3.078029197008334,
+              "p95": 3.551169099053368,
+              "max": 3.5743193669626407
+            },
+            "rss_mib": {
+              "n": 2207,
+              "mean": 1785.4403602174898,
+              "p50": 1785.625,
+              "p95": 1787.125,
+              "max": 1787.125
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 55,
+              "mean": 0.7566744959214702,
+              "p50": 0.0309267999837175,
+              "p95": 3.169582383008674,
+              "max": 3.7359893560642377
+            },
+            "final_return_s": {
+              "n": 55,
+              "mean": 3.185263146575062,
+              "p50": 3.1076427689986303,
+              "p95": 4.430741906010553,
+              "max": 4.6636159089589455
+            },
+            "rss_mib": {
+              "n": 2208,
+              "mean": 1788.416893115942,
+              "p50": 1788.625,
+              "p95": 1789.125,
+              "max": 1790.125
+            }
+          }
+        ]
+      },
+      "cancelled_calls": 44,
+      "partial_scheduler": {
+        "mode": "continuous",
+        "policy": "headroom_followup",
+        "version": "prefix-time-followup-v1",
+        "thermal_policy": "pace",
+        "decisions": {
+          "minimum_audio": 607,
+          "offered": 248,
+          "near_final": 767
+        },
+        "candidate_updates": 20491,
+        "candidate_replacements": 20034,
+        "snapshots": 248,
+        "snapshot_frames": 7105792,
+        "discarded_candidates": 209,
+        "pending_peak": 1,
+        "thermal_backoff_s": 0.0,
+        "thermal_pause_c": 90,
+        "thermal_resume_c": 85,
+        "thermal_pacing_start_c": 82,
+        "thermal_factor_peak": 1.4,
+        "compute_duty_target": null,
+        "first_debt_allowance_s": null,
+        "final_reserve_max_s": null,
+        "accounted_inference_s": 0.0,
+        "work_debt_peak_s": 0.0,
+        "thermal_sample_s": 1.0,
+        "tail_margin_s": 0.2,
+        "deferred_s": {
+          "minimum_audio": 49.20251437986735,
+          "near_final": 66.41895885090344
+        },
+        "near_final_followups": 50,
+        "cancel_partial_grace_s": 0.0
+      },
+      "failures": [
+        {
+          "segment_id": 2,
+          "kind": "partial",
+          "start_frame": 127424,
+          "end_frame": 177152,
+          "status": "cancelled",
+          "duration_s": 3.108,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 5,
+          "kind": "partial",
+          "start_frame": 427968,
+          "end_frame": 476672,
+          "status": "cancelled",
+          "duration_s": 3.044,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 6,
+          "kind": "partial",
+          "start_frame": 567232,
+          "end_frame": 614400,
+          "status": "cancelled",
+          "duration_s": 2.948,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 10,
+          "kind": "partial",
+          "start_frame": 956352,
+          "end_frame": 994816,
+          "status": "cancelled",
+          "duration_s": 2.404,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 11,
+          "kind": "partial",
+          "start_frame": 1066432,
+          "end_frame": 1111552,
+          "status": "cancelled",
+          "duration_s": 2.82,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 12,
+          "kind": "partial",
+          "start_frame": 1124288,
+          "end_frame": 1159680,
+          "status": "cancelled",
+          "duration_s": 2.212,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 13,
+          "kind": "partial",
+          "start_frame": 1244096,
+          "end_frame": 1271808,
+          "status": "cancelled",
+          "duration_s": 1.732,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 15,
+          "kind": "partial",
+          "start_frame": 1328064,
+          "end_frame": 1377280,
+          "status": "cancelled",
+          "duration_s": 3.076,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 16,
+          "kind": "partial",
+          "start_frame": 1417664,
+          "end_frame": 1452544,
+          "status": "cancelled",
+          "duration_s": 2.18,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 18,
+          "kind": "partial",
+          "start_frame": 1495488,
+          "end_frame": 1516544,
+          "status": "cancelled",
+          "duration_s": 1.316,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 19,
+          "kind": "partial",
+          "start_frame": 1573824,
+          "end_frame": 1617408,
+          "status": "cancelled",
+          "duration_s": 2.724,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 24,
+          "kind": "partial",
+          "start_frame": 1898432,
+          "end_frame": 1947136,
+          "status": "cancelled",
+          "duration_s": 3.044,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 29,
+          "kind": "partial",
+          "start_frame": 2205632,
+          "end_frame": 2250752,
+          "status": "cancelled",
+          "duration_s": 2.82,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 30,
+          "kind": "partial",
+          "start_frame": 2316224,
+          "end_frame": 2342400,
+          "status": "cancelled",
+          "duration_s": 1.636,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 32,
+          "kind": "partial",
+          "start_frame": 2436160,
+          "end_frame": 2473472,
+          "status": "cancelled",
+          "duration_s": 2.332,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 34,
+          "kind": "partial",
+          "start_frame": 2628544,
+          "end_frame": 2676736,
+          "status": "cancelled",
+          "duration_s": 3.012,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 37,
+          "kind": "partial",
+          "start_frame": 2807744,
+          "end_frame": 2838016,
+          "status": "cancelled",
+          "duration_s": 1.892,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 39,
+          "kind": "partial",
+          "start_frame": 2994112,
+          "end_frame": 3039744,
+          "status": "cancelled",
+          "duration_s": 2.852,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 42,
+          "kind": "partial",
+          "start_frame": 3225536,
+          "end_frame": 3273216,
+          "status": "cancelled",
+          "duration_s": 2.98,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 44,
+          "kind": "partial",
+          "start_frame": 3451328,
+          "end_frame": 3500544,
+          "status": "cancelled",
+          "duration_s": 3.076,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 45,
+          "kind": "partial",
+          "start_frame": 3577792,
+          "end_frame": 3627008,
+          "status": "cancelled",
+          "duration_s": 3.076,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 63,
+          "kind": "partial",
+          "start_frame": 4638656,
+          "end_frame": 4672000,
+          "status": "cancelled",
+          "duration_s": 2.084,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 64,
+          "kind": "partial",
+          "start_frame": 4720576,
+          "end_frame": 4730880,
+          "status": "cancelled",
+          "duration_s": 0.644,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 65,
+          "kind": "partial",
+          "start_frame": 4753856,
+          "end_frame": 4801536,
+          "status": "cancelled",
+          "duration_s": 2.98,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 70,
+          "kind": "partial",
+          "start_frame": 5114816,
+          "end_frame": 5163008,
+          "status": "cancelled",
+          "duration_s": 3.012,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 72,
+          "kind": "partial",
+          "start_frame": 5274048,
+          "end_frame": 5302272,
+          "status": "cancelled",
+          "duration_s": 1.764,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 79,
+          "kind": "partial",
+          "start_frame": 5735360,
+          "end_frame": 5782016,
+          "status": "cancelled",
+          "duration_s": 2.916,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 84,
+          "kind": "partial",
+          "start_frame": 6140864,
+          "end_frame": 6190080,
+          "status": "cancelled",
+          "duration_s": 3.076,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 98,
+          "kind": "partial",
+          "start_frame": 7078336,
+          "end_frame": 7129600,
+          "status": "cancelled",
+          "duration_s": 3.204,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 109,
+          "kind": "partial",
+          "start_frame": 7846336,
+          "end_frame": 7895552,
+          "status": "cancelled",
+          "duration_s": 3.076,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 121,
+          "kind": "partial",
+          "start_frame": 8435776,
+          "end_frame": 8475136,
+          "status": "cancelled",
+          "duration_s": 2.46,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 122,
+          "kind": "partial",
+          "start_frame": 8491968,
+          "end_frame": 8537600,
+          "status": "cancelled",
+          "duration_s": 2.852,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 123,
+          "kind": "partial",
+          "start_frame": 8562624,
+          "end_frame": 8603136,
+          "status": "cancelled",
+          "duration_s": 2.532,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 125,
+          "kind": "partial",
+          "start_frame": 8747456,
+          "end_frame": 8795136,
+          "status": "cancelled",
+          "duration_s": 2.98,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 128,
+          "kind": "partial",
+          "start_frame": 8936384,
+          "end_frame": 8987136,
+          "status": "cancelled",
+          "duration_s": 3.172,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 143,
+          "kind": "partial",
+          "start_frame": 9845184,
+          "end_frame": 9894400,
+          "status": "cancelled",
+          "duration_s": 3.076,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 168,
+          "kind": "partial",
+          "start_frame": 11442624,
+          "end_frame": 11492352,
+          "status": "cancelled",
+          "duration_s": 3.108,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 173,
+          "kind": "partial",
+          "start_frame": 11750336,
+          "end_frame": 11798016,
+          "status": "cancelled",
+          "duration_s": 2.98,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 174,
+          "kind": "partial",
+          "start_frame": 11825088,
+          "end_frame": 11873280,
+          "status": "cancelled",
+          "duration_s": 3.012,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 182,
+          "kind": "partial",
+          "start_frame": 12426176,
+          "end_frame": 12476416,
+          "status": "cancelled",
+          "duration_s": 3.14,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 185,
+          "kind": "partial",
+          "start_frame": 12568000,
+          "end_frame": 12617216,
+          "status": "cancelled",
+          "duration_s": 3.076,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 193,
+          "kind": "partial",
+          "start_frame": 13060032,
+          "end_frame": 13107200,
+          "status": "cancelled",
+          "duration_s": 2.948,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 198,
+          "kind": "partial",
+          "start_frame": 13450176,
+          "end_frame": 13498880,
+          "status": "cancelled",
+          "duration_s": 3.044,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 208,
+          "kind": "partial",
+          "start_frame": 14178240,
+          "end_frame": 14214144,
+          "status": "cancelled",
+          "duration_s": 2.244,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        }
+      ],
+      "successful_final_return_s": {
+        "n": 210,
+        "mean": 2.9631706165800282,
+        "p50": 2.988477958017029,
+        "p95": 3.8767785119526366,
+        "max": 4.6636159089589455
+      },
+      "display": {
+        "content_changes_with_older_end_than_previously_shown": 0,
+        "partial_displayed_before_own_segment_end": {
+          "segments": 210,
+          "with_partial": 110,
+          "segments_at_least_2s": 140,
+          "with_partial_at_least_2s": 107
+        },
+        "source_distributions": {
+          "first_s": {
+            "n": 100,
+            "mean": 2.5644553478497767,
+            "p50": 2.4012187039572837,
+            "p95": 3.939649971982476,
+            "max": 8.468153540018989
+          },
+          "first4_s": {
+            "n": 100,
+            "mean": 3.1061968945320917,
+            "p50": 2.7759414849979294,
+            "p95": 5.450427350979282,
+            "max": 8.611350510010539
+          },
+          "file_end_s": {
+            "n": 100,
+            "mean": 1.578441199718876,
+            "p50": 1.6428679430084685,
+            "p95": 3.0363337619928643,
+            "max": 7.818543971955819
+          },
+          "observed_first_s": {
+            "n": 100,
+            "mean": 2.5644553478497767,
+            "p50": 2.4012187039572837,
+            "p95": 3.939649971982476,
+            "max": 8.468153540018989
+          },
+          "observed_first4_s": {
+            "n": 100,
+            "mean": 3.069724752891831,
+            "p50": 2.7759414849979294,
+            "p95": 4.7691066420441075,
+            "max": 8.611350510010539
+          },
+          "max_content_gap_s": {
+            "n": 100,
+            "mean": 2.9517511934629552,
+            "p50": 2.7504111210042765,
+            "p95": 4.087881701998413,
+            "max": 8.468153540018989
+          },
+          "first_completed_partial_s": {
+            "n": 98,
+            "mean": 2.896884293572582,
+            "p50": 2.78815653406366,
+            "p95": 4.455253100953996,
+            "max": 10.04451681205262
+          }
+        },
+        "stability": {
+          "normalization": "ko_cer_v1",
+          "displayed_updates": 4446,
+          "normalized_revisions": 86,
+          "retracted_suffix_characters": 406,
+          "prefix_replay_revisions": 0,
+          "prefix_replay_retracted_characters": 0,
+          "within_call_revisions": 0,
+          "failed_results": 0,
+          "cancelled_results": 44,
+          "suppressed_prefix_tokens": 1594,
+          "segments_with_display": 210,
+          "revised_segments": 61,
+          "prefix_replay_segments": 0,
+          "suppressed_prefix_jobs": 223,
+          "latest_completed_partial_vs_final": {
+            "paired_segments": 108,
+            "whole_partial_is_final_prefix": 73,
+            "partial_characters": 1284,
+            "retained_prefix_characters": 1060,
+            "retained_prefix_fraction": 0.8255451713395638
+          },
+          "finals_shorter_than4": 26,
+          "first4_to_final_consistent4_s": {
+            "n": 184,
+            "mean": 0.48276759743305814,
+            "p50": 0.0,
+            "p95": 3.6944532489869744,
+            "max": 5.915312504046597
+          },
+          "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+        }
+      },
+      "audit": {
+        "fresh_gaps_ge4": 16,
+        "normalized_gaps_ge4": 17,
+        "normalized_gap_s": {
+          "n": 442,
+          "mean": 2.0161647341628957,
+          "p50": 1.78630953701213,
+          "p95": 3.8184220000403,
+          "max": 4.783192081027664
+        },
+        "long_partial_final_segments": [
+          5,
+          26,
+          44,
+          56,
+          68,
+          73,
+          80,
+          91,
+          93,
+          130,
+          141,
+          166,
+          196
+        ],
+        "followups": 50,
+        "extra_changed": 43,
+        "extra_cost_s": 91.42210309999064,
+        "extra_statuses": {
+          "cancelled": 24,
+          "success": 26
+        },
+        "extra_cancelled_changed": 17,
+        "held_segments": [],
+        "held_then_extra_segments": [],
+        "age_error_max_s": null,
+        "rows": [
+          {
+            "segment_id": 2,
+            "job_id": 6,
+            "end_frame": 177152,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 3.947349247937566,
+            "changed_before_final": false,
+            "cost_s": 1.5285451830131933
+          },
+          {
+            "segment_id": 5,
+            "job_id": 15,
+            "end_frame": 476672,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.291173397592719,
+            "changed_before_final": false,
+            "cost_s": 1.3748715269612148
+          },
+          {
+            "segment_id": 9,
+            "job_id": 28,
+            "end_frame": 926208,
+            "status": "success",
+            "est_gap_at_decision_s": 4.059539486080805,
+            "changed_before_final": true,
+            "cost_s": 1.7683230499969795
+          },
+          {
+            "segment_id": 15,
+            "job_id": 45,
+            "end_frame": 1377280,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.078218875249427,
+            "changed_before_final": true,
+            "cost_s": 1.99559942597989
+          },
+          {
+            "segment_id": 22,
+            "job_id": 61,
+            "end_frame": 1804800,
+            "status": "success",
+            "est_gap_at_decision_s": 4.723305199274808,
+            "changed_before_final": true,
+            "cost_s": 1.874016396002844
+          },
+          {
+            "segment_id": 24,
+            "job_id": 66,
+            "end_frame": 1947136,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.317102138152852,
+            "changed_before_final": true,
+            "cost_s": 2.024250066955574
+          },
+          {
+            "segment_id": 29,
+            "job_id": 75,
+            "end_frame": 2250752,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 3.998644111903697,
+            "changed_before_final": false,
+            "cost_s": 1.3403762660454959
+          },
+          {
+            "segment_id": 34,
+            "job_id": 89,
+            "end_frame": 2676736,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.430608929956883,
+            "changed_before_final": true,
+            "cost_s": 2.0971815689699724
+          },
+          {
+            "segment_id": 38,
+            "job_id": 98,
+            "end_frame": 2902016,
+            "status": "success",
+            "est_gap_at_decision_s": 4.128146174379779,
+            "changed_before_final": true,
+            "cost_s": 1.551013023010455
+          },
+          {
+            "segment_id": 42,
+            "job_id": 110,
+            "end_frame": 3273216,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.032103700991981,
+            "changed_before_final": false,
+            "cost_s": 0.9391599160153419
+          },
+          {
+            "segment_id": 44,
+            "job_id": 118,
+            "end_frame": 3500544,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 3.9487800756425244,
+            "changed_before_final": false,
+            "cost_s": 1.7075905250385404
+          },
+          {
+            "segment_id": 45,
+            "job_id": 122,
+            "end_frame": 3627008,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.112933654187266,
+            "changed_before_final": true,
+            "cost_s": 2.00151954498142
+          },
+          {
+            "segment_id": 49,
+            "job_id": 129,
+            "end_frame": 3840000,
+            "status": "success",
+            "est_gap_at_decision_s": 4.369072669586915,
+            "changed_before_final": true,
+            "cost_s": 1.7969066670630127
+          },
+          {
+            "segment_id": 54,
+            "job_id": 141,
+            "end_frame": 4218880,
+            "status": "success",
+            "est_gap_at_decision_s": 3.8759803517953886,
+            "changed_before_final": true,
+            "cost_s": 2.048388801049441
+          },
+          {
+            "segment_id": 65,
+            "job_id": 161,
+            "end_frame": 4801536,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.031569959498882,
+            "changed_before_final": true,
+            "cost_s": 2.05842928099446
+          },
+          {
+            "segment_id": 70,
+            "job_id": 172,
+            "end_frame": 5163008,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.215197221456712,
+            "changed_before_final": false,
+            "cost_s": 1.2257063039578497
+          },
+          {
+            "segment_id": 74,
+            "job_id": 183,
+            "end_frame": 5497344,
+            "status": "success",
+            "est_gap_at_decision_s": 3.8793582712923413,
+            "changed_before_final": true,
+            "cost_s": 1.779289270984009
+          },
+          {
+            "segment_id": 77,
+            "job_id": 188,
+            "end_frame": 5636608,
+            "status": "success",
+            "est_gap_at_decision_s": 3.762937542565421,
+            "changed_before_final": true,
+            "cost_s": 1.6324998770141974
+          },
+          {
+            "segment_id": 79,
+            "job_id": 193,
+            "end_frame": 5782016,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.3197297434393285,
+            "changed_before_final": true,
+            "cost_s": 1.6551326289772987
+          },
+          {
+            "segment_id": 82,
+            "job_id": 201,
+            "end_frame": 6046208,
+            "status": "success",
+            "est_gap_at_decision_s": 3.901184675262913,
+            "changed_before_final": true,
+            "cost_s": 1.7952243610052392
+          },
+          {
+            "segment_id": 84,
+            "job_id": 206,
+            "end_frame": 6190080,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 3.95531493590157,
+            "changed_before_final": true,
+            "cost_s": 2.0135997670004144
+          },
+          {
+            "segment_id": 86,
+            "job_id": 210,
+            "end_frame": 6318080,
+            "status": "success",
+            "est_gap_at_decision_s": 4.48100228233754,
+            "changed_before_final": true,
+            "cost_s": 1.9161176360212266
+          },
+          {
+            "segment_id": 95,
+            "job_id": 228,
+            "end_frame": 6983680,
+            "status": "success",
+            "est_gap_at_decision_s": 4.081613321482149,
+            "changed_before_final": true,
+            "cost_s": 1.8925349910277873
+          },
+          {
+            "segment_id": 98,
+            "job_id": 234,
+            "end_frame": 7129600,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 3.8424801467339713,
+            "changed_before_final": true,
+            "cost_s": 1.9487019199877977
+          },
+          {
+            "segment_id": 100,
+            "job_id": 239,
+            "end_frame": 7278080,
+            "status": "success",
+            "est_gap_at_decision_s": 3.8722621261368504,
+            "changed_before_final": true,
+            "cost_s": 1.9648491980042309
+          },
+          {
+            "segment_id": 102,
+            "job_id": 244,
+            "end_frame": 7412736,
+            "status": "success",
+            "est_gap_at_decision_s": 4.023431958861341,
+            "changed_before_final": true,
+            "cost_s": 1.627614670083858
+          },
+          {
+            "segment_id": 105,
+            "job_id": 250,
+            "end_frame": 7599616,
+            "status": "success",
+            "est_gap_at_decision_s": 3.8907290237365584,
+            "changed_before_final": true,
+            "cost_s": 1.8653267619665712
+          },
+          {
+            "segment_id": 107,
+            "job_id": 255,
+            "end_frame": 7753216,
+            "status": "success",
+            "est_gap_at_decision_s": 4.1099824939920815,
+            "changed_before_final": true,
+            "cost_s": 1.8942214449634776
+          },
+          {
+            "segment_id": 109,
+            "job_id": 260,
+            "end_frame": 7895552,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 3.5434419872324585,
+            "changed_before_final": true,
+            "cost_s": 1.9442884040763602
+          },
+          {
+            "segment_id": 112,
+            "job_id": 265,
+            "end_frame": 8025600,
+            "status": "success",
+            "est_gap_at_decision_s": 3.76471861553419,
+            "changed_before_final": true,
+            "cost_s": 1.8962860200554132
+          },
+          {
+            "segment_id": 115,
+            "job_id": 270,
+            "end_frame": 8143872,
+            "status": "success",
+            "est_gap_at_decision_s": 3.6538909841721634,
+            "changed_before_final": true,
+            "cost_s": 1.7725615410599858
+          },
+          {
+            "segment_id": 125,
+            "job_id": 292,
+            "end_frame": 8795136,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.460718526229595,
+            "changed_before_final": true,
+            "cost_s": 2.0729511129902676
+          },
+          {
+            "segment_id": 128,
+            "job_id": 298,
+            "end_frame": 8987136,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 3.861714240007046,
+            "changed_before_final": true,
+            "cost_s": 1.8656864089425653
+          },
+          {
+            "segment_id": 132,
+            "job_id": 305,
+            "end_frame": 9222144,
+            "status": "success",
+            "est_gap_at_decision_s": 4.409534927328856,
+            "changed_before_final": true,
+            "cost_s": 2.0931699629873037
+          },
+          {
+            "segment_id": 135,
+            "job_id": 310,
+            "end_frame": 9356800,
+            "status": "success",
+            "est_gap_at_decision_s": 4.751541391099488,
+            "changed_before_final": true,
+            "cost_s": 2.241767243016511
+          },
+          {
+            "segment_id": 137,
+            "job_id": 314,
+            "end_frame": 9497600,
+            "status": "success",
+            "est_gap_at_decision_s": 5.041074396718839,
+            "changed_before_final": true,
+            "cost_s": 1.975310756941326
+          },
+          {
+            "segment_id": 143,
+            "job_id": 325,
+            "end_frame": 9894400,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.251113380619744,
+            "changed_before_final": true,
+            "cost_s": 2.0182812330313027
+          },
+          {
+            "segment_id": 145,
+            "job_id": 329,
+            "end_frame": 10063872,
+            "status": "success",
+            "est_gap_at_decision_s": 5.005249912182168,
+            "changed_before_final": true,
+            "cost_s": 2.236260255915113
+          },
+          {
+            "segment_id": 146,
+            "job_id": 332,
+            "end_frame": 10172416,
+            "status": "success",
+            "est_gap_at_decision_s": 4.787136256804164,
+            "changed_before_final": true,
+            "cost_s": 1.7275994149968028
+          },
+          {
+            "segment_id": 148,
+            "job_id": 336,
+            "end_frame": 10304000,
+            "status": "success",
+            "est_gap_at_decision_s": 4.292415312968037,
+            "changed_before_final": true,
+            "cost_s": 2.0563803609693423
+          },
+          {
+            "segment_id": 151,
+            "job_id": 342,
+            "end_frame": 10441216,
+            "status": "success",
+            "est_gap_at_decision_s": 4.201186629510936,
+            "changed_before_final": true,
+            "cost_s": 2.02210315305274
+          },
+          {
+            "segment_id": 158,
+            "job_id": 357,
+            "end_frame": 10854400,
+            "status": "success",
+            "est_gap_at_decision_s": 4.022196565778698,
+            "changed_before_final": true,
+            "cost_s": 1.6796304079471156
+          },
+          {
+            "segment_id": 168,
+            "job_id": 377,
+            "end_frame": 11492352,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 3.915229263259572,
+            "changed_before_final": true,
+            "cost_s": 1.949181923060678
+          },
+          {
+            "segment_id": 173,
+            "job_id": 386,
+            "end_frame": 11798016,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 3.9733522962786454,
+            "changed_before_final": false,
+            "cost_s": 0.9742111329687759
+          },
+          {
+            "segment_id": 180,
+            "job_id": 402,
+            "end_frame": 12297216,
+            "status": "success",
+            "est_gap_at_decision_s": 4.3946758474590615,
+            "changed_before_final": true,
+            "cost_s": 1.922141071059741
+          },
+          {
+            "segment_id": 182,
+            "job_id": 407,
+            "end_frame": 12476416,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 3.8897934941826167,
+            "changed_before_final": true,
+            "cost_s": 1.8973128739744425
+          },
+          {
+            "segment_id": 185,
+            "job_id": 413,
+            "end_frame": 12617216,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 3.88821272356937,
+            "changed_before_final": true,
+            "cost_s": 2.0393627979792655
+          },
+          {
+            "segment_id": 193,
+            "job_id": 427,
+            "end_frame": 13107200,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.046564436133281,
+            "changed_before_final": true,
+            "cost_s": 1.8747882019961253
+          },
+          {
+            "segment_id": 198,
+            "job_id": 438,
+            "end_frame": 13498880,
+            "status": "cancelled",
+            "est_gap_at_decision_s": 4.322379105168901,
+            "changed_before_final": true,
+            "cost_s": 1.9640203099697828
+          },
+          {
+            "segment_id": 200,
+            "job_id": 442,
+            "end_frame": 13629952,
+            "status": "success",
+            "est_gap_at_decision_s": 4.802042334530642,
+            "changed_before_final": true,
+            "cost_s": 1.8818184399278834
+          }
+        ]
+      }
+    },
+    "fixed-baseline": {
+      "input": {
+        "source_commit": "1f98e932ae397304c5626e3231d23fa8cb2e12d8",
+        "input_manifest_sha256": "f693163f3d0d11a09873d3d5dbbd8a68aea6ebd1897cc051fd99dd076f8b76ab",
+        "config_sha256": "841012b8f418d9966cc9046cae93b2ef31852696cd94d809112ed084c9bc4fc0",
+        "source_dirty": false,
+        "vad_model_sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+        "model_files": {
+          "Qwen3-ASR-0.6B-Q8_0.gguf": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+          },
+          "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+          },
+          "runtime_library": {
+            "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/token-draft-20261119-01/bridge/libedge_asr_gguf.so",
+            "sha256": "1cc11d27276af2eb4bb863dcb62cd8ee670175c3b622408523d5f317f5170b14"
+          },
+          "runtime_manifest": {
+            "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/token-draft-20261119-01/bridge/build.json",
+            "sha256": "ff517313176cc9caf4f90f3de0da2ccc280677acaf54c633854cd629aff652a9"
+          }
+        },
+        "audio": {
+          "sha256": "5008e9154b14533a72326f1745665a7bb8a031508fcda427398fd2a1c24a65cd",
+          "frames": 14258317,
+          "sample_rate_hz": 16000,
+          "channels": 1,
+          "sample_width_bytes": 2,
+          "duration_s": 891.1448125
+        },
+        "settings": {
+          "gap_s": 0.0,
+          "vad_preprocess": "rms26-floor80",
+          "vad_threshold": 0.3,
+          "vad_max_speech_s": 5,
+          "partial_after_s": 0.6,
+          "partial_interval_s": 1,
+          "partial_mode": "continuous",
+          "partial_min_new_s": 1.0,
+          "partial_tail_margin_s": 0.2,
+          "adaptive_policy": "recent",
+          "partial_cost_model": "total",
+          "partial_budget_s": 2.5,
+          "protect_short_followup": false,
+          "partial_max_calls": 2,
+          "continuous_policy": "headroom",
+          "partial_thermal_policy": "pace",
+          "cancel_partial_for_final": true,
+          "partial_followup_s": null,
+          "max_segment_s": 5,
+          "drain_timeout_s": 30,
+          "queue_capacity": 4,
+          "token_stream": true,
+          "partials": true,
+          "silence_policy": "skip-zero"
+        },
+        "warmup_input": {
+          "policy": "leading_max_segment_v1",
+          "source_id": "fleurs-13962545215242501803",
+          "source_audio_sha256": "e7b0fd9527a0e3f31922280410f5939d4b9da0a619d1546921cd6957212904de",
+          "source_frames": 235200,
+          "start_frame": 0,
+          "end_frame": 80000,
+          "payload_float32_sha256": "c4128f45d74c47f1175b0adea8dae7e6e2acd400fad95a7b526849841f35e43f",
+          "scope": "첫 원음의 ASR 최대 구간 이내 PCM만 워밍업. 평가 입력은 전체 원음 유지."
+        },
+        "processed_pcm_sha256": "273529b8a519b3b2dab6cd2a1e941633a21e6f4ac3995619967446df77be4dd7",
+        "warmup_successes": 4,
+        "environment": {
+          "machine": "aarch64",
+          "python": "3.11.18 (main, Oct 26 2026, 14:06:29) [Clang 23.1.3 ]",
+          "platform": "Linux-6.12.62+rpt-rpi-2712-aarch64-with-glibc2.41",
+          "runtime": {
+            "sherpa_package_version": "2.0.1",
+            "sherpa_core_package_version": "2.0.1",
+            "python_onnxruntime_package_version": "1.31.1",
+            "sherpa_native_onnxruntime_version": null,
+            "native_version_source": "sherpa_onnx.onnxruntime_version",
+            "status": "not_imported",
+            "reason": "선택 런타임을 아직 import하지 않았습니다."
+          },
+          "thread_environment": {
+            "OMP_WAIT_POLICY": null,
+            "OMP_NUM_THREADS": null,
+            "OMP_DYNAMIC": null,
+            "OMP_PROC_BIND": null,
+            "OMP_PLACES": null,
+            "GOMP_SPINCOUNT": null,
+            "KMP_BLOCKTIME": null,
+            "OPENBLAS_NUM_THREADS": "1"
+          }
+        },
+        "engine_metadata": {
+          "backend": "llama_cpp_mtmd",
+          "quantization": "q8_0",
+          "audio_quantization": "q8_0",
+          "thread_configuration": {
+            "threads": 2,
+            "threads_batch": 3,
+            "audio_threads": 3
+          },
+          "cache_text_prefix": true,
+          "provider": "cpu"
+        }
+      },
+      "score": {
+        "reference_characters": 3848,
+        "errors": 418,
+        "substitutions": 184,
+        "deletions": 160,
+        "insertions": 74,
+        "cer": 0.10862785862785863
+      },
+      "calls": {
+        "partial": {
+          "attempts": 213,
+          "statuses": {
+            "success": 190,
+            "cancelled": 23
+          },
+          "successes_without_normalized_characters": [],
+          "inference_sum_s": 234.24465798819438,
+          "inference_s": {
+            "n": 213,
+            "mean": 1.0997401783483305,
+            "p50": 1.0780826350674033,
+            "p95": 1.8576421199832112,
+            "max": 2.1188038249965757
+          },
+          "queue_wait_s": {
+            "n": 213,
+            "mean": 0.00017205581665826096,
+            "p50": 0.00017114903312176466,
+            "p95": 0.00027127901557832956,
+            "max": 0.0003788539906963706
+          }
+        },
+        "final": {
+          "attempts": 210,
+          "statuses": {
+            "success": 210
+          },
+          "successes_without_normalized_characters": [
+            114,
+            142,
+            209
+          ],
+          "inference_sum_s": 425.72831464605406,
+          "inference_s": {
+            "n": 210,
+            "mean": 2.0272776887907336,
+            "p50": 2.172106352983974,
+            "p95": 3.5545266759581864,
+            "max": 4.462570083909668
+          },
+          "queue_wait_s": {
+            "n": 210,
+            "mean": 0.673177914680647,
+            "p50": 0.0020139210391789675,
+            "p95": 2.92527621507179,
+            "max": 3.6550585000077263
+          }
+        }
+      },
+      "source_pcm_signature": "2565bc0491e662124df6888493104aa2d0437c640158c92bf3cc303a5086c0c2",
+      "final_pcm_signature": "2baf78be5c5c6c90e0c6d9ff65c5d5f8a8dea72a407f47d2dfa6a91e1ed04986",
+      "stale_displayed_events": 0,
+      "active": {
+        "owned_s": 651.6160000000004,
+        "own_advancing_publish_in_last_1s_percent": 28.116931445096377,
+        "own_displayed_audio_end_in_last_1s_percent": 9.005172064788791,
+        "own_advancing_max_gap_for_segments_ge2s_s": {
+          "n": 140,
+          "mean": 2.3662947083232506,
+          "p50": 2.34542298404034,
+          "p95": 3.4480000000000075,
+          "max": 5.0
+        }
+      },
+      "pacing": {
+        "chunk_ms": 100,
+        "last_scheduled_s": 891.1448125,
+        "last_observed_s": 891.145023169,
+        "chunk_types": {
+          "enqueue": 8912
+        },
+        "release_lag_s": {
+          "n": 8912,
+          "mean": 0.00020486961377945805,
+          "p50": 0.00013242500000387736,
+          "p95": 0.00038629200000173114,
+          "max": 0.005955172999961178
+        }
+      },
+      "track_while_input": {
+        "displayed_content_changes": {
+          "events_during_input": 3946,
+          "interval_with_edges_s": {
+            "n": 3947,
+            "mean": 0.22577775842411957,
+            "p50": 0.06368831999134272,
+            "p95": 1.2901463059242815,
+            "max": 4.33184060791973
+          },
+          "max_s": 4.33184060791973,
+          "max_from_s": 584.7071551859844,
+          "max_to_s": 589.0389957939042
+        },
+        "audio_end_advances": {
+          "events_during_input": 410,
+          "interval_with_edges_s": {
+            "n": 411,
+            "mean": 2.1682355535279805,
+            "p50": 1.7329515110468492,
+            "p95": 4.393388053053059,
+            "max": 4.947609729948454
+          },
+          "max_s": 4.947609729948454,
+          "max_from_s": 280.0218520859489,
+          "max_to_s": 284.9694618158974
+        }
+      },
+      "transport": {
+        "captured_chunks": 8912,
+        "accepted_chunks": 8912,
+        "processed_chunks": 8912,
+        "planned_chunks": 8912,
+        "dropped_chunks": 0,
+        "dropped_audio_s": 0.0,
+        "finalization_from_audio_end_s": 1.3716838900000994,
+        "event_max_chunks": 1,
+        "event_max_audio_s": 0.1,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0,
+        "inference_queue_peak": 2
+      },
+      "resources": {
+        "elapsed_s": 892.51649639,
+        "cpu_seconds_replay_plus_producer": 1828.956966838,
+        "mean_four_core_percent": 51.230340678174045,
+        "main_process_peak_rss_mib": 1800.859375,
+        "total_inference_s": 659.9729726342484,
+        "inference_s_per_input_s": 0.7405900403356144,
+        "thermal_guard_max_c": 85.9,
+        "admission_c": 58.4,
+        "current_limit_sample_counts": {
+          "0": 468,
+          "8": 412,
+          "6": 26
+        },
+        "current_limit_input_s_approx": 446.39052047954215,
+        "guard": {
+          "exit_code": 0,
+          "status": "completed",
+          "limit_verified": true,
+          "operational_valid": true,
+          "error": null,
+          "rejection": null
+        },
+        "quarters": [
+          {
+            "final_queue_wait_s": {
+              "n": 45,
+              "mean": 0.3928727205377072,
+              "p50": 0.007824125001206994,
+              "p95": 1.93807730905246,
+              "max": 3.0026212780503556
+            },
+            "final_return_s": {
+              "n": 45,
+              "mean": 2.5648772112354647,
+              "p50": 2.5762535779569298,
+              "p95": 3.2656271669380317,
+              "max": 3.7155095839248986
+            },
+            "rss_mib": {
+              "n": 2210,
+              "mean": 1778.9261877828055,
+              "p50": 1779.359375,
+              "p95": 1780.859375,
+              "max": 1781.359375
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 53,
+              "mean": 0.8395029642895954,
+              "p50": 0.0020575140370056033,
+              "p95": 3.024766469025053,
+              "max": 3.5034228049917147
+            },
+            "final_return_s": {
+              "n": 53,
+              "mean": 2.9942569169267372,
+              "p50": 2.965994553932944,
+              "p95": 4.003850844906651,
+              "max": 4.183390687894075
+            },
+            "rss_mib": {
+              "n": 2210,
+              "mean": 1782.5514564479638,
+              "p50": 1782.359375,
+              "p95": 1783.859375,
+              "max": 1783.859375
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 57,
+              "mean": 0.6999603676744491,
+              "p50": 0.1035775049822405,
+              "p95": 2.5224131810246035,
+              "max": 2.933680669986643
+            },
+            "final_return_s": {
+              "n": 57,
+              "mean": 2.9010869496097147,
+              "p50": 2.9984458568869172,
+              "p95": 3.5963232099953757,
+              "max": 3.7065506029055086
+            },
+            "rss_mib": {
+              "n": 2209,
+              "mean": 1785.5280033386148,
+              "p50": 1785.859375,
+              "p95": 1786.859375,
+              "max": 1786.859375
+            }
+          },
+          {
+            "final_queue_wait_s": {
+              "n": 55,
+              "mean": 0.7144853017081253,
+              "p50": 0.0019256049999967217,
+              "p95": 3.1003934929613024,
+              "max": 3.6550585000077263
+            },
+            "final_return_s": {
+              "n": 55,
+              "mean": 3.092477532705491,
+              "p50": 3.0165465239807645,
+              "p95": 4.504559376936413,
+              "max": 4.64687891190033
+            },
+            "rss_mib": {
+              "n": 2209,
+              "mean": 1788.7181346197374,
+              "p50": 1788.359375,
+              "p95": 1789.859375,
+              "max": 1789.859375
+            }
+          }
+        ]
+      },
+      "cancelled_calls": 23,
+      "partial_scheduler": {
+        "mode": "continuous",
+        "policy": "headroom",
+        "version": "estimated-headroom-v1",
+        "thermal_policy": "pace",
+        "decisions": {
+          "minimum_audio": 641,
+          "offered": 213,
+          "near_final": 1589
+        },
+        "candidate_updates": 20491,
+        "candidate_replacements": 20069,
+        "snapshots": 213,
+        "snapshot_frames": 5278144,
+        "discarded_candidates": 209,
+        "pending_peak": 1,
+        "thermal_backoff_s": 0.0,
+        "thermal_pause_c": 90,
+        "thermal_resume_c": 85,
+        "thermal_pacing_start_c": 82,
+        "thermal_factor_peak": 1.4,
+        "compute_duty_target": null,
+        "first_debt_allowance_s": null,
+        "final_reserve_max_s": null,
+        "accounted_inference_s": 0.0,
+        "work_debt_peak_s": 0.0,
+        "thermal_sample_s": 1.0,
+        "tail_margin_s": 0.2,
+        "deferred_s": {
+          "minimum_audio": 52.90326803189237,
+          "near_final": 141.8756816854002
+        },
+        "cancel_partial_grace_s": 0.0
+      },
+      "failures": [
+        {
+          "segment_id": 10,
+          "kind": "partial",
+          "start_frame": 956352,
+          "end_frame": 994816,
+          "status": "cancelled",
+          "duration_s": 2.404,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 11,
+          "kind": "partial",
+          "start_frame": 1066432,
+          "end_frame": 1111552,
+          "status": "cancelled",
+          "duration_s": 2.82,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 12,
+          "kind": "partial",
+          "start_frame": 1124288,
+          "end_frame": 1159680,
+          "status": "cancelled",
+          "duration_s": 2.212,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 13,
+          "kind": "partial",
+          "start_frame": 1244096,
+          "end_frame": 1271808,
+          "status": "cancelled",
+          "duration_s": 1.732,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 16,
+          "kind": "partial",
+          "start_frame": 1417664,
+          "end_frame": 1449472,
+          "status": "cancelled",
+          "duration_s": 1.988,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 17,
+          "kind": "partial",
+          "start_frame": 1465280,
+          "end_frame": 1489408,
+          "status": "cancelled",
+          "duration_s": 1.508,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 18,
+          "kind": "partial",
+          "start_frame": 1495488,
+          "end_frame": 1518080,
+          "status": "cancelled",
+          "duration_s": 1.412,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 19,
+          "kind": "partial",
+          "start_frame": 1573824,
+          "end_frame": 1617408,
+          "status": "cancelled",
+          "duration_s": 2.724,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 30,
+          "kind": "partial",
+          "start_frame": 2316224,
+          "end_frame": 2342400,
+          "status": "cancelled",
+          "duration_s": 1.636,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 32,
+          "kind": "partial",
+          "start_frame": 2436160,
+          "end_frame": 2479616,
+          "status": "cancelled",
+          "duration_s": 2.716,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 33,
+          "kind": "partial",
+          "start_frame": 2494912,
+          "end_frame": 2530816,
+          "status": "cancelled",
+          "duration_s": 2.244,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 37,
+          "kind": "partial",
+          "start_frame": 2807744,
+          "end_frame": 2838016,
+          "status": "cancelled",
+          "duration_s": 1.892,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 39,
+          "kind": "partial",
+          "start_frame": 2994112,
+          "end_frame": 3039744,
+          "status": "cancelled",
+          "duration_s": 2.852,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 47,
+          "kind": "partial",
+          "start_frame": 3673024,
+          "end_frame": 3709952,
+          "status": "cancelled",
+          "duration_s": 2.308,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 63,
+          "kind": "partial",
+          "start_frame": 4638656,
+          "end_frame": 4673536,
+          "status": "cancelled",
+          "duration_s": 2.18,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 64,
+          "kind": "partial",
+          "start_frame": 4720576,
+          "end_frame": 4730880,
+          "status": "cancelled",
+          "duration_s": 0.644,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 72,
+          "kind": "partial",
+          "start_frame": 5274048,
+          "end_frame": 5302272,
+          "status": "cancelled",
+          "duration_s": 1.764,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 103,
+          "kind": "partial",
+          "start_frame": 7445568,
+          "end_frame": 7488000,
+          "status": "cancelled",
+          "duration_s": 2.652,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 117,
+          "kind": "partial",
+          "start_frame": 8178624,
+          "end_frame": 8223744,
+          "status": "cancelled",
+          "duration_s": 2.82,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 121,
+          "kind": "partial",
+          "start_frame": 8435776,
+          "end_frame": 8475136,
+          "status": "cancelled",
+          "duration_s": 2.46,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 123,
+          "kind": "partial",
+          "start_frame": 8562624,
+          "end_frame": 8606208,
+          "status": "cancelled",
+          "duration_s": 2.724,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 150,
+          "kind": "partial",
+          "start_frame": 10380224,
+          "end_frame": 10390016,
+          "status": "cancelled",
+          "duration_s": 0.612,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        },
+        {
+          "segment_id": 157,
+          "kind": "partial",
+          "start_frame": 10733504,
+          "end_frame": 10766336,
+          "status": "cancelled",
+          "duration_s": 2.052,
+          "failure_kind": null,
+          "error": {
+            "type": "InferenceCancelled",
+            "message": "final_pending"
+          }
+        }
+      ],
+      "successful_final_return_s": {
+        "n": 210,
+        "mean": 2.9026824358536603,
+        "p50": 2.9010515999961655,
+        "p95": 3.874250836943304,
+        "max": 4.64687891190033
+      },
+      "display": {
+        "content_changes_with_older_end_than_previously_shown": 0,
+        "partial_displayed_before_own_segment_end": {
+          "segments": 210,
+          "with_partial": 109,
+          "segments_at_least_2s": 140,
+          "with_partial_at_least_2s": 106
+        },
+        "source_distributions": {
+          "first_s": {
+            "n": 100,
+            "mean": 2.5166473143657426,
+            "p50": 2.305154650991767,
+            "p95": 3.7874533039703806,
+            "max": 8.509437840987971
+          },
+          "first4_s": {
+            "n": 100,
+            "mean": 3.0510511738031862,
+            "p50": 2.7396817778935656,
+            "p95": 5.588198748906144,
+            "max": 8.634710669957144
+          },
+          "file_end_s": {
+            "n": 100,
+            "mean": 1.4888596662591624,
+            "p50": 1.5406609299434422,
+            "p95": 2.923509583924897,
+            "max": 7.841261349941647
+          },
+          "observed_first_s": {
+            "n": 100,
+            "mean": 2.5166473143657426,
+            "p50": 2.305154650991767,
+            "p95": 3.7874533039703806,
+            "max": 8.509437840987971
+          },
+          "observed_first4_s": {
+            "n": 100,
+            "mean": 3.0377071716129076,
+            "p50": 2.7396817778935656,
+            "p95": 5.588198748906144,
+            "max": 8.634710669957144
+          },
+          "max_content_gap_s": {
+            "n": 100,
+            "mean": 3.3798699129398,
+            "p50": 3.406107966007653,
+            "p95": 4.270979550923222,
+            "max": 8.509437840987971
+          },
+          "first_completed_partial_s": {
+            "n": 97,
+            "mean": 2.762425878150631,
+            "p50": 2.7197865408919597,
+            "p95": 4.26681744690984,
+            "max": 4.835180542957971
+          }
+        },
+        "stability": {
+          "normalization": "ko_cer_v1",
+          "displayed_updates": 4361,
+          "normalized_revisions": 77,
+          "retracted_suffix_characters": 329,
+          "prefix_replay_revisions": 0,
+          "prefix_replay_retracted_characters": 0,
+          "within_call_revisions": 0,
+          "failed_results": 0,
+          "cancelled_results": 23,
+          "suppressed_prefix_tokens": 1195,
+          "segments_with_display": 210,
+          "revised_segments": 58,
+          "prefix_replay_segments": 0,
+          "suppressed_prefix_jobs": 182,
+          "latest_completed_partial_vs_final": {
+            "paired_segments": 106,
+            "whole_partial_is_final_prefix": 67,
+            "partial_characters": 1159,
+            "retained_prefix_characters": 947,
+            "retained_prefix_fraction": 0.817083692838654
+          },
+          "finals_shorter_than4": 26,
+          "first4_to_final_consistent4_s": {
+            "n": 184,
+            "mean": 0.4987737472401932,
+            "p50": 0.0,
+            "p95": 4.449553715996444,
+            "max": 5.75192975695245
+          },
+          "scope": "같은 구간의 ko_cer_v1 공통 접두부 뒤 철회 문자수이며 편집 거리·부분 CER가 아님. 4자 보존은 자기 최종 전사 기준 후향 평가이며 정답·단어 음향·GUI 지연이 아님. 실패는 별도 집계하고 해당 구간의 성공 일치율에서 제외."
+        }
+      },
+      "audit": {
+        "fresh_gaps_ge4": 43,
+        "normalized_gaps_ge4": 42,
+        "normalized_gap_s": {
+          "n": 409,
+          "mean": 2.178838172371638,
+          "p50": 1.7704014310147613,
+          "p95": 4.393388053053059,
+          "max": 4.97370732401032
+        },
+        "long_partial_final_segments": [
+          7,
+          24,
+          26,
+          34,
+          45,
+          49,
+          54,
+          59,
+          65,
+          68,
+          73,
+          74,
+          77,
+          80,
+          82,
+          89,
+          91,
+          93,
+          95,
+          100,
+          107,
+          109,
+          112,
+          115,
+          125,
+          128,
+          135,
+          137,
+          141,
+          143,
+          146,
+          153,
+          158,
+          166,
+          168,
+          170,
+          180,
+          182,
+          196,
+          198
+        ],
+        "followups": 0,
+        "extra_changed": 0,
+        "extra_cost_s": 0,
+        "extra_statuses": {},
+        "extra_cancelled_changed": 0,
+        "held_segments": [],
+        "held_then_extra_segments": [],
+        "age_error_max_s": null,
+        "rows": []
+      }
+    }
+  },
+  "paired": {
+    "final_pcm": 210,
+    "all_success": 210,
+    "end_to_final_s": {
+      "fixed-gated": {
+        "n": 210,
+        "mean": 2.823609036937477,
+        "p50": 2.8362933350065873,
+        "p95": 3.757824814955711,
+        "max": 4.536978506968353
+      },
+      "fixed-followup": {
+        "n": 210,
+        "mean": 2.9631706165800282,
+        "p50": 2.988477958017029,
+        "p95": 3.8767785119526366,
+        "max": 4.6636159089589455
+      },
+      "fixed-baseline": {
+        "n": 210,
+        "mean": 2.9026824358536603,
+        "p50": 2.9010515999961655,
+        "p95": 3.874250836943304,
+        "max": 4.64687891190033
+      }
+    },
+    "changes": [
+      {
+        "segment_id": 31,
+        "texts": {
+          "fixed-gated": "은 구리와 같은 기본적인 화학 원소를 알고 있었는데 이것들은 모두.",
+          "fixed-followup": "은 구리와 같은 기본적인 화학 원소를 알고 있었는데 이것들은.",
+          "fixed-baseline": "은 구리와 같은 기본적인 화학 원소를 알고 있었는데 이것들은 모두."
+        }
+      },
+      {
+        "segment_id": 100,
+        "texts": {
+          "fixed-gated": "몽둥이와 함께 변시의 가게에선 수에 파이프와 곡괭이 자로 가.",
+          "fixed-followup": "몽둥이와 함께 변시의 가게에선 수에 파이프와 곶갱이 자로가.",
+          "fixed-baseline": "몽둥이와 함께 변시의 가게에선 수에 파이프와 곡괭이 자로 가."
+        }
+      },
+      {
+        "segment_id": 170,
+        "texts": {
+          "fixed-gated": "노유동 특파원 미국 최대의 방산 업체인 로킷 마틴이 지난 이십구 일",
+          "fixed-followup": "노유동 특파원 미국 최대의 방산 업체인 로킷 마틴이 지난 이십구 일",
+          "fixed-baseline": "노유동 특파원 미국 최대의 방산 업체인 로킷마틴이 지난 이십구 일"
+        }
+      }
+    ],
+    "targeting": {
+      "fixed-gated": {
+        "offers_in_baseline_long": 20,
+        "offers_elsewhere": 10,
+        "baseline_long_still_long": 12,
+        "new_long": 5
+      },
+      "fixed-followup": {
+        "offers_in_baseline_long": 26,
+        "offers_elsewhere": 24,
+        "baseline_long_still_long": 9,
+        "new_long": 4
+      },
+      "fixed-baseline": {
+        "offers_in_baseline_long": 0,
+        "offers_elsewhere": 0,
+        "baseline_long_still_long": 40,
+        "new_long": 0
+      }
+    }
+  },
+  "raw_sha256": {
+    "protected-after.json": "358afd945dd54fdeca7ed8616980b6e08573e4fef95949f0edb8b9e476205c2d",
+    "fixed-gated.log": "4186eeca34e25343e467bf952b27139b70328df9f9bb9c8a416ed9b43fa773fc",
+    "fixed-baseline.log": "9f80654bfe6093d93907afdf79fde8e364c0ab0acc419733aead1d41ce8a2790",
+    "protected-before.json": "358afd945dd54fdeca7ed8616980b6e08573e4fef95949f0edb8b9e476205c2d",
+    "fixed-followup.log": "83446f37f509e0faafefd9f7d560ab200c08fa84bb41f4607258f37154acf7f5",
+    "campaign.json": "6a70f0c801d008497905ee1343ca8cae72d63dbbfc3a78a7faa6fd5bd498ba47",
+    "inputs/fixed.jsonl": "f693163f3d0d11a09873d3d5dbbd8a68aea6ebd1897cc051fd99dd076f8b76ab",
+    "fixed-gated/threads.jsonl": "70c5627e0c0b13713865b57df675bb72a404754a5014ce3266e65af1a9e03760",
+    "fixed-gated/execution.json": "a9fd5c97ff8069012bcf6bda6f06e2454f3273c05f7dc7d337df78a549de625c",
+    "fixed-gated/thermal.jsonl": "bff6c747301cf17e83fc7c7b0a441ac4fbe5363ae5bea72abc4ac3dfe9a0dc69",
+    "fixed-gated/worker.json": "d33ee993917197d0f2857a08a4c79465466ad6cfac6bf5cb28937bef78d5bc5c",
+    "fixed-gated/jobs.jsonl": "3f28b54566f652616d61f51b2f68395f40068670268d9640734e95114e75409e",
+    "fixed-gated/console.log": "e951a1f06a6c230d2b7b48c4afaee79b49cdab7bfe137d8365af2cbe247ee522",
+    "fixed-gated/warnings.jsonl": "95d8ed01dd387ed4c9ca4ab79674a99fb61cac09e0348675a33c2edeb744c3a3",
+    "fixed-gated/admission.jsonl": "0a7efce69abf9b3193e8665c5afb0bee3d9d45acb735e15995a01fd263a80ca5",
+    "fixed-gated/stream/decoder.jsonl": "867047b8cb34dc5863f94773e6261cf6ae8ffdd6c5db5d53a17f15a090430082",
+    "fixed-gated/stream/producer.jsonl": "5f3f827c5407eae66b1eb232dc33ce82afac77fdd9f5ebc776e20e3aa0b70a85",
+    "fixed-gated/stream/backlog.jsonl": "562b187460dc37037ed6fd9774013f086fab8d4fbd3a5a59b43dfa58073a0656",
+    "fixed-followup/threads.jsonl": "b869e591c88609c50ca33664c3cc55960f54d949d34018576138b7e1c3c5a9ef",
+    "fixed-followup/execution.json": "5503918b20fd49b6ba6c367ce2064f6555d17e1ca063eb37aff083ce7f842a50",
+    "fixed-followup/thermal.jsonl": "b8f5b9c120664b7e697d3f442d48bc893b4456a73db151167f6905dd8ae0f270",
+    "fixed-followup/worker.json": "ed8cebfa126299efa26fbd9f1ac7ae4eccc9b75fddb84f409f0024d942ef98f2",
+    "fixed-followup/jobs.jsonl": "bfadd7de65f0b2ea2d9cf30f7e89654fc049be57159fb94db43b04725365432e",
+    "fixed-followup/console.log": "74307e194c50bd5d5af1a2cd74d88107b91636388d1d7fb617f9d7b6a0aecc6d",
+    "fixed-followup/warnings.jsonl": "cdfc5643714c1387477f57ee22f89812cfb630a276908daccfc74433e5f8ffd1",
+    "fixed-followup/admission.jsonl": "cd5b6a65734713555199dccf0c934c451709b7aba5d881ca9944b65065f1c78a",
+    "fixed-followup/stream/decoder.jsonl": "c4fd8fd94ffe048e78f559a445a88e6a5e2d903eb9ae22c28acf7ca5eda4ef07",
+    "fixed-followup/stream/producer.jsonl": "8b8885e43dc6c9b13125605811369aa7bb119c4157aef967cb80ceed193b8241",
+    "fixed-followup/stream/backlog.jsonl": "bcac554e48991a5cfe07ad496594c471d8b92d6adf0d761a9dd467077a17c05c",
+    "fixed-baseline/threads.jsonl": "8e77da1af24f002473dad56df4abf43bb2c88695e37c9d42a3926b2fed223e47",
+    "fixed-baseline/execution.json": "f348f1f58f14a024acc610d07443735859e35b64712a0935e991bb61592b2fa0",
+    "fixed-baseline/thermal.jsonl": "983f86a4c9b24c57467c6cdf7b960458a4db4796a74a101b91935b2b4085d53e",
+    "fixed-baseline/worker.json": "d4c86bdebc83fdb375c20e126c73820d45e93f068f8f9a5fd6bcb09315da0c75",
+    "fixed-baseline/jobs.jsonl": "b04eeb8ad079b2517ad2bdea3a7cdb2fea2c95b6316ef320f2c3754c7f52eadf",
+    "fixed-baseline/console.log": "2cd70904fc48105eeb95f1e8e0702ce0c40c365ba638c1895ae09a5721894943",
+    "fixed-baseline/warnings.jsonl": "85ecc2a107348b19d3815ea10370827c68e65f90ed58f508e4c3fea1e5f40a0e",
+    "fixed-baseline/admission.jsonl": "a445135b5913d8e5dc0b37ebb6133877697663132c69972481310c1bfa4ac827",
+    "fixed-baseline/stream/decoder.jsonl": "0efbbab47072e6fe7e6db07c1a7cb63fa6a57c18cc0c819b489217821ec06b5c",
+    "fixed-baseline/stream/producer.jsonl": "bb5e52c74bdc726c01b2cfe0fe8f2c96feafc825834296caa1d933d29ab3f360",
+    "fixed-baseline/stream/backlog.jsonl": "d57b86a7f1ce982ea6337b0c37046785533a87e9c01b6c81ebc3a120a45a1890"
+  },
+  "protected_files": 246,
+  "verification": {
+    "raw_files": 40,
+    "protected_files": 246,
+    "host_common_protected": 226,
+    "independent_host_rp5_summary_equal": true,
+    "helpers": {
+      "results/maintenance/followup-gap-20261120-01/holds.py": "b6b8869695197a3a6036f6a62e914bea822c50f30aebe2527ac90d4587e92f6b",
+      "results/maintenance/followup-gap-20261120-01/run.py": "9763dc80d3745c124c8806b3a909fa9a9c0819cfc59a31c646e5c9269512a164",
+      "results/maintenance/followup-gap-20261120-01/listen.py": "2afb3770093b83883955c68aeb2c8de9d350fb26a3bb368bd01ceb1df5576db1",
+      "results/maintenance/followup-gap-20261120-01/history.py": "ebb8cb5b52d6f985459127f74b10d45ff397fdbc7e9f6f609b1b5bc11f673565",
+      "results/maintenance/followup-gap-20261120-01/watch.py": "b582972f88a8c4513fc5dc3d5c697c2af9c5aab879e4aa493c7fd0b0c996b172",
+      "results/maintenance/followup-gap-20261120-01/analyze.py": "ddb41d053e33b17566ac7d92b47b6ecf156042ebd71105357dd4d8acca320462",
+      "results/maintenance/followup-gap-20261120-01/publish.py": "f44de9d28b8ae351ef79407f492574a1b69b5bc1f994542b205a486868c61ef3",
+      "results/maintenance/followup-gap-20261120-01/tables.py": "224b04b19d5ca09c0366e7d3c73a578c3a858881df3aa210943955c776492bf9",
+      "results/maintenance/followup-gap-20261120-01/interim.py": "bf4c818f4b870748d9c71a1efd407c7147ff44d19266c0fa956f6ae348043dd5",
+      "/d/shin/edge-asr/results/maintenance/token-draft-fixed100-20261119-01/verify.py": "64466c950d4c8bac0042d672e7a5b3bec9def9e2ccd3b86fa04d03adf40c7f91"
+    }
+  },
+  "held_segments_diagnosis": {
+    "held_no_extra": 16,
+    "long_same_after_hold": 11,
+    "long_same_after_offer": 0,
+    "other_long_same": 6,
+    "first_hold_to_next_long_same": 11,
+    "miss_predicted_gap_s": {
+      "n": 11,
+      "mean": 3.8026384503134323,
+      "p50": 3.826485168187018,
+      "p95": 3.8905083639701625,
+      "max": 3.8905083639701625
+    },
+    "miss_observed_gap_s": {
+      "n": 11,
+      "mean": 4.229820162989199,
+      "p50": 4.239804564975202,
+      "p95": 4.379006900009699,
+      "max": 4.379006900009699
+    },
+    "miss_prediction_for_final_display_s": {
+      "n": 11,
+      "mean": 1.4475788525050723,
+      "p50": 1.4634770279175475,
+      "p95": 1.575568583777096,
+      "max": 1.575568583777096
+    },
+    "miss_actual_final_submit_to_fresh_s": {
+      "n": 11,
+      "mean": 1.7992961789820006,
+      "p50": 1.819195154006593,
+      "p95": 1.8437118330039084,
+      "max": 1.8437118330039084
+    },
+    "miss_reasons": {
+      "hard_limit": 11
+    },
+    "rows": [
+      {
+        "segment_id": 2,
+        "predicted_s": 3.951288282889303,
+        "observed_next_gap_s": 3.77778801205568,
+        "previous_kind": "partial",
+        "next_kind": "final",
+        "same_segment": true,
+        "final_reason": "vad_end",
+        "predicted_remaining_s": 1.964,
+        "observed_to_final_submit_s": 1.6450322939781472,
+        "predicted_prefix_s": 1.4091780268898126,
+        "observed_submit_to_new_final_display_s": 1.5546269440092146
+      },
+      {
+        "segment_id": 20,
+        "predicted_s": 3.886886566705168,
+        "observed_next_gap_s": 3.7577269029570743,
+        "previous_kind": "partial",
+        "next_kind": "final",
+        "same_segment": true,
+        "final_reason": "vad_end",
+        "predicted_remaining_s": 1.912,
+        "observed_to_final_submit_s": 1.7577509040711448,
+        "predicted_prefix_s": 1.5521662507225806,
+        "observed_submit_to_new_final_display_s": 1.5772392759099603
+      },
+      {
+        "segment_id": 40,
+        "predicted_s": 3.815193560780879,
+        "observed_next_gap_s": 4.103197299060412,
+        "previous_kind": "partial",
+        "next_kind": "final",
+        "same_segment": true,
+        "final_reason": "hard_limit",
+        "predicted_remaining_s": 1.816,
+        "observed_to_final_submit_s": 1.8358435439877212,
+        "predicted_prefix_s": 1.575568583777096,
+        "observed_submit_to_new_final_display_s": 1.8437118330039084
+      },
+      {
+        "segment_id": 44,
+        "predicted_s": 3.9494739924442452,
+        "observed_next_gap_s": 3.7226730959955603,
+        "previous_kind": "partial",
+        "next_kind": "final",
+        "same_segment": true,
+        "final_reason": "vad_end",
+        "predicted_remaining_s": 2.008,
+        "observed_to_final_submit_s": 1.7561088519869372,
+        "predicted_prefix_s": 1.5737456234829932,
+        "observed_submit_to_new_final_display_s": 1.5988194489618763
+      },
+      {
+        "segment_id": 52,
+        "predicted_s": 3.6335998125330153,
+        "observed_next_gap_s": 3.9882009419379756,
+        "previous_kind": "partial",
+        "next_kind": "final",
+        "same_segment": true,
+        "final_reason": "hard_limit",
+        "predicted_remaining_s": 1.792,
+        "observed_to_final_submit_s": 1.9106602349784225,
+        "predicted_prefix_s": 1.4755107486036216,
+        "observed_submit_to_new_final_display_s": 1.7114126059459522
+      },
+      {
+        "segment_id": 82,
+        "predicted_s": 3.872203817451436,
+        "observed_next_gap_s": 4.239804564975202,
+        "previous_kind": "partial",
+        "next_kind": "final",
+        "same_segment": true,
+        "final_reason": "hard_limit",
+        "predicted_remaining_s": 2.04,
+        "observed_to_final_submit_s": 2.1104846521047875,
+        "predicted_prefix_s": 1.5236833985103926,
+        "observed_submit_to_new_final_display_s": 1.8207581419264898
+      },
+      {
+        "segment_id": 98,
+        "predicted_s": 3.851183775934719,
+        "observed_next_gap_s": 4.25235150498338,
+        "previous_kind": "partial",
+        "next_kind": "final",
+        "same_segment": true,
+        "final_reason": "hard_limit",
+        "predicted_remaining_s": 1.896,
+        "observed_to_final_submit_s": 1.9585304530337453,
+        "predicted_prefix_s": 1.4054319528651913,
+        "observed_submit_to_new_final_display_s": 1.7440518769435585
+      },
+      {
+        "segment_id": 100,
+        "predicted_s": 3.691870777677419,
+        "observed_next_gap_s": 4.129168806946836,
+        "previous_kind": "partial",
+        "next_kind": "final",
+        "same_segment": true,
+        "final_reason": "hard_limit",
+        "predicted_remaining_s": 2.068,
+        "observed_to_final_submit_s": 2.1193331100512296,
+        "predicted_prefix_s": 1.3591557187155359,
+        "observed_submit_to_new_final_display_s": 1.7450734159210697
+      },
+      {
+        "segment_id": 115,
+        "predicted_s": 3.7478683922324034,
+        "observed_next_gap_s": 4.273485722951591,
+        "previous_kind": "partial",
+        "next_kind": "final",
+        "same_segment": true,
+        "final_reason": "hard_limit",
+        "predicted_remaining_s": 1.72,
+        "observed_to_final_submit_s": 1.8111676450353116,
+        "predicted_prefix_s": 1.400220006175869,
+        "observed_submit_to_new_final_display_s": 1.8345561359310523
+      },
+      {
+        "segment_id": 128,
+        "predicted_s": 3.7462631255376437,
+        "observed_next_gap_s": 4.14814014500007,
+        "previous_kind": "partial",
+        "next_kind": "final",
+        "same_segment": true,
+        "final_reason": "hard_limit",
+        "predicted_remaining_s": 1.824,
+        "observed_to_final_submit_s": 1.903619286022149,
+        "predicted_prefix_s": 1.4910073365296523,
+        "observed_submit_to_new_final_display_s": 1.8132484400412068
+      },
+      {
+        "segment_id": 153,
+        "predicted_s": 3.889315919931313,
+        "observed_next_gap_s": 4.379006900009699,
+        "previous_kind": "partial",
+        "next_kind": "final",
+        "same_segment": true,
+        "final_reason": "hard_limit",
+        "predicted_remaining_s": 1.784,
+        "observed_to_final_submit_s": 1.9179174089804292,
+        "predicted_prefix_s": 1.4634770279175475,
+        "observed_submit_to_new_final_display_s": 1.819195154006593
+      },
+      {
+        "segment_id": 158,
+        "predicted_s": 3.826485168187018,
+        "observed_next_gap_s": 4.298249781015329,
+        "previous_kind": "partial",
+        "next_kind": "final",
+        "same_segment": true,
+        "final_reason": "hard_limit",
+        "predicted_remaining_s": 1.984,
+        "observed_to_final_submit_s": 2.058527846937068,
+        "predicted_prefix_s": 1.3550406192029598,
+        "observed_submit_to_new_final_display_s": 1.7522611260646954
+      },
+      {
+        "segment_id": 160,
+        "predicted_s": 3.6262944340014824,
+        "observed_next_gap_s": 4.205517448950559,
+        "previous_kind": "partial",
+        "next_kind": "final",
+        "same_segment": true,
+        "final_reason": "hard_limit",
+        "predicted_remaining_s": 1.708,
+        "observed_to_final_submit_s": 1.8115047649480402,
+        "predicted_prefix_s": 1.3570654960663984,
+        "observed_submit_to_new_final_display_s": 1.8327279679942876
+      },
+      {
+        "segment_id": 173,
+        "predicted_s": 3.7928823960010654,
+        "observed_next_gap_s": 2.4221470690099522,
+        "previous_kind": "partial",
+        "next_kind": "final",
+        "same_segment": true,
+        "final_reason": "vad_end",
+        "predicted_remaining_s": 1.796,
+        "observed_to_final_submit_s": 0.6080796620808542,
+        "predicted_prefix_s": 1.551906087035941,
+        "observed_submit_to_new_final_display_s": 1.3690382270142436
+      },
+      {
+        "segment_id": 182,
+        "predicted_s": 3.871835617743276,
+        "observed_next_gap_s": 4.270263702957891,
+        "previous_kind": "partial",
+        "next_kind": "final",
+        "same_segment": true,
+        "final_reason": "hard_limit",
+        "predicted_remaining_s": 1.836,
+        "observed_to_final_submit_s": 1.9117982969619334,
+        "predicted_prefix_s": 1.5089178587634409,
+        "observed_submit_to_new_final_display_s": 1.831487720948644
+      },
+      {
+        "segment_id": 185,
+        "predicted_s": 3.8905083639701625,
+        "observed_next_gap_s": 4.228835916030221,
+        "previous_kind": "partial",
+        "next_kind": "final",
+        "same_segment": true,
+        "final_reason": "hard_limit",
+        "predicted_remaining_s": 1.8,
+        "observed_to_final_submit_s": 1.8668948670383543,
+        "predicted_prefix_s": 1.4837993790317126,
+        "observed_submit_to_new_final_display_s": 1.7551861560204998
+      }
+    ]
+  },
+  "development_trace": {
+    "prior_run": "near-final-stream-20261120-01",
+    "unfiltered_offers": 53,
+    "pass_at_original_decision": 33,
+    "matched_prior_baseline_long_among_offers": 24,
+    "retained_of_matched": 18,
+    "scope": "과거 결정 시점만 재계산했으며 재선택·온도·작업 시각 변화는 새 실측에서 검증"
+  }
+}
