@@ -2,6 +2,10 @@
 
 2026-11-20 갱신, 최신 완료 실측은 2026-11-20입니다. 목표는 **RP5에서 Qwen3-ASR-0.6B의 한국어 정확도·완료율을 유지하면서 실제 인식 지연을 줄이는 것**입니다. [최적화 과정](research/optimization_history.md), [연구 계획](research/qwen3_optimization.md), [평가 조건](research/qwen_realtime.md), [최근100개 캐시 대조](../results/summaries/optimization/realtime-prefix-cache-20261112.md).
 
+## Raspberry Pi AI Kit와 Qwen Q8
+
+같은 Qwen Q8의 두 번째 합성곱을 Hailo-8L에 연결했습니다. 같은 원음 100개 1배속에서 총 추론 782.3→770.1초, 최종 CER 10.89→10.27%, 확정 p95 7.34→7.16초였습니다. 운영 기본은 Q8 CPU이고, 별도 선택 빌드로 실험을 재현할 수 있습니다. [장치·지원 범위·동일 PCM 대조](../results/summaries/optimization/hailo8l-q8-20261120.md).
+
 ## Q8 확정 전 추가 갱신
 
 4초 공백 선별 후보를 먼저 측정하고 기존 추가 허용, 추가 없음 순서로 같은 100개를 RP5에서 1배속 재생했습니다. 후보는 추가 없음 대비 4초 이상 공백 43→21회·공백 p95 4.39→3.95초·같은 정규화 확정 210구간·총 추론 +6.65%였습니다. 기존 추가 허용 대비 총 추론 742.91→703.84초, 입장 온도 58.95→53.45°C, 열 제한 관측 약 591→393초, 공백 p95 3.82→3.95초였습니다. 선별 후보는 선택 프로필로 두고, 긴 자연발화·낭독 검증에는 [4초 선별 프로필](../configs/listener_q8_followup_gap.toml)을 우선합니다. [3조건 해시·지연·정확도·보류 이유](../results/summaries/optimization/followup-gap-20261120.md).

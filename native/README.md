@@ -142,6 +142,22 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 
 기존 benchmark의 요청 준비 hook으로 진단한 뒤, 선택 `final_token_draft_block`과 `qwen/token_drafts.py`로 실제 직전 부분 토큰 전달을 연결했습니다. 원래 전체 음성·Q8 정밀도·5초 확정·토큰 표시를 유지합니다. 공유 설정은 setter를 활성화하지 않습니다. 전체 PCM에서 원시 출력/CER 동등성은 성립하지 않았으며, 별도 [탐색적1배속 실측](../results/summaries/optimization/token-draft-stream-20261119.md)에 비용·지연·정확도 절충을 기록했습니다. 참고: [고정 llama.cpp 검증 예제](https://github.com/ggml-org/llama.cpp/blob/7d7f0287530bc8981690f361d8c1627dbae1c99a/examples/speculative-simple/speculative-simple.cpp). 별도 draft 모델은 로드하지 않습니다.
 
+## Hailo-8L 합성곱 실험 재현
+
+Host의 DFC 3.x는 x86-64 Linux의 별도 Python 3.10 환경에 둡니다. 모델의 실제 특징 계수 및 입출력 캡처에는 위 GGUF 빌드에 `--profile-operators --capture-boundaries`를 추가하고 `EDGE_ASR_QWEN_BOUNDARY_DIR`로 비어 있는 호출별 폴더를 지정합니다. Q8 해시 검사, 정적 ONNX 내보내기, DFC 설정, 실제 HEF 식별자는 [2026-11-20 장치 실측](../results/summaries/optimization/hailo8l-q8-20261120.md)에 있습니다.
+
+다음은 RP5에서 원래 엔진에 선택 라이브러리를 빌드한 명령입니다. `trial`은 HailoRT 4.23.0 헤더와 공유 라이브러리를 푼 실험 경로이며 `-o`의 대상은 새 파일로 지정합니다.
+
+```bash
+engine="$PWD/runtimes/qwen3-opt/llama-q8-20261109-01"
+trial="$PWD/runtimes/qwen3-opt/hailo8l-q8-20261120-01"
+sdk="$trial/device/unpack/usr"
+g++ -std=c++17 -O2 -shared -fPIC -Wall -Wextra -Werror \
+  -isystem "$sdk/include" -I "$engine/src/ggml/include" native/gguf/hailo_conv.cpp \
+  -L "$sdk/lib" -l:libhailort.so.4.23.0 -L "$engine/build/bin" -lggml-base -ldl -pthread \
+  -Wl,-rpath,"$sdk/lib:$engine/build/bin" -o "$trial/hybrid-rebuild.so"
+```
+
 ## 토큰 선택 점수 진단
 
 `build.py --trace-tokens`는 별도 경로에 `token_trace_v1` 빌드를 만듭니다. 기본 빌드에는 해당 코드·setter가 들어가지 않습니다. 진단 setter `edge_gguf_set_token_trace(handle, enabled)`는 다음 한 호출에만 적용하며 잘못된 값은 대기를 지우고 거부합니다. `token_trace.h`는 EOG를 포함한 각 선택에서 원시 logits의 선택 토큰/가장 높은 경쟁 토큰·점수 차·출력 위치·batch 행·직전 decode 행 수·후보 수락/제거 상태를 최대 출력 상한만큼 기록합니다. 원시 logits·샘플러·KV·출력은 수정하지 않습니다.

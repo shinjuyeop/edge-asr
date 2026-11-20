@@ -132,13 +132,14 @@ assert 'edge_asr.evaluation' not in sys.modules
 
     def test_local_document_links_resolve(self):
         markdown = [ROOT / name for name in ("README.md", "CONTRIBUTING.md", "AGENTS.md")]
+        # runtimes/ 아래에서 프로젝트가 관리하는 문서는 README 하나다.
+        markdown.append(ROOT / "runtimes/README.md")
         for name in (
             "docs",
             "configs",
             "benchmarks",
             "experiments",
             "results/summaries",
-            "runtimes",
             "native",
         ):
             markdown.extend((ROOT / name).rglob("*.md"))

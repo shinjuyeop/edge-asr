@@ -2,6 +2,10 @@
 
 2026-11-11 KST에 Host 셸과 SSH로 접속한 RP5에서 직접 확인했습니다. 확인 당시 양쪽 소스는 `258a6503c913a9c5e6aef388278691169c2a4de3`입니다. 이 문서는 설치 상태의 스냅샷이며 새 환경의 설치 성공이나 모델 성능을 보증하는 lock 파일은 아닙니다.
 
+## 2026-11-20 AI Kit 장착 후 확인
+
+RP5의 외부 PCIe에는 Hailo-8L `0001:01:00.0`이 Gen2 ×1로 연결됩니다. 이전 NVMe SSD인 TS256GMTE110S는 USB 480 Mbit/s의 `/dev/sda`로 부팅·루트 파일시스템을 제공합니다. Host Ubuntu x86-64의 별도 Python 3.10.12 환경에서 공식 DFC 3.34.0으로 컴파일했고, RP5의 HailoRT·커널 드라이버·펌웨어 4.23.0으로 Qwen HEF를 실행했습니다. 드라이버와 펌웨어는 실험 실행 중에만 활성화했습니다. 장치 식별 결과·HEF 해시·실제 전송 및 추론 시간은 [Hailo-8L 종합 실측](../../results/summaries/optimization/hailo8l-q8-20261120.md)에 있습니다.
+
 ## 실행 방식
 
 현재 프로젝트는 **Docker 없이 장비별 Python 가상환경과 별도 native 빌드**를 사용합니다. 저장소에 Dockerfile·Compose 설정이 없고, 확인한 두 셸에서도 `/.dockerenv`·`/run/.containerenv`는 없었습니다. Host의 IDE 바깥 운영체제나 다른 프로젝트의 컨테이너 사용 여부는 이 기록의 범위가 아닙니다.
