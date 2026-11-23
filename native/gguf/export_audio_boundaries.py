@@ -80,24 +80,62 @@ def export(weights, kind, tokens, path):
             epsilon=1e-5,
         )
 
+    projected = {"cnn_projected", "cnn_pack", "cnn_slice"}
+    stacks = {"cnn_stack", "cnn_projection"} | projected
     x = "input"
-    if kind in ("conv1", "conv1_linear", "cnn_projection", "cnn_stack", "cnn_projected"):
+    if kind in stacks or kind in ("conv1", "conv1_linear"):
         input_shape = [1, 1, 128, 100]
         x = conv(x, 1, bias=kind != "conv1_linear")
         output_shape = [1, 480, 64, 50]
-        if kind in ("cnn_projection", "cnn_stack", "cnn_projected"):
+        if kind in stacks:
             x = gelu(conv(gelu(conv(gelu(x), 2)), 3))
             output_shape = [1, 480, 16, 13]
         if kind == "cnn_projection":
             x = projection(x)
             output_shape = [1, 13, 896]
-        if kind == "cnn_projected":
-            # 각 시간 위치에서 원래 투영의 열은 c*16+f 순서다.
+        if kind in projected:
+            # 원래 투영 열은 c*16+f. 주파수별 Slice를 연결한 경우에만 f*480+c다.
             tensor = weights["a.conv_out.weight"]
             matrix = gguf.dequantize(tensor.data, tensor.tensor_type).astype(np.float32)
-            kernel = constant("conv_out_kernel", matrix.reshape(896, 480, 16, 1))
-            x = op("Conv", x, kernel, kernel_shape=[16, 1])
             output_shape = [1, 896, 1, 13]
+            if kind == "cnn_projected":
+                kernel = constant("conv_out_kernel", matrix.reshape(896, 480, 16, 1))
+                x = op("Conv", x, kernel, kernel_shape=[16, 1])
+            else:
+                output = f"v{len(nodes)}"
+                if kind == "cnn_slice":
+                    matrix = matrix.reshape(896, 480, 16).transpose(0, 2, 1)
+                kernel = constant("conv_out_kernel", matrix.reshape(896, 7680, 1, 1))
+                if kind == "cnn_pack":
+                    filters = np.tile(np.eye(16, dtype=np.float32), (480, 1))
+                    packing = constant("packing", filters.reshape(7680, 1, 16, 1))
+                    nodes.append(
+                        helper.make_node(
+                            "Conv",
+                            [x, packing],
+                            ["packed"],
+                            group=480,
+                            kernel_shape=[16, 1],
+                            name="pack",
+                        )
+                    )
+                else:
+                    axis = constant("freq", np.array([2], dtype=np.int64))
+                    edges = [constant(f"f{i}", np.array([i], dtype=np.int64)) for i in range(17)]
+                    bands = [f"band{i}" for i in range(16)]
+                    for i, band in enumerate(bands):
+                        nodes.append(
+                            helper.make_node(
+                                "Slice", [x, edges[i], edges[i + 1], axis], [band], name=f"crop{i}"
+                            )
+                        )
+                    nodes.append(helper.make_node("Concat", bands, ["packed"], axis=1, name="bars"))
+                nodes.append(
+                    helper.make_node(
+                        "Conv", ["packed", kernel], [output], kernel_shape=[1, 1], name="project"
+                    )
+                )
+                x = output
     elif kind == "conv23":
         input_shape, output_shape = [1, 480, 64, 50], [1, 480, 16, 13]
         x = gelu(conv(gelu(conv(x, 2)), 3))
@@ -211,6 +249,8 @@ def main():
         "cnn_projection",
         "cnn_stack",
         "cnn_projected",
+        "cnn_pack",
+        "cnn_slice",
         "conv23",
     ):
         export(weights, kind, None, args.output / f"{kind}.onnx")

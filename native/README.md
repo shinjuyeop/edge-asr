@@ -64,6 +64,18 @@ CNN 출력 투영만 선택하려면 실험 자식에 같은 preload와 `EDGE_AS
 
 세 합성곱을 묶으려면 `EDGE_ASR_HAILO_CNN_STACK_HEF`에 `qwen_cnn_stack.hef`의 절대 경로를 지정합니다. 단일 층을 고르는 `EDGE_ASR_HAILO_LAYER`와는 함께 지정할 수 없습니다. 추출기의 `cnn_stack.onnx`에는 각 층의 bias와 원래 Erf GELU 세 개가 들어 있습니다. 고정 Qwen 그래프에서 `inp_chunks`부터 `after_conv_blocks`까지를 단일 노드로 연결하고 투영 전 재배열은 원래 GGML이 수행합니다. 선택한 실행에서 `edge_hailo_cnn_stack` 콜백이 기록돼야 합니다.
 
+같은 preload에서 CNN 뒤 투영까지 묶거나 첫 오디오 블록과 최종 음성 MLP를 선택할 수 있습니다. 아래 변수의 HEF는 모두 같은 Q8 모델에서 추출해 Hailo-8L용으로 컴파일합니다.
+
+| 환경 변수 | ONNX 또는 HEF | 실행 경계 |
+| --- | --- | --- |
+| `EDGE_ASR_HAILO_FUSED_HEF` | `cnn_projected.onnx`, `cnn_slice.onnx` 또는 `cnn_pack.onnx` | Mel 청크 → 세 Conv·GELU → CNN 출력 투영. 출력은 시간 행 13×896입니다. |
+| `EDGE_ASR_HAILO_CONV23_HEF` | `conv23.onnx` | CPU가 첫 GELU까지 계산한 뒤 Conv2·3 및 GELU를 한 번에 호출합니다. |
+| `EDGE_ASR_HAILO_BLOCK_DIR` | 디렉터리 안의 `block026.hef`, `block052.hef`, `block078.hef` | 위치 임베딩 뒤 첫 Transformer 블록 전체입니다. 길이 26·52·78에서 해당 HEF를 고르고 나머지 길이에서는 CPU 블록을 사용합니다. |
+| `EDGE_ASR_HAILO_EMBED_HEF` | `projector-row.onnx` | 마지막 오디오 정규화 뒤 896→896→1,024 음성 MLP입니다. |
+| `EDGE_ASR_HAILO_TEMPERATURE=1` | 선택 계측 | Hailo 콜백에서 약 10초 간격으로 TS0·TS1 센서를 콘솔에 기록합니다. |
+
+CNN 시작 경로는 단일 Conv, Conv2·3, 세 층 묶음, 투영까지 묶음 중 하나를 고릅니다. 세 층 묶음 또는 Conv2·3과 별도 CNN 투영을 비교할 때는 `EDGE_ASR_HAILO_PROJECTION_HEF`를 함께 지정합니다. 여러 HEF는 같은 VDevice의 스케줄러를 사용합니다. 독립 QKV 검산은 기존 추출기에 `--linear-reference`, `--text-gguf`, `--qkv`를 함께 전달합니다.
+
 ## GGUF 연산별 진단
 
 2026-11-20 이후 새로 만든 계측 빌드는 그룹별 최초 관측 순서와 모든 작업 스레드를 합친 프로세스 CPU 초를 함께 기록합니다. 기존 빌드의 기록에는 이 필드가 없습니다. 별도 `--profile-operators --capture-boundaries` 빌드에만 `EDGE_ASR_QWEN_BOUNDARY_DIR`로 단일 창·단일 호출의 빈 출력 폴더를 지정할 수 있습니다. 계측을 켜면 Qwen의 DFT·Mel 계수와 입출력, 합성곱·첫 Transformer 블록·최종 투영, 각 LLM 단계에서 첫 FFN up 행렬곱의 첫 입출력을 GGML 차원 역순의 파일명과 연속 FP32 바이트로 보존합니다. 같은 이름 충돌·형식 오류는 유효하지 않은 trace로 처리합니다. 복사·파일 쓰기가 있는 호출은 지연 대조에서 제외합니다.
