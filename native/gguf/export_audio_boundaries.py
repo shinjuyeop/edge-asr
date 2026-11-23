@@ -43,6 +43,10 @@ def export(weights, kind, tokens, path):
         half = constant("half", np.float32(0.5))
         root = constant("sqrt_two", np.float32(np.sqrt(2)))
         one = constant("one", np.float32(1))
+        if kind == "cnn_stack":
+            # DFC 3.x가 GELU로 인식하는 곱셈 순서. Qwen의 Erf와 계수는 그대로 쓴다.
+            cdf = op("Add", one, op("Erf", op("Div", x, root)))
+            return op("Mul", op("Mul", x, cdf), half)
         return op("Mul", op("Mul", x, half), op("Add", one, op("Erf", op("Div", x, root))))
 
     def conv(x, i, bias=True):
@@ -79,12 +83,15 @@ def export(weights, kind, tokens, path):
         )
 
     x = "input"
-    if kind in ("conv1", "conv1_linear", "cnn_projection"):
+    if kind in ("conv1", "conv1_linear", "cnn_projection", "cnn_stack"):
         input_shape = [1, 1, 128, 100]
         x = conv(x, 1, bias=kind != "conv1_linear")
         output_shape = [1, 480, 64, 50]
+        if kind in ("cnn_projection", "cnn_stack"):
+            x = gelu(conv(gelu(conv(gelu(x), 2)), 3))
+            output_shape = [1, 480, 16, 13]
         if kind == "cnn_projection":
-            x = projection(gelu(conv(gelu(conv(gelu(x), 2)), 3)))
+            x = projection(x)
             output_shape = [1, 13, 896]
     elif kind in ("conv2", "conv3", "conv2_linear"):
         second = kind.startswith("conv2")
@@ -182,6 +189,7 @@ def main():
         "conv2_linear",
         "conv_out",
         "cnn_projection",
+        "cnn_stack",
     ):
         export(weights, kind, None, args.output / f"{kind}.onnx")
     for tokens in sorted(set(args.tokens)):

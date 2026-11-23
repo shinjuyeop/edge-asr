@@ -62,6 +62,8 @@ Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다.
 
 CNN 출력 투영만 선택하려면 실험 자식에 같은 preload와 `EDGE_ASR_HAILO_PROJECTION_HEF=/절대/경로/conv_out_row.hef`를 지정합니다. 위 Conv2 환경변수를 함께 지정하면 두 HEF가 하나의 Hailo 장치와 round-robin 스케줄러를 공유합니다. 투영 입력은 원래 GGML 그래프가 준비한 시간 행당 7,680개 FP32 값이고 출력은 같은 순서의 896개 FP32 값입니다. HailoRT가 호스트 FP32와 HEF INT8 사이의 변환을 수행합니다. 호출마다 `edge_hailo_projection`의 행 수와 동기 시간, 레이아웃 처리 시간을 남깁니다. 최종 음성 임베딩 투영과 LLM은 CPU가 계속 실행합니다.
 
+세 합성곱을 묶으려면 `EDGE_ASR_HAILO_CNN_STACK_HEF`에 `qwen_cnn_stack.hef`의 절대 경로를 지정합니다. 단일 층을 고르는 `EDGE_ASR_HAILO_LAYER`와는 함께 지정할 수 없습니다. 추출기의 `cnn_stack.onnx`에는 각 층의 bias와 원래 Erf GELU 세 개가 들어 있습니다. 고정 Qwen 그래프에서 `inp_chunks`부터 `after_conv_blocks`까지를 단일 노드로 연결하고 투영 전 재배열은 원래 GGML이 수행합니다. 선택한 실행에서 `edge_hailo_cnn_stack` 콜백이 기록돼야 합니다.
+
 ## GGUF 연산별 진단
 
 2026-11-20 이후 새로 만든 계측 빌드는 그룹별 최초 관측 순서와 모든 작업 스레드를 합친 프로세스 CPU 초를 함께 기록합니다. 기존 빌드의 기록에는 이 필드가 없습니다. 별도 `--profile-operators --capture-boundaries` 빌드에만 `EDGE_ASR_QWEN_BOUNDARY_DIR`로 단일 창·단일 호출의 빈 출력 폴더를 지정할 수 있습니다. 계측을 켜면 Qwen의 DFT·Mel 계수와 입출력, 합성곱·첫 Transformer 블록·최종 투영, 각 LLM 단계에서 첫 FFN up 행렬곱의 첫 입출력을 GGML 차원 역순의 파일명과 연속 FP32 바이트로 보존합니다. 같은 이름 충돌·형식 오류는 유효하지 않은 trace로 처리합니다. 복사·파일 쓰기가 있는 호출은 지연 대조에서 제외합니다.

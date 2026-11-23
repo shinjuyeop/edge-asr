@@ -1,5 +1,4 @@
-// Qwen의 지정된 FP16 합성곱과 CNN 출력 투영을 Hailo-8L에서 실행하는 실험용 preload.
-// 원래 qwen3a 그래프가 bias와 GELU를 이어서 계산한다.
+// Qwen 합성곱 한 층, bias·GELU를 포함한 세 층, CNN 출력 투영의 선택 preload.
 #include "ggml.h"
 #include <hailo/hailort.hpp>
 #include <algorithm>
@@ -32,7 +31,19 @@ void transpose(const float* src, float* dst, size_t batches, size_t rows, size_t
 }
 
 bool uses_both_networks() {
-    return std::getenv("EDGE_ASR_HAILO_LAYER") && std::getenv("EDGE_ASR_HAILO_PROJECTION_HEF");
+    return (std::getenv("EDGE_ASR_HAILO_LAYER") || std::getenv("EDGE_ASR_HAILO_CNN_STACK_HEF"))
+        && std::getenv("EDGE_ASR_HAILO_PROJECTION_HEF");
+}
+
+enum class Boundary { conv, projection, cnn_stack };
+
+const char* boundary_name(Boundary boundary) {
+    switch (boundary) {
+        case Boundary::conv: return "conv";
+        case Boundary::projection: return "projection";
+        case Boundary::cnn_stack: return "cnn_stack";
+    }
+    std::abort();
 }
 
 std::shared_ptr<VDevice> qwen_device() {
@@ -81,8 +92,9 @@ public:
         if (!uses_both_networks()) active = group->activate().expect("activate");
     }
 
-    void infer(const ggml_tensor* src, ggml_tensor* dst, bool projection) {
+    void infer(const ggml_tensor* src, ggml_tensor* dst, Boundary boundary) {
         std::lock_guard<std::mutex> guard(lock);
+        const bool projection = boundary == Boundary::projection;
         const size_t count = projection ? src->ne[1] : src->ne[3];
         if (ggml_nbytes(src) != count * input_bytes || ggml_nbytes(dst) != count * output_bytes ||
             !ggml_is_contiguous(src) || !ggml_is_contiguous(dst))
@@ -109,21 +121,30 @@ public:
         const double total = std::chrono::duration<double, std::milli>(Clock::now() - began).count();
         const double sync = std::chrono::duration<double, std::milli>(returned - submitted).count();
         std::fprintf(stderr, "edge_hailo_%s frames=%zu sync_ms=%.4f layout_ms=%.4f\n",
-                     projection ? "projection" : "conv", count, sync, total - sync);
+                     boundary_name(boundary), count, sync, total - sync);
     }
 };
 
-template<bool projection>
-void compute(ggml_tensor* dst, int thread, int, void*) {
+template<Boundary boundary>
+void compute(ggml_tensor* dst, int thread, int, void* file) {
     if (thread != 0) return;
     try {
-        static QwenNetwork engine(std::getenv(projection ? "EDGE_ASR_HAILO_PROJECTION_HEF" : "EDGE_ASR_HAILO_HEF"));
-        engine.infer(dst->src[0], dst, projection);
+        static QwenNetwork engine(static_cast<const char*>(file));
+        engine.infer(dst->src[0], dst, boundary);
     } catch (const std::exception& error) {
         // GGML custom op에는 실패 반환값이 없다. 격리한 평가 자식이 잘못된 전사를 반환하지 않게 한다.
         std::fprintf(stderr, "Qwen Hailo inference failed: %s\n", error.what());
         std::abort();
     }
+}
+
+ggml_tensor* chunk_input(ggml_tensor* node) {
+    if (std::strcmp(node->name, "inp_chunks") == 0) return node;
+    for (auto* source : node->src) {
+        if (!source) break;
+        if (auto* input = chunk_input(source)) return input;
+    }
+    return nullptr;
 }
 }
 
@@ -140,7 +161,7 @@ extern "C" ggml_tensor* ggml_conv_2d(ggml_context* ctx, ggml_tensor* weights, gg
             input->ne[1] != (first ? 128 : 64) || input->ne[2] != weights->ne[2])
             throw std::runtime_error("unexpected Qwen Conv signature");
         return ggml_custom_4d(ctx, GGML_TYPE_F32, (input->ne[0]+1)/2, (input->ne[1]+1)/2,
-                              480, input->ne[3], &input, 1, compute<false>, 1, nullptr);
+                              480, input->ne[3], &input, 1, compute<Boundary::conv>, 1, std::getenv("EDGE_ASR_HAILO_HEF"));
     }
     static auto original = reinterpret_cast<decltype(&ggml_conv_2d)>(dlsym(RTLD_NEXT, "ggml_conv_2d"));
     if (!original) std::abort();
@@ -156,9 +177,34 @@ extern "C" ggml_tensor* ggml_mul_mat(ggml_context* ctx, ggml_tensor* weights, gg
             throw std::runtime_error("unexpected Qwen audio projection signature");
         // 원래 ggml_cont/reshape가 이미 시간 순서의 7680원소 행을 만든다.
         return ggml_custom_4d(ctx, GGML_TYPE_F32, 896, input->ne[1], 1, 1,
-                              &input, 1, compute<true>, 1, nullptr);
+                              &input, 1, compute<Boundary::projection>, 1, std::getenv("EDGE_ASR_HAILO_PROJECTION_HEF"));
     }
     static auto original = reinterpret_cast<decltype(&ggml_mul_mat)>(dlsym(RTLD_NEXT, "ggml_mul_mat"));
     if (!original) std::abort();
     return original(ctx, weights, input);
+}
+
+extern "C" ggml_tensor* ggml_permute(ggml_context* ctx, ggml_tensor* tensor,
+                                     int axis0, int axis1, int axis2, int axis3) {
+    static auto original = reinterpret_cast<decltype(&ggml_permute)>(dlsym(RTLD_NEXT, "ggml_permute"));
+    if (!original) std::abort();
+    static char* stack = std::getenv("EDGE_ASR_HAILO_CNN_STACK_HEF");
+    if (stack && std::strcmp(tensor->name, "after_conv_blocks") == 0) {
+        if (std::getenv("EDGE_ASR_HAILO_LAYER"))
+            throw std::runtime_error("choose either the CNN stack or a single Conv");
+        // qwen3a가 세 번째 GELU 출력을 투영용으로 재배열하는 경계다.
+        // 새 노드는 최초의 Mel 청크만 참조하므로 원래 CPU 합성곱 노드는 실행 그래프에서 제외된다.
+        auto* input = chunk_input(tensor);
+        if (!input || input->type != GGML_TYPE_F32 || !ggml_is_contiguous(input) ||
+            input->ne[0] != 100 || input->ne[1] != 128 || input->ne[2] != 1 ||
+            tensor->type != GGML_TYPE_F32 || tensor->ne[0] != 13 || tensor->ne[1] != 16 ||
+            tensor->ne[2] != 480 || tensor->ne[3] != input->ne[3] ||
+            tensor->op != GGML_OP_UNARY || ggml_get_unary_op(tensor) != GGML_UNARY_OP_GELU_ERF ||
+            axis0 != 2 || axis1 != 0 || axis2 != 1 || axis3 != 3)
+            throw std::runtime_error("unexpected Qwen CNN stack signature");
+        tensor = ggml_custom_4d(ctx, GGML_TYPE_F32, 13, 16, 480, input->ne[3],
+                                &input, 1, compute<Boundary::cnn_stack>, 1, stack);
+        ggml_set_name(tensor, "after_conv_blocks");
+    }
+    return original(ctx, tensor, axis0, axis1, axis2, axis3);
 }
