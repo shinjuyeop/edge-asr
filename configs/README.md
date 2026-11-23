@@ -28,6 +28,8 @@
 
 `quantization/q4_0_head_realtime.toml`은 2026-11-17 빠른 Q4_0 본체/출력층 후보의 동일 자산·빌드를 공유 경로에서 참조합니다. `listener_continuous.toml`은 이 단일 모델에 연속 수정 정책을 연결하는 선택 청취 프로필입니다. Q8 공유 기본과 과거 2/3회 실험 설정은 변경하지 않습니다.
 
+`gguf_realtime_2_4.toml`은 같은 Q8 모델에서 생성 2스레드, 음성 인코딩·Prefill 4스레드를 사용하는 RP5 측정 구성입니다. CNN HEF는 청취 프로필의 `[hailo]`가 연결합니다.
+
 ## 청취 프로필
 
 모델 TOML은 정밀도·스레드·native/캐시 자산을, listener TOML은 참조 모델·입력 목록·VAD/요청/표시 옵션을 지정합니다. 아래는 `tools listen-qwen3 --profile`에 전달하며 모델 설정의 `check-config --evaluation`과 구분합니다. `tests/qwen/test_listener.py`는 모든 공유 프로필을 기존 `replay_args()`와 replay parser로 변환하고, 참조 모델이 추적 대상 설정인지·설정 문법과 옵션이 유효한지 자산 없이 확인합니다. 모델·음원 누락은 실제 실행 준비 단계에서 별도로 검사합니다.
