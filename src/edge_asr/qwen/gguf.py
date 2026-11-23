@@ -187,7 +187,9 @@ class Qwen3GGUFAdapter:
                 return False
             status = self.library.edge_gguf_offer_final(self.handle, job_id, pcm, len(samples))
         if status < 0:
-            raise RuntimeError("다음 확정 요청의 오디오 준비 실패")
+            raise RuntimeError(
+                self.library.edge_gguf_error().decode(errors="replace") or "오디오 준비 실패"
+            )
         return bool(status)
 
     def prepare_realtime_job(self, job):
@@ -567,8 +569,8 @@ class Qwen3GGUFAdapter:
             raise ValueError("GGUF text prefix 단계 시간 불일치")
 
     def close(self):
-        if self.handle is not None:
-            with self.prepare_lock:
+        with self.prepare_lock:
+            if self.handle is not None:
                 self.library.edge_gguf_destroy(self.handle)
                 self.handle = None
         if self.convolution:

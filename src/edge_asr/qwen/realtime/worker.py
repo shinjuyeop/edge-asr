@@ -135,9 +135,13 @@ class DecodeWorker:
                     and not self.finals
                     and getattr(self.adapter, "prepare_final_audio", False)
                 ):
-                    job["audio_prepare_offered"] = self.adapter.offer_final_audio(
-                        job["job_id"], samples
-                    )
+                    try:
+                        job["audio_prepare_offered"] = self.adapter.offer_final_audio(
+                            job["job_id"], samples
+                        )
+                    except Exception as error:
+                        job["audio_prepare_offered"] = False
+                        job["audio_prepare_error"] = str(error)
                 self.finals.append((job, samples))
             else:
                 self.partial = (job, samples)

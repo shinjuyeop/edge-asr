@@ -3,8 +3,10 @@
 #include <chrono>
 #include <cstdint>
 #include <cstring>
+#include <exception>
 #include <future>
 #include <mutex>
+#include <string>
 #include <vector>
 
 // 한 확정 요청의 PCM 사본만 소유한다. 같은 mtmd_context는 직전 요청의
@@ -17,6 +19,7 @@ public:
         std::vector<float> pcm, embedding;
         double compute_s = 0, wait_s = 0;
         bool matched = false;
+        std::string discard_reason, error;
     };
 
     template<class Encoder>
@@ -28,7 +31,16 @@ public:
         snapshot.pcm.assign(pcm, pcm + count);
         work = std::async(std::launch::async, [snapshot=std::move(snapshot), encode]() mutable {
             const auto start = Clock::now();
-            snapshot.embedding = encode(snapshot.pcm.data(), snapshot.pcm.size());
+            try {
+                snapshot.embedding = encode(snapshot.pcm.data(), snapshot.pcm.size());
+                if (snapshot.embedding.empty()) snapshot.discard_reason = "empty_embedding";
+            } catch (const std::exception& e) {
+                snapshot.discard_reason = "encoder_error";
+                snapshot.error = e.what();
+            } catch (...) {
+                snapshot.discard_reason = "encoder_error";
+                snapshot.error = "unknown exception";
+            }
             snapshot.compute_s = std::chrono::duration<double>(Clock::now()-start).count();
             return std::move(snapshot);
         });
@@ -53,7 +65,11 @@ public:
         snapshot.wait_s = std::chrono::duration<double>(Clock::now()-start).count();
         snapshot.matched = snapshot.job_id == job_id && snapshot.pcm.size() == count &&
                            std::memcmp(snapshot.pcm.data(), pcm, count*sizeof(float)) == 0;
-        if (!snapshot.matched) snapshot.embedding.clear();
+        if (!snapshot.matched) {
+            snapshot.embedding.clear();
+            if (snapshot.discard_reason.empty())
+                snapshot.discard_reason = snapshot.job_id != job_id ? "job_mismatch" : "pcm_mismatch";
+        }
         return snapshot;
     }
 

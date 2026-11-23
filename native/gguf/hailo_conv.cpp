@@ -39,16 +39,18 @@ bool scheduled() {
         networks += std::getenv(var) != nullptr;
     }
     // 각 길이의 Transformer 블록은 별도 정적 HEF다.
-    return networks > 1 || std::getenv("EDGE_ASR_HAILO_BLOCK_DIR");
+    return networks > 1 || std::getenv("EDGE_ASR_HAILO_BLOCK_DIR") ||
+           std::getenv("EDGE_ASR_HAILO_BLOCK_PAIR_DIR");
 }
 
-enum class Boundary { conv, projection, cnn_stack, fused, embed, block, conv23 };
+enum class Boundary { conv, projection, cnn_stack, fused, embed, block, block_pair, conv23 };
 
 const char* boundary_name(Boundary boundary) {
     switch (boundary) {
         case Boundary::fused: return "fused";
         case Boundary::embed: return "embed";
         case Boundary::block: return "block";
+        case Boundary::block_pair: return "block_pair";
         case Boundary::conv23: return "conv23";
         case Boundary::conv: return "conv";
         case Boundary::projection: return "projection";
@@ -162,6 +164,7 @@ void compute(ggml_tensor* dst, int thread, int, void* file) {
     }
 }
 
+template<Boundary boundary>
 void compute_block(ggml_tensor* dst, int thread, int, void* directory) {
     if (thread != 0) return;
     try {
@@ -172,10 +175,11 @@ void compute_block(ggml_tensor* dst, int thread, int, void* directory) {
         auto& engine = networks[rows];
         if (!engine) {
             const auto path = std::string(static_cast<const char*>(directory)) +
-                              "/block0" + std::to_string(rows) + ".hef";
+                              (boundary == Boundary::block ? "/block0" : "/blocks01_") +
+                              std::to_string(rows) + ".hef";
             engine = std::make_unique<QwenNetwork>(path.c_str());
         }
-        engine->infer(dst->src[0], dst, Boundary::block);
+        engine->infer(dst->src[0], dst, boundary);
     } catch (const std::exception& error) {
         std::fprintf(stderr, "Qwen Hailo block failed: %s\n", error.what());
         std::abort();
@@ -296,7 +300,25 @@ extern "C" ggml_tensor* ggml_add(ggml_context* ctx, ggml_tensor* a, ggml_tensor*
             throw std::runtime_error("unexpected Qwen first block residual");
         if (input->ne[1] == 26 || input->ne[1] == 52 || input->ne[1] == 78)
             return ggml_custom_4d(ctx, GGML_TYPE_F32, 896, input->ne[1], 1, 1,
-                                  &input, 1, compute_block, 1, block_dir);
+                                  &input, 1, compute_block<Boundary::block>, 1, block_dir);
+    }
+    static char* pair_dir = std::getenv("EDGE_ASR_HAILO_BLOCK_PAIR_DIR");
+    if (pair_dir && std::strcmp(b->name, "ffn_out-1") == 0 &&
+        std::strcmp(a->name, "ffn_inp-1") == 0 && (a->ne[1] == 13 || a->ne[1] == 26)) {
+        if (block_dir) throw std::runtime_error("choose a single first block or a block pair");
+        // 1층의 residual 입력에서 0층의 두 residual을 따라 위치 임베딩 직후로 돌아간다.
+        auto* first = a->src[1];
+        if (a->op != GGML_OP_ADD || !first || first->op != GGML_OP_ADD ||
+            std::strcmp(first->name, "layer_out-0") != 0 || !first->src[0] || !first->src[1] ||
+            std::strcmp(first->src[0]->name, "ffn_inp-0") != 0 ||
+            std::strcmp(first->src[1]->name, "ffn_out-0") != 0)
+            throw std::runtime_error("unexpected Qwen first two block residuals");
+        auto* input = first->src[0]->src[1];
+        if (first->src[0]->op != GGML_OP_ADD || !input || input->type != GGML_TYPE_F32 ||
+            !ggml_is_matrix(input) || input->ne[0] != 896 || input->ne[1] != a->ne[1])
+            throw std::runtime_error("unexpected Qwen block pair input");
+        return ggml_custom_4d(ctx, GGML_TYPE_F32, 896, input->ne[1], 1, 1, &input, 1,
+                              compute_block<Boundary::block_pair>, 1, pair_dir);
     }
     static char* embed = std::getenv("EDGE_ASR_HAILO_EMBED_HEF");
     if (embed && std::strcmp(b->name, "mm.a.mlp.2.bias") == 0) {

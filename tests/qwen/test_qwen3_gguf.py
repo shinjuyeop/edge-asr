@@ -740,6 +740,16 @@ int main() {
     assert(pipeline.offer(6, pcm, 2, encode));
     pcm[0]=3;
     assert(pipeline.take(6, pcm, 2).embedding.empty());
+    pipeline.decode_phase(true);
+    assert(pipeline.offer(8,pcm,2,[](const float*, size_t)->std::vector<float> {
+        throw std::runtime_error("encoder did not produce an embedding");
+    }));
+    auto failed=pipeline.take(8, pcm, 2);
+    assert(failed.job_id==8 && failed.matched && failed.embedding.empty());
+    assert(failed.discard_reason=="encoder_error" && !failed.error.empty());
+    pipeline.decode_phase(true);
+    assert(pipeline.offer(9, pcm, 2, encode));
+    assert(pipeline.take(9, pcm, 2).embedding.size()==2);
     std::promise<void> done;
     auto future=done.get_future();
     {

@@ -1191,6 +1191,27 @@ class RealtimeTests(unittest.TestCase):
                 adapter.release.set()
                 session.close()
 
+    def test_failed_audio_preparation_keeps_final_in_fifo(self):
+        class UnavailablePreparation(Adapter):
+            prepare_final_audio = True
+
+            def offer_final_audio(self, job_id, samples):
+                raise RuntimeError("prepare thread unavailable")
+
+        adapter, events = UnavailablePreparation(), []
+        worker = DecodeWorker(adapter, events.append)
+        self.addCleanup(worker.abort)
+        pcm = array("f", [0.1] * 1600)
+        worker.submit("partial", 0, 0, 1600, pcm, 1600)
+        self.assertTrue(adapter.entered.wait(2))
+        worker.submit("final", 0, 0, 1600, pcm, 1600)
+        adapter.release.set()
+        worker.finish(3)
+        (final,) = [e for e in events if e["type"] == "result" and e["kind"] == "final"]
+        self.assertEqual(final["status"], "success")
+        self.assertFalse(final["audio_prepare_offered"])
+        self.assertEqual(final["audio_prepare_error"], "prepare thread unavailable")
+
     def test_one_inflight_latest_partial_and_finals_first(self):
         adapter, events = Adapter(), []
         worker = DecodeWorker(adapter, events.append, capacity=1)

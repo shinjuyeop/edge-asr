@@ -191,7 +191,11 @@ llama_pos eval_prompt(State* s, const mtmd_input_chunks* chunks, bool hit, size_
                 bool equal=std::memcmp(prepared.data(),mtmd_get_output_embd(s->audio),
                                        prepared.size()*sizeof(float))==0;
                 out["final_audio_preparation"]["embedding_bytes_equal"]=equal;
-                if (!equal) throw std::runtime_error("prepared and original embeddings differ");
+                if (!equal) {
+                    embedding=mtmd_get_output_embd(s->audio);
+                    out["final_audio_preparation"]["used"]=false;
+                    out["final_audio_preparation"]["discard_reason"]="embedding_mismatch";
+                }
             }
             stage=Clock::now();
             operator_phase(s,"audio_prefill");
@@ -384,6 +388,8 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
             s->selected_job=-1;
             out["final_audio_preparation"]={{"job_id",prepared.job_id},{"used",false},
                 {"compute_s",prepared.compute_s},{"wait_s",prepared.wait_s}};
+            if (!prepared.discard_reason.empty()) out["final_audio_preparation"]["discard_reason"]=prepared.discard_reason;
+            if (!prepared.error.empty()) out["final_audio_preparation"]["error"]=prepared.error;
         }
         auto stage=Clock::now();
         std::unique_ptr<mtmd_bitmap,decltype(&mtmd_bitmap_free)> bitmap(mtmd_bitmap_init_from_audio(count,samples),mtmd_bitmap_free);
@@ -407,8 +413,10 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
             size_t chunks_with_audio=0;
             for(size_t i=0;i<mtmd_input_chunks_size(chunks.get());++i)
                 chunks_with_audio+=mtmd_input_chunk_get_type(mtmd_input_chunks_get(chunks.get(),i))==MTMD_INPUT_CHUNK_TYPE_AUDIO;
-            if (chunks_with_audio!=1 || prepared.embedding.size()!=audio_tokens*size_t(llama_model_n_embd_inp(s->model)))
+            if (chunks_with_audio!=1 || prepared.embedding.size()!=audio_tokens*size_t(llama_model_n_embd_inp(s->model))) {
                 prepared.embedding.clear();
+                out["final_audio_preparation"]["discard_reason"]="shape_mismatch";
+            }
             out["final_audio_preparation"]["used"]=!prepared.embedding.empty();
         }
         out["audio_tokens"]=audio_tokens; out["preprocess_s"]=since(stage);
