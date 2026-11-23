@@ -1,0 +1,1880 @@
+{
+  "run": "hailo-projection-20261120-02",
+  "measured": "2026-11-20",
+  "report_as_of": "2026-11-23",
+  "code": "f0eca50aece4e326a9f7d93d3ebab62a49bdbb20",
+  "verified_streams": {
+    "fixed-cpu": {
+      "source_count": 100,
+      "pcm": "273529b8a519b3b2dab6cd2a1e941633a21e6f4ac3995619967446df77be4dd7",
+      "audio_s": 891.1448125,
+      "score": {
+        "reference_characters": 3848,
+        "errors": 419,
+        "substitutions": 187,
+        "deletions": 162,
+        "insertions": 70,
+        "cer": 0.10888773388773389
+      },
+      "failed_calls": 0,
+      "source": "f0eca50aece4e326a9f7d93d3ebab62a49bdbb20",
+      "resources": {
+        "elapsed_s": 894.189272271,
+        "cpu_seconds_replay_plus_producer": 1895.138266672,
+        "mean_four_core_percent": 52.98481891476005,
+        "main_process_peak_rss_mib": 1794.859375,
+        "total_inference_s": 687.1408129779948,
+        "inference_s_per_input_s": 0.7710764887362174,
+        "thermal_guard_max_c": 89.75,
+        "admission_c": 71.05,
+        "current_limit_input_s_approx": 864.648886874
+      },
+      "thermal": {
+        "entry_C": 71.05,
+        "max_C": 89.75,
+        "actual_mhz": {
+          "min": 1000.008576,
+          "median": 1500.016128,
+          "max": 1500.025984
+        },
+        "flags": {
+          "0": 47,
+          "8": 83,
+          "6": 791
+        },
+        "undervoltage_samples": 0,
+        "fan_rpm": [],
+        "input_clock_mhz": {
+          "n": 867,
+          "mean": 1494.250228041507,
+          "p50": 1500.016128,
+          "p95": 1500.022656,
+          "max": 1500.025984
+        },
+        "input_below_1490_mhz_percent": 1.1534025374855825,
+        "input_C": {
+          "n": 867,
+          "mean": 86.72785467128021,
+          "p50": 87.0,
+          "p95": 89.2,
+          "max": 89.75
+        }
+      },
+      "core_rail_W": 2.5818117721758793,
+      "receipts": {},
+      "evidence_sha256": {
+        "worker.json": "2d110b4d9e7ea8220e7cbf8a4d142781e56a81f16ca3fac0c7e58e3b97f985c0",
+        "execution.json": "a46bef3bf8777c77806446a3c73ca277d208ac82a575858b2e32692fe294effc",
+        "jobs.jsonl": "19fa17019f70e7e767abaf1932cd2a5bc6c0fd15f4180cbff8e9627293210a83",
+        "stream/producer.jsonl": "240bc111840b86f9d06ddc2d24db7952f6000d5589a5e3a21e80e8b6f1e9934f",
+        "thermal.jsonl": "ef3d8596406fa9fcdebe18f214ad318aaca9bbea857cf44de49031042b6ba22e",
+        "console.log": "f8a5aad0c4df9d7cc4c3ddc2b4da099619926dc3458b078e01cbc7f64da8f0aa"
+      },
+      "first_s": {
+        "n": 100,
+        "mean": 5.9408658540999895,
+        "p50": 7.491206249000243,
+        "p95": 8.374713203000283,
+        "max": 9.84840839199967
+      },
+      "latest_audio_gap_s": {
+        "n": 263,
+        "mean": 3.388383317490494,
+        "p50": 3.019443582999884,
+        "p95": 6.170052550000037,
+        "max": 7.82290230900071
+      },
+      "final_latency_s": {
+        "n": 210,
+        "mean": 4.404379447785712,
+        "p50": 4.458982360000277,
+        "p95": 5.529297878999728,
+        "max": 6.153996313000334
+      },
+      "final_native_s": 609.1525040980002,
+      "partial_calls": 56,
+      "dropped_chunks": 0
+    },
+    "fixed-conv": {
+      "source_count": 100,
+      "pcm": "273529b8a519b3b2dab6cd2a1e941633a21e6f4ac3995619967446df77be4dd7",
+      "audio_s": 891.1448125,
+      "score": {
+        "reference_characters": 3848,
+        "errors": 395,
+        "substitutions": 167,
+        "deletions": 166,
+        "insertions": 62,
+        "cer": 0.10265072765072765
+      },
+      "failed_calls": 0,
+      "source": "f0eca50aece4e326a9f7d93d3ebab62a49bdbb20",
+      "resources": {
+        "elapsed_s": 893.656810199,
+        "cpu_seconds_replay_plus_producer": 1882.790656962,
+        "mean_four_core_percent": 52.67096483444073,
+        "main_process_peak_rss_mib": 1834.453125,
+        "total_inference_s": 699.077197749004,
+        "inference_s_per_input_s": 0.7844709276686768,
+        "thermal_guard_max_c": 87.0,
+        "admission_c": 71.05,
+        "current_limit_input_s_approx": 775.2920813050025
+      },
+      "thermal": {
+        "entry_C": 71.05,
+        "max_C": 87.0,
+        "actual_mhz": {
+          "min": 1500.009472,
+          "median": 1500.016128,
+          "max": 1500.025984
+        },
+        "flags": {
+          "0": 153,
+          "8": 465,
+          "6": 302
+        },
+        "undervoltage_samples": 0,
+        "fan_rpm": [],
+        "input_clock_mhz": {
+          "n": 868,
+          "mean": 1500.0177402396116,
+          "p50": 1500.016128,
+          "p95": 1500.022656,
+          "max": 1500.025984
+        },
+        "input_below_1490_mhz_percent": 0.0,
+        "input_C": {
+          "n": 868,
+          "mean": 83.69049539170469,
+          "p50": 83.7,
+          "p95": 85.9,
+          "max": 87.0
+        }
+      },
+      "core_rail_W": 2.5636902043535037,
+      "receipts": {
+        "conv": {
+          "measured_calls": 312,
+          "sync_s": 5.487925600000005,
+          "layout_s": 7.633432300000002,
+          "console_calls": 316
+        }
+      },
+      "evidence_sha256": {
+        "worker.json": "31694b62fa11eceb5a2bef6d4a2442410f8203ecfc7fd49342a2628eac746055",
+        "execution.json": "150f685fc10e0420ef0f892e945e0b4edcf1cc2b09185895e0e25c5240503416",
+        "jobs.jsonl": "650cbbf3551d786cb0fc00f641f33ce6393e5cfbd7059ce48675cdc44ceac70a",
+        "stream/producer.jsonl": "031da97fbad7d4effe1720f08f90be7af07abb2e25c4b644ef73b1cf0fe8e63f",
+        "thermal.jsonl": "9b4f66e8362cc88a950ed489338adec288bc77965436cc115095ca608c7d48ec",
+        "console.log": "727ae95bb36364defdefc2395f3a7cc00cfce6e602342daadf439682b5b49acf"
+      },
+      "first_s": {
+        "n": 100,
+        "mean": 4.531526533319708,
+        "p50": 3.6186168229991154,
+        "p95": 8.025186770999085,
+        "max": 9.399754788999758
+      },
+      "latest_audio_gap_s": {
+        "n": 307,
+        "mean": 2.902751832247557,
+        "p50": 2.505619065999781,
+        "p95": 5.337453445000392,
+        "max": 6.220875987999534
+      },
+      "final_latency_s": {
+        "n": 210,
+        "mean": 3.976764394761579,
+        "p50": 4.081833295999672,
+        "p95": 4.964570323999965,
+        "max": 5.4597634809993
+      },
+      "final_native_s": 557.9692725560002,
+      "partial_calls": 102,
+      "dropped_chunks": 0
+    },
+    "fixed-proj": {
+      "source_count": 100,
+      "pcm": "273529b8a519b3b2dab6cd2a1e941633a21e6f4ac3995619967446df77be4dd7",
+      "audio_s": 891.1448125,
+      "score": {
+        "reference_characters": 3848,
+        "errors": 406,
+        "substitutions": 182,
+        "deletions": 160,
+        "insertions": 64,
+        "cer": 0.10550935550935552
+      },
+      "failed_calls": 0,
+      "source": "f0eca50aece4e326a9f7d93d3ebab62a49bdbb20",
+      "resources": {
+        "elapsed_s": 893.616288511,
+        "cpu_seconds_replay_plus_producer": 1886.611066258,
+        "mean_four_core_percent": 52.78023382389299,
+        "main_process_peak_rss_mib": 1807.203125,
+        "total_inference_s": 686.8726222960177,
+        "inference_s_per_input_s": 0.7707755380060832,
+        "thermal_guard_max_c": 89.75,
+        "admission_c": 70.5,
+        "current_limit_input_s_approx": 837.424046747997
+      },
+      "thermal": {
+        "entry_C": 70.5,
+        "max_C": 89.75,
+        "actual_mhz": {
+          "min": 1000.01184,
+          "median": 1500.019456,
+          "max": 1500.025984
+        },
+        "flags": {
+          "0": 73,
+          "8": 181,
+          "6": 666
+        },
+        "undervoltage_samples": 0,
+        "fan_rpm": [],
+        "input_clock_mhz": {
+          "n": 868,
+          "mean": 1498.2892707833919,
+          "p50": 1500.019456,
+          "p95": 1500.022656,
+          "max": 1500.025984
+        },
+        "input_below_1490_mhz_percent": 0.3456221198156682,
+        "input_C": {
+          "n": 868,
+          "mean": 85.57367511520745,
+          "p50": 85.9,
+          "p95": 88.1,
+          "max": 89.75
+        }
+      },
+      "core_rail_W": 2.575804630496485,
+      "receipts": {
+        "projection": {
+          "measured_calls": 278,
+          "sync_s": 1.0502291999999995,
+          "layout_s": 0.0017439000000000005,
+          "console_calls": 282
+        }
+      },
+      "evidence_sha256": {
+        "worker.json": "1af4eb6f17a3e6fdbe12fba124f393c07f4f11f0b2bb273818f14e3283d7db9c",
+        "execution.json": "c0ee34f71c1ecfb7849263dc9eeddb79f45f7828e5ce040c0b631ab1071ab369",
+        "jobs.jsonl": "93de2446ff65a9ca16aa20aadb4cb8efc415409f6f5286095703e8c48e34f7a0",
+        "stream/producer.jsonl": "9588664e655217b522899e277fbcd0579c83d82f1b377a883499a58c07b8aed6",
+        "thermal.jsonl": "16b923f914a859a296f07cfc0bca8f802ad89dbfb45348b1af82214392a1652d",
+        "console.log": "4311cc2a130ded1cfb1805de76ad7660b24a48597bc4177f33ed35ca35d524e1"
+      },
+      "first_s": {
+        "n": 100,
+        "mean": 5.513507208460283,
+        "p50": 6.297052767001219,
+        "p95": 8.227124273000868,
+        "max": 9.75089849900121
+      },
+      "latest_audio_gap_s": {
+        "n": 275,
+        "mean": 3.2405265909090906,
+        "p50": 2.8770002399996883,
+        "p95": 5.840234892000808,
+        "max": 7.317944886000987
+      },
+      "final_latency_s": {
+        "n": 210,
+        "mean": 4.256500671714566,
+        "p50": 4.341572379000013,
+        "p95": 5.314058057000466,
+        "max": 5.848192222999842
+      },
+      "final_native_s": 591.2792152389999,
+      "partial_calls": 68,
+      "dropped_chunks": 0
+    },
+    "fixed-both": {
+      "source_count": 100,
+      "pcm": "273529b8a519b3b2dab6cd2a1e941633a21e6f4ac3995619967446df77be4dd7",
+      "audio_s": 891.1448125,
+      "score": {
+        "reference_characters": 3848,
+        "errors": 400,
+        "substitutions": 157,
+        "deletions": 170,
+        "insertions": 73,
+        "cer": 0.10395010395010396
+      },
+      "failed_calls": 0,
+      "source": "f0eca50aece4e326a9f7d93d3ebab62a49bdbb20",
+      "resources": {
+        "elapsed_s": 893.681001283,
+        "cpu_seconds_replay_plus_producer": 1836.30569961,
+        "mean_four_core_percent": 51.369160163798234,
+        "main_process_peak_rss_mib": 1836.25,
+        "total_inference_s": 692.8616381440006,
+        "inference_s_per_input_s": 0.7774961245639307,
+        "thermal_guard_max_c": 90.3,
+        "admission_c": 69.4,
+        "current_limit_input_s_approx": 835.3054864719991
+      },
+      "thermal": {
+        "entry_C": 69.4,
+        "max_C": 90.3,
+        "actual_mhz": {
+          "min": 1000.008576,
+          "median": 1500.016128,
+          "max": 1500.025984
+        },
+        "flags": {
+          "0": 75,
+          "8": 105,
+          "6": 738
+        },
+        "undervoltage_samples": 0,
+        "fan_rpm": [],
+        "input_clock_mhz": {
+          "n": 866,
+          "mean": 1495.9753592609568,
+          "p50": 1500.016128,
+          "p95": 1500.022656,
+          "max": 1500.025984
+        },
+        "input_below_1490_mhz_percent": 0.8083140877598153,
+        "input_C": {
+          "n": 866,
+          "mean": 86.21755196304815,
+          "p50": 86.45,
+          "p95": 88.65,
+          "max": 90.3
+        }
+      },
+      "core_rail_W": 2.518068779735246,
+      "receipts": {
+        "conv": {
+          "measured_calls": 310,
+          "sync_s": 6.697609699999996,
+          "layout_s": 7.637604499999997,
+          "console_calls": 314
+        },
+        "projection": {
+          "measured_calls": 310,
+          "sync_s": 5.4473544,
+          "layout_s": 0.0014590000000000013,
+          "console_calls": 314
+        }
+      },
+      "evidence_sha256": {
+        "worker.json": "126b91115f633e4592f1f86d26e0db709fa55f7c6b0381a40671f333af363a8e",
+        "execution.json": "9fe270e9bf9f6d176c35ad9ef5c32cf1c8c894f532475aa7f14c768e5cc67d82",
+        "jobs.jsonl": "bb6ba446faaebcb7f663978e7dc5ed4c6eaa7970ff3e72f696e7d518516babd1",
+        "stream/producer.jsonl": "dfb51f69405a59f65bf25294dce5e6b20862684914ce33aae9f222448c8a4116",
+        "thermal.jsonl": "971bd4895304d0d75327013cdc02065900eef00a767b623efb97d148f2d70d00",
+        "console.log": "b9d3d62406d68b16f6b0e8e051117f7d4c093849bfd1422f3c1371c31888b4f9"
+      },
+      "first_s": {
+        "n": 100,
+        "mean": 4.631782986249851,
+        "p50": 3.5799594640000585,
+        "p95": 7.932552303999387,
+        "max": 9.321031405000554
+      },
+      "latest_audio_gap_s": {
+        "n": 305,
+        "mean": 2.921786270491803,
+        "p50": 2.5481016039993847,
+        "p95": 5.25014946400006,
+        "max": 6.957925839999007
+      },
+      "final_latency_s": {
+        "n": 210,
+        "mean": 3.934464223356879,
+        "p50": 4.022717215999833,
+        "p95": 4.967872195999348,
+        "max": 5.423810544000389
+      },
+      "final_native_s": 554.4468341950002,
+      "partial_calls": 100,
+      "dropped_chunks": 0
+    },
+    "natural-both": {
+      "source_count": 8,
+      "pcm": "a2d5bb9bcc104157488223e04a8c7f9e449e8d917a67b9e87a13475bbb1ffd32",
+      "audio_s": 467.4280625,
+      "score": {
+        "reference_characters": 2129,
+        "errors": 271,
+        "substitutions": 147,
+        "deletions": 99,
+        "insertions": 25,
+        "cer": 0.12728980742132456
+      },
+      "failed_calls": 0,
+      "source": "f0eca50aece4e326a9f7d93d3ebab62a49bdbb20",
+      "resources": {
+        "elapsed_s": 468.642915879,
+        "cpu_seconds_replay_plus_producer": 1046.2453041420001,
+        "mean_four_core_percent": 55.81249970351268,
+        "main_process_peak_rss_mib": 1811.578125,
+        "total_inference_s": 388.5068433689903,
+        "inference_s_per_input_s": 0.8311585771960157,
+        "thermal_guard_max_c": 90.3,
+        "admission_c": 69.95,
+        "current_limit_input_s_approx": 451.05875554700003
+      },
+      "thermal": {
+        "entry_C": 69.95,
+        "max_C": 90.3,
+        "actual_mhz": {
+          "min": 1000.008576,
+          "median": 1500.016128,
+          "max": 1500.022656
+        },
+        "flags": {
+          "0": 41,
+          "8": 40,
+          "6": 409
+        },
+        "undervoltage_samples": 0,
+        "fan_rpm": [],
+        "input_clock_mhz": {
+          "n": 456,
+          "mean": 1479.1841281403467,
+          "p50": 1500.016128,
+          "p95": 1500.022656,
+          "max": 1500.022656
+        },
+        "input_below_1490_mhz_percent": 4.166666666666667,
+        "input_C": {
+          "n": 456,
+          "mean": 86.7865131578944,
+          "p50": 87.55,
+          "p95": 89.2,
+          "max": 90.3
+        }
+      },
+      "core_rail_W": 2.606335623834386,
+      "receipts": {
+        "conv": {
+          "measured_calls": 221,
+          "sync_s": 4.3204628,
+          "layout_s": 4.507975999999998,
+          "console_calls": 225
+        },
+        "projection": {
+          "measured_calls": 221,
+          "sync_s": 3.753177500000001,
+          "layout_s": 0.0011309000000000002,
+          "console_calls": 225
+        }
+      },
+      "evidence_sha256": {
+        "worker.json": "2258adca4123616ffa03a6f4822a50f76d948a1d71165c4763cd8e87a9365715",
+        "execution.json": "f0a7ddf6f5dacf29adcf442a37ba97c7f49c2694a5687f752eabd55babeaa545",
+        "jobs.jsonl": "c8dc86f2592e3ff5c61a79cec7c2b92346050fbfbd2a49f1ac8e05128f2ee9c5",
+        "stream/producer.jsonl": "b1a9346511e110329bb3b12e16eff1adaa4919d9b2b9d0c932c7f46b4db86fb9",
+        "thermal.jsonl": "3b298dcf1d3664255c05aaf2b4e94866918d07bcd16c74c678bc0711fbf64cb4",
+        "console.log": "8b14dcc7fd86364da32d03e5202ecb3a02e59048eb639e83fe7fb01363f6c2c2"
+      },
+      "first_s": {
+        "n": 8,
+        "mean": 5.418918406375432,
+        "p50": 5.318454730000042,
+        "p95": 8.180201982999556,
+        "max": 8.180201982999556
+      },
+      "latest_audio_gap_s": {
+        "n": 204,
+        "mean": 2.291314031862745,
+        "p50": 2.1145186480007396,
+        "p95": 4.88356236799882,
+        "max": 6.238613006000378
+      },
+      "final_latency_s": {
+        "n": 167,
+        "mean": 3.235254890641156,
+        "p50": 3.2169837330000064,
+        "p95": 4.666033273000518,
+        "max": 5.420226953999986
+      },
+      "final_native_s": 324.4165503349999,
+      "partial_calls": 54,
+      "dropped_chunks": 0
+    }
+  },
+  "paired_fixed": {
+    "models": [
+      "cpu",
+      "conv",
+      "proj",
+      "both"
+    ],
+    "same_final_pcm": 210,
+    "all_success_finals": 210,
+    "same_success_end_to_final_s": {
+      "cpu": {
+        "n": 210,
+        "mean": 4.404379447785712,
+        "p50": 4.458982360000277,
+        "p95": 5.529297878999728,
+        "max": 6.153996313000334
+      },
+      "conv": {
+        "n": 210,
+        "mean": 3.976764394761579,
+        "p50": 4.081833295999672,
+        "p95": 4.964570323999965,
+        "max": 5.4597634809993
+      },
+      "proj": {
+        "n": 210,
+        "mean": 4.256500671714566,
+        "p50": 4.341572379000013,
+        "p95": 5.314058057000466,
+        "max": 5.848192222999842
+      },
+      "both": {
+        "n": 210,
+        "mean": 3.934464223356879,
+        "p50": 4.022717215999833,
+        "p95": 4.967872195999348,
+        "max": 5.423810544000389
+      }
+    },
+    "same_success_inference_s": {
+      "cpu": {
+        "n": 210,
+        "mean": 2.9020848515523583,
+        "p50": 3.0889052180000363,
+        "p95": 4.998485149000771,
+        "max": 5.620905529000083
+      },
+      "conv": {
+        "n": 210,
+        "mean": 2.6583364490476318,
+        "p50": 2.824288768999395,
+        "p95": 4.6829202940007235,
+        "max": 5.045018168000752
+      },
+      "proj": {
+        "n": 210,
+        "mean": 2.817259763733377,
+        "p50": 2.9948843290003424,
+        "p95": 4.945077743001093,
+        "max": 5.504595042999426
+      },
+      "both": {
+        "n": 210,
+        "mean": 2.641300843014254,
+        "p50": 2.8398117590004404,
+        "p95": 4.612093495999943,
+        "max": 5.007051557000523
+      }
+    },
+    "same_success_native_sum_s": {
+      "cpu": 609.1525040980002,
+      "conv": 557.9692725560002,
+      "proj": 591.2792152389999,
+      "both": 554.4468341950002
+    },
+    "final_statuses": {
+      "cpu": {
+        "success": 210
+      },
+      "conv": {
+        "success": 210
+      },
+      "proj": {
+        "success": 210
+      },
+      "both": {
+        "success": 210
+      }
+    },
+    "versus_first": {
+      "conv": {
+        "token_equal": 132,
+        "raw_equal": 132,
+        "normalized_equal": 143,
+        "both_success": 210,
+        "examples": [
+          {
+            "segment": 3,
+            "cpu": "이제 사람들은 컴퓨터 화면에 메시지를 쓰고 연필깎이를 가까이 할 필요가.",
+            "candidate": "이제 사람들은 컴퓨터 화면에 메시지를 쓰고 연필깎기를 가까이 할 필요가."
+          },
+          {
+            "segment": 5,
+            "cpu": "지구가 마치 움직이지 않은 것처럼 느껴지기에 언뜻보기에 맞는 말 같기.",
+            "candidate": "지구가 마치 움직이지 않은 것처럼 느껴지기에 언뜻보면 맞는 말 같고."
+          },
+          {
+            "segment": 9,
+            "cpu": "이 이야기에 관계된 두 명의 성인 자녀를 둔 기혼자인 뒤발은.",
+            "candidate": "이 이야기에 관계된 두 명의 성인 자녀를 둔 기혼자인 뷰발은."
+          }
+        ]
+      },
+      "proj": {
+        "token_equal": 181,
+        "raw_equal": 182,
+        "normalized_equal": 188,
+        "both_success": 210,
+        "examples": [
+          {
+            "segment": 31,
+            "cpu": "은 구리와 같은 기본적인 화학 원소를 알고 있었는데 이것들은.",
+            "candidate": "은 구리와 같은 기본적인 화학 원소를 알고 있었는데 이것들은 모두."
+          },
+          {
+            "segment": 35,
+            "cpu": "그.",
+            "candidate": "이."
+          },
+          {
+            "segment": 43,
+            "cpu": "그러한 발견은 또한 조류에 있어서 기타래 진화에 대한 통찰을 제공한다.",
+            "candidate": "그러한 발견은 또한 조류에 있어서 기탈의 진화에 대한 통찰을 제공한다."
+          }
+        ]
+      },
+      "both": {
+        "token_equal": 128,
+        "raw_equal": 128,
+        "normalized_equal": 138,
+        "both_success": 210,
+        "examples": [
+          {
+            "segment": 3,
+            "cpu": "이제 사람들은 컴퓨터 화면에 메시지를 쓰고 연필깎이를 가까이 할 필요가.",
+            "candidate": "이제 사람들은 컴퓨터 화면에 메시지를 쓰고 연필깎기를 가까이 할 필요가."
+          },
+          {
+            "segment": 5,
+            "cpu": "지구가 마치 움직이지 않은 것처럼 느껴지기에 언뜻보기에 맞는 말 같기.",
+            "candidate": "지구가 마치 움직이지 않은 것처럼 느껴지기에 언뜻보면 맞는 말 같고."
+          },
+          {
+            "segment": 9,
+            "cpu": "이 이야기에 관계된 두 명의 성인 자녀를 둔 기혼자인 뒤발은.",
+            "candidate": "이 이야기에 관계된 두 명의 성인 자녀를 둔 기혼자인 뷰발은."
+          }
+        ]
+      }
+    }
+  },
+  "incremental_projection": {
+    "fixed": {
+      "compared_pcm": 210,
+      "both_successful": 210,
+      "different_tokens": 24,
+      "different_transcripts": 24,
+      "different_normalized": 24
+    }
+  },
+  "fixed_by_source": {
+    "conv": {
+      "fewer": 27,
+      "same": 55,
+      "more": 18,
+      "errors_removed": 65,
+      "errors_added": 41,
+      "net": -24,
+      "largest_drops": [
+        {
+          "source": "zeroth-137_003_1848",
+          "baseline_errors": 21,
+          "candidate_errors": 8
+        },
+        {
+          "source": "zeroth-149_003_2332",
+          "baseline_errors": 12,
+          "candidate_errors": 5
+        }
+      ],
+      "largest_rises": [
+        {
+          "source": "fleurs-375683238417481119",
+          "baseline_errors": 0,
+          "candidate_errors": 5
+        },
+        {
+          "source": "zeroth-118_003_2737",
+          "baseline_errors": 2,
+          "candidate_errors": 7
+        }
+      ]
+    },
+    "proj": {
+      "fewer": 12,
+      "same": 85,
+      "more": 3,
+      "errors_removed": 18,
+      "errors_added": 5,
+      "net": -13,
+      "largest_drops": [
+        {
+          "source": "zeroth-137_003_1848",
+          "baseline_errors": 21,
+          "candidate_errors": 17
+        },
+        {
+          "source": "zeroth-104_003_2993",
+          "baseline_errors": 4,
+          "candidate_errors": 2
+        }
+      ],
+      "largest_rises": [
+        {
+          "source": "fleurs-9406104450793293120",
+          "baseline_errors": 12,
+          "candidate_errors": 14
+        },
+        {
+          "source": "zeroth-147_003_2910",
+          "baseline_errors": 0,
+          "candidate_errors": 2
+        }
+      ]
+    },
+    "both": {
+      "fewer": 27,
+      "same": 53,
+      "more": 20,
+      "errors_removed": 66,
+      "errors_added": 47,
+      "net": -19,
+      "largest_drops": [
+        {
+          "source": "zeroth-137_003_1848",
+          "baseline_errors": 21,
+          "candidate_errors": 9
+        },
+        {
+          "source": "zeroth-149_003_2332",
+          "baseline_errors": 12,
+          "candidate_errors": 5
+        }
+      ],
+      "largest_rises": [
+        {
+          "source": "fleurs-375683238417481119",
+          "baseline_errors": 0,
+          "candidate_errors": 5
+        },
+        {
+          "source": "zeroth-118_003_2737",
+          "baseline_errors": 2,
+          "candidate_errors": 7
+        }
+      ]
+    }
+  },
+  "pcm": {
+    "cpu": {
+      "thermal": {
+        "entry_C": 70.5,
+        "max_C": 84.8,
+        "actual_mhz": {
+          "min": 1500.009472,
+          "median": 1500.019456,
+          "max": 1500.025984
+        },
+        "flags": {
+          "0": 16,
+          "8": 16,
+          "6": 1
+        },
+        "undervoltage_samples": 0,
+        "fan_rpm": []
+      },
+      "rows": {
+        "1": {
+          "elapsed_ms": 1131.0613089996575,
+          "cpu_ms": 3092.0336680000014,
+          "n_tokens": 4,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            13
+          ],
+          "stages_ms": {
+            "preprocess_s": 0.367545,
+            "audio_encode_s": 482.6331833333333,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 234.203896,
+            "suffix_eval_s": 122.41448033333334,
+            "kv_reset_s": 0.04542566666666667,
+            "token_decode_s": 286.545753,
+            "native_elapsed_s": 1130.450886,
+            "first_generated_token_s": 840.6395673333334
+          },
+          "npu": {}
+        },
+        "3": {
+          "elapsed_ms": 2306.3148973333227,
+          "cpu_ms": 6149.154387999996,
+          "n_tokens": 10,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            132343,
+            135990,
+            125149,
+            133886,
+            139646,
+            31079,
+            13
+          ],
+          "stages_ms": {
+            "preprocess_s": 0.6970649999999999,
+            "audio_encode_s": 976.4277186666667,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 449.718385,
+            "suffix_eval_s": 128.011138,
+            "kv_reset_s": 0.024352,
+            "token_decode_s": 741.8702283333332,
+            "native_elapsed_s": 2305.705888,
+            "first_generated_token_s": 1555.7019533333334
+          },
+          "npu": {}
+        },
+        "5": {
+          "elapsed_ms": 3621.065784000166,
+          "cpu_ms": 9509.048078333335,
+          "n_tokens": 17,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            132343,
+            135990,
+            125149,
+            133886,
+            23084,
+            144280,
+            126352,
+            133886,
+            73669,
+            61741,
+            126204,
+            133553,
+            125678,
+            13
+          ],
+          "stages_ms": {
+            "preprocess_s": 1.0105853333333332,
+            "audio_encode_s": 1466.1418443333334,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 723.354112,
+            "suffix_eval_s": 134.72567733333332,
+            "kv_reset_s": 0.035784,
+            "token_decode_s": 1280.7274409999998,
+            "native_elapsed_s": 3620.4529476666667,
+            "first_generated_token_s": 2326.073203666667
+          },
+          "npu": {}
+        }
+      }
+    },
+    "conv": {
+      "thermal": {
+        "entry_C": 71.05,
+        "max_C": 83.15,
+        "actual_mhz": {
+          "min": 1500.009472,
+          "median": 1500.016128,
+          "max": 1500.022656
+        },
+        "flags": {
+          "0": 26,
+          "8": 5
+        },
+        "undervoltage_samples": 0,
+        "fan_rpm": []
+      },
+      "rows": {
+        "1": {
+          "elapsed_ms": 1020.5892450003375,
+          "cpu_ms": 2705.0024096666652,
+          "n_tokens": 4,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            25715
+          ],
+          "stages_ms": {
+            "preprocess_s": 0.37755833333333333,
+            "audio_encode_s": 373.7366103333333,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 232.682278,
+            "suffix_eval_s": 121.72463366666666,
+            "kv_reset_s": 0.044734666666666666,
+            "token_decode_s": 287.3926936666667,
+            "native_elapsed_s": 1019.9804076666668,
+            "first_generated_token_s": 729.3806420000001
+          },
+          "npu": {
+            "conv": [
+              12.8309,
+              14.2569
+            ]
+          }
+        },
+        "3": {
+          "elapsed_ms": 2074.5203056664345,
+          "cpu_ms": 5365.27159833333,
+          "n_tokens": 10,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            132343,
+            135990,
+            125149,
+            133886,
+            139646,
+            31079,
+            13
+          ],
+          "stages_ms": {
+            "preprocess_s": 0.6978443333333334,
+            "audio_encode_s": 756.4399096666666,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 447.70576300000005,
+            "suffix_eval_s": 127.85680566666666,
+            "kv_reset_s": 0.024759666666666666,
+            "token_decode_s": 732.326428,
+            "native_elapsed_s": 2073.905721,
+            "first_generated_token_s": 1333.5256186666666
+          },
+          "npu": {
+            "conv": [
+              20.452566666666666,
+              30.565166666666666
+            ]
+          }
+        },
+        "5": {
+          "elapsed_ms": 3278.3819183332525,
+          "cpu_ms": 8346.617451666667,
+          "n_tokens": 17,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            132343,
+            135990,
+            125149,
+            133886,
+            23084,
+            144280,
+            126352,
+            133886,
+            73669,
+            61741,
+            126204,
+            133553,
+            125678,
+            13
+          ],
+          "stages_ms": {
+            "preprocess_s": 1.002328,
+            "audio_encode_s": 1129.3251383333334,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 722.5314099999999,
+            "suffix_eval_s": 133.43779999999998,
+            "kv_reset_s": 0.036068,
+            "token_decode_s": 1277.029956333333,
+            "native_elapsed_s": 3277.785451,
+            "first_generated_token_s": 1987.1485903333332
+          },
+          "npu": {
+            "conv": [
+              28.124933333333335,
+              44.897933333333334
+            ]
+          }
+        }
+      }
+    },
+    "proj": {
+      "thermal": {
+        "entry_C": 71.6,
+        "max_C": 85.35,
+        "actual_mhz": {
+          "min": 1500.0128,
+          "median": 1500.016128,
+          "max": 1500.022656
+        },
+        "flags": {
+          "0": 24,
+          "8": 7,
+          "6": 2
+        },
+        "undervoltage_samples": 0,
+        "fan_rpm": []
+      },
+      "rows": {
+        "1": {
+          "elapsed_ms": 1100.9700646663987,
+          "cpu_ms": 2995.724535333332,
+          "n_tokens": 4,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            13
+          ],
+          "stages_ms": {
+            "preprocess_s": 0.3670946666666667,
+            "audio_encode_s": 453.5336223333333,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 234.66549533333333,
+            "suffix_eval_s": 121.66127166666666,
+            "kv_reset_s": 0.04543866666666667,
+            "token_decode_s": 285.98984133333335,
+            "native_elapsed_s": 1100.3631603333333,
+            "first_generated_token_s": 811.1217546666667
+          },
+          "npu": {
+            "projection": [
+              1.9750666666666667,
+              0.0063
+            ]
+          }
+        },
+        "3": {
+          "elapsed_ms": 2241.376841999833,
+          "cpu_ms": 5950.925265333333,
+          "n_tokens": 10,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            132343,
+            135990,
+            125149,
+            133886,
+            139646,
+            31079,
+            13
+          ],
+          "stages_ms": {
+            "preprocess_s": 0.7062073333333333,
+            "audio_encode_s": 920.5977623333333,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 449.952222,
+            "suffix_eval_s": 127.77243833333333,
+            "kv_reset_s": 0.024296333333333333,
+            "token_decode_s": 732.7985466666667,
+            "native_elapsed_s": 2240.7433636666665,
+            "first_generated_token_s": 1499.8798563333332
+          },
+          "npu": {
+            "projection": [
+              3.6639666666666666,
+              0.006533333333333334
+            ]
+          }
+        },
+        "5": {
+          "elapsed_ms": 3531.766895000146,
+          "cpu_ms": 9223.586211666669,
+          "n_tokens": 17,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            132343,
+            135990,
+            125149,
+            133886,
+            23084,
+            144280,
+            126352,
+            133886,
+            73669,
+            61741,
+            126204,
+            133553,
+            125678,
+            13
+          ],
+          "stages_ms": {
+            "preprocess_s": 1.0086966666666666,
+            "audio_encode_s": 1380.249261,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 725.1519913333333,
+            "suffix_eval_s": 133.911388,
+            "kv_reset_s": 0.035617333333333334,
+            "token_decode_s": 1276.3591633333333,
+            "native_elapsed_s": 3531.168015333333,
+            "first_generated_token_s": 2241.1673036666666
+          },
+          "npu": {
+            "projection": [
+              5.0849,
+              0.006233333333333333
+            ]
+          }
+        }
+      }
+    },
+    "both": {
+      "thermal": {
+        "entry_C": 71.6,
+        "max_C": 83.15,
+        "actual_mhz": {
+          "min": 1500.0128,
+          "median": 1500.016128,
+          "max": 1500.022656
+        },
+        "flags": {
+          "0": 25,
+          "8": 5
+        },
+        "undervoltage_samples": 0,
+        "fan_rpm": []
+      },
+      "rows": {
+        "1": {
+          "elapsed_ms": 1009.2638509995595,
+          "cpu_ms": 2610.197913666667,
+          "n_tokens": 4,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            25715
+          ],
+          "stages_ms": {
+            "preprocess_s": 0.36990433333333333,
+            "audio_encode_s": 360.65177933333337,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 233.56048499999997,
+            "suffix_eval_s": 122.64156333333334,
+            "kv_reset_s": 0.04561166666666666,
+            "token_decode_s": 287.28977533333335,
+            "native_elapsed_s": 1008.6363033333334,
+            "first_generated_token_s": 718.0774793333334
+          },
+          "npu": {
+            "conv": [
+              17.9618,
+              15.153233333333334
+            ],
+            "projection": [
+              15.7191,
+              0.004233333333333333
+            ]
+          }
+        },
+        "3": {
+          "elapsed_ms": 2037.3623083335892,
+          "cpu_ms": 5185.505104000001,
+          "n_tokens": 10,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            132343,
+            135990,
+            125149,
+            133886,
+            139646,
+            31079,
+            13
+          ],
+          "stages_ms": {
+            "preprocess_s": 0.6954436666666667,
+            "audio_encode_s": 710.1100593333334,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 450.675519,
+            "suffix_eval_s": 127.64408099999999,
+            "kv_reset_s": 0.024444666666666667,
+            "token_decode_s": 738.7397976666666,
+            "native_elapsed_s": 2036.7495203333333,
+            "first_generated_token_s": 1289.9576706666667
+          },
+          "npu": {
+            "conv": [
+              25.0035,
+              31.748
+            ],
+            "projection": [
+              18.205433333333332,
+              0.005433333333333333
+            ]
+          }
+        },
+        "5": {
+          "elapsed_ms": 3209.668581999722,
+          "cpu_ms": 8066.817143333335,
+          "n_tokens": 17,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            132343,
+            135990,
+            125149,
+            133886,
+            23084,
+            144280,
+            126352,
+            133886,
+            73669,
+            61741,
+            126204,
+            133553,
+            125678,
+            13
+          ],
+          "stages_ms": {
+            "preprocess_s": 0.9918716666666666,
+            "audio_encode_s": 1057.663162,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 722.402782,
+            "suffix_eval_s": 134.21570799999998,
+            "kv_reset_s": 0.036982,
+            "token_decode_s": 1279.209329,
+            "native_elapsed_s": 3209.0475213333334,
+            "first_generated_token_s": 1916.1525303333333
+          },
+          "npu": {
+            "conv": [
+              32.49346666666667,
+              48.086866666666666
+            ],
+            "projection": [
+              20.533833333333334,
+              0.005933333333333333
+            ]
+          }
+        }
+      }
+    }
+  },
+  "boundaries": {
+    "proj": {
+      "1": {
+        "conv2_bias": {
+          "size": 768000,
+          "rel_l2": 0.0,
+          "max_abs": 0.0
+        },
+        "after_conv_out": {
+          "size": 23296,
+          "rel_l2": 0.02499217030757679,
+          "max_abs": 0.055617570877075195
+        },
+        "layer_out-0": {
+          "size": 23296,
+          "rel_l2": 0.0227346458055887,
+          "max_abs": 0.057117536664009094
+        },
+        "after_transformer": {
+          "size": 23296,
+          "rel_l2": 0.12683138339323324,
+          "max_abs": 0.6478757858276367
+        },
+        "projected": {
+          "size": 26624,
+          "rel_l2": 0.10097297570931472,
+          "max_abs": 0.031382955610752106
+        }
+      },
+      "3": {
+        "conv2_bias": {
+          "size": 1536000,
+          "rel_l2": 0.0,
+          "max_abs": 0.0
+        },
+        "after_conv_out": {
+          "size": 46592,
+          "rel_l2": 0.023534971749255507,
+          "max_abs": 0.40368151664733887
+        },
+        "layer_out-0": {
+          "size": 46592,
+          "rel_l2": 0.021804852810343257,
+          "max_abs": 0.4027674198150635
+        },
+        "after_transformer": {
+          "size": 46592,
+          "rel_l2": 0.06014705913632741,
+          "max_abs": 0.723829448223114
+        },
+        "projected": {
+          "size": 53248,
+          "rel_l2": 0.03783505231779127,
+          "max_abs": 0.010676157660782337
+        }
+      },
+      "5": {
+        "conv2_bias": {
+          "size": 2304000,
+          "rel_l2": 0.0,
+          "max_abs": 0.0
+        },
+        "after_conv_out": {
+          "size": 69888,
+          "rel_l2": 0.023033863104721053,
+          "max_abs": 0.40368151664733887
+        },
+        "layer_out-0": {
+          "size": 69888,
+          "rel_l2": 0.021474743150382686,
+          "max_abs": 0.4066917896270752
+        },
+        "after_transformer": {
+          "size": 69888,
+          "rel_l2": 0.0496555315569425,
+          "max_abs": 0.587816596031189
+        },
+        "projected": {
+          "size": 79872,
+          "rel_l2": 0.0322750664189177,
+          "max_abs": 0.009823241271078587
+        }
+      }
+    },
+    "conv": {
+      "1": {
+        "conv2_bias": {
+          "size": 768000,
+          "rel_l2": 0.10451805717620664,
+          "max_abs": 0.38134706020355225
+        },
+        "after_conv_out": {
+          "size": 23296,
+          "rel_l2": 0.14037040964747813,
+          "max_abs": 0.6091933250427246
+        },
+        "layer_out-0": {
+          "size": 23296,
+          "rel_l2": 0.10979922808719592,
+          "max_abs": 0.4140453338623047
+        },
+        "after_transformer": {
+          "size": 23296,
+          "rel_l2": 0.3522853656333021,
+          "max_abs": 1.5819047838449478
+        },
+        "projected": {
+          "size": 26624,
+          "rel_l2": 0.258905733636204,
+          "max_abs": 0.053766148164868355
+        }
+      },
+      "3": {
+        "conv2_bias": {
+          "size": 1536000,
+          "rel_l2": 0.0921829814074367,
+          "max_abs": 0.4135278910398483
+        },
+        "after_conv_out": {
+          "size": 46592,
+          "rel_l2": 0.12256750961098566,
+          "max_abs": 0.6559711694717407
+        },
+        "layer_out-0": {
+          "size": 46592,
+          "rel_l2": 0.09909542803461605,
+          "max_abs": 0.4195411205291748
+        },
+        "after_transformer": {
+          "size": 46592,
+          "rel_l2": 0.3250048992314872,
+          "max_abs": 2.0960194766521454
+        },
+        "projected": {
+          "size": 53248,
+          "rel_l2": 0.24545025197216272,
+          "max_abs": 0.059637871105223894
+        }
+      },
+      "5": {
+        "conv2_bias": {
+          "size": 2304000,
+          "rel_l2": 0.08989739841466535,
+          "max_abs": 0.4135278910398483
+        },
+        "after_conv_out": {
+          "size": 69888,
+          "rel_l2": 0.1168961076830437,
+          "max_abs": 0.6559711694717407
+        },
+        "layer_out-0": {
+          "size": 69888,
+          "rel_l2": 0.09531634306262245,
+          "max_abs": 0.4240070581436157
+        },
+        "after_transformer": {
+          "size": 69888,
+          "rel_l2": 0.3079972948106301,
+          "max_abs": 2.0143309235572815
+        },
+        "projected": {
+          "size": 79872,
+          "rel_l2": 0.2304003229184632,
+          "max_abs": 0.05743843549862504
+        }
+      }
+    },
+    "both": {
+      "1": {
+        "conv2_bias": {
+          "size": 768000,
+          "rel_l2": 0.10451805717620664,
+          "max_abs": 0.38134706020355225
+        },
+        "after_conv_out": {
+          "size": 23296,
+          "rel_l2": 0.14321223812680453,
+          "max_abs": 0.6076222658157349
+        },
+        "layer_out-0": {
+          "size": 23296,
+          "rel_l2": 0.11292709737763926,
+          "max_abs": 0.37690162658691406
+        },
+        "after_transformer": {
+          "size": 23296,
+          "rel_l2": 0.3304701511824882,
+          "max_abs": 1.1075705885887146
+        },
+        "projected": {
+          "size": 26624,
+          "rel_l2": 0.23521657057317646,
+          "max_abs": 0.0447350200265646
+        }
+      },
+      "3": {
+        "conv2_bias": {
+          "size": 1536000,
+          "rel_l2": 0.0921829814074367,
+          "max_abs": 0.4135278910398483
+        },
+        "after_conv_out": {
+          "size": 46592,
+          "rel_l2": 0.1247698366441127,
+          "max_abs": 0.6550890207290649
+        },
+        "layer_out-0": {
+          "size": 46592,
+          "rel_l2": 0.1015406151332253,
+          "max_abs": 0.42291581630706787
+        },
+        "after_transformer": {
+          "size": 46592,
+          "rel_l2": 0.3218137800176341,
+          "max_abs": 1.578748695552349
+        },
+        "projected": {
+          "size": 53248,
+          "rel_l2": 0.24513603267921236,
+          "max_abs": 0.059966133907437325
+        }
+      },
+      "5": {
+        "conv2_bias": {
+          "size": 2304000,
+          "rel_l2": 0.08989739841466535,
+          "max_abs": 0.4135278910398483
+        },
+        "after_conv_out": {
+          "size": 69888,
+          "rel_l2": 0.11895043395041659,
+          "max_abs": 0.6550890207290649
+        },
+        "layer_out-0": {
+          "size": 69888,
+          "rel_l2": 0.09768108755570337,
+          "max_abs": 0.4257550835609436
+        },
+        "after_transformer": {
+          "size": 69888,
+          "rel_l2": 0.3151220257902519,
+          "max_abs": 1.6067741513252258
+        },
+        "projected": {
+          "size": 79872,
+          "rel_l2": 0.2442065852744019,
+          "max_abs": 0.0778136495500803
+        }
+      }
+    }
+  },
+  "nodes": {
+    "cpu": {
+      "1": {
+        "projection_op": "MUL_MAT",
+        "conv2_ops": [
+          "IM2COL",
+          "MUL_MAT"
+        ],
+        "token_ids": [
+          23573,
+          134952,
+          126614,
+          13
+        ],
+        "transcript": "한 목격.",
+        "ms": {
+          "conv2": {
+            "total_s": 139.381395,
+            "process_cpu_s": 415.039904
+          },
+          "projection": {
+            "total_s": 34.340929,
+            "process_cpu_s": 103.10190800000001
+          }
+        }
+      },
+      "3": {
+        "projection_op": "MUL_MAT",
+        "conv2_ops": [
+          "IM2COL",
+          "MUL_MAT"
+        ],
+        "token_ids": [
+          23573,
+          134952,
+          126614,
+          132343,
+          135990,
+          125149,
+          133886,
+          139646,
+          31079,
+          13
+        ],
+        "transcript": "한 목격자는 사람들이 무리를 이루어.",
+        "ms": {
+          "conv2": {
+            "total_s": 278.68377,
+            "process_cpu_s": 830.2439929999999
+          },
+          "projection": {
+            "total_s": 68.530155,
+            "process_cpu_s": 205.646388
+          }
+        }
+      },
+      "5": {
+        "projection_op": "MUL_MAT",
+        "conv2_ops": [
+          "IM2COL",
+          "MUL_MAT"
+        ],
+        "token_ids": [
+          23573,
+          134952,
+          126614,
+          132343,
+          135990,
+          125149,
+          133886,
+          23084,
+          144280,
+          126352,
+          133886,
+          73669,
+          61741,
+          126204,
+          133553,
+          125678,
+          13
+        ],
+        "transcript": "한 목격자는 사람들이 무리를 이뤄 거리를 배회하고 물품.",
+        "ms": {
+          "conv2": {
+            "total_s": 416.137728,
+            "process_cpu_s": 1244.5457529999999
+          },
+          "projection": {
+            "total_s": 101.396057,
+            "process_cpu_s": 303.707183
+          }
+        }
+      }
+    },
+    "conv": {
+      "1": {
+        "projection_op": "MUL_MAT",
+        "conv2_ops": [
+          "CUSTOM"
+        ],
+        "token_ids": [
+          23573,
+          134952,
+          126614,
+          25715
+        ],
+        "transcript": "한 목격자",
+        "ms": {
+          "conv2": {
+            "total_s": 63.905298,
+            "process_cpu_s": 44.630171000000004
+          },
+          "projection": {
+            "total_s": 36.020031,
+            "process_cpu_s": 102.76
+          }
+        }
+      },
+      "3": {
+        "projection_op": "MUL_MAT",
+        "conv2_ops": [
+          "CUSTOM"
+        ],
+        "token_ids": [
+          23573,
+          134952,
+          126614,
+          132343,
+          135990,
+          125149,
+          133886,
+          139646,
+          31079,
+          13
+        ],
+        "transcript": "한 목격자는 사람들이 무리를 이루어.",
+        "ms": {
+          "conv2": {
+            "total_s": 53.917488999999996,
+            "process_cpu_s": 55.087259
+          },
+          "projection": {
+            "total_s": 68.507932,
+            "process_cpu_s": 204.745056
+          }
+        }
+      },
+      "5": {
+        "projection_op": "MUL_MAT",
+        "conv2_ops": [
+          "CUSTOM"
+        ],
+        "token_ids": [
+          23573,
+          134952,
+          126614,
+          132343,
+          135990,
+          125149,
+          133886,
+          23084,
+          144280,
+          126352,
+          133886,
+          73669,
+          61741,
+          126204,
+          133553,
+          125678,
+          13
+        ],
+        "transcript": "한 목격자는 사람들이 무리를 이뤄 거리를 배회하고 물품.",
+        "ms": {
+          "conv2": {
+            "total_s": 81.95255399999999,
+            "process_cpu_s": 86.68427700000001
+          },
+          "projection": {
+            "total_s": 103.544013,
+            "process_cpu_s": 309.69057100000003
+          }
+        }
+      }
+    },
+    "proj": {
+      "1": {
+        "projection_op": "CUSTOM",
+        "conv2_ops": [
+          "IM2COL",
+          "MUL_MAT"
+        ],
+        "token_ids": [
+          23573,
+          134952,
+          126614,
+          13
+        ],
+        "transcript": "한 목격.",
+        "ms": {
+          "conv2": {
+            "total_s": 138.73411299999998,
+            "process_cpu_s": 415.304757
+          },
+          "projection": {
+            "total_s": 48.082682,
+            "process_cpu_s": 23.756221
+          }
+        }
+      },
+      "3": {
+        "projection_op": "CUSTOM",
+        "conv2_ops": [
+          "IM2COL",
+          "MUL_MAT"
+        ],
+        "token_ids": [
+          23573,
+          134952,
+          126614,
+          132343,
+          135990,
+          125149,
+          133886,
+          139646,
+          31079,
+          13
+        ],
+        "transcript": "한 목격자는 사람들이 무리를 이루어.",
+        "ms": {
+          "conv2": {
+            "total_s": 278.406304,
+            "process_cpu_s": 833.6667749999999
+          },
+          "projection": {
+            "total_s": 3.6683890000000003,
+            "process_cpu_s": 9.54176
+          }
+        }
+      },
+      "5": {
+        "projection_op": "CUSTOM",
+        "conv2_ops": [
+          "IM2COL",
+          "MUL_MAT"
+        ],
+        "token_ids": [
+          23573,
+          134952,
+          126614,
+          132343,
+          135990,
+          125149,
+          133886,
+          23084,
+          144280,
+          126352,
+          133886,
+          73669,
+          61741,
+          126204,
+          133553,
+          125678,
+          13
+        ],
+        "transcript": "한 목격자는 사람들이 무리를 이뤄 거리를 배회하고 물품.",
+        "ms": {
+          "conv2": {
+            "total_s": 418.33227500000004,
+            "process_cpu_s": 1251.285771
+          },
+          "projection": {
+            "total_s": 5.29586,
+            "process_cpu_s": 13.69387
+          }
+        }
+      }
+    },
+    "both": {
+      "1": {
+        "projection_op": "CUSTOM",
+        "conv2_ops": [
+          "CUSTOM"
+        ],
+        "token_ids": [
+          23573,
+          134952,
+          126614,
+          25715
+        ],
+        "transcript": "한 목격자",
+        "ms": {
+          "conv2": {
+            "total_s": 71.425224,
+            "process_cpu_s": 47.963125000000005
+          },
+          "projection": {
+            "total_s": 35.908307,
+            "process_cpu_s": 26.039277
+          }
+        }
+      },
+      "3": {
+        "projection_op": "CUSTOM",
+        "conv2_ops": [
+          "CUSTOM"
+        ],
+        "token_ids": [
+          23573,
+          134952,
+          126614,
+          132343,
+          135990,
+          125149,
+          133886,
+          139646,
+          31079,
+          13
+        ],
+        "transcript": "한 목격자는 사람들이 무리를 이루어.",
+        "ms": {
+          "conv2": {
+            "total_s": 57.368636,
+            "process_cpu_s": 54.166704
+          },
+          "projection": {
+            "total_s": 17.119639999999997,
+            "process_cpu_s": 11.515875
+          }
+        }
+      },
+      "5": {
+        "projection_op": "CUSTOM",
+        "conv2_ops": [
+          "CUSTOM"
+        ],
+        "token_ids": [
+          23573,
+          134952,
+          126614,
+          132343,
+          135990,
+          125149,
+          133886,
+          23084,
+          144280,
+          126352,
+          133886,
+          73669,
+          61741,
+          126204,
+          133553,
+          125678,
+          13
+        ],
+        "transcript": "한 목격자는 사람들이 무리를 이뤄 거리를 배회하고 물품.",
+        "ms": {
+          "conv2": {
+            "total_s": 89.870482,
+            "process_cpu_s": 91.038074
+          },
+          "projection": {
+            "total_s": 19.18291,
+            "process_cpu_s": 14.103169000000001
+          }
+        }
+      }
+    }
+  },
+  "longform_status": "Host에서 확인한 후속 긴 음원 기록은 natural-both, 전체 3경로 대조는 미확인."
+}

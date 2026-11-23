@@ -1,10 +1,12 @@
 # 현재 상태 — Qwen3-ASR 최적화
 
-2026-11-20 갱신, 최신 완료 실측은 2026-11-20입니다. 목표는 **RP5에서 Qwen3-ASR-0.6B의 한국어 정확도·완료율을 유지하면서 실제 인식 지연을 줄이는 것**입니다. [최적화 과정](research/optimization_history.md), [연구 계획](research/qwen3_optimization.md), [평가 조건](research/qwen_realtime.md), [최근100개 캐시 대조](../results/summaries/optimization/realtime-prefix-cache-20261112.md).
+2026-11-23 갱신, 최신 완료 실측은 2026-11-20입니다. 목표는 **RP5에서 Qwen3-ASR-0.6B의 한국어 정확도·완료율을 유지하면서 실제 인식 지연을 줄이는 것**입니다. [최적화 과정](research/optimization_history.md), [연구 계획](research/qwen3_optimization.md), [평가 조건](research/qwen_realtime.md), [최근100개 캐시 대조](../results/summaries/optimization/realtime-prefix-cache-20261112.md).
 
 ## Raspberry Pi AI Kit와 Qwen Q8
 
-같은 Qwen Q8의 두 번째 합성곱을 Hailo-8L에 연결했습니다. 같은 원음 100개 1배속에서 총 추론 782.3→770.1초, 최종 CER 10.89→10.27%, 확정 p95 7.34→7.16초였습니다. 운영 기본은 Q8 CPU이고, 별도 선택 빌드로 실험을 재현할 수 있습니다. [장치·지원 범위·동일 PCM 대조](../results/summaries/optimization/hailo8l-q8-20261120.md).
+같은 한국어 원음 100개·저지연 가변 정책에서 확정 추론 합계는 CPU 609.15초, Conv2 557.97초, Conv2+CNN 출력 투영 554.45초였습니다. CER는 각각 10.89%, 10.27%, 10.40%였습니다. Conv2를 우선 NPU 후보로 두고 긴 음원 대조와 첫 부분 자막 지연 개선을 먼저 진행합니다. [네 경로 실측·현재 검증 범위](../results/summaries/optimization/hailo-projection-20261120.md).
+
+앞선 고정 갱신 실험에서는 같은 Qwen Q8의 두 번째 합성곱을 Hailo-8L에 연결했습니다. 같은 원음 100개 1배속에서 총 추론 782.3→770.1초, 최종 CER 10.89→10.27%, 확정 p95 7.34→7.16초였습니다. 운영 기본은 Q8 CPU이고, 별도 선택 빌드로 실험을 재현할 수 있습니다. [장치·지원 범위·동일 PCM 대조](../results/summaries/optimization/hailo8l-q8-20261120.md).
 
 ## Q8 확정 전 추가 갱신
 
