@@ -59,6 +59,7 @@ class SegmentPipeline:
         convert=list,
         context_frames=3200,
         context_selection="all",
+        onset_context_max_gap_frames=None,
         native_budget_frames=30 * RATE,
         clock=time.perf_counter,
         progress=None,
@@ -71,6 +72,13 @@ class SegmentPipeline:
             raise ValueError("문맥은 0~3200프레임이어야 합니다.")
         if context_selection not in ("all", "onset", "continuation", "unowned_onset"):
             raise ValueError("문맥 적용 위치는 all/onset/continuation/unowned_onset이어야 합니다.")
+        if onset_context_max_gap_frames is not None and (
+            context_selection != "unowned_onset"
+            or not context_frames
+            or type(onset_context_max_gap_frames) is not int
+            or onset_context_max_gap_frames < 1
+        ):
+            raise ValueError("쉼 상한에는 미소유 시작 문맥과 양의 프레임 수가 필요합니다.")
         if native_budget_frames is None:
             capacity = getattr(vad, "max_audio_buffer_frames", None)
             if type(capacity) is not int or capacity != 0:
@@ -95,6 +103,8 @@ class SegmentPipeline:
         self.maximum = max_segment_s * RATE
         self.context = context_frames
         self.context_selection = context_selection
+        self.onset_context_max_gap = onset_context_max_gap_frames
+        self.previous_vad_owned_end = None
         if split_on_pause and not hasattr(vad, "resumed_pause_frames"):
             raise ValueError("쉼 경계에는 재개 직전의 무음 길이를 제공하는 VAD가 필요합니다.")
         self.split_on_pause = split_on_pause
@@ -148,7 +158,14 @@ class SegmentPipeline:
 
     def payload_start(self, begin):
         if self.context_selection == "unowned_onset":
-            return begin if self.continuation else max(self.owned_end, begin - self.context)
+            if self.continuation:
+                return begin
+            if self.onset_context_max_gap is not None and (
+                self.previous_vad_owned_end is None
+                or begin - self.previous_vad_owned_end > self.onset_context_max_gap
+            ):
+                return begin
+            return max(self.owned_end, begin - self.context)
         use_context = self.context_selection == "all" or (
             self.continuation == (self.context_selection == "continuation")
         )
@@ -196,6 +213,13 @@ class SegmentPipeline:
                     else 0
                 ),
             )
+        if self.onset_context_max_gap is not None:
+            row["previous_vad_owned_end_frame"] = self.previous_vad_owned_end
+            row["vad_onset_gap_frames"] = (
+                begin - self.previous_vad_owned_end
+                if not self.continuation and self.previous_vad_owned_end is not None
+                else None
+            )
         self.emit(row, pcm)
         self.payload_peak = max(self.payload_peak, len(pcm))
         self.segment_id += 1
@@ -215,6 +239,8 @@ class SegmentPipeline:
             # 확정 구간은 되돌리지 않으며 해당 여분을 계측한다. 음소 끝으로 해석하지 않는다.
             self.committed_tail_overhang += max(0, self.owned_end - end)
             self._emit(start, end, reason)
+            # hard_limit·pause_before_limit은 같은 VAD 안의 분할이다. native 종료에서만 갱신한다.
+            self.previous_vad_owned_end = self.owned_end
             self.native_start = None
             self.span_id += 1
             self.continuation = False
@@ -303,6 +329,8 @@ class SegmentPipeline:
         }
         if self.context_selection != "all":
             result["context_selection"] = self.context_selection
+        if self.onset_context_max_gap is not None:
+            result["onset_context_max_gap_frames"] = self.onset_context_max_gap
         if self.vad_processor is not None:
             result.update(
                 vad_preprocess=self.vad_processor.policy,

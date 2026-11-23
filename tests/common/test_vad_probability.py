@@ -78,6 +78,7 @@ class ProbabilityTests(unittest.TestCase):
                     lambda row, pcm: rows.append((row, pcm)),
                     context_frames=3200,
                     context_selection="unowned_onset",
+                    onset_context_max_gap_frames=8000,
                     native_budget_frames=None,
                     split_on_pause=split,
                 )
@@ -89,6 +90,8 @@ class ProbabilityTests(unittest.TestCase):
                 self.assertEqual(right[0]["owned_start_frame"], cut)
                 self.assertEqual(right[0]["context_start_frame"], cut)
                 self.assertTrue(right[0]["is_continuation"])
+                self.assertIsNone(right[0]["previous_vad_owned_end_frame"])
+                self.assertIsNone(right[0]["vad_onset_gap_frames"])
                 reference, _ = preprocess(signal, "identity")
                 self.assertEqual(left[1] + right[1], reference)
 

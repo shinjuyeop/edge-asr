@@ -81,6 +81,47 @@ def run(samples, maximum=3, policy="identity", vad=None):
 
 
 class SegmentTests(unittest.TestCase):
+    def test_onset_context_requires_previous_vad_and_inclusive_audio_gap(self):
+        # Sherpa 구간은 512프레임 입력창의 중간 좌표도 반환할 수 있다.
+        spans = {5: (1000, 2500), 24: (10500, 12000), 43: (20001, 22000)}
+
+        class CompletedSpans(Vad):
+            def accept_waveform(self, block):
+                super().accept_waveform(block)
+                if self.blocks in spans:
+                    start, end = spans[self.blocks]
+                    self.queue.append(SimpleNamespace(start=start, samples=range(end - start)))
+
+        signal = array("f", ((i % 255) / 32768 for i in range(22_400)))
+        expected, _ = preprocess(signal, "identity")
+        rows = []
+        pipeline = SegmentPipeline(
+            CompletedSpans(lambda _: False),
+            "identity",
+            5,
+            lambda row, pcm: rows.append((row, pcm)),
+            context_frames=3200,
+            context_selection="unowned_onset",
+            onset_context_max_gap_frames=8000,
+            clock=lambda: 10,
+        )
+        for start in range(0, len(signal), 1600):
+            pipeline.accept(signal[start : start + 1600], final=start + 1600 >= len(signal))
+        pipeline.finish()
+        self.assertEqual([s["vad_onset_gap_frames"] for s, _ in rows], [None, 8000, 8001])
+        self.assertEqual([s["previous_vad_owned_end_frame"] for s, _ in rows], [None, 2500, 12000])
+        self.assertEqual([s["applied_context_frames"] for s, _ in rows], [0, 3200, 0])
+        for (start, end), (row, pcm) in zip(spans.values(), rows, strict=True):
+            self.assertEqual((row["owned_start_frame"], row["owned_end_frame"]), (start, end))
+            self.assertEqual(
+                row["owned_pcm_sha256"], hashlib.sha256(pcm_bytes(expected[start:end])).hexdigest()
+            )
+            self.assertEqual(pcm, expected[row["context_start_frame"] : end])
+        with self.assertRaises(ValueError):
+            SegmentPipeline(
+                Vad(), "identity", 5, lambda *a: None, onset_context_max_gap_frames=8000
+            )
+
     def test_separate_vad_level_keeps_original_asr_pcm_and_partial_eof(self):
         class Meter(Vad):
             def reset(self):

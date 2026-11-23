@@ -36,6 +36,7 @@ class CaptionSession:
         protect_short_followup=False,
         max_segment_s=5,
         onset_context_s=0.0,
+        onset_context_max_gap_s=None,
         split_on_pause=False,
         drain_timeout_s=30,
         queue_capacity=4,
@@ -51,6 +52,12 @@ class CaptionSession:
     ):
         if not math.isfinite(onset_context_s) or not 0 <= onset_context_s <= 0.2:
             raise ValueError("발화 시작 문맥은 0~0.2초여야 합니다.")
+        if onset_context_max_gap_s is not None and (
+            not math.isfinite(onset_context_max_gap_s)
+            or onset_context_max_gap_s <= 0
+            or not onset_context_s
+        ):
+            raise ValueError("발화 재개 쉼 상한에는 시작 문맥과 유한한 양의 시간이 필요합니다.")
         if partial_after_s <= 0 or partial_interval_s <= 0:
             raise ValueError("부분 전사 시작·갱신 간격은 양수여야 합니다.")
         if partial_followup_s is not None and (
@@ -182,6 +189,11 @@ class CaptionSession:
             self._final,
             context_frames=round(onset_context_s * 16000),
             context_selection="unowned_onset" if onset_context_s else "all",
+            onset_context_max_gap_frames=(
+                round(onset_context_max_gap_s * 16000)
+                if onset_context_max_gap_s is not None
+                else None
+            ),
             split_on_pause=split_on_pause,
             native_budget_frames=None,
             progress=self._progress,

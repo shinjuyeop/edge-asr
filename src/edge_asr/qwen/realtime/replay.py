@@ -419,6 +419,12 @@ def argument_parser():
         help="발화 시작 앞에서 이전 구간이 소유하지 않은 PCM 최대 0.2초를 추가",
     )
     parser.add_argument(
+        "--onset-context-max-gap-s",
+        type=float,
+        default=argparse.SUPPRESS,
+        help="이전 VAD 소유 끝에서 현재 시작까지 이 시간 이내일 때만 시작 문맥 사용",
+    )
+    parser.add_argument(
         "--split-on-pause",
         action="store_true",
         default=argparse.SUPPRESS,
