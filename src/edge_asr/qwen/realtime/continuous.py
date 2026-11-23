@@ -31,6 +31,7 @@ class ContinuousPolicy:
         policy="latest",
         thermal_policy="pause",
         followup_gap_target_s=None,
+        first_snapshot_cap_s=None,
     ):
         self.condition, self.emit, self.clock = condition, emit, clock
         self.minimum, self.min_new, self.maximum, self.tail = minimum, min_new, maximum, tail
@@ -44,6 +45,17 @@ class ContinuousPolicy:
         ):
             raise ValueError("예상 공백 기준은 headroom_followup에서 유한한 양수로 지정합니다.")
         self.followup_gap_target_s = followup_gap_target_s
+        if first_snapshot_cap_s is not None and (
+            policy != "first_text"
+            or not math.isfinite(first_snapshot_cap_s)
+            or not minimum / 16000 <= first_snapshot_cap_s < maximum / 16000
+        ):
+            raise ValueError(
+                "첫 PCM 상한은 first_text에서 최소 부분 길이 이상, 구간 상한 미만이어야 합니다."
+            )
+        self.first_cap = (
+            round(first_snapshot_cap_s * 16000) if first_snapshot_cap_s is not None else None
+        )
         self.last_display_end = -1
         self.last_display_at = None
         self.thermal_factor = 1.0
@@ -94,6 +106,8 @@ class ContinuousPolicy:
             self.stats["final_reserve_max_s"] = None
         if policy == "headroom_followup":
             self.stats["near_final_followups"] = 0
+        if self.first_cap is not None:
+            self.stats.update(first_snapshot_cap_frames=self.first_cap, capped_first_snapshots=0)
 
         if followup_gap_target_s is not None:
             self.stats.update(
@@ -164,6 +178,15 @@ class ContinuousPolicy:
             )
         if end <= self.last_end:
             return
+        self._log_opportunity(segment, start, end)
+        if self.candidate:
+            self.stats["candidate_replacements"] += 1
+        self.candidate = (segment, start, end, read)
+        self.stats["candidate_updates"] += 1
+        self.stats["pending_peak"] = 1
+        self.condition.notify_all()
+
+    def _log_opportunity(self, segment, start, end):
         if (
             not self.eligible_logged
             and end - start >= self.minimum
@@ -182,12 +205,6 @@ class ContinuousPolicy:
                     "at_monotonic_s": self.clock(),
                 }
             )
-        if self.candidate:
-            self.stats["candidate_replacements"] += 1
-        self.candidate = (segment, start, end, read)
-        self.stats["candidate_updates"] += 1
-        self.stats["pending_peak"] = 1
-        self.condition.notify_all()
 
     def discard(self, reason, segment=None):
         if self.candidate and (segment is None or self.candidate[0] == segment):
@@ -271,11 +288,20 @@ class ContinuousPolicy:
             first + decode + (encode + embeddings) * (end - self.last_end) / (self.last_end - start)
         )
 
+    def snapshot_end(self, start, latest):
+        """지연된 최초 요청만 줄인다. 후속 요청 한 번을 구성할 만큼의 새 PCM이 있어야 한다."""
+        if self.first_cap is not None and self.last_end == start:
+            cutoff = start + self.first_cap
+            if latest - cutoff >= self.min_new * self.thermal_factor:
+                return cutoff
+        return latest
+
     def choose(self, estimated_s=None, *, previous=None, available_frame=None):
         self.wake_at = None
         if self.candidate is None:
             return None
-        segment, start, end, read = self.candidate
+        segment, start, latest, read = self.candidate
+        end = self.snapshot_end(start, latest)
         now = self.clock()
         rate = self._account(now) if self.policy == "paced" else None
         first = self.last_end == start
@@ -292,7 +318,7 @@ class ContinuousPolicy:
         remaining = (self.maximum - (end - start)) / 16000
         useful_s = None
         if self.policy == "first_text":
-            remaining = (start + self.maximum - max(end, available_frame or end)) / 16000
+            remaining = (start + self.maximum - max(latest, available_frame or latest)) / 16000
             if first and self.first_costs:
                 # 최근 첫 부분 요청의 실제 의미 문자 발행까지. 새 음성의 encoder/prefill만 길이 보정.
                 useful_s = (
@@ -345,6 +371,7 @@ class ContinuousPolicy:
                     "start_frame": start,
                     "end_frame": end,
                     "last_executed_end_frame": self.last_end,
+                    **({"candidate_end_frame": latest} if self.first_cap is not None else {}),
                     **(
                         {"display_age_s": display_age, "projected_gap_s": projected_gap}
                         if self.followup_gap_target_s is not None
@@ -397,7 +424,12 @@ class ContinuousPolicy:
         if followup:
             self.followup_used = True
             self.stats["near_final_followups"] += 1
-        self.candidate = None
+        if end < latest:
+            # 확정을 기다리는 동안 수집한 실제 최신 PCM은 그대로 남아 다음 요청 또는 폐기에 쓰인다.
+            self.stats["capped_first_snapshots"] += 1
+            self._log_opportunity(segment, start, latest)
+        else:
+            self.candidate = None
         self.stats["snapshots"] += 1
         self.stats["snapshot_frames"] += end - start
         return segment, start, end, read(start, end)

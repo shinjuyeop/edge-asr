@@ -247,6 +247,41 @@ class ContinuousTests(unittest.TestCase):
             p.discard("final", 0)
             self.assertIsNone(p.candidate)
 
+    def test_late_first_snapshot_caps_real_pcm_once_and_keeps_latest_candidate(self):
+        p, _, events = self.policy(policy="first_text", first_snapshot_cap_s=1.2)
+        calls = []
+
+        def read(start, end):
+            calls.append((start, end))
+            return array("h", [1]) * (end - start)
+
+        with p.condition:
+            p.observe({"temperature_mc": 60000, "current_limits": 0})
+            p.update(0, 1600, 46000, read)
+            _, start, end, pcm = p.choose(0.7)
+            self.assertEqual((start, end, len(pcm)), (1600, 20800, 19200))
+            offered = next(e for e in events if e.get("reason") == "offered")
+            self.assertEqual((offered["end_frame"], offered["candidate_end_frame"]), (20800, 46000))
+            self.assertEqual(p.choose(0.9)[1:3], (1600, 46000))
+            self.assertIsNone(p.choose(0.9))
+            self.assertEqual(calls, [(1600, 20800), (1600, 46000)])
+            self.assertEqual(p.stats["capped_first_snapshots"], 1)
+            p.update(1, 50000, 127000, read)
+            self.assertIsNone(p.choose(0.7))
+            self.assertEqual(events[-1]["reason"], "near_final")
+            p.discard("final", 1)
+            self.assertIsNone(p.choose())
+
+    def test_first_snapshot_cap_leaves_early_request_intact(self):
+        p, _, _ = self.policy(policy="first_text", first_snapshot_cap_s=1.2)
+        with p.condition:
+            p.observe({"temperature_mc": 60000, "current_limits": 0})
+            p.update(0, 0, 25000, lambda a, b: b - a)
+            self.assertEqual(p.choose(0.7)[1:], (0, 25000, 25000))
+            self.assertIsNone(p.candidate)
+        with self.assertRaises(ValueError):
+            self.policy(policy="headroom", first_snapshot_cap_s=1.2)
+
     def test_first_text_uses_observed_meaningful_latency_and_reserves_actual_remaining_input(self):
         cv = Condition()
         events = []

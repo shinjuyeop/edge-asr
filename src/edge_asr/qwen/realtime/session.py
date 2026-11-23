@@ -46,6 +46,7 @@ class CaptionSession:
         cancel_partial_for_final=False,
         continuous_policy="latest",
         followup_gap_target_s=None,
+        first_snapshot_cap_s=None,
         partial_thermal_policy="pause",
     ):
         if not math.isfinite(onset_context_s) or not 0 <= onset_context_s <= 0.2:
@@ -87,6 +88,8 @@ class CaptionSession:
             cancel_partial_for_final and (partial_mode != "continuous" or not token_stream)
         ):
             raise ValueError("최종 우선 취소는 continuous·token_stream에서만 선택합니다.")
+        if first_snapshot_cap_s is not None and partial_mode != "continuous":
+            raise ValueError("첫 PCM 상한에는 continuous 모드가 필요합니다.")
         if followup_gap_target_s is not None and partial_mode != "continuous":
             raise ValueError("예상 공백 기준에는 continuous 모드가 필요합니다.")
         if (
@@ -164,6 +167,7 @@ class CaptionSession:
                 policy=continuous_policy,
                 thermal_policy=partial_thermal_policy,
                 followup_gap_target_s=followup_gap_target_s,
+                first_snapshot_cap_s=first_snapshot_cap_s,
             )
             self.scheduler_stats = self.continuous.stats
             self.scheduler_stats["cancel_partial_grace_s"] = (
@@ -206,7 +210,10 @@ class CaptionSession:
             "first_text",
         ):
             _, start, end, _ = self.continuous.candidate
-            estimate = self.worker.estimate_cost("partial", end - start, model="audio_scaled")
+            snapshot_end = self.continuous.snapshot_end(start, end)
+            estimate = self.worker.estimate_cost(
+                "partial", snapshot_end - start, model="audio_scaled"
+            )
         candidate = self.continuous.choose(
             estimate, previous=self.partial, available_frame=self.position
         )
