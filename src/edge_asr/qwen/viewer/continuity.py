@@ -188,6 +188,9 @@ def continuity(worker, records, *, word_starts=None):
         active_gaps.extend(y - x for x, y in zip(bounds, bounds[1:]))
     counts = Counter((r["kind"], r["status"]) for r in results.values())
     cancelled = [r for r in results.values() if r.get("status") == "cancelled"]
+    partials = [r for r in results.values() if r["kind"] == "partial"]
+    fresh_jobs = {e["job_id"] for e in fresh}
+    without_fresh = [r for r in partials if r["job_id"] not in fresh_jobs]
     completed_final = [r for r in results.values() if r["kind"] == "final"]
     stages = defaultdict(float)
     for r in completed_final:
@@ -249,6 +252,16 @@ def continuity(worker, records, *, word_starts=None):
                 if r["status"] == "success" and not normalize(r.get("hypothesis") or "")
             )
         ),
+        "partial_work": {
+            "submitted": sum(e["type"] == "submitted" and e["kind"] == "partial" for e in records),
+            "coalesced_before_start": sum(
+                e["type"] == "coalesced" and e["kind"] == "partial" for e in records
+            ),
+            "with_fresh_display": len(partials) - len(without_fresh),
+            "without_fresh_display": len(without_fresh),
+            "without_fresh_inference_s": sum(r.get("inference_s") or 0 for r in without_fresh),
+            "cancelled_after_fresh_display": sum(r["job_id"] in fresh_jobs for r in cancelled),
+        },
         "cancelled_compute_s": sum(r.get("inference_s") or 0 for r in cancelled),
         "inference_s": sum(r.get("inference_s") or 0 for r in results.values()),
         "final_native_stages_s": dict(stages),

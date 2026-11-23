@@ -47,7 +47,14 @@ class SubtitleMetricsTests(unittest.TestCase):
                 "published_s": 7.3,
             }
         )
+        events.extend(
+            {**events[i], "type": "result", "status": "cancelled", "inference_s": cost}
+            for i, cost in ((1, 0.25), (6, 0.75))
+        )
         result = continuity(worker, events)
+        self.assertEqual(result["partial_work"]["without_fresh_display"], 1)
+        self.assertEqual(result["partial_work"]["cancelled_after_fresh_display"], 1)
+        self.assertEqual(result["partial_work"]["without_fresh_inference_s"], 0.75)
         self.assertEqual(result["raw_first_any_s"]["mean"], 1.1)
         self.assertEqual(result["meaningful_first_s"]["mean"], 1.2)
         self.assertEqual(result["meaningful_four_s"]["mean"], 2.4)
