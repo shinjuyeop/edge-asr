@@ -56,7 +56,7 @@ Python 실행 코드는 [src/edge_asr/qwen/](../src/edge_asr/qwen/), C++ 소스�
 
 Host/RP5 모의·문법 검사는 [tests/qwen/](../tests/qwen/)에 있습니다. `EDGE_ASR_LLAMA_SOURCE`와 `EDGE_ASR_ORT_HEADERS`를 지정하면 고정 헤더의 C++ 검사도 실행합니다. 실제 모델 성능은 RP5 실측으로만 확인합니다.
 
-## Hailo-8L Qwen 합성곱·CNN 출력 투영 실험
+## Hailo-8L Qwen 오디오 연산 실험
 
 [ONNX 추출](gguf/export_audio_boundaries.py)은 고정 Q8 GGUF의 가중치를 검증합니다. [선택 합성곱](gguf/hailo_conv.cpp)은 Linux CPU 엔진의 지정 Conv 한 개를 무편향 HEF로 바꿉니다. 원래 노드가 bias·GELU를 적용합니다. HailoRT 헤더와 라이브러리로 별도 빌드한 뒤 실험 자식에서만 preload합니다. `EDGE_ASR_HAILO_LAYER`는 `a.conv2d.1.weight` 또는 `a.conv2d.2.weight`, `EDGE_ASR_HAILO_HEF`는 그 층의 검증한 무편향 HEF 절대 경로입니다. HEF 및 가중치 해시와 실제 호출의 `edge_hailo_conv` 기록을 대조합니다. 장치 오류는 실험 자식의 실패로 기록합니다.
 
@@ -66,12 +66,12 @@ CNN 출력 투영만 선택하려면 실험 자식에 같은 preload와 `EDGE_AS
 
 같은 preload에서 CNN 뒤 투영까지 묶거나 첫 오디오 블록과 최종 음성 MLP를 선택할 수 있습니다. 아래 변수의 HEF는 모두 같은 Q8 모델에서 추출해 Hailo-8L용으로 컴파일합니다.
 
-| 환경 변수 | ONNX 또는 HEF | 실행 경계 |
+| 환경 변수 | RP5에서 사용한 HEF | 실행 경계 |
 | --- | --- | --- |
-| `EDGE_ASR_HAILO_FUSED_HEF` | `cnn_projected.onnx`, `cnn_slice.onnx` 또는 `cnn_pack.onnx` | Mel 청크 → 세 Conv·GELU → CNN 출력 투영. 출력은 시간 행 13×896입니다. |
-| `EDGE_ASR_HAILO_CONV23_HEF` | `conv23.onnx` | CPU가 첫 GELU까지 계산한 뒤 Conv2·3 및 GELU를 한 번에 호출합니다. |
+| `EDGE_ASR_HAILO_FUSED_HEF` | `cnn_projected.hef` 또는 `cnn_slice.hef` | Mel 청크 → 세 Conv·GELU → CNN 출력 투영. 출력은 시간 행 13×896입니다. |
+| `EDGE_ASR_HAILO_CONV23_HEF` | `conv23.hef` | CPU가 첫 GELU까지 계산한 뒤 Conv2·3 및 GELU를 한 번에 호출합니다. |
 | `EDGE_ASR_HAILO_BLOCK_DIR` | 디렉터리 안의 `block026.hef`, `block052.hef`, `block078.hef` | 위치 임베딩 뒤 첫 Transformer 블록 전체입니다. 길이 26·52·78에서 해당 HEF를 고르고 나머지 길이에서는 CPU 블록을 사용합니다. |
-| `EDGE_ASR_HAILO_EMBED_HEF` | `projector-row.onnx` | 마지막 오디오 정규화 뒤 896→896→1,024 음성 MLP입니다. |
+| `EDGE_ASR_HAILO_EMBED_HEF` | `projector1.hef` | 마지막 오디오 정규화 뒤 896→896→1,024 음성 MLP입니다. |
 | `EDGE_ASR_HAILO_TEMPERATURE=1` | 선택 계측 | Hailo 콜백에서 약 10초 간격으로 TS0·TS1 센서를 콘솔에 기록합니다. |
 
 CNN 시작 경로는 단일 Conv, Conv2·3, 세 층 묶음, 투영까지 묶음 중 하나를 고릅니다. 세 층 묶음 또는 Conv2·3과 별도 CNN 투영을 비교할 때는 `EDGE_ASR_HAILO_PROJECTION_HEF`를 함께 지정합니다. 여러 HEF는 같은 VDevice의 스케줄러를 사용합니다. 독립 QKV 검산은 기존 추출기에 `--linear-reference`, `--text-gguf`, `--qkv`를 함께 전달합니다.
