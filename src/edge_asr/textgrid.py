@@ -5,6 +5,13 @@ import re
 from dataclasses import dataclass
 
 
+def label_kind(text):
+    """서울말뭉치의 발화·허용된 비언어 주석·기타 태그를 구분한다."""
+    if text in {"", "<SIL>", "<VOCNOISE>", "<LAUGH>", "<NOISE>"}:
+        return "nonlexical"
+    return "excluded" if "<" in text or ">" in text else "speech"
+
+
 @dataclass(frozen=True)
 class Interval:
     start: float

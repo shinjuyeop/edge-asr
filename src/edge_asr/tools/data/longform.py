@@ -15,7 +15,7 @@ from pathlib import Path
 from edge_asr.artifacts import digest, read_jsonl, write_json, write_jsonl
 from edge_asr.dataset import load_audio, load_manifest, write_wav
 from edge_asr.metrics import normalize
-from edge_asr.textgrid import read_textgrid
+from edge_asr.textgrid import label_kind, read_textgrid
 from edge_asr.tools.data import zeroth
 from edge_asr.tools.data.external import convert, finish, verify_existing
 
@@ -26,7 +26,6 @@ ARCHIVES = {
     "label-TextGrid.zip": "dab4d35509755c6cfee7c118c2d8868aa1dddfb0367e7b50b107e5fc9a464275",
     "sound-flac.zip": "2ef8f19ee60c0710d97c36c0ee616c265097f670c495d36afccc26b6412eb4d4",
 }
-NONLEXICAL = {"", "<SIL>", "<VOCNOISE>", "<LAUGH>", "<NOISE>"}
 QUOTAS = (
     (10, "male", "dense"),
     (10, "female", "hesitation"),
@@ -51,12 +50,6 @@ RECIPE = {
     "role": "development_regression_not_independent_holdout",
     "human_audio_review": False,
 }
-
-
-def label_kind(text):
-    if text in NONLEXICAL:
-        return "nonlexical"
-    return "excluded" if "<" in text or ">" in text else "speech"
 
 
 def natural_candidates(name, intervals):

@@ -4,7 +4,7 @@ from collections import defaultdict
 
 from edge_asr.artifacts import digest, read_jsonl
 from edge_asr.metrics import distribution, normalize
-from edge_asr.tools.data.longform import label_kind, read_textgrid
+from edge_asr.textgrid import label_kind, read_textgrid
 
 
 def annotated_word_starts(manifest, sources, rate):
