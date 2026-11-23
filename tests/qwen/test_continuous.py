@@ -247,6 +247,47 @@ class ContinuousTests(unittest.TestCase):
             p.discard("final", 0)
             self.assertIsNone(p.candidate)
 
+    def test_first_text_uses_observed_meaningful_latency_and_reserves_actual_remaining_input(self):
+        cv = Condition()
+        events = []
+        p = ContinuousPolicy(cv, events.append, 7200, 10_400, 80_000, 2400, policy="first_text")
+        with cv:
+            p.observe({"temperature_mc": 78000, "current_limits": 0})
+            p.update(0, 0, 8000, lambda a, b: b - a)
+            self.assertIsNotNone(p.choose())
+            sample = {
+                "segment_id": 0,
+                "end_frame": 8000,
+                "kind": "partial",
+                "displayed": True,
+                "status": "provisional",
+                "job_id": 7,
+                "started_monotonic_s": 10,
+            }
+            p.record_display({**sample, "hypothesis": ".", "published_s": 0.20}, None, 10)
+            self.assertIsNone(p.first_display)
+            p.record_display({**sample, "hypothesis": "첫", "published_s": 0.45}, None, 10)
+            p.completed(
+                {
+                    **sample,
+                    "status": "success",
+                    "start_frame": 0,
+                    "adapter_result": {
+                        "native_result": {"audio_encode_s": 0.15, "audio_embedding_eval_s": 0.10}
+                    },
+                }
+            )
+            self.assertEqual(len(p.first_costs), 1)
+            p.update(1, 80_000, 104_000, lambda a, b: b - a)
+            self.assertIsNone(p.choose(estimated_s=4.2, available_frame=158_000))
+            self.assertEqual(events[-1]["reason"], "near_final")
+            # 새 구간에서 전체 완료 예측 4.2초보다 실제 첫 표시 추정이 짧으면 시작한다.
+            p.update(2, 160_000, 184_000, lambda a, b: b - a)
+            self.assertIsNotNone(p.choose(estimated_s=4.2, available_frame=185_000))
+            self.assertLess(events[-1]["estimated_useful_text_s"], 4.2)
+            eligible = [e for e in events if e["type"] == "partial_audio_eligible"]
+            self.assertEqual([e["segment_id"] for e in eligible], [0, 1, 2])
+
     def test_content_metric_counts_corrections_but_not_repeated_strings(self):
         events = [
             {

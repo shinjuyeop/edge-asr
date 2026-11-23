@@ -82,12 +82,25 @@ class DecodeWorker:
             largest_input = max(samples for samples, _, _ in history)
             return max(cost for _, cost, _ in history) * max(1.0, frames / largest_input) * 1.2
 
-    def submit(self, kind, segment_id, start, end, samples, available_frame, *, only_if_idle=False):
+    def submit(
+        self,
+        kind,
+        segment_id,
+        start,
+        end,
+        samples,
+        available_frame,
+        *,
+        only_if_idle=False,
+        owned_start_frame=None,
+    ):
         with self.condition:
             if self.closing or self.error or not self.thread.is_alive():
                 raise RuntimeError(self.error or "종료된 전사 작업자입니다.")
             if kind not in ("partial", "final") or not 0 <= start < end <= available_frame:
                 raise ValueError("도착한 음성 범위의 partial/final 작업이 필요합니다.")
+            if owned_start_frame is not None and not start <= owned_start_frame < end:
+                raise ValueError("소유 구간은 입력 PCM 안에 있어야 합니다.")
             if end - start != len(samples):
                 raise ValueError("전사 구간과 PCM 길이가 다릅니다.")
             if only_if_idle and (self.active or self.finals or self.partial is not None):
@@ -102,6 +115,11 @@ class DecodeWorker:
                 "start_frame": start,
                 "end_frame": end,
                 "available_frame": available_frame,
+                **(
+                    {"owned_start_frame": owned_start_frame}
+                    if owned_start_frame is not None
+                    else {}
+                ),
                 "submitted_monotonic_s": time.perf_counter(),
                 "payload_float32_sha256": float_digest(samples),
             }

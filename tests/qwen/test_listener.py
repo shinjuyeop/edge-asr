@@ -1,6 +1,7 @@
 """실제 모델 없이 청취 시간축·실패·음원 보존·HTTP 경계를 검증한다."""
 
 import json
+import os
 import shutil
 import signal
 import subprocess
@@ -22,7 +23,7 @@ from edge_asr.config import load_evaluation_config
 from edge_asr.dataset import Audio, load_audio, prepare_track, write_wav
 from edge_asr.qwen.realtime.replay import argument_parser
 from edge_asr.qwen.viewer.analysis import compact_event, source_metrics
-from edge_asr.qwen.viewer.runs import Library, Run, replay_args
+from edge_asr.qwen.viewer.runs import Library, Run, hailo_worker_prefix, replay_args
 from edge_asr.qwen.viewer.server import ASSETS, handler
 from edge_asr.streaming import run_paced
 
@@ -76,6 +77,26 @@ class ListenerTests(unittest.TestCase):
                     self.assertFalse(args.vad_model.exists())
                     for key, value in profile.get("replay", {}).items():
                         self.assertEqual(getattr(args, key), value)
+
+    def test_hailo_live_worker_pins_assets_and_requires_the_device(self):
+        self.assertEqual(hailo_worker_prefix(self.root, {}), [])
+        profile = {"hailo": {}}
+        for key in ("preload", "cnn_stack_hef"):
+            path = self.root / key
+            path.write_bytes(key.encode())
+            profile["hailo"][key] = key
+            profile["hailo"][key + "_sha256"] = digest(path)
+        with (
+            patch.object(os, "access", return_value=False),
+            self.assertRaisesRegex(ValueError, "장치가 준비"),
+        ):
+            hailo_worker_prefix(self.root, profile)
+        with patch.object(os, "access", return_value=True):
+            args = hailo_worker_prefix(self.root, profile)
+            self.assertIn(f"EDGE_ASR_HAILO_CNN_STACK_HEF={self.root / 'cnn_stack_hef'}", args)
+            (self.root / "preload").write_bytes(b"changed")
+            with self.assertRaisesRegex(ValueError, "해시"):
+                hailo_worker_prefix(self.root, profile)
 
     def test_profile_option_errors_are_not_reported_as_missing_assets(self):
         profile = {"config": "absent.toml", "vad_model": "absent.onnx"}

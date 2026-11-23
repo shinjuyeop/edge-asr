@@ -90,6 +90,7 @@ class Run:
                 "audio": w.get("audio"),
                 "config": w.get("config", {}),
                 "settings": w.get("settings", {}),
+                "audio_accelerator": w.get("audio_accelerator"),
                 "source_commit": w.get("source_commit"),
                 "cursor": len(self.events),
                 "events": self.events[cursor:],
@@ -154,6 +155,27 @@ def replay_args(root, profile, output, manifest):
         else:
             args.extend(["--" + key.replace("_", "-"), str(value)])
     return args
+
+
+def hailo_worker_prefix(root, profile):
+    """선택한 로컬 프로필의 CNN 자산을 확인하고 추론 자식에만 넘긴다."""
+    if "hailo" not in profile:
+        return []
+    options = profile["hailo"]
+    paths = {}
+    for key in ("preload", "cnn_stack_hef"):
+        path = root / options[key]
+        if not path.is_file() or digest(path) != options[f"{key}_sha256"]:
+            raise ValueError(f"Hailo {key} 자산 경로·해시를 확인하세요: {path}")
+        paths[key] = path
+    if not os.access("/dev/hailo0", os.R_OK | os.W_OK):
+        raise ValueError("Hailo 장치가 준비되지 않았습니다. RP5 장치 실행 명령을 확인하세요.")
+    return [
+        "env",
+        f"LD_PRELOAD={paths['preload']}",
+        f"EDGE_ASR_HAILO_CNN_STACK_HEF={paths['cnn_stack_hef']}",
+        "EDGE_ASR_HAILO_TEMPERATURE=1",
+    ]
 
 
 class Library:
@@ -280,6 +302,7 @@ class Library:
                 except BlockingIOError:
                     raise ValueError("다른 청취 서버의 평가가 실행 중입니다.") from None
                 profile = self.profiles[profile_id]
+                worker_prefix = hailo_worker_prefix(self.root, profile)
                 samples, _ = load_manifest(self.root / profile["manifest"], self.root)
                 if microphone is not None:
                     from edge_asr.microphone import devices
@@ -345,6 +368,7 @@ class Library:
                     "operational",
                     "--skip-temperature-admission",
                     "--",
+                    *worker_prefix,
                     sys.executable,
                     script,
                     "tools",

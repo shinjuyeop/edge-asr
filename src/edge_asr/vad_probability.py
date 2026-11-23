@@ -100,11 +100,14 @@ class BoundedProbabilityVad:
 
     max_audio_buffer_frames = 0
 
-    def __init__(self, probability, *, threshold=0.5, max_speech_s=5):
+    def __init__(self, probability, *, threshold=0.5, max_speech_s=5, min_silence_s=0.3):
         if threshold not in (0.1, 0.2, 0.3, 0.5):
             raise ValueError("VAD 시작 임계값은 0.1/0.2/0.3/0.5여야 합니다.")
         if type(max_speech_s) is not int or max_speech_s not in (5, 15, 30):
             raise ValueError("VAD 판정 전환은 5/15/30초여야 합니다.")
+        if not math.isfinite(min_silence_s) or not 0.1 <= min_silence_s <= 0.8:
+            raise ValueError("VAD 종료 무음은 0.1~0.8초여야 합니다.")
+        self.silence_frames = round(min_silence_s * RATE)
         self.threshold = threshold
         self.max_speech_s = max_speech_s
         self.probability = probability
@@ -114,6 +117,7 @@ class BoundedProbabilityVad:
         self.probability.reset()
         self.fed = self.head = self.temp_start = self.temp_end = 0
         self.triggered = False
+        self.low_frames = self.resumed_pause_frames = 0
         self.start = None
         self.queue = deque()
         self.queue_peak = self.active_peak = 0
@@ -154,7 +158,13 @@ class BoundedProbabilityVad:
             raise ValueError("유한한 0~1 확률이 필요합니다.")
         # 이전 wrapper처럼 다음 창 수신 전의 가상 버퍼 길이로 soft limit을 판단한다.
         long_active = self.fed - self.head > self.max_speech_s * RATE
-        threshold, silence = (0.9, 1600) if long_active else (self.threshold, 4800)
+        threshold, silence = (0.9, 1600) if long_active else (self.threshold, self.silence_frames)
+        # 같은 활성 VAD 안에서 낮은 확률이 연속된 직후의 첫 음성 창을 표시한다.
+        self.resumed_pause_frames = self.low_frames if self.triggered and value > threshold else 0
+        if self.triggered and value < max(threshold - 0.15, 0.01):
+            self.low_frames += WINDOW
+        else:
+            self.low_frames = 0
         self.fed += WINDOW
         speech = self._classify(value, threshold, silence)
         if speech:
@@ -214,6 +224,7 @@ class BoundedProbabilityVad:
             "backend": "bounded_probability_experimental",
             "threshold": self.threshold,
             "max_speech_s": self.max_speech_s,
+            "min_silence_s": self.silence_frames / RATE,
             "retained_audio_frames": 0,
             "queue_capacity": 1,
             "queue_peak": self.queue_peak,

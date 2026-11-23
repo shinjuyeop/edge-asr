@@ -57,6 +57,61 @@ class FakeNumpy:
 
 
 class ProbabilityTests(unittest.TestCase):
+    def test_short_pause_and_hard_boundary_share_no_owned_frames(self):
+        # 각 창의 음성 확률만 제어한다. 입력 PCM은 위치별로 달라 경계에서 직접 검산한다.
+        signal = array("f", (((i % 301) - 150) / 32768 for i in range(100_113)))
+        for split, reason, cut in (
+            (False, "hard_limit", 80_000),
+            (True, "pause_before_limit", 144 * 512),
+        ):
+            with self.subTest(split=split):
+                vad = BoundedProbabilityVad(
+                    Probability(lambda window: 0.0 if 141 <= window <= 144 else 1.0),
+                    threshold=0.3,
+                    max_speech_s=15,
+                )
+                rows = []
+                pipeline = SegmentPipeline(
+                    vad,
+                    "identity",
+                    5,
+                    lambda row, pcm: rows.append((row, pcm)),
+                    context_frames=3200,
+                    context_selection="unowned_onset",
+                    native_budget_frames=None,
+                    split_on_pause=split,
+                )
+                for start in range(0, len(signal), 1600):
+                    pipeline.accept(signal[start : start + 1600], final=start + 1600 >= len(signal))
+                pipeline.finish()
+                left, right = rows
+                self.assertEqual((left[0]["reason"], left[0]["owned_end_frame"]), (reason, cut))
+                self.assertEqual(right[0]["owned_start_frame"], cut)
+                self.assertEqual(right[0]["context_start_frame"], cut)
+                self.assertTrue(right[0]["is_continuation"])
+                reference, _ = preprocess(signal, "identity")
+                self.assertEqual(left[1] + right[1], reference)
+
+    def test_minimum_silence_changes_endpoint_without_losing_the_last_word(self):
+        # 첫 0.384초 쉼은 0.5초 허용일 때 유지되고 이후 긴 무음에서 두 설정 모두 종료한다.
+        for duration, expected in ((0.3, 2), (0.5, 1)):
+            vad = BoundedProbabilityVad(
+                Probability(lambda w: 0.0 if 20 <= w < 32 or w >= 60 else 1.0),
+                threshold=0.3,
+                min_silence_s=duration,
+            )
+            spans = []
+            for _ in range(80):
+                vad.accept_waveform([0.0] * 512)
+                if not vad.empty():
+                    spans.append(vad.front)
+                    vad.pop()
+            self.assertEqual(len(spans), expected)
+            self.assertLessEqual(abs(spans[-1].end - 60 * 512), 512)
+        for bad in (float("nan"), 0.0, 1.0):
+            with self.assertRaises(ValueError):
+                BoundedProbabilityVad(Probability(), min_silence_s=bad)
+
     def test_lower_threshold_recovers_weak_sustained_activity(self):
         for threshold in (0.1, 0.2, 0.3):
             vad = BoundedProbabilityVad(Probability(0.25), threshold=threshold)

@@ -62,13 +62,14 @@ class SegmentPipeline:
         clock=time.perf_counter,
         progress=None,
         vad_policy=None,
+        split_on_pause=False,
     ):
         if type(max_segment_s) is not int or max_segment_s not in (3, 5, 8):
             raise ValueError("소유 구간 상한은 3/5/8초여야 합니다.")
         if type(context_frames) is not int or not 0 <= context_frames <= 3200:
             raise ValueError("문맥은 0~3200프레임이어야 합니다.")
-        if context_selection not in ("all", "onset", "continuation"):
-            raise ValueError("문맥 적용 위치는 all/onset/continuation이어야 합니다.")
+        if context_selection not in ("all", "onset", "continuation", "unowned_onset"):
+            raise ValueError("문맥 적용 위치는 all/onset/continuation/unowned_onset이어야 합니다.")
         if native_budget_frames is None:
             capacity = getattr(vad, "max_audio_buffer_frames", None)
             if type(capacity) is not int or capacity != 0:
@@ -93,6 +94,10 @@ class SegmentPipeline:
         self.maximum = max_segment_s * RATE
         self.context = context_frames
         self.context_selection = context_selection
+        if split_on_pause and not hasattr(vad, "resumed_pause_frames"):
+            raise ValueError("쉼 경계에는 재개 직전의 무음 길이를 제공하는 VAD가 필요합니다.")
+        self.split_on_pause = split_on_pause
+        self.pause_emissions = 0
         self.span_id = 0
         self.continuation = False
         self.native_budget = native_budget_frames
@@ -140,6 +145,14 @@ class SegmentPipeline:
                 del self.vad_pending[:WINDOW]
             self._window(block, vad_block)
 
+    def payload_start(self, begin):
+        if self.context_selection == "unowned_onset":
+            return begin if self.continuation else max(self.owned_end, begin - self.context)
+        use_context = self.context_selection == "all" or (
+            self.continuation == (self.context_selection == "continuation")
+        )
+        return max(0, begin - self.context) if use_context else begin
+
     def _emit(self, start, end, reason):
         native_end = end
         end = min(end, self.ring.end)
@@ -148,11 +161,7 @@ class SegmentPipeline:
             return
         if end - begin > self.maximum:
             raise ValueError("강제 구간 상한 위반")
-        use_context = self.context_selection == "all" or (
-            self.continuation == (self.context_selection == "continuation")
-        )
-        applied_context = self.context if use_context else 0
-        context_start = max(0, begin - applied_context)
+        context_start = self.payload_start(begin)
         pcm = self.ring.read(context_start, end)
         row = {
             "segment_id": self.segment_id,
@@ -178,13 +187,19 @@ class SegmentPipeline:
             row.update(
                 vad_span_id=self.span_id,
                 is_continuation=self.continuation,
-                applied_context_frames=applied_context,
+                applied_context_frames=(
+                    begin - context_start
+                    if self.context_selection == "unowned_onset"
+                    else self.context
+                    if self.continuation == (self.context_selection == "continuation")
+                    else 0
+                ),
             )
         self.emit(row, pcm)
         self.payload_peak = max(self.payload_peak, len(pcm))
         self.segment_id += 1
         self.owned_end = end
-        self.continuation = reason == "hard_limit"
+        self.continuation = reason in ("hard_limit", "pause_before_limit")
 
     def _drain(self, reason):
         while not self.vad.empty():
@@ -228,6 +243,13 @@ class SegmentPipeline:
             if self.native_budget is not None and active > self.native_budget:
                 raise ValueError("활성 VAD 버퍼 예산 위반")
             begin = max(start, self.owned_end)
+            if self.split_on_pause and self.vad.resumed_pause_frames >= 3 * WINDOW:
+                # 재개한 현재 창 전체는 다음 구간 소유다. 이전 progress 시각보다 거슬러 가지 않는다.
+                cut = self.fed - WINDOW
+                if self.maximum - RATE * 0.8 <= cut - begin <= self.maximum and cut < self.ring.end:
+                    self._emit(begin, cut, "pause_before_limit")
+                    self.pause_emissions += 1
+                    begin = self.owned_end
             # native VAD 상태를 바꾸지 않고 도착한 공통 PCM의 소유 구간만 확정한다.
             while min(self.fed, self.ring.end) - begin >= self.maximum:
                 self._emit(begin, begin + self.maximum, "hard_limit")
@@ -264,6 +286,8 @@ class SegmentPipeline:
             "hard_limit_emissions": self.hard_emissions,
             "owned_max_frames": self.maximum,
             "context_frames": self.context,
+            "split_on_pause": self.split_on_pause,
+            "pause_before_limit_emissions": self.pause_emissions,
             "ring_capacity_frames": self.ring.capacity,
             "ring_peak_frames": self.ring.peak,
             "pending_peak_frames": self.pending_peak,

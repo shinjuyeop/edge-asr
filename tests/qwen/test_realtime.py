@@ -408,6 +408,37 @@ class RealtimeTests(unittest.TestCase):
         finally:
             session.close()
 
+    def test_onset_context_preserves_payload_coordinates_and_real_repetitions(self):
+        adapter, events = Adapter(), []
+        adapter.release.set()
+        signal = array("f", [0.0] * 8000 + [0.5] * 8000 + [0.0] * 14400 + [0.5] * 8000)
+        session = CaptionSession(
+            adapter,
+            BoundedProbabilityVad(Probability()),
+            len(signal),
+            events.append,
+            {"t0_monotonic_ns": time.perf_counter_ns()},
+            onset_context_s=0.2,
+            partials=False,
+        )
+        try:
+            for start in range(0, len(signal), 1600):
+                end = min(start + 1600, len(signal))
+                session.accept_at(session, signal[start:end], start, end)
+            self.assertEqual(session.finish_stream(session), "전사 전사")
+            self.assertEqual(len(session.segments), 2)
+            jobs = [e for e in events if e["type"] == "submitted"]
+            previous_end = 0
+            for job, segment, pcm in zip(jobs, session.segments, adapter.calls, strict=True):
+                self.assertEqual(job["owned_start_frame"], segment["owned_start_frame"])
+                self.assertEqual(job["start_frame"], segment["context_start_frame"])
+                self.assertGreaterEqual(job["start_frame"], previous_end)
+                self.assertLess(job["start_frame"], job["owned_start_frame"])
+                self.assertEqual(pcm, list(signal[job["start_frame"] : job["end_frame"]]))
+                previous_end = job["end_frame"]
+        finally:
+            session.close()
+
     def test_partial_control_preserves_final_pcm_and_segmentation(self):
         payloads, segments = [], []
         for partials, mode, policy in (

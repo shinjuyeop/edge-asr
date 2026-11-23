@@ -4,6 +4,7 @@ import argparse
 import json
 import math
 import os
+import re
 import subprocess
 import time
 from copy import deepcopy
@@ -195,6 +196,7 @@ def run(
                     K2SileroProbability(p),
                     threshold=settings.get("vad_threshold", 0.5),
                     max_speech_s=settings.get("vad_max_speech_s", 5),
+                    min_silence_s=settings.get("vad_min_silence_s", 0.3),
                 )
             )
         )(vad_model)
@@ -222,6 +224,22 @@ def run(
                     row.update(status="success", hypothesis=text)
                 finally:
                     row["adapter_result"] = deepcopy(getattr(adapter, "last_result_metadata", None))
+        if stack_hef := os.environ.get("EDGE_ASR_HAILO_CNN_STACK_HEF"):
+            frame_counts = []
+            for row in info["warmup"]:
+                stderr = (row["adapter_result"] or {}).get("native_stderr", "")
+                match = re.search(r"^edge_hailo_cnn_stack frames=([1-9]\d*) ", stderr, re.M)
+                if not match:
+                    raise RuntimeError(
+                        "CNN HEF를 선택했지만 워밍업에서 Hailo 실행을 확인하지 못했습니다."
+                    )
+                frame_counts.append(int(match[1]))
+            info["audio_accelerator"] = {
+                "device": "Hailo-8L",
+                "boundary": "cnn_stack",
+                "hef_sha256": digest(Path(stack_hef)),
+                "warmup_frames": frame_counts,
+            }
         info["status"] = "preparing" if start_signal else "replaying"
         write_json(receipt, info)
         lock = Lock()
@@ -240,7 +258,7 @@ def run(
         session_settings = {
             k: v
             for k, v in settings.items()
-            if k not in ("gap_s", "vad_threshold", "vad_max_speech_s")
+            if k not in ("gap_s", "vad_threshold", "vad_max_speech_s", "vad_min_silence_s")
         }
         session = CaptionSession(
             adapter,
@@ -387,7 +405,27 @@ def argument_parser():
         choices=(5, 15, 30),
         help="VAD가 판정을 강화하는 활성 길이. ASR 구간 상한과 독립; 기본5초 보존",
     )
-    parser.add_argument("--partial-after-s", type=float, default=2, choices=(0.6, 0.8, 1, 2, 3))
+    parser.add_argument(
+        "--vad-min-silence-s",
+        type=float,
+        default=argparse.SUPPRESS,
+        help="일반 VAD 종료를 확정할 무음 길이. 기본 0.3초",
+    )
+    parser.add_argument(
+        "--onset-context-s",
+        type=float,
+        default=argparse.SUPPRESS,
+        help="발화 시작 앞에서 이전 구간이 소유하지 않은 PCM 최대 0.2초를 추가",
+    )
+    parser.add_argument(
+        "--split-on-pause",
+        action="store_true",
+        default=argparse.SUPPRESS,
+        help="상한 전 0.8초 안에서 짧은 쉼이 끝나면 발화 재개 지점에서 분할",
+    )
+    parser.add_argument(
+        "--partial-after-s", type=float, default=2, choices=(0.45, 0.6, 0.8, 1, 2, 3)
+    )
     parser.add_argument("--partial-interval-s", type=float, default=1, choices=(0.5, 1, 2, 4))
     parser.add_argument(
         "--partial-mode", choices=("fixed", "adaptive", "continuous"), default="fixed"
@@ -412,7 +450,7 @@ def argument_parser():
         "--continuous-policy",
         choices=tuple(POLICY_VERSIONS),
         default="latest",
-        help="paced는 계산량 배분, headroom은 호출 종료 여유 확보, headroom_followup은 끝에서 새 토큰을 표시할 여유가 있으면 1회 추가",
+        help="paced는 계산량 배분, headroom은 호출 종료 여유 확보, headroom_followup은 끝에서 새 토큰을 표시할 여유가 있으면 1회 추가, first_text는 첫 표시까지의 시간을 별도 추정",
     )
     parser.add_argument(
         "--followup-gap-target-s",

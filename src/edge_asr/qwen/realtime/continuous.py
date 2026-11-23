@@ -2,15 +2,18 @@
 
 import math
 import time
+from collections import deque
 from threading import Event, Thread
 
 from edge_asr import thermal
+from edge_asr.metrics import normalize
 
 POLICY_VERSIONS = {
     "latest": "latest-completion-v1",
     "paced": "paced-completion-v2",
     "headroom": "estimated-headroom-v1",
     "headroom_followup": "prefix-time-followup-v1",
+    "first_text": "first-text-headroom-v1",
 }
 
 
@@ -51,6 +54,9 @@ class ContinuousPolicy:
         self.segment = None
         self.last_end = 0
         self.followup_used = False
+        self.first_costs = deque(maxlen=3)
+        self.first_request = self.first_display = None
+        self.eligible_logged = False
         self.last_reason = None
         self.deferral = None
         self.blocked_since = None
@@ -84,7 +90,7 @@ class ContinuousPolicy:
             "tail_margin_s": tail / 16000,
             "deferred_s": {},
         }
-        if policy in ("headroom", "headroom_followup"):
+        if policy in ("headroom", "headroom_followup", "first_text"):
             self.stats["final_reserve_max_s"] = None
         if policy == "headroom_followup":
             self.stats["near_final_followups"] = 0
@@ -96,6 +102,19 @@ class ContinuousPolicy:
 
     def record_display(self, event, previous, t0):
         """표시 내용과 PCM 끝이 함께 전진한 서버 발행 시각만 보존한다. 세션 락 안에서 호출."""
+        if (
+            self.policy == "first_text"
+            and self.first_request == (event["segment_id"], event["end_frame"])
+            and event["kind"] == "partial"
+            and event["displayed"]
+            and event["status"] in ("provisional", "success")
+            and any(c.isalnum() for c in normalize(event["hypothesis"] or ""))
+        ):
+            self.first_display = (
+                event["job_id"],
+                t0 + event["published_s"] - event["started_monotonic_s"],
+            )
+            self.first_request = None
         if (
             self.followup_gap_target_s is None
             or event["end_frame"] <= self.last_display_end
@@ -133,9 +152,36 @@ class ContinuousPolicy:
         if self.segment != segment:
             self.discard("segment_change")
             self.segment, self.last_end = segment, start
-            self.followup_used = False
+            self.followup_used = self.eligible_logged = False
+            self.emit(
+                {
+                    "type": "active_span",
+                    "segment_id": segment,
+                    "start_frame": start,
+                    "observed_frame": end,
+                    "at_monotonic_s": self.clock(),
+                }
+            )
         if end <= self.last_end:
             return
+        if (
+            not self.eligible_logged
+            and end - start >= self.minimum
+            and (
+                self.last_end == start or end - self.last_end >= self.min_new * self.thermal_factor
+            )
+        ):
+            self.eligible_logged = True
+            self.emit(
+                {
+                    "type": "partial_audio_eligible",
+                    "segment_id": segment,
+                    "start_frame": start,
+                    "end_frame": end,
+                    "previous_end_frame": self.last_end,
+                    "at_monotonic_s": self.clock(),
+                }
+            )
         if self.candidate:
             self.stats["candidate_replacements"] += 1
         self.candidate = (segment, start, end, read)
@@ -171,6 +217,23 @@ class ContinuousPolicy:
 
     def completed(self, result):
         """실패·취소·final도 소비한 wall 비용에 포함한다. 작업자의 락 안에서 호출한다."""
+        if (
+            self.policy == "first_text"
+            and self.first_display
+            and self.first_display[0] == result["job_id"]
+        ):
+            native = (result.get("adapter_result") or {}).get("native_result") or {}
+            stages = [native.get(k) for k in ("audio_encode_s", "audio_embedding_eval_s")]
+            observed = self.first_display[1]
+            if (
+                result["status"] == "success"
+                and all(type(x) in (int, float) and math.isfinite(x) and x >= 0 for x in stages)
+                and sum(stages) <= observed
+            ):
+                self.first_costs.append(
+                    (result["end_frame"] - result["start_frame"], observed, sum(stages))
+                )
+            self.first_display = None
         if self.policy == "paced":
             cost = result["ended_monotonic_s"] - result["started_monotonic_s"]
             self._account(self.clock(), cost)
@@ -187,7 +250,7 @@ class ContinuousPolicy:
             or previous["status"] != "success"
             or not previous["displayed"]
             or previous["segment_id"] != self.segment
-            or previous["start_frame"] != start
+            or previous.get("owned_start_frame", previous["start_frame"]) != start
             or previous["end_frame"] != self.last_end
         ):
             return None
@@ -219,7 +282,7 @@ class ContinuousPolicy:
         reserve = self.tail / 16000
         if self.policy == "paced" and estimated_s is not None:
             reserve = min(0.8, max(reserve, estimated_s))
-        elif self.policy in ("headroom", "headroom_followup"):
+        elif self.policy in ("headroom", "headroom_followup", "first_text"):
             # 이력이 없을 때는 한 번의 새 음성 간격을 확보한다.
             reserve += self.min_new / 16000 if estimated_s is None else estimated_s
         allowance = 0.35 if first else 0.0
@@ -227,6 +290,22 @@ class ContinuousPolicy:
         followup = False
         display_age = projected_gap = None
         remaining = (self.maximum - (end - start)) / 16000
+        useful_s = None
+        if self.policy == "first_text":
+            remaining = (start + self.maximum - max(end, available_frame or end)) / 16000
+            if first and self.first_costs:
+                # 최근 첫 부분 요청의 실제 의미 문자 발행까지. 새 음성의 encoder/prefill만 길이 보정.
+                useful_s = (
+                    max(
+                        observed + audio * ((end - start) / frames - 1)
+                        for frames, observed, audio in self.first_costs
+                    )
+                    * 1.2
+                )
+            elif not first:
+                useful_s = self._prefix_time(previous, start, end)
+            if useful_s is not None:
+                reserve = self.tail / 16000 + min(reserve - self.tail / 16000, useful_s)
         if end - start < self.minimum or (
             not first and end - self.last_end < self.min_new * self.thermal_factor
         ):
@@ -271,6 +350,15 @@ class ContinuousPolicy:
                         if self.followup_gap_target_s is not None
                         else {}
                     ),
+                    **(
+                        {
+                            "estimated_useful_text_s": useful_s,
+                            "remaining_s": remaining,
+                            "first_cost_samples": len(self.first_costs),
+                        }
+                        if self.policy == "first_text"
+                        else {}
+                    ),
                     "estimated_inference_s": estimated_s,
                     "final_reserve_s": reserve,
                     "thermal_factor": self.thermal_factor,
@@ -302,7 +390,10 @@ class ContinuousPolicy:
         if reason != "offered":
             return None
         # 선택·제출·시작은 같은 condition 안에서 수행해 새 final이 끼어들지 않는다.
+        if self.policy == "first_text":
+            self.first_request = (segment, end) if first else None
         self.last_end = end
+        self.eligible_logged = False
         if followup:
             self.followup_used = True
             self.stats["near_final_followups"] += 1

@@ -35,6 +35,8 @@ class CaptionSession:
         partial_max_calls=2,
         protect_short_followup=False,
         max_segment_s=5,
+        onset_context_s=0.0,
+        split_on_pause=False,
         drain_timeout_s=30,
         queue_capacity=4,
         partials=True,
@@ -46,6 +48,8 @@ class CaptionSession:
         followup_gap_target_s=None,
         partial_thermal_policy="pause",
     ):
+        if not math.isfinite(onset_context_s) or not 0 <= onset_context_s <= 0.2:
+            raise ValueError("발화 시작 문맥은 0~0.2초여야 합니다.")
         if partial_after_s <= 0 or partial_interval_s <= 0:
             raise ValueError("부분 전사 시작·갱신 간격은 양수여야 합니다.")
         if partial_followup_s is not None and (
@@ -85,8 +89,11 @@ class CaptionSession:
             raise ValueError("최종 우선 취소는 continuous·token_stream에서만 선택합니다.")
         if followup_gap_target_s is not None and partial_mode != "continuous":
             raise ValueError("예상 공백 기준에는 continuous 모드가 필요합니다.")
-        if continuous_policy == "headroom_followup" and not cancel_partial_for_final:
-            raise ValueError("headroom_followup은 토큰 표시와 최종 우선 취소가 필요합니다.")
+        if (
+            continuous_policy in ("headroom_followup", "first_text")
+            and not cancel_partial_for_final
+        ):
+            raise ValueError("이 여유시간 정책은 토큰 표시와 최종 우선 취소가 필요합니다.")
         if partial_mode == "continuous" and partial_tail_margin_s > 0.5:
             raise ValueError("continuous 끝 여유는 최대 0.5초입니다.")
         if adaptive_policy not in ("recent", "budgeted") or (
@@ -169,7 +176,9 @@ class CaptionSession:
             "identity",
             max_segment_s,
             self._final,
-            context_frames=0,
+            context_frames=round(onset_context_s * 16000),
+            context_selection="unowned_onset" if onset_context_s else "all",
+            split_on_pause=split_on_pause,
             native_budget_frames=None,
             progress=self._progress,
             vad_policy=vad_preprocess,
@@ -194,6 +203,7 @@ class CaptionSession:
             "paced",
             "headroom",
             "headroom_followup",
+            "first_text",
         ):
             _, start, end, _ = self.continuous.candidate
             estimate = self.worker.estimate_cost("partial", end - start, model="audio_scaled")
@@ -309,8 +319,17 @@ class CaptionSession:
                     timing["visible_text"] = text
                 self.partial = event
 
-    def _offer(self, kind, segment_id, start, end, pcm, *, only_if_idle=False):
-        if not 0 <= start < end <= self.position or end - start != len(pcm):
+    def _offer(self, kind, segment_id, start, end, pcm, *, only_if_idle=False, owned_start=None):
+        if kind == "partial" and self.pipeline.context:
+            owned_start = start
+            start = self.pipeline.payload_start(owned_start)
+            if start < owned_start:
+                prefix = self.pipeline.ring.read(start, owned_start)
+                prefix.extend(pcm)
+                pcm = prefix
+        if not 0 <= start <= (
+            start if owned_start is None else owned_start
+        ) < end <= self.position or end - start != len(pcm):
             raise ValueError("도착한 PCM과 전사 구간이 일치해야 합니다.")
         if self.silence_policy == "skip-zero" and not any(pcm):
             row = {
@@ -322,6 +341,7 @@ class CaptionSession:
                 "available_frame": self.position,
                 "pcm16_sha256": hashlib.sha256(pcm_bytes(pcm)).hexdigest(),
                 "reason": "exact_zero_pcm",
+                **({"owned_start_frame": owned_start} if owned_start is not None else {}),
                 "at_monotonic_s": time.perf_counter(),
             }
             with self.lock:
@@ -340,6 +360,7 @@ class CaptionSession:
             array("f", (x / 32768 for x in pcm)),
             self.position,
             only_if_idle=only_if_idle,
+            **({"owned_start_frame": owned_start} if owned_start is not None else {}),
         )
 
     def _request_partial(self, start, end, read, *, only_if_idle):
@@ -454,7 +475,12 @@ class CaptionSession:
             self.continuous.discard("final", event["segment_id"])
         self.segments.append(dict(event))
         self._offer(
-            "final", event["segment_id"], event["owned_start_frame"], event["owned_end_frame"], pcm
+            "final",
+            event["segment_id"],
+            event["context_start_frame"],
+            event["owned_end_frame"],
+            pcm,
+            owned_start=event["owned_start_frame"] if self.pipeline.context else None,
         )
 
     def start_stream(self):
