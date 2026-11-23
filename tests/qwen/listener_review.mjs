@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createListener} from '../../src/edge_asr/qwen/viewer/web/listener.mjs';
+import {createListener, runConditions} from '../../src/edge_asr/qwen/viewer/web/listener.mjs';
 import {sourceReview, reviewTranscript} from '../../src/edge_asr/qwen/viewer/web/review.mjs';
 import {continuousCaption} from '../../src/edge_asr/qwen/viewer/web/captions.mjs';
 const sources=[{id:'a',start:0,end:32000,reference:'첫 문장'},{id:'b',start:32000,end:64000,reference:'다음 문장'}];
@@ -83,4 +83,19 @@ test('raw final history includes suppressed finals once and ignores stale revisi
  const stale=event(9,0,1600,3,'옛날',{segment_id:0,revision:4});
  const r=sourceReview(sources,[final,final,stale],0);
  assert.equal(reviewTranscript(r),'확정');
+});
+
+test('conditions identify the recorded scheduler and optional PCM boundaries',()=>{
+ for(const policy of ['latest','paced','headroom','headroom_followup','first_text']){
+  const rows=Object.fromEntries(runConditions({settings:{partial_mode:'continuous',continuous_policy:policy}}));
+  assert.match(rows['부분 요청'],new RegExp(policy+' · '));
+  assert.equal(rows['첫 부분 PCM 상한'],undefined);assert.equal(rows['발화 재개 앞 문맥'],undefined);
+ }
+ const rows=Object.fromEntries(runConditions({settings:{partial_mode:'continuous',first_snapshot_cap_s:1.2,
+  split_on_pause:true,onset_context_s:0.2,onset_context_max_gap_s:0.6,vad_min_silence_s:0.5}}));
+ assert.match(rows['부분 요청'],/연속 정책 기록 없음/);assert.doesNotMatch(rows['부분 요청'],/최신 입력 우선/);
+ assert.equal(rows['표시'],'기록 없음');assert.equal(rows['첫 부분 PCM 상한'],'1.2초');
+ assert.equal(rows['쉼 경계 분할'],'사용');assert.equal(rows['발화 재개 앞 문맥'],'0.2초');
+ assert.equal(rows['재개 문맥 적용 최대 공백'],'0.6초');assert.equal(rows['VAD 최소 무음'],'0.5초');
+ assert.equal(rows['오디오 가속'],undefined);
 });
