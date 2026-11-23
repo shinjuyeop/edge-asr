@@ -61,6 +61,12 @@ class SubtitleMetricsTests(unittest.TestCase):
         self.assertEqual(result["owned_first_only_sources"], [])
         self.assertEqual(result["meaningful_four_s"]["mean"], 2.4)
         self.assertEqual(result["fresh_count"], 3)
+        (window,) = result["timeline_windows"]
+        self.assertEqual(window["fresh_displays"], result["fresh_count"])
+        self.assertEqual(window["input_age_at_10hz_s"], result["input_age_at_10hz_s"])
+        self.assertEqual(
+            window["max_gap_clipped_to_window_s"], result["meaningful_fresh_gap_s"]["max"]
+        )
         self.assertEqual(result["missing_first"], 1)
         self.assertEqual(result["missing_file_final"], 0)
         self.assertAlmostEqual(result["common_file_end_final_s"]["p95"], 2.3)

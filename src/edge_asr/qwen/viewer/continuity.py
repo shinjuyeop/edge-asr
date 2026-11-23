@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import math
 from bisect import bisect_left, bisect_right
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -182,6 +183,24 @@ def continuity(worker, records, *, word_starts=None):
             samples_without += 1
         else:
             ages.append(now - fresh[i]["end_frame"] / rate)
+    timeline_windows = []
+    for start in range(0, math.ceil(duration), 300):
+        end = min(start + 300, duration)
+        begin = bisect_left(fresh_times, start)
+        stop = bisect_right(fresh_times, end) if end == duration else bisect_left(fresh_times, end)
+        marks = [start, *fresh_times[begin:stop], end]
+        # age 표본의 미관측 구간은 트랙 맨 앞에만 있다. 마지막 tick도 한 번만 집계한다.
+        tick_start = max(0, start * 10 - samples_without)
+        tick_stop = len(ages) if end == duration else max(0, int(end * 10) - samples_without)
+        timeline_windows.append(
+            {
+                "start_s": start,
+                "end_s": end,
+                "fresh_displays": stop - begin,
+                "max_gap_clipped_to_window_s": max(b - a for a, b in zip(marks, marks[1:])),
+                "input_age_at_10hz_s": distribution(ages[tick_start:tick_stop]),
+            }
+        )
     windows = worker.get("segments", [])
     active_gaps = []
     for s in windows:
@@ -240,6 +259,7 @@ def continuity(worker, records, *, word_starts=None):
         ),
         "input_age_at_10hz_s": distribution(ages),
         "age_samples_before_first": samples_without,
+        "timeline_windows": timeline_windows,
         "longest_gaps": [
             {
                 "from_s": times[i],
