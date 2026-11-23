@@ -7,14 +7,20 @@
 현재 환경의 개발 PC 터미널에서 실행합니다. 먼저 Host 변경을 main에 push하고, RP5에 같은 소스를 동기화합니다. 다른 추론이 실행 중일 때는 새 평가를 시작하지 않습니다.
 
 ```bash
+run=results/optimization/opt3/hailo-cnn-stack-20261123-01
 .venv/bin/python scripts/edge_asr.py tools listen-qwen3 \
   --ssh rp5 --port 8765 \
   --profile configs/listener.toml \
+  --run "$run/fixed-stack" --run "$run/fixed-conv" --run "$run/fixed-cpu" \
   --run results/optimization/opt3/realtime-prefix-cache-20261112-01/full100/on \
   --run results/optimization/opt3/realtime100-onnx-20261110-02
 ```
 
-이 명령은 RP5의 localhost 청취 서버를 기존 SSH로 개발 PC의 `127.0.0.1:8765`에 전달합니다. RP5에는 추가 Python 패키지를 설치하지 않습니다. 개발 PC 브라우저에서는 `http://127.0.0.1:8765`를 엽니다. 노트북에서는 개발 PC에 연결한 VS Code의 **Ports → Forward a Port → 8765**를 사용하고 안내된 로컬 주소를 엽니다. 이미 해당 포트를 쓰고 있으면 다른 `--port`를 지정합니다.
+이 명령은 RP5의 청취 서버를 SSH로 개발 PC에 연결합니다. 노트북에서는 개발 PC에 연결한 VS Code의 **Ports → Forward a Port → 8765**를 사용하고 안내된 로컬 주소를 엽니다. 개발 PC에서는 아래 링크를 클릭합니다.
+
+[http://127.0.0.1:8765](http://127.0.0.1:8765)
+
+Conv1·2·3 묶음은 **기록 재생**에서 `hailo-cnn-stack-20261123-01/fixed-stack`을 선택하고 **기록 불러오기 → 재생**을 누릅니다. 같은 원음의 Conv2 단독과 CPU 전용 결과는 각각 `fixed-conv`, `fixed-cpu`에서 들을 수 있습니다.
 
 두 브라우저가 같은 실행을 볼 수 있고, 각 장비에서 음량을 조절합니다. 라이브 탭에서 준비한 실행은 다른 화면의 기록 목록에도 나타납니다. 준비·실행 중인 기록을 라이브로 보려면 라이브 모드에서 실행 ID를 선택하는 흐름을 사용합니다. 서버 종료나 브라우저 닫기로 이미 시작한 RP5 평가를 자동 중단하지 않습니다. **이 평가 중단** 버튼은 해당 서버가 실행한 평가만 중단하고 원시를 보존합니다. 종료 제한은 기존 thermal-run의 1800초·4GiB·운영 온도 기록을 사용합니다.
 
