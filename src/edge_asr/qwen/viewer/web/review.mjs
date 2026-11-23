@@ -1,12 +1,13 @@
 // 원래 발행 시각을 유지하면서 선택한 원음의 결과만 검토한다.
+import {finalRecords} from './captions.mjs';
+
 export function sourceReview(sources, events, index) {
   const source = sources[index];
   if (!source) return null;
   const relevant = events.filter(e =>
     !e.stale_revision && e.start_frame < source.end && e.end_frame > source.start &&
     (e.type === 'token' || e.type === 'result'));
-  const finals = relevant.filter(e => e.type === 'result' && e.kind === 'final')
-    .sort((a, b) => a.start_frame - b.start_frame);
+  const finals = finalRecords(relevant);
   return {
     index, source, events: relevant, finals,
     start: source.start / 16000,

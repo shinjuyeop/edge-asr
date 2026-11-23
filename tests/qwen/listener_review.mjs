@@ -67,3 +67,18 @@ test('continuous captions keep completed context, accept corrections and reject 
  rows.push(event(7,32000,48000,5,'다음 확정',{segment_id:1}));
  assert.equal(continuousCaption(rows).text,'첫 확정 다음 확정');
 });
+
+test('punctuation finals preserve readable context and audible repeats remain distinct',()=>{
+ const a=event(0,0,1000,1,'안 돼'),b=event(1,1000,2000,2,'안 돼');
+ const empty=event(2,2000,3000,3,'.');
+ const pending=event(3,3000,4000,4,'다음',{kind:'partial',status:'success'});
+ assert.equal(continuousCaption([a,b,empty,pending]).text,'안 돼 안 돼 다음');
+ assert.equal(reviewTranscript(sourceReview([{id:'x',start:0,end:5000}],[a,b,empty,pending],0)),'안 돼 안 돼 .');
+});
+
+test('raw final history includes suppressed finals once and ignores stale revisions',()=>{
+ const final=event(4,0,1600,2,'확정',{segment_id:0,revision:6,displayed:false});
+ const stale=event(9,0,1600,3,'옛날',{segment_id:0,revision:4});
+ const r=sourceReview(sources,[final,final,stale],0);
+ assert.equal(reviewTranscript(r),'확정');
+});

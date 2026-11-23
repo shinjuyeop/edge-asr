@@ -1,5 +1,5 @@
 import {sourceReview, reviewTranscript} from './review.mjs';
-import {continuousCaption} from './captions.mjs';
+import {continuousCaption, finalRecords} from './captions.mjs';
 export function createListener(browser=globalThis) {
   const {document, window, AudioContext, fetch, performance, devicePixelRatio,
     requestAnimationFrame, setTimeout, setInterval, Blob, navigator, URL}=browser;
@@ -11,7 +11,7 @@ export function createListener(browser=globalThis) {
   let calibration=null, clockSamples=[], observations=[], lastEventKey='', tableKey='';
   let lastArrival=null, follow=false, currentSource=-1, busy=false, selectionDirty=false;
   let audioEnded=false, completionNotified=false, resultsShown=false;
-  let review=null, reviewDone=false;
+  let review=null, reviewDone=false, historyKey=null, lastDomText=null;
   const reviewing = () => mode==='replay' && !isMic() && $('replayStyle').value==='source';
   const isMic = () => run?.input?.kind==='microphone';
   const isLive = () => mode!=='replay';
@@ -79,7 +79,7 @@ export function createListener(browser=globalThis) {
     for(const button of $('sourceRows').querySelectorAll('button')){button.disabled=$('seek').disabled;button.closest('tr').classList.toggle('listenable',!button.disabled);}
   }
   function clearRun(){
-    stopAudio();epoch++;run=null;events=[];buffer=null;cursor=0;position=0;lastEventKey='';tableKey='';
+    stopAudio();epoch++;run=null;events=[];historyKey=null;lastDomText=null;buffer=null;cursor=0;position=0;lastEventKey='';tableKey='';
     review=null;reviewDone=false;$('seek').min=0;
     currentSource=-2;loadingAudio=false;follow=false;selectionDirty=false;observations=[];lastArrival=null;calibration=null;clockSamples=[];
     audioEnded=false;completionNotified=false;resultsShown=false;$('finalResult').open=false;$('finalTranscript').textContent='확정 결과 대기';
@@ -146,6 +146,7 @@ export function createListener(browser=globalThis) {
   function renderConditions(){
     if(!run)return;const m=run.config?.model||{},s=run.settings||{};
     const fields=[['모델',`${m.family||'준비 중'} · ${m.quantization||'—'}`],['스레드',`${m.num_threads??'—'} / ${m.num_threads_batch??m.num_threads??'—'}`],['고정 KV',m.cache_text_prefix?'사용':'미사용'],['부분 요청',s.partial_mode==='continuous'?`연속 수정 / 첫 ${s.partial_after_s}초 / 새 음성 ${s.partial_min_new_s}초 / ${s.continuous_policy==='paced'?'계산량에 따라 간격 조절':'최신 입력 우선'} / ${s.partial_thermal_policy==='pace'?'열 상태에 따라 간격 조절':'열 상태에 따라 일시 대기'}`:s.partial_mode==='adaptive'?`가변${s.adaptive_policy==='budgeted'?`·첫 요청 보호 / ${s.partial_max_calls}회·${s.partial_budget_s}초 예산`:''} / 첫 ${s.partial_after_s}초 / 새 음성 ${s.partial_min_new_s}초 / 끝 여유 ${s.partial_tail_margin_s}초`:`첫 ${s.partial_after_s??'—'}초 / 다음 ${s.partial_followup_s??s.partial_interval_s??'—'}초 뒤 / 이후 ${s.partial_interval_s??'—'}초`],['짧은 첫 결과 후속',s.protect_short_followup?'4자 미만·1회 비용 예산 예외':'사용 안 함'],['구간',`${s.max_segment_s??'—'}초`],['VAD',`${s.vad_preprocess||'—'} / ${s.vad_threshold??'—'}`],['표시',s.token_stream?'생성 중 토큰':'완성 문자열'],['소스',(run.source_commit||'—').slice(0,8)]];
+    if(run.audio_accelerator)fields.push(['오디오 가속','Hailo-8L · CNN (워밍업 장치 호출 확인)']);
     if(m.family==='qwen3_gguf'){fields[0][0]='텍스트';fields.splice(1,0,['오디오',m.audio_quantization??'q8_0']);}
     const windowSeconds=m.partial_audio_window_ms!=null?m.partial_audio_window_ms/1000:m.partial_audio_window_s;
     if(windowSeconds)fields.splice(3,0,['부분 음성 창',`${windowSeconds}초 / 캐시 ${m.partial_audio_window_cache===false?'끔':'켬'} / 확정은 전체 구간`]);
@@ -200,24 +201,36 @@ export function createListener(browser=globalThis) {
       highlightSource();
     }
     if(isMic()){$('referenceText').textContent=run.input.reference||'자유 발화 · 정답 미입력';$('sourceName').textContent=`RP5 · ${run.input.device}`;$('sourceTag').textContent='마이크';}
-    const shown=displayEvents(isLive()&&follow?Infinity:at);
+    const horizon=isLive()&&follow?Infinity:at;
+    const shown=displayEvents(horizon);
     const continuous=run?.settings?.partial_mode==='continuous'?continuousCaption(shown):null,e=continuous?.last||shown.at(-1);
     const eventKey=e?`${e.job_id}:${e.type}:${e.published_s}:${continuous?.text||''}`:'';
     if(eventKey!==lastEventKey||!e){
-      lastEventKey=eventKey;$('hypothesis').textContent=continuous?.text||(e?.status==='failed'?'이 구간의 전사에 실패했습니다.':e?.hypothesis||(isLive()?'입력이 시작되면 자막이 표시됩니다.':'재생하면 자막이 표시됩니다.'));$('hypothesis').classList.toggle('muted',!e?.hypothesis);
+      lastEventKey=eventKey;$('hypothesis').textContent=(continuous&&e?continuous.text||'[빈 확정 전사]':null)||(e?.status==='failed'?'이 구간의 전사에 실패했습니다.':e?.hypothesis||(isLive()?'입력이 시작되면 자막이 표시됩니다.':'재생하면 자막이 표시됩니다.'));$('hypothesis').classList.toggle('muted',!e?.hypothesis);
       $('captionState').textContent=e?e.status==='failed'?'실패':e.type==='token'?'생성 중':e.kind==='final'?'확정':'부분 결과':'대기';
       $('captionState').dataset.state=e?e.status==='failed'?'failed':e.type==='result'&&e.kind==='final'?'final':'partial':'waiting';
       const matches=e?sources.filter(s=>e.start_frame<s.end&&e.end_frame>s.start):[];
       $('captionTarget').textContent=e?`${isMic()?'발화 구간 '+(e.segment_id+1):'원음 '+(matches.map(s=>sources.indexOf(s)+1).join('·')||'—')} · 처리 ${e.start_frame/16000>=0?(e.start_frame/16000).toFixed(2):'—'}–${(e.end_frame/16000).toFixed(2)}초 · RP5 발행 +${e.published_s.toFixed(2)}초`:'';
-      const finals=reviewing()&&review?review.finals.filter(e=>e.published_s<=at):shown.filter(e=>e.type==='result'&&e.kind==='final').sort((a,b)=>a.start_frame-b.start_frame);
+    }
+    const finals=finalRecords(reviewing()&&review?review.finals:events,horizon);
+    const finalKey=finals.map(row=>row.job_id).join(',');
+    if(finalKey!==historyKey||!run){
+      historyKey=finalKey;
       $('finalTranscript').textContent=finals.map(e=>e.status==='failed'?'[전사 실패]':e.hypothesis||'[빈 전사]').join(' ')||'확정 결과 대기';
-      $('history').replaceChildren(...finals.slice(-8).reverse().map(e=>{const div=document.createElement('div');div.className='history-row';const span=document.createElement('span'),p=document.createElement('p');span.textContent=`${clock(e.published_s)} · 구간 ${e.segment_id+1} · ${e.status==='failed'?'실패':'확정'}`;p.textContent=e.hypothesis||'빈 전사 · 실패 기록';div.append(span,p);return div;}));
+      $('history').replaceChildren(...finals.slice(-8).reverse().map(e=>{const div=document.createElement('div');div.className='history-row';const span=document.createElement('span'),p=document.createElement('p');span.textContent=`${clock(e.published_s)} · 구간 ${e.segment_id+1} · ${e.status==='failed'?'실패':'확정'}`;p.textContent=e.hypothesis||(e.status==='failed'?'[전사 실패]':'[빈 전사]');div.append(span,p);return div;}));
     }
     if(reviewing()&&review&&reviewDone){
       $('hypothesis').textContent=reviewTranscript(review);$('hypothesis').classList.remove('muted');
       $('captionState').textContent='확정 전사';$('captionState').dataset.state='final';
       $('captionTarget').textContent=`원음 ${review.index+1}의 확정 결과${review.crossesBoundary?' · 원음 경계를 걸친 구간 포함':''}`;
     }
+    const domText=$('hypothesis').textContent;
+    if(run&&e&&domText!==lastDomText){
+      observations.push({type:'dom_caption',mode,review_source:reviewing()?review?.index:null,
+        job_id:e.job_id,segment_id:e.segment_id,revision:e.revision??null,token_index:e.token_index??null,
+        published_s:e.published_s,browser_applied_s:performance.now()/1000,track_s:at,text:domText});
+    }
+    lastDomText=domText;
     if(!resultsShown&&((buffer&&at>=buffer.duration)||(isLive()&&follow&&run?.terminal))){resultsShown=true;$('finalResult').open=true;}
     const heard=source?shown.filter(r=>r.hypothesis&&r.status!=='failed'&&r.start_frame<source.end&&r.end_frame>source.start&&sources.filter(s=>r.start_frame<s.end&&r.end_frame>s.start).length===1):[];
     const first=heard.find(r=>r.hypothesis.trim()),four=heard.find(r=>Array.from(r.hypothesis).filter(c=>/[\p{L}\p{N}]/u.test(c)).length>=4);
@@ -235,7 +248,7 @@ export function createListener(browser=globalThis) {
         if(e.displayed){const t0=state.clock?.t0_monotonic_s;
           const extra=isLive()&&t0&&calibration?received+calibration.offset-t0-e.published_s:null;
           if(extra!=null)lastArrival=extra;
-          observations.push({type:'received',job_id:e.job_id,event:e.type,published_s:e.published_s,browser_received_s:received,forwarding_estimate_s:extra});
+          observations.push({type:'received',job_id:e.job_id,segment_id:e.segment_id,revision:e.revision??null,token_index:e.token_index??null,event:e.type,published_s:e.published_s,browser_received_s:received,forwarding_estimate_s:extra});
         }
       }
       events.push(...state.events);cursor=state.cursor;run=state;
@@ -337,7 +350,7 @@ export function createListener(browser=globalThis) {
   $('rewind').onclick=()=>{if(reviewing()&&review){selectReview(review.index);return;}stopAudio();position=0;lastEventKey='';renderCaption(0);$('play').textContent='재생';};
   $('seek').oninput=()=>{if(mode!=='replay')return;const was=playing;stopAudio();position=Number($('seek').value);reviewDone=false;lastEventKey='';if(was)playAudio(position);else $('play').textContent='재생';renderCaption(position);};
   $('volume').oninput=()=>{if(gain)gain.gain.value=Number($('volume').value);};$('sort').onchange=renderTable;
-  $('download').onclick=()=>{const blob=new Blob([JSON.stringify({run:run?.id,mode,userAgent:navigator.userAgent,audioOutputLatency:context?.outputLatency??null,scope:'브라우저 수신·재생 추정. 물리 화면/음향 실측 아님.',observations},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`listener-${run?.id||'session'}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);};
+  $('download').onclick=()=>{const blob=new Blob([JSON.stringify({run:run?.id,mode,userAgent:navigator.userAgent,audioOutputLatency:context?.outputLatency??null,scope:'브라우저 수신, DOM 텍스트 적용 및 재생 추정 시각. 물리 화면·음향 출력 미측정.',observations},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`listener-${run?.id||'session'}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);};
   window.addEventListener('resize',drawWave);
   async function start(){
   await refreshCatalog().catch(e=>{connection(false);notice(e.message,true);});
