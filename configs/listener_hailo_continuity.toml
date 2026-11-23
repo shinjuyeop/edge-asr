@@ -1,0 +1,31 @@
+title = "Q8 + Hailo-8L · 자막 연속 표시 · 4초 구간과 짧은 쉼 문맥"
+config = "configs/gguf_realtime_2_4.toml"
+manifest = "data/evaluation/edge100-20261109-01/manifest.jsonl"
+vad_model = "models/silero-vad-k2-20261029/silero_vad.onnx"
+
+[hailo]
+preload = "runtimes/qwen3-opt/hailo-partitions-20261123-01/hybrid.so"
+preload_sha256 = "31ea76300452fa6652e44823551ef40fa81cfcc2d881a28ccfa0cf21b7d0ae5d"
+cnn_stack_hef = "runtimes/qwen3-opt/hailo-cnn-stack-20261123-01/qwen_cnn_stack.hef"
+cnn_stack_hef_sha256 = "2eaa3e44f082b6b91465cc2a3c1cdea8bc3c18b309ca508d223b7d0312b04235"
+
+[replay]
+gap_s = 0.0
+vad_threshold = 0.3
+vad_preprocess = "rms26-floor80"
+vad_max_speech_s = 15
+max_segment_s = 4
+partial_mode = "continuous"
+continuous_policy = "first_text"
+partial_after_s = 0.45
+partial_min_new_s = 0.65
+partial_tail_margin_s = 0.15
+partial_thermal_policy = "pace"
+cancel_partial_for_final = true
+token_stream = true
+drain_timeout_s = 30
+queue_capacity = 4
+silence_policy = "skip-zero"
+split_on_pause = true
+onset_context_s = 0.2
+onset_context_max_gap_s = 0.5
