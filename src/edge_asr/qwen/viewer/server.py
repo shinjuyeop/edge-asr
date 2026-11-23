@@ -135,11 +135,19 @@ def main():
     parser.add_argument("--profile", type=Path, action="append", default=[])
     parser.add_argument("--manifest", type=Path, action="append", default=[])
     parser.add_argument("--ssh", help="개발 PC에서 RP5 서버 실행·localhost 포트 전달")
+    parser.add_argument(
+        "--ssh-device-session",
+        type=Path,
+        help="RP5 장치를 임시로 여는 기존 Bash 스크립트. 해당 청취 평가가 끝난 뒤 장치를 반환",
+    )
+    parser.add_argument("--wait-for-evaluation", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--remote-root", default="/home/deepet/projects/edge-asr")
     parser.add_argument("--stdio-lifetime", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args()
     if not 1024 <= args.port <= 65535:
         parser.error("포트는 1024~65535 범위입니다.")
+    if args.ssh_device_session and not args.ssh:
+        parser.error("--ssh-device-session에는 --ssh가 필요합니다.")
     if args.ssh:
         if args.ssh.startswith("-"):
             parser.error("SSH 별칭 오류")
@@ -155,6 +163,8 @@ def main():
         for key in ("run", "profile", "manifest"):
             for value in getattr(args, key):
                 argv.extend(["--" + key, str(value)])
+        if args.ssh_device_session:
+            argv = ["bash", "--", str(args.ssh_device_session), *argv, "--wait-for-evaluation"]
         remote = "cd " + shlex.quote(args.remote_root) + " && exec " + shlex.join(argv)
         command = [
             "ssh",
@@ -194,6 +204,8 @@ def main():
         pass
     finally:
         server.server_close()
+        if args.wait_for_evaluation:
+            library.wait_for_evaluation()
 
 
 if __name__ == "__main__":

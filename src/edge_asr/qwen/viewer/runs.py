@@ -185,6 +185,7 @@ class Library:
         self.process = None
         self.active_id = None
         self.stopping = False
+        self.closing = False
         self.active = None
         self.lock = threading.RLock()
         self.cache = self.root / "results/listener"
@@ -291,8 +292,18 @@ class Library:
             run.audio_path = target
             return target
 
+    def wait_for_evaluation(self):
+        """임시 장치 세션의 수명이 이 서버에서 시작한 평가를 포함하게 한다."""
+        with self.lock:
+            self.closing = True
+            process = self.process
+        if process is not None:
+            process.wait()
+
     def launch(self, profile_id, selection, *, microphone=None):
         with self.lock:
+            if self.closing:
+                raise ValueError("청취 장치 세션을 종료 중입니다.")
             if self.process and self.process.poll() is None:
                 raise ValueError("이미 준비 또는 실행 중인 평가가 있습니다.")
             # 부모는 생성 직후 닫고 guard만 보유한다. 실패·완료 뒤 잠금이 남지 않는다.

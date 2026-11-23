@@ -2,6 +2,7 @@
 
 import json
 import os
+import shlex
 import shutil
 import signal
 import subprocess
@@ -333,6 +334,25 @@ class ListenerTests(unittest.TestCase):
         before = digest(self.output / "viewer-start.json")
         self.assertEqual(value, self.library.start(self.run.id))
         self.assertEqual(before, digest(self.output / "viewer-start.json"))
+
+    def test_ssh_device_session_owns_the_guard_until_it_finishes(self):
+        from edge_asr.qwen.viewer.server import main
+
+        wrapper = "results/maintenance/device setup.sh"
+        with patch.object(sys, "argv", ["listen", "--ssh", "rp5", "--ssh-device-session", wrapper]):
+            with patch("edge_asr.qwen.viewer.server.subprocess.call", return_value=0) as call:
+                self.assertEqual(main(), 0)
+        args = shlex.split(call.call_args.args[0][-1])
+        self.assertEqual(
+            args[args.index("exec") + 1 : args.index(".venv/bin/python")], ["bash", "--", wrapper]
+        )
+        self.assertIn("--wait-for-evaluation", args)
+        self.library.process = Mock()
+        self.library.wait_for_evaluation()
+        self.library.process.wait.assert_called_once_with()
+        self.library.process.send_signal.assert_not_called()
+        with self.assertRaisesRegex(ValueError, "종료 중"):
+            self.library.launch("test", "all")
 
     def test_stop_waits_for_cleanup_is_idempotent_and_preserves_worker(self):
         self.worker.update(status="ready", telemetry={})
