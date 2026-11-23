@@ -26,6 +26,7 @@ def event_record(row):
         "token_index",
         "published_s",
         "start_frame",
+        "owned_start_frame",
         "end_frame",
         "available_frame",
         "payload_float32_sha256",
@@ -58,7 +59,7 @@ def continuity(worker, records, *, word_starts=None):
         if e["type"] == "partial_decision":
             decisions[e["segment_id"]].append(e)
     previous = {}
-    first, four, old_first = {}, {}, {}
+    first, four, old_first, owned_first = {}, {}, {}, {}
     final_at = {}
     fresh = []
     old_marks = []
@@ -73,9 +74,9 @@ def continuity(worker, records, *, word_starts=None):
             right += 1
         if e.get("stale_revision"):
             continue
+        owned_left = bisect_right(ends, e.get("owned_start_frame", lo))
         if e["type"] == "result" and e["kind"] == "final":
             # 이전 파일에서 빌린 왼쪽 문맥은 이 확정이 소유한 원음이 아니다.
-            owned_left = bisect_right(ends, e.get("owned_start_frame", lo))
             for index in range(owned_left, right):
                 final_at[index] = at
         if not visible(e) or e.get("status") == "cancelled":
@@ -97,6 +98,8 @@ def continuity(worker, records, *, word_starts=None):
         if not text or prior.startswith(text):
             continue
         previous[segment] = text
+        if owned_left + 1 == right:
+            owned_first.setdefault(owned_left, e)
         if unique:
             first.setdefault(left, e)
             if len(text) >= 4:
@@ -213,6 +216,9 @@ def continuity(worker, records, *, word_starts=None):
         "source_time_origin": "원음 파일 시작 또는 녹음 시작, 음향 단어 시작 시각 미측정",
         "raw_first_any_s": delays(old_first),
         "meaningful_first_s": delays(first),
+        "first_by_owned_s": delays(owned_first),
+        "owned_first_only_sources": [sources[i]["id"] for i in sorted(owned_first.keys() - first)],
+        "owned_first_scope": "보조 지표. 소유 PCM이 한 원음에만 겹친 요청의 첫 본문 발행까지 잰다. 빌린 앞 파일의 음성이 글자에 기여할 수 있어 어휘 귀속·정확도를 보장하지 않는다.",
         "onsets": onset_latencies(worker, records, first, word_starts or {}),
         "meaningful_four_s": delays(four),
         "missing_first": len(sources) - len(first),
