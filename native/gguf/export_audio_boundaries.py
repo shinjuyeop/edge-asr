@@ -43,11 +43,9 @@ def export(weights, kind, tokens, path):
         half = constant("half", np.float32(0.5))
         root = constant("sqrt_two", np.float32(np.sqrt(2)))
         one = constant("one", np.float32(1))
-        if kind == "cnn_stack":
-            # DFC 3.x가 GELU로 인식하는 곱셈 순서. Qwen의 Erf와 계수는 그대로 쓴다.
-            cdf = op("Add", one, op("Erf", op("Div", x, root)))
-            return op("Mul", op("Mul", x, cdf), half)
-        return op("Mul", op("Mul", x, half), op("Add", one, op("Erf", op("Div", x, root))))
+        # DFC 3.x가 GELU로 인식하는 곱셈 순서. Qwen의 Erf와 계수는 그대로 쓴다.
+        cdf = op("Add", one, op("Erf", op("Div", x, root)))
+        return op("Mul", op("Mul", x, cdf), half)
 
     def conv(x, i, bias=True):
         prefix = f"a.conv2d.{i}"
@@ -83,16 +81,26 @@ def export(weights, kind, tokens, path):
         )
 
     x = "input"
-    if kind in ("conv1", "conv1_linear", "cnn_projection", "cnn_stack"):
+    if kind in ("conv1", "conv1_linear", "cnn_projection", "cnn_stack", "cnn_projected"):
         input_shape = [1, 1, 128, 100]
         x = conv(x, 1, bias=kind != "conv1_linear")
         output_shape = [1, 480, 64, 50]
-        if kind in ("cnn_projection", "cnn_stack"):
+        if kind in ("cnn_projection", "cnn_stack", "cnn_projected"):
             x = gelu(conv(gelu(conv(gelu(x), 2)), 3))
             output_shape = [1, 480, 16, 13]
         if kind == "cnn_projection":
             x = projection(x)
             output_shape = [1, 13, 896]
+        if kind == "cnn_projected":
+            # 각 시간 위치에서 원래 투영의 열은 c*16+f 순서다.
+            tensor = weights["a.conv_out.weight"]
+            matrix = gguf.dequantize(tensor.data, tensor.tensor_type).astype(np.float32)
+            kernel = constant("conv_out_kernel", matrix.reshape(896, 480, 16, 1))
+            x = op("Conv", x, kernel, kernel_shape=[16, 1])
+            output_shape = [1, 896, 1, 13]
+    elif kind == "conv23":
+        input_shape, output_shape = [1, 480, 64, 50], [1, 480, 16, 13]
+        x = gelu(conv(gelu(conv(x, 2)), 3))
     elif kind in ("conv2", "conv3", "conv2_linear"):
         second = kind.startswith("conv2")
         input_shape = [1, 480, 64, 50] if second else [1, 480, 32, 25]
@@ -138,13 +146,22 @@ def export(weights, kind, tokens, path):
         file.write(model.SerializeToString())
 
 
-def export_frame_matrices(directory, text_gguf, output):
+def export_frame_matrices(directory, text_gguf, output, *, qkv=False):
     """DFT·Mel·LLM FFN up은 행별 독립 선형 변환이다. 실제 GGML 방향을 유지한다."""
     if digest(text_gguf) != MODEL_FILES["Qwen3-ASR-0.6B-Q8_0.gguf"]:
         raise ValueError("현재 Q8 text GGUF 해시와 일치해야 합니다.")
     reader = gguf.GGUFReader(text_gguf)
-    up = next(t for t in reader.tensors if t.name == "blk.0.ffn_up.weight")
-    matrices = {"llm_up": gguf.dequantize(up.data, up.tensor_type).reshape(3072, 1024)}
+    tensors = {t.name: t for t in reader.tensors}
+
+    def matrix(name):
+        tensor = tensors[name]
+        return gguf.dequantize(tensor.data, tensor.tensor_type).reshape(-1, 1024)
+
+    matrices = {"llm_up": matrix("blk.0.ffn_up.weight")}
+    if qkv:
+        matrices["llm_qkv"] = np.concatenate(
+            [matrix(f"blk.0.attn_{role}.weight") for role in ("q", "k", "v")]
+        )
     for name, rows, columns in (("dft_basis", 402, 400), ("mel_filters", 128, 201)):
         file = directory / f"{name}_1_1_{rows}_{columns}.f32"
         matrices[name] = np.fromfile(file, dtype="<f4").reshape(rows, columns)
@@ -170,7 +187,10 @@ def main():
     p.add_argument("--output", required=True, type=Path)
     p.add_argument("--linear-reference", type=Path, help="실제 DFT·Mel 계수를 추출한 호출 디렉터리")
     p.add_argument("--text-gguf", type=Path, help="첫 LLM FFN up 투영의 원래 Q8 가중치")
+    p.add_argument("--qkv", action="store_true", help="첫 LLM 블록의 Q/K/V를 행 방향으로 묶음")
     args = p.parse_args()
+    if args.qkv and not args.text_gguf:
+        p.error("--qkv에는 --text-gguf가 필요합니다.")
     if bool(args.linear_reference) != bool(args.text_gguf):
         p.error("--linear-reference와 --text-gguf를 함께 지정하세요.")
     if digest(args.audio_gguf) != MODEL_FILES["mmproj-Qwen3-ASR-0.6B-Q8_0.gguf"]:
@@ -179,7 +199,7 @@ def main():
         p.error("한 encoder 창에서 패딩을 포함한 실제 13~104 토큰 수를 지정하세요.")
     args.output.mkdir(parents=True, exist_ok=False)
     if args.linear_reference:
-        export_frame_matrices(args.linear_reference, args.text_gguf, args.output)
+        export_frame_matrices(args.linear_reference, args.text_gguf, args.output, qkv=args.qkv)
     weights = {w.name: w for w in gguf.GGUFReader(args.audio_gguf).tensors}
     for kind in (
         "conv1",
@@ -190,8 +210,12 @@ def main():
         "conv_out",
         "cnn_projection",
         "cnn_stack",
+        "cnn_projected",
+        "conv23",
     ):
         export(weights, kind, None, args.output / f"{kind}.onnx")
+    for kind in ("ffn0", "projector"):
+        export(weights, kind, 1, args.output / f"{kind}-row.onnx")
     for tokens in sorted(set(args.tokens)):
         for kind in ("block0", "ffn0", "projector"):
             export(weights, kind, tokens, args.output / f"{kind}-{tokens}.onnx")

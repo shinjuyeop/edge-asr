@@ -1,4 +1,4 @@
-// Qwen 합성곱 한 층, bias·GELU를 포함한 세 층, CNN 출력 투영의 선택 preload.
+// 고정 Qwen 오디오 그래프의 선택적 Hailo 경계. 기본 CPU 실행은 그대로 둔다.
 #include "ggml.h"
 #include <hailo/hailort.hpp>
 #include <algorithm>
@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <dlfcn.h>
+#include <map>
 #include <memory>
 #include <mutex>
 #include <stdexcept>
@@ -30,15 +31,25 @@ void transpose(const float* src, float* dst, size_t batches, size_t rows, size_t
     }
 }
 
-bool uses_both_networks() {
-    return (std::getenv("EDGE_ASR_HAILO_LAYER") || std::getenv("EDGE_ASR_HAILO_CNN_STACK_HEF"))
-        && std::getenv("EDGE_ASR_HAILO_PROJECTION_HEF");
+bool scheduled() {
+    int networks = 0;
+    for (const char* var : {"EDGE_ASR_HAILO_LAYER", "EDGE_ASR_HAILO_CNN_STACK_HEF",
+                            "EDGE_ASR_HAILO_PROJECTION_HEF", "EDGE_ASR_HAILO_FUSED_HEF",
+                            "EDGE_ASR_HAILO_EMBED_HEF", "EDGE_ASR_HAILO_CONV23_HEF"}) {
+        networks += std::getenv(var) != nullptr;
+    }
+    // 각 길이의 Transformer 블록은 별도 정적 HEF다.
+    return networks > 1 || std::getenv("EDGE_ASR_HAILO_BLOCK_DIR");
 }
 
-enum class Boundary { conv, projection, cnn_stack };
+enum class Boundary { conv, projection, cnn_stack, fused, embed, block, conv23 };
 
 const char* boundary_name(Boundary boundary) {
     switch (boundary) {
+        case Boundary::fused: return "fused";
+        case Boundary::embed: return "embed";
+        case Boundary::block: return "block";
+        case Boundary::conv23: return "conv23";
         case Boundary::conv: return "conv";
         case Boundary::projection: return "projection";
         case Boundary::cnn_stack: return "cnn_stack";
@@ -54,7 +65,7 @@ std::shared_ptr<VDevice> qwen_device() {
     hailo_vdevice_params_t params{};
     if (hailo_init_vdevice_params(&params) != HAILO_SUCCESS)
         throw std::runtime_error("Hailo device parameters missing");
-    params.scheduling_algorithm = uses_both_networks()
+    params.scheduling_algorithm = scheduled()
         ? HAILO_SCHEDULING_ALGORITHM_ROUND_ROBIN : HAILO_SCHEDULING_ALGORITHM_NONE;
     std::shared_ptr<VDevice> device = VDevice::create(params).expect("Hailo device");
     shared = device;
@@ -69,6 +80,7 @@ class QwenNetwork {
     std::unique_ptr<InferVStreams> pipeline;
     std::string input_name, output_name;
     size_t input_bytes, output_bytes;
+    Clock::time_point last_temperature{};
     std::mutex lock;
     std::vector<float> packed_input, packed_output;
 public:
@@ -89,25 +101,27 @@ public:
         pipeline = std::make_unique<InferVStreams>(InferVStreams::create(*group, inputs, outputs).expect("Conv pipeline"));
         input_bytes = pipeline->get_input_vstreams().front().get().get_frame_size();
         output_bytes = pipeline->get_output_vstreams().front().get().get_frame_size();
-        if (!uses_both_networks()) active = group->activate().expect("activate");
+        if (!scheduled()) active = group->activate().expect("activate");
     }
 
     void infer(const ggml_tensor* src, ggml_tensor* dst, Boundary boundary) {
         std::lock_guard<std::mutex> guard(lock);
-        const bool projection = boundary == Boundary::projection;
-        const size_t count = projection ? src->ne[1] : src->ne[3];
+        const bool rows = boundary == Boundary::projection || boundary == Boundary::embed;
+        const bool image_output = boundary == Boundary::conv || boundary == Boundary::cnn_stack ||
+                                  boundary == Boundary::conv23;
+        const size_t count = rows ? src->ne[1] : src->ne[3];
         if (ggml_nbytes(src) != count * input_bytes || ggml_nbytes(dst) != count * output_bytes ||
             !ggml_is_contiguous(src) || !ggml_is_contiguous(dst))
             throw std::runtime_error("Qwen and HEF frame layout mismatch");
         const auto began = Clock::now();
         const auto* in = static_cast<const float*>(src->data);
-        if (!projection && src->ne[2] != 1) {
+        if (image_output && src->ne[2] != 1) {
             packed_input.resize(ggml_nelements(src));
             transpose(in, packed_input.data(), count, src->ne[2], src->ne[0] * src->ne[1]);
             in = packed_input.data();
         }
         auto* out = static_cast<float*>(dst->data);
-        if (!projection) {
+        if (image_output) {
             packed_output.resize(ggml_nelements(dst));
             out = packed_output.data();
         }
@@ -117,11 +131,21 @@ public:
         const auto status = pipeline->infer(input, output, count);
         const auto returned = Clock::now();
         if (status != HAILO_SUCCESS) throw std::runtime_error("Hailo infer status " + std::to_string(status));
-        if (!projection) transpose(packed_output.data(), static_cast<float*>(dst->data), count, dst->ne[0] * dst->ne[1], dst->ne[2]);
+        if (image_output) transpose(packed_output.data(), static_cast<float*>(dst->data), count, dst->ne[0] * dst->ne[1], dst->ne[2]);
         const double total = std::chrono::duration<double, std::milli>(Clock::now() - began).count();
         const double sync = std::chrono::duration<double, std::milli>(returned - submitted).count();
         std::fprintf(stderr, "edge_hailo_%s frames=%zu sync_ms=%.4f layout_ms=%.4f\n",
                      boundary_name(boundary), count, sync, total - sync);
+        if (std::getenv("EDGE_ASR_HAILO_TEMPERATURE") &&
+            returned - last_temperature >= std::chrono::seconds(10)) {
+            last_temperature = returned;
+            auto devices = device->get_physical_devices();
+            if (devices && devices->size() == 1) {
+                auto value = devices->front().get().get_chip_temperature();
+                if (value) std::fprintf(stderr, "edge_hailo_temp_C=%.2f,%.2f\n",
+                                        value->ts0_temperature, value->ts1_temperature);
+            }
+        }
     }
 };
 
@@ -134,6 +158,26 @@ void compute(ggml_tensor* dst, int thread, int, void* file) {
     } catch (const std::exception& error) {
         // GGML custom op에는 실패 반환값이 없다. 격리한 평가 자식이 잘못된 전사를 반환하지 않게 한다.
         std::fprintf(stderr, "Qwen Hailo inference failed: %s\n", error.what());
+        std::abort();
+    }
+}
+
+void compute_block(ggml_tensor* dst, int thread, int, void* directory) {
+    if (thread != 0) return;
+    try {
+        static std::mutex lock;
+        static std::map<int64_t, std::unique_ptr<QwenNetwork>> networks;
+        std::lock_guard<std::mutex> guard(lock);
+        const auto rows = dst->ne[1];
+        auto& engine = networks[rows];
+        if (!engine) {
+            const auto path = std::string(static_cast<const char*>(directory)) +
+                              "/block0" + std::to_string(rows) + ".hef";
+            engine = std::make_unique<QwenNetwork>(path.c_str());
+        }
+        engine->infer(dst->src[0], dst, Boundary::block);
+    } catch (const std::exception& error) {
+        std::fprintf(stderr, "Qwen Hailo block failed: %s\n", error.what());
         std::abort();
     }
 }
@@ -169,6 +213,16 @@ extern "C" ggml_tensor* ggml_conv_2d(ggml_context* ctx, ggml_tensor* weights, gg
 }
 
 extern "C" ggml_tensor* ggml_mul_mat(ggml_context* ctx, ggml_tensor* weights, ggml_tensor* input) {
+    static char* fused = std::getenv("EDGE_ASR_HAILO_FUSED_HEF");
+    if (fused && std::strcmp(weights->name, "a.conv_out.weight") == 0) {
+        auto* chunks = chunk_input(input);
+        if (!chunks || chunks->type != GGML_TYPE_F32 || chunks->ne[0] != 100 ||
+            chunks->ne[1] != 128 || chunks->ne[2] != 1 || input->ne[1] != chunks->ne[3]*13 ||
+            input->ne[0] != 7680 || weights->ne[0] != 7680 || weights->ne[1] != 896)
+            throw std::runtime_error("unexpected Qwen fused CNN signature");
+        return ggml_custom_4d(ctx, GGML_TYPE_F32, 896, input->ne[1], 1, 1,
+                              &chunks, 1, compute<Boundary::fused>, 1, fused);
+    }
     static const char* projection = std::getenv("EDGE_ASR_HAILO_PROJECTION_HEF");
     if (projection && std::strcmp(weights->name, "a.conv_out.weight") == 0) {
         if (weights->type != GGML_TYPE_F16 || weights->ne[0] != 7680 || weights->ne[1] != 896 ||
@@ -189,6 +243,28 @@ extern "C" ggml_tensor* ggml_permute(ggml_context* ctx, ggml_tensor* tensor,
     static auto original = reinterpret_cast<decltype(&ggml_permute)>(dlsym(RTLD_NEXT, "ggml_permute"));
     if (!original) std::abort();
     static char* stack = std::getenv("EDGE_ASR_HAILO_CNN_STACK_HEF");
+    static char* tail = std::getenv("EDGE_ASR_HAILO_CONV23_HEF");
+    if (tail && std::strcmp(tensor->name, "after_conv_blocks") == 0) {
+        // ggml_conv_2d의 im2col 두 번째 입력까지 따라가 첫 GELU 출력에서 시작한다.
+        auto* input = tensor;
+        for (int layer = 3; layer >= 2; --layer) {
+            if (input->op != GGML_OP_UNARY || ggml_get_unary_op(input) != GGML_UNARY_OP_GELU_ERF ||
+                input->src[0]->op != GGML_OP_ADD) throw std::runtime_error("unexpected CNN GELU");
+            auto* node = input->src[0]->src[0];
+            while (node && node->op != GGML_OP_IM2COL) {
+                if (node->op != GGML_OP_MUL_MAT && node->op != GGML_OP_RESHAPE &&
+                    node->op != GGML_OP_CONT && node->op != GGML_OP_PERMUTE) break;
+                node = node->src[0];
+            }
+            if (!node || node->op != GGML_OP_IM2COL) throw std::runtime_error("missing CNN im2col");
+            input = node->src[1];
+        }
+        if (input->ne[0] != 50 || input->ne[1] != 64 || input->ne[2] != 480 ||
+            input->ne[3] != tensor->ne[3]) throw std::runtime_error("unexpected Conv2 input");
+        tensor = ggml_custom_4d(ctx, GGML_TYPE_F32, 13, 16, 480, input->ne[3],
+                                &input, 1, compute<Boundary::conv23>, 1, tail);
+        ggml_set_name(tensor, "after_conv_blocks");
+    }
     if (stack && std::strcmp(tensor->name, "after_conv_blocks") == 0) {
         if (std::getenv("EDGE_ASR_HAILO_LAYER"))
             throw std::runtime_error("choose either the CNN stack or a single Conv");
@@ -207,4 +283,38 @@ extern "C" ggml_tensor* ggml_permute(ggml_context* ctx, ggml_tensor* tensor,
         ggml_set_name(tensor, "after_conv_blocks");
     }
     return original(ctx, tensor, axis0, axis1, axis2, axis3);
+}
+
+extern "C" ggml_tensor* ggml_add(ggml_context* ctx, ggml_tensor* a, ggml_tensor* b) {
+    static char* block_dir = std::getenv("EDGE_ASR_HAILO_BLOCK_DIR");
+    if (block_dir && std::strcmp(b->name, "ffn_out-0") == 0 &&
+        std::strcmp(a->name, "ffn_inp-0") == 0) {
+        // 첫 residual의 두 번째 피연산자가 위치 임베딩을 더한 원래 블록 입력이다.
+        auto* input = a->src[1];
+        if (a->op != GGML_OP_ADD || !input || input->ne[0] != 896 ||
+            !ggml_is_matrix(input) || input->type != GGML_TYPE_F32)
+            throw std::runtime_error("unexpected Qwen first block residual");
+        if (input->ne[1] == 26 || input->ne[1] == 52 || input->ne[1] == 78)
+            return ggml_custom_4d(ctx, GGML_TYPE_F32, 896, input->ne[1], 1, 1,
+                                  &input, 1, compute_block, 1, block_dir);
+    }
+    static char* embed = std::getenv("EDGE_ASR_HAILO_EMBED_HEF");
+    if (embed && std::strcmp(b->name, "mm.a.mlp.2.bias") == 0) {
+        // down matmul ← GELU ← bias ← up matmul ← 최종 audio norm 출력
+        auto* activation = a->src[1];
+        if (a->op != GGML_OP_MUL_MAT || !activation || activation->op != GGML_OP_UNARY ||
+            ggml_get_unary_op(activation) != GGML_UNARY_OP_GELU_ERF ||
+            activation->src[0]->op != GGML_OP_ADD ||
+            activation->src[0]->src[0]->op != GGML_OP_MUL_MAT)
+            throw std::runtime_error("unexpected Qwen embedding projector");
+        auto* input = activation->src[0]->src[0]->src[1];
+        if (!input || std::strcmp(input->name, "after_transformer") != 0 ||
+            input->ne[0] != 896 || !ggml_is_matrix(input) || a->ne[0] != 1024)
+            throw std::runtime_error("unexpected Qwen embedding dimensions");
+        return ggml_custom_4d(ctx, GGML_TYPE_F32, 1024, input->ne[1], 1, 1,
+                              &input, 1, compute<Boundary::embed>, 1, embed);
+    }
+    static auto original = reinterpret_cast<decltype(&ggml_add)>(dlsym(RTLD_NEXT, "ggml_add"));
+    if (!original) std::abort();
+    return original(ctx, a, b);
 }

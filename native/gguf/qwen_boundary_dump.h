@@ -23,10 +23,22 @@ inline bool dump_qwen_boundary(const ggml_tensor* t, const std::string& phase) {
     const char* directory = std::getenv("EDGE_ASR_QWEN_BOUNDARY_DIR");
     if (!directory || !*directory) return true;
     if (phase != "audio_encoder") {
-        if (t->op != GGML_OP_MUL_MAT || !t->src[0] || !t->src[1] ||
-            std::strcmp(t->src[0]->name, "blk.0.ffn_up.weight") != 0) return true;
-        return write_qwen_tensor(directory, phase + "_up_in", t->src[1]) &&
-               write_qwen_tensor(directory, phase + "_up_out", t);
+        if (t->op != GGML_OP_MUL_MAT || !t->src[0] || !t->src[1]) return true;
+        const char* weight = t->src[0]->name;
+        if (std::strcmp(weight, "blk.0.ffn_up.weight") == 0)
+            return write_qwen_tensor(directory, phase + "_up_in", t->src[1]) &&
+                   write_qwen_tensor(directory, phase + "_up_out", t);
+        if (std::strcmp(weight, "blk.0.attn_q.weight") == 0)
+            return write_qwen_tensor(directory, phase + "_qkv_in", t->src[1]) &&
+                   write_qwen_tensor(directory, phase + "_q_out", t);
+        if (std::strcmp(weight, "blk.0.attn_k.weight") == 0)
+            return write_qwen_tensor(directory, phase + "_k_out", t);
+        if (std::strcmp(weight, "blk.0.attn_v.weight") == 0)
+            return write_qwen_tensor(directory, phase + "_v_out", t);
+        if (std::strcmp(weight, "output.weight") == 0 && t->ne[1] > 0)
+            return write_qwen_tensor(directory, phase + "_head_in", t->src[1]) &&
+                   write_qwen_tensor(directory, phase + "_head_out", t);
+        return true;
     }
     if (t->op == GGML_OP_CUSTOM && t->src[0] && t->src[1]) {
         // 고정 mtmd_mul_mat_prec의 두 입력. GGML은 b @ a.T를 계산한다.
