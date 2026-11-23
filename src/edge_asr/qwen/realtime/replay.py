@@ -23,6 +23,7 @@ from edge_asr.qwen.realtime.stability import content_updates
 from edge_asr.qwen.realtime.stability import summarize as summarize_stability
 from edge_asr.resources import measure_process
 from edge_asr.runtime import environment, limits_verified
+from edge_asr.segmentation import SEGMENT_LIMITS_S
 from edge_asr.streaming import read_events, run_paced
 from edge_asr.vad_probability import BoundedProbabilityVad, K2SileroProbability
 
@@ -475,7 +476,7 @@ def argument_parser():
         choices=(1, 2, 4),
         help="각 구간의 첫 부분 요청 뒤 한 번만 적용할 갱신 간격. 생략하면 기존 반복 간격 유지",
     )
-    parser.add_argument("--max-segment-s", type=int, default=5, choices=(3, 5, 8))
+    parser.add_argument("--max-segment-s", type=int, default=5, choices=SEGMENT_LIMITS_S)
     parser.add_argument("--drain-timeout-s", type=int, default=30, choices=(10, 30, 60))
     parser.add_argument("--queue-capacity", type=int, default=4, choices=(2, 4, 8))
     parser.add_argument(

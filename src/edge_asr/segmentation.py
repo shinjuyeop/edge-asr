@@ -12,6 +12,7 @@ from edge_asr.dataset import pcm_bytes
 
 RATE = 16000
 WINDOW = 512
+SEGMENT_LIMITS_S = (3, 4, 5, 8)
 
 
 class PcmRing:
@@ -64,8 +65,8 @@ class SegmentPipeline:
         vad_policy=None,
         split_on_pause=False,
     ):
-        if type(max_segment_s) is not int or max_segment_s not in (3, 5, 8):
-            raise ValueError("소유 구간 상한은 3/5/8초여야 합니다.")
+        if type(max_segment_s) is not int or max_segment_s not in SEGMENT_LIMITS_S:
+            raise ValueError("소유 구간 상한은 3/4/5/8초여야 합니다.")
         if type(context_frames) is not int or not 0 <= context_frames <= 3200:
             raise ValueError("문맥은 0~3200프레임이어야 합니다.")
         if context_selection not in ("all", "onset", "continuation", "unowned_onset"):

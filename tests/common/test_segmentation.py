@@ -132,7 +132,7 @@ class SegmentTests(unittest.TestCase):
 
     def test_sustained_voice_emits_before_eof_with_no_owned_frame_loss(self):
         samples = array("f", ((i % 200 - 100) / 32768 for i in range(16000 * 13 + 137)))
-        for maximum in (3, 5, 8):
+        for maximum in (3, 4, 5, 8):
             with self.subTest(maximum=maximum):
                 vad = Vad()
                 p, rows = run(samples, maximum, vad=vad)
