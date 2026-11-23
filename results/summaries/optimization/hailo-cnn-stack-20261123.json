@@ -1,0 +1,1914 @@
+{
+  "run_id": "hailo-cnn-stack-20261123-01",
+  "source": "f59e5519810b251a700274f75ac74183157fbb93",
+  "compile": {
+    "target": "hailo8l",
+    "dfc": "3.34.0",
+    "host_python": "3.10",
+    "calibration": {
+      "sources": 49,
+      "NHWC_shape": [
+        98,
+        128,
+        100,
+        1
+      ]
+    },
+    "calibration_evaluation_id_or_source_hash_overlap": 0,
+    "compiler_options": {
+      "optimization_level": 0,
+      "compression_level": 0,
+      "batch_size": 1
+    },
+    "canonical_parse_optimize_compile": [
+      "passed",
+      "passed",
+      "passed"
+    ],
+    "control_parse_error": "ParsingWithRecommendationException: Parsing failed. The errors found in the graph are:\n UnsupportedActivationLayerError in op v3: Unexpected activation at v3, op=Erf\n UnsupportedActivationLayerError in op v9: Unexpected activation at v9, op=Erf\n UnsupportedActivationLayerError in op v15: Unexpected activation at v15, op=Erf\nPlease try to parse the model again, using these end node names: v2, v1",
+    "conv_activations": [
+      "gelu",
+      "gelu",
+      "gelu"
+    ],
+    "raw_format": "UINT8 NHWC(128x100x1) -> UINT8 FCR(16x13x480), single context",
+    "files_sha256": {
+      "onnx/cnn_stack.onnx": "a234187a2f61643a9657f5c701111f4ea6ddd31fcbd170ee41f8d91bea8400e3",
+      "canonical/hn.json": "aa4d620f1496196fa0bb860150b6031f2eaac1984c51d330a5945cce5365f4d0",
+      "canonical/qwen_cnn_stack.hef": "2eaa3e44f082b6b91465cc2a3c1cdea8bc3c18b309ca508d223b7d0312b04235",
+      "canonical/quantized.har": "cbd1ee0cf13167328baf088f3ba82d5e5fccce184cbeadb56d2e9de2109edd4e"
+    }
+  },
+  "host_fp32": {
+    "r01-1s": {
+      "pcm_sha256": "7b5cd6297c3159b206a5af6488e2317021ace1ed6a9c1f619af8bc6e8f49d956",
+      "input_shape": [
+        2,
+        1,
+        128,
+        100
+      ],
+      "output_shape": [
+        2,
+        480,
+        16,
+        13
+      ],
+      "vs_RP5_ggml": {
+        "max_abs": 0.006524085998535156,
+        "relative_l2": 0.0022182542092125364
+      },
+      "control_vs_RP5_ggml": {
+        "max_abs": 0.006524085998535156,
+        "relative_l2": 0.0022182542092125364
+      },
+      "canonical_vs_control": {
+        "max_abs": 0.0,
+        "relative_l2": 0.0
+      },
+      "RP5_boundary_sha256": "af3dd70ce32ce792f6cb3ec5f8c26720015913187a3000531231946dcd8bb71f"
+    },
+    "r01-3s": {
+      "pcm_sha256": "3b30b0d422aa6dcda5e2b81d36c4735fab8285309ee2d3046cd403b7a2146e12",
+      "input_shape": [
+        4,
+        1,
+        128,
+        100
+      ],
+      "output_shape": [
+        4,
+        480,
+        16,
+        13
+      ],
+      "vs_RP5_ggml": {
+        "max_abs": 0.008746623992919922,
+        "relative_l2": 0.0023500622673829335
+      },
+      "control_vs_RP5_ggml": {
+        "max_abs": 0.008746623992919922,
+        "relative_l2": 0.0023500622673829335
+      },
+      "canonical_vs_control": {
+        "max_abs": 0.0,
+        "relative_l2": 0.0
+      },
+      "RP5_boundary_sha256": "85a4ad84e3bf45ec2624ceb4edc2ec42a1d6c4d34bd338a30a1bd8b355eb4604"
+    },
+    "r01-5s": {
+      "pcm_sha256": "e7fa7f1eaae5f180582f76da8a98a59d24be1a578459c7cb3314e657bc90342d",
+      "input_shape": [
+        6,
+        1,
+        128,
+        100
+      ],
+      "output_shape": [
+        6,
+        480,
+        16,
+        13
+      ],
+      "vs_RP5_ggml": {
+        "max_abs": 0.008746623992919922,
+        "relative_l2": 0.0023493980474178547
+      },
+      "control_vs_RP5_ggml": {
+        "max_abs": 0.008746623992919922,
+        "relative_l2": 0.0023493980474178547
+      },
+      "canonical_vs_control": {
+        "max_abs": 0.0,
+        "relative_l2": 0.0
+      },
+      "RP5_boundary_sha256": "53a93f706a7a59464e0858047de9885665bc4df319b9546aa97924490b58159d"
+    }
+  },
+  "sdk_emulation": {
+    "SDK_NATIVE": {
+      "r01-1s": {
+        "relative_l2": 0.0022182397161376677,
+        "max_abs": 0.006524443626403809
+      },
+      "r01-3s": {
+        "relative_l2": 0.0023500563476494267,
+        "max_abs": 0.008746743202209473
+      },
+      "r01-5s": {
+        "relative_l2": 0.0023493955844452576,
+        "max_abs": 0.008746743202209473
+      }
+    },
+    "SDK_QUANTIZED": {
+      "r01-1s": {
+        "relative_l2": 0.34410877688171687,
+        "max_abs": 0.3772045373916626
+      },
+      "r01-3s": {
+        "relative_l2": 0.29194432264636555,
+        "max_abs": 0.4454769492149353
+      },
+      "r01-5s": {
+        "relative_l2": 0.28373018021237156,
+        "max_abs": 0.4454769492149353
+      }
+    }
+  },
+  "sdk_layer_diagnostics": {
+    "SDK_NATIVE": {
+      "r01-1s": {
+        "conv1": {
+          "relative_l2": 0.00032788519214306674,
+          "max_abs": 0.0006775557994842529,
+          "scale": 0.014549288898706436,
+          "zero_point": 12.0,
+          "cpu_outside_range_fraction": 0.0
+        },
+        "conv2": {
+          "relative_l2": 0.0016962100888319928,
+          "max_abs": 0.0062291622161865234,
+          "scale": 0.020414365455508232,
+          "zero_point": 9.0,
+          "cpu_outside_range_fraction": 0.0
+        },
+        "conv3": {
+          "relative_l2": 0.0022182534611968284,
+          "max_abs": 0.006525397300720215,
+          "scale": 0.01713716797530651,
+          "zero_point": 10.0,
+          "cpu_outside_range_fraction": 0.0
+        }
+      },
+      "r01-3s": {
+        "conv1": {
+          "relative_l2": 0.00032958431733118564,
+          "max_abs": 0.0006775557994842529,
+          "scale": 0.014549288898706436,
+          "zero_point": 12.0,
+          "cpu_outside_range_fraction": 0.0
+        },
+        "conv2": {
+          "relative_l2": 0.0018198481024622561,
+          "max_abs": 0.00883030891418457,
+          "scale": 0.020414365455508232,
+          "zero_point": 9.0,
+          "cpu_outside_range_fraction": 0.0
+        },
+        "conv3": {
+          "relative_l2": 0.0023500562581324335,
+          "max_abs": 0.008746862411499023,
+          "scale": 0.01713716797530651,
+          "zero_point": 10.0,
+          "cpu_outside_range_fraction": 0.0
+        }
+      },
+      "r01-5s": {
+        "conv1": {
+          "relative_l2": 0.00034470015259388927,
+          "max_abs": 0.0006775557994842529,
+          "scale": 0.014549288898706436,
+          "zero_point": 12.0,
+          "cpu_outside_range_fraction": 0.0
+        },
+        "conv2": {
+          "relative_l2": 0.0018398873437758768,
+          "max_abs": 0.00883030891418457,
+          "scale": 0.020414365455508232,
+          "zero_point": 9.0,
+          "cpu_outside_range_fraction": 0.0
+        },
+        "conv3": {
+          "relative_l2": 0.0023493979838761993,
+          "max_abs": 0.008746862411499023,
+          "scale": 0.01713716797530651,
+          "zero_point": 10.0,
+          "cpu_outside_range_fraction": 0.0
+        }
+      }
+    },
+    "SDK_QUANTIZED": {
+      "r01-1s": {
+        "conv1": {
+          "relative_l2": 0.17885841275929812,
+          "max_abs": 0.06246250867843628,
+          "scale": 0.014549288898706436,
+          "zero_point": 12.0,
+          "cpu_outside_range_fraction": 0.0
+        },
+        "conv2": {
+          "relative_l2": 0.3304896754024862,
+          "max_abs": 0.4156121611595154,
+          "scale": 0.020414365455508232,
+          "zero_point": 9.0,
+          "cpu_outside_range_fraction": 0.0
+        },
+        "conv3": {
+          "relative_l2": 0.34410877688171687,
+          "max_abs": 0.3772045373916626,
+          "scale": 0.01713716797530651,
+          "zero_point": 10.0,
+          "cpu_outside_range_fraction": 0.0
+        }
+      },
+      "r01-3s": {
+        "conv1": {
+          "relative_l2": 0.1610978191497025,
+          "max_abs": 0.06674355268478394,
+          "scale": 0.014549288898706436,
+          "zero_point": 12.0,
+          "cpu_outside_range_fraction": 0.0
+        },
+        "conv2": {
+          "relative_l2": 0.29035909807104926,
+          "max_abs": 0.42056238651275635,
+          "scale": 0.020414365455508232,
+          "zero_point": 9.0,
+          "cpu_outside_range_fraction": 0.0
+        },
+        "conv3": {
+          "relative_l2": 0.29194432264636555,
+          "max_abs": 0.4454769492149353,
+          "scale": 0.01713716797530651,
+          "zero_point": 10.0,
+          "cpu_outside_range_fraction": 0.0
+        }
+      },
+      "r01-5s": {
+        "conv1": {
+          "relative_l2": 0.15952161030149303,
+          "max_abs": 0.06674355268478394,
+          "scale": 0.014549288898706436,
+          "zero_point": 12.0,
+          "cpu_outside_range_fraction": 0.0
+        },
+        "conv2": {
+          "relative_l2": 0.2856011612531401,
+          "max_abs": 0.4214446544647217,
+          "scale": 0.020414365455508232,
+          "zero_point": 9.0,
+          "cpu_outside_range_fraction": 0.0
+        },
+        "conv3": {
+          "relative_l2": 0.28373018021237156,
+          "max_abs": 0.4454769492149353,
+          "scale": 0.01713716797530651,
+          "zero_point": 10.0,
+          "cpu_outside_range_fraction": 0.0
+        }
+      }
+    }
+  },
+  "sdk_quantized_vs_board": {
+    "SDK_QUANTIZED": {
+      "r01-1s": {
+        "relative_l2": 0.134228961219737,
+        "max_abs": 0.10282301902770996
+      },
+      "r01-3s": {
+        "relative_l2": 0.10733281824772373,
+        "max_abs": 0.10282301902770996
+      },
+      "r01-5s": {
+        "relative_l2": 0.10203649830761106,
+        "max_abs": 0.11996018886566162
+      }
+    }
+  },
+  "board_boundaries": {
+    "1": {
+      "error": {
+        "inp_chunks": {
+          "shape": [
+            2,
+            1,
+            128,
+            100
+          ],
+          "relative_l2": 0.0,
+          "max_abs": 0.0,
+          "rmse": 0.0
+        },
+        "after_conv_blocks": {
+          "shape": [
+            2,
+            480,
+            16,
+            13
+          ],
+          "relative_l2": 0.3139556131209548,
+          "max_abs": 0.4286159873008728,
+          "rmse": 0.04028752503106446
+        },
+        "after_conv_out": {
+          "shape": [
+            1,
+            1,
+            26,
+            896
+          ],
+          "relative_l2": 0.2134171582611972,
+          "max_abs": 0.8837696388363838,
+          "rmse": 0.12667093735131796
+        },
+        "layer_out-0": {
+          "shape": [
+            1,
+            1,
+            26,
+            896
+          ],
+          "relative_l2": 0.19213145513625476,
+          "max_abs": 0.8272805213928223,
+          "rmse": 0.1229255065967196
+        },
+        "after_transformer": {
+          "shape": [
+            1,
+            1,
+            26,
+            896
+          ],
+          "relative_l2": 0.4740754335999821,
+          "max_abs": 2.3240209817886353,
+          "rmse": 0.2205685403970268
+        },
+        "projected": {
+          "shape": [
+            1,
+            1,
+            26,
+            1024
+          ],
+          "relative_l2": 0.2734890736638197,
+          "max_abs": 0.09992607496678829,
+          "rmse": 0.0069456598100570135
+        }
+      },
+      "cpu": {
+        "chain_wall_ms": 245.181982,
+        "chain_process_cpu_ms": 711.1548469999999,
+        "im2col": [
+          "a.conv2d.1.weight",
+          "a.conv2d.2.weight",
+          "a.conv2d.3.weight"
+        ],
+        "output_op": "UNARY",
+        "transcript": "한 목격.",
+        "tokens": [
+          23573,
+          134952,
+          126614,
+          13
+        ]
+      },
+      "stack": {
+        "chain_wall_ms": 107.17725,
+        "chain_process_cpu_ms": 16.431738000000003,
+        "im2col": [],
+        "output_op": "CUSTOM",
+        "transcript": "한 목격.",
+        "tokens": [
+          23573,
+          134952,
+          126614,
+          13
+        ]
+      }
+    },
+    "3": {
+      "error": {
+        "inp_chunks": {
+          "shape": [
+            4,
+            1,
+            128,
+            100
+          ],
+          "relative_l2": 0.0,
+          "max_abs": 0.0,
+          "rmse": 0.0
+        },
+        "after_conv_blocks": {
+          "shape": [
+            4,
+            480,
+            16,
+            13
+          ],
+          "relative_l2": 0.2782867391669891,
+          "max_abs": 0.46261411905288696,
+          "rmse": 0.04001165886518203
+        },
+        "after_conv_out": {
+          "shape": [
+            1,
+            1,
+            52,
+            896
+          ],
+          "relative_l2": 0.18715634973707648,
+          "max_abs": 0.8837696388363838,
+          "rmse": 0.11690183436127108
+        },
+        "layer_out-0": {
+          "shape": [
+            1,
+            1,
+            52,
+            896
+          ],
+          "relative_l2": 0.16769772048558976,
+          "max_abs": 0.7462321072816849,
+          "rmse": 0.1114763895149252
+        },
+        "after_transformer": {
+          "shape": [
+            1,
+            1,
+            52,
+            896
+          ],
+          "relative_l2": 0.3389245702243616,
+          "max_abs": 2.345882534980774,
+          "rmse": 0.16530216277820595
+        },
+        "projected": {
+          "shape": [
+            1,
+            1,
+            52,
+            1024
+          ],
+          "relative_l2": 0.22015285955608294,
+          "max_abs": 0.0591537281870842,
+          "rmse": 0.005378391099626542
+        }
+      },
+      "cpu": {
+        "chain_wall_ms": 495.04331699999994,
+        "chain_process_cpu_ms": 1456.227735,
+        "im2col": [
+          "a.conv2d.1.weight",
+          "a.conv2d.2.weight",
+          "a.conv2d.3.weight"
+        ],
+        "output_op": "UNARY",
+        "transcript": "한 목격자는 사람들이 무리를 이루어.",
+        "tokens": [
+          23573,
+          134952,
+          126614,
+          132343,
+          135990,
+          125149,
+          133886,
+          139646,
+          31079,
+          13
+        ]
+      },
+      "stack": {
+        "chain_wall_ms": 14.184778999999999,
+        "chain_process_cpu_ms": 4.6736260000000005,
+        "im2col": [],
+        "output_op": "CUSTOM",
+        "transcript": "한 목격자는 사람들이 무리를 이루어.",
+        "tokens": [
+          23573,
+          134952,
+          126614,
+          132343,
+          135990,
+          125149,
+          133886,
+          139646,
+          31079,
+          13
+        ]
+      }
+    },
+    "5": {
+      "error": {
+        "inp_chunks": {
+          "shape": [
+            6,
+            1,
+            128,
+            100
+          ],
+          "relative_l2": 0.0,
+          "max_abs": 0.0,
+          "rmse": 0.0
+        },
+        "after_conv_blocks": {
+          "shape": [
+            6,
+            480,
+            16,
+            13
+          ],
+          "relative_l2": 0.2733345112522958,
+          "max_abs": 0.46261411905288696,
+          "rmse": 0.03989331203117539
+        },
+        "after_conv_out": {
+          "shape": [
+            1,
+            1,
+            78,
+            896
+          ],
+          "relative_l2": 0.18153343892912074,
+          "max_abs": 0.8837696388363838,
+          "rmse": 0.11444628387696171
+        },
+        "layer_out-0": {
+          "shape": [
+            1,
+            1,
+            78,
+            896
+          ],
+          "relative_l2": 0.16367538224293796,
+          "max_abs": 0.7554218620061874,
+          "rmse": 0.10923192588506515
+        },
+        "after_transformer": {
+          "shape": [
+            1,
+            1,
+            78,
+            896
+          ],
+          "relative_l2": 0.2671339293226416,
+          "max_abs": 2.384289860725403,
+          "rmse": 0.13100480219789523
+        },
+        "projected": {
+          "shape": [
+            1,
+            1,
+            78,
+            1024
+          ],
+          "relative_l2": 0.15629098645358097,
+          "max_abs": 0.045016638934612274,
+          "rmse": 0.0037740193262650146
+        }
+      },
+      "cpu": {
+        "chain_wall_ms": 741.536835,
+        "chain_process_cpu_ms": 2190.4656919999993,
+        "im2col": [
+          "a.conv2d.1.weight",
+          "a.conv2d.2.weight",
+          "a.conv2d.3.weight"
+        ],
+        "output_op": "UNARY",
+        "transcript": "한 목격자는 사람들이 무리를 이뤄 거리를 배회하고 물품.",
+        "tokens": [
+          23573,
+          134952,
+          126614,
+          132343,
+          135990,
+          125149,
+          133886,
+          23084,
+          144280,
+          126352,
+          133886,
+          73669,
+          61741,
+          126204,
+          133553,
+          125678,
+          13
+        ]
+      },
+      "stack": {
+        "chain_wall_ms": 20.828923,
+        "chain_process_cpu_ms": 6.274206,
+        "im2col": [],
+        "output_op": "CUSTOM",
+        "transcript": "한 목격자는 사람들이 무리를 이뤄 거리를 배회하고 물품.",
+        "tokens": [
+          23573,
+          134952,
+          126614,
+          132343,
+          135990,
+          125149,
+          133886,
+          23084,
+          144280,
+          126352,
+          133886,
+          73669,
+          61741,
+          126204,
+          133553,
+          125678,
+          13
+        ]
+      }
+    }
+  },
+  "pcm": {
+    "cpu": {
+      "model_load_s": 2.0241414989999953,
+      "first_1s_ms": 1239.6654199999944,
+      "thermal": {
+        "entry_C": 70.5,
+        "max_C": 83.15,
+        "actual_mhz": {
+          "min": 1500.0128,
+          "median": 1500.019456,
+          "max": 1500.022656
+        },
+        "flags": {
+          "0": 31,
+          "8": 3
+        },
+        "undervoltage_samples": 0,
+        "fan_rpm": []
+      },
+      "durations": {
+        "1": {
+          "elapsed_ms": 1133.2121760000102,
+          "cpu_ms": 3094.9198446666664,
+          "n_tokens": 4,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            13
+          ],
+          "stages_ms": {
+            "preprocess_s": 0.3617363333333334,
+            "audio_encode_s": 481.646323,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 234.34606766666667,
+            "suffix_eval_s": 122.30712033333334,
+            "kv_reset_s": 0.04570366666666667,
+            "token_decode_s": 289.825992,
+            "native_elapsed_s": 1132.61213,
+            "first_generated_token_s": 839.5066403333333
+          },
+          "npu": {},
+          "elapsed_per_call_ms": [
+            1132.111162000001,
+            1134.3412670000248,
+            1133.1840990000046
+          ],
+          "hypothesis": "한 목격."
+        },
+        "3": {
+          "elapsed_ms": 2336.323220333346,
+          "cpu_ms": 6208.079851333335,
+          "n_tokens": 10,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            132343,
+            135990,
+            125149,
+            133886,
+            139646,
+            31079,
+            13
+          ],
+          "stages_ms": {
+            "preprocess_s": 0.6931946666666667,
+            "audio_encode_s": 976.0237453333334,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 451.587543,
+            "suffix_eval_s": 134.44080833333334,
+            "kv_reset_s": 0.023018666666666666,
+            "token_decode_s": 764.0085076666666,
+            "native_elapsed_s": 2335.7196743333334,
+            "first_generated_token_s": 1563.5672516666668
+          },
+          "npu": {},
+          "elapsed_per_call_ms": [
+            2413.640686000008,
+            2298.247494000009,
+            2297.0814810000206
+          ],
+          "hypothesis": "한 목격자는 사람들이 무리를 이루어."
+        },
+        "5": {
+          "elapsed_ms": 3624.305646000001,
+          "cpu_ms": 9520.169860999998,
+          "n_tokens": 17,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            132343,
+            135990,
+            125149,
+            133886,
+            23084,
+            144280,
+            126352,
+            133886,
+            73669,
+            61741,
+            126204,
+            133553,
+            125678,
+            13
+          ],
+          "stages_ms": {
+            "preprocess_s": 1.0166036666666667,
+            "audio_encode_s": 1472.5282703333332,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 726.081752,
+            "suffix_eval_s": 133.57016033333335,
+            "kv_reset_s": 0.03644466666666667,
+            "token_decode_s": 1275.8540256666665,
+            "native_elapsed_s": 3623.7139083333336,
+            "first_generated_token_s": 2334.0374136666665
+          },
+          "npu": {},
+          "elapsed_per_call_ms": [
+            3634.305499999982,
+            3617.650461999972,
+            3620.960976000049
+          ],
+          "hypothesis": "한 목격자는 사람들이 무리를 이뤄 거리를 배회하고 물품."
+        }
+      }
+    },
+    "conv": {
+      "model_load_s": 2.028837377000002,
+      "first_1s_ms": 1165.928392000012,
+      "thermal": {
+        "entry_C": 71.6,
+        "max_C": 81.5,
+        "actual_mhz": {
+          "min": 1500.009472,
+          "median": 1500.016128,
+          "max": 1500.025984
+        },
+        "flags": {
+          "0": 30,
+          "8": 1
+        },
+        "undervoltage_samples": 0,
+        "fan_rpm": []
+      },
+      "durations": {
+        "1": {
+          "elapsed_ms": 1019.3953886666616,
+          "cpu_ms": 2702.7250650000005,
+          "n_tokens": 4,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            25715
+          ],
+          "stages_ms": {
+            "preprocess_s": 0.3657916666666667,
+            "audio_encode_s": 372.24028599999997,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 233.53182566666666,
+            "suffix_eval_s": 121.519052,
+            "kv_reset_s": 0.045093,
+            "token_decode_s": 287.05049,
+            "native_elapsed_s": 1018.7934906666667,
+            "first_generated_token_s": 728.5196886666668
+          },
+          "npu": {
+            "conv": {
+              "sync_ms": 12.7193,
+              "host_layout_ms": 13.6042
+            }
+          },
+          "elapsed_per_call_ms": [
+            1020.804102999989,
+            1020.058774000006,
+            1017.3232889999895
+          ],
+          "hypothesis": "한 목격자"
+        },
+        "3": {
+          "elapsed_ms": 2074.260223333321,
+          "cpu_ms": 5369.1846093333315,
+          "n_tokens": 10,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            132343,
+            135990,
+            125149,
+            133886,
+            139646,
+            31079,
+            13
+          ],
+          "stages_ms": {
+            "preprocess_s": 0.7083919999999999,
+            "audio_encode_s": 755.6202163333334,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 447.8036093333333,
+            "suffix_eval_s": 127.30833866666666,
+            "kv_reset_s": 0.024506666666666666,
+            "token_decode_s": 733.25822,
+            "native_elapsed_s": 2073.665066333333,
+            "first_generated_token_s": 1332.2898136666665
+          },
+          "npu": {
+            "conv": {
+              "sync_ms": 20.288,
+              "host_layout_ms": 30.483233333333335
+            }
+          },
+          "elapsed_per_call_ms": [
+            2077.762758999995,
+            2072.5789739999527,
+            2072.4389370000154
+          ],
+          "hypothesis": "한 목격자는 사람들이 무리를 이루어."
+        },
+        "5": {
+          "elapsed_ms": 3280.35620866666,
+          "cpu_ms": 8340.736084333332,
+          "n_tokens": 17,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            132343,
+            135990,
+            125149,
+            133886,
+            23084,
+            144280,
+            126352,
+            133886,
+            73669,
+            61741,
+            126204,
+            133553,
+            125678,
+            13
+          ],
+          "stages_ms": {
+            "preprocess_s": 1.0156589999999999,
+            "audio_encode_s": 1129.3550233333333,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 728.3622393333334,
+            "suffix_eval_s": 133.24785366666666,
+            "kv_reset_s": 0.035926,
+            "token_decode_s": 1273.1201030000002,
+            "native_elapsed_s": 3279.7477123333338,
+            "first_generated_token_s": 1992.8554279999998
+          },
+          "npu": {
+            "conv": {
+              "sync_ms": 27.914566666666666,
+              "host_layout_ms": 44.594366666666666
+            }
+          },
+          "elapsed_per_call_ms": [
+            3292.5211649999824,
+            3275.289498999996,
+            3273.2579620000024
+          ],
+          "hypothesis": "한 목격자는 사람들이 무리를 이뤄 거리를 배회하고 물품."
+        }
+      }
+    },
+    "stack": {
+      "model_load_s": 2.045223926999995,
+      "first_1s_ms": 1038.2578219999914,
+      "thermal": {
+        "entry_C": 71.6,
+        "max_C": 81.5,
+        "actual_mhz": {
+          "min": 1500.0128,
+          "median": 1500.019456,
+          "max": 1500.022656
+        },
+        "flags": {
+          "0": 26,
+          "8": 2
+        },
+        "undervoltage_samples": 0,
+        "fan_rpm": []
+      },
+      "durations": {
+        "1": {
+          "elapsed_ms": 899.89363700001,
+          "cpu_ms": 2371.7641903333324,
+          "n_tokens": 4,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            13
+          ],
+          "stages_ms": {
+            "preprocess_s": 0.370971,
+            "audio_encode_s": 249.121057,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 235.19412166666666,
+            "suffix_eval_s": 122.43809866666666,
+            "kv_reset_s": 0.044734333333333334,
+            "token_decode_s": 288.1378923333333,
+            "native_elapsed_s": 899.295153,
+            "first_generated_token_s": 607.9795423333333
+          },
+          "npu": {
+            "cnn_stack": {
+              "sync_ms": 6.7053666666666665,
+              "host_layout_ms": 0.36843333333333333
+            }
+          },
+          "elapsed_per_call_ms": [
+            904.1345289999754,
+            898.1262770000171,
+            897.4201050000374
+          ],
+          "hypothesis": "한 목격."
+        },
+        "3": {
+          "elapsed_ms": 1821.7034916666535,
+          "cpu_ms": 4672.312612000002,
+          "n_tokens": 10,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            132343,
+            135990,
+            125149,
+            133886,
+            139646,
+            31079,
+            13
+          ],
+          "stages_ms": {
+            "preprocess_s": 0.7037376666666667,
+            "audio_encode_s": 498.28729866666663,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 450.982536,
+            "suffix_eval_s": 127.80271666666665,
+            "kv_reset_s": 0.023475666666666666,
+            "token_decode_s": 734.4829066666666,
+            "native_elapsed_s": 1821.1239766666667,
+            "first_generated_token_s": 1078.6128976666666
+          },
+          "npu": {
+            "cnn_stack": {
+              "sync_ms": 12.503433333333334,
+              "host_layout_ms": 0.9852333333333333
+            }
+          },
+          "elapsed_per_call_ms": [
+            1819.8653709999917,
+            1822.724174999962,
+            1822.5209290000066
+          ],
+          "hypothesis": "한 목격자는 사람들이 무리를 이루어."
+        },
+        "5": {
+          "elapsed_ms": 2908.977352666625,
+          "cpu_ms": 7317.137823333335,
+          "n_tokens": 17,
+          "tokens": [
+            23573,
+            134952,
+            126614,
+            132343,
+            135990,
+            125149,
+            133886,
+            23084,
+            144280,
+            126352,
+            133886,
+            73669,
+            61741,
+            126204,
+            133553,
+            125678,
+            13
+          ],
+          "stages_ms": {
+            "preprocess_s": 1.0160106666666666,
+            "audio_encode_s": 749.6088523333333,
+            "prefix_eval_s": 0.0,
+            "audio_embedding_eval_s": 725.017004,
+            "suffix_eval_s": 134.02275133333333,
+            "kv_reset_s": 0.035247,
+            "token_decode_s": 1284.249046,
+            "native_elapsed_s": 2908.344818333333,
+            "first_generated_token_s": 1610.5014926666668
+          },
+          "npu": {
+            "cnn_stack": {
+              "sync_ms": 18.269466666666666,
+              "host_layout_ms": 1.4779
+            }
+          },
+          "elapsed_per_call_ms": [
+            2898.9792090000037,
+            2901.662361999911,
+            2926.29048699996
+          ],
+          "hypothesis": "한 목격자는 사람들이 무리를 이뤄 거리를 배회하고 물품."
+        }
+      }
+    }
+  },
+  "stream": {
+    "cpu": {
+      "score": {
+        "reference_characters": 3848,
+        "errors": 419,
+        "substitutions": 187,
+        "deletions": 162,
+        "insertions": 70,
+        "cer": 0.10888773388773389
+      },
+      "source": "f59e5519810b251a700274f75ac74183157fbb93",
+      "source_count": 100,
+      "input_manifest": "f693163f3d0d11a09873d3d5dbbd8a68aea6ebd1897cc051fd99dd076f8b76ab",
+      "audio_s": 891.1448125,
+      "pcm": "273529b8a519b3b2dab6cd2a1e941633a21e6f4ac3995619967446df77be4dd7",
+      "final_pcm_signature": "2baf78be5c5c6c90e0c6d9ff65c5d5f8a8dea72a407f47d2dfa6a91e1ed04986",
+      "thermal": {
+        "entry_C": 71.05,
+        "max_C": 89.2,
+        "actual_mhz": {
+          "min": 1500.009472,
+          "median": 1500.016128,
+          "max": 1500.025984
+        },
+        "flags": {
+          "0": 56,
+          "8": 167,
+          "6": 698
+        },
+        "undervoltage_samples": 0,
+        "fan_rpm": [],
+        "input_clock_mhz": {
+          "n": 868,
+          "mean": 1500.0174197972171,
+          "p50": 1500.016128,
+          "p95": 1500.022656,
+          "max": 1500.025984
+        },
+        "input_below_1490_mhz_percent": 0.0,
+        "input_C": {
+          "n": 868,
+          "mean": 85.65351382488484,
+          "p50": 85.9,
+          "p95": 88.1,
+          "max": 89.2
+        }
+      },
+      "resources": {
+        "elapsed_s": 893.874731511,
+        "cpu_seconds_replay_plus_producer": 1907.666222186,
+        "mean_four_core_percent": 53.353846879676674,
+        "main_process_peak_rss_mib": 1795.109375,
+        "total_inference_s": 693.8907626270006,
+        "inference_s_per_input_s": 0.778650958737417,
+        "thermal_guard_max_c": 89.2,
+        "admission_c": 71.05,
+        "current_limit_input_s_approx": 860.4811309099998
+      },
+      "core_rail_W": 2.577303277846611,
+      "pmic_n": 867,
+      "failed_calls": 0,
+      "evidence_sha256": {
+        "worker.json": "846b8b030008f710f2fbca06e8d3f0ec046249aee50b8ff0f022013f226c2906",
+        "execution.json": "e17e75abe69c920f04e3004b7eb595905509a3b202dc14157f0873da70ca2621",
+        "jobs.jsonl": "1fe11d4c0c5b0695b02499915f2b0c74da21e4ad73e6d4f0298fe231f8ed6eb0",
+        "stream/producer.jsonl": "b285d085cdba9dcbe30166c3b8082888e48cb82205a6f456f68e504f24e2a7d3",
+        "thermal.jsonl": "b9d7796d5352b61790adfbab13accbecfd01275995975796363fcbe7bb1a9b58",
+        "console.log": "04e3c6a8c7630138373ae05eec153630fdfab17a4db9c128720e6ecc56d4f22c"
+      },
+      "receipts": {},
+      "transport": {
+        "captured_chunks": 8912,
+        "accepted_chunks": 8912,
+        "processed_chunks": 8912,
+        "planned_chunks": 8912,
+        "dropped_chunks": 0,
+        "dropped_audio_s": 0.0,
+        "finalization_from_audio_end_s": 2.7299190110001064,
+        "event_max_chunks": 1,
+        "event_max_audio_s": 0.1,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0,
+        "inference_queue_peak": 2
+      },
+      "cancelled_calls": 7,
+      "stale_displayed_events": 0,
+      "first_display_s": {
+        "n": 100,
+        "mean": 5.890603231070005,
+        "p50": 7.482651432999887,
+        "p95": 8.343906734000143,
+        "max": 9.856381083999963
+      },
+      "first_4chars_s": {
+        "n": 100,
+        "mean": 6.272023696949997,
+        "p50": 7.7635137310002165,
+        "p95": 8.69428308399992,
+        "max": 10.011818256999845
+      },
+      "first_explanation": {
+        "source": "zeroth-149_003_2332",
+        "kind": "final",
+        "event": "token",
+        "segment": 205,
+        "job": 265,
+        "first_s": 8.343906734000143,
+        "start_to_submit_s": 5.948098134999896,
+        "queue_s": 0.002807108000070002,
+        "start_to_display_s": 2.3930014910001773
+      },
+      "first_kinds": {
+        "partial": 40,
+        "final": 60
+      },
+      "fresh_audio_gap_s": {
+        "n": 267,
+        "mean": 3.3376210205992507,
+        "p50": 2.933091156000046,
+        "p95": 5.940725542000109,
+        "max": 7.35969281000007
+      },
+      "final_latency_s": {
+        "n": 210,
+        "mean": 4.393724696742851,
+        "p50": 4.478169803999776,
+        "p95": 5.4755060379999065,
+        "max": 6.149165627999992
+      },
+      "calls_by_kind": {
+        "partial": {
+          "attempts": 60,
+          "statuses": {
+            "success": 53,
+            "cancelled": 7
+          },
+          "queue_wait_s": {
+            "n": 60,
+            "mean": 0.00021936703335541098,
+            "p50": 0.00022787200032325927,
+            "p95": 0.00029566800003522076,
+            "max": 0.0003634470003817114
+          }
+        },
+        "final": {
+          "attempts": 210,
+          "statuses": {
+            "success": 210
+          },
+          "queue_wait_s": {
+            "n": 210,
+            "mean": 1.290247360490496,
+            "p50": 0.009616165999887016,
+            "p95": 4.299797104999925,
+            "max": 5.082922308999969
+          }
+        }
+      },
+      "final_stage_s": {
+        "native_elapsed_s": 607.674115802,
+        "preprocess_s": 0.14559693599999998,
+        "audio_encode_s": 198.3703248840001,
+        "audio_embedding_eval_s": 98.60520538699997,
+        "prefix_eval_s": 0.69460395,
+        "suffix_eval_s": 28.191642569999992,
+        "token_decode_s": 274.0877135480002,
+        "kv_reset_s": 0.06618831000000003
+      },
+      "final_generated_token_ids": 3552
+    },
+    "conv": {
+      "score": {
+        "reference_characters": 3848,
+        "errors": 395,
+        "substitutions": 167,
+        "deletions": 166,
+        "insertions": 62,
+        "cer": 0.10265072765072765
+      },
+      "source": "f59e5519810b251a700274f75ac74183157fbb93",
+      "source_count": 100,
+      "input_manifest": "f693163f3d0d11a09873d3d5dbbd8a68aea6ebd1897cc051fd99dd076f8b76ab",
+      "audio_s": 891.1448125,
+      "pcm": "273529b8a519b3b2dab6cd2a1e941633a21e6f4ac3995619967446df77be4dd7",
+      "final_pcm_signature": "2baf78be5c5c6c90e0c6d9ff65c5d5f8a8dea72a407f47d2dfa6a91e1ed04986",
+      "thermal": {
+        "entry_C": 70.5,
+        "max_C": 89.2,
+        "actual_mhz": {
+          "min": 1500.009472,
+          "median": 1500.016128,
+          "max": 1500.025984
+        },
+        "flags": {
+          "0": 71,
+          "8": 152,
+          "6": 696
+        },
+        "undervoltage_samples": 0,
+        "fan_rpm": [],
+        "input_clock_mhz": {
+          "n": 867,
+          "mean": 1500.017221831587,
+          "p50": 1500.016128,
+          "p95": 1500.022656,
+          "max": 1500.025984
+        },
+        "input_below_1490_mhz_percent": 0.0,
+        "input_C": {
+          "n": 867,
+          "mean": 85.57583621683968,
+          "p50": 85.9,
+          "p95": 88.1,
+          "max": 89.2
+        }
+      },
+      "resources": {
+        "elapsed_s": 893.693722706,
+        "cpu_seconds_replay_plus_producer": 1880.511968106,
+        "mean_four_core_percent": 52.6050457871638,
+        "main_process_peak_rss_mib": 1836.203125,
+        "total_inference_s": 697.9913843950005,
+        "inference_s_per_input_s": 0.7832524799609947,
+        "thermal_guard_max_c": 89.2,
+        "admission_c": 70.5,
+        "current_limit_input_s_approx": 840.2729512060002
+      },
+      "core_rail_W": 2.526980924424763,
+      "pmic_n": 867,
+      "failed_calls": 0,
+      "evidence_sha256": {
+        "worker.json": "14a18b2842b97dff2f204b268fa8a449a80c7e4e9607d0470b72ade211426489",
+        "execution.json": "77753691b6d8d70b84746977577f318faaba77ab29f4225a3f5970cc4777f63e",
+        "jobs.jsonl": "971908118310b422bb58d3b017601ed6a50cdc340e62270967ad1d8788dbfc1b",
+        "stream/producer.jsonl": "21c67ff5906f02f59f9b230b1ad37c486e3c39a2544aeb1440739ba9df5a9cca",
+        "thermal.jsonl": "edeb06116988b974dfbfbcde46c6459929936a187f6adb7d948f5406432b7c28",
+        "console.log": "0a31ae0ad0c3b7041c7e7f9dadd658c3383846919bb2d325bc97cbd9d7bacb0b"
+      },
+      "receipts": {
+        "conv": {
+          "measured_calls": 308,
+          "sync_s": 5.468169600000001,
+          "layout_s": 7.595103600000001,
+          "console_calls": 312
+        }
+      },
+      "transport": {
+        "captured_chunks": 8912,
+        "accepted_chunks": 8912,
+        "processed_chunks": 8912,
+        "planned_chunks": 8912,
+        "dropped_chunks": 0,
+        "dropped_audio_s": 0.0,
+        "finalization_from_audio_end_s": 2.5489102060000732,
+        "event_max_chunks": 1,
+        "event_max_audio_s": 0.1,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0,
+        "inference_queue_peak": 2
+      },
+      "cancelled_calls": 7,
+      "stale_displayed_events": 0,
+      "first_display_s": {
+        "n": 100,
+        "mean": 4.699512390960041,
+        "p50": 3.669525630999999,
+        "p95": 8.006090779000147,
+        "max": 9.443233551000162
+      },
+      "first_4chars_s": {
+        "n": 100,
+        "mean": 5.046415890750057,
+        "p50": 3.968674109999995,
+        "p95": 8.293079704000206,
+        "max": 9.593733341000302
+      },
+      "first_explanation": {
+        "source": "zeroth-121_003_2904",
+        "kind": "final",
+        "event": "token",
+        "segment": 146,
+        "job": 227,
+        "first_s": 8.006090779000147,
+        "start_to_submit_s": 5.975947175000215,
+        "queue_s": 0.000800746000095387,
+        "start_to_display_s": 2.0293428579998363
+      },
+      "first_kinds": {
+        "partial": 62,
+        "final": 38
+      },
+      "fresh_audio_gap_s": {
+        "n": 302,
+        "mean": 2.9508106374172183,
+        "p50": 2.550005136999971,
+        "p95": 5.325318498000115,
+        "max": 7.299207647000003
+      },
+      "final_latency_s": {
+        "n": 210,
+        "mean": 4.002712651957204,
+        "p50": 4.088729826999838,
+        "p95": 5.0429527870002175,
+        "max": 5.491902492000008
+      },
+      "calls_by_kind": {
+        "partial": {
+          "attempts": 98,
+          "statuses": {
+            "success": 91,
+            "cancelled": 7
+          },
+          "queue_wait_s": {
+            "n": 98,
+            "mean": 0.000227388153081513,
+            "p50": 0.00024348300030396786,
+            "p95": 0.00033389100008207606,
+            "max": 0.0003560570000900043
+          }
+        },
+        "final": {
+          "attempts": 210,
+          "statuses": {
+            "success": 210
+          },
+          "queue_wait_s": {
+            "n": 210,
+            "mean": 1.1215510981190662,
+            "p50": 0.003095536000046195,
+            "p95": 3.9409717210000963,
+            "max": 4.742134676999967
+          }
+        }
+      },
+      "final_stage_s": {
+        "native_elapsed_s": 561.0700271609999,
+        "preprocess_s": 0.14608763000000005,
+        "audio_encode_s": 153.23429663800007,
+        "audio_embedding_eval_s": 98.83567510600004,
+        "prefix_eval_s": 0.7098896499999999,
+        "suffix_eval_s": 27.984935544000006,
+        "token_decode_s": 272.86775310099995,
+        "kv_reset_s": 0.06618865299999989
+      },
+      "final_generated_token_ids": 3539
+    },
+    "stack": {
+      "score": {
+        "reference_characters": 3848,
+        "errors": 450,
+        "substitutions": 225,
+        "deletions": 163,
+        "insertions": 62,
+        "cer": 0.11694386694386695
+      },
+      "source": "f59e5519810b251a700274f75ac74183157fbb93",
+      "source_count": 100,
+      "input_manifest": "f693163f3d0d11a09873d3d5dbbd8a68aea6ebd1897cc051fd99dd076f8b76ab",
+      "audio_s": 891.1448125,
+      "pcm": "273529b8a519b3b2dab6cd2a1e941633a21e6f4ac3995619967446df77be4dd7",
+      "final_pcm_signature": "2baf78be5c5c6c90e0c6d9ff65c5d5f8a8dea72a407f47d2dfa6a91e1ed04986",
+      "thermal": {
+        "entry_C": 71.6,
+        "max_C": 90.3,
+        "actual_mhz": {
+          "min": 1500.009472,
+          "median": 1500.019456,
+          "max": 1500.025984
+        },
+        "flags": {
+          "0": 104,
+          "8": 149,
+          "6": 666
+        },
+        "undervoltage_samples": 0,
+        "fan_rpm": [],
+        "input_clock_mhz": {
+          "n": 867,
+          "mean": 1500.017596973453,
+          "p50": 1500.019456,
+          "p95": 1500.022656,
+          "max": 1500.025984
+        },
+        "input_below_1490_mhz_percent": 0.0,
+        "input_C": {
+          "n": 867,
+          "mean": 85.43690888119971,
+          "p50": 85.9,
+          "p95": 88.1,
+          "max": 90.3
+        }
+      },
+      "resources": {
+        "elapsed_s": 893.375352877,
+        "cpu_seconds_replay_plus_producer": 1795.191511419,
+        "mean_four_core_percent": 50.23620546609602,
+        "main_process_peak_rss_mib": 1701.546875,
+        "total_inference_s": 671.185198478001,
+        "inference_s_per_input_s": 0.7531718628256068,
+        "thermal_guard_max_c": 90.3,
+        "admission_c": 71.6,
+        "current_limit_input_s_approx": 814.249828099
+      },
+      "core_rail_W": 2.4831764748444822,
+      "pmic_n": 867,
+      "failed_calls": 0,
+      "evidence_sha256": {
+        "worker.json": "48b1cf6d2cc8d7f57d7fd7b8145c6d25ca0fbc8b84fc1a9bb137047e8a47b629",
+        "execution.json": "41460c5c05907ff1ec4c235c71554f7b1978cb3b90be99939df44afc0837616e",
+        "jobs.jsonl": "075cad6f8cf3679076ac44d9113a3a6e26f75f23dd0d8851f37dfb4c75c580b0",
+        "stream/producer.jsonl": "73bd8734b33d412e540e14f8f0ed03ac09049b7f9f371e33d997d614242ec49e",
+        "thermal.jsonl": "ec2f8b11eac86ec3a2a2afa62278084bf15323abd3c2871fcc6b2209a5fbc1de",
+        "console.log": "c312f10ae4332aec9dff02b70416ab33924ea91afa4ec8f413a0a831ee244196"
+      },
+      "receipts": {
+        "cnn_stack": {
+          "measured_calls": 342,
+          "sync_s": 3.4013045,
+          "layout_s": 0.2643466000000001,
+          "console_calls": 346
+        }
+      },
+      "transport": {
+        "captured_chunks": 8912,
+        "accepted_chunks": 8912,
+        "processed_chunks": 8912,
+        "planned_chunks": 8912,
+        "dropped_chunks": 0,
+        "dropped_audio_s": 0.0,
+        "finalization_from_audio_end_s": 2.230540377000011,
+        "event_max_chunks": 1,
+        "event_max_audio_s": 0.1,
+        "at_audio_end_s": 0.0,
+        "end_audio_s": 0.0,
+        "inference_queue_peak": 2
+      },
+      "cancelled_calls": 15,
+      "stale_displayed_events": 0,
+      "first_display_s": {
+        "n": 100,
+        "mean": 3.5738517213500245,
+        "p50": 2.92168561699998,
+        "p95": 7.242331196999999,
+        "max": 8.892230070000096
+      },
+      "first_4chars_s": {
+        "n": 100,
+        "mean": 4.085614430930025,
+        "p50": 3.434673248999985,
+        "p95": 7.477388524000048,
+        "max": 9.045883436000167
+      },
+      "first_explanation": {
+        "source": "zeroth-121_003_0845",
+        "kind": "final",
+        "event": "token",
+        "segment": 141,
+        "job": 241,
+        "first_s": 7.242331196999999,
+        "start_to_submit_s": 5.602054737000003,
+        "queue_s": 0.0019358439999450638,
+        "start_to_display_s": 1.6383406160000504
+      },
+      "first_kinds": {
+        "partial": 80,
+        "final": 20
+      },
+      "fresh_audio_gap_s": {
+        "n": 336,
+        "mean": 2.6522167038690476,
+        "p50": 2.2400448470000356,
+        "p95": 5.135061754000162,
+        "max": 6.250298878999956
+      },
+      "final_latency_s": {
+        "n": 210,
+        "mean": 3.568888745219077,
+        "p50": 3.6394055660000504,
+        "p95": 4.535354880999989,
+        "max": 5.114121770999986
+      },
+      "calls_by_kind": {
+        "partial": {
+          "attempts": 132,
+          "statuses": {
+            "success": 117,
+            "cancelled": 15
+          },
+          "queue_wait_s": {
+            "n": 132,
+            "mean": 0.00022878278787605709,
+            "p50": 0.00023753899995426764,
+            "p95": 0.0003216320001229178,
+            "max": 0.000381483000182925
+          }
+        },
+        "final": {
+          "attempts": 210,
+          "statuses": {
+            "success": 210
+          },
+          "queue_wait_s": {
+            "n": 210,
+            "mean": 0.9373011676190469,
+            "p50": 0.003036071999986234,
+            "p95": 3.601784741000074,
+            "max": 4.378935660000025
+          }
+        }
+      },
+      "final_stage_s": {
+        "native_elapsed_s": 508.687719648,
+        "preprocess_s": 0.14536146600000005,
+        "audio_encode_s": 101.51269752600001,
+        "audio_embedding_eval_s": 98.40664223400003,
+        "prefix_eval_s": 1.4926874959999998,
+        "suffix_eval_s": 27.94736329,
+        "token_decode_s": 271.8383594719999,
+        "kv_reset_s": 0.13267168200000012
+      },
+      "final_generated_token_ids": 3540
+    }
+  },
+  "paired": {
+    "models": [
+      "cpu",
+      "conv",
+      "stack"
+    ],
+    "same_final_pcm": 210,
+    "all_success_finals": 210,
+    "same_success_end_to_final_s": {
+      "cpu": {
+        "n": 210,
+        "mean": 4.393724696742851,
+        "p50": 4.478169803999776,
+        "p95": 5.4755060379999065,
+        "max": 6.149165627999992
+      },
+      "conv": {
+        "n": 210,
+        "mean": 4.002712651957204,
+        "p50": 4.088729826999838,
+        "p95": 5.0429527870002175,
+        "max": 5.491902492000008
+      },
+      "stack": {
+        "n": 210,
+        "mean": 3.568888745219077,
+        "p50": 3.6394055660000504,
+        "p95": 4.535354880999989,
+        "max": 5.114121770999986
+      }
+    },
+    "same_success_inference_s": {
+      "cpu": {
+        "n": 210,
+        "mean": 2.8953369921904706,
+        "p50": 3.081801548000385,
+        "p95": 5.066885391000142,
+        "max": 5.585119941999892
+      },
+      "conv": {
+        "n": 210,
+        "mean": 2.6733381842571458,
+        "p50": 2.8736739299999954,
+        "p95": 4.702734404999774,
+        "max": 5.11326125100004
+      },
+      "stack": {
+        "n": 210,
+        "mean": 2.423711530352382,
+        "p50": 2.5878040680000822,
+        "p95": 4.284938447000059,
+        "max": 4.827761266000152
+      }
+    },
+    "same_success_native_sum_s": {
+      "cpu": 607.674115802,
+      "conv": 561.0700271609999,
+      "stack": 508.687719648
+    },
+    "final_statuses": {
+      "cpu": {
+        "success": 210
+      },
+      "conv": {
+        "success": 210
+      },
+      "stack": {
+        "success": 210
+      }
+    },
+    "versus_first": {
+      "conv": {
+        "token_equal": 132,
+        "raw_equal": 132,
+        "normalized_equal": 143,
+        "both_success": 210,
+        "examples": [
+          {
+            "segment": 3,
+            "cpu": "이제 사람들은 컴퓨터 화면에 메시지를 쓰고 연필깎이를 가까이 할 필요가.",
+            "candidate": "이제 사람들은 컴퓨터 화면에 메시지를 쓰고 연필깎기를 가까이 할 필요가."
+          },
+          {
+            "segment": 5,
+            "cpu": "지구가 마치 움직이지 않은 것처럼 느껴지기에 언뜻보기에 맞는 말 같기.",
+            "candidate": "지구가 마치 움직이지 않은 것처럼 느껴지기에 언뜻보면 맞는 말 같고."
+          },
+          {
+            "segment": 9,
+            "cpu": "이 이야기에 관계된 두 명의 성인 자녀를 둔 기혼자인 뒤발은.",
+            "candidate": "이 이야기에 관계된 두 명의 성인 자녀를 둔 기혼자인 뷰발은."
+          }
+        ]
+      },
+      "stack": {
+        "token_equal": 123,
+        "raw_equal": 123,
+        "normalized_equal": 132,
+        "both_success": 210,
+        "examples": [
+          {
+            "segment": 5,
+            "cpu": "지구가 마치 움직이지 않은 것처럼 느껴지기에 언뜻보기에 맞는 말 같기.",
+            "candidate": "지구가 마치 움직이지 않은 것처럼 느껴지게 얼뜨거려 맞는 말 같아."
+          },
+          {
+            "segment": 6,
+            "cpu": "구조물을 긁거나 낙소해서 현장을 더럽히지 마시오.",
+            "candidate": "구조물을 긁거나 낙서해서 현장을 더럽히지 마시오."
+          },
+          {
+            "segment": 9,
+            "cpu": "이 이야기에 관계된 두 명의 성인 자녀를 둔 기혼자인 뒤발은.",
+            "candidate": "이 이야기에 관계된 두 명의 성인 자녀를 둔 기혼자인 주발은"
+          }
+        ]
+      }
+    }
+  },
+  "by_source": {
+    "conv": {
+      "fewer": 27,
+      "same": 55,
+      "more": 18,
+      "errors_removed": 65,
+      "errors_added": 41,
+      "net": -24,
+      "largest_drops": [
+        {
+          "source": "zeroth-137_003_1848",
+          "baseline_errors": 21,
+          "candidate_errors": 8
+        },
+        {
+          "source": "zeroth-149_003_2332",
+          "baseline_errors": 12,
+          "candidate_errors": 5
+        }
+      ],
+      "largest_rises": [
+        {
+          "source": "fleurs-375683238417481119",
+          "baseline_errors": 0,
+          "candidate_errors": 5
+        },
+        {
+          "source": "zeroth-118_003_2737",
+          "baseline_errors": 2,
+          "candidate_errors": 7
+        }
+      ]
+    },
+    "stack": {
+      "fewer": 23,
+      "same": 49,
+      "more": 28,
+      "errors_removed": 36,
+      "errors_added": 67,
+      "net": 31,
+      "largest_drops": [
+        {
+          "source": "zeroth-105_003_1057",
+          "baseline_errors": 7,
+          "candidate_errors": 3
+        },
+        {
+          "source": "zeroth-104_003_0890",
+          "baseline_errors": 5,
+          "candidate_errors": 2
+        }
+      ],
+      "largest_rises": [
+        {
+          "source": "zeroth-132_003_1379",
+          "baseline_errors": 0,
+          "candidate_errors": 8
+        },
+        {
+          "source": "fleurs-14278025439467391857",
+          "baseline_errors": 6,
+          "candidate_errors": 11
+        }
+      ]
+    }
+  },
+  "verification": {
+    "verified_rp5_raw_files": 121,
+    "raw_file_index_sha256": "f585d50ea681a6da96608486e6da9a58a85b07e35a1ddc4806fce712e0f9d304",
+    "groups": {
+      "capture": {
+        "model_files": {
+          "Qwen3-ASR-0.6B-Q8_0.gguf": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+          },
+          "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+          },
+          "runtime_library": {
+            "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/hailo8l-q8-20261120-01/rp-capture-04/libedge_asr_gguf.so",
+            "sha256": "3e89983e74a4a67ba9108331a85e15c947ed00d762428c9e19cb6b8e38f6f7da"
+          },
+          "runtime_manifest": {
+            "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/hailo8l-q8-20261120-01/rp-capture-04/build.json",
+            "sha256": "8f4c1fedaaaaf43edcff209954921fa68356faeed0c2a3bf6c6532e4793c96a6"
+          }
+        },
+        "input_manifest_sha256": "27c35011bff7987ba502ffe480205050b0fe6b0706930ef6256e43fae481b1c1",
+        "config_sha256": "2b43188baa98b26934cb4816386103cc94bce5f42062f3f942fcc03b248a60b2",
+        "source_commit": "f59e5519810b251a700274f75ac74183157fbb93"
+      },
+      "pcm": {
+        "model_files": {
+          "Qwen3-ASR-0.6B-Q8_0.gguf": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+          },
+          "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+          },
+          "runtime_library": {
+            "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+            "sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf"
+          },
+          "runtime_manifest": {
+            "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+            "sha256": "a7fa6d9d6ffab5b5a0f7f98e3dc94cd7d751fe503a16f214936b5ff32fd3d113"
+          }
+        },
+        "input_manifest_sha256": "d8539225ea5b46226f381fb1ca63bd076900cb2b9a5be3693aae096caceab884",
+        "config_sha256": "fe87ae0570093045f40d6e99c505046366e9b619512c8cd9265454ce6443e069",
+        "source_commit": "f59e5519810b251a700274f75ac74183157fbb93"
+      },
+      "fixed": {
+        "model_files": {
+          "Qwen3-ASR-0.6B-Q8_0.gguf": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971"
+          },
+          "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf": {
+            "path": "/home/deepet/projects/edge-asr/models/qwen3-opt/gguf-q8-20261109-01/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+            "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d"
+          },
+          "runtime_library": {
+            "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/libedge_asr_gguf.so",
+            "sha256": "b2ba3e177693e7a544b690dd4b788a40edefe1a4b2718ac172fb204d1a845adf"
+          },
+          "runtime_manifest": {
+            "path": "/home/deepet/projects/edge-asr/runtimes/qwen3-opt/prefix-20261112-01/bridge/build.json",
+            "sha256": "a7fa6d9d6ffab5b5a0f7f98e3dc94cd7d751fe503a16f214936b5ff32fd3d113"
+          }
+        },
+        "input_manifest_sha256": "f693163f3d0d11a09873d3d5dbbd8a68aea6ebd1897cc051fd99dd076f8b76ab",
+        "config_sha256": "fe87ae0570093045f40d6e99c505046366e9b619512c8cd9265454ce6443e069",
+        "source_commit": "f59e5519810b251a700274f75ac74183157fbb93"
+      }
+    }
+  },
+  "conv2_vs_stack": {
+    "both_success": 210,
+    "different_token_ids": 89,
+    "different_normalized_text": 83
+  },
+  "diagnostic_device": {
+    "temperature_before_C": [
+      46.82634353637695,
+      46.57341384887695
+    ],
+    "input_shape": [
+      6,
+      128,
+      100,
+      1
+    ],
+    "input_quant": [
+      0.009125759825110435,
+      85.0
+    ],
+    "output_quant": [
+      0.01713716797530651,
+      10.0
+    ],
+    "input_numpy_quant_ms": 0.39715,
+    "logical_UINT8_input_bytes": 76800,
+    "fp32_sync_ms": 18.307806,
+    "uint8_sync_ms": 17.967434,
+    "logical_UINT8_output_bytes": 599040,
+    "output_numpy_dequant_ms": 1.842066,
+    "raw_vs_float_max_abs": 0.0,
+    "float_vs_integrated_max_abs": 0.0,
+    "temperature_after_C": [
+      47.129859924316406,
+      46.82634353637695
+    ],
+    "cli_30_single_frames": [
+      {
+        "net_name": "qwen_cnn_stack",
+        "status": "0",
+        "status_description": "HAILO_SUCCESS",
+        "fps": "",
+        "num_of_frames": "30",
+        "send_rate": "",
+        "recv_rate": "",
+        "hw_latency": "3.30274",
+        "overall_latency": "3.47607",
+        "min_power": "",
+        "average_power": "",
+        "max_power": "",
+        "min_current": "",
+        "average_current": "",
+        "max_current": "",
+        "min_temp": "",
+        "average_temp": "",
+        "max_temp": ""
+      }
+    ]
+  },
+  "build_sha256": "a10a6ca0e707b43d0310bf45a2823e1c937aac37d303adb062426ecb52147062"
+}
