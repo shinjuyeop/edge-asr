@@ -72,6 +72,8 @@ test('punctuation finals preserve readable context and audible repeats remain di
  const a=event(0,0,1000,1,'안 돼'),b=event(1,1000,2000,2,'안 돼');
  const empty=event(2,2000,3000,3,'.');
  const pending=event(3,3000,4000,4,'다음',{kind:'partial',status:'success'});
+ const punctToken={...empty,type:'token',status:'provisional',token_index:1};
+ assert.equal(continuousCaption([a,b,punctToken]).text,'안 돼 안 돼');
  assert.equal(continuousCaption([a,b,empty,pending]).text,'안 돼 안 돼 다음');
  assert.equal(reviewTranscript(sourceReview([{id:'x',start:0,end:5000}],[a,b,empty,pending],0)),'안 돼 안 돼 .');
 });

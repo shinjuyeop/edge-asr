@@ -5,6 +5,8 @@
 #include "mtmd-helper.h"
 #include "prefix_cache.h"
 #include "audio_window_cache.h"
+#include "final_audio_prepare.h"
+#include <cstdlib>
 #include "token_draft.h"
 #ifdef EDGE_ASR_TRACE_TOKENS
 #include "token_trace.h"
@@ -44,6 +46,8 @@ struct State {
     json configuration;
     TextPrefixCache prefix_cache;
     AudioWindowCache audio_windows;
+    std::unique_ptr<FinalAudioPreparation> preparation;
+    int64_t selected_job = -1;
     int audio_window_ms = 0;
     bool audio_window_reuse = false, audio_window_kv_valid = false;
     std::vector<int32_t> pending_token_draft;
@@ -55,6 +59,7 @@ struct State {
     OperatorProfile operators;
 #endif
     ~State() {
+        preparation.reset(); // std::async 작업이 mtmd를 반납한 뒤 장치를 닫는다.
         if (batch) llama_batch_ext_free(batch);
         if (sampler) llama_sampler_free(sampler);
         if (audio) mtmd_free(audio);
@@ -138,7 +143,7 @@ std::string piece(const llama_vocab* vocab,llama_token token) {
 
 // upstream과 같은 chunk 순서·평가 함수를 사용하고 시간만 세분한다.
 llama_pos eval_prompt(State* s, const mtmd_input_chunks* chunks, bool hit, size_t prefix_size, json& out,
-                      const std::vector<float>& window_embeds, size_t reused_audio) {
+                      const std::vector<float>& window_embeds, size_t reused_audio, std::vector<float>& prepared) {
     llama_pos past=hit ? llama_pos(prefix_size) : 0;
     for (size_t i=0;i<mtmd_input_chunks_size(chunks);++i) {
         const auto* chunk=mtmd_input_chunks_get(chunks,i);
@@ -173,13 +178,24 @@ llama_pos eval_prompt(State* s, const mtmd_input_chunks* chunks, bool hit, size_
                 out["audio_embedding_eval_s"]=out["audio_embedding_eval_s"].get<double>()+since(stage);
                 continue;
             }
-            operator_phase(s,"audio_encoder");
-            const int encoded=mtmd_encode_chunk(s->audio,chunk);
-            out["audio_encode_s"]=out["audio_encode_s"].get<double>()+since(stage);
-            if (encoded!=0) throw std::runtime_error("audio encoder failed");
+            float* embedding = prepared.data();
+            if (prepared.empty()) {
+                operator_phase(s,"audio_encoder");
+                const int encoded=mtmd_encode_chunk(s->audio,chunk);
+                out["audio_encode_s"]=out["audio_encode_s"].get<double>()+since(stage);
+                if (encoded!=0) throw std::runtime_error("audio encoder failed");
+                embedding=mtmd_get_output_embd(s->audio);
+            }
+            if (!prepared.empty() && std::getenv("EDGE_ASR_VERIFY_PREPARED_AUDIO")) {
+                if (mtmd_encode_chunk(s->audio,chunk)!=0) throw std::runtime_error("verification encoder failed");
+                bool equal=std::memcmp(prepared.data(),mtmd_get_output_embd(s->audio),
+                                       prepared.size()*sizeof(float))==0;
+                out["final_audio_preparation"]["embedding_bytes_equal"]=equal;
+                if (!equal) throw std::runtime_error("prepared and original embeddings differ");
+            }
             stage=Clock::now();
             operator_phase(s,"audio_prefill");
-            const int decoded=mtmd_helper_decode_image_chunk(s->audio,s->ctx,chunk,mtmd_get_output_embd(s->audio),
+            const int decoded=mtmd_helper_decode_image_chunk(s->audio,s->ctx,chunk,embedding,
                 past,0,llama_n_batch(s->ctx),&past,nullptr,nullptr);
             out["audio_embedding_eval_s"]=out["audio_embedding_eval_s"].get<double>()+since(stage);
             if (decoded!=0) throw std::runtime_error("audio embedding prefill failed");
@@ -314,6 +330,24 @@ __attribute__((visibility("default"))) int edge_gguf_set_operator_profile(void* 
     s->operators.enabled=enabled!=0; s->operators.reset(); return 0;
 }
 #endif
+__attribute__((visibility("default"))) int edge_gguf_enable_final_prepare(void* handle) {
+    auto* s=static_cast<State*>(handle);
+    if (!s || s->preparation) return -1;
+    try { s->preparation=std::make_unique<FinalAudioPreparation>(); return 0; }
+    catch(const std::exception& e) { error=e.what(); return -1; }
+}
+__attribute__((visibility("default"))) void edge_gguf_select_final(void* handle,int64_t job) {
+    static_cast<State*>(handle)->selected_job=job;
+}
+__attribute__((visibility("default"))) int edge_gguf_offer_final(void* handle,int64_t job,const float* pcm,size_t count) {
+    auto* s=static_cast<State*>(handle);
+    if (!s || !s->preparation || job<0 || !pcm || count<320) return -1;
+    try {
+        return s->preparation->offer(job,pcm,count,[s](const float* data,size_t size) {
+            return encode_audio_window(s,data,size,false);
+        }) ? 1 : 0;
+    } catch(const std::exception& e) { error=e.what(); return -1; }
+}
 // 입력은 같은 batch PCM이다. callback은 토큰 바이트 전달만 하며 0 외 반환은 호출 실패로 남긴다.
 typedef int (*edge_token_callback)(void*,const void*,size_t,int,double);
 __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(void* handle,const float* samples,size_t count,edge_token_callback callback,void* user) {
@@ -344,6 +378,13 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
     const auto began=Clock::now();
     try {
         if (!samples || count<320) throw std::runtime_error("at least 2 feature frames required");
+        FinalAudioPreparation::Snapshot prepared;
+        if (s->preparation) {
+            prepared=s->preparation->take(s->selected_job,samples,count);
+            s->selected_job=-1;
+            out["final_audio_preparation"]={{"job_id",prepared.job_id},{"used",false},
+                {"compute_s",prepared.compute_s},{"wait_s",prepared.wait_s}};
+        }
         auto stage=Clock::now();
         std::unique_ptr<mtmd_bitmap,decltype(&mtmd_bitmap_free)> bitmap(mtmd_bitmap_init_from_audio(count,samples),mtmd_bitmap_free);
         std::unique_ptr<mtmd_input_chunks,decltype(&mtmd_input_chunks_free)> chunks(mtmd_input_chunks_init(),mtmd_input_chunks_free);
@@ -361,6 +402,14 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
         for(size_t i=0;i<mtmd_input_chunks_size(chunks.get());++i) {
             const auto* c=mtmd_input_chunks_get(chunks.get(),i);
             if(mtmd_input_chunk_get_type(c)==MTMD_INPUT_CHUNK_TYPE_AUDIO) audio_tokens+=mtmd_input_chunk_get_n_tokens(c);
+        }
+        if (!prepared.embedding.empty()) {
+            size_t chunks_with_audio=0;
+            for(size_t i=0;i<mtmd_input_chunks_size(chunks.get());++i)
+                chunks_with_audio+=mtmd_input_chunk_get_type(mtmd_input_chunks_get(chunks.get(),i))==MTMD_INPUT_CHUNK_TYPE_AUDIO;
+            if (chunks_with_audio!=1 || prepared.embedding.size()!=audio_tokens*size_t(llama_model_n_embd_inp(s->model)))
+                prepared.embedding.clear();
+            out["final_audio_preparation"]["used"]=!prepared.embedding.empty();
         }
         out["audio_tokens"]=audio_tokens; out["preprocess_s"]=since(stage);
         std::vector<float> window_embeds;
@@ -402,9 +451,10 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
         out["prefix_cache"]["reused_tokens"]=hit ? prefix.size() : 0;
         out["prefix_cache"]["miss_reason"]=miss ? json(miss) : json(nullptr);
         stage=Clock::now();
-        llama_pos past=eval_prompt(s,chunks.get(),hit,prefix.size(),out,window_embeds,reused_audio);
+        llama_pos past=eval_prompt(s,chunks.get(),hit,prefix.size(),out,window_embeds,reused_audio,prepared.embedding);
         out["audio_and_prefill_s"]=since(stage)+(s->audio_window_ms?out["audio_encode_s"].get<double>():0);
         if (past!=positions) throw std::runtime_error("prompt position mismatch after prefix reuse");
+        if (s->preparation) s->preparation->decode_phase(true);
         double decode_s=0,sample_s=0;int decode_calls=0,decode_rows=0,logit=-1;
         const auto* vocab=llama_model_get_vocab(s->model);
         for(int i=0;i<s->max_new;++i) {
@@ -449,6 +499,7 @@ __attribute__((visibility("default"))) const char* edge_gguf_transcribe_tokens(v
         if(out["termination"]=="eog") out["status"]="success";
         else out["error"]="generation did not terminate with eog";
     } catch (const std::exception& e) { out["error"]=e.what(); }
+    if (s->preparation) s->preparation->decode_phase(false);
     out["token_draft"]={{"policy","q8_greedy_verify_prefix_v1"},{"candidate_tokens",draft.size()},
         {"block",draft.block()},{"batches",draft.batches},{"proposed",draft.proposed},
         {"accepted",draft.accepted},{"rejected",draft.rejected}};

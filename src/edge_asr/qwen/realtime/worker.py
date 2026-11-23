@@ -130,6 +130,14 @@ class DecodeWorker:
                 self.emit({"type": "coalesced", **self.partial[0], "replaced_by": job["job_id"]})
                 self.partial = None
             if kind == "final":
+                if (
+                    self.active
+                    and not self.finals
+                    and getattr(self.adapter, "prepare_final_audio", False)
+                ):
+                    job["audio_prepare_offered"] = self.adapter.offer_final_audio(
+                        job["job_id"], samples
+                    )
                 self.finals.append((job, samples))
             else:
                 self.partial = (job, samples)

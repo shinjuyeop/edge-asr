@@ -88,6 +88,7 @@ def build(
         "bridge_source_sha256": sha(cpp),
         "prefix_cache_source_sha256": sha(cpp.with_name("prefix_cache.h")),
         "audio_window_source_sha256": sha(cpp.with_name("audio_window_cache.h")),
+        "final_audio_prepare_source_sha256": sha(cpp.with_name("final_audio_prepare.h")),
         "token_draft_source_sha256": sha(cpp.with_name("token_draft.h")),
         "features": [
             "token_callback_v1",
@@ -96,6 +97,7 @@ def build(
             "partial_audio_window_v1",
             "partial_audio_window_ms_v1",
             "token_draft_v1",
+            "final_audio_prepare_v1",
         ],
         "cmake_cache_sha256": sha(engine_build / "CMakeCache.txt"),
         "engine_libraries": {p.name: sha(p) for p in (engine_build / "bin").glob("*.so")},

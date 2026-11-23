@@ -718,6 +718,62 @@ class GGUFTests(unittest.TestCase):
 
 @unittest.skipUnless(shutil.which("g++"), "text prefix KV 상태 검사는 g++가 필요합니다.")
 class GGUFPolicyTests(unittest.TestCase):
+    @unittest.skipUnless(shutil.which("g++"), "확정 PCM 준비 동시성 검사에는 g++가 필요합니다.")
+    def test_preparation_checks_revision_pcm_and_waits_before_reusing_encoder(self):
+        code = r"""
+#include "final_audio_prepare.h"
+#include <cassert>
+int main() {
+    FinalAudioPreparation pipeline;
+    float pcm[] = {1, 2};
+    auto encode=[](const float* p, size_t n) { return std::vector<float>(p,p+n); };
+    assert(!pipeline.offer(4, pcm, 2, encode));
+    pipeline.decode_phase(true);
+    assert(pipeline.offer(4, pcm, 2, encode));
+    assert(!pipeline.offer(5, pcm, 2, encode));
+    auto ready=pipeline.take(4, pcm, 2);
+    assert(ready.matched && ready.embedding[1]==2);
+    pipeline.decode_phase(true);
+    assert(pipeline.offer(4, pcm, 2, encode));
+    assert(pipeline.take(5, pcm, 2).embedding.empty());
+    pipeline.decode_phase(true);
+    assert(pipeline.offer(6, pcm, 2, encode));
+    pcm[0]=3;
+    assert(pipeline.take(6, pcm, 2).embedding.empty());
+    std::promise<void> done;
+    auto future=done.get_future();
+    {
+        FinalAudioPreparation at_shutdown;
+        at_shutdown.decode_phase(true);
+        assert(at_shutdown.offer(7,pcm,2,[&](const float* p,size_t n) {
+            done.set_value();
+            return encode(p,n);
+        }));
+    }
+    future.get();
+}
+"""
+        with tempfile.TemporaryDirectory() as temporary:
+            binary = Path(temporary) / "prepare"
+            subprocess.run(
+                [
+                    "g++",
+                    "-std=c++17",
+                    "-pthread",
+                    "-I",
+                    str(ROOT / "native/gguf"),
+                    "-x",
+                    "c++",
+                    "-",
+                    "-o",
+                    str(binary),
+                ],
+                input=code,
+                text=True,
+                check=True,
+            )
+            subprocess.run([str(binary)], check=True, timeout=10)
+
     def test_only_matching_prefix_survives_and_all_failure_paths_clear_state(self):
         code = r"""
 #include "prefix_cache.h"

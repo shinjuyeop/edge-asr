@@ -93,6 +93,7 @@ def load_evaluation_config(path: str | Path) -> dict:
             "partial_audio_window_ms",
             "partial_audio_window_cache",
             "final_token_draft_block",
+            "prepare_final_audio",
         }
     allowed = {
         "model": model_keys,
@@ -151,6 +152,8 @@ def load_evaluation_config(path: str | Path) -> dict:
         and type(config["model"]["cache_text_prefix"]) is not bool
     ):
         raise ValueError("model.cache_text_prefix는 true/false여야 합니다.")
+    if type(config["model"].get("prepare_final_audio", False)) is not bool:
+        raise ValueError("model.prepare_final_audio는 true/false여야 합니다.")
     if family == "zipformer":
         padding = config["model"]["tail_padding_s"]
         if (

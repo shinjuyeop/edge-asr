@@ -5,6 +5,7 @@ import ctypes
 import json
 import math
 from array import array
+from threading import Lock
 
 from edge_asr.artifacts import digest
 from edge_asr.dataset import Audio, resolve_path
@@ -112,6 +113,24 @@ class Qwen3GGUFAdapter:
             raise ValueError(
                 "cache_text_prefix에는 text_prefix_cache_v1 별도 GGUF 빌드가 필요합니다."
             )
+        self.prepare_final_audio = model.get("prepare_final_audio", False)
+        if type(self.prepare_final_audio) is not bool:
+            raise ValueError("prepare_final_audio는 true/false여야 합니다.")
+        self.prepare_lock = Lock()
+        if self.prepare_final_audio:
+            features = self.build.get("features", [])
+            if "final_audio_prepare_v1" not in features:
+                raise ValueError("확정 PCM 준비에는 final_audio_prepare_v1 빌드가 필요합니다.")
+            if "operator_profile_v1" in features or any(
+                model.get(key)
+                for key in (
+                    "partial_audio_window_s",
+                    "partial_audio_window_ms",
+                    "conv_kernel_manifest",
+                    "audio_feature_cache_manifest",
+                )
+            ):
+                raise ValueError("확정 PCM 준비 실험은 독립적인 원본 음성 인코더를 사용합니다.")
         self.model_files.update(
             runtime_library=self.library_path, runtime_manifest=self.manifest_path
         )
@@ -161,7 +180,21 @@ class Qwen3GGUFAdapter:
         if self.audio_windows:
             self.audio_windows.prepare(kind)
 
+    def offer_final_audio(self, job_id, samples):
+        pcm = (ctypes.c_float * len(samples)).from_buffer(samples)
+        with self.prepare_lock:
+            if self.handle is None:
+                return False
+            status = self.library.edge_gguf_offer_final(self.handle, job_id, pcm, len(samples))
+        if status < 0:
+            raise RuntimeError("다음 확정 요청의 오디오 준비 실패")
+        return bool(status)
+
     def prepare_realtime_job(self, job):
+        if self.prepare_final_audio:
+            self.library.edge_gguf_select_final(
+                self.handle, job["job_id"] if job["kind"] == "final" else -1
+            )
         if self.token_drafts:
             self.token_drafts.prepare(job)
 
@@ -196,6 +229,7 @@ class Qwen3GGUFAdapter:
             "token_output_callback": self.supports_token_stream,
             "thread_configuration": self.thread_configuration,
             "cache_text_prefix": self.cache_text_prefix,
+            "prepare_final_audio": self.prepare_final_audio,
             "final_token_draft_block": self.model.get("final_token_draft_block"),
             "partial_audio_window_s": self.model.get("partial_audio_window_s"),
             "partial_audio_window_ms": self.model.get("partial_audio_window_ms"),
@@ -307,6 +341,24 @@ class Qwen3GGUFAdapter:
             if lib.edge_gguf_set_prefix_cache(self.handle, int(self.cache_text_prefix)) != 0:
                 self.close()
                 raise RuntimeError("GGUF text prefix 캐시 설정 실패")
+        if self.prepare_final_audio:
+            try:
+                lib.edge_gguf_enable_final_prepare.argtypes = [ctypes.c_void_p]
+                lib.edge_gguf_enable_final_prepare.restype = ctypes.c_int
+                lib.edge_gguf_select_final.argtypes = [ctypes.c_void_p, ctypes.c_int64]
+                lib.edge_gguf_select_final.restype = None
+                lib.edge_gguf_offer_final.argtypes = [
+                    ctypes.c_void_p,
+                    ctypes.c_int64,
+                    ctypes.POINTER(ctypes.c_float),
+                    ctypes.c_size_t,
+                ]
+                lib.edge_gguf_offer_final.restype = ctypes.c_int
+                if lib.edge_gguf_enable_final_prepare(self.handle) != 0:
+                    raise RuntimeError("확정 PCM 준비 초기화 실패")
+            except Exception:
+                self.close()
+                raise
         if self.audio_windows or self.token_drafts:
             try:
                 if self.audio_windows:
@@ -516,8 +568,9 @@ class Qwen3GGUFAdapter:
 
     def close(self):
         if self.handle is not None:
-            self.library.edge_gguf_destroy(self.handle)
-            self.handle = None
+            with self.prepare_lock:
+                self.library.edge_gguf_destroy(self.handle)
+                self.handle = None
         if self.convolution:
             self.convolution.close()
         if self.feature_cache:

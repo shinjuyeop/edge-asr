@@ -9,6 +9,7 @@ from pathlib import Path
 from edge_asr.artifacts import digest, read_jsonl, write_json
 from edge_asr.metrics import distribution, normalize
 from edge_asr.qwen.viewer.analysis import visible
+from edge_asr.qwen.viewer.onsets import annotated_word_starts, onset_latencies
 
 
 def letters(row):
@@ -33,7 +34,7 @@ def event_record(row):
     return {key: row[key] for key in keys if key in row}
 
 
-def continuity(worker, records):
+def continuity(worker, records, *, word_starts=None):
     """원음은 겹치지 않는 연속 트랙 좌표다. 겹친 요청은 원음별 첫 표시에 배분하지 않는다."""
     sources = worker["sources"]
     ends = [s["end"] for s in sources]
@@ -207,6 +208,7 @@ def continuity(worker, records):
         "source_time_origin": "원음 파일 시작 또는 녹음 시작, 음향 단어 시작 시각 미측정",
         "raw_first_any_s": delays(old_first),
         "meaningful_first_s": delays(first),
+        "onsets": onset_latencies(worker, records, first, word_starts or {}),
         "meaningful_four_s": delays(four),
         "missing_first": len(sources) - len(first),
         "missing_four": len(sources) - len(four),
@@ -265,10 +267,22 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument(
+        "--seoul-manifest", type=Path, help="서울말뭉치 원본 TextGrid 주석 manifest"
+    )
     args = parser.parse_args()
     p = args.run
     worker = json.loads((p / "worker.json").read_text())
-    summary = continuity(worker, read_jsonl(p / "jobs.jsonl"))
+    onsets = (
+        annotated_word_starts(
+            args.seoul_manifest, worker["sources"], worker["audio"]["sample_rate_hz"]
+        )
+        if args.seoul_manifest
+        else {}
+    )
+    summary = continuity(worker, read_jsonl(p / "jobs.jsonl"), word_starts=onsets)
+    if args.seoul_manifest:
+        summary["seoul_manifest_sha256"] = digest(args.seoul_manifest)
     summary["source_commit"] = worker.get("source_commit")
     summary["worker_status"] = worker.get("status")
     summary["complete_input"] = worker.get("pipeline", {}).get("complete")
