@@ -74,7 +74,9 @@ def continuity(worker, records, *, word_starts=None):
         if e.get("stale_revision"):
             continue
         if e["type"] == "result" and e["kind"] == "final":
-            for index in range(left, right):
+            # 이전 파일에서 빌린 왼쪽 문맥은 이 확정이 소유한 원음이 아니다.
+            owned_left = bisect_right(ends, e.get("owned_start_frame", lo))
+            for index in range(owned_left, right):
                 final_at[index] = at
         if not visible(e) or e.get("status") == "cancelled":
             continue

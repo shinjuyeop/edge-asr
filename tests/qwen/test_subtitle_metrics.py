@@ -55,3 +55,34 @@ class SubtitleMetricsTests(unittest.TestCase):
         self.assertEqual(result["missing_first"], 1)
         self.assertEqual(result["missing_file_final"], 0)
         self.assertAlmostEqual(result["common_file_end_final_s"]["p95"], 2.3)
+
+    def test_left_context_cannot_delay_the_previous_files_final(self):
+        worker = {
+            "sources": [
+                {"id": "a", "start": 0, "end": 100},
+                {"id": "b", "start": 100, "end": 200},
+            ],
+            "audio": {"frames": 200, "sample_rate_hz": 100},
+        }
+        final = dict(type="result", kind="final", status="success", displayed=True)
+        a = dict(
+            final,
+            job_id=1,
+            segment_id=0,
+            start_frame=0,
+            end_frame=100,
+            hypothesis="앞",
+            published_s=1.2,
+        )
+        b = dict(
+            final,
+            job_id=2,
+            segment_id=1,
+            start_frame=80,
+            owned_start_frame=100,
+            end_frame=200,
+            hypothesis="뒤",
+            published_s=2.4,
+        )
+        report = continuity(worker, [a, b])
+        self.assertAlmostEqual(report["common_file_end_final_s"]["mean"], 0.3)
