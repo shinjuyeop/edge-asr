@@ -57,6 +57,45 @@ class FakeNumpy:
 
 
 class ProbabilityTests(unittest.TestCase):
+    def test_end_grace_keeps_short_final_speech_with_its_preceding_pcm(self):
+        # 5초를 막 넘긴 EOF, VAD 자연 종료와 계속 발화하는 경우를 같은 정책으로 비교한다.
+        for frames, quiet_at in [(80_128, None), (80_256, None), (86_000, None), (96_000, 156)]:
+            with self.subTest(frames=frames, quiet_at=quiet_at):
+                rows = []
+                vad = BoundedProbabilityVad(
+                    Probability(lambda n: 0.99 if quiet_at is None or n < quiet_at else 0.01),
+                    max_speech_s=15,
+                )
+                pipe = SegmentPipeline(
+                    vad,
+                    "identity",
+                    5,
+                    lambda r, p: rows.append((r, p)),
+                    context_frames=0,
+                    native_budget_frames=None,
+                    split_on_pause=True,
+                    boundary_target_s=2.2,
+                    boundary_pause_center=True,
+                    boundary_end_grace_s=0.2,
+                )
+                signal = array("f", [0.1]) * frames
+                for i in range(0, frames, 1600):
+                    pipe.accept(signal[i : i + 1600], final=i + 1600 >= frames)
+                pipe.finish()
+                end = rows[-1][0]["owned_end_frame"]
+                self.assertEqual(
+                    sum((pcm for _, pcm in rows), array("h")),
+                    preprocess(signal, "identity")[0][:end],
+                )
+                self.assertTrue(all(320 <= len(pcm) <= 83_200 for _, pcm in rows))
+                self.assertEqual(len(rows), 2 if frames == 86_000 else 1)
+                if quiet_at is not None:
+                    self.assertEqual(rows[0][0]["reason"], "vad_end")
+                    self.assertGreater(end, 80_000)
+                if len(rows) == 2:
+                    self.assertEqual(rows[0][0]["owned_end_frame"], 80_000)
+                    self.assertEqual(rows[1][0]["owned_start_frame"], 80_000)
+
     def test_lookback_uses_both_sides_without_reassigning_displayed_audio(self):
         signal = array(
             "f", (0.002 if 3.45 * 16000 <= i < 3.54 * 16000 else 0.3 for i in range(71903))

@@ -1,4 +1,4 @@
-title = "Q8 + Hailo-8L · 경계 연속 전사 · 2.2초부터 쉼 탐색 · 최대 5초"
+title = "Q8 + Hailo-8L · 경계 연속 전사 · 2.2초부터 쉼 탐색 · 5초 절단·끝 여유 0.2초"
 config = "configs/gguf_realtime_2_4.toml"
 manifest = "data/evaluation/edge100-20261109-01/manifest.jsonl"
 vad_model = "models/silero-vad-k2-20261029/silero_vad.onnx"
@@ -17,6 +17,7 @@ vad_max_speech_s = 15
 max_segment_s = 5
 boundary_target_s = 2.2
 boundary_pause_center = true
+boundary_end_grace_s = 0.2
 defer_provisional_punctuation = true
 partial_mode = "continuous"
 continuous_policy = "first_text"

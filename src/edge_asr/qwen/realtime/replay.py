@@ -446,6 +446,12 @@ def argument_parser():
         help="연속 청취 화면에서 생성 중인 끝 문장부호는 뒤 본문이나 확정이 도착할 때 표시",
     )
     parser.add_argument(
+        "--boundary-end-grace-s",
+        type=float,
+        default=argparse.SUPPRESS,
+        help="강제 절단 전 오른쪽의 확인된 PCM을 기다릴 시간. 음성이 이 안에서 끝나면 한 번에 확정",
+    )
+    parser.add_argument(
         "--boundary-pause-center",
         action="store_true",
         default=argparse.SUPPRESS,

@@ -70,6 +70,7 @@ class SegmentPipeline:
         boundary_energy_valley=False,
         boundary_lookback_s=None,
         boundary_pause_center=False,
+        boundary_end_grace_s=None,
     ):
         if type(max_segment_s) is not int or max_segment_s not in SEGMENT_LIMITS_S:
             raise ValueError("소유 구간 상한은 3/4/5/6/8초여야 합니다.")
@@ -87,6 +88,13 @@ class SegmentPipeline:
             or boundary_energy_valley
         ):
             raise ValueError("쉼 내부 정렬에는 확률 VAD와 쉼 탐색 목표가 필요합니다.")
+        if boundary_end_grace_s is not None and (
+            not boundary_pause_center
+            or not hasattr(vad, "confirmed_end_frame")
+            or not math.isfinite(boundary_end_grace_s)
+            or not WINDOW / RATE <= boundary_end_grace_s <= 0.3
+        ):
+            raise ValueError("끝 여유는 확률 VAD의 쉼 내부 경계와 32~300ms가 필요합니다.")
         if boundary_lookback_s is not None and (
             not math.isfinite(boundary_lookback_s) or not 0.2 <= boundary_lookback_s <= 1.2
         ):
@@ -136,6 +144,7 @@ class SegmentPipeline:
         )
         self.boundary_energy_valley = boundary_energy_valley
         self.boundary_pause_center = boundary_pause_center
+        self.end_grace = round(boundary_end_grace_s * RATE) if boundary_end_grace_s else 0
         self.boundary_lookback = (
             round(boundary_lookback_s * RATE) if boundary_lookback_s is not None else 0
         )
@@ -146,7 +155,7 @@ class SegmentPipeline:
         self.continuation = False
         self.native_budget = native_budget_frames
         # 활성 구간+왼쪽 문맥+VAD lookback/종료 대기+100ms 입력 여유.
-        self.ring = PcmRing(self.maximum + context_frames + RATE)
+        self.ring = PcmRing(self.maximum + self.end_grace + context_frames + RATE)
         self.pending = array("h")
         self.fed = self.owned_end = self.segment_id = self.hard_emissions = 0
         self.native_start = None
@@ -210,7 +219,8 @@ class SegmentPipeline:
         begin = max(start, self.owned_end)
         if begin >= end:
             return
-        if end - begin > self.maximum:
+        limit = self.maximum + (self.end_grace if reason in ("vad_end", "eof") else 0)
+        if end - begin > limit:
             raise ValueError("강제 구간 상한 위반")
         context_start = self.payload_start(begin)
         pcm = self.ring.read(context_start, end)
@@ -273,6 +283,10 @@ class SegmentPipeline:
             # 종료 무음 대기가 나중에 빠지면서 이미 확정한 tail보다 native 끝이 앞설 수 있다.
             # 확정 구간은 되돌리지 않으며 해당 여분을 계측한다. 음소 끝으로 해석하지 않는다.
             self.committed_tail_overhang += max(0, self.owned_end - end)
+            begin = max(start, self.owned_end)
+            if self.end_grace and min(end, self.ring.end) - begin > self.maximum + self.end_grace:
+                self._emit(begin, self._hard_cut(begin + self.maximum), "hard_limit")
+                self.hard_emissions += 1
             self._emit(start, end, reason)
             # hard_limit·pause_before_limit은 같은 VAD 안의 분할이다. native 종료에서만 갱신한다.
             self.previous_vad_owned_end = self.owned_end
@@ -342,6 +356,10 @@ class SegmentPipeline:
             if self.native_budget is not None and active > self.native_budget:
                 raise ValueError("활성 VAD 버퍼 예산 위반")
             begin = max(start, self.owned_end)
+            available = min(self.fed, self.ring.end)
+            if self.end_grace:
+                # VAD 종료 때 빠질 수 있는 후행 무음을 오른쪽 발화 길이에 넣지 않는다.
+                available = min(available, self.vad.confirmed_end_frame)
             energy_resume = self.boundary_energy_valley and self._resumed_energy(block)
             soft_pause = self.vad.resumed_soft_frames if self.boundary_pause_center else 0
             if self.split_on_pause and (
@@ -376,11 +394,12 @@ class SegmentPipeline:
                             )
                             cut = first + offset + WINDOW // 2
                             evidence = "pause_center"
-                    self._emit(begin, cut, "pause_before_limit", boundary_evidence=evidence)
-                    self.pause_emissions += 1
-                    begin = self.owned_end
+                    if not self.end_grace or cut + WINDOW <= available:
+                        self._emit(begin, cut, "pause_before_limit", boundary_evidence=evidence)
+                        self.pause_emissions += 1
+                        begin = self.owned_end
             # native VAD 상태를 바꾸지 않고 도착한 공통 PCM의 소유 구간만 확정한다.
-            while min(self.fed, self.ring.end) - begin >= self.maximum:
+            while available - begin >= self.maximum + self.end_grace:
                 limit = begin + self.maximum
                 cut = self._hard_cut(limit)
                 self._emit(
@@ -430,7 +449,7 @@ class SegmentPipeline:
             "newly_clipped_samples": self.clipped,
             "segments": self.segment_id,
             "hard_limit_emissions": self.hard_emissions,
-            "owned_max_frames": self.maximum,
+            "owned_max_frames": self.maximum + self.end_grace,
             "context_frames": self.context,
             "split_on_pause": self.split_on_pause,
             "pause_before_limit_emissions": self.pause_emissions,
@@ -453,6 +472,8 @@ class SegmentPipeline:
             result["boundary_energy_valley"] = self.boundary_energy_valley
         if self.boundary_lookback:
             result["boundary_lookback_frames"] = self.boundary_lookback
+        if self.end_grace:
+            result["boundary_end_grace_frames"] = self.end_grace
         if self.boundary_pause_center:
             result["boundary_pause_center"] = True
         if self.onset_context_max_gap is not None:

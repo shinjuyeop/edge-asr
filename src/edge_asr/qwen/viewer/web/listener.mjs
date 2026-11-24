@@ -35,6 +35,7 @@ export function runConditions(run){
   if(s.split_on_pause!=null)fields.push(['쉼 경계 분할',loggedFlag(s.split_on_pause,'사용','사용 안 함')]);
   if(s.boundary_target_s!=null)fields.push(['쉼 경계 탐색 시작',loggedSeconds(s.boundary_target_s)],['저에너지 뒤 재개도 분할',loggedFlag(s.boundary_energy_valley??false,'사용','사용 안 함')]);
   if(s.boundary_lookback_s!=null)fields.push(['강제 확정 전 양측 음향 검토',loggedSeconds(s.boundary_lookback_s)]);
+  if(s.boundary_end_grace_s!=null)fields.push(['강제 분할 전 확인할 뒤 음성',loggedSeconds(s.boundary_end_grace_s)]);
   if(s.boundary_pause_center)fields.push(['쉼 내부 경계','VAD 확률 회복과 원음 에너지 중심']);
   if(s.defer_provisional_punctuation)fields.push(['미확정 끝 문장부호','뒤 본문 또는 확정 때 표시']);
   if(s.onset_context_s!=null)fields.push(['발화 재개 앞 문맥',loggedSeconds(s.onset_context_s)]);

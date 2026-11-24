@@ -203,6 +203,12 @@ class BoundedProbabilityVad:
                 self.head = max(self.head, self.fed - 2 * WINDOW - 1600)
             self.start = None
 
+    @property
+    def confirmed_end_frame(self):
+        """현재 발화가 자연 종료될 때 거슬러 갈 수 없는 마지막 프레임."""
+        max_silence = self.silence_frames + (RATE // 5 if self.short_span_frames else 0)
+        return max(self.temp_end or self.fed, self.fed - max_silence)
+
     def is_speech_detected(self):
         return self.start is not None
 
