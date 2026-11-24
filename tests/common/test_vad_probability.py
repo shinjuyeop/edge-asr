@@ -128,6 +128,40 @@ class ProbabilityTests(unittest.TestCase):
                 if energy:
                     self.assertEqual(left["boundary_evidence"], "energy_valley")
 
+    def test_recovered_posterior_selects_quiet_pcm_before_next_word(self):
+        # 지연된 VAD 확률은 native 종료를 일으키지 않는다. 실제 쉼은 강세 회복 전이다.
+        vad = BoundedProbabilityVad(
+            Probability(lambda n: 0.4 if 105 <= n <= 110 else 0.99), threshold=0.3, max_speech_s=15
+        )
+        signal = array("f", (0.001 if 104 * 512 <= i < 106 * 512 else 0.3 for i in range(71517)))
+        rows, frontiers = [], {}
+
+        def progress(begin, end, read):
+            frontiers[begin] = max(frontiers.get(begin, begin), end)
+
+        pipe = SegmentPipeline(
+            vad,
+            "identity",
+            6,
+            lambda row, pcm: rows.append((row, pcm)),
+            context_frames=0,
+            native_budget_frames=None,
+            split_on_pause=True,
+            boundary_target_s=3.2,
+            boundary_pause_center=True,
+            progress=progress,
+        )
+        for i in range(0, len(signal), 1600):
+            pipe.accept(signal[i : i + 1600], final=i + 1600 >= len(signal))
+        pipe.finish()
+        (left, a), (right, b) = rows
+        cut = left["owned_end_frame"]
+        self.assertEqual(left["boundary_evidence"], "pause_center")
+        self.assertTrue(104 * 512 <= cut < 106 * 512)
+        self.assertLessEqual(frontiers[0], cut)
+        self.assertEqual(right["owned_start_frame"], cut)
+        self.assertEqual(a + b, preprocess(signal, "identity")[0])
+
     def test_short_pause_and_hard_boundary_share_no_owned_frames(self):
         # 각 창의 음성 확률만 제어한다. 입력 PCM은 위치별로 달라 경계에서 직접 검산한다.
         signal = array("f", (((i % 301) - 150) / 32768 for i in range(100_113)))

@@ -69,6 +69,7 @@ class SegmentPipeline:
         boundary_target_s=None,
         boundary_energy_valley=False,
         boundary_lookback_s=None,
+        boundary_pause_center=False,
     ):
         if type(max_segment_s) is not int or max_segment_s not in SEGMENT_LIMITS_S:
             raise ValueError("소유 구간 상한은 3/4/5/6/8초여야 합니다.")
@@ -80,6 +81,12 @@ class SegmentPipeline:
             raise ValueError("쉼 경계 목표는 양수이며 소유 구간 상한보다 작아야 합니다.")
         if boundary_energy_valley and boundary_target_s is None:
             raise ValueError("에너지 경계에는 명시적인 쉼 경계 목표가 필요합니다.")
+        if boundary_pause_center and (
+            boundary_target_s is None
+            or not hasattr(vad, "resumed_soft_frames")
+            or boundary_energy_valley
+        ):
+            raise ValueError("쉼 내부 정렬에는 확률 VAD와 쉼 탐색 목표가 필요합니다.")
         if boundary_lookback_s is not None and (
             not math.isfinite(boundary_lookback_s) or not 0.2 <= boundary_lookback_s <= 1.2
         ):
@@ -128,6 +135,7 @@ class SegmentPipeline:
             round(boundary_target_s * RATE) if boundary_target_s is not None else None
         )
         self.boundary_energy_valley = boundary_energy_valley
+        self.boundary_pause_center = boundary_pause_center
         self.boundary_lookback = (
             round(boundary_lookback_s * RATE) if boundary_lookback_s is not None else 0
         )
@@ -335,10 +343,12 @@ class SegmentPipeline:
                 raise ValueError("활성 VAD 버퍼 예산 위반")
             begin = max(start, self.owned_end)
             energy_resume = self.boundary_energy_valley and self._resumed_energy(block)
+            soft_pause = self.vad.resumed_soft_frames if self.boundary_pause_center else 0
             if self.split_on_pause and (
-                self.vad.resumed_pause_frames >= 3 * WINDOW or energy_resume
+                self.vad.resumed_pause_frames >= 3 * WINDOW
+                or soft_pause >= 4 * WINDOW
+                or energy_resume
             ):
-                # 재개한 현재 창 전체는 다음 구간 소유다. 이전 progress 시각보다 거슬러 가지 않는다.
                 cut = self.fed - WINDOW
                 target = (
                     self.maximum - RATE * 0.8
@@ -351,6 +361,21 @@ class SegmentPipeline:
                         if self.vad.resumed_pause_frames >= 3 * WINDOW
                         else "energy_valley"
                     )
+                    if self.boundary_pause_center:
+                        # VAD 회복이 실제 다음 단어보다 늦을 수 있다. 낮은 확률 직전의 두 창까지
+                        # 포함한 최근 최대 256ms에서 가장 조용한 32ms의 중앙을 택한다.
+                        width = min(
+                            8 * WINDOW, max(soft_pause, self.vad.resumed_pause_frames) + 2 * WINDOW
+                        )
+                        first = max(begin, cut - width)
+                        pcm = self.ring.read(first, cut)
+                        if len(pcm) >= WINDOW:
+                            offsets = range(0, len(pcm) - WINDOW + 1, WINDOW // 2)
+                            offset = min(
+                                offsets, key=lambda i: sum(x * x for x in pcm[i : i + WINDOW])
+                            )
+                            cut = first + offset + WINDOW // 2
+                            evidence = "pause_center"
                     self._emit(begin, cut, "pause_before_limit", boundary_evidence=evidence)
                     self.pause_emissions += 1
                     begin = self.owned_end
@@ -369,6 +394,14 @@ class SegmentPipeline:
             if self.progress is not None:
                 # 경계가 결정될 때까지 마지막 탐색 범위는 수정 가능한 PCM이다.
                 end = min(self.fed, self.ring.end, begin + self.maximum - self.boundary_lookback)
+                if self.boundary_pause_center:
+                    # 첫 부분은 즉시 보낸다. 쉼 탐색이 시작될 때에만 되돌릴 수 있는 꼬리를 남긴다.
+                    end = min(
+                        end,
+                        max(
+                            begin, begin + self.boundary_target - 8 * WINDOW, self.fed - 8 * WINDOW
+                        ),
+                    )
                 self.progress(begin, end, self.ring.read)
 
     def finish(self):
@@ -420,6 +453,8 @@ class SegmentPipeline:
             result["boundary_energy_valley"] = self.boundary_energy_valley
         if self.boundary_lookback:
             result["boundary_lookback_frames"] = self.boundary_lookback
+        if self.boundary_pause_center:
+            result["boundary_pause_center"] = True
         if self.onset_context_max_gap is not None:
             result["onset_context_max_gap_frames"] = self.onset_context_max_gap
         if self.vad_processor is not None:

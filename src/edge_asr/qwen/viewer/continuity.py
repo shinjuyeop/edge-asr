@@ -10,6 +10,7 @@ from pathlib import Path
 from edge_asr.artifacts import digest, read_jsonl, write_json
 from edge_asr.metrics import distribution, normalize
 from edge_asr.qwen.viewer.analysis import visible
+from edge_asr.qwen.viewer.boundary_errors import boundary_errors
 from edge_asr.qwen.viewer.onsets import annotated_word_starts, onset_latencies
 
 
@@ -309,6 +310,16 @@ def main():
     parser.add_argument("--run", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument(
+        "--boundary-errors",
+        action="store_true",
+        help="정답과 확정 전사를 정렬해 구간 사이의 삽입 반복을 계산",
+    )
+    parser.add_argument(
+        "--punctuation-reference",
+        type=Path,
+        help="원음 ID·audio_sha256·문장부호를 보존한 reference가 있는 JSONL",
+    )
+    parser.add_argument(
         "--seoul-manifest", type=Path, help="서울말뭉치 원본 TextGrid 주석 manifest"
     )
     args = parser.parse_args()
@@ -322,6 +333,11 @@ def main():
         else {}
     )
     summary = continuity(worker, read_jsonl(p / "jobs.jsonl"), word_starts=onsets)
+    if args.boundary_errors or args.punctuation_reference:
+        refs = read_jsonl(args.punctuation_reference) if args.punctuation_reference else ()
+        summary["boundary_errors"] = boundary_errors(worker, refs)
+    if args.punctuation_reference:
+        summary["punctuation_reference_sha256"] = digest(args.punctuation_reference)
     if args.seoul_manifest:
         summary["seoul_manifest_sha256"] = digest(args.seoul_manifest)
     summary["source_commit"] = worker.get("source_commit")

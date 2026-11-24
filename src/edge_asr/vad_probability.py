@@ -127,6 +127,7 @@ class BoundedProbabilityVad:
         self.fed = self.head = self.temp_start = self.temp_end = 0
         self.triggered = False
         self.low_frames = self.resumed_pause_frames = 0
+        self.soft_low_frames = self.resumed_soft_frames = 0
         self.start = None
         self.queue = deque()
         self.queue_peak = self.active_peak = 0
@@ -175,6 +176,11 @@ class BoundedProbabilityVad:
                 silence += RATE // 5
         # 같은 활성 VAD 안에서 낮은 확률이 연속된 직후의 첫 음성 창을 표시한다.
         self.resumed_pause_frames = self.low_frames if self.triggered and value > threshold else 0
+        # 음성 확정 상태는 그대로 두고, 신뢰도가 회복되기 직전의 낮은 구간 길이를 노출한다.
+        self.resumed_soft_frames = self.soft_low_frames if self.triggered and value > 0.5 else 0
+        self.soft_low_frames = (
+            self.soft_low_frames + WINDOW if self.triggered and value <= 0.5 else 0
+        )
         if self.triggered and value < max(threshold - 0.15, 0.01):
             self.low_frames += WINDOW
         else:

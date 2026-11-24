@@ -439,6 +439,12 @@ def argument_parser():
         help="이전 VAD 소유 끝에서 현재 시작까지 이 시간 이내일 때만 시작 문맥 사용",
     )
     parser.add_argument(
+        "--boundary-pause-center",
+        action="store_true",
+        default=argparse.SUPPRESS,
+        help="VAD 확률이 회복된 짧은 쉼 안에서 원음이 가장 조용한 위치를 경계로 사용",
+    )
+    parser.add_argument(
         "--boundary-lookback-s",
         type=float,
         default=argparse.SUPPRESS,
