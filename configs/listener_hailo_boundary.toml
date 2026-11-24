@@ -17,6 +17,7 @@ vad_max_speech_s = 15
 max_segment_s = 8
 boundary_target_s = 3.4
 boundary_pause_center = true
+defer_provisional_punctuation = true
 partial_mode = "continuous"
 continuous_policy = "first_text"
 partial_after_s = 0.45

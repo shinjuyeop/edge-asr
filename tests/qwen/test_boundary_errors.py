@@ -38,6 +38,8 @@ class BoundaryErrorTests(unittest.TestCase):
         report = boundary_errors(sample, [annotation])
         self.assertEqual(report["inserted_copies"], 1)
         self.assertEqual(report["adjacent_repetitions"][0]["text"], "매")
+        sample["results"][1]["segment_id"] += 1
+        self.assertEqual(boundary_errors(sample)["inserted_copies"], 0)
         self.assertEqual(
             report["punctuation"]["sentence"],
             {"reference": 1, "predicted": 2, "matched": 1, "extra": 1, "missing": 0},

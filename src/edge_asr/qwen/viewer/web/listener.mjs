@@ -35,6 +35,7 @@ export function runConditions(run){
   if(s.boundary_target_s!=null)fields.push(['쉼 경계 탐색 시작',loggedSeconds(s.boundary_target_s)],['저에너지 뒤 재개도 분할',loggedFlag(s.boundary_energy_valley??false,'사용','사용 안 함')]);
   if(s.boundary_lookback_s!=null)fields.push(['강제 확정 전 양측 음향 검토',loggedSeconds(s.boundary_lookback_s)]);
   if(s.boundary_pause_center)fields.push(['쉼 내부 경계','VAD 확률 회복과 원음 에너지 중심']);
+  if(s.defer_provisional_punctuation)fields.push(['미확정 끝 문장부호','뒤 본문 또는 확정 때 표시']);
   if(s.onset_context_s!=null)fields.push(['발화 재개 앞 문맥',loggedSeconds(s.onset_context_s)]);
   if(s.onset_context_max_gap_s!=null)fields.push(['재개 문맥 적용 최대 공백',loggedSeconds(s.onset_context_max_gap_s)]);
   if(run.audio_accelerator)fields.push(['오디오 가속','Hailo-8L · CNN (워밍업 장치 호출 확인)']);
@@ -242,7 +243,7 @@ export function createListener(browser=globalThis) {
     if(isMic()){$('referenceText').textContent=run.input.reference||'자유 발화 · 정답 미입력';$('sourceName').textContent=`RP5 · ${run.input.device}`;$('sourceTag').textContent='마이크';}
     const horizon=isLive()&&follow?Infinity:at;
     const shown=displayEvents(horizon);
-    const continuous=run?.settings?.partial_mode==='continuous'?continuousCaption(shown):null,e=continuous?.last||shown.at(-1);
+    const continuous=run?.settings?.partial_mode==='continuous'?continuousCaption(shown,run.settings.defer_provisional_punctuation):null,e=continuous?.last||shown.at(-1);
     const eventKey=e?`${e.job_id}:${e.type}:${e.published_s}:${continuous?.text||''}`:'';
     if(eventKey!==lastEventKey||!e){
       lastEventKey=eventKey;$('hypothesis').textContent=(continuous&&e?continuous.text||'[빈 확정 전사]':null)||(e?.status==='failed'?'이 구간의 전사에 실패했습니다.':e?.hypothesis||(isLive()?'입력이 시작되면 자막이 표시됩니다.':'재생하면 자막이 표시됩니다.'));$('hypothesis').classList.toggle('muted',!e?.hypothesis);

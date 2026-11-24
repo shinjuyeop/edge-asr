@@ -99,3 +99,15 @@ test('conditions identify the recorded scheduler and optional PCM boundaries',()
  assert.equal(rows['재개 문맥 적용 최대 공백'],'0.6초');assert.equal(rows['VAD 최소 무음'],'0.5초');
  assert.equal(rows['오디오 가속'],undefined);
 });
+
+test('continuous provisional punctuation waits for following text or the authoritative final',()=>{
+ const event={type:'result',kind:'partial',status:'success',segment_id:0,job_id:1,revision:1,displayed:true,
+   hypothesis:'“매일.”'};
+ assert.equal(continuousCaption([event]).text,'“매일.”');
+ assert.equal(continuousCaption([event],true).text,'“매일”');
+ const next={...event,job_id:2,revision:2,type:'token',token_index:3,kind:'final',status:'provisional',hypothesis:'“매일.” 매일 3.14초?'};
+ assert.equal(continuousCaption([event,next],true).text,'“매일.” 매일 3.14초');
+ const final={...next,type:'result',status:'success'};
+ assert.equal(continuousCaption([event,next,final],true).text,final.hypothesis);
+ assert.equal(event.hypothesis,'“매일.”');
+});

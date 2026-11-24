@@ -267,6 +267,7 @@ def run(
                 "vad_max_speech_s",
                 "vad_min_silence_s",
                 "vad_short_span_s",
+                "defer_provisional_punctuation",
             )
         }
         session = CaptionSession(
@@ -437,6 +438,12 @@ def argument_parser():
         type=float,
         default=argparse.SUPPRESS,
         help="이전 VAD 소유 끝에서 현재 시작까지 이 시간 이내일 때만 시작 문맥 사용",
+    )
+    parser.add_argument(
+        "--defer-provisional-punctuation",
+        action="store_true",
+        default=argparse.SUPPRESS,
+        help="연속 청취 화면에서 생성 중인 끝 문장부호는 뒤 본문이나 확정이 도착할 때 표시",
     )
     parser.add_argument(
         "--boundary-pause-center",

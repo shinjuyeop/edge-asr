@@ -180,6 +180,9 @@ def boundary_errors(worker, references=()):
         if idx + 1 == len(finals):
             continue
         nxt = finals[idx + 1]
+        # 실패하거나 건너뛴 중간 구간 양쪽을 하나의 확정 경계로 세지 않는다.
+        if nxt["segment_id"] != result["segment_id"] + 1:
+            continue
         next_start = nxt.get("owned_start_frame", nxt["start_frame"])
         owner = next(
             (

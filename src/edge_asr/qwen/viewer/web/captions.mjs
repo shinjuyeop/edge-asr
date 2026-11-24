@@ -12,7 +12,7 @@ export function finalRecords(events, at=Infinity) {
   return [...done.values()].sort((a,b)=>a.start_frame-b.start_frame||a.segment_id-b.segment_id);
 }
 
-export function continuousCaption(events) {
+export function continuousCaption(events, deferProvisionalPunctuation=false) {
   const segments=new Map();
   for(const e of events){
     if(!e.displayed||e.stale_revision||e.status==='cancelled')continue;
@@ -27,5 +27,11 @@ export function continuousCaption(events) {
   const done=rows.filter(e=>isFinal(e)&&(readable(e.hypothesis)||e.status==='failed'));
   const pending=rows.filter(e=>!isFinal(e));
   const visible=[...done.slice(-2),...pending].sort((a,b)=>a.segment_id-b.segment_id);
-  return {text:visible.map(e=>e.status==='failed'?'[전사 실패]':e.hypothesis||'').filter(Boolean).join(' '),last:rows.at(-1)};
+  const text=visible.map(e=>{
+    if(e.status==='failed')return '[전사 실패]';
+    const raw=e.hypothesis||'';
+    // 이미 뒤 본문이 나온 부호와 확정 원문은 그대로 표시한다.
+    return deferProvisionalPunctuation&&!isFinal(e)?raw.replace(/[.!?。？！…]+(?=[”’"'»）)\]}]*\s*$)/u,''):raw;
+  }).filter(Boolean).join(' ');
+  return {text,last:rows.at(-1)};
 }
