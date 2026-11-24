@@ -5,6 +5,7 @@ from edge_asr.qwen.viewer.boundary_errors import (
     boundary_errors,
     cut_words,
     edit_coordinates,
+    paired_windows,
     punctuation,
     word_display_delays,
 )
@@ -13,6 +14,7 @@ from edge_asr.qwen.viewer.boundary_errors import (
 def worker(reference, left, right):
     return {
         "status": "completed",
+        "audio": {"sha256": "track"},
         "final_transcript_score": character_errors(reference, left + right),
         "sources": [
             {"id": "src", "reference": reference, "start": 0, "end": 20, "audio_sha256": "pcm"}
@@ -58,6 +60,18 @@ class BoundaryErrorTests(unittest.TestCase):
         sample["status"] = "failed"
         with self.assertRaises(ValueError):
             boundary_errors(sample)
+
+    def test_same_original_windows_count_removed_errors_and_require_paired_audio(self):
+        old = worker("공원에는 매일", "공원에는 매.", "매일.")
+        new = worker("공원에는 매일", "공원에는", "매일.")
+        before, after = boundary_errors(old), boundary_errors(new)
+        windows = paired_windows(old, new, before, after)
+        self.assertEqual(windows["baseline"]["baseline"], {"I": 1})
+        self.assertEqual(windows["baseline"]["candidate"], {})
+        self.assertEqual(windows["candidate"]["baseline"], {"I": 1})
+        new["audio"]["sha256"] = "different"
+        with self.assertRaises(ValueError):
+            paired_windows(old, new, before, after)
 
     def test_word_age_requires_unique_words_and_audio_owned_by_the_request(self):
         words = {"s": [(0, 10, "공원"), (10, 20, "매일"), (20, 30, "매일"), (30, 40, "갑니다")]}

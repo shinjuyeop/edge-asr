@@ -10,7 +10,12 @@ from pathlib import Path
 from edge_asr.artifacts import digest, read_jsonl, write_json
 from edge_asr.metrics import distribution, normalize
 from edge_asr.qwen.viewer.analysis import visible
-from edge_asr.qwen.viewer.boundary_errors import boundary_errors, cut_words, word_display_delays
+from edge_asr.qwen.viewer.boundary_errors import (
+    boundary_errors,
+    cut_words,
+    paired_windows,
+    word_display_delays,
+)
 from edge_asr.qwen.viewer.onsets import annotated_words, onset_latencies
 
 
@@ -315,6 +320,11 @@ def main():
         help="정답과 확정 전사를 정렬해 구간 사이의 삽입 반복을 계산",
     )
     parser.add_argument(
+        "--boundary-baseline",
+        type=Path,
+        help="같은 연속 PCM 기준 실행의 원래·새 경계 양쪽 3자 편집 대조",
+    )
+    parser.add_argument(
         "--punctuation-reference",
         type=Path,
         help="원음 ID·audio_sha256·문장부호를 보존한 reference가 있는 JSONL",
@@ -332,9 +342,16 @@ def main():
     )
     records = read_jsonl(p / "jobs.jsonl")
     summary = continuity(worker, records, word_starts={k: v[0][0] for k, v in words.items()})
-    if args.boundary_errors or args.punctuation_reference:
+    if args.boundary_errors or args.punctuation_reference or args.boundary_baseline:
         refs = read_jsonl(args.punctuation_reference) if args.punctuation_reference else ()
         summary["boundary_errors"] = boundary_errors(worker, refs)
+        if args.boundary_baseline:
+            base_path = args.boundary_baseline / "worker.json"
+            baseline = json.loads(base_path.read_text())
+            summary["paired_boundary_windows"] = paired_windows(
+                baseline, worker, boundary_errors(baseline), summary["boundary_errors"]
+            )
+            summary["boundary_baseline_worker_sha256"] = digest(base_path)
         if words:
             summary["boundary_errors"]["cut_annotated_words"] = cut_words(words, worker["segments"])
             summary["word_display"] = word_display_delays(
