@@ -1,14 +1,13 @@
 # 실행 설정
 
-[listener_hailo_continuity.toml](listener_hailo_continuity.toml)은 RP5 Hailo-8L에서 검증한 자막 청취 구성입니다. [listener_hailo_cnn.toml](listener_hailo_cnn.toml)로 이전 5초 기준과 비교합니다. [1배속 검증·실행 방법](../results/summaries/optimization/subtitle-continuity-20261123.md)
-
-공유 개발 입구는 `gguf_realtime.toml`의 **Q8 회귀 참조**입니다. 최근 연속 수정 실험은 **Q4 속도 대조군**을 별도로 사용합니다. 두 역할은 제품 기본 채택과 구분하며, 이번 구조 정리에서 모델 기본값·채택 판정을 바꾸지 않습니다. 기존 batch 기준선과 양자화 후보도 보존합니다. 상대 자산 경로는 저장소 루트 기준이고 `asset_manifest`는 모델 폴더 기준입니다.
+CPU 회귀에는 `gguf_realtime.toml`과 [연속 입력 대표 명령](../docs/guides/qwen3_optimization.md#현재-개발용-대표-명령)을 함께 사용합니다. RP5 청취에는 반응성 우선 T 또는 경계 정확도 우선 P8을 선택합니다. P5G와 P2는 경계 정책 대조용입니다. 상대 자산 경로는 저장소 루트, `asset_manifest`는 모델 폴더 기준입니다.
 
 ## 모델·평가 설정
 
 | 파일 | 용도·채택 상태 |
 | --- | --- |
 | [gguf_realtime.toml](gguf_realtime.toml) | 공유 Q8 회귀 참조·생성2T/음성·prefill3T·고정 text prefix KV. 연속 옵션은 별도 지정 |
+| [gguf_realtime_2_4.toml](gguf_realtime_2_4.toml) | T·P8·P5G의 Q8 모델, 생성 2·음성/Prefill 4스레드. Hailo 자산은 청취 프로필에서 지정 |
 | [gguf_final_draft.toml](gguf_final_draft.toml) | 선택 Q8 확정 토큰 후보4개 묶음·같은 구간의 직전 부분 토큰만 전달. 1배속 주요 지연 개선·CER 소폭 증가, 공유 기본 유지 |
 | [onnx.toml](onnx.toml) | ONNX INT8 2T 출발 참조 |
 | [gguf.toml](gguf.toml) | GGUF Q8_0 2T 최적화 기준선 |
@@ -30,15 +29,15 @@
 
 `quantization/q4_0_head_realtime.toml`은 2026-11-17 빠른 Q4_0 본체/출력층 후보의 동일 자산·빌드를 공유 경로에서 참조합니다. `listener_continuous.toml`은 이 단일 모델에 연속 수정 정책을 연결하는 선택 청취 프로필입니다. Q8 공유 기본과 과거 2/3회 실험 설정은 변경하지 않습니다.
 
-`gguf_realtime_2_4.toml`은 같은 Q8 모델에서 생성 2스레드, 음성 인코딩·Prefill 4스레드를 사용하는 RP5 측정 구성입니다. CNN HEF는 청취 프로필의 `[hailo]`가 연결합니다.
-
 ## 청취 프로필
 
 모델 TOML은 정밀도·스레드·native/캐시 자산을, listener TOML은 참조 모델·입력 목록·VAD/요청/표시 옵션을 지정합니다. 아래는 `tools listen-qwen3 --profile`에 전달하며 모델 설정의 `check-config --evaluation`과 구분합니다. `tests/qwen/test_listener.py`는 모든 공유 프로필을 기존 `replay_args()`와 replay parser로 변환하고, 참조 모델이 추적 대상 설정인지·설정 문법과 옵션이 유효한지 자산 없이 확인합니다. 모델·음원 누락은 실제 실행 준비 단계에서 별도로 검사합니다.
 
 | 프로필 | 모델·입력·용도 |
 | --- | --- |
-| [listener_hailo_boundary.toml](listener_hailo_boundary.toml) | Q8 + Hailo CNN P8·음향 쉼 내부 확정·미확정 종결부호 보류. [경계 및 지연 대조](../results/summaries/optimization/boundary-20261124.md) |
+| [listener_hailo_cnn.toml](listener_hailo_cnn.toml) | A · 이전 CNN 5초 대조, 생성 2·음성/Prefill 3스레드 |
+| [listener_hailo_continuity.toml](listener_hailo_continuity.toml) | T · 반응성 우선, CNN 묶음·4초 구간 |
+| [listener_hailo_boundary.toml](listener_hailo_boundary.toml) | Q8 + Hailo CNN P8·경계 정확도 우선·3.4초부터 쉼 탐색·최대 8초·미확정 종결부호 보류. [경계 및 지연 대조](../results/summaries/optimization/boundary-20261124.md) |
 | [listener_hailo_boundary_early.toml](listener_hailo_boundary_early.toml) | Q8 + Hailo CNN P2 · 2.2초부터 탐색·최대 8초. [원음·지연 비교](../results/summaries/optimization/boundary-20261124.md) |
 | [listener_hailo_boundary_5s.toml](listener_hailo_boundary_5s.toml) | Q8 + Hailo CNN P5G · 2.2초부터 탐색·5초 분할, 끝 여유 0.2초. [원음·지연 비교](../results/summaries/optimization/boundary-20261124.md) |
 | [listener.toml](listener.toml) | Q8 공유 회귀 참조·고정100개·첫1초/이후4초 |

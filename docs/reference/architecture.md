@@ -1,6 +1,10 @@
-# 코드 구조
+# RP5 시스템과 코드 구조
 
-현재 작업은 `qwen/`의 Python 실행 경로와 `native/`의 C++ 연결에 모읍니다.
+청취 화면은 개발 PC 브라우저에서 열고 추론은 RP5에서 실행합니다. WAV·USB 마이크 → CPU의 VAD·구간 버퍼 → 직렬 추론 워커 → 부분·확정 이벤트 → SSH 터널과 브라우저(기본 포트 8765) 순서입니다.
+
+공유 Q8은 CPU에서 전 단계를 실행합니다. T·P8에서는 청취 프로필의 `[hailo]`가 지정한 라이브러리가 Encoder의 Conv1·2·3과 GELU를 PCIe로 연결된 Hailo-8L의 단일 HEF에 전달합니다. log-Mel, 나머지 Encoder와 투영, 텍스트·음성 Prefill, 토큰별 Decode는 CPU에 남습니다. T와 P8의 차이는 PCM 분할과 표시 정책입니다. [실행 설정](../../configs/README.md) · [native 연결](../../native/gguf/hailo_conv.cpp)
+
+아래 표의 Python 모듈은 `src/edge_asr/` 기준입니다.
 
 | 위치 | 역할 |
 | --- | --- |
@@ -95,7 +99,7 @@ flowchart TD
 2. **VAD와 ASR 파형 분리:** `CaptionSession` → `SegmentPipeline`이 100ms 블록을 처리하고, VAD에는 512샘플(32ms) 창을 공급합니다. 대표 명령의 `rms26-floor80`은 VAD용 분기에만 적용합니다. ASR 분기는 `identity`로 원래 PCM16 값을 보존하며 구간을 float32로 변환해 전달합니다. 이 음량 보정은 모델의 Mel 정규화와 다릅니다. [음량 정책](../../src/edge_asr/audio_policy.py), [구간 처리](../../src/edge_asr/segmentation.py)
 3. **부분/확정 요청:** VAD 좌표와 부분 갱신 정책으로 도착한 PCM 범위를 결정합니다. 직렬 작업자는 대기 중 확정 요청을 우선하고, 부분 요청은 최신 대기로 합칩니다. 기본 경로는 실행 중인 호출을 선점하지 않습니다. 선택 연속 모드의 최종 우선 취소는 토큰 callback 경계에서만 적용합니다. 요청 시점·큐 대기는 전처리 연산 시간과 별도입니다. [세션](../../src/edge_asr/qwen/realtime/session.py), [작업자](../../src/edge_asr/qwen/realtime/worker.py)
 4. **텍스트 토큰화:** bridge는 빈 system, 음성 marker가 있는 user, `language Korean<asr_text>`로 시작하는 assistant 프롬프트를 구성합니다. `mtmd_tokenize()`가 텍스트를 모델 어휘의 토큰 ID로 바꾸고 `<|audio_start|>`·`<|audio_end|>`를 붙입니다. **파형을 텍스트 토크나이저에 넣는 것은 아닙니다.** 음성 입력은 별도 파형·특징·임베딩 경로를 탑니다. 고정 prefix KV가 적중해도 현재 구현은 프롬프트 토큰화를 수행하고 모델의 앞 text 평가를 생략합니다. [bridge](../../native/gguf/bridge.cpp)
-5. **음성 특징 추출:** 고정 런타임은 16kHz, 400샘플 창(25ms), 160샘플 간격(10ms), 128 Mel 대역입니다. 양끝 반사 패딩 → Hann 창을 포함한 주파수 변환 → 파워 → Mel 필터 → log10 → `max(log_mel, 최대값−8)`과 `(값+4)/4` 정규화 → 100 특징 프레임 배수 패딩 순입니다. 마지막 정규화를 엄밀한 `[-1,1]` 범위 보장으로 해석하지 않습니다. 내부 추론 창은 최대 800 특징 프레임으로 나누며 현재 ASR 구간 상한 5초와는 다른 층위입니다.
+5. **음성 특징 추출:** 고정 런타임은 16kHz, 400샘플 창(25ms), 160샘플 간격(10ms), 128 Mel 대역입니다. 양끝 반사 패딩 → Hann 창을 포함한 주파수 변환 → 파워 → Mel 필터 → log10 → `max(log_mel, 최대값−8)`과 `(값+4)/4` 정규화 → 100 특징 프레임 배수 패딩 순입니다. 마지막 정규화를 엄밀한 `[-1,1]` 범위 보장으로 해석하지 않습니다. 내부 추론 창은 최대 800 특징 프레임으로 나누며 CPU 회귀 구성의 ASR 구간 상한 5초와는 다른 층위입니다.
 
 주파수 변환을 앞선 대화에서는 FFT라고 통칭했지만, **현재 실제 `mtmd_audio_log_mel()` 경로는 Hann 창을 합친 DFT 행렬과 FP32 행렬곱**을 사용합니다. Mel 필터도 FP32 계산입니다. 같은 파일의 별도 FFT helper를 이번 Qwen 경로의 실행 함수로 혼동하지 않습니다. [특징 추출](https://github.com/ggml-org/llama.cpp/blob/7d7f0287530bc8981690f361d8c1627dbae1c99a/tools/mtmd/mtmd-audio.cpp#L591), [DFT·Mel 계산](https://github.com/ggml-org/llama.cpp/blob/7d7f0287530bc8981690f361d8c1627dbae1c99a/tools/mtmd/mtmd-subcontext.cpp#L314)
 

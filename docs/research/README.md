@@ -4,7 +4,7 @@
 
 실험에서 확인한 문제와 개발 방향의 변화는 [ASR 최적화 과정](optimization_history.md)에 정리합니다. 중요한 판단이 바뀔 때 갱신하며, 상세 조건·수치는 연결된 개별 보고서를 따릅니다.
 
-2026-11-10부터 [Qwen 단독1배속·부분 자막](qwen_realtime.md)을 우선 검증하고, 같은 연속 입력 경로에서 낮은 비트 양자화를 비교합니다. 기존 batch 기준선과 실제 자막 지연을 구분합니다.
+양자화·부분 자막 대조에서 사용한 연속 입력 조건은 [Qwen 1배속 평가 설계](qwen_realtime.md)에 있습니다. 다음 엔진 비교의 순서와 채택 여부는 [현재 상태](../status.md)에서 관리합니다.
 
 이전 모델 비교·VAD·Zip+Refine·병합 연구 문서는 [보관 색인](../archive/model-comparison/README.md), 실측 보고서는 [결과 색인](../../results/summaries/README.md)에 있습니다. 과거 계획의 다음 작업과 신규 OPT 단계를 섞지 않습니다.
 
