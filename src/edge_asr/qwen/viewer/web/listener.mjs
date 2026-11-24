@@ -29,6 +29,7 @@ export function runConditions(run){
     ['구간',loggedSeconds(s.max_segment_s)],['VAD',`${s.vad_preprocess||'—'} / ${s.vad_threshold??'—'}`],
     ['표시',loggedFlag(s.token_stream,'생성 중 토큰','완성 문자열')],['소스',(run.source_commit||'—').slice(0,8)]];
   if(s.first_snapshot_cap_s!=null)fields.push(['첫 부분 PCM 상한',loggedSeconds(s.first_snapshot_cap_s)]);
+  if(s.partial_after_display_s!=null)fields.push(['부분 결과 뒤 후속 대기',loggedSeconds(s.partial_after_display_s)]);
   if(s.vad_min_silence_s!=null)fields.push(['VAD 최소 무음',loggedSeconds(s.vad_min_silence_s)]);
   if(s.vad_short_span_s!=null)fields.push(['종료를 0.2초 더 기다리는 발화 길이',loggedSeconds(s.vad_short_span_s)]);
   if(s.split_on_pause!=null)fields.push(['쉼 경계 분할',loggedFlag(s.split_on_pause,'사용','사용 안 함')]);

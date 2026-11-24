@@ -272,6 +272,38 @@ class ContinuousTests(unittest.TestCase):
             p.discard("final", 1)
             self.assertIsNone(p.choose())
 
+    def test_followup_wait_uses_visible_text_and_keeps_the_next_segment_first_free(self):
+        p, now, events = self.policy(policy="first_text", partial_after_display_s=1.2)
+
+        def read(a, b):
+            return b - a
+
+        with p.condition:
+            p.observe({"temperature_mc": 60000, "current_limits": 0})
+            p.update(0, 0, 16000, read)
+            self.assertIsNotNone(p.choose(0.5))
+            last = dict(
+                kind="partial",
+                status="success",
+                displayed=True,
+                hypothesis="안녕",
+                segment_id=0,
+                start_frame=0,
+                end_frame=16000,
+                ended_monotonic_s=0.1,
+            )
+            p.update(0, 0, 36000, read)
+            self.assertIsNone(p.choose(0.5, previous=last))
+            self.assertEqual(events[-1]["reason"], "after_partial_display")
+            self.assertAlmostEqual(p.wait_s(), 1.3)
+            now[0] = 1.31
+            self.assertIsNotNone(p.choose(0.5, previous=last))
+            p.discard("final", 0)
+            p.update(1, 50000, 66000, read)
+            self.assertIsNotNone(p.choose(0.5, previous=last))
+        with self.assertRaises(ValueError):
+            self.policy(policy="latest", partial_after_display_s=1.2)
+
     def test_first_snapshot_cap_leaves_early_request_intact(self):
         p, _, _ = self.policy(policy="first_text", first_snapshot_cap_s=1.2)
         with p.condition:

@@ -52,6 +52,7 @@ class CaptionSession:
         continuous_policy="latest",
         followup_gap_target_s=None,
         first_snapshot_cap_s=None,
+        partial_after_display_s=None,
         partial_thermal_policy="pause",
     ):
         if not math.isfinite(onset_context_s) or not 0 <= onset_context_s <= 0.2:
@@ -101,6 +102,8 @@ class CaptionSession:
             raise ValueError("최종 우선 취소는 continuous·token_stream에서만 선택합니다.")
         if first_snapshot_cap_s is not None and partial_mode != "continuous":
             raise ValueError("첫 PCM 상한에는 continuous 모드가 필요합니다.")
+        if partial_after_display_s is not None and partial_mode != "continuous":
+            raise ValueError("본문 표시 뒤 후속 대기는 continuous 모드에서만 사용합니다.")
         if followup_gap_target_s is not None and partial_mode != "continuous":
             raise ValueError("예상 공백 기준에는 continuous 모드가 필요합니다.")
         if (
@@ -179,6 +182,7 @@ class CaptionSession:
                 thermal_policy=partial_thermal_policy,
                 followup_gap_target_s=followup_gap_target_s,
                 first_snapshot_cap_s=first_snapshot_cap_s,
+                partial_after_display_s=partial_after_display_s,
             )
             self.scheduler_stats = self.continuous.stats
             self.scheduler_stats["cancel_partial_grace_s"] = (

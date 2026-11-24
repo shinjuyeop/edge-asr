@@ -32,6 +32,7 @@ class ContinuousPolicy:
         thermal_policy="pause",
         followup_gap_target_s=None,
         first_snapshot_cap_s=None,
+        partial_after_display_s=None,
     ):
         self.condition, self.emit, self.clock = condition, emit, clock
         self.minimum, self.min_new, self.maximum, self.tail = minimum, min_new, maximum, tail
@@ -56,6 +57,13 @@ class ContinuousPolicy:
         self.first_cap = (
             round(first_snapshot_cap_s * 16000) if first_snapshot_cap_s is not None else None
         )
+        if partial_after_display_s is not None and (
+            policy != "first_text"
+            or not math.isfinite(partial_after_display_s)
+            or not 0 < partial_after_display_s < maximum / 16000
+        ):
+            raise ValueError("본문 표시 뒤 후속 대기는 first_text의 구간 길이 이내여야 합니다.")
+        self.after_display_s = partial_after_display_s
         self.last_display_end = -1
         self.last_display_at = None
         self.thermal_factor = 1.0
@@ -108,6 +116,8 @@ class ContinuousPolicy:
             self.stats["near_final_followups"] = 0
         if self.first_cap is not None:
             self.stats.update(first_snapshot_cap_frames=self.first_cap, capped_first_snapshots=0)
+        if self.after_display_s is not None:
+            self.stats["partial_after_display_s"] = self.after_display_s
 
         if followup_gap_target_s is not None:
             self.stats.update(
@@ -317,6 +327,19 @@ class ContinuousPolicy:
         display_age = projected_gap = None
         remaining = (self.maximum - (end - start)) / 16000
         useful_s = None
+        followup_at = None
+        if (
+            self.after_display_s is not None
+            and not first
+            and previous
+            and previous["segment_id"] == segment
+            and previous["kind"] == "partial"
+            and previous["status"] == "success"
+            and previous["displayed"]
+            and any(c.isalnum() for c in (previous["hypothesis"] or ""))
+            and "ended_monotonic_s" in previous
+        ):
+            followup_at = previous["ended_monotonic_s"] + self.after_display_s
         if self.policy == "first_text":
             remaining = (start + self.maximum - max(latest, available_frame or latest)) / 16000
             if first and self.first_costs:
@@ -352,6 +375,9 @@ class ContinuousPolicy:
                         projected_gap is not None and projected_gap >= self.followup_gap_target_s
                     )
                     reason = "offered" if followup else "projected_gap_below_target"
+        elif followup_at is not None and now < followup_at:
+            reason = "after_partial_display"
+            self.wake_at = followup_at
         elif self.policy == "paced" and self.work_debt_s > allowance + 1e-6:
             reason = "compute_pacing"
             self.wake_at = now + (self.work_debt_s - allowance) / rate

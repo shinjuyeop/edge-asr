@@ -505,6 +505,12 @@ def argument_parser():
         help="paced는 계산량 배분, headroom은 호출 종료 여유 확보, headroom_followup은 끝에서 새 토큰을 표시할 여유가 있으면 1회 추가, first_text는 첫 표시까지의 시간을 별도 추정",
     )
     parser.add_argument(
+        "--partial-after-display-s",
+        type=float,
+        default=argparse.SUPPRESS,
+        help="같은 구간의 본문 부분 결과를 표시한 뒤 다음 부분 추론을 시작하기까지의 최소 시간",
+    )
+    parser.add_argument(
         "--first-snapshot-cap-s",
         type=float,
         default=argparse.SUPPRESS,
