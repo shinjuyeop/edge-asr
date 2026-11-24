@@ -38,6 +38,9 @@
 
 | 프로필 | 모델·입력·용도 |
 | --- | --- |
+| [listener_hailo_boundary.toml](listener_hailo_boundary.toml) | Q8 + Hailo CNN P8·음향 쉼 내부 확정·미확정 종결부호 보류. [경계 및 지연 대조](../results/summaries/optimization/boundary-20261124.md) |
+| [listener_hailo_boundary_early.toml](listener_hailo_boundary_early.toml) | Q8 + Hailo CNN P2 · 2.2초부터 탐색·최대 8초. [원음·지연 비교](../results/summaries/optimization/boundary-20261124.md) |
+| [listener_hailo_boundary_5s.toml](listener_hailo_boundary_5s.toml) | Q8 + Hailo CNN P5G · 2.2초부터 탐색·5초 분할, 끝 여유 0.2초. [원음·지연 비교](../results/summaries/optimization/boundary-20261124.md) |
 | [listener.toml](listener.toml) | Q8 공유 회귀 참조·고정100개·첫1초/이후4초 |
 | [listener_continuous.toml](listener_continuous.toml) | 빠른 Q4·고정100개·횟수 제한 없는 연속 수정 |
 | [listener_continuous_paced.toml](listener_continuous_paced.toml) | 같은 Q4·실제 계산량 배분과 열 상태에 따른 갱신 감속 |

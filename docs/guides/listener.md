@@ -2,6 +2,33 @@
 
 `listen-qwen3`는 같은 연속 입력 이벤트 계약으로 **라이브 청취와 기록 재생**을 제공합니다. 원음·정답·실제 부분/확정 자막, 원음별 지연, 전체 연결 CER를 함께 확인합니다. 모델·스레드·캐시·갱신 간격은 실행 기록에서 읽으며 화면에 고정하지 않습니다.
 
+## 음성 경계 전후 비교
+
+[청취 화면 열기](http://127.0.0.1:8778). **기록 재생**에서 `fixed-T`와 `fixed-P8`의 같은 `fleurs-1441445080190694850`를 재생합니다. **라이브**에서는 경계 프로필을 선택한 뒤 **준비 → 시작**으로 RP5의 Q8 + Hailo-8L 새 전사를 확인합니다.
+
+서버를 다시 시작할 때 아래 명령을 저장소 루트에서 실행합니다. 8778번에서 같은 서버가 실행 중이면 링크로 접속합니다.
+
+```bash
+old=results/optimization/opt3/subtitle-continuity-20261123-01
+run=results/optimization/opt3/boundary-20261124-01
+device=()
+if ! ssh rp5 'test -c /dev/hailo0'; then
+  device=(--ssh-device-session results/maintenance/hailo8l-q8-20261120-01/with-device-02.sh)
+fi
+.venv/bin/python scripts/edge_asr.py tools listen-qwen3 \
+  --ssh rp5 --port 8778 "${device[@]}" \
+  --profile configs/listener_hailo_boundary.toml --profile configs/listener_hailo_continuity.toml --profile configs/listener_hailo_boundary_5s.toml \
+  --manifest data/evaluation/longform-20261117-01/natural.jsonl \
+  --manifest data/evaluation/longform-20261117-01/reading.jsonl \
+  --manifest results/maintenance/boundary-20261124-01/reserved.jsonl \
+  --run "$run/fixed-P8" --run "$old/fixed-T" --run "$run/fixed-P5G" \
+  --run "$run/natural-P8" --run "$old/natural-T" \
+  --run "$run/reading-P8" --run "$run/reading-T" \
+  --run "$run/reserved-P8" --run "$run/reserved-T"
+```
+
+[같은 음향 시각의 원문·표시·열 조건 비교](../../results/summaries/optimization/boundary-20261124.md)
+
 ## Q8 + Hailo-8L 자막 비교와 실제 추론
 
 개발 PC에서 다음 명령을 실행한 뒤 [청취 화면 열기](http://127.0.0.1:8776)를 누릅니다. 기존 8765번 청취 서버와 함께 열 수 있습니다.
@@ -92,6 +119,20 @@ Host에 회수한 기록만 볼 때는 `--ssh`를 생략합니다. 이 경우 Ho
 기록 재생은 브라우저에 음원을 미리 불러오고 Web Audio 출력 시간축에 원래 `published_s`를 배치합니다. 라이브는 준비 완료 후 서버 시계에 시작을 예약하고, 브라우저와 서버의 반복 왕복 요청으로 시계 차이를 추정합니다. 표시한 왕복/2는 편도 실측이 아니며 비대칭 경로·오디오 출력·브라우저 스케줄링 오차가 남습니다. RP5 실제 입력 시작은 `clock.json`으로 별도 기록합니다.
 
 라이브 이벤트는 약300ms 간격의 증분 HTTP 관측으로 전달합니다. 화면에 표시한 발행→수신 추정에는 이 관측 대기와 SSH·브라우저 처리도 포함됩니다. 늦은 자막을 앞당겨 재생하지 않습니다. 네트워크 끊김은 표시하고 마지막 cursor부터 다시 받으며 RP5 입력을 역압으로 늦추지 않습니다. 청취 서버 동시 실행의 보드 부하는 기존 무관측 벤치마크와 다르므로 **라이브 청취 측정**으로 구분합니다.
+
+### 저장된 경계 오류 검산
+
+같은 원음의 확정 전사로 경계 양쪽에 같은 글자가 있는지, 그중 한쪽이 정답에 대한 문자 삽입인지 검산할 수 있습니다. 원본 단어 주석이 있는 서울말뭉치는 잘린 단어와 실제 단어 끝에서 본문이 처음 나타난 시점도 계산합니다. 저장소 루트의 Host에서 실행합니다.
+
+```bash
+run=results/optimization/opt3/subtitle-continuity-20261123-01/natural-T
+.venv/bin/python scripts/edge_asr.py tools subtitle-metrics \
+  --run "$run" --boundary-errors \
+  --seoul-manifest data/evaluation/longform-20261117-01/natural.jsonl \
+  --output /tmp/edge-asr-natural-boundaries.json
+```
+
+문장부호 원문이 있는 실행에는 `--punctuation-reference results/maintenance/boundary-20261124-01/punctuation.jsonl`을 추가합니다. 각 행의 `id`, `audio_sha256`, `reference`를 저장된 원음과 맞춘 뒤 종결·절 부호를 따로 집계합니다. 같은 순서와 PCM의 기준 실행 폴더를 `--boundary-baseline`으로 지정하면 양쪽 경계의 동일한 정답 위치에서 삽입·누락·치환을 비교합니다. 청취 화면의 미확정 끝 문장부호 보류 옵션은 확정 이력과 CER 원문을 보존합니다.
 
 ## 조건 변경·코드 위치
 
