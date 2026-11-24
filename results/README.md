@@ -1,6 +1,6 @@
 # 결과 보관
 
-작은 검토용 요약은 [summaries/](summaries/README.md), 현재 채택한 기능/정책은 [프로젝트 상태](../docs/status.md)에서 확인한다. 원시 측정값은 기존 실행 폴더에 그대로 보존한다.
+작은 검토용 요약은 [summaries/](summaries/README.md), 현재 채택한 기능/정책은 [프로젝트 상태](../docs/status.md)에서 확인한다. 개발 PC에 전체 원시 기록과 기존 실행 경로를 보존한다. RP5 사본은 사용처를 조사하고 SHA-256을 대조한 뒤 정리할 수 있다. [회수·정리 절차](../docs/guides/deployment.md#실험-결과-회수와-rp5-정리)
 
 | 경로 | 내용 |
 | --- | --- |

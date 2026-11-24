@@ -49,6 +49,7 @@ ruff format --check src tests scripts native
 - RP5는 실제 추론을 한 번에 하나씩 실행합니다. 실행 중 pull·checkout·패키지 변경을 하지 않습니다.
 - 실행 ID는 목적·날짜·순번으로 정하고 새 출력 폴더를 사용합니다. 예: `realtime-example-20261111-01`.
 - Git은 소스·공유 설정·문서·검토한 요약을 전달합니다. 모델·원음·native 빌드·원시 결과는 필요한 경로만 SSH/rsync로 전달하고 해시를 확인합니다.
+- 완료한 실험 기록은 개발 PC에 회수합니다. RP5 사본의 정리 조건과 검산 방법은 [회수·정리 절차](docs/guides/deployment.md#실험-결과-회수와-rp5-정리)를 따릅니다.
 - 요약에는 소스 커밋, 설정·명령, 모델/빌드/입력 해시, 환경, 실패·생략·미측정 범위를 남깁니다. 과거 실행 기록의 경로·해시·판정을 소급 수정하지 않습니다.
 
 자산 위치와 장비 차이는 [환경 기록](docs/reference/environment.md), 동기화 절차는 [RP5 안내](docs/guides/deployment.md)를 확인합니다.
