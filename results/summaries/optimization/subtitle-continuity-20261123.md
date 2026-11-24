@@ -8,19 +8,19 @@
 
 [추천 청취 프로필](../../../configs/listener_hailo_continuity.toml)은 처음 0.45초, 이후 새 음성 0.65초와 첫 본문 생성 예상시간으로 부분 요청을 결정한다. ASR은 최대 4초, native VAD 최대 15초이고 한도 근처의 짧은 쉼을 분할점으로 쓴다. 실제 VAD 종료 후 500ms 이내의 재개에만 최대 200ms의 미소유 음성을 덧붙인다. 텍스트 prefix KV는 재사용하고 Decode와 나머지 인코더는 CPU에서 처리한다. 독립 검산 때 확정 토큰 보존을 가장 우선하는 경우의 5초 H는 아래 대조표와 같은 실행 ID로 다시 들을 수 있다.
 
-터미널을 저장소 루트에서 열고 다음 명령을 실행한다. 이 RP5에 보존한 드라이버 4.23 임시 세션이 Hailo를 열고 청취가 끝나면 원래 상태로 돌린다. 포트가 사용 중이면 `--port`와 링크의 번호를 함께 바꾼다.
+터미널을 저장소 루트에서 열고 다음 명령을 실행한다. 이 RP5에 보존한 드라이버 4.23 임시 세션이 Hailo를 열고 청취가 끝나면 원래 상태로 돌린다. 기존 청취 서버의 목록에 아래 기록이 있으면 바로 접속한다. 목록을 바꿔야 하면 평가가 끝난 뒤 서버를 종료하고 8765번에서 다시 시작한다.
 
 ```bash
 run=results/optimization/opt3/subtitle-continuity-20261123-01
 .venv/bin/python scripts/edge_asr.py tools listen-qwen3 \
-  --ssh rp5 --port 8776 \
+  --ssh rp5 --port 8765 \
   --ssh-device-session results/maintenance/hailo8l-q8-20261120-01/with-device-02.sh \
   --profile configs/listener_hailo_continuity.toml --profile configs/listener_hailo_cnn.toml \
   --manifest data/evaluation/longform-20261117-01/natural.jsonl \
   --run "$run/fixed-T" --run "$run/fixed-A" --run "$run/natural-T" --run "$run/natural-A"
 ```
 
-[청취 화면 열기](http://127.0.0.1:8776) · [실행 및 마이크 안내](../../../docs/guides/listener.md)
+[청취 화면 열기](http://127.0.0.1:8765) · [실행 및 마이크 안내](../../../docs/guides/listener.md)
 
 ## 2. 현재 Q8 + CNN 기준과 같은 입력에서 측정한 변화
 

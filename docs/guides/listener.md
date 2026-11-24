@@ -2,11 +2,13 @@
 
 `listen-qwen3`는 같은 연속 입력 이벤트 계약으로 **라이브 청취와 기록 재생**을 제공합니다. 원음·정답·실제 부분/확정 자막, 원음별 지연, 전체 연결 CER를 함께 확인합니다. 모델·스레드·캐시·갱신 간격은 실행 기록에서 읽으며 화면에 고정하지 않습니다.
 
+청취 주소는 [http://127.0.0.1:8765](http://127.0.0.1:8765)로 통일합니다. 기록 목록을 바꿀 때는 실행 중인 평가가 끝난 뒤 기존 청취 서버를 종료하고, 원하는 `--run`을 넣어 같은 포트에서 시작합니다.
+
 ## 음성 경계 전후 비교
 
-[청취 화면 열기](http://127.0.0.1:8778). **기록 재생**에서 `fixed-T`와 `fixed-P8`의 같은 `fleurs-1441445080190694850`를 재생합니다. **라이브**에서는 경계 프로필을 선택한 뒤 **준비 → 시작**으로 RP5의 Q8 + Hailo-8L 새 전사를 확인합니다.
+[청취 화면 열기](http://127.0.0.1:8765). **기록 재생**에서 `fixed-T`와 `fixed-P8`의 같은 `fleurs-1441445080190694850`를 재생합니다. **라이브**에서는 경계 프로필을 선택한 뒤 **준비 → 시작**으로 RP5의 Q8 + Hailo-8L 새 전사를 확인합니다.
 
-서버를 다시 시작할 때 아래 명령을 저장소 루트에서 실행합니다. 8778번에서 같은 서버가 실행 중이면 링크로 접속합니다.
+서버를 다시 시작할 때 아래 명령을 저장소 루트에서 실행합니다. 이미 이 기록 목록을 제공 중이면 링크로 바로 접속합니다.
 
 ```bash
 old=results/optimization/opt3/subtitle-continuity-20261123-01
@@ -16,13 +18,15 @@ if ! ssh rp5 'test -c /dev/hailo0'; then
   device=(--ssh-device-session results/maintenance/hailo8l-q8-20261120-01/with-device-02.sh)
 fi
 .venv/bin/python scripts/edge_asr.py tools listen-qwen3 \
-  --ssh rp5 --port 8778 "${device[@]}" \
+  --ssh rp5 --port 8765 "${device[@]}" \
   --profile configs/listener_hailo_boundary.toml --profile configs/listener_hailo_continuity.toml --profile configs/listener_hailo_boundary_5s.toml \
+  --profile configs/listener_hailo_cnn.toml \
   --manifest data/evaluation/longform-20261117-01/natural.jsonl \
   --manifest data/evaluation/longform-20261117-01/reading.jsonl \
   --manifest results/maintenance/boundary-20261124-01/reserved.jsonl \
   --run "$run/fixed-P8" --run "$old/fixed-T" --run "$run/fixed-P5G" \
   --run "$run/natural-P8" --run "$old/natural-T" \
+  --run "$old/fixed-A" --run "$old/natural-A" \
   --run "$run/reading-P8" --run "$run/reading-T" \
   --run "$run/reserved-P8" --run "$run/reserved-T"
 ```
@@ -31,12 +35,12 @@ fi
 
 ## Q8 + Hailo-8L 자막 비교와 실제 추론
 
-개발 PC에서 다음 명령을 실행한 뒤 [청취 화면 열기](http://127.0.0.1:8776)를 누릅니다. 기존 8765번 청취 서버와 함께 열 수 있습니다.
+위 명령으로 연 목록에도 `fixed-T`, `fixed-A`, `natural-T`, `natural-A`가 있습니다. 이 네 기록만 열려면 아래 명령으로 서버를 시작하고 [청취 화면](http://127.0.0.1:8765)을 엽니다.
 
 ```bash
 run=results/optimization/opt3/subtitle-continuity-20261123-01
 .venv/bin/python scripts/edge_asr.py tools listen-qwen3 \
-  --ssh rp5 --port 8776 \
+  --ssh rp5 --port 8765 \
   --ssh-device-session results/maintenance/hailo8l-q8-20261120-01/with-device-02.sh \
   --profile configs/listener_hailo_continuity.toml --profile configs/listener_hailo_cnn.toml \
   --manifest data/evaluation/longform-20261117-01/natural.jsonl \
@@ -171,11 +175,11 @@ Q4 스레드 대조의 새 프로필은 **Q4 prefill4T · 동일6개**이고, �
 
 ## 긴 음원 Q8 가변 갱신 듣기
 
-개발 PC의 저장소에서 다음 명령으로 새 가변 프로필과 같은 빌드의 고정 대조 기록을 엽니다. 브라우저에서 `http://127.0.0.1:8776`에 접속해 **기록 재생**에서 `natural`(자연발화) 또는 `reading`(낭독)의 `fixed`와 `headroom`을 번갈아 선택합니다. **원음별 확인**은 각 파일 끝의 확정 자막을 읽은 뒤 다음 음원으로 넘길 수 있습니다.
+개발 PC의 저장소에서 다음 명령으로 새 가변 프로필과 같은 빌드의 고정 대조 기록을 엽니다. [청취 화면](http://127.0.0.1:8765)의 **기록 재생**에서 `natural`(자연발화) 또는 `reading`(낭독)의 `fixed`와 `headroom`을 번갈아 선택합니다. **원음별 확인**은 각 파일 끝의 확정 자막을 읽은 뒤 다음 음원으로 넘길 수 있습니다.
 
 ```bash
 run=results/optimization/opt3/q8-fresh-longform-20261118-01
-.venv/bin/python scripts/edge_asr.py tools listen-qwen3 --ssh rp5 --port 8776 \
+.venv/bin/python scripts/edge_asr.py tools listen-qwen3 --ssh rp5 --port 8765 \
   --profile configs/listener_q8_headroom.toml \
   --manifest data/evaluation/longform-20261117-01/reading.jsonl \
   --run "$run/natural-headroom" --run "$run/natural-fixed" \
