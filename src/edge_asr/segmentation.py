@@ -4,6 +4,7 @@ ASR/텍스트 병합은 수행하지 않는다. 활성 VAD의 native flush는 �
 """
 
 import hashlib
+import math
 import time
 from array import array
 
@@ -12,7 +13,7 @@ from edge_asr.dataset import pcm_bytes
 
 RATE = 16000
 WINDOW = 512
-SEGMENT_LIMITS_S = (3, 4, 5, 8)
+SEGMENT_LIMITS_S = (3, 4, 5, 6, 8)
 
 
 class PcmRing:
@@ -65,9 +66,19 @@ class SegmentPipeline:
         progress=None,
         vad_policy=None,
         split_on_pause=False,
+        boundary_target_s=None,
+        boundary_energy_valley=False,
     ):
         if type(max_segment_s) is not int or max_segment_s not in SEGMENT_LIMITS_S:
-            raise ValueError("소유 구간 상한은 3/4/5/8초여야 합니다.")
+            raise ValueError("소유 구간 상한은 3/4/5/6/8초여야 합니다.")
+        if boundary_target_s is not None and (
+            not split_on_pause
+            or not math.isfinite(boundary_target_s)
+            or not 0 < boundary_target_s < max_segment_s
+        ):
+            raise ValueError("쉼 경계 목표는 양수이며 소유 구간 상한보다 작아야 합니다.")
+        if boundary_energy_valley and boundary_target_s is None:
+            raise ValueError("에너지 경계에는 명시적인 쉼 경계 목표가 필요합니다.")
         if type(context_frames) is not int or not 0 <= context_frames <= 3200:
             raise ValueError("문맥은 0~3200프레임이어야 합니다.")
         if context_selection not in ("all", "onset", "continuation", "unowned_onset"):
@@ -108,6 +119,12 @@ class SegmentPipeline:
         if split_on_pause and not hasattr(vad, "resumed_pause_frames"):
             raise ValueError("쉼 경계에는 재개 직전의 무음 길이를 제공하는 VAD가 필요합니다.")
         self.split_on_pause = split_on_pause
+        self.boundary_target = (
+            round(boundary_target_s * RATE) if boundary_target_s is not None else None
+        )
+        self.boundary_energy_valley = boundary_energy_valley
+        self.energy_peak = 0.0
+        self.quiet_windows = 0
         self.pause_emissions = 0
         self.span_id = 0
         self.continuation = False
@@ -171,7 +188,7 @@ class SegmentPipeline:
         )
         return max(0, begin - self.context) if use_context else begin
 
-    def _emit(self, start, end, reason):
+    def _emit(self, start, end, reason, *, boundary_evidence=None):
         native_end = end
         end = min(end, self.ring.end)
         begin = max(start, self.owned_end)
@@ -220,6 +237,8 @@ class SegmentPipeline:
                 if not self.continuation and self.previous_vad_owned_end is not None
                 else None
             )
+        if boundary_evidence is not None:
+            row["boundary_evidence"] = boundary_evidence
         self.emit(row, pcm)
         self.payload_peak = max(self.payload_peak, len(pcm))
         self.segment_id += 1
@@ -244,6 +263,20 @@ class SegmentPipeline:
             self.native_start = None
             self.span_id += 1
             self.continuation = False
+            self.energy_peak = 0.0
+            self.quiet_windows = 0
+
+    def _resumed_energy(self, block):
+        # 원래 PCM의 최근 강세에 비해 두 창 이상 낮아졌다가 강도가 회복됐는지 본다.
+        # 현재 창의 시작만 경계로 쓰므로 이미 부분 요청에 넘긴 프레임을 되감지 않는다.
+        energy = sum(sample * sample for sample in block) / WINDOW
+        self.energy_peak = max(energy, self.energy_peak * 0.93)
+        if self.energy_peak and energy <= self.energy_peak * 0.075:
+            self.quiet_windows += 1
+            return False
+        resumed = self.quiet_windows >= 2 and energy >= self.energy_peak * 0.12
+        self.quiet_windows = 0
+        return resumed
 
     def _window(self, block, vad_block=None):
         if (
@@ -270,11 +303,24 @@ class SegmentPipeline:
             if self.native_budget is not None and active > self.native_budget:
                 raise ValueError("활성 VAD 버퍼 예산 위반")
             begin = max(start, self.owned_end)
-            if self.split_on_pause and self.vad.resumed_pause_frames >= 3 * WINDOW:
+            energy_resume = self.boundary_energy_valley and self._resumed_energy(block)
+            if self.split_on_pause and (
+                self.vad.resumed_pause_frames >= 3 * WINDOW or energy_resume
+            ):
                 # 재개한 현재 창 전체는 다음 구간 소유다. 이전 progress 시각보다 거슬러 가지 않는다.
                 cut = self.fed - WINDOW
-                if self.maximum - RATE * 0.8 <= cut - begin <= self.maximum and cut < self.ring.end:
-                    self._emit(begin, cut, "pause_before_limit")
+                target = (
+                    self.maximum - RATE * 0.8
+                    if self.boundary_target is None
+                    else self.boundary_target
+                )
+                if target <= cut - begin <= self.maximum and cut < self.ring.end:
+                    evidence = (
+                        "vad_pause"
+                        if self.vad.resumed_pause_frames >= 3 * WINDOW
+                        else "energy_valley"
+                    )
+                    self._emit(begin, cut, "pause_before_limit", boundary_evidence=evidence)
                     self.pause_emissions += 1
                     begin = self.owned_end
             # native VAD 상태를 바꾸지 않고 도착한 공통 PCM의 소유 구간만 확정한다.
@@ -329,6 +375,9 @@ class SegmentPipeline:
         }
         if self.context_selection != "all":
             result["context_selection"] = self.context_selection
+        if self.boundary_target is not None:
+            result["boundary_target_frames"] = self.boundary_target
+            result["boundary_energy_valley"] = self.boundary_energy_valley
         if self.onset_context_max_gap is not None:
             result["onset_context_max_gap_frames"] = self.onset_context_max_gap
         if self.vad_processor is not None:

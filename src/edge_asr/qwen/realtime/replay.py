@@ -425,6 +425,18 @@ def argument_parser():
         help="이전 VAD 소유 끝에서 현재 시작까지 이 시간 이내일 때만 시작 문맥 사용",
     )
     parser.add_argument(
+        "--boundary-target-s",
+        type=float,
+        default=argparse.SUPPRESS,
+        help="쉼 경계 탐색을 시작하는 소유 길이. --split-on-pause와 더 긴 --max-segment-s 사용",
+    )
+    parser.add_argument(
+        "--boundary-energy-valley",
+        action="store_true",
+        default=argparse.SUPPRESS,
+        help="VAD 쉼 외에 원음의 짧은 저에너지 구간 뒤 강세 회복도 분할 후보로 사용",
+    )
+    parser.add_argument(
         "--split-on-pause",
         action="store_true",
         default=argparse.SUPPRESS,

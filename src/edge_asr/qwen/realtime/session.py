@@ -38,6 +38,8 @@ class CaptionSession:
         onset_context_s=0.0,
         onset_context_max_gap_s=None,
         split_on_pause=False,
+        boundary_target_s=None,
+        boundary_energy_valley=False,
         drain_timeout_s=30,
         queue_capacity=4,
         partials=True,
@@ -195,6 +197,8 @@ class CaptionSession:
                 else None
             ),
             split_on_pause=split_on_pause,
+            boundary_target_s=boundary_target_s,
+            boundary_energy_valley=boundary_energy_valley,
             native_budget_frames=None,
             progress=self._progress,
             vad_policy=vad_preprocess,

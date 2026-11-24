@@ -31,6 +31,7 @@ export function runConditions(run){
   if(s.first_snapshot_cap_s!=null)fields.push(['첫 부분 PCM 상한',loggedSeconds(s.first_snapshot_cap_s)]);
   if(s.vad_min_silence_s!=null)fields.push(['VAD 최소 무음',loggedSeconds(s.vad_min_silence_s)]);
   if(s.split_on_pause!=null)fields.push(['쉼 경계 분할',loggedFlag(s.split_on_pause,'사용','사용 안 함')]);
+  if(s.boundary_target_s!=null)fields.push(['쉼 경계 탐색 시작',loggedSeconds(s.boundary_target_s)],['저에너지 뒤 재개도 분할',loggedFlag(s.boundary_energy_valley??false,'사용','사용 안 함')]);
   if(s.onset_context_s!=null)fields.push(['발화 재개 앞 문맥',loggedSeconds(s.onset_context_s)]);
   if(s.onset_context_max_gap_s!=null)fields.push(['재개 문맥 적용 최대 공백',loggedSeconds(s.onset_context_max_gap_s)]);
   if(run.audio_accelerator)fields.push(['오디오 가속','Hailo-8L · CNN (워밍업 장치 호출 확인)']);

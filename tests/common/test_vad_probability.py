@@ -57,6 +57,45 @@ class FakeNumpy:
 
 
 class ProbabilityTests(unittest.TestCase):
+    def test_acoustic_target_keeps_partial_frontiers_and_final_pcm_ownership(self):
+        # 같은 PCM에서 VAD는 계속 음성을 보고 에너지만 창 105~108에서 내려간다.
+        signal = array("f", (0.01 if 105 <= i // 512 < 109 else 0.2 for i in range(102_117)))
+        reference, _ = preprocess(signal, "identity")
+        for energy, end, reason in (
+            (True, 109 * 512, "pause_before_limit"),
+            (False, 96_000, "hard_limit"),
+        ):
+            with self.subTest(energy=energy):
+                rows, progress = [], {}
+
+                def observe(begin, until, read):
+                    progress[begin] = max(progress.get(begin, begin), until)
+
+                pipeline = SegmentPipeline(
+                    BoundedProbabilityVad(Probability(), max_speech_s=15),
+                    "identity",
+                    6,
+                    lambda r, p: rows.append((r, p)),
+                    split_on_pause=True,
+                    boundary_target_s=3,
+                    boundary_energy_valley=energy,
+                    native_budget_frames=None,
+                    context_frames=0,
+                    progress=observe,
+                )
+                for i in range(0, len(signal), 1600):
+                    pipeline.accept(signal[i : i + 1600], final=i + 1600 >= len(signal))
+                pipeline.finish()
+                (left, p1), (right, p2) = rows
+                self.assertEqual(
+                    (left["reason"], left["owned_end_frame"], right["owned_start_frame"]),
+                    (reason, end, end),
+                )
+                self.assertEqual(p1 + p2, reference)
+                self.assertLessEqual(progress[0], end)
+                if energy:
+                    self.assertEqual(left["boundary_evidence"], "energy_valley")
+
     def test_short_pause_and_hard_boundary_share_no_owned_frames(self):
         # 각 창의 음성 확률만 제어한다. 입력 PCM은 위치별로 달라 경계에서 직접 검산한다.
         signal = array("f", (((i % 301) - 150) / 32768 for i in range(100_113)))
