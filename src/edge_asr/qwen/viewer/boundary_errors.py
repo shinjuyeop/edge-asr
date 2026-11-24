@@ -2,10 +2,57 @@
 
 import re
 import unicodedata
-from bisect import bisect_left
+from bisect import bisect_left, bisect_right
 from collections import Counter
 
-from edge_asr.metrics import normalize
+from edge_asr.metrics import distribution, normalize
+from edge_asr.qwen.viewer.analysis import visible
+
+
+def word_display_delays(annotated, records, rate):
+    """두 연속 단어의 고유 본문을 표시한 첫 시각과 두 번째 단어의 음향 끝을 비교한다."""
+    anchors = []
+    for source, words in annotated.items():
+        reference = "".join(text for _, _, text in words)
+        for index, (previous, current) in enumerate(zip(words, words[1:]), 1):
+            phrase = previous[2] + current[2]
+            if len(phrase) >= 3 and reference.find(phrase) == reference.rfind(phrase):
+                anchors.append((current[1], previous[0], source, index, phrase))
+    anchors.sort()
+    ends = [a[0] for a in anchors]
+    seen = {}
+    events = sorted(
+        (
+            e
+            for e in records
+            if visible(e) and not e.get("stale_revision") and e["status"] != "cancelled"
+        ),
+        key=lambda e: e["published_s"],
+    )
+    for e in events:
+        start = e.get("owned_start_frame", e["start_frame"])
+        text = normalize(e["hypothesis"])
+        for end, begin, source, index, phrase in anchors[
+            bisect_right(ends, start) : bisect_right(ends, e["end_frame"])
+        ]:
+            if (source, index) in seen or begin < start or e["published_s"] < end / rate:
+                continue
+            if phrase in text and text.find(phrase) == text.rfind(phrase):
+                seen[source, index] = dict(
+                    source=source,
+                    word_index=index,
+                    audio_end_frame=end,
+                    published_s=e["published_s"],
+                    delay_s=e["published_s"] - end / rate,
+                    job_id=e["job_id"],
+                    kind=e["kind"],
+                )
+    return {
+        "annotated_words": sum(map(len, annotated.values())),
+        "unique_pairs": len(anchors),
+        "first_visible_word_end_delay_s": distribution([x["delay_s"] for x in seen.values()]),
+        "observations": list(seen.values()),
+    }
 
 
 def edit_coordinates(reference, hypothesis):
@@ -50,6 +97,31 @@ def punctuation(text):
             continue
         family = "sentence" if mark[0][0] in ".!?。？！…" else "clause"
         yield len(normalize(text[:start])), family
+
+
+def cut_words(annotated, segments):
+    cuts = sorted(
+        (s["owned_end_frame"], s["segment_id"], s["reason"])
+        for s in segments
+        if s["reason"] in ("hard_limit", "pause_before_limit")
+    )
+    frames = [cut[0] for cut in cuts]
+    rows = []
+    for source, words in annotated.items():
+        for index, (lo, hi, text) in enumerate(words):
+            inside = cuts[bisect_right(frames, lo) : bisect_left(frames, hi)]
+            if inside:
+                rows.append(
+                    dict(
+                        source=source,
+                        word_index=index,
+                        text=text,
+                        start_frame=lo,
+                        end_frame=hi,
+                        cuts=[dict(frame=f, segment_id=i, reason=r) for f, i, r in inside],
+                    )
+                )
+    return rows
 
 
 def boundary_errors(worker, references=()):

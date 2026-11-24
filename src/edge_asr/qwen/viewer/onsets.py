@@ -7,10 +7,10 @@ from edge_asr.metrics import distribution, normalize
 from edge_asr.textgrid import label_kind, read_textgrid
 
 
-def annotated_word_starts(manifest, sources, rate):
+def annotated_words(manifest, sources, rate):
     """소스 해시·전체 전사와 일치하는 서울말뭉치 화자의 pWord.ortho. 주석만 인정한다."""
     by_id = {r["id"]: r for r in read_jsonl(manifest) if "label_member" in r}
-    starts = {}
+    annotated = {}
     for source in sources:
         row = by_id.get(source["id"])
         if row is None:
@@ -30,18 +30,26 @@ def annotated_word_starts(manifest, sources, rate):
             if tier.name != "pWord.ortho.":
                 continue
             words = [
-                (max(lo, round(word.start * rate)), normalize(word.text))
+                (
+                    source["start"] + max(lo, round(word.start * rate)) - lo,
+                    source["start"] + min(hi, round(word.end * rate)) - lo,
+                    normalize(word.text),
+                )
                 for word in tier.intervals
                 if max(lo, round(word.start * rate)) < min(hi, round(word.end * rate))
                 and label_kind(word.text) == "speech"
                 and normalize(word.text)
             ]
-            if words and "".join(w[1] for w in words) == normalize(row["reference"]):
-                matches.append(source["start"] + words[0][0] - lo)
+            if words and "".join(w[2] for w in words) == normalize(row["reference"]):
+                matches.append(words)
         if len(matches) != 1:
             raise ValueError(f"전체 정답과 일치하는 단어 계층이 하나여야 합니다: {source['id']}")
-        starts[source["id"]] = matches[0]
-    return starts
+        annotated[source["id"]] = matches[0]
+    return annotated
+
+
+def annotated_word_starts(manifest, sources, rate):
+    return {key: words[0][0] for key, words in annotated_words(manifest, sources, rate).items()}
 
 
 def onset_latencies(worker, records, first, word_starts):

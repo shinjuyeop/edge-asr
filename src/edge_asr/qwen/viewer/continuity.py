@@ -10,8 +10,8 @@ from pathlib import Path
 from edge_asr.artifacts import digest, read_jsonl, write_json
 from edge_asr.metrics import distribution, normalize
 from edge_asr.qwen.viewer.analysis import visible
-from edge_asr.qwen.viewer.boundary_errors import boundary_errors
-from edge_asr.qwen.viewer.onsets import annotated_word_starts, onset_latencies
+from edge_asr.qwen.viewer.boundary_errors import boundary_errors, cut_words, word_display_delays
+from edge_asr.qwen.viewer.onsets import annotated_words, onset_latencies
 
 
 def letters(row):
@@ -325,17 +325,21 @@ def main():
     args = parser.parse_args()
     p = args.run
     worker = json.loads((p / "worker.json").read_text())
-    onsets = (
-        annotated_word_starts(
-            args.seoul_manifest, worker["sources"], worker["audio"]["sample_rate_hz"]
-        )
+    words = (
+        annotated_words(args.seoul_manifest, worker["sources"], worker["audio"]["sample_rate_hz"])
         if args.seoul_manifest
         else {}
     )
-    summary = continuity(worker, read_jsonl(p / "jobs.jsonl"), word_starts=onsets)
+    records = read_jsonl(p / "jobs.jsonl")
+    summary = continuity(worker, records, word_starts={k: v[0][0] for k, v in words.items()})
     if args.boundary_errors or args.punctuation_reference:
         refs = read_jsonl(args.punctuation_reference) if args.punctuation_reference else ()
         summary["boundary_errors"] = boundary_errors(worker, refs)
+        if words:
+            summary["boundary_errors"]["cut_annotated_words"] = cut_words(words, worker["segments"])
+            summary["word_display"] = word_display_delays(
+                words, records, worker["audio"]["sample_rate_hz"]
+            )
     if args.punctuation_reference:
         summary["punctuation_reference_sha256"] = digest(args.punctuation_reference)
     if args.seoul_manifest:
