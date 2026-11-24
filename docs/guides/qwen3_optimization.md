@@ -4,6 +4,8 @@
 
 공유 개발 설정은 **Q8 회귀 참조**, 최근 연속 수정 실험의 Q4 최대3회는 **속도 대조군**입니다. 제품 목표는 발화 중 계속 갱신·수정되는 자막이며 과거 최대2회/3회는 비교·재현 조건입니다. [모델·listener 프로필 색인](../../configs/README.md)에서 각 경로와 채택 상태를 구분합니다. 아래 대표 명령과 기존 기본값은 유지합니다.
 
+RP5 + Hailo-8L에서는 선택한 [Q8 자막 프로필](../../configs/listener_hailo_continuity.toml)로 라이브·마이크를 실행합니다. [실행 명령과 기록 재생](listener.md#q8--hailo-8l-자막-비교와-실제-추론) · [고정 100개·서울 자연발화·장시간 비교](../../results/summaries/optimization/subtitle-continuity-20261123.md)
+
 ## 환경과 설정
 
 저장소 루트에서 기존 환경을 사용합니다. 실제 확인한 OS·Python·패키지·native 빌드는 [환경 기록](../reference/environment.md)에 있습니다.

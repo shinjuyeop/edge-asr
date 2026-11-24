@@ -1,5 +1,7 @@
 # 실행 설정
 
+[listener_hailo_continuity.toml](listener_hailo_continuity.toml)은 RP5 Hailo-8L에서 검증한 자막 청취 구성입니다. [listener_hailo_cnn.toml](listener_hailo_cnn.toml)로 이전 5초 기준과 비교합니다. [1배속 검증·실행 방법](../results/summaries/optimization/subtitle-continuity-20261123.md)
+
 공유 개발 입구는 `gguf_realtime.toml`의 **Q8 회귀 참조**입니다. 최근 연속 수정 실험은 **Q4 속도 대조군**을 별도로 사용합니다. 두 역할은 제품 기본 채택과 구분하며, 이번 구조 정리에서 모델 기본값·채택 판정을 바꾸지 않습니다. 기존 batch 기준선과 양자화 후보도 보존합니다. 상대 자산 경로는 저장소 루트 기준이고 `asset_manifest`는 모델 폴더 기준입니다.
 
 ## 모델·평가 설정

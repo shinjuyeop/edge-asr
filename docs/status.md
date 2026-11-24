@@ -1,6 +1,12 @@
 # 현재 상태 — Qwen3-ASR 최적화
 
-2026-11-23 갱신, 최신 완료 실측은 2026-11-23입니다. 목표는 **RP5에서 Qwen3-ASR-0.6B의 한국어 정확도·완료율을 유지하면서 실제 인식 지연을 줄이는 것**입니다. [최적화 과정](research/optimization_history.md), [연구 계획](research/qwen3_optimization.md), [평가 조건](research/qwen_realtime.md), [최근100개 캐시 대조](../results/summaries/optimization/realtime-prefix-cache-20261112.md).
+2026-11-24 갱신. 목표는 **RP5에서 Qwen3-ASR-0.6B의 한국어 정확도·완료율을 유지하면서 실제 인식 지연을 줄이는 것**입니다. [최적화 과정](research/optimization_history.md), [연구 계획](research/qwen3_optimization.md), [평가 조건](research/qwen_realtime.md), [최근100개 캐시 대조](../results/summaries/optimization/realtime-prefix-cache-20261112.md).
+
+## Q8 + Hailo-8L 자막 연속성
+
+고정 100개를 RP5에 1배속으로 입력했습니다. 기존 CNN 구성에서 4초 구간과 짧은 쉼 문맥을 적용하자 첫 본문 p95가 7.13초에서 4.13초로, 새 음성을 반영한 갱신 공백 p95가 4.99초에서 4.00초로 줄었습니다. 5초 초과 공백은 16회에서 0회로 줄었고 문자 오류는 450자에서 460자(3,848자 중 11.95%)로 늘었습니다. 같은 100개를 다시 실행했을 때 확정 전사 226개의 토큰이 모두 일치했습니다.
+
+서울 자연발화 8개에서도 5초 초과 갱신 공백은 7회에서 0회로 줄었으나 첫 본문 p95는 8.69초에서 9.30초로 늘었습니다. 별도의 30분 28초 반복 시험에서는 입력 18,283청크와 확정 600개를 모두 처리했습니다. [실측 보고서](../results/summaries/optimization/subtitle-continuity-20261123.md) · [RP5 청취 실행 방법](guides/listener.md#q8--hailo-8l-자막-비교와-실제-추론)
 
 ## Raspberry Pi AI Kit와 Qwen Q8
 

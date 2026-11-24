@@ -2,6 +2,22 @@
 
 `listen-qwen3`는 같은 연속 입력 이벤트 계약으로 **라이브 청취와 기록 재생**을 제공합니다. 원음·정답·실제 부분/확정 자막, 원음별 지연, 전체 연결 CER를 함께 확인합니다. 모델·스레드·캐시·갱신 간격은 실행 기록에서 읽으며 화면에 고정하지 않습니다.
 
+## Q8 + Hailo-8L 자막 비교와 실제 추론
+
+개발 PC에서 다음 명령을 실행한 뒤 [청취 화면 열기](http://127.0.0.1:8776)를 누릅니다. 기존 8765번 청취 서버와 함께 열 수 있습니다.
+
+```bash
+run=results/optimization/opt3/subtitle-continuity-20261123-01
+.venv/bin/python scripts/edge_asr.py tools listen-qwen3 \
+  --ssh rp5 --port 8776 \
+  --ssh-device-session results/maintenance/hailo8l-q8-20261120-01/with-device-02.sh \
+  --profile configs/listener_hailo_continuity.toml --profile configs/listener_hailo_cnn.toml \
+  --manifest data/evaluation/longform-20261117-01/natural.jsonl \
+  --run "$run/fixed-T" --run "$run/fixed-A" --run "$run/natural-T" --run "$run/natural-A"
+```
+
+**기록 재생**은 저장한 자막을 표시합니다. **라이브**에서 추천 프로필·원음을 골라 준비하고 **시작**을 누르면 RP5가 현재 모델을 실행합니다. **마이크**는 RP5의 실제 입력 장치를 선택해야 합니다. 라이브와 마이크는 모델 로드·워밍업 뒤 장치 호출을 확인해 실행 조건에 표시합니다. Hailo 드라이버가 상시 설치된 보드에서는 임시 세션 옵션을 생략할 수 있습니다. 앞의 임시 세션은 실험 장비에 보존된 스크립트와 일치하는 커널·모듈·펌웨어를 사용합니다. 평가가 끝난 뒤 터미널에서 Ctrl+C로 닫습니다. [같은 원음 비교·장시간 결과](../../results/summaries/optimization/subtitle-continuity-20261123.md)
+
 ## 개발 PC·노트북에서 열기
 
 현재 환경의 개발 PC 터미널에서 실행합니다. 먼저 Host 변경을 main에 push하고, RP5에 같은 소스를 동기화합니다. 다른 추론이 실행 중일 때는 새 평가를 시작하지 않습니다.
@@ -13,7 +29,7 @@ run=results/optimization/opt3/hailo-cnn-stack-20261123-01
   --profile configs/listener.toml \
   --run "$run/fixed-stack" --run "$run/fixed-conv" --run "$run/fixed-cpu" \
   --run results/optimization/opt3/realtime-prefix-cache-20261112-01/full100/on \
-  --run results/optimization/opt3/realtime100-onnx-20261110-02
+  --run results/optimization/opt3/realtime100-onnx-20261110-02/onnx-2t
 ```
 
 이 명령은 RP5의 청취 서버를 SSH로 개발 PC에 연결합니다. 노트북에서는 개발 PC에 연결한 VS Code의 **Ports → Forward a Port → 8765**를 사용하고 안내된 로컬 주소를 엽니다. 개발 PC에서는 아래 링크를 클릭합니다.
