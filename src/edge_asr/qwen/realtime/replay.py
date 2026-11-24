@@ -198,6 +198,7 @@ def run(
                     threshold=settings.get("vad_threshold", 0.5),
                     max_speech_s=settings.get("vad_max_speech_s", 5),
                     min_silence_s=settings.get("vad_min_silence_s", 0.3),
+                    short_span_s=settings.get("vad_short_span_s"),
                 )
             )
         )(vad_model)
@@ -259,7 +260,14 @@ def run(
         session_settings = {
             k: v
             for k, v in settings.items()
-            if k not in ("gap_s", "vad_threshold", "vad_max_speech_s", "vad_min_silence_s")
+            if k
+            not in (
+                "gap_s",
+                "vad_threshold",
+                "vad_max_speech_s",
+                "vad_min_silence_s",
+                "vad_short_span_s",
+            )
         }
         session = CaptionSession(
             adapter,
@@ -407,6 +415,12 @@ def argument_parser():
         help="VAD가 판정을 강화하는 활성 길이. ASR 구간 상한과 독립; 기본5초 보존",
     )
     parser.add_argument(
+        "--vad-short-span-s",
+        type=float,
+        default=argparse.SUPPRESS,
+        help="지정 길이 이내에 시작한 쉼에서만 VAD 종료 대기를 200ms 연장",
+    )
+    parser.add_argument(
         "--vad-min-silence-s",
         type=float,
         default=argparse.SUPPRESS,
@@ -423,6 +437,12 @@ def argument_parser():
         type=float,
         default=argparse.SUPPRESS,
         help="이전 VAD 소유 끝에서 현재 시작까지 이 시간 이내일 때만 시작 문맥 사용",
+    )
+    parser.add_argument(
+        "--boundary-lookback-s",
+        type=float,
+        default=argparse.SUPPRESS,
+        help="강제 상한 직전의 PCM을 보류하고 양측 음향을 비교해 분할점을 결정",
     )
     parser.add_argument(
         "--boundary-target-s",

@@ -57,6 +57,38 @@ class FakeNumpy:
 
 
 class ProbabilityTests(unittest.TestCase):
+    def test_lookback_uses_both_sides_without_reassigning_displayed_audio(self):
+        signal = array(
+            "f", (0.002 if 3.45 * 16000 <= i < 3.54 * 16000 else 0.3 for i in range(71903))
+        )
+        rows, frontiers = [], {}
+
+        def progress(start, end, read):
+            frontiers[start] = max(frontiers.get(start, start), end)
+
+        pipeline = SegmentPipeline(
+            BoundedProbabilityVad(Probability(), max_speech_s=15),
+            "identity",
+            4,
+            lambda r, p: rows.append((r, p)),
+            context_frames=0,
+            native_budget_frames=None,
+            boundary_lookback_s=0.8,
+            progress=progress,
+        )
+        for i in range(0, len(signal), 1600):
+            pipeline.accept(signal[i : i + 1600], final=i + 1600 >= len(signal))
+        pipeline.finish()
+        (left, p1), (right, p2) = rows
+        cut = left["owned_end_frame"]
+        self.assertTrue(3.45 <= cut / 16000 <= 3.54)
+        self.assertEqual(
+            (left["reason"], left["boundary_evidence"]), ("hard_limit", "lookback_valley")
+        )
+        self.assertEqual(right["owned_start_frame"], cut)
+        self.assertLessEqual(frontiers[0], cut)
+        self.assertEqual(p1 + p2, preprocess(signal, "identity")[0])
+
     def test_acoustic_target_keeps_partial_frontiers_and_final_pcm_ownership(self):
         # 같은 PCM에서 VAD는 계속 음성을 보고 에너지만 창 105~108에서 내려간다.
         signal = array("f", (0.01 if 105 <= i // 512 < 109 else 0.2 for i in range(102_117)))
@@ -153,6 +185,28 @@ class ProbabilityTests(unittest.TestCase):
         for bad in (float("nan"), 0.0, 1.0):
             with self.assertRaises(ValueError):
                 BoundedProbabilityVad(Probability(), min_silence_s=bad)
+
+    def test_short_phrase_waits_across_a_pause_but_long_phrase_keeps_ordinary_endpoint(self):
+        def spans(short_span):
+            vad = BoundedProbabilityVad(
+                Probability(lambda w: 0 if 16 <= w < 28 or 94 <= w < 106 or w >= 125 else 1),
+                threshold=0.3,
+                short_span_s=short_span,
+                max_speech_s=15,
+            )
+            result = []
+            for _ in range(150):
+                vad.accept_waveform([0.0] * 512)
+                if not vad.empty():
+                    result.append(vad.front)
+                    vad.pop()
+            return result
+
+        ordinary, joined = spans(None), spans(1.5)
+        self.assertEqual((len(ordinary), len(joined)), (3, 2))
+        self.assertEqual(joined[0].start, ordinary[0].start)
+        self.assertEqual(joined[0].end, ordinary[1].end)
+        self.assertLessEqual(abs(joined[-1].end - ordinary[-1].end), 512)
 
     def test_lower_threshold_recovers_weak_sustained_activity(self):
         for threshold in (0.1, 0.2, 0.3):

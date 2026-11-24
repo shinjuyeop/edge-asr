@@ -68,6 +68,7 @@ class SegmentPipeline:
         split_on_pause=False,
         boundary_target_s=None,
         boundary_energy_valley=False,
+        boundary_lookback_s=None,
     ):
         if type(max_segment_s) is not int or max_segment_s not in SEGMENT_LIMITS_S:
             raise ValueError("소유 구간 상한은 3/4/5/6/8초여야 합니다.")
@@ -79,6 +80,10 @@ class SegmentPipeline:
             raise ValueError("쉼 경계 목표는 양수이며 소유 구간 상한보다 작아야 합니다.")
         if boundary_energy_valley and boundary_target_s is None:
             raise ValueError("에너지 경계에는 명시적인 쉼 경계 목표가 필요합니다.")
+        if boundary_lookback_s is not None and (
+            not math.isfinite(boundary_lookback_s) or not 0.2 <= boundary_lookback_s <= 1.2
+        ):
+            raise ValueError("강제 경계의 양측 음향 검토 범위는 0.2~1.2초여야 합니다.")
         if type(context_frames) is not int or not 0 <= context_frames <= 3200:
             raise ValueError("문맥은 0~3200프레임이어야 합니다.")
         if context_selection not in ("all", "onset", "continuation", "unowned_onset"):
@@ -123,6 +128,9 @@ class SegmentPipeline:
             round(boundary_target_s * RATE) if boundary_target_s is not None else None
         )
         self.boundary_energy_valley = boundary_energy_valley
+        self.boundary_lookback = (
+            round(boundary_lookback_s * RATE) if boundary_lookback_s is not None else 0
+        )
         self.energy_peak = 0.0
         self.quiet_windows = 0
         self.pause_emissions = 0
@@ -278,6 +286,29 @@ class SegmentPipeline:
         self.quiet_windows = 0
         return resumed
 
+    def _hard_cut(self, limit):
+        if not self.boundary_lookback:
+            return limit
+        # 상한까지 도착한 원음만 사용한다. 60ms 저에너지대 양쪽에서 강도가 회복된
+        # 경우만 택해 계속 조용해지는 문장 끝을 국소 최솟값으로 잘못 고르지 않는다.
+        step = RATE // 50
+        begin = limit - self.boundary_lookback
+        pcm = self.ring.read(begin, limit)
+        power = [sum(x * x for x in pcm[i : i + step]) for i in range(0, len(pcm) - step + 1, step)]
+        median = sorted(power)[len(power) // 2]
+        best, cut = None, limit
+        for i in range(3, len(power) - 3):
+            energy = sum(power[i - 1 : i + 2]) / 3
+            left = max(power[i - 3 : i - 1])
+            right = max(power[i + 2 : i + 4])
+            if (
+                energy < 0.24 * median
+                and energy < 0.4 * min(left, right)
+                and (best is None or energy <= best)
+            ):
+                best, cut = energy, begin + i * step + step // 2
+        return cut
+
     def _window(self, block, vad_block=None):
         if (
             self.native_budget is not None
@@ -325,11 +356,20 @@ class SegmentPipeline:
                     begin = self.owned_end
             # native VAD 상태를 바꾸지 않고 도착한 공통 PCM의 소유 구간만 확정한다.
             while min(self.fed, self.ring.end) - begin >= self.maximum:
-                self._emit(begin, begin + self.maximum, "hard_limit")
+                limit = begin + self.maximum
+                cut = self._hard_cut(limit)
+                self._emit(
+                    begin,
+                    cut,
+                    "hard_limit",
+                    boundary_evidence="lookback_valley" if cut < limit else None,
+                )
                 self.hard_emissions += 1
                 begin = self.owned_end
             if self.progress is not None:
-                self.progress(begin, min(self.fed, self.ring.end), self.ring.read)
+                # 경계가 결정될 때까지 마지막 탐색 범위는 수정 가능한 PCM이다.
+                end = min(self.fed, self.ring.end, begin + self.maximum - self.boundary_lookback)
+                self.progress(begin, end, self.ring.read)
 
     def finish(self):
         if self.closed or self.ring.end == 0:
@@ -378,6 +418,8 @@ class SegmentPipeline:
         if self.boundary_target is not None:
             result["boundary_target_frames"] = self.boundary_target
             result["boundary_energy_valley"] = self.boundary_energy_valley
+        if self.boundary_lookback:
+            result["boundary_lookback_frames"] = self.boundary_lookback
         if self.onset_context_max_gap is not None:
             result["onset_context_max_gap_frames"] = self.onset_context_max_gap
         if self.vad_processor is not None:

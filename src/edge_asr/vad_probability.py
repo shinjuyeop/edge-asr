@@ -100,7 +100,9 @@ class BoundedProbabilityVad:
 
     max_audio_buffer_frames = 0
 
-    def __init__(self, probability, *, threshold=0.5, max_speech_s=5, min_silence_s=0.3):
+    def __init__(
+        self, probability, *, threshold=0.5, max_speech_s=5, min_silence_s=0.3, short_span_s=None
+    ):
         if threshold not in (0.1, 0.2, 0.3, 0.5):
             raise ValueError("VAD 시작 임계값은 0.1/0.2/0.3/0.5여야 합니다.")
         if type(max_speech_s) is not int or max_speech_s not in (5, 15, 30):
@@ -108,6 +110,13 @@ class BoundedProbabilityVad:
         if not math.isfinite(min_silence_s) or not 0.1 <= min_silence_s <= 0.8:
             raise ValueError("VAD 종료 무음은 0.1~0.8초여야 합니다.")
         self.silence_frames = round(min_silence_s * RATE)
+        if short_span_s is not None and (
+            not math.isfinite(short_span_s)
+            or not 0 < short_span_s < max_speech_s
+            or min_silence_s + 0.2 > 0.8
+        ):
+            raise ValueError("짧은 발화 범위와 추가 200ms를 포함한 종료 무음 예산을 확인하세요.")
+        self.short_span_frames = round(short_span_s * RATE) if short_span_s is not None else 0
         self.threshold = threshold
         self.max_speech_s = max_speech_s
         self.probability = probability
@@ -159,6 +168,11 @@ class BoundedProbabilityVad:
         # 이전 wrapper처럼 다음 창 수신 전의 가상 버퍼 길이로 soft limit을 판단한다.
         long_active = self.fed - self.head > self.max_speech_s * RATE
         threshold, silence = (0.9, 1600) if long_active else (self.threshold, self.silence_frames)
+        if self.short_span_frames and self.start is not None and not long_active:
+            # 무음이 시작된 위치를 기준으로 결정해 대기 도중 종료 기준이 바뀌지 않게 한다.
+            silence_start = self.temp_end or (self.fed + WINDOW)
+            if silence_start - self.start <= self.short_span_frames:
+                silence += RATE // 5
         # 같은 활성 VAD 안에서 낮은 확률이 연속된 직후의 첫 음성 창을 표시한다.
         self.resumed_pause_frames = self.low_frames if self.triggered and value > threshold else 0
         if self.triggered and value < max(threshold - 0.15, 0.01):
