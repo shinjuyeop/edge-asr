@@ -4,6 +4,7 @@
 
 ## 경계·자막·연산 분배
 
+- [11월 25일 P8 부분 전사 스케줄링](partial-scheduling-20261125.md) — 같은 확정 PCM·토큰, 새 음성·실측 비용 기반 후속 요청, 독립 자유대화와 연속 부하.
 - [11월 25일 최신 Batch와 LiteRT-LM 검증](batch-litert-20261125.md) — 같은 Q8의 CPU·Hailo 20개, 1·3·5초 PCM과 공식 ARM64 ASR 확인.
 - [11월 24일 T·P8·P5G 경계 대조](boundary-20261124.md) — 고정 100개, 자연발화·낭독, 장시간 입력과 선택적 재전사.
 - [11월 23일 T 자막 연속성](subtitle-continuity-20261123.md) — 초기 ONNX와 직접 CNN 기준, 강제 분할·중첩 진단.

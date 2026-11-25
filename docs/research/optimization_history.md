@@ -30,4 +30,6 @@ P8은 3.4초부터 음향적 쉼을 찾아 최대 8초까지 문맥을 보존했
 
 CPU에는 나머지 Encoder와 Prefill·직렬 Decode가 남아 있다. 확정을 기다리거나 취소될 부분 요청을 처리하는 동안 새 본문 표시가 늦어지고, 열 보호는 부분 요청을 더 미룰 수 있다. 엔진 비교에서는 배치 호출 비용과 실제 1배속 표시 지연을 따로 검증한다. [현재 우선순위](../status.md)
 
+P8의 확정 경계를 유지한 부분 예산은 고정 100개에서 같은 158개 확정 PCM·토큰을 냈다. 새 본문을 표시하지 못한 부분의 호출 합은 당일 P8 대비 35.7% 줄었으나 첫 본문 p95 9.24초와 갱신 공백 p95 5.88초가 남았다. 자연발화에서는 갱신 공백이 감소하고 같은 주석 단어의 표시 p95가 증가했다. 약 30분 연속 부하에는 부분 호출이 더 많아져 전체 추론이 10.7% 늘었다. 후보는 대조용으로 보존하고 확정 Decode와 오디오 Prefill의 점유 감소를 우선한다. [부분 스케줄링 전수 대조](../../results/summaries/optimization/partial-scheduling-20261125.md)
+
 실행별 수치와 실패 기록은 [보고서 색인](../../results/summaries/optimization/README.md), 초기 33단계의 세부 실험 순서와 당시 판단은 [정리 전 최적화 과정](https://github.com/shinjuyeop/edge-asr/blob/619b0422c2f72c6fe4480b39f7ca32e2f848aba4/docs/research/optimization_history.md)에 있다.
