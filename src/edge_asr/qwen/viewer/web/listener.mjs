@@ -3,6 +3,7 @@ import {continuousCaption, finalRecords} from './captions.mjs';
 const schedulerNames={
   latest:'최신 입력 우선', paced:'처리량에 따라 간격 조절', headroom:'예상 완료 시간과 남은 여유',
   headroom_followup:'후속 요청의 접두부 시간과 여유', first_text:'첫 유용한 본문까지의 예상 시간',
+  first_text_budget:'첫 본문 우선 · 새 음성과 접두부 비용으로 후속 선택',
 };
 const thermalNames={pace:'열 상태에 따라 간격 조절',pause:'열 상태에 따라 일시 대기'};
 const loggedFlag=(value,on,off)=>value===true?on:value===false?off:'기록 없음';

@@ -371,6 +371,42 @@ class ContinuousTests(unittest.TestCase):
         self.assertEqual(result["changed_events"], 3)
         self.assertEqual(result["interval_s"]["p50"], 0.5)
 
+    def test_budget_uses_fresh_audio_not_prefix_replay_and_preserves_first_priority(self):
+        p, now, events = self.policy(policy="first_text_budget", thermal_policy="pace")
+        with p.condition:
+            p.observe({"temperature_mc": 65000, "current_limits": 0})
+            p.update(0, 0, 16000, lambda a, b: b - a)
+            self.assertIsNotNone(p.choose(1.4, pending_pause=True))
+            first = {
+                "kind": "partial",
+                "status": "provisional",
+                "segment_id": 0,
+                "job_id": 1,
+                "end_frame": 16000,
+                "displayed": True,
+                "started_monotonic_s": 0,
+                "published_s": 0.5,
+                "hypothesis": "한국어",
+            }
+            p.record_display(first, None, 0)
+            p.record_display({**first, "end_frame": 24000, "hypothesis": "한국."}, first, 0)
+            self.assertEqual(p.fresh_display, (0, 16000, 0.5))
+            p.update(0, 0, 32000, lambda a, b: b - a)
+            now[0] = 1.6
+            self.assertIsNone(p.choose(1.4, pending_pause=True))
+            self.assertEqual(events[-1]["reason"], "vad_pause_pending")
+            self.assertIsNone(p.choose(1.4))
+            self.assertEqual(events[-1]["reason"], "followup_compute_budget")
+            now[0] = 3.2
+            self.assertIsNotNone(p.choose(1.4))
+            p.discard("final", 0)
+            p.update(1, 64000, 80000, lambda a, b: b - a)
+            p.observe({"temperature_mc": 90000, "current_limits": 8})
+            self.assertIsNone(p.choose(0.5))
+            self.assertEqual(events[-1]["reason"], "thermal_backoff")
+            p.observe({"temperature_mc": 85000, "current_limits": 8})
+            self.assertIsNotNone(p.choose(0.5))
+
     def test_pace_thermal_limits_allow_updates_but_voltage_missing_and_extreme_heat_wait(self):
         p, _, _ = self.policy(thermal_policy="pace")
         with p.condition:

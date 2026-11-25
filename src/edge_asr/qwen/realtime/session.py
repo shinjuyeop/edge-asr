@@ -8,10 +8,10 @@ from contextlib import nullcontext
 from threading import Condition, RLock
 
 from edge_asr.dataset import pcm_bytes
-from edge_asr.qwen.realtime.continuous import POLICY_VERSIONS, ContinuousPolicy
+from edge_asr.qwen.realtime.continuous import FIRST_TEXT_POLICIES, POLICY_VERSIONS, ContinuousPolicy
 from edge_asr.qwen.realtime.stability import replays_prefix
 from edge_asr.qwen.realtime.worker import DecodeWorker
-from edge_asr.segmentation import SegmentPipeline
+from edge_asr.segmentation import WINDOW, SegmentPipeline
 
 
 class CaptionSession:
@@ -108,7 +108,7 @@ class CaptionSession:
         if followup_gap_target_s is not None and partial_mode != "continuous":
             raise ValueError("예상 공백 기준에는 continuous 모드가 필요합니다.")
         if (
-            continuous_policy in ("headroom_followup", "first_text")
+            continuous_policy in ("headroom_followup", *FIRST_TEXT_POLICIES)
             and not cancel_partial_for_final
         ):
             raise ValueError("이 여유시간 정책은 토큰 표시와 최종 우선 취소가 필요합니다.")
@@ -233,7 +233,7 @@ class CaptionSession:
             "paced",
             "headroom",
             "headroom_followup",
-            "first_text",
+            *FIRST_TEXT_POLICIES,
         ):
             _, start, end, _ = self.continuous.candidate
             snapshot_end = self.continuous.snapshot_end(start, end)
@@ -241,7 +241,11 @@ class CaptionSession:
                 "partial", snapshot_end - start, model="audio_scaled"
             )
         candidate = self.continuous.choose(
-            estimate, previous=self.partial, available_frame=self.position
+            estimate,
+            previous=self.partial,
+            available_frame=self.position,
+            pending_pause=self.continuous.display_budget
+            and getattr(self.pipeline.vad, "low_frames", 0) >= 3 * WINDOW,
         )
         if candidate:
             segment, start, end, pcm = candidate

@@ -14,7 +14,10 @@ POLICY_VERSIONS = {
     "headroom": "estimated-headroom-v1",
     "headroom_followup": "prefix-time-followup-v1",
     "first_text": "first-text-headroom-v1",
+    "first_text_budget": "first-text-budget-v1",
 }
+FIRST_TEXT_POLICIES = ("first_text", "first_text_budget")
+FRESH_DISPLAY_TARGET_S = 4.0
 
 
 class ContinuousPolicy:
@@ -39,6 +42,7 @@ class ContinuousPolicy:
         if policy not in POLICY_VERSIONS or thermal_policy not in ("pause", "pace"):
             raise ValueError("지원하지 않는 연속 갱신 또는 열 정책입니다.")
         self.policy, self.thermal_policy = policy, thermal_policy
+        self.display_budget = policy == "first_text_budget"
         if followup_gap_target_s is not None and (
             policy != "headroom_followup"
             or not math.isfinite(followup_gap_target_s)
@@ -47,12 +51,12 @@ class ContinuousPolicy:
             raise ValueError("예상 공백 기준은 headroom_followup에서 유한한 양수로 지정합니다.")
         self.followup_gap_target_s = followup_gap_target_s
         if first_snapshot_cap_s is not None and (
-            policy != "first_text"
+            policy not in FIRST_TEXT_POLICIES
             or not math.isfinite(first_snapshot_cap_s)
             or not minimum / 16000 <= first_snapshot_cap_s < maximum / 16000
         ):
             raise ValueError(
-                "첫 PCM 상한은 first_text에서 최소 부분 길이 이상, 구간 상한 미만이어야 합니다."
+                "첫 PCM 상한은 첫 본문 정책에서 최소 부분 길이 이상, 구간 상한 미만이어야 합니다."
             )
         self.first_cap = (
             round(first_snapshot_cap_s * 16000) if first_snapshot_cap_s is not None else None
@@ -66,6 +70,7 @@ class ContinuousPolicy:
         self.after_display_s = partial_after_display_s
         self.last_display_end = -1
         self.last_display_at = None
+        self.fresh_display = None
         self.thermal_factor = 1.0
         self.overheated = False
         self.work_debt_s, self.accounted_at = 0.0, clock()
@@ -110,8 +115,10 @@ class ContinuousPolicy:
             "tail_margin_s": tail / 16000,
             "deferred_s": {},
         }
-        if policy in ("headroom", "headroom_followup", "first_text"):
+        if policy in ("headroom", "headroom_followup", *FIRST_TEXT_POLICIES):
             self.stats["final_reserve_max_s"] = None
+        if self.display_budget:
+            self.stats["fresh_display_target_s"] = FRESH_DISPLAY_TARGET_S
         if policy == "headroom_followup":
             self.stats["near_final_followups"] = 0
         if self.first_cap is not None:
@@ -127,7 +134,7 @@ class ContinuousPolicy:
     def record_display(self, event, previous, t0):
         """표시 내용과 PCM 끝이 함께 전진한 서버 발행 시각만 보존한다. 세션 락 안에서 호출."""
         if (
-            self.policy == "first_text"
+            self.policy in FIRST_TEXT_POLICIES
             and self.first_request == (event["segment_id"], event["end_frame"])
             and event["kind"] == "partial"
             and event["displayed"]
@@ -139,6 +146,24 @@ class ContinuousPolicy:
                 t0 + event["published_s"] - event["started_monotonic_s"],
             )
             self.first_request = None
+        if (
+            self.display_budget
+            and event["displayed"]
+            and event["status"]
+            in (
+                "provisional",
+                "success",
+            )
+        ):
+            segment, end = event["segment_id"], event["end_frame"]
+            last = self.fresh_display
+            if event["kind"] == "partial" and (not last or segment != last[0] or end > last[1]):
+                text = "".join(c for c in normalize(event["hypothesis"] or "") if c.isalnum())
+                old = ""
+                if previous and previous["segment_id"] == segment:
+                    old = "".join(c for c in normalize(previous["hypothesis"] or "") if c.isalnum())
+                if text and not old.startswith(text):
+                    self.fresh_display = (segment, end, t0 + event["published_s"])
         if (
             self.followup_gap_target_s is None
             or event["end_frame"] <= self.last_display_end
@@ -245,7 +270,7 @@ class ContinuousPolicy:
     def completed(self, result):
         """실패·취소·final도 소비한 wall 비용에 포함한다. 작업자의 락 안에서 호출한다."""
         if (
-            self.policy == "first_text"
+            self.policy in FIRST_TEXT_POLICIES
             and self.first_display
             and self.first_display[0] == result["job_id"]
         ):
@@ -253,7 +278,11 @@ class ContinuousPolicy:
             stages = [native.get(k) for k in ("audio_encode_s", "audio_embedding_eval_s")]
             observed = self.first_display[1]
             if (
-                result["status"] == "success"
+                (
+                    result["status"] == "success"
+                    or self.display_budget
+                    and result["status"] == "cancelled"
+                )
                 and all(type(x) in (int, float) and math.isfinite(x) and x >= 0 for x in stages)
                 and sum(stages) <= observed
             ):
@@ -306,7 +335,7 @@ class ContinuousPolicy:
                 return cutoff
         return latest
 
-    def choose(self, estimated_s=None, *, previous=None, available_frame=None):
+    def choose(self, estimated_s=None, *, previous=None, available_frame=None, pending_pause=False):
         self.wake_at = None
         if self.candidate is None:
             return None
@@ -318,7 +347,7 @@ class ContinuousPolicy:
         reserve = self.tail / 16000
         if self.policy == "paced" and estimated_s is not None:
             reserve = min(0.8, max(reserve, estimated_s))
-        elif self.policy in ("headroom", "headroom_followup", "first_text"):
+        elif self.policy in ("headroom", "headroom_followup", *FIRST_TEXT_POLICIES):
             # 이력이 없을 때는 한 번의 새 음성 간격을 확보한다.
             reserve += self.min_new / 16000 if estimated_s is None else estimated_s
         allowance = 0.35 if first else 0.0
@@ -340,9 +369,12 @@ class ContinuousPolicy:
             and "ended_monotonic_s" in previous
         ):
             followup_at = previous["ended_monotonic_s"] + self.after_display_s
-        if self.policy == "first_text":
+        last_fresh = self.fresh_display
+        has_fresh = last_fresh is not None and last_fresh[0] == segment
+        new_audio_s = budget_s = None
+        if self.policy in FIRST_TEXT_POLICIES:
             remaining = (start + self.maximum - max(latest, available_frame or latest)) / 16000
-            if first and self.first_costs:
+            if (first or self.display_budget and not has_fresh) and self.first_costs:
                 # 최근 첫 부분 요청의 실제 의미 문자 발행까지. 새 음성의 encoder/prefill만 길이 보정.
                 useful_s = (
                     max(
@@ -355,12 +387,20 @@ class ContinuousPolicy:
                 useful_s = self._prefix_time(previous, start, end)
             if useful_s is not None:
                 reserve = self.tail / 16000 + min(reserve - self.tail / 16000, useful_s)
+        if self.display_budget and has_fresh:
+            fallback = self.min_new / 16000 if estimated_s is None else estimated_s
+            budget_s = (fallback if useful_s is None else useful_s) * self.thermal_factor
+            new_audio_s = (end - last_fresh[1]) / 16000
+            display_age = max(0.0, now - last_fresh[2])
+            projected_gap = display_age + budget_s
         if end - start < self.minimum or (
             not first and end - self.last_end < self.min_new * self.thermal_factor
         ):
             reason = "minimum_audio"
         elif not self.thermal_ready or self.hot:
             reason = "thermal_backoff"
+        elif self.display_budget and has_fresh and pending_pause:
+            reason = "vad_pause_pending"
         elif remaining <= reserve:
             reason = "near_final"
             if self.policy == "headroom_followup" and not first and not self.followup_used:
@@ -375,6 +415,12 @@ class ContinuousPolicy:
                         projected_gap is not None and projected_gap >= self.followup_gap_target_s
                     )
                     reason = "offered" if followup else "projected_gap_below_target"
+        elif (
+            budget_s is not None
+            and new_audio_s < budget_s
+            and projected_gap < FRESH_DISPLAY_TARGET_S
+        ):
+            reason = "followup_compute_budget"
         elif followup_at is not None and now < followup_at:
             reason = "after_partial_display"
             self.wake_at = followup_at
@@ -409,7 +455,17 @@ class ContinuousPolicy:
                             "remaining_s": remaining,
                             "first_cost_samples": len(self.first_costs),
                         }
-                        if self.policy == "first_text"
+                        if self.policy in FIRST_TEXT_POLICIES
+                        else {}
+                    ),
+                    **(
+                        {
+                            "fresh_display_age_s": display_age,
+                            "new_audio_s": new_audio_s,
+                            "followup_budget_s": budget_s,
+                            "projected_fresh_gap_s": projected_gap,
+                        }
+                        if self.display_budget
                         else {}
                     ),
                     "estimated_inference_s": estimated_s,
@@ -443,8 +499,9 @@ class ContinuousPolicy:
         if reason != "offered":
             return None
         # 선택·제출·시작은 같은 condition 안에서 수행해 새 final이 끼어들지 않는다.
-        if self.policy == "first_text":
-            self.first_request = (segment, end) if first else None
+        if self.policy in FIRST_TEXT_POLICIES:
+            awaiting_first_display = first or (self.display_budget and not has_fresh)
+            self.first_request = (segment, end) if awaiting_first_display else None
         self.last_end = end
         self.eligible_logged = False
         if followup:

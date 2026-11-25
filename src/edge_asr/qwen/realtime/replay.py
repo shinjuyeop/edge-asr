@@ -508,7 +508,7 @@ def argument_parser():
         "--continuous-policy",
         choices=tuple(POLICY_VERSIONS),
         default="latest",
-        help="paced는 계산량 배분, headroom은 호출 종료 여유 확보, headroom_followup은 끝에서 새 토큰을 표시할 여유가 있으면 1회 추가, first_text는 첫 표시까지의 시간을 별도 추정",
+        help="first_text_budget은 첫 본문을 우선하고 새 음성량·접두부 비용과 표시 공백으로 후속을 선별",
     )
     parser.add_argument(
         "--partial-after-display-s",
@@ -520,7 +520,7 @@ def argument_parser():
         "--first-snapshot-cap-s",
         type=float,
         default=argparse.SUPPRESS,
-        help="first_text 지연 최초 요청의 PCM 길이. 새 PCM 한 번 분량이 더 쌓였을 때만 적용",
+        help="첫 본문 정책의 지연된 첫 PCM 길이. 새 PCM 한 번 분량이 더 쌓였을 때 적용",
     )
     parser.add_argument(
         "--followup-gap-target-s",

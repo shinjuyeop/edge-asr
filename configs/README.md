@@ -38,6 +38,7 @@ CPU 회귀에는 `gguf_realtime.toml`과 [연속 입력 대표 명령](../docs/g
 | [listener_hailo_cnn.toml](listener_hailo_cnn.toml) | A · 이전 CNN 5초 대조, 생성 2·음성/Prefill 3스레드 |
 | [listener_hailo_continuity.toml](listener_hailo_continuity.toml) | T · 반응성 우선, CNN 묶음·4초 구간 |
 | [listener_hailo_boundary.toml](listener_hailo_boundary.toml) | Q8 + Hailo CNN P8·경계 정확도 우선·3.4초부터 쉼 탐색·최대 8초·미확정 종결부호 보류. [경계 및 지연 대조](../results/summaries/optimization/boundary-20261124.md) |
+| [listener_hailo_partial_budget.toml](listener_hailo_partial_budget.toml) | P8 확정 경계를 유지하는 선택 실험. 첫 본문 길이를 제한하고 새 음성량, 접두부 재생 비용, 최신 표시 공백으로 후속 부분 전사를 결정합니다. |
 | [listener_hailo_boundary_early.toml](listener_hailo_boundary_early.toml) | Q8 + Hailo CNN P2 · 2.2초부터 탐색·최대 8초. [원음·지연 비교](../results/summaries/optimization/boundary-20261124.md) |
 | [listener_hailo_boundary_5s.toml](listener_hailo_boundary_5s.toml) | Q8 + Hailo CNN P5G · 2.2초부터 탐색·5초 분할, 끝 여유 0.2초. [원음·지연 비교](../results/summaries/optimization/boundary-20261124.md) |
 | [listener.toml](listener.toml) | Q8 공유 회귀 참조·고정100개·첫1초/이후4초 |
