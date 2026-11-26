@@ -4,6 +4,7 @@
 
 ## 경계·자막·연산 분배
 
+- [11월 26일 CPU Decode·Audio Prefill 실측](cpu-stages-20261126.md) — Hailo CNN을 사용한 Q8 KleidiAI, 같은 요청의 Prefill 결합, P8 실시간 전사와 독립 대화.
 - [11월 26일 음향 가변 분할과 지연 확정](adaptive-boundaries-20261126.md) — 동일 PCM 분할, 선택적 중첩, 주석 단어와 독립 대화의 1배속 대조.
 - [11월 25일 P8 부분 전사 스케줄링](partial-scheduling-20261125.md) — 같은 확정 PCM·토큰, 새 음성·실측 비용 기반 후속 요청, 독립 자유대화와 연속 부하.
 - [11월 25일 최신 Batch와 LiteRT-LM 검증](batch-litert-20261125.md) — 같은 Q8의 CPU·Hailo 20개, 1·3·5초 PCM과 공식 ARM64 ASR 확인.

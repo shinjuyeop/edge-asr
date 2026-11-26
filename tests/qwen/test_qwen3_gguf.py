@@ -241,7 +241,12 @@ class GGUFTests(unittest.TestCase):
             row = self.prefix_result(hit=hit)
             self.library.edge_gguf_transcribe.return_value = json.dumps(row).encode()
             self.assertEqual(adapter.transcribe(self.audio), "한 글!")
+        fused = self.prefix_result(hit=True)
+        fused.update(audio_embedding_eval_s=0, suffix_eval_s=0, audio_suffix_eval_s=0.6)
+        self.library.edge_gguf_transcribe.return_value = json.dumps(fused).encode()
+        self.assertEqual(adapter.transcribe(self.audio), "한 글!")
         bad = [self.prefix_result(hit=True) for _ in range(5)]
+        bad.append(dict(fused, audio_suffix_eval_s=2))
         bad[0]["runtime_configuration"]["cache_text_prefix"] = False
         bad[1]["prefix_cache"]["reused_tokens"] = 0
         bad[2]["prefix_eval_s"] = 0.1
@@ -896,6 +901,7 @@ class GGUFNativeSyntaxTests(unittest.TestCase):
             [],
             ["-DEDGE_ASR_PROFILE_OPERATORS"],
             ["-DEDGE_ASR_TRACE_TOKENS"],
+            ["-DEDGE_ASR_MIXED_PREFILL"],
             ["-DEDGE_ASR_PROFILE_OPERATORS", "-DEDGE_ASR_TRACE_TOKENS"],
         ):
             with self.subTest(flags=flags):

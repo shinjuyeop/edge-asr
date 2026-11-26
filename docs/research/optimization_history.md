@@ -32,4 +32,6 @@ CPU에는 나머지 Encoder와 Prefill·직렬 Decode가 남아 있다. 확정�
 
 P8의 확정 경계를 유지한 부분 예산은 고정 100개에서 같은 158개 확정 PCM·토큰을 냈다. 새 본문을 표시하지 못한 부분의 호출 합은 당일 P8 대비 35.7% 줄었으나 첫 본문 p95 9.24초와 갱신 공백 p95 5.88초가 남았다. 자연발화에서는 갱신 공백이 감소하고 같은 주석 단어의 표시 p95가 증가했다. 약 30분 연속 부하에는 부분 호출이 더 많아져 전체 추론이 10.7% 늘었다. 후보는 대조용으로 보존하고 확정 Decode와 오디오 Prefill의 점유 감소를 우선한다. [부분 스케줄링 전수 대조](../../results/summaries/optimization/partial-scheduling-20261125.md)
 
+같은 Q8·Hailo CNN의 KleidiAI 경로는 RP5에서 5초 Audio Prefill을 0.602초에서 0.387초로, Decode를 1.275초에서 1.242초로 줄였다. 행 단위 INT8 재패킹으로 출력 토큰도 달라진다. 확정 경계가 같은 고정 100개에서는 확정 호출 합이 38.63초 줄고 부분 호출 합이 38.68초 늘었다. 같은 요청의 마지막 음성과 텍스트를 결합한 별도 Prefill은 9개 PCM의 토큰을 보존했으며 전체 호출 절감은 1.68%였다. [CPU 커널·정확도·1배속 실측](../../results/summaries/optimization/cpu-stages-20261126.md)
+
 실행별 수치와 실패 기록은 [보고서 색인](../../results/summaries/optimization/README.md), 초기 33단계의 세부 실험 순서와 당시 판단은 [정리 전 최적화 과정](https://github.com/shinjuyeop/edge-asr/blob/619b0422c2f72c6fe4480b39f7ca32e2f848aba4/docs/research/optimization_history.md)에 있다.
