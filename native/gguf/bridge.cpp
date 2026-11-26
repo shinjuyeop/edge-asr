@@ -141,6 +141,40 @@ std::string piece(const llama_vocab* vocab,llama_token token) {
     return std::string(buffer.data(),n);
 }
 
+#ifdef EDGE_ASR_MIXED_PREFILL
+// 동일 요청의 마지막 음성과 고정 텍스트만 한 causal batch에 넣는다.
+bool eval_audio_suffix(State* s, const mtmd_input_chunk* audio, const mtmd_input_chunk* suffix,
+                       const float* embedding, llama_pos& past) {
+    if (mtmd_input_chunk_get_type(suffix)!=MTMD_INPUT_CHUNK_TYPE_TEXT ||
+        mtmd_decode_use_non_causal(s->audio,audio)) return false;
+    const size_t rows=mtmd_input_chunk_get_n_tokens(audio);
+    size_t count=0;
+    const auto* tokens=mtmd_input_chunk_get_tokens_text(suffix,&count);
+    if (!tokens || !count || !rows || rows!=size_t(mtmd_input_chunk_get_n_pos(audio)) ||
+        rows+count>llama_n_ubatch(s->ctx)) return false;
+    const size_t dim=llama_model_n_embd_inp(s->model);
+    llama_batch_ext_clear(s->batch);
+    for (size_t i=0;i<rows;++i) {
+        const auto pos=past+llama_pos(i);
+        const llama_pos axes[4]={pos,pos,pos,pos};
+        const int idx=llama_batch_ext_add_embd(s->batch,0,{embedding+i*dim,1,dim});
+        if (idx<0 || !llama_batch_ext_set_pos(s->batch,idx,axes))
+            throw std::runtime_error("mixed audio position failed");
+    }
+    for (size_t i=0;i<count;++i) {
+        const auto pos=past+llama_pos(rows+i);
+        const int idx=llama_batch_ext_add_token(s->batch,0,tokens[i]);
+        if (idx<0 || !llama_batch_ext_set_pos(s->batch,idx,&pos) ||
+            !llama_batch_ext_set_output_logits(s->batch,idx,i+1==count))
+            throw std::runtime_error("mixed suffix position failed");
+    }
+    if (llama_process(s->ctx,LLAMA_PROCESS_TYPE_DECODE,s->batch)!=0)
+        throw std::runtime_error("mixed audio and suffix prefill failed");
+    past+=llama_pos(rows+count);
+    return true;
+}
+#endif
+
 // upstream과 같은 chunk 순서·평가 함수를 사용하고 시간만 세분한다.
 llama_pos eval_prompt(State* s, const mtmd_input_chunks* chunks, bool hit, size_t prefix_size, json& out,
                       const std::vector<float>& window_embeds, size_t reused_audio, std::vector<float>& prepared) {
@@ -199,6 +233,14 @@ llama_pos eval_prompt(State* s, const mtmd_input_chunks* chunks, bool hit, size_
             }
             stage=Clock::now();
             operator_phase(s,"audio_prefill");
+#ifdef EDGE_ASR_MIXED_PREFILL
+            if (i+2==mtmd_input_chunks_size(chunks) &&
+                eval_audio_suffix(s,chunk,mtmd_input_chunks_get(chunks,i+1),embedding,past)) {
+                out["audio_suffix_eval_s"]=since(stage);
+                ++i;
+                continue;
+            }
+#endif
             const int decoded=mtmd_helper_decode_image_chunk(s->audio,s->ctx,chunk,embedding,
                 past,0,llama_n_batch(s->ctx),&past,nullptr,nullptr);
             out["audio_embedding_eval_s"]=out["audio_embedding_eval_s"].get<double>()+since(stage);

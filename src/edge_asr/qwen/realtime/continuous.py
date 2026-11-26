@@ -283,6 +283,7 @@ class ContinuousPolicy:
                     or self.display_budget
                     and result["status"] == "cancelled"
                 )
+                and "audio_suffix_eval_s" not in native
                 and all(type(x) in (int, float) and math.isfinite(x) and x >= 0 for x in stages)
                 and sum(stages) <= observed
             ):
@@ -311,6 +312,8 @@ class ContinuousPolicy:
         ):
             return None
         native = (previous.get("adapter_result") or {}).get("native_result") or {}
+        if "audio_suffix_eval_s" in native:
+            return None
         keys = (
             "first_generated_token_s",
             "token_decode_s",

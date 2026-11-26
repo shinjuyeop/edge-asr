@@ -158,6 +158,7 @@ def continuity(worker, records, *, word_starts=None):
                     "preprocess_s",
                     "audio_encode_s",
                     "audio_embedding_eval_s",
+                    "audio_suffix_eval_s",
                     "prefix_eval_s",
                     "suffix_eval_s",
                     "token_decode_s",
@@ -226,6 +227,7 @@ def continuity(worker, records, *, word_starts=None):
         for k in (
             "audio_encode_s",
             "audio_embedding_eval_s",
+            "audio_suffix_eval_s",
             "prefix_eval_s",
             "suffix_eval_s",
             "token_decode_s",

@@ -560,6 +560,8 @@ class Qwen3GGUFAdapter:
         ):
             raise ValueError("GGUF text prefix 캐시 반환 설정/상태가 일치하지 않습니다.")
         keys = ("prefix_eval_s", "suffix_eval_s", "audio_encode_s", "audio_embedding_eval_s")
+        if "audio_suffix_eval_s" in result:
+            keys += ("audio_suffix_eval_s",)
         values = [result.get(key) for key in (*keys, "audio_and_prefill_s")]
         if (
             any(type(v) not in (int, float) or not math.isfinite(v) or v < 0 for v in values)

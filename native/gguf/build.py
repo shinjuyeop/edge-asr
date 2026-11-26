@@ -23,6 +23,7 @@ def build(
     trace_tokens=False,
     kleidiai=False,
     capture_boundaries=False,
+    mixed_prefill=False,
 ):
     head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=source, text=True).strip()
     if (
@@ -71,6 +72,8 @@ def build(
         "-o",
         str(library),
     ]
+    if mixed_prefill:
+        command.insert(1, "-DEDGE_ASR_MIXED_PREFILL")
     if capture_boundaries:
         if not profile_operators:
             raise ValueError("경계 텐서 검산에는 --profile-operators가 필요합니다.")
@@ -120,6 +123,8 @@ def build(
             for name in ("GGML_CPU_KLEIDIAI", "GGML_CPU_REPACK", "GGML_OPENMP")
         },
     }
+    if mixed_prefill:
+        receipt["features"].append("mixed_audio_suffix_prefill_v1")
     if profile_operators:
         receipt["features"].append("operator_profile_v1")
         receipt["operator_profile_source_sha256"] = sha(cpp.with_name("operator_profile.h"))
@@ -148,6 +153,9 @@ def main():
         "--trace-tokens", action="store_true", help="별도 토큰 선택 logits 진단 빌드"
     )
     parser.add_argument("--kleidiai", action="store_true", help="명시적인 KleidiAI ON 엔진 비교")
+    parser.add_argument(
+        "--mixed-prefill", action="store_true", help="음성·텍스트 suffix 결합 실험 빌드"
+    )
     args = parser.parse_args()
     build(
         args.source.resolve(),
@@ -157,6 +165,7 @@ def main():
         trace_tokens=args.trace_tokens,
         capture_boundaries=args.capture_boundaries,
         kleidiai=args.kleidiai,
+        mixed_prefill=args.mixed_prefill,
     )
 
 

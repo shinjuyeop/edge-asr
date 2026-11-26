@@ -254,9 +254,13 @@ class DecodeWorker:
                             native.get(key) for key in ("audio_encode_s", "audio_embedding_eval_s")
                         ]
                         audio = None
-                        if result["status"] == "success" and all(
-                            type(value) in (int, float) and math.isfinite(value) and value >= 0
-                            for value in stages
+                        if (
+                            result["status"] == "success"
+                            and "audio_suffix_eval_s" not in native
+                            and all(
+                                type(value) in (int, float) and math.isfinite(value) and value >= 0
+                                for value in stages
+                            )
                         ):
                             measured = sum(stages)
                             if measured <= self.last_inference_s:

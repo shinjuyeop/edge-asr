@@ -37,6 +37,7 @@ def compact_event(row):
             "suffix_eval_s",
             "audio_encode_s",
             "audio_embedding_eval_s",
+            "audio_suffix_eval_s",
             "token_decode_s",
         )
         if k in native
