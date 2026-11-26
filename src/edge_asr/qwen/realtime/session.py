@@ -8,6 +8,13 @@ from contextlib import nullcontext
 from threading import Condition, RLock
 
 from edge_asr.dataset import pcm_bytes
+from edge_asr.qwen.realtime.boundary_repair import (
+    COMMIT_WAIT_S,
+    CONTEXT_FRAMES,
+    PendingBoundary,
+    repair_tail,
+    tail,
+)
 from edge_asr.qwen.realtime.continuous import FIRST_TEXT_POLICIES, POLICY_VERSIONS, ContinuousPolicy
 from edge_asr.qwen.realtime.stability import replays_prefix
 from edge_asr.qwen.realtime.worker import DecodeWorker
@@ -43,6 +50,8 @@ class CaptionSession:
         boundary_lookback_s=None,
         boundary_pause_center=False,
         boundary_end_grace_s=None,
+        boundary_acoustic=False,
+        boundary_repair=False,
         drain_timeout_s=30,
         queue_capacity=4,
         partials=True,
@@ -72,6 +81,10 @@ class CaptionSession:
             raise ValueError("첫 후속 갱신 간격은 유한한 양수여야 합니다.")
         if type(partials) is not bool or silence_policy not in ("preserve", "skip-zero"):
             raise ValueError("부분 전사 bool·무음 preserve/skip-zero 정책이 필요합니다.")
+        if boundary_repair and not (
+            boundary_acoustic and partial_mode == "continuous" and token_stream and partials
+        ):
+            raise ValueError("경계 복구에는 음향 경계와 continuous 토큰 부분 전사가 필요합니다.")
         if partial_mode not in ("fixed", "adaptive", "continuous") or (
             partial_mode != "fixed" and partial_followup_s is not None
         ):
@@ -167,6 +180,9 @@ class CaptionSession:
         self.results, self.segments, self.finals = [], [], {}
         self.skipped, self.finalized = [], set()
         self.partial = None
+        self.boundary_repair = boundary_repair
+        self.pending_boundary = None
+        self.boundary_stats = {"held": 0, "probes": 0, "repaired": 0, "held_tail_characters_max": 0}
         self.token_timings = {}
         self.latest_revision = {}
         self.continuous = None
@@ -191,6 +207,8 @@ class CaptionSession:
                 if cancel_partial_for_final
                 else None
             )
+            if boundary_repair:
+                self.scheduler_stats["boundary_repair"] = self.boundary_stats
         self.pipeline = SegmentPipeline(
             vad,
             "identity",
@@ -209,6 +227,7 @@ class CaptionSession:
             boundary_lookback_s=boundary_lookback_s,
             boundary_pause_center=boundary_pause_center,
             boundary_end_grace_s=boundary_end_grace_s,
+            boundary_acoustic=boundary_acoustic,
             native_budget_frames=None,
             progress=self._progress,
             vad_policy=vad_preprocess,
@@ -228,6 +247,7 @@ class CaptionSession:
             self.continuous.start()
 
     def _continuous_next(self):
+        self._expire_boundary()
         estimate = None
         if self.continuous.candidate and self.continuous.policy in (
             "paced",
@@ -250,7 +270,11 @@ class CaptionSession:
         if candidate:
             segment, start, end, pcm = candidate
             self._offer("partial", segment, start, end, pcm)
-        return self.continuous.wait_s()
+        wake = self.continuous.wait_s()
+        if self.pending_boundary:
+            remaining = max(0.001, self.pending_boundary.deadline - time.perf_counter())
+            return remaining if wake is None else min(wake, remaining)
+        return wake
 
     def _fresh_revision(self, event):
         """같은 작업의 토큰 순서와 결과 완료를 포함한다. 낡은 결과도 원시는 보존한다."""
@@ -269,37 +293,110 @@ class CaptionSession:
         if event["type"] == "token":
             self._token(event)
         if event["type"] == "result":
-            t0 = self.telemetry["t0_monotonic_ns"] / 1e9
             with self.lock:
-                event["published_s"] = time.perf_counter() - t0
-                event["queue_wait_s"] = (
-                    event["started_monotonic_s"] - event["submitted_monotonic_s"]
-                )
-                event["inference_s"] = event["ended_monotonic_s"] - event["started_monotonic_s"]
-                self.results.append(event)
-                fresh = self._fresh_revision(event) if self.continuous else True
-                event["displayed"] = (
-                    event["kind"] == "final" or event["segment_id"] not in self.finalized
-                ) and fresh
-                if self.continuous and event["kind"] == "partial" and event["status"] != "success":
-                    event["displayed"] = False
-                if (
-                    self.continuous
-                    and event["kind"] == "partial"
-                    and self.partial
-                    and self.partial["segment_id"] > event["segment_id"]
-                ):
-                    event["displayed"] = False
-                if self.continuous:
-                    self.continuous.record_display(event, self.partial, t0)
-                if event["kind"] == "final" and fresh:
-                    self.finalized.add(event["segment_id"])
-                    self.finals[event["segment_id"]] = event
-                    if self.partial and self.partial["segment_id"] <= event["segment_id"]:
-                        self.partial = None
-                elif event["displayed"]:
-                    self.partial = event
+                self._expire_boundary()
+                if event.get("boundary_probe"):
+                    if (
+                        self.pending_boundary
+                        and event["status"] == "success"
+                        and self.pending_boundary.follows(
+                            event["segment_id"], event["owned_start_frame"]
+                        )
+                    ):
+                        self.pending_boundary.probe = event["hypothesis"]
+                if self.boundary_repair and event["kind"] == "final":
+                    self._commit_boundary(right=event)
+                    if self._hold_boundary(event):
+                        return
+                self._publish_result(event)
+            return
         self.emit(event)
+
+    def _publish_result(self, event):
+        t0 = self.telemetry["t0_monotonic_ns"] / 1e9
+        event["published_s"] = time.perf_counter() - t0
+        event["queue_wait_s"] = event["started_monotonic_s"] - event["submitted_monotonic_s"]
+        event["inference_s"] = event["ended_monotonic_s"] - event["started_monotonic_s"]
+        self.results.append(event)
+        fresh = self._fresh_revision(event) if self.continuous else True
+        event["displayed"] = (
+            fresh
+            and not event.get("boundary_probe", False)
+            and (event["kind"] == "final" or event["segment_id"] not in self.finalized)
+        )
+        if (
+            self.continuous
+            and event["kind"] == "partial"
+            and (
+                event["status"] != "success"
+                or self.partial
+                and self.partial["segment_id"] > event["segment_id"]
+            )
+        ):
+            event["displayed"] = False
+        if self.continuous:
+            self.continuous.record_display(event, self.partial, t0)
+        if event["kind"] == "final" and fresh:
+            self.finalized.add(event["segment_id"])
+            self.finals[event["segment_id"]] = event
+            if self.partial and self.partial["segment_id"] <= event["segment_id"]:
+                self.partial = None
+        elif event["displayed"]:
+            self.partial = event
+        self.emit(event)
+
+    def _hold_boundary(self, event):
+        text = event["hypothesis"] or ""
+        fragment = tail(text)
+        if self.segments[event["segment_id"]]["reason"] != "hard_limit" or fragment is None:
+            return False
+        now = time.perf_counter()
+        self.pending_boundary = PendingBoundary(event, now + COMMIT_WAIT_S)
+        self.boundary_stats["held"] += 1
+        self.boundary_stats["held_tail_characters_max"] = max(
+            self.boundary_stats["held_tail_characters_max"], len(text) - fragment[0]
+        )
+        self.emit(
+            {
+                "type": "boundary_pending",
+                **{k: event[k] for k in ("job_id", "segment_id")},
+                "at_monotonic_s": now,
+                "deadline_monotonic_s": now + COMMIT_WAIT_S,
+                "stable_prefix": text[: fragment[0]].rstrip(),
+                "tail_characters": len(text) - fragment[0],
+            }
+        )
+        return True
+
+    def _expire_boundary(self):
+        if self.pending_boundary and time.perf_counter() >= self.pending_boundary.deadline:
+            self._commit_boundary(reason="deadline")
+
+    def _commit_boundary(self, *, right=None, reason="next_final"):
+        pending = self.pending_boundary
+        if pending is None:
+            return
+        event = pending.result
+        self.pending_boundary = None
+        text = event["hypothesis"]
+        repaired = text
+        if (
+            right
+            and right["status"] == "success"
+            and pending.follows(
+                right["segment_id"], right.get("owned_start_frame", right["start_frame"])
+            )
+        ):
+            repaired = repair_tail(text, pending.probe, right["hypothesis"])
+        event.update(
+            boundary_commit_reason=reason,
+            boundary_wait_s=max(0, time.perf_counter() - event["ended_monotonic_s"]),
+            boundary_repaired=repaired != text,
+        )
+        if repaired != text:
+            event.update(boundary_raw_hypothesis=text, hypothesis=repaired)
+            self.boundary_stats["repaired"] += 1
+        self._publish_result(event)
 
     def _token(self, event):
         t0 = self.telemetry["t0_monotonic_ns"] / 1e9
@@ -328,6 +425,7 @@ class CaptionSession:
             event["prefix_replay_suppressed"] = replays_prefix(self.partial, event)
             event["displayed"] = (
                 bool(text.strip())
+                and not event.get("boundary_probe", False)
                 and (
                     text != timing.get("visible_text")
                     if self.continuous
@@ -357,9 +455,25 @@ class CaptionSession:
                 self.partial = event
 
     def _offer(self, kind, segment_id, start, end, pcm, *, only_if_idle=False, owned_start=None):
-        if kind == "partial" and self.pipeline.context:
+        pending = self.pending_boundary
+        probe = bool(
+            kind == "partial"
+            and pending
+            and not pending.offered
+            and self.pipeline.continuation
+            and pending.follows(segment_id, start)
+        )
+        if kind == "partial" and (self.pipeline.context or probe):
             owned_start = start
-            start = self.pipeline.payload_start(owned_start)
+            if probe:
+                start = max(
+                    pending.result["start_frame"],
+                    self.pipeline.ring.start,
+                    owned_start - CONTEXT_FRAMES,
+                )
+                probe = start < owned_start
+            else:
+                start = self.pipeline.payload_start(owned_start)
             if start < owned_start:
                 prefix = self.pipeline.ring.read(start, owned_start)
                 prefix.extend(pcm)
@@ -389,7 +503,7 @@ class CaptionSession:
                         self.partial = None
             self.emit(row)
             return True
-        return self.worker.submit(
+        accepted = self.worker.submit(
             kind,
             segment_id,
             start,
@@ -397,8 +511,13 @@ class CaptionSession:
             array("f", (x / 32768 for x in pcm)),
             self.position,
             only_if_idle=only_if_idle,
+            **({"boundary_probe": True} if probe else {}),
             **({"owned_start_frame": owned_start} if owned_start is not None else {}),
         )
+        if accepted and probe:
+            pending.offered = True
+            self.boundary_stats["probes"] += 1
+        return accepted
 
     def _request_partial(self, start, end, read, *, only_if_idle):
         if not self._offer(
@@ -529,6 +648,7 @@ class CaptionSession:
         if self.worker.error:
             raise RuntimeError(self.worker.error)
         with self.lock if self.continuous else nullcontext():
+            self._expire_boundary()
             self.position = end
             self.pipeline.accept(
                 samples, final=end == self.frames or (self.frames is None and len(samples) < 1600)
@@ -543,11 +663,22 @@ class CaptionSession:
             if self.continuous:
                 self.continuous.discard("eof")
         self.worker.finish(self.timeout)
+        with self.lock:
+            self._commit_boundary(reason="eof")
         return self.text(final_only=True)
 
     def text(self, *, final_only=False):
         with self.lock:
             parts = [row["hypothesis"] or "" for _, row in sorted(self.finals.items())]
+            if (
+                not final_only
+                and self.pending_boundary
+                and (
+                    self.partial is None
+                    or self.partial["segment_id"] > self.pending_boundary.result["segment_id"]
+                )
+            ):
+                parts.append(self.pending_boundary.result["hypothesis"])
             if (
                 not final_only
                 and self.partial

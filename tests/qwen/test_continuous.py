@@ -7,6 +7,7 @@ from queue import Queue
 from threading import Condition, Event, RLock
 from unittest.mock import patch
 
+from edge_asr.qwen.realtime.boundary_repair import repair_tail
 from edge_asr.qwen.realtime.continuous import ContinuousPolicy
 from edge_asr.qwen.realtime.replay import argument_parser
 from edge_asr.qwen.realtime.session import CaptionSession
@@ -38,6 +39,44 @@ class ControlledModel:
 
 
 class ContinuousTests(unittest.TestCase):
+    def test_boundary_repair_requires_two_transcripts_and_keeps_repetitions(self):
+        self.assertEqual(
+            repair_tail("앞구절 회의.", "회의실 앞에서", "회의실 앞에서 봐요."), "앞구절"
+        )
+        self.assertEqual(
+            repair_tail("앞구절 회의.", "회의 회의실 앞에서", "회의실 앞에서"), "앞구절 회의."
+        )
+        self.assertEqual(repair_tail("안 들어요.", "들어요 안", "들어요 안"), "안 들어요.")
+        self.assertEqual(repair_tail("문장 매.", "매일 합니다", "매일 합니다"), "문장 매.")
+
+    def test_boundary_commit_keeps_original_on_deadline(self):
+        s, _, events = self.session()
+        s.boundary_repair = True
+        s.segments.extend([{"reason": "hard_limit"}, {"reason": "eof"}])
+        now = time.perf_counter()
+        left = dict(
+            type="result",
+            kind="final",
+            status="success",
+            job_id=3,
+            segment_id=0,
+            start_frame=0,
+            end_frame=80000,
+            hypothesis="앞구절 회의.",
+            submitted_monotonic_s=now,
+            started_monotonic_s=now,
+            ended_monotonic_s=now,
+        )
+        with s.lock:
+            s._event(left)
+            self.assertIsNone(s.finals.get(0))
+            self.assertEqual(events[-1]["type"], "boundary_pending")
+            self.assertEqual(s.text(), "앞구절 회의.")
+            s.pending_boundary.deadline = now - 1
+            s._expire_boundary()
+            self.assertEqual(s.finals[0]["hypothesis"], "앞구절 회의.")
+            self.assertEqual(s.finals[0]["boundary_commit_reason"], "deadline")
+
     def policy(self, **settings):
         now, events = [0.0], []
         p = ContinuousPolicy(

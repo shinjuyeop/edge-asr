@@ -9,7 +9,14 @@ from types import SimpleNamespace
 from edge_asr.audio_policy import preprocess
 from edge_asr.dataset import Audio
 from edge_asr.legacy.vad_probe import source_metrics
-from edge_asr.segmentation import PcmRing, SegmentPipeline, SegmentReplayAdapter, pcm_bytes
+from edge_asr.segmentation import (
+    WINDOW,
+    PcmRing,
+    SegmentPipeline,
+    SegmentReplayAdapter,
+    acoustic_pause_cut,
+    pcm_bytes,
+)
 from edge_asr.streaming import run_paced
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -81,6 +88,17 @@ def run(samples, maximum=3, policy="identity", vad=None):
 
 
 class SegmentTests(unittest.TestCase):
+    def test_acoustic_pause_requires_low_energy_between_two_voiced_flanks(self):
+        pcm = [10] * (4 * WINDOW) + [1] * (4 * WINDOW) + [8] * WINDOW
+
+        def read(a, b):
+            return pcm[a:b]
+
+        self.assertEqual(acoustic_pause_cut(read, 0, 8 * WINDOW, 4 * WINDOW, 9 * WINDOW), 2816)
+        self.assertIsNone(acoustic_pause_cut(read, 0, 8 * WINDOW, 3 * WINDOW, 9 * WINDOW))
+        pcm[-WINDOW:] = [1] * WINDOW
+        self.assertIsNone(acoustic_pause_cut(read, 0, 8 * WINDOW, 4 * WINDOW, 9 * WINDOW))
+
     def test_onset_context_requires_previous_vad_and_inclusive_audio_gap(self):
         # Sherpa 구간은 512프레임 입력창의 중간 좌표도 반환할 수 있다.
         spans = {5: (1000, 2500), 24: (10500, 12000), 43: (20001, 22000)}

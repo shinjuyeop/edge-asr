@@ -38,6 +38,8 @@ CPU 회귀에는 `gguf_realtime.toml`과 [연속 입력 대표 명령](../docs/g
 | [listener_hailo_cnn.toml](listener_hailo_cnn.toml) | A · 이전 CNN 5초 대조, 생성 2·음성/Prefill 3스레드 |
 | [listener_hailo_continuity.toml](listener_hailo_continuity.toml) | T · 반응성 우선, CNN 묶음·4초 구간 |
 | [listener_hailo_boundary.toml](listener_hailo_boundary.toml) | Q8 + Hailo CNN P8·경계 정확도 우선·3.4초부터 쉼 탐색·최대 8초·미확정 종결부호 보류. [경계 및 지연 대조](../results/summaries/optimization/boundary-20261124.md) |
+| [listener_hailo_adaptive_pause.toml](listener_hailo_adaptive_pause.toml) | 실험 A. VAD 확률과 원음 에너지로 확인한 쉼에서 소유 구간을 나눕니다. |
+| [listener_hailo_boundary_repair.toml](listener_hailo_boundary_repair.toml) | 실험 B. A의 경계를 쓰고 강제 절단 직후 부분 요청 하나에 이전 PCM을 추가해 지연 확정을 검증합니다. |
 | [listener_hailo_partial_budget.toml](listener_hailo_partial_budget.toml) | P8 확정 경계에서 첫 PCM 길이와 후속 부분 요청의 비용을 제어하는 실험용 구성. 고정 100개에서 새 본문 없는 계산은 감소했으나 약 30분 부하에서 전체 추론 시간은 늘었습니다. [RP5 대조](../results/summaries/optimization/partial-scheduling-20261125.md) |
 | [listener_hailo_boundary_early.toml](listener_hailo_boundary_early.toml) | Q8 + Hailo CNN P2 · 2.2초부터 탐색·최대 8초. [원음·지연 비교](../results/summaries/optimization/boundary-20261124.md) |
 | [listener_hailo_boundary_5s.toml](listener_hailo_boundary_5s.toml) | Q8 + Hailo CNN P5G · 2.2초부터 탐색·5초 분할, 끝 여유 0.2초. [원음·지연 비교](../results/summaries/optimization/boundary-20261124.md) |

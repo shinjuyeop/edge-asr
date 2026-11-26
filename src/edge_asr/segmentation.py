@@ -16,6 +16,28 @@ WINDOW = 512
 SEGMENT_LIMITS_S = (3, 4, 5, 6, 8)
 
 
+def acoustic_pause_cut(read, begin, resumed_at, pause_frames, maximum):
+    """확률이 회복된 시점에 도착한 원음에서만 쉼 내부를 확인한다."""
+    if pause_frames < 4 * WINDOW:
+        return None
+    quiet_start = resumed_at - min(pause_frames, 8 * WINDOW)
+    if quiet_start - 4 * WINDOW < begin:
+        return None
+    quiet = read(quiet_start, resumed_at)
+    before, after = (
+        read(quiet_start - 4 * WINDOW, quiet_start),
+        read(resumed_at, resumed_at + WINDOW),
+    )
+    energies = [sum(x * x for x in quiet[i : i + WINDOW]) for i in range(0, len(quiet), WINDOW)]
+    flank = min(sum(x * x for x in before) / 4, sum(x * x for x in after))
+    if not flank or sum(energies) > 0.2 * flank * len(energies):
+        return None
+    mid = (len(energies) - 1) / 2
+    index = min(range(len(energies)), key=lambda i: (energies[i], abs(i - mid)))
+    cut = quiet_start + index * WINDOW + WINDOW // 2
+    return cut if cut - begin <= maximum else None
+
+
 class PcmRing:
     """절대 프레임 좌표를 가진 PCM16 유한 버퍼. 사라진 범위는 오류로 거부한다."""
 
@@ -71,6 +93,7 @@ class SegmentPipeline:
         boundary_lookback_s=None,
         boundary_pause_center=False,
         boundary_end_grace_s=None,
+        boundary_acoustic=False,
     ):
         if type(max_segment_s) is not int or max_segment_s not in SEGMENT_LIMITS_S:
             raise ValueError("소유 구간 상한은 3/4/5/6/8초여야 합니다.")
@@ -95,6 +118,8 @@ class SegmentPipeline:
             or not WINDOW / RATE <= boundary_end_grace_s <= 0.3
         ):
             raise ValueError("끝 여유는 확률 VAD의 쉼 내부 경계와 32~300ms가 필요합니다.")
+        if boundary_acoustic and (not boundary_pause_center or boundary_lookback_s is not None):
+            raise ValueError("음향 쉼 확인에는 확률 VAD의 쉼 내부 경계가 필요합니다.")
         if boundary_lookback_s is not None and (
             not math.isfinite(boundary_lookback_s) or not 0.2 <= boundary_lookback_s <= 1.2
         ):
@@ -144,6 +169,7 @@ class SegmentPipeline:
         )
         self.boundary_energy_valley = boundary_energy_valley
         self.boundary_pause_center = boundary_pause_center
+        self.boundary_acoustic = boundary_acoustic
         self.end_grace = round(boundary_end_grace_s * RATE) if boundary_end_grace_s else 0
         self.boundary_lookback = (
             round(boundary_lookback_s * RATE) if boundary_lookback_s is not None else 0
@@ -379,7 +405,20 @@ class SegmentPipeline:
                         if self.vad.resumed_pause_frames >= 3 * WINDOW
                         else "energy_valley"
                     )
-                    if self.boundary_pause_center:
+                    if self.boundary_acoustic:
+                        cut = (
+                            acoustic_pause_cut(
+                                self.ring.read,
+                                begin,
+                                cut,
+                                max(soft_pause, self.vad.resumed_pause_frames),
+                                self.maximum,
+                            )
+                            if cut + WINDOW <= self.ring.end
+                            else None
+                        )
+                        evidence = "acoustic_pause"
+                    elif self.boundary_pause_center:
                         # VAD 회복이 실제 다음 단어보다 늦을 수 있다. 낮은 확률 직전의 두 창까지
                         # 포함한 최근 최대 256ms에서 가장 조용한 32ms의 중앙을 택한다.
                         width = min(
@@ -394,7 +433,11 @@ class SegmentPipeline:
                             )
                             cut = first + offset + WINDOW // 2
                             evidence = "pause_center"
-                    if not self.end_grace or cut + WINDOW <= available:
+                    if (
+                        cut is not None
+                        and (not self.boundary_acoustic or target <= cut - begin)
+                        and (not self.end_grace or cut + WINDOW <= available)
+                    ):
                         self._emit(begin, cut, "pause_before_limit", boundary_evidence=evidence)
                         self.pause_emissions += 1
                         begin = self.owned_end
@@ -476,6 +519,8 @@ class SegmentPipeline:
             result["boundary_end_grace_frames"] = self.end_grace
         if self.boundary_pause_center:
             result["boundary_pause_center"] = True
+        if self.boundary_acoustic:
+            result["boundary_acoustic"] = True
         if self.onset_context_max_gap is not None:
             result["onset_context_max_gap_frames"] = self.onset_context_max_gap
         if self.vad_processor is not None:

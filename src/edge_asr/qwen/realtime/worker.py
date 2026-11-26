@@ -93,6 +93,7 @@ class DecodeWorker:
         *,
         only_if_idle=False,
         owned_start_frame=None,
+        boundary_probe=False,
     ):
         with self.condition:
             if self.closing or self.error or not self.thread.is_alive():
@@ -120,6 +121,7 @@ class DecodeWorker:
                     if owned_start_frame is not None
                     else {}
                 ),
+                **({"boundary_probe": True} if boundary_probe else {}),
                 "submitted_monotonic_s": time.perf_counter(),
                 "payload_float32_sha256": float_digest(samples),
             }

@@ -176,12 +176,17 @@ def run(
         maximum = settings.get("max_segment_s", 5)
         if not math.isfinite(maximum) or maximum <= 0:
             raise ValueError("워밍업의 ASR 최대 구간은 유한한 양수여야 합니다.")
-        end = min(source_frames, round(maximum * 16000))
+        warmup_maximum = settings.get("warmup_max_s", maximum)
+        if not math.isfinite(warmup_maximum) or not 0.1 <= warmup_maximum <= maximum:
+            raise ValueError("워밍업 상한은 0.1초 이상, ASR 구간 상한 이하여야 합니다.")
+        end = min(source_frames, round(warmup_maximum * 16000))
         if end < source_frames:
             pcm = warmup.samples[:end]
             warmup = Audio(pcm, 16000, float_digest(pcm))
         info["warmup_input"] = {
-            "policy": "leading_max_segment_v1",
+            "policy": "leading_warmup_limit_v1"
+            if warmup_maximum != maximum
+            else "leading_max_segment_v1",
             "source_id": samples[0].id,
             "source_audio_sha256": samples[0].audio_sha256,
             "source_frames": source_frames,
@@ -268,6 +273,7 @@ def run(
                 "vad_min_silence_s",
                 "vad_short_span_s",
                 "defer_provisional_punctuation",
+                "warmup_max_s",
             )
         }
         session = CaptionSession(
@@ -456,6 +462,24 @@ def argument_parser():
         action="store_true",
         default=argparse.SUPPRESS,
         help="VAD 확률이 회복된 짧은 쉼 안에서 원음이 가장 조용한 위치를 경계로 사용",
+    )
+    parser.add_argument(
+        "--boundary-acoustic",
+        action="store_true",
+        default=argparse.SUPPRESS,
+        help="VAD 회복과 양쪽 원음 에너지가 뒷받침하는 쉼 내부에서만 분할",
+    )
+    parser.add_argument(
+        "--boundary-repair",
+        action="store_true",
+        default=argparse.SUPPRESS,
+        help="강제 경계만 다음 부분에 문맥을 빌려주고 제한 시간 내에 확정 어절을 대조",
+    )
+    parser.add_argument(
+        "--warmup-max-s",
+        type=float,
+        default=argparse.SUPPRESS,
+        help="구간 정책을 비교할 때 첫 원음에서 동일한 길이로 워밍업",
     )
     parser.add_argument(
         "--boundary-lookback-s",
