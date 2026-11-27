@@ -1,0 +1,17 @@
+[model]
+family = "nemotron"
+path = "models/asr-comparison-20261127-01/sherpa-onnx-nemotron-3.5-asr-streaming-0.6b-560ms-int8-2026-06-11"
+language = "ko"
+endpoint_silence_s = 1.2
+tail_padding_s = 0.7
+encoder = "encoder.int8.onnx"
+decoder = "decoder.int8.onnx"
+joiner = "joiner.int8.onnx"
+num_threads = 2
+
+[audio]
+sample_rate_hz = 16000
+
+[evaluation]
+mode = "batch"
+warmup_runs = 1

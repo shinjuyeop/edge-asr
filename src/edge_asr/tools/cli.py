@@ -27,6 +27,7 @@ COMMANDS = {
     "probe-load": "probes.load",
     "profile-qwen3": "edge_asr.qwen.profiling",
     "benchmark-qwen3": "edge_asr.qwen.benchmark",
+    "replay-asr": "edge_asr.qwen.realtime.replay",
     "replay-qwen3": "edge_asr.qwen.realtime.replay",
     "subtitle-metrics": "edge_asr.qwen.viewer.continuity",
     "listen-qwen3": "edge_asr.qwen.viewer.server",

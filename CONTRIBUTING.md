@@ -22,6 +22,7 @@ ruff format --check src tests scripts native
 | 작업 | 위치 |
 | --- | --- |
 | Qwen 모델 호출·연속 입력 | `src/edge_asr/qwen/`, `tests/qwen/` |
+| 비교 모델 호출·1배속 검증 | `src/edge_asr/adapters/`, `configs/model_comparison/`, `tools replay-asr` |
 | C++ 연결·빌드 | `native/gguf/`, `native/ort_trace/` |
 | 입력·채점·계측·기록 | 기존 `dataset.py`, `scoring.py`, `metrics.py`, `resources.py`, `runtime.py`, `artifacts.py` |
 | 데이터 준비·실행 제한·보고서 | `src/edge_asr/tools/`의 해당 역할 폴더 |

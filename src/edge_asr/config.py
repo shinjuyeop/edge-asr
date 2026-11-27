@@ -4,7 +4,7 @@ import math
 import tomllib
 from pathlib import Path
 
-from edge_asr.adapters import SUPPORTED_MODES
+from edge_asr.adapters import ONLINE_TRANSDUCERS, SUPPORTED_MODES
 
 MODEL_FAMILIES = set(SUPPORTED_MODES)
 
@@ -64,10 +64,14 @@ def load_evaluation_config(path: str | Path) -> dict:
         raise ValueError(f"{family}의 지원 평가 모드는 {SUPPORTED_MODES[family]}입니다: {mode}")
     model_keys = {"family", "path", "num_threads", "tokens"}
     model_keys |= (
-        {"encoder", "decoder", "joiner", "tail_padding_s"}
-        if family == "zipformer"
+        {"encoder", "decoder", "joiner", "tail_padding_s", "endpoint_silence_s"}
+        if family in ONLINE_TRANSDUCERS
         else {"model_file", "language", "use_itn", "quantization"}
     )
+    if family == "nemotron":
+        model_keys.add("language")
+    if family == "whisper":
+        model_keys = {"family", "path", "num_threads", "tokens", "encoder", "decoder", "language"}
     if family in {"qwen3_asr", "qwen3_gguf"}:
         model_keys = {
             "family",
@@ -105,7 +109,7 @@ def load_evaluation_config(path: str | Path) -> dict:
             raise ValueError(f"알 수 없는 {section} 설정: {sorted(set(supplied[section]) - keys)}")
     model_defaults = (
         {"num_threads": 2, "tail_padding_s": 0.66}
-        if family == "zipformer"
+        if family in ONLINE_TRANSDUCERS
         else {
             "num_threads": 1,
             "model_file": "model.int8.onnx",
@@ -113,6 +117,13 @@ def load_evaluation_config(path: str | Path) -> dict:
             "quantization": "int8",
         }
     )
+    if family == "whisper":
+        model_defaults = {
+            "num_threads": 2,
+            "encoder": "base-encoder.int8.onnx",
+            "decoder": "base-decoder.int8.onnx",
+            "tokens": "base-tokens.txt",
+        }
     if family in {"qwen3_asr", "qwen3_gguf"}:
         model_defaults = {
             "num_threads": 1,
@@ -154,7 +165,7 @@ def load_evaluation_config(path: str | Path) -> dict:
         raise ValueError("model.cache_text_prefix는 true/false여야 합니다.")
     if type(config["model"].get("prepare_final_audio", False)) is not bool:
         raise ValueError("model.prepare_final_audio는 true/false여야 합니다.")
-    if family == "zipformer":
+    if family in ONLINE_TRANSDUCERS:
         padding = config["model"]["tail_padding_s"]
         if (
             type(padding) not in (int, float)
@@ -162,6 +173,22 @@ def load_evaluation_config(path: str | Path) -> dict:
             or not 0 <= padding <= 10
         ):
             raise ValueError("model.tail_padding_s는 0~10초의 유한한 수여야 합니다.")
+        endpoint = config["model"].get("endpoint_silence_s")
+        if endpoint is not None and (
+            type(endpoint) not in (int, float)
+            or not math.isfinite(endpoint)
+            or not 0.2 <= endpoint <= 5
+        ):
+            raise ValueError("model.endpoint_silence_s는 0.2~5초의 유한한 수여야 합니다.")
+        if family == "nemotron" and (
+            config["model"].get("language") != "ko"
+            or config["audio"]["sample_rate_hz"] != 16000
+            or any(key not in config["model"] for key in ("encoder", "decoder", "joiner"))
+        ):
+            raise ValueError("Nemotron에는 ko·16000Hz와 encoder/decoder/joiner 파일이 필요합니다.")
+    elif family == "whisper":
+        if config["model"].get("language") != "ko" or config["audio"]["sample_rate_hz"] != 16000:
+            raise ValueError("Whisper 비교는 다국어 Base의 ko·16000Hz를 사용합니다.")
     elif family == "sensevoice":
         language = config["model"].get("language")
         if not isinstance(language, str) or language not in {"ko", "auto", "zh", "en", "ja", "yue"}:
@@ -256,8 +283,6 @@ def load_evaluation_config(path: str | Path) -> dict:
             raise ValueError("현재 큐 초과 정책은 drop_newest입니다.")
         if config["audio"]["sample_rate_hz"] * streaming["chunk_ms"] % 1000:
             raise ValueError("chunk_ms는 정수 프레임 수여야 합니다.")
-        if config["model"]["family"] != "zipformer":
-            raise ValueError("paced_stream의 현재 지원 모델은 zipformer입니다.")
         config["streaming"] = streaming
     elif "streaming" in supplied:
         raise ValueError("batch 모드에는 [streaming]을 지정하지 않습니다.")

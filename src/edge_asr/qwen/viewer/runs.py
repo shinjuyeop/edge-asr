@@ -13,7 +13,7 @@ import uuid
 
 from edge_asr.artifacts import digest, write_json, write_jsonl
 from edge_asr.dataset import load_manifest, prepare_track, write_wav
-from edge_asr.qwen.realtime.replay import argument_parser
+from edge_asr.qwen.realtime.replay import QWEN_REPLAY_KIND, REPLAY_KINDS, argument_parser
 from edge_asr.qwen.viewer.analysis import compact_event, microphone_sources, source_metrics
 
 
@@ -38,8 +38,8 @@ class Run:
             stamp = (stat.st_ino, stat.st_mtime_ns, stat.st_size) if stat else None
             if stamp is not None and stamp != self.stamp:
                 self.worker = read(worker)
-                if self.worker.get("kind") != "qwen3_paced_partial_replay":
-                    raise ValueError("Qwen 연속 입력 worker.json이 필요합니다.")
+                if self.worker.get("kind") not in {QWEN_REPLAY_KIND, *REPLAY_KINDS.values()}:
+                    raise ValueError("연속 입력 worker.json이 필요합니다.")
                 self.stamp = stamp
             log = self.path / "jobs.jsonl"
             if log.exists():

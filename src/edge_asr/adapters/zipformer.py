@@ -1,4 +1,4 @@
-"""sherpa-onnx streaming Zipformer의 batch·청크 입력 어댑터."""
+"""sherpa-onnx Zipformer·Nemotron의 상태 유지형 Transducer 어댑터."""
 
 from pathlib import Path
 
@@ -32,7 +32,8 @@ class ZipformerAdapter:
             "provider": "cpu",
             "feature_dim": 80,
             "language": "ko",
-            "language_policy": "Korean_model_not_runtime_language_argument",
+            "language_policy": "per_stream_ko" if self.model.get("language") else "Korean_weights",
+            "endpoint_trailing_silence_s": self.model.get("endpoint_silence_s"),
             "use_itn": None,
             "itn_reason": "no_separate_itn_in_this_adapter",
             "quantization": {
@@ -52,6 +53,12 @@ class ZipformerAdapter:
         import numpy as np
         import sherpa_onnx
 
+        if self.model.get("language") and not hasattr(
+            getattr(sherpa_onnx, "OnlineStream", None), "set_option"
+        ):
+            raise RuntimeError(
+                "Nemotron에는 OnlineStream.set_option을 지원하는 sherpa-onnx가 필요합니다."
+            )
         self.np = np
         self.padding = np.zeros(
             round(self.model["tail_padding_s"] * self.sample_rate_hz), dtype=np.float32
@@ -63,6 +70,16 @@ class ZipformerAdapter:
             sample_rate=self.sample_rate_hz,
             feature_dim=80,
             decoding_method="greedy_search",
+            **(
+                {
+                    "enable_endpoint_detection": True,
+                    "rule1_min_trailing_silence": self.model["endpoint_silence_s"],
+                    "rule2_min_trailing_silence": self.model["endpoint_silence_s"],
+                    "rule3_min_utterance_length": float("inf"),
+                }
+                if self.model.get("endpoint_silence_s")
+                else {}
+            ),
         )
 
     def transcribe(self, audio: Audio) -> str:
@@ -70,19 +87,9 @@ class ZipformerAdapter:
             raise RuntimeError("모델을 먼저 로드해야 합니다.")
         if audio.sample_rate_hz != self.sample_rate_hz:
             raise ValueError("어댑터와 오디오의 샘플레이트가 다릅니다.")
-        stream = self.recognizer.create_stream()  # 파일마다 상태를 새로 만듦
-        samples = self.np.frombuffer(audio.samples, dtype=self.np.float32)
-        stream.accept_waveform(self.sample_rate_hz, samples)
-        if len(self.padding):
-            stream.accept_waveform(self.sample_rate_hz, self.padding)
-        stream.input_finished()
-        while self.recognizer.is_ready(stream):
-            self.recognizer.decode_stream(stream)
-        result = self.recognizer.get_result(stream)
-        text = result if isinstance(result, str) else getattr(result, "text", None)
-        if not isinstance(text, str):
-            raise TypeError("모델이 문자열 가설을 반환하지 않았습니다.")
-        return text
+        stream = self.start_stream()
+        self.feed(stream, audio.samples)
+        return self.finish_stream(stream)
 
     def close(self) -> None:
         self.recognizer = None
@@ -90,28 +97,43 @@ class ZipformerAdapter:
     def start_stream(self):
         if self.recognizer is None:
             raise RuntimeError("모델을 먼저 로드해야 합니다.")
-        return self.recognizer.create_stream()
+        stream = self.recognizer.create_stream()
+        if language := self.model.get("language"):
+            stream.set_option("language", language)
+        return stream
 
-    def _decode_result(self, stream) -> str:
+    def _decode_result(self, stream, on_decode=None) -> str:
         while self.recognizer.is_ready(stream):
-            self.recognizer.decode_stream(stream)
+            if on_decode is None:
+                self.recognizer.decode_stream(stream)
+                continue
+            on_decode(self.recognizer.decode_stream, stream)
         result = self.recognizer.get_result(stream)
         text = result if isinstance(result, str) else getattr(result, "text", None)
         if not isinstance(text, str):
             raise TypeError("모델이 문자열 가설을 반환하지 않았습니다.")
         return text
 
-    def accept_chunk(self, stream, samples) -> str:
+    def feed(self, stream, samples):
         stream.accept_waveform(
             self.sample_rate_hz, self.np.frombuffer(samples, dtype=self.np.float32)
         )
-        return self._decode_result(stream)
 
-    def finish_stream(self, stream) -> str:
+    def accept_chunk(self, stream, samples, on_decode=None) -> str:
+        self.feed(stream, samples)
+        return self._decode_result(stream, on_decode)
+
+    def finish_stream(self, stream, on_decode=None) -> str:
         if len(self.padding):
             stream.accept_waveform(self.sample_rate_hz, self.padding)
         stream.input_finished()
-        return self._decode_result(stream)
+        return self._decode_result(stream, on_decode)
+
+    def is_endpoint(self, stream):
+        return self.recognizer.is_endpoint(stream)
+
+    def reset_endpoint(self, stream):
+        self.recognizer.reset(stream)
 
     def token_snapshot(self, stream) -> dict:
         """선택적 진단. decode/reset 없이 설치된 native 결과를 정밀도 손실 없이 읽는다."""

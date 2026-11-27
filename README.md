@@ -40,6 +40,7 @@ T에서 P8로 바꾸면 정답 어절 안에서 문장을 끝낸 횟수가 28회
 edge-asr/
 ├── benchmarks/                  입력 목록 명세
 ├── configs/                     모델 설정·청취 프로필
+│   ├── model_comparison/        한국어 ASR 엔진 비교 설정
 │   ├── quantization/            양자화 비교 설정
 │   ├── gguf_realtime.toml       CPU 회귀 기준
 │   ├── listener_hailo_boundary.toml

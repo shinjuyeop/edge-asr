@@ -14,7 +14,7 @@
 | `qwen/benchmark.py` | 모델1회 로딩·첫 추론·워밍업·반복·고정 PCM 재현 |
 | `qwen/profiling.py` | ONNX Python/ORT 호출 경계·세션/시계 검증 |
 | `qwen/viewer/` | `runs.py`가 실행 상태·프로필 인자·음원 검증, `server.py`가 HTTP/SSH, `web/app.js`가 브라우저 시작, `web/listener.mjs`가 재생·표시를 담당 |
-| `qwen/realtime/` | 1배속 실행·VAD 접두 부분 전사·유한 단일 작업자. `stability.py`로 접두부 재표시·문자 철회 집계. 공통 입력·구간 분할 재사용 |
+| `qwen/realtime/` | `replay.py`가 공통 1배속 입력과 자막 기록을 연결. `session.py`의 VAD·제한 구간 전사는 Qwen·SenseVoice·Whisper에서 공유. `transducer.py`는 Zipformer·Nemotron 상태를 유지하고 모델 endpoint와 EOF에서 확정 |
 | `native/gguf/`, `native/ort_trace/` | C ABI·ORT 계측과 빌드. [안내](../../native/README.md) |
 | `tools/data/` | 데이터 준비·검증·평가 순서 생성 |
 | `dataset.py`, `config.py`, `audio_policy.py` | manifest·PCM·해시·설정 검사 |
@@ -23,7 +23,7 @@
 | `tools/probes/`, `thermal.py`, `cooling.py` | 열·시간·메모리 제한과 냉각 점검 |
 | `streaming.py`, `segmentation.py`, `vad*.py`, `textgrid.py` | 재사용 입력·큐·구간/VAD·주석 기반 |
 | `microphone.py` | 모델 독립 ALSA 장치 조회·16kHz 수집·유한 큐·녹음/실패 보존 |
-| `adapters/`, `legacy/` | 공통 factory·이전 비교 모델과 자막/병합 재현 |
+| `adapters/`, `legacy/` | 공통 factory와 비교 모델 어댑터, 과거 자막·병합 재현 |
 | `legacy/benchmark_zipformer.py` | M1 Zipformer 전용 반복 프로브. 현재 Qwen의 `qwen/benchmark.py`와 구분 |
 
 고정100개 선정은 `tools/data/fixed100.py`, 긴 발화 선정·연결은 `tools/data/longform.py`가 담당합니다. 두 도구는 `tools/data/zeroth.py`의 고정 원본 정보·archive 읽기·화자/전사/FLAC 후보 생성을 공유합니다. FLEURS에도 쓰는 tar 검사·프레임 보존 PCM 변환과 출처 영수증은 기존 `tools/data/external.py`에 둡니다. 파일 해시·JSON·JSONL은 `artifacts.py`를 직접 사용하고, 입력·TextGrid는 `dataset.py`·`textgrid.py`를 재사용합니다. 각 도구의 선정/연결 규칙·실패 산출물 보존/정리 정책은 각 준비 경로에 유지하며 결과 JSONL은 기존 연속 입력 평가기에 전달합니다. [구성·정답 범위](../research/longform.md).

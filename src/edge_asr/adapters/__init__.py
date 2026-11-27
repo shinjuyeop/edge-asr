@@ -2,16 +2,19 @@
 
 from pathlib import Path
 
+ONLINE_TRANSDUCERS = {"zipformer", "nemotron"}
 SUPPORTED_MODES = {
     "zipformer": ("batch", "paced_stream"),
+    "nemotron": ("batch", "paced_stream"),
     "sensevoice": ("batch",),
+    "whisper": ("batch",),
     "qwen3_asr": ("batch",),
     "qwen3_gguf": ("batch",),
 }
 
 
 def create_adapter(model: dict, sample_rate_hz: int, root: Path):
-    if model["family"] == "zipformer":
+    if model["family"] in ONLINE_TRANSDUCERS:
         from edge_asr.adapters.zipformer import ZipformerAdapter
 
         return ZipformerAdapter(model, sample_rate_hz, root)
@@ -19,6 +22,10 @@ def create_adapter(model: dict, sample_rate_hz: int, root: Path):
         from edge_asr.adapters.sensevoice import SenseVoiceAdapter
 
         return SenseVoiceAdapter(model, sample_rate_hz, root)
+    if model["family"] == "whisper":
+        from edge_asr.adapters.whisper import WhisperAdapter
+
+        return WhisperAdapter(model, sample_rate_hz, root)
     if model["family"] == "qwen3_asr":
         from edge_asr.qwen.onnx import Qwen3Adapter
 

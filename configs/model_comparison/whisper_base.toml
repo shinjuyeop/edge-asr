@@ -1,0 +1,12 @@
+[model]
+family = "whisper"
+path = "models/asr-comparison-20261127-01/sherpa-onnx-whisper-base"
+language = "ko"
+num_threads = 2
+
+[audio]
+sample_rate_hz = 16000
+
+[evaluation]
+mode = "batch"
+warmup_runs = 1

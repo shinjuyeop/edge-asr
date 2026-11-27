@@ -1,0 +1,13 @@
+[model]
+family = "sensevoice"
+path = "models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17"
+language = "ko"
+use_itn = true
+num_threads = 2
+
+[audio]
+sample_rate_hz = 16000
+
+[evaluation]
+mode = "batch"
+warmup_runs = 1

@@ -1,4 +1,4 @@
-"""Qwen 단독 WAV 1배속·VAD·누적 부분 전사. 오디오 encoder 증분 실행은 아니다."""
+"""WAV 1배속 자막 재생. Transducer 증분 전사 및 VAD 기반 제한 구간 전사를 지원한다."""
 
 import argparse
 import json
@@ -11,7 +11,7 @@ from copy import deepcopy
 from pathlib import Path
 from threading import Lock
 
-from edge_asr.adapters import create_adapter
+from edge_asr.adapters import ONLINE_TRANSDUCERS, create_adapter
 from edge_asr.artifacts import digest, write_event, write_json
 from edge_asr.audio_policy import VAD_POLICIES
 from edge_asr.config import load_evaluation_config
@@ -21,11 +21,20 @@ from edge_asr.qwen.realtime.continuous import POLICY_VERSIONS
 from edge_asr.qwen.realtime.session import CaptionSession
 from edge_asr.qwen.realtime.stability import content_updates
 from edge_asr.qwen.realtime.stability import summarize as summarize_stability
+from edge_asr.qwen.realtime.transducer import TransducerSession
 from edge_asr.resources import measure_process
 from edge_asr.runtime import environment, limits_verified
 from edge_asr.segmentation import SEGMENT_LIMITS_S
 from edge_asr.streaming import read_events, run_paced
 from edge_asr.vad_probability import BoundedProbabilityVad, K2SileroProbability
+
+REPLAY_KINDS = {
+    "zipformer": "transducer_paced_replay",
+    "nemotron": "transducer_paced_replay",
+    "sensevoice": "offline_window_paced_replay",
+    "whisper": "offline_window_paced_replay",
+}
+QWEN_REPLAY_KIND = "qwen3_paced_partial_replay"
 
 
 def session_snapshot(session):
@@ -33,7 +42,9 @@ def session_snapshot(session):
     return {
         "results": session.results,
         "segments": session.segments,
-        "pipeline": session.pipeline.metadata(),
+        "pipeline": session.metadata()
+        if isinstance(session, TransducerSession)
+        else session.pipeline.metadata(),
         "partial_scheduler": session.scheduler_stats,
     }
 
@@ -53,7 +64,9 @@ def collect_completed_metrics(info, session, events, sources, hypothesis, *, tok
         final_from_owned_end_s=distribution(
             [r["published_s"] - r["end_frame"] / 16000 for r in finals]
         ),
-        inference_queue_wait_s=distribution([r["queue_wait_s"] for r in session.results]),
+        inference_queue_wait_s=distribution(
+            [r["queue_wait_s"] for r in session.results if r["queue_wait_s"] is not None]
+        ),
         failed_calls=sum(r["status"] == "failed" for r in session.results),
         cancelled_calls=sum(r["status"] == "cancelled" for r in session.results),
         empty_partial_calls=sum(r.get("failure_kind") == "empty_partial" for r in session.results),
@@ -114,12 +127,16 @@ def run(
     **settings,
 ):
     config = load_evaluation_config(config_path)
+    family = config["model"]["family"]
+    native = family in ONLINE_TRANSDUCERS
     if microphone_device and (
         not math.isfinite(microphone_seconds) or not 0 < microphone_seconds <= 600
     ):
         raise ValueError("마이크 입력 제한은0초 초과600초 이하입니다.")
-    if config["model"]["family"] not in ("qwen3_asr", "qwen3_gguf"):
-        raise ValueError("Qwen 단독 연속 경로는 ONNX 또는 GGUF 설정이 필요합니다.")
+    if native and (
+        not config["model"].get("endpoint_silence_s") or config["audio"]["sample_rate_hz"] != 16000
+    ):
+        raise ValueError("Transducer 자막 재생에는 16kHz와 model.endpoint_silence_s가 필요합니다.")
     limits = Path("/proc/self/limits").read_text()
     if not limits_verified(limits):
         raise RuntimeError("thermal-run의 4GiB 주소 공간 제한이 필요합니다.")
@@ -129,7 +146,7 @@ def run(
             raise FileExistsError(f"기존 실행을 덮어쓰지 않습니다: {output / name}")
     info = {
         "schema_version": 1,
-        "kind": "qwen3_paced_partial_replay",
+        "kind": REPLAY_KINDS.get(family, QWEN_REPLAY_KIND),
         "status": "preparing",
         "process_id": os.getpid(),
         "source_commit": subprocess.check_output(
@@ -149,6 +166,14 @@ def run(
         "acoustic_word_latency_s": None,
         "scope": "1배속 입력과 추론 동시 진행. 접두 PCM 재전사·음성 KV 재계산. 선택적 고정 text prefix KV 유지·GGUF 토큰 배포를 지원하며 encoder 증분 실행·마이크·음향 단어 시각은 미구현.",
     }
+    if native:
+        info["scope"] = (
+            "Transducer 상태를 유지하며 증분 처리. 엔진의 무음 endpoint와 EOF에서 확정. 이벤트 시각은 서버 발행 기준."
+        )
+    elif family in {"sensevoice", "whisper"}:
+        info["scope"] = (
+            "Silero VAD와 제한된 접두 PCM 창을 사용해 부분·확정 전사를 요청. 이벤트 시각은 서버 발행 기준."
+        )
     receipt = output / "worker.json"
     write_json(receipt, info)
     adapter = session = log = None
@@ -195,19 +220,21 @@ def run(
             "payload_float32_sha256": float_digest(warmup.samples),
             "scope": "첫 원음의 ASR 최대 구간 이내 PCM만 워밍업. 평가 입력은 전체 원음 유지.",
         }
-        vad = (
-            vad_factory
-            or (
-                lambda p: BoundedProbabilityVad(
-                    K2SileroProbability(p),
-                    threshold=settings.get("vad_threshold", 0.5),
-                    max_speech_s=settings.get("vad_max_speech_s", 5),
-                    min_silence_s=settings.get("vad_min_silence_s", 0.3),
-                    short_span_s=settings.get("vad_short_span_s"),
+        vad = None
+        if not native:
+            vad = (
+                vad_factory
+                or (
+                    lambda p: BoundedProbabilityVad(
+                        K2SileroProbability(p),
+                        threshold=settings.get("vad_threshold", 0.5),
+                        max_speech_s=settings.get("vad_max_speech_s", 5),
+                        min_silence_s=settings.get("vad_min_silence_s", 0.3),
+                        short_span_s=settings.get("vad_short_span_s"),
+                    )
                 )
-            )
-        )(vad_model)
-        info["vad_model_sha256"] = digest(vad_model)
+            )(vad_model)
+            info["vad_model_sha256"] = digest(vad_model)
         adapter = (adapter_factory or create_adapter)(config["model"], 16000, root)
         if settings.get("token_stream", False) and (
             getattr(adapter, "supports_token_stream", False) is not True
@@ -276,13 +303,17 @@ def run(
                 "warmup_max_s",
             )
         }
-        session = CaptionSession(
-            adapter,
-            vad,
-            len(audio.samples) if audio else None,
-            emit,
-            info["telemetry"],
-            **session_settings,
+        session = (
+            TransducerSession(adapter, emit, info["telemetry"])
+            if native
+            else CaptionSession(
+                adapter,
+                vad,
+                len(audio.samples) if audio else None,
+                emit,
+                info["telemetry"],
+                **session_settings,
+            )
         )
         paced = {
             "chunk_ms": 100,
@@ -353,11 +384,11 @@ def run(
         info.update(
             hypothesis=hypothesis,
             **session_snapshot(session),
-            vad=vad.metadata(),
+            vad=vad.metadata() if vad else None,
             vad_probability=vad.probability.metadata()
-            if hasattr(vad.probability, "metadata")
+            if vad and hasattr(vad.probability, "metadata")
             else None,
-            inference_queue_peak=session.worker.queue_peak,
+            inference_queue_peak=None if native else session.worker.queue_peak,
         )
         events = read_events(output / "jobs.jsonl")
         collect_completed_metrics(
@@ -367,15 +398,17 @@ def run(
         info.update(status="failed", error={"type": type(error).__name__, "message": str(error)})
     finally:
         if session is not None:
-            session.close()
+            if not native:
+                session.close()
             info.update(
                 **session_snapshot(session),
                 skipped_silence=session.skipped,
                 token_timings=list(session.token_timings.values()),
             )
-        if adapter is not None and (session is None or not session.worker.thread.is_alive()):
+        worker_done = native or session is None or not session.worker.thread.is_alive()
+        if adapter is not None and worker_done:
             adapter.close()
-        if log is not None and (session is None or not session.worker.thread.is_alive()):
+        if log is not None and worker_done:
             log.close()
         write_json(receipt, info)
     return info

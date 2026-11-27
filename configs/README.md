@@ -18,6 +18,7 @@ CPU 회귀에는 `gguf_realtime.toml`과 [연속 입력 대표 명령](../docs/g
 | [quantization/q4_0_partial_window.toml](quantization/q4_0_partial_window.toml) | 같은 Q4의 선택 1.99초 부분 음성 창·embedding/음성 KV 캐시. 확정은 전체 음성 경로, 기본 전환 보류 |
 | [eval_manifest.example.jsonl](eval_manifest.example.jsonl) | 목록 형식 예시2줄. 실제 평가100개가 아님 |
 | [legacy/](legacy/README.md) | 이전 세 모델·Zip 1배속·M1 재현 설정 |
+| [model_comparison/](model_comparison/) | Zipformer 72M·174M, Nemotron 3.5 다국어, SenseVoice Small, Whisper Base의 RP5 비교 설정 |
 
 [평가 기준](../docs/research/fixed100_baseline.md), [실측 결과](../results/summaries/optimization/fixed100-baseline-20261109.md), [실행 안내](../docs/guides/qwen3_optimization.md)를 따릅니다. 실제 음성 목록은 로컬 `data/evaluation/edge100-20261109-01/manifest.jsonl`입니다. 비교 순서는 `tools prepare-baseline100`으로 새 실행 경로에 준비합니다.
 
