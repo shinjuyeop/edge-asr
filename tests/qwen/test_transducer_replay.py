@@ -34,7 +34,7 @@ class TransducerReplayTests(unittest.TestCase):
         adapter = Adapter()
         events = []
         session = TransducerSession(
-            adapter, events.append, {"t0_monotonic_ns": time.perf_counter_ns()}
+            adapter, events.append, {"t0_monotonic_ns": time.perf_counter_ns()}, frames=3
         )
         stream = session.start_stream()
         for start in range(3):
@@ -45,3 +45,10 @@ class TransducerReplayTests(unittest.TestCase):
         self.assertEqual([row["kind"] for row in events], ["partial", "final", "partial", "final"])
         self.assertEqual([row["reason"] for row in session.segments], ["native_endpoint", "eof"])
         self.assertEqual(events[-1]["owned_start_frame"], 2)
+        self.assertTrue(session.metadata()["complete"])
+
+    def test_missing_last_input_is_different_from_a_normal_eof(self):
+        session = TransducerSession(None, None, {}, frames=1600)
+        with self.assertRaisesRegex(RuntimeError, "원음 프레임"):
+            session.finish_stream(None)
+        self.assertFalse(session.metadata()["complete"])

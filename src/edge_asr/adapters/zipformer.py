@@ -32,7 +32,9 @@ class ZipformerAdapter:
             "provider": "cpu",
             "feature_dim": 80,
             "language": "ko",
-            "language_policy": "per_stream_ko" if self.model.get("language") else "Korean_weights",
+            "language_policy": "per_stream_ko"
+            if self.model.get("language")
+            else "Korean_model_not_runtime_language_argument",
             "endpoint_trailing_silence_s": self.model.get("endpoint_silence_s"),
             "use_itn": None,
             "itn_reason": "no_separate_itn_in_this_adapter",

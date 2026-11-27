@@ -304,7 +304,9 @@ def run(
             )
         }
         session = (
-            TransducerSession(adapter, emit, info["telemetry"])
+            TransducerSession(
+                adapter, emit, info["telemetry"], frames=len(audio.samples) if audio else None
+            )
             if native
             else CaptionSession(
                 adapter,

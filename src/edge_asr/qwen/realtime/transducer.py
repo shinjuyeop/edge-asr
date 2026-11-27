@@ -6,8 +6,10 @@ from edge_asr.metrics import distribution
 
 
 class TransducerSession:
-    def __init__(self, adapter, emit, telemetry):
+    def __init__(self, adapter, emit, telemetry, *, frames=None):
         self.adapter, self.emit, self.telemetry = adapter, emit, telemetry
+        self.frames = frames
+        self.complete = False
         self.results, self.segments, self.skipped = [], [], []
         self.token_timings = {}
         self.position = self.segment_start = self.segment_id = 0
@@ -20,6 +22,7 @@ class TransducerSession:
             "strategy": "stateful_transducer",
             "segmentation": "sherpa_onnx_endpoint_and_eof",
             "input": "original_pcm",
+            "complete": self.complete,
             "frame_scope": "엔진에 전달한 원음 범위. 음향 토큰의 끝이나 모델 내부 lookahead 제외 시점이 아님.",
         }
 
@@ -101,7 +104,10 @@ class TransducerSession:
         return text
 
     def finish_stream(self, stream):
+        if self.frames is not None and self.position != self.frames:
+            raise RuntimeError("EOF까지 도착하지 못한 원음 프레임이 있습니다.")
         begin = time.perf_counter()
         text = self.adapter.finish_stream(stream, self._decode)
         self._commit(text, begin, time.perf_counter() - begin, "eof")
+        self.complete = True
         return " ".join(row["hypothesis"] for row in self.results if row["kind"] == "final")

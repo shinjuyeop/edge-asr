@@ -61,9 +61,11 @@ edge-asr/
 ├── runtimes/                    장비별 외부 엔진·빌드
 ├── scripts/
 │   └── edge_asr.py              공통 CLI
-├── src/edge_asr/qwen/
-│   ├── realtime/                입력·요청·자막 처리
-│   └── viewer/                  청취 서버·브라우저 화면
+├── src/edge_asr/
+│   ├── adapters/                모델별 추론 연결
+│   └── qwen/
+│       ├── realtime/            입력·요청·자막 처리
+│       └── viewer/              청취 서버·브라우저 화면
 └── tests/                       Host 회귀 검사
 ```
 
