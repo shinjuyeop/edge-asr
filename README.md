@@ -1,6 +1,6 @@
 # Raspberry Pi 5 한국어 실시간 자막
 
-Qwen3-ASR-0.6B로 Raspberry Pi 5(RP5)에서 한국어 음성을 받아 발화 중에는 부분 자막을 갱신하고 구간이 끝나면 전사를 확정합니다. 파일 전체를 빠르게 전사해도 말하는 도중 화면이 오래 멈출 수 있습니다. 이 프로젝트는 WAV를 실제 시간에 맞춰 공급하고, 문자 오류와 사람이 자막을 기다리는 시간을 함께 측정합니다. USB 마이크로도 같은 인식 경로를 사용할 수 있습니다.
+Raspberry Pi 5(RP5)에서 한국어 음성을 받아 발화 중에는 부분 자막을 갱신하고 구간이 끝나면 전사를 확정합니다. Qwen3-ASR-0.6B 청취 구성과 Zipformer·Nemotron·SenseVoice·Whisper 비교 경로에서 WAV를 실제 시간에 맞춰 공급하고 문자 오류와 자막 대기 시간을 함께 측정합니다. USB 마이크 입력은 ALSA를 사용합니다.
 
 ## RP5와 Hailo-8L의 역할
 
@@ -71,4 +71,4 @@ edge-asr/
 
 ## 현재 한계와 다음 방향
 
-P8은 긴 문맥을 확보하는 동안 첫 본문이 늦어집니다. 부분 전사와 확정 전사가 CPU 워커를 공유하고, 장시간 입력에서는 열 제한이 관측됩니다. 다음 단계는 Q8 CPU와 Hailo의 배치 성능을 다시 측정하고 LiteRT-LM의 실행 가능성을 소규모로 비교하는 것입니다. 엔진 선택은 비교 후 결정합니다. [현재 상태와 우선순위](docs/status.md) · [최적화 과정](docs/research/optimization_history.md) · [문서 안내](docs/README.md) · [개발 절차](CONTRIBUTING.md)
+P8은 긴 문맥을 확보하는 동안 첫 본문이 늦어지고 장시간 입력에선 열 제한이 관측됩니다. 같은 원음을 비교한 뒤 실시간 자막의 주 후보로 Zipformer 174M INT8 320 ms·2스레드를 선정했습니다. 첫 표시의 지연이 큰 원음과 낮은 음량의 오류, 띄어쓰기·구두점이 다음 검증 대상입니다. [한국어 ASR 모델 실측](results/summaries/asr-rp5-model-comparison-20261127.md) · [현재 상태와 우선순위](docs/status.md) · [최적화 과정](docs/research/optimization_history.md) · [문서 안내](docs/README.md) · [개발 절차](CONTRIBUTING.md)
