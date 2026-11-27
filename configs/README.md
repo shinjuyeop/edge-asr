@@ -1,6 +1,6 @@
 # 실행 설정
 
-CPU 회귀에는 `gguf_realtime.toml`과 [연속 입력 대표 명령](../docs/guides/qwen3_optimization.md#현재-개발용-대표-명령)을 함께 사용합니다. RP5 청취에는 반응성 우선 T 또는 경계 정확도 우선 P8을 선택합니다. P5G와 P2는 경계 정책 대조용입니다. 상대 자산 경로는 저장소 루트, `asset_manifest`는 모델 폴더 기준입니다.
+주력 Zipformer 기준은 [B0](zipformer/b0.toml)와 [Zipformer 실행 안내](../docs/guides/zipformer.md)에서 확인합니다. Qwen CPU 회귀에는 `gguf_realtime.toml`과 [연속 입력 대표 명령](../docs/guides/qwen3_optimization.md#현재-개발용-대표-명령)을 함께 사용합니다. RP5 청취에는 반응성 우선 T 또는 경계 정확도 우선 P8을 선택합니다. P5G와 P2는 경계 정책 대조용입니다. 상대 자산 경로는 저장소 루트, `asset_manifest`는 모델 폴더 기준입니다.
 
 ## 모델·평가 설정
 

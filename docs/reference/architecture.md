@@ -1,8 +1,8 @@
 # RP5 시스템과 코드 구조
 
-청취 화면은 개발 PC 브라우저에서 열고 추론은 RP5에서 실행합니다. WAV·USB 마이크 → CPU의 VAD·구간 버퍼 → 직렬 추론 워커 → 부분·확정 이벤트 → SSH 터널과 브라우저(기본 포트 8765) 순서입니다.
+청취 화면은 개발 PC 브라우저에서 열고 추론은 RP5에서 실행합니다. 주력 Zipformer는 16kHz PCM 100ms 입력을 한 인식기 스트림에 공급합니다. 320ms 단위로 encoder cache와 predictor 상태를 이어 가고, 본문 변경을 부분 이벤트로 발행합니다. native endpoint와 EOF에서 확정합니다. 청취 화면은 SSH 터널과 기본 포트 8765에서 같은 이벤트를 재생합니다. [Zipformer B0 설정과 명령](../guides/zipformer.md)
 
-공유 Q8은 CPU에서 전 단계를 실행합니다. T·P8에서는 청취 프로필의 `[hailo]`가 지정한 라이브러리가 Encoder의 Conv1·2·3과 GELU를 PCIe로 연결된 Hailo-8L의 단일 HEF에 전달합니다. log-Mel, 나머지 Encoder와 투영, 텍스트·음성 Prefill, 토큰별 Decode는 CPU에 남습니다. T와 P8의 차이는 PCM 분할과 표시 정책입니다. [실행 설정](../../configs/README.md) · [native 연결](../../native/gguf/hailo_conv.cpp)
+Qwen 회귀 경로는 CPU VAD가 음성을 나누고 부분·확정 요청을 직렬로 처리합니다. 공유 Q8은 CPU에서 전 단계를 실행합니다. T·P8에서는 청취 프로필의 `[hailo]`가 지정한 라이브러리가 Encoder의 Conv1·2·3과 GELU를 PCIe로 연결된 Hailo-8L의 단일 HEF에 전달합니다. log-Mel, 나머지 Encoder와 투영, 텍스트·음성 Prefill, 토큰별 Decode는 CPU에 남습니다. T와 P8의 차이는 PCM 분할과 표시 정책입니다. [실행 설정](../../configs/README.md) · [native 연결](../../native/gguf/hailo_conv.cpp)
 
 아래 표의 Python 모듈은 `src/edge_asr/` 기준입니다.
 
@@ -30,15 +30,17 @@
 
 ```mermaid
 flowchart LR
-  CLI[CLI] --> Q[Qwen 실행기]
+  CLI[CLI] --> Z[Zipformer 증분 전사]
+  Z --> C[공통 입력·채점·계측]
+  CLI --> Q[Qwen 실행기]
   Q --> A[ONNX / GGUF]
   A --> N[native / 외부 런타임]
-  Q --> C[공통 입력·채점·계측]
+  Q --> C
   CLI --> L[legacy 재현]
   L --> C
 ```
 
-어댑터 계약은 `model_files`, `load()`, `transcribe(Audio) -> str`, `close()`입니다. 공통 factory는 선택 모델만 import합니다. GGUF는 ctypes로 별도 C ABI에 같은 float PCM을 전달합니다. `realtime/`은 도착한 접두 PCM을 반복 호출해 부분 자막을 갱신합니다. 새 GGUF bridge의 선택적 `transcribe_stream(Audio, on_text)`는 생성 중 텍스트를 임시 배포하며 기존 계약·최종 채점은 유지합니다. 기본 전체 음성 경로는 음성 청크 간 KV를 재사용하지 않습니다. 선택 부분 음성 창은 아래 범위에서 embedding·음성 KV를 재사용하며 전체 encoder의 수치 동등 증분 계산과 구분합니다. [측정 범위](../research/qwen_realtime.md).
+어댑터 계약은 `model_files`, `load()`, `transcribe(Audio) -> str`, `close()`입니다. 공통 factory는 선택 모델만 import합니다. GGUF는 ctypes로 별도 C ABI에 같은 float PCM을 전달합니다. Qwen의 `CaptionSession`은 도착한 접두 PCM을 반복 호출해 부분 자막을 갱신합니다. 새 GGUF bridge의 선택적 `transcribe_stream(Audio, on_text)`는 생성 중 텍스트를 임시 배포하며 기존 계약·최종 채점은 유지합니다. 기본 전체 음성 경로는 음성 청크 간 KV를 재사용하지 않습니다. 선택 부분 음성 창은 아래 범위에서 embedding·음성 KV를 재사용하며 전체 encoder의 수치 동등 증분 계산과 구분합니다. [측정 범위](../research/qwen_realtime.md).
 
 GGUF의 선택 설정 `num_threads_batch`는 여러 토큰 prefill과 오디오 인코딩에 적용하고 `num_threads`는 토큰 생성에 적용합니다. 생략하면 기존처럼 같은 값을 쓰며 기존5인자 생성 ABI를 사용합니다. 명시할 때는 `split_threads_v1` 별도 빌드의6인자 생성 함수를 사용하고 반환된 설정을 검사합니다. `audio_threads`는 mtmd 초기화에 전달한 값의 기록이며 별도 runtime getter가 아닙니다.
 

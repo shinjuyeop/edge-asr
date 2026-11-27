@@ -1,0 +1,9 @@
+title = "Zipformer 174M · B0"
+config = "configs/zipformer/b0.toml"
+manifest = "results/optimization/asr-comparison-20261127-01/inputs/fixed100.jsonl"
+# 청취 프로필의 공통 인자. 네이티브 Transducer는 VAD 모델을 로드하지 않습니다.
+vad_model = "models/silero-vad-k2-20261029/silero_vad.onnx"
+
+[replay]
+gap_s = 2
+warmup_max_s = 2.5

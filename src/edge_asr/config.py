@@ -70,6 +70,8 @@ def load_evaluation_config(path: str | Path) -> dict:
     )
     if family == "nemotron":
         model_keys.add("language")
+    if family == "zipformer":
+        model_keys.update(("decoding_method", "max_active_paths"))
     if family == "whisper":
         model_keys = {"family", "path", "num_threads", "tokens", "encoder", "decoder", "language"}
     if family in {"qwen3_asr", "qwen3_gguf"}:
@@ -180,6 +182,19 @@ def load_evaluation_config(path: str | Path) -> dict:
             or not 0.2 <= endpoint <= 5
         ):
             raise ValueError("model.endpoint_silence_s는 0.2~5초의 유한한 수여야 합니다.")
+        if family == "zipformer":
+            method = config["model"].get("decoding_method", "greedy_search")
+            if method not in ("greedy_search", "modified_beam_search"):
+                raise ValueError(
+                    "model.decoding_method는 greedy_search 또는 modified_beam_search입니다."
+                )
+            paths = config["model"].get("max_active_paths")
+            if method == "modified_beam_search" and (type(paths) is not int or paths < 1):
+                raise ValueError(
+                    "modified_beam_search에는 양의 정수 max_active_paths가 필요합니다."
+                )
+            if method == "greedy_search" and paths is not None:
+                raise ValueError("max_active_paths는 modified_beam_search에서만 사용합니다.")
         if family == "nemotron" and (
             config["model"].get("language") != "ko"
             or config["audio"]["sample_rate_hz"] != 16000

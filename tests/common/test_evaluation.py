@@ -269,10 +269,23 @@ class EvaluationTests(unittest.TestCase):
             self.assertEqual(adapter.transcribe(audio), "가")
             self.assertEqual(adapter.transcribe(audio), "가")
         self.assertEqual(constructor.call_count, 1)
+        self.assertEqual(constructor.call_args.kwargs["decoding_method"], "greedy_search")
+        self.assertNotIn("max_active_paths", constructor.call_args.kwargs)
         self.assertEqual(len(streams), 2)
         self.assertIsNot(streams[0], streams[1])
         self.assertTrue(all(stream.finished for stream in streams))
         self.assertEqual(len(adapter.padding), 10560)
+        model = {
+            **config["model"],
+            "decoding_method": "modified_beam_search",
+            "max_active_paths": 8,
+        }
+        beam = create_adapter(model, 16000, self.root)
+        with patch.dict(sys.modules, numpy=numpy, sherpa_onnx=sherpa):
+            beam.load()
+        self.assertEqual(constructor.call_args.kwargs["decoding_method"], "modified_beam_search")
+        self.assertEqual(constructor.call_args.kwargs["max_active_paths"], 8)
+        self.assertEqual(beam.metadata["max_active_paths"], 8)
 
 
 class CliEvaluationTests(unittest.TestCase):

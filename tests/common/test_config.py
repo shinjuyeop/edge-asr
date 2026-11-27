@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from edge_asr.config import load_config
+from edge_asr.config import load_config, load_evaluation_config
 
 ROOT = Path(__file__).resolve().parents[2]
 EXAMPLE = ROOT / "configs/legacy" / "zipformer_streaming.toml"
@@ -38,3 +38,22 @@ class ConfigTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             with self.assertRaises(FileNotFoundError):
                 load_config(Path(temp) / "missing.toml")
+
+    def test_zipformer_decoding_requires_a_valid_active_paths_setting(self):
+        model = (ROOT / "configs/zipformer/b0.toml").read_text(encoding="utf-8")
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "zipformer.toml"
+            for options in (
+                'decoding_method = "beam_search"',
+                'decoding_method = "modified_beam_search"',
+                'decoding_method = "modified_beam_search"\nmax_active_paths = 0',
+                'decoding_method = "modified_beam_search"\nmax_active_paths = true',
+                'decoding_method = "greedy_search"\nmax_active_paths = 4',
+            ):
+                with self.subTest(options=options):
+                    path.write_text(model.replace('decoding_method = "greedy_search"', options))
+                    with self.assertRaises(ValueError):
+                        load_evaluation_config(path)
+        for arm, paths in (("b1-a", 2), ("b1-b", 4), ("b1-c", 8)):
+            config = load_evaluation_config(ROOT / f"configs/zipformer/{arm}.toml")
+            self.assertEqual(config["model"]["max_active_paths"], paths)

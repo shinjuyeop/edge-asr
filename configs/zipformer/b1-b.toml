@@ -1,0 +1,18 @@
+[model]
+family = "zipformer"
+path = "models/asr-comparison-20261127-01/zipformer-174m-320ms"
+endpoint_silence_s = 1.2
+tail_padding_s = 0.64
+encoder = "encoder-epoch-99-avg-1-chunk-16-left-128.int8.onnx"
+decoder = "decoder-epoch-99-avg-1-chunk-16-left-128.int8.onnx"
+joiner = "joiner-epoch-99-avg-1-chunk-16-left-128.int8.onnx"
+num_threads = 2
+decoding_method = "modified_beam_search"
+max_active_paths = 4
+
+[audio]
+sample_rate_hz = 16000
+
+[evaluation]
+mode = "batch"
+warmup_runs = 1

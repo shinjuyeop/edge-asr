@@ -15,6 +15,8 @@ MODEL_FILES = {
 class ZipformerAdapter:
     def __init__(self, model: dict, sample_rate_hz: int, root: Path):
         self.model = model
+        self.decoding_method = model.get("decoding_method", "greedy_search")
+        self.max_active_paths = model.get("max_active_paths")
         self.sample_rate_hz = sample_rate_hz
         directory = resolve_path(model["path"], root)
         self.model_files = {
@@ -36,6 +38,8 @@ class ZipformerAdapter:
             if self.model.get("language")
             else "Korean_model_not_runtime_language_argument",
             "endpoint_trailing_silence_s": self.model.get("endpoint_silence_s"),
+            "decoding_method": self.decoding_method,
+            "max_active_paths": self.max_active_paths,
             "use_itn": None,
             "itn_reason": "no_separate_itn_in_this_adapter",
             "quantization": {
@@ -71,7 +75,12 @@ class ZipformerAdapter:
             provider="cpu",
             sample_rate=self.sample_rate_hz,
             feature_dim=80,
-            decoding_method="greedy_search",
+            decoding_method=self.decoding_method,
+            **(
+                {"max_active_paths": self.max_active_paths}
+                if self.max_active_paths is not None
+                else {}
+            ),
             **(
                 {
                     "enable_endpoint_detection": True,

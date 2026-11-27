@@ -1,36 +1,14 @@
 # Raspberry Pi 5 한국어 실시간 자막
 
-Raspberry Pi 5(RP5)에서 한국어 음성을 받아 발화 중에는 부분 자막을 갱신하고 구간이 끝나면 전사를 확정합니다. Qwen3-ASR-0.6B 청취 구성과 Zipformer·Nemotron·SenseVoice·Whisper 비교 경로에서 WAV를 실제 시간에 맞춰 공급하고 문자 오류와 자막 대기 시간을 함께 측정합니다. USB 마이크 입력은 ALSA를 사용합니다.
+Raspberry Pi 5(RP5)에서 한국어 음성을 받아 부분 자막을 갱신하고 발화가 끝나면 확정합니다. 주력 모델은 **한국어 Zipformer 174M INT8**입니다. 16kHz 모노 음성을 100ms씩 공급하고, CPU에서 320ms 증분 추론을 수행하며 encoder 상태를 이어 갑니다. WAV 1배속 입력으로 문자 오류와 자막 대기 시간을 함께 측정합니다.
 
-## RP5와 Hailo-8L의 역할
+## 기준선과 청취
 
-| 단계 | T·P8 청취 구성에서 실행하는 연산 |
-| --- | --- |
-| 음성 전처리 | RP5 CPU가 16 kHz 모노 PCM을 받고 VAD로 발화 구간을 찾습니다. ASR에는 원음에서 계산한 log-Mel 특징을 사용합니다. |
-| 음성 Encoder | Hailo-8L이 앞단 합성곱 3개와 GELU를 하나의 HEF로 실행합니다. CPU가 나머지 투영과 Transformer를 계산해 음성 임베딩을 만듭니다. |
-| Prefill | CPU가 텍스트와 음성 임베딩을 처리합니다. 요청 간 동일한 텍스트 접두부의 KV 캐시를 재사용합니다. |
-| Decode·표시 | CPU가 토큰을 차례로 생성하면 브라우저가 부분 자막과 확정 결과를 표시합니다. |
+B0는 Greedy Search, 모델 2스레드, 1.2초 trailing blank, RP5 1.5GHz CPU 상한입니다. 고정 100개에서 CER 9.80%, 원음 끝→확정 p95 1.34초를 기록했습니다. 30분 28초 입력의 CPU 점유는 18.6%, 최고 온도는 79.3°C였고 드롭·실패·확정 유실이 없었습니다. [B0 실행과 원시 기록](docs/guides/zipformer.md)
 
-두 구성은 같은 GGUF Q8 모델과 CNN 가속기를 사용합니다. T는 구간을 최대 4초로 나눠 새 본문을 빨리 보여줍니다. P8은 3.4초부터 음향적 쉼을 찾고 최대 8초까지 기다려 단어 중간에서 확정하는 오류를 줄입니다. CPU만 사용하는 공유 Q8은 변경 전후를 비교하는 회귀 기준입니다. [연산 경로](docs/reference/architecture.md) · [설정 선택](configs/README.md)
+WAV 직접 재생은 `tools replay-asr`에 B0 설정을 지정합니다. 웹 청취는 B0 프로필로 RP5 서버를 준비한 뒤 포트 8765에서 원음을 선택합니다. 설치·음원·모델 준비와 SSH 터널은 실행 안내를 따릅니다. [B0 실행 명령](docs/guides/zipformer.md#대표-실행) · [환경 준비](docs/guides/setup.md) · [청취 화면](http://127.0.0.1:8765)
 
-## 고정 100개 원음에서의 변화
-
-RP5에서 한국어 WAV 100개를 1배속으로 공급한 결과입니다. 지연은 서버 발행 기준 p95이며, 갱신 공백은 새 음성을 반영해 본문이 달라진 표시 사이의 시간입니다.
-
-| 구성 | 확정 문자 오류 / 정답 3,848자 | 첫 본문 | 최신 갱신 공백 | 원음 끝 → 확정 |
-| --- | ---: | ---: | ---: | ---: |
-| 초기 ONNX INT8 CPU | 615 | 12.25초 | 4.60초 | 8.56초 |
-| T · 반응성 우선 | 460 (11.95%) | 4.13초 | 4.00초 | 3.06초 |
-| P8 · 경계 정확도 우선 | 374 (9.72%) | 9.42초 | 6.06초 | 5.42초 |
-
-T에서 P8로 바꾸면 정답 어절 안에서 문장을 끝낸 횟수가 28회에서 10회로 줄었습니다. 초기 ONNX와는 원음과 정답이 같지만 순서·VAD·표시 방식·열 조건이 달라 누적 변화로 읽어야 합니다. [원음별 경계·지연 대조](results/summaries/optimization/boundary-20261124.md)
-
-## 실제 음성과 자막 확인하기
-
-1. 모델·원음·실행 기록을 준비한 장비에서 개발 PC의 저장소 루트를 엽니다. 처음 설치할 때는 [환경 준비](docs/guides/setup.md)를 따릅니다.
-2. [T·P8 청취 명령](docs/guides/listener.md#음성-경계-전후-비교)으로 서버를 시작합니다. 이미 같은 기록 목록을 제공 중이면 바로 [청취 화면](http://127.0.0.1:8765)을 엽니다.
-3. **기록 재생**에서 `fixed-T`와 `fixed-P8`의 같은 원음 `fleurs-1441445080190694850`를 선택해 ‘매일’에서 들리는 음성과 확정 자막을 비교합니다. **라이브**에서는 프로필과 원음을 고르고 **준비 → 시작**으로 RP5에서 새로 전사합니다. [USB 마이크 사용법](docs/guides/listener.md#rp5-usb-마이크)
-4. CPU 회귀 기준을 직접 실행할 때는 모델 설정과 VAD·갱신 옵션을 함께 지정합니다. [Q8 대표 명령](docs/guides/qwen3_optimization.md#현재-개발용-대표-명령)
+Qwen3-ASR T·P8과 Hailo-8L의 CNN 가속 결과는 비교 기준입니다. 모델과 NPU 배포 경로는 한국어 모델 비교 기록에서 확인할 수 있습니다. [T·P8 원음별 비교](results/summaries/optimization/boundary-20261124.md) · [한국어 ASR 모델 실측](results/summaries/asr-rp5-model-comparison-20261127.md)
 
 ## 주요 경로
 
@@ -42,9 +20,11 @@ edge-asr/
 ├── configs/                     모델 설정·청취 프로필
 │   ├── model_comparison/        한국어 ASR 엔진 비교 설정
 │   ├── quantization/            양자화 비교 설정
-│   ├── gguf_realtime.toml       CPU 회귀 기준
+│   ├── zipformer/               B0 기준선과 B1 탐색 설정
+│   ├── gguf_realtime.toml       Qwen CPU 회귀 기준
 │   ├── listener_hailo_boundary.toml
-│   └── listener_hailo_continuity.toml
+│   ├── listener_hailo_continuity.toml
+│   └── listener_zipformer_b0.toml
 ├── data/                        로컬 평가 음원·정답
 ├── docs/
 │   ├── guides/                  설치·청취·동기화
@@ -71,4 +51,4 @@ edge-asr/
 
 ## 현재 한계와 다음 방향
 
-P8은 긴 문맥을 확보하는 동안 첫 본문이 늦어지고 장시간 입력에선 열 제한이 관측됩니다. 같은 원음을 비교한 뒤 실시간 자막의 주 후보로 Zipformer 174M INT8 320 ms·2스레드를 선정했습니다. 첫 표시의 지연이 큰 원음과 낮은 음량의 오류, 띄어쓰기·구두점이 다음 검증 대상입니다. [한국어 ASR 모델 실측](results/summaries/asr-rp5-model-comparison-20261127.md) · [현재 상태와 우선순위](docs/status.md) · [최적화 과정](docs/research/optimization_history.md) · [문서 안내](docs/README.md) · [개발 절차](CONTRIBUTING.md)
+Zipformer의 저음량 인식과 첫 본문, 띄어쓰기·구두점이 개선 대상입니다. Hailo-8L은 encoder의 고정 연산부터 검토합니다. [현재 상태와 우선순위](docs/status.md) · [문서 안내](docs/README.md) · [개발 절차](CONTRIBUTING.md)
