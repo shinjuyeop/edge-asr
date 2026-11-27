@@ -62,7 +62,11 @@ class ListenerTests(unittest.TestCase):
                     profile = tomllib.loads((root / name).read_text())
                     self.assertIn(profile["config"], tracked)
                     config = load_evaluation_config(root / profile["config"])
-                    self.assertIn(config["model"]["family"], ("qwen3_asr", "qwen3_gguf"))
+                    self.assertIn(
+                        config["model"]["family"], ("qwen3_asr", "qwen3_gguf", "zipformer")
+                    )
+                    if config["model"]["family"] == "zipformer":
+                        self.assertIn("endpoint_silence_s", config["model"])
                     args = argument_parser().parse_args(
                         replay_args(
                             missing_root,
